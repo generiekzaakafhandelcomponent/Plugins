@@ -4,16 +4,16 @@
   "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "^13.2.3",
-    "@angular/core": "^13.2.3"
+    "@angular/core": "^13.2.3",
+    "@valtimo/config": "^5.9.1",
+    "@valtimo/plugin": "^5.9.1",
+    "@valtimo/user-interface": "^5.9.1"
   },
   "dependencies": {
     "@angular-devkit/build-angular": "^13.2.4",
     "@angular/animations": "^13.2.3",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
-    "@valtimo/config": "5.9.1",
-    "@valtimo/plugin": "5.9.1",
-    "@valtimo/user-interface": "5.9.1",
     "ngx-translate-multi-http-loader": "^3.0.0",
     "tslib": "^2.0.0"
   }
