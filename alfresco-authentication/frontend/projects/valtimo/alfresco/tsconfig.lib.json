@@ -1,6 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "declarationMap": true,
@@ -21,5 +22,6 @@
     "enableResourceInlining": true,
     "allowSyntheticDefaultImports": true
   },
+  "include": ["src/lib/**.ts"],
   "exclude": ["src/test.ts", "**/*.spec.ts"]
 }

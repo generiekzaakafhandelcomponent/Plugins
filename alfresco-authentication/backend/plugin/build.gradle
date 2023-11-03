@@ -90,7 +90,7 @@ tasks.register("integrationTesting", Test) {
 }
 
 dockerCompose {
-    projectName = "slack"
+    projectName = "alfresco-authhentication"
     isRequiredBy(integrationTesting)
     useComposeFiles.addAll("docker-compose-integration-test.yml")
 }

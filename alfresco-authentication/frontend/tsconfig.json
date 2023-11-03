@@ -21,14 +21,14 @@
     "allowSyntheticDefaultImports": true
   },
   "paths": {
-    "@valtimo/slack": [
-      "dist/valtimo/slack"
+    "@valtimo/alfresco-auth-plugin": [
+      "dist/valtimo/alfresco-auth"
     ]
   },
   "files": [],
   "references": [
     {
-      "path": "./projects/valtimo/slack/tsconfig.spec.json"
+      "path": "./projects/valtimo/alfresco/tsconfig.spec.json"
     }
     ]
 }

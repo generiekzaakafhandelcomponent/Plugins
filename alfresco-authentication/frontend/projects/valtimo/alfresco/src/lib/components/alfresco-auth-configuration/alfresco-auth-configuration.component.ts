@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2015-2022 Ritense BV, the Netherlands.
  *
@@ -19,6 +20,7 @@ import {PluginConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {AlfrescoAuthConfig} from "../../models";
 
+// @ts-ignore
 @Component({
   selector: 'valtimo-alfresco-auth-configuration',
   templateUrl: './alfresco-auth-configuration.component.html',
