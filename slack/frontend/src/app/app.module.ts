@@ -43,12 +43,8 @@ import {
 import {ProcessModule} from '@valtimo/process';
 import {ViewConfiguratorModule} from '@valtimo/view-configurator';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ContextModule} from '@valtimo/context';
-import {DashboardModule} from '@valtimo/dashboard';
 import {DocumentModule} from '@valtimo/document';
 import {AccountModule} from '@valtimo/account';
-import {UserManagementModule} from '@valtimo/user-management';
-import {AuthorityModule} from '@valtimo/authority';
 import {ChoiceFieldModule} from '@valtimo/choice-field';
 import {ResourceModule} from '@valtimo/resource';
 import {FormModule} from '@valtimo/form';
@@ -59,7 +55,6 @@ import {DecisionModule} from '@valtimo/decision';
 import {MilestoneModule} from '@valtimo/milestone';
 import {LoggerModule} from 'ngx-logger';
 import {FormManagementModule} from '@valtimo/form-management';
-import {ManagementContextModule} from '@valtimo/management';
 import {FormLinkModule} from '@valtimo/form-link';
 import {MigrationModule} from '@valtimo/migration';
 import {DossierManagementModule} from '@valtimo/dossier-management';
@@ -68,6 +63,7 @@ import {ConfigModule, ConfigService, MultiTranslateHttpLoaderFactory} from '@val
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {SlackPluginModule, slackPluginSpecification} from '../../projects/valtimo/slack/src/public_api';
+import {AccessControlManagementModule} from '@valtimo/access-control-management';
 import {
   PLUGINS_TOKEN,
 } from '@valtimo/plugin';
@@ -107,16 +103,11 @@ export function tabsFactory() {
     BpmnJsDiagramModule,
     FormsModule,
     ReactiveFormsModule,
-    ContextModule,
-    DashboardModule,
     DocumentModule,
     AccountModule,
-    UserManagementModule,
-    AuthorityModule,
     ChoiceFieldModule,
     ResourceModule,
     FormModule,
-    ManagementContextModule,
     AnalyseModule,
     SwaggerModule,
     ProcessManagementModule,
@@ -127,6 +118,7 @@ export function tabsFactory() {
     MigrationModule,
     DossierManagementModule,
     PluginManagementModule,
+    AccessControlManagementModule,
     SlackPluginModule,
     HttpClientModule, TranslateModule.forRoot({
       loader: {

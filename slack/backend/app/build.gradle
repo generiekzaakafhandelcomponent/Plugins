@@ -34,12 +34,12 @@ dependencies {
     implementation(project(":slack:backend:plugin"))
 
     implementation "com.ritense.valtimo:audit:${valtimoVersion}"
+    implementation "com.ritense.valtimo:authorization:${valtimoVersion}"
     implementation "com.ritense.valtimo:case:${valtimoVersion}"
     implementation "com.ritense.valtimo:contract:${valtimoVersion}"
     implementation "com.ritense.valtimo:core:${valtimoVersion}"
     implementation "com.ritense.valtimo:document:${valtimoVersion}"
     implementation "com.ritense.valtimo:form:${valtimoVersion}"
-    implementation "com.ritense.valtimo:form-flow-valtimo:${valtimoVersion}"
     implementation "com.ritense.valtimo:form-link:${valtimoVersion}"
     implementation "com.ritense.valtimo:keycloak-iam:${valtimoVersion}"
     implementation "com.ritense.valtimo:local-resource:${valtimoVersion}"

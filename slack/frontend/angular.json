@@ -35,6 +35,11 @@
                 "glob": "**/*",
                 "input": "src/assets/i18n",
                 "output": "./valtimo-translation/custom/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/monaco-editor",
+                "output": "assets/monaco-editor"
               }
             ],
             "styles": [
@@ -368,7 +373,6 @@
       }
     }
   },
-  "defaultProject": "example-slack-plugin",
   "cli": {
     "analytics": false
   }

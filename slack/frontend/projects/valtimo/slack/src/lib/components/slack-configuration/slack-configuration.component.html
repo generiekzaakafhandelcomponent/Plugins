@@ -30,6 +30,7 @@
     [required]="true"
     [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
     [widthPx]="350"
+    placeholder="Slack Plugin"
   >
   </v-input>
   <v-input
@@ -41,6 +42,7 @@
     [defaultValue]="obs.prefill?.url"
     [required]="true"
     [tooltip]="'urlTooltip' | pluginTranslate: pluginId | async"
+    placeholder="https://www.slack.com/"
   >
   </v-input>
   <v-input

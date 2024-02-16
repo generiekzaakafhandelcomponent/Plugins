@@ -17,15 +17,17 @@
 package com.ritense.valtimo.slack.plugin
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
 import com.ritense.document.domain.impl.request.NewDocumentRequest
 import com.ritense.plugin.domain.PluginConfiguration
 import com.ritense.plugin.service.PluginService
 import com.ritense.plugin.web.rest.request.PluginProcessLinkCreateDto
 import com.ritense.processdocument.domain.impl.request.NewDocumentAndStartProcessRequest
 import com.ritense.processdocument.service.ProcessDocumentService
+import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.resource.service.TemporaryResourceStorageService
-import com.ritense.valtimo.slack.BaseIntegrationTest
 import com.ritense.valtimo.contract.json.Mapper
+import com.ritense.valtimo.slack.BaseIntegrationTest
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -188,7 +190,7 @@ class SlackPluginIT : BaseIntegrationTest() {
                 configuration.id.id,
                 actionDefinitionKey,
                 Mapper.INSTANCE.get().readTree(actionProperties) as ObjectNode,
-                "bpmn:ServiceTask:start",
+                SERVICE_TASK_START,
             )
         )
     }
@@ -207,7 +209,7 @@ class SlackPluginIT : BaseIntegrationTest() {
             )
         )
         request.withProcessVars(processVars)
-        val result = processDocumentService.newDocumentAndStartProcess(request)
+        val result = runWithoutAuthorization { processDocumentService.newDocumentAndStartProcess(request) }
         if (result.errors().isNotEmpty()) {
             fail(result.errors().first().asString())
         }

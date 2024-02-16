@@ -1,0 +1,19 @@
+[
+  {
+    "activityId": "StartEvent",
+    "activityType": "bpmn:StartEvent:start",
+    "processLinkType": "form",
+    "formDefinitionName": "start-form-example"
+  },
+  {
+    "activityId": "SendSlackMessage",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "8661ca7e-9ae7-4688-90be-68c3ca828de1",
+    "pluginActionDefinitionKey": "post-message",
+    "actionProperties": {
+      "channel": "AAAAA1111",
+      "message": "Hello world!"
+    }
+  }
+]

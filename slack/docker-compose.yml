@@ -10,8 +10,6 @@ services:
       POSTGRES_USER: example
       POSTGRES_PASSWORD: password
       POSTGRES_DB: example-core-db
-    volumes:
-      - example-core-db-data:/var/lib/postgres # persist data even if container shuts down
 
   example-core-keycloak:
     container_name: example-core-keycloak
@@ -22,7 +20,7 @@ services:
       - ./docker/imports/keycloak:/opt/jboss/keycloak/imports
       - ./docker/imports/keycloak/exports:/opt/jboss/keycloak/exports
     ports:
-      - "8082:8080"
+      - "8081:8080"
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
@@ -40,6 +38,3 @@ services:
     environment:
       - POSTGRES_USER=${DB_USER:-keycloak}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-keycloak}
-
-volumes:
-  example-core-db-data: #enabled persistence
