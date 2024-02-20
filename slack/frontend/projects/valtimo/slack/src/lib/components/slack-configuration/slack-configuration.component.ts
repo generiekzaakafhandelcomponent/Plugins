@@ -35,6 +35,13 @@ export class SlackConfigurationComponent
   @Input() prefillConfiguration$!: Observable<SlackConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
+
+  constructor(
+      private readonly pluginManagementService: PluginManagementService,
+      private readonly translateService: TranslateService,
+      private readonly pluginTranslationService: PluginTranslationService
+  ) {}
+
   readonly authenticationPluginSelectItems$: Observable<Array<{id?: string; text: string}>> =
     combineLatest([
       this.pluginManagementService.getPluginConfigurationsByCategory('slack-authentication'),
@@ -53,12 +60,6 @@ export class SlackConfigurationComponent
   private saveSubscription!: Subscription;
   private readonly formValue$ = new BehaviorSubject<SlackConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
-
-  constructor(
-    private readonly pluginManagementService: PluginManagementService,
-    private readonly translateService: TranslateService,
-    private readonly pluginTranslationService: PluginTranslationService
-  ) {}
 
   ngOnInit(): void {
     this.openSaveSubscription();

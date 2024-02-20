@@ -28,13 +28,13 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "node_modules/@valtimo/config/assets/core",
-                "output": "./valtimo-translation/core/"
+                "input": "node_modules/@valtimo/layout/assets/img",
+                "output": "./valtimo-layout/img/"
               },
               {
                 "glob": "**/*",
-                "input": "src/assets/i18n",
-                "output": "./valtimo-translation/custom/"
+                "input": "node_modules/@valtimo/config/assets/core",
+                "output": "./valtimo-translation/core/"
               },
               {
                 "glob": "**/*",
@@ -65,7 +65,7 @@
               "node_modules/bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css",
               "node_modules/flatpickr/dist/flatpickr.css",
               "node_modules/@valtimo/layout/assets/css/app.css",
-              "node_modules/@valtimo/user-interface/assets/design-tokens.css",
+              "node_modules/@valtimo/components/assets/css/design-tokens.css",
               "node_modules/@valtimo/components/assets/css/carbon.scss",
               "node_modules/@valtimo/components/assets/css/carbon-beagle-compatibility.scss",
               "src/styles.scss"
@@ -92,182 +92,20 @@
               "camunda-bpmn-moddle/lib",
               "object-refs",
               "heatmap.js"
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "20mb",
-                  "maximumError": "100mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ]
-            },
-            "test": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": true,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "20mb",
-                  "maximumError": "50mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ]
-            },
-            "dev": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": true,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "20mb",
-                  "maximumError": "50mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ]
-            },
-            "sys": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.sys.ts"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": true,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "20mb",
-                  "maximumError": "50mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ]
-            },
-            "acc": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.acc.ts"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": true,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "20mb",
-                  "maximumError": "50mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ]
-            },
-            "prd": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prd.ts"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": true,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "20mb",
-                  "maximumError": "50mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ]
-            }
-          }
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "example-slack-plugin:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "example-slack-plugin:build:production"
-            }
           }
         },
         "extract-i18n": {

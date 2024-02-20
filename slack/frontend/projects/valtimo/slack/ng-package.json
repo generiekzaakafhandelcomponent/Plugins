@@ -6,10 +6,7 @@
     "entryFile": "src/public_api.ts"
   },
   "allowedNonPeerDependencies": [
-    "ngx-toastr",
-    "@foxythemes/bootstrap-datetime-picker-bs4",
     "bpmn-js",
-    "jquery",
     "moment",
     "heatmap.js-fixed",
     "@angular-devkit/build-angular",
@@ -33,7 +30,6 @@
     "@babel/runtime",
     "@foxythemes/bootstrap-datetime-picker-bs4",
     "@mdi/font",
-    "@ng-bootstrap/ng-bootstrap",
     "@ngx-translate/http-loader",
     "@valtimo/account",
     "@valtimo/analyse",
@@ -92,7 +88,6 @@
     "tslib",
     "zone.js",
     "@ngx-translate/core",
-    "@ngx-translate/http-loader",
     "@ng-bootstrap/ng-bootstrap",
     "@formio/angular",
     "ngx-spinner",
