@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1f15klj" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:process id="documentToPrintStraatExapmle" name="Document to printstraat" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="StartEvent">
+      <bpmn:outgoing>Flow_0vvcz70</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0vvcz70" sourceRef="StartEvent" targetRef="Activity_0c0x37r" />
+    <bpmn:sequenceFlow id="Flow_1uvtflx" sourceRef="Activity_0c0x37r" targetRef="Activity_1238wxa" />
+    <bpmn:endEvent id="Event_146etv0">
+      <bpmn:incoming>Flow_04c9ujq</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_04c9ujq" sourceRef="Activity_1238wxa" targetRef="Event_146etv0" />
+    <bpmn:serviceTask id="Activity_0c0x37r" name="store document to temp storage" camunda:expression="${storeDocumentService.storeDocumentInTempStorage(execution)}">
+      <bpmn:incoming>Flow_0vvcz70</bpmn:incoming>
+      <bpmn:outgoing>Flow_1uvtflx</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:callActivity id="Activity_1238wxa" name="Send document to printstraat" calledElement="document-to-printstraat">
+      <bpmn:extensionElements>
+        <camunda:in source="printstraatTemporaryFileId" target="printstraatTemporaryFileId" />
+        <camunda:in source="printstraatZaaknummer" target="printstraatZaaknummer" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1uvtflx</bpmn:incoming>
+      <bpmn:outgoing>Flow_04c9ujq</bpmn:outgoing>
+    </bpmn:callActivity>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="documentToPrintStraatExapmle">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_146etv0_di" bpmnElement="Event_146etv0">
+        <dc:Bounds x="592" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0057j0l_di" bpmnElement="Activity_0c0x37r">
+        <dc:Bounds x="259" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0zuntps_di" bpmnElement="Activity_1238wxa">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0vvcz70_di" bpmnElement="Flow_0vvcz70">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="259" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1uvtflx_di" bpmnElement="Flow_1uvtflx">
+        <di:waypoint x="359" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04c9ujq_di" bpmnElement="Flow_04c9ujq">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="592" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

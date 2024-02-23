@@ -17,9 +17,16 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface PrintstraatConfig extends PluginConfigurationData {
-    test: string;
+    url: string;
+    token: string;
+}
+
+interface SendDocumentConfig {
+    zaaknummerVariable: string;
+    tempFileIdVariable: string;
 }
 
 export {
-    PrintstraatConfig
+    PrintstraatConfig,
+    SendDocumentConfig
 };

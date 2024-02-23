@@ -18,10 +18,14 @@ package com.ritense.valtimo.backend.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.resource.service.TemporaryResourceStorageService
 
-class PrintstraatPluginFactory(pluginService: PluginService) : PluginFactory<PrintstraatPlugin>(pluginService) {
+class PrintstraatPluginFactory(
+    pluginService: PluginService,
+    private val temporaryResourceStorageService: TemporaryResourceStorageService
+) : PluginFactory<PrintstraatPlugin>(pluginService) {
 
     override fun create(): PrintstraatPlugin {
-        return PrintstraatPlugin()
+        return PrintstraatPlugin(temporaryResourceStorageService)
     }
 }

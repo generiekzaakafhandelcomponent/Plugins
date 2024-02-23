@@ -19,67 +19,44 @@ import {PRINTSTRAAT_PLUGIN_LOGO_BASE64} from './assets';
 import {
   PrintstraatPluginConfigurationComponent
 } from "./components/printstraat-configuration/printstraat-plugin-configuration.component";
+import {
+  SendDocumentToPrintstraatConfigurationComponent
+} from "./components/send-document-to-printstraat/send-document-to-printstraat-configuration.component";
 
 const printstraatPluginSpecification: PluginSpecification = {
   pluginId: 'printstraat',
   pluginLogoBase64: PRINTSTRAAT_PLUGIN_LOGO_BASE64,
   pluginConfigurationComponent: PrintstraatPluginConfigurationComponent,
   functionConfigurationComponents: {
+    'send-document-to-printstraat' : SendDocumentToPrintstraatConfigurationComponent
   },
   pluginTranslations: {
     nl: {
       title: "printstraat",
       description: "Met deze plugin kan je documenten naar de printstraat versturen",
-      host: "host",
-      username: "gebruikersnaam",
-      password: "wachtwoord",
-      protocol: "protocol",
-      auth: "authenticatie",
-      debug: "debug",
-      startTlsEnable: "startTls inschakelen",
-      sender: "afzender",
-      recipients: "ontvanger",
-      cc: "cc",
-      bcc: "bcc",
-      subject: "onderwerp",
-      attachments: "bijlagen",
-      content: "inhoud"
+      url: "url",
+      token: "token",
+      zaaknummerVariable: "zaaknummer variable",
+      tempFileIdVariable: "temp file id variable",
+      'send-document-to-printstraat': "Stuur het document naar de printstraat"
     },
     en: {
       title: "printstraat",
       description: "With this plugin you can send documents to the printing station",
-      host: "host",
-      username: "username",
-      password: "password",
-      protocol: "protocol",
-      auth: "auth",
-      debug: "debug",
-      startTlsEnable: "startTlsEnable",
-      sender: "sender",
-      recipients: "recipient",
-      cc: "cc",
-      bcc: "bcc",
-      subject: "subject",
-      attachments: "attachments",
-      content: "content"
+      url: "url",
+      token: "token",
+      zaaknummerVariable: "casenumber variable",
+      tempFileIdVariable: "temp file id variable",
+      'send-document-to-printstraat': "Send the document to the printing station"
     },
     de: {
       title: "printstraat",
       description: "Mit diesem Plugin können Sie Dokumente an die Druckstation senden",
-      host: "Host",
-      username: "Benutzername",
-      password: "Passwort",
-      protocol: "Protokoll",
-      auth: "Authentifizierung",
-      debug: "Debug",
-      startTlsEnable: "StartTLS aktivieren",
-      sender: "Absender",
-      recipients: "Empfänger",
-      cc: "CC",
-      bcc: "BCC",
-      subject: "Betreff",
-      attachments: "Anhänge",
-      content: "Inhalt"
+      url: "url",
+      token: "token",
+      zaaknummerVariable: "Fallnummer variable",
+      tempFileIdVariable: "temp file id variable",
+      'send-document-to-printstraat': "Senden Sie das Dokument an die Druckstation"
     },
   },
 };

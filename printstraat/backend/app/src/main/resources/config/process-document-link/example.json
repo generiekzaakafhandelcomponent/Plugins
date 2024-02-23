@@ -1,0 +1,8 @@
+[
+    {
+        "processDefinitionKey": "documentToPrintStraatExapmle",
+        "canInitializeDocument": true,
+        "startableByUser": true,
+        "processIsVisibleInMenu": true
+    }
+]

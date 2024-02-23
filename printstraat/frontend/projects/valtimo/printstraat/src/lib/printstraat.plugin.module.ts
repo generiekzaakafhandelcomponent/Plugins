@@ -21,10 +21,13 @@ import {FormModule, InputModule} from '@valtimo/user-interface';
 import {
   PrintstraatPluginConfigurationComponent
 } from "./components/printstraat-configuration/printstraat-plugin-configuration.component";
+import {
+  SendDocumentToPrintstraatConfigurationComponent
+} from "./components/send-document-to-printstraat/send-document-to-printstraat-configuration.component";
 
 @NgModule({
-  declarations: [PrintstraatPluginConfigurationComponent],
+  declarations: [PrintstraatPluginConfigurationComponent, SendDocumentToPrintstraatConfigurationComponent],
   imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule],
-  exports: [PrintstraatPluginConfigurationComponent]
+  exports: [PrintstraatPluginConfigurationComponent, SendDocumentToPrintstraatConfigurationComponent]
 })
 export class PrintstraatPluginModule {}
