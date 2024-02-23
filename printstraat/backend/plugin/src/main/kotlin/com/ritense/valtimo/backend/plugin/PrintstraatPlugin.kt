@@ -28,7 +28,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.reactive.function.client.WebClient
 import java.net.URI
-import java.util.*
+import java.util.Base64
 
 @Plugin(
     key = "printstraat",
