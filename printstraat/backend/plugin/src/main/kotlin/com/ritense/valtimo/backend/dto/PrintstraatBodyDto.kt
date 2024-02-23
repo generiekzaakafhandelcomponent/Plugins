@@ -13,19 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.ritense.valtimo.implementation.commutr.printstraat.dto
 
-package com.ritense.valtimo.backend.plugin
-
-import com.ritense.plugin.PluginFactory
-import com.ritense.plugin.service.PluginService
-import com.ritense.resource.service.TemporaryResourceStorageService
-
-class PrintstraatPluginFactory(
-    pluginService: PluginService,
-    private val temporaryResourceStorageService: TemporaryResourceStorageService
-) : PluginFactory<PrintstraatPlugin>(pluginService) {
-
-    override fun create(): PrintstraatPlugin {
-        return PrintstraatPlugin(temporaryResourceStorageService)
-    }
-}
+data class PrintstraatBodyDto(
+    val zaaknummer: String,
+    val fileName: String,
+    val file: String
+    )

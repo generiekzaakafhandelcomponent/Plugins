@@ -20,32 +20,23 @@
         disabled: disabled$ | async,
         prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
     } as obs"
->
-  <v-input
-          name="configurationTitle"
-          [title]="'configurationTitle' | pluginTranslate: pluginId | async"
-          [margin]="true"
-          [defaultValue]="obs.prefill?.configurationTitle"
-          [disabled]="obs.disabled"
-          [required]="true"
-  >
-  </v-input>
-  <v-input
-            name="url"
-            [title]="'url' | pluginTranslate: pluginId | async"
+    >
+    <v-input
+            name="zaaknummerVariable"
+            [title]="'zaaknummerVariable' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.url"
+            [defaultValue]="obs.prefill?.zaaknummerVariable"
             [disabled]="obs.disabled"
-            [required]="true"
-  >
-  </v-input>
-  <v-input
-          name="token"
-          [title]="'token' | pluginTranslate: pluginId | async"
-          [margin]="true"
-          [defaultValue]="obs.prefill?.token"
-          [disabled]="obs.disabled"
-          [required]="true"
-  >
-  </v-input>
+            [required]="false"
+    >
+    </v-input>
+    <v-input
+            name="tempFileIdVariable"
+            [title]="'tempFileIdVariable' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.tempFileIdVariable"
+            [disabled]="obs.disabled"
+            [required]="false"
+    >
+    </v-input>
 </v-form>

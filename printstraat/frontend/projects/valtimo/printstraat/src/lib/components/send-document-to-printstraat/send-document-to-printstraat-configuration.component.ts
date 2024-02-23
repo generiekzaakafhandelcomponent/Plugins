@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2023 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,61 +15,49 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {PluginConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {PrintstraatConfig} from '../../models';
+import {SendDocumentConfig} from '../../models';
+
 
 @Component({
-  selector: 'printstraat-plugin-configuration',
-  templateUrl: './printstraat-plugin-configuration.component.html'
+  selector: 'valtimo-send-document-to-printstraat-configuration',
+  templateUrl: './send-document-to-printstraat-configuration.component.html',
 })
-export class PrintstraatPluginConfigurationComponent
-  // The component explicitly implements the PluginConfigurationComponent interface
-  implements PluginConfigurationComponent, OnInit, OnDestroy
-{
-  @Input() save$: Observable<void>;
+
+export class SendDocumentToPrintstraatConfigurationComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
-  // If the plugin had already been saved, a prefill configuration of the type SamplePluginConfig is expected
-  @Input() prefillConfiguration$: Observable<PrintstraatConfig>;
-
-  // If the configuration data changes, output whether the data is valid or not
+  @Input() prefillConfiguration$: Observable<SendDocumentConfig>;
+  @Input() save$: Observable<void>;
+  @Output() configuration: EventEmitter<SendDocumentConfig> = new EventEmitter<SendDocumentConfig>();
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  // If the configuration is valid, output a configuration of the type SamplePluginConfig
-  @Output() configuration: EventEmitter<PrintstraatConfig> =
-    new EventEmitter<PrintstraatConfig>();
 
+  private readonly formValue$ = new BehaviorSubject<SendDocumentConfig | null>(null);
   private saveSubscription!: Subscription;
-
-  private readonly formValue$ = new BehaviorSubject<PrintstraatConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.openSaveSubscription();
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.saveSubscription?.unsubscribe();
   }
 
-  formValueChange(formValue: any): void {
+  public formValueChange(formValue: SendDocumentConfig): void {
     this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: PrintstraatConfig): void {
-    // The configuration is valid when a host and port are defined
-    const valid = !!(formValue.configurationTitle);
+  private handleValid(formValue: SendDocumentConfig): void {
+    const valid = true;
 
     this.valid$.next(valid);
     this.valid.emit(valid);
   }
 
   private openSaveSubscription(): void {
-    /*
-    If the save observable is triggered, check if the configuration is valid, and if so,
-    output the configuration using the configuration EventEmitter.
-     */
     this.saveSubscription = this.save$?.subscribe(save => {
       combineLatest([this.formValue$, this.valid$])
         .pipe(take(1))

@@ -21,3 +21,6 @@
 export * from './lib/models';
 export * from './lib/printstraat.plugin.module';
 export * from './lib/printstraat.plugin.specification';
+export * from './lib/components/send-document-to-printstraat/send-document-to-printstraat-configuration.component';
+export * from './lib/components/printstraat-configuration/printstraat-plugin-configuration.component';
+

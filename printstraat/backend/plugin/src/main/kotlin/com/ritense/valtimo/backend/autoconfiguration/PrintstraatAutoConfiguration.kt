@@ -17,6 +17,7 @@
 package com.ritense.valtimo.backend.autoconfiguration
 
 import com.ritense.plugin.service.PluginService
+import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimo.backend.plugin.PrintstraatPluginFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
@@ -28,9 +29,10 @@ class PrintstraatAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(PrintstraatPluginFactory::class)
     fun printstraatPluginFactory(
-        pluginService: PluginService
+        pluginService: PluginService,
+        temporaryResourceStorageService: TemporaryResourceStorageService
     ): PrintstraatPluginFactory {
-        return PrintstraatPluginFactory(pluginService)
+        return PrintstraatPluginFactory(pluginService, temporaryResourceStorageService)
     }
 
 }
