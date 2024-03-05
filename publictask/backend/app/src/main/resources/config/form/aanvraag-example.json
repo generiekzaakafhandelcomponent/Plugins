@@ -1,0 +1,330 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "columns",
+      "type": "columns",
+      "input": false,
+      "label": "Columns",
+      "columns": [
+        {
+          "pull": 0,
+          "push": 0,
+          "size": "md",
+          "width": 6,
+          "offset": 0,
+          "components": [
+            {
+              "key": "panel1",
+              "type": "panel",
+              "input": false,
+              "label": "Panel",
+              "title": "<strong>Aanvraaggegevens</strong>",
+              "tableView": false,
+              "components": [
+                {
+                  "key": "aanvraag.kostenInEuros",
+                  "mask": false,
+                  "type": "currency",
+                  "input": true,
+                  "label": "Kosten in Euro's",
+                  "currency": "EUR",
+                  "disabled": true,
+                  "delimiter": true,
+                  "tableView": false,
+                  "spellcheck": true,
+                  "customClass": "h5",
+                  "inputFormat": "plain",
+                  "placeholder": "€200",
+                  "truncateMultipleSpaces": false
+                },
+                {
+                  "key": "aanvraag.omschrijving",
+                  "type": "textarea",
+                  "input": true,
+                  "label": "Omschrijving:",
+                  "disabled": true,
+                  "tableView": true,
+                  "autoExpand": false,
+                  "customClass": "h5"
+                },
+                {
+                  "key": "aanvraag.redenBouwkundigeAanpassing",
+                  "type": "textarea",
+                  "input": true,
+                  "label": "Reden incidentele bouwkundige <br>aanpassing:",
+                  "disabled": true,
+                  "tableView": true,
+                  "autoExpand": false,
+                  "customClass": "h5"
+                },
+                {
+                  "key": "aanvraag.factuurPer",
+                  "data": {
+                    "custom": "function getNext12Months() {\n  const currentDate = new Date();\n  const months = [];\n\n  for (let i = 0; i < 12; i++) {\n    const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + i, 1);\n    const formattedMonth = `${(nextMonth.getMonth() + 1).toString().padStart(2, '0')}/${nextMonth.getFullYear()}`;\n    months.push(formattedMonth);\n}\n\nreturn months;\n  \n}\n\nconst next12Months = getNext12Months();\nvalues = next12Months"
+                  },
+                  "type": "select",
+                  "input": true,
+                  "label": "Factuur per",
+                  "widget": "choicesjs",
+                  "dataSrc": "custom",
+                  "disabled": true,
+                  "tableView": true,
+                  "customClass": "h5"
+                },
+                {
+                  "key": "aanvraag.schadeGeclaimedBijLeverancier",
+                  "type": "radio",
+                  "input": true,
+                  "label": "Schade geclaimed bij leverancier?",
+                  "inline": true,
+                  "values": [
+                    {
+                      "label": "Ja",
+                      "value": "ja",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "Nee",
+                      "value": "nee",
+                      "shortcut": ""
+                    }
+                  ],
+                  "disabled": true,
+                  "tableView": false,
+                  "attributes": {
+                    "style": "color: #343434;"
+                  },
+                  "labelWidth": 30,
+                  "customClass": "h5",
+                  "labelMargin": 3,
+                  "optionsLabelPosition": "right"
+                },
+                {
+                  "key": "aanvraag.redenKostenNietBijFnHoren",
+                  "type": "textarea",
+                  "input": true,
+                  "label": "Reden dat deze kosten niet bij FN horen:",
+                  "disabled": true,
+                  "tableView": true,
+                  "autoExpand": false,
+                  "customClass": "h5"
+                }
+              ],
+              "collapsible": false
+            }
+          ],
+          "currentWidth": 6
+        },
+        {
+          "pull": 0,
+          "push": 0,
+          "size": "md",
+          "width": 6,
+          "offset": 0,
+          "components": [
+            {
+              "key": "strongAanvraaggegevensStrong",
+              "type": "panel",
+              "input": false,
+              "label": "Panel",
+              "title": "<strong>Gegevens aanvrager</strong>",
+              "tableView": false,
+              "components": [
+                {
+                  "key": "aanvraag.indiener",
+                  "type": "textfield",
+                  "input": true,
+                  "label": "Indiener",
+                  "disabled": true,
+                  "tableView": true,
+                  "spellcheck": false,
+                  "customClass": "h5",
+                  "customDefaultValue": "value = token.name;"
+                },
+                {
+                  "key": "aanvraag.aanvrager",
+                  "data": {
+                    "url": "../api/v1/users/authority/ROLE_CONSTRUCTION_DEPARTMENT",
+                    "headers": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{localStorage.getItem('formioToken')}}"
+                      }
+                    ]
+                  },
+                  "type": "select",
+                  "input": true,
+                  "label": "Aanvrager",
+                  "widget": "choicesjs",
+                  "dataSrc": "url",
+                  "disabled": true,
+                  "lazyLoad": false,
+                  "template": "<span>{{ item.fullName }}</span>",
+                  "tableView": true,
+                  "labelWidth": 30,
+                  "customClass": "h5",
+                  "disableLimit": false,
+                  "valueProperty": "fullName"
+                },
+                {
+                  "key": "aanvraag.aanvraagdatum",
+                  "type": "textfield",
+                  "input": true,
+                  "label": "Aanvraagdatum",
+                  "disabled": true,
+                  "tableView": true,
+                  "customClass": "h5",
+                  "default": "TEST"
+                },
+                {
+                  "key": "aanvraag.restaurant",
+                  "data": {
+                    "url": "../api/v1/choice-field-values/restaurant/values?page=0&size=300",
+                    "headers": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{localStorage.getItem('formioToken')}}"
+                      }
+                    ]
+                  },
+                  "type": "select",
+                  "input": true,
+                  "label": "Restaurant",
+                  "widget": "choicesjs",
+                  "dataSrc": "url",
+                  "disabled": true,
+                  "lazyLoad": false,
+                  "template": "<span>{{ item.value }}</span>",
+                  "tableView": true,
+                  "labelWidth": 30,
+                  "customClass": "h5",
+                  "disableLimit": false,
+                  "valueProperty": "name"
+                },
+                {
+                  "key": "aanvraag.franchisenemer",
+                  "data": {
+                    "url": "../api/v1/choice-field-values/franchisenemer/values",
+                    "headers": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{localStorage.getItem('formioToken')}}"
+                      }
+                    ]
+                  },
+                  "type": "select",
+                  "input": true,
+                  "label": "Franchisenemer",
+                  "widget": "choicesjs",
+                  "dataSrc": "url",
+                  "disabled": true,
+                  "lazyLoad": false,
+                  "template": "<span>{{ item.value }}</span>",
+                  "tableView": true,
+                  "labelWidth": 30,
+                  "customClass": "h5",
+                  "disableLimit": false,
+                  "valueProperty": "name"
+                }
+              ],
+              "collapsible": false
+            }
+          ],
+          "currentWidth": 6
+        }
+      ],
+      "tableView": false
+    },
+    {
+      "key": "beoordeling.aanvraagBeoordeling",
+      "type": "radio",
+      "input": true,
+      "label": "Aanvraag goedkeuren of afkeuren?",
+      "inline": true,
+      "values": [
+        {
+          "label": "Goedkeuren",
+          "value": "Goedgekeurd",
+          "shortcut": ""
+        },
+        {
+          "label": "Afkeuren",
+          "value": "Afgekeurd",
+          "shortcut": ""
+        }
+      ],
+      "validate": {
+        "required": true,
+        "custom": "",
+        "customPrivate": false,
+        "strictDateValidation": false,
+        "multiple": false,
+        "unique": false,
+        "onlyAvailableItems": false
+      },
+      "tableView": false,
+      "customClass": "h5",
+      "customDefaultValue": "show = value = \"\";",
+      "optionsLabelPosition": "right",
+      "placeholder": "",
+      "prefix": "",
+      "suffix": "",
+      "multiple": false,
+      "defaultValue": null,
+      "protected": false,
+      "unique": false,
+      "persistent": true,
+      "hidden": false,
+      "clearOnHide": true,
+      "refreshOn": "",
+      "redrawOn": "",
+      "modalEdit": false,
+      "dataGridLabel": false,
+      "labelPosition": "top",
+      "description": "",
+      "errorLabel": "",
+      "tooltip": "",
+      "hideLabel": false,
+      "tabindex": "",
+      "disabled": false,
+      "autofocus": false,
+      "dbIndex": false,
+      "calculateValue": "",
+      "calculateServer": false,
+      "widget": null,
+      "attributes": {},
+      "validateOn": "change",
+      "conditional": {
+        "show": null,
+        "when": null,
+        "eq": ""
+      },
+      "overlay": {
+        "style": "",
+        "left": "",
+        "top": "",
+        "width": "",
+        "height": ""
+      },
+      "allowCalculateOverride": false,
+      "encrypted": false,
+      "showCharCount": false,
+      "showWordCount": false,
+      "properties": {},
+      "allowMultipleMasks": false,
+      "addons": [],
+      "inputType": "radio",
+      "fieldSet": false,
+      "id": "e8rit9k"
+    },
+    {
+      "type": "button",
+      "label": "Submit",
+      "key": "submit",
+      "disableOnInvalid": true,
+      "input": true,
+      "tableView": false
+    }
+  ]
+}

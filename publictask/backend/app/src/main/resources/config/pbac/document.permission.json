@@ -1,0 +1,45 @@
+{
+  "changesetId": "document-v1",
+  "permissions": [
+    {
+      "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+      "action": "view",
+      "roleKey": "ROLE_USER"
+    },
+    {
+      "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+      "action": "view_list",
+      "roleKey": "ROLE_USER"
+    },
+    {
+      "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+      "action": "create",
+      "roleKey": "ROLE_USER"
+    },
+    {
+      "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+      "action": "modify",
+      "roleKey": "ROLE_USER"
+    },
+    {
+      "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+      "action": "delete",
+      "roleKey": "ROLE_ADMIN"
+    },
+    {
+      "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+      "action": "claim",
+      "roleKey": "ROLE_USER"
+    },
+    {
+      "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+      "action": "assign",
+      "roleKey": "ROLE_USER"
+    },
+    {
+      "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+      "action": "assignable",
+      "roleKey": "ROLE_USER"
+    }
+  ]
+}

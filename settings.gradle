@@ -15,5 +15,9 @@ include(
         "amsterdam-email-api:backend",
         "amsterdam-email-api:backend:app",
         "amsterdam-email-api:backend:plugin",
-        "amsterdam-email-api:frontend"
+        "amsterdam-email-api:frontend",
+        "brp:backend",
+        "brp:backend:app",
+        "brp:backend:plugin",
+        "brp:frontend",
 )
