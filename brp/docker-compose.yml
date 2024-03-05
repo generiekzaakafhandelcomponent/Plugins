@@ -1,20 +1,20 @@
 version: "3.9"
 services:
 
-  example-core-db:
-    container_name: example-core-db
+  brp-example-core-db:
+    container_name: brp-example-core-db
     image: postgres:14.1
     ports:
       - "54340:5432"
     environment:
       POSTGRES_USER: example
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: example-core-db
+      POSTGRES_DB: brp-example-core-db
 
-  example-core-keycloak:
-    container_name: example-core-keycloak
+  brp-example-core-keycloak:
+    container_name: brp-example-core-keycloak
     depends_on:
-      - example-core-keycloak-db
+      - brp-example-core-keycloak-db
     image: quay.io/keycloak/keycloak:17.0.1-legacy
     volumes:
       - ./docker/imports/keycloak:/opt/jboss/keycloak/imports
@@ -24,7 +24,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
       DB_VENDOR: postgres
-      DB_ADDR: example-core-keycloak-db
+      DB_ADDR: brp-example-core-keycloak-db
       DB_USER: keycloak
       DB_PASSWORD: keycloak
     command:
@@ -33,9 +33,9 @@ services:
       - "-Dkeycloak.migration.file=/opt/jboss/keycloak/imports/realm.json"
       - "-Dkeycloak.migration.strategy=IGNORE_EXISTING"
 
-  example-core-keycloak-db:
+  brp-example-core-keycloak-db:
     image: postgres:14.1
-    container_name: example-core-keycloak-db
+    container_name: brp-example-core-keycloak-db
     ports:
       - "54329:5432"
     environment:
