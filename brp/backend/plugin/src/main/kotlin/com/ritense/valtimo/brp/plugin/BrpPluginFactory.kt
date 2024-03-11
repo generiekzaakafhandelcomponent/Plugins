@@ -18,10 +18,12 @@ package com.ritense.valtimo.brp.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimo.brp.service.BrpService
 
 class BrpPluginFactory(
     pluginService: PluginService,
+    private val brpService: BrpService
 ) : PluginFactory<BrpPlugin>(pluginService) {
 
-    override fun create(): BrpPlugin = BrpPlugin()
+    override fun create(): BrpPlugin = BrpPlugin(brpService)
 }

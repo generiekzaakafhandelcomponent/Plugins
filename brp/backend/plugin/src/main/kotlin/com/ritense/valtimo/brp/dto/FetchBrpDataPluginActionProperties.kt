@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-/*
- * Public API Surface of BRP
- */
+package com.ritense.valtimo.brp.dto
 
-export * from './lib/models';
-export * from './lib/brp.plugin.module';
-export * from './lib/brp.plugin.specification';
-export * from './lib/components/brp-configuration/brp-plugin-configuration.component';
-export * from './lib/components/fetch-brp-data/fetch-brp-data-configuration.component';
-
+data class FetchBrpDataPluginActionProperties(
+    val requestUserId: String,
+    val requestProcessId: String,
+    val requestSubjectIdentifier: String,
+    val filterChildrenOlderThenThirteen: Boolean
+)

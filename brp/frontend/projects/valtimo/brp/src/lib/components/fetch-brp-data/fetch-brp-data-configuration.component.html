@@ -22,28 +22,25 @@
   } as obs"
 >
   <v-input
-    name="channels"
-    [title]="'channels' | pluginTranslate: pluginId | async"
+    name="requestProcessId"
+    [title]="'requestProcessId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.requestProcessId"
+    [disabled]="obs.disabled"
+  ></v-input>
+  <v-input
+    name="requestSubjectIdentifier"
+    [title]="'requestSubjectIdentifier' | pluginTranslate: pluginId | async"
     [margin]="true"
     [required]="true"
-    [defaultValue]="obs.prefill?.channels"
+    [defaultValue]="obs.prefill?.requestSubjectIdentifier"
     [disabled]="obs.disabled"
-    [tooltip]="'channelsTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
-  <v-input
-    name="message"
-    [title]="'message' | pluginTranslate: pluginId | async"
+    <v-input
+    name="filterChildrenOlderThenThirteen"
+    [title]="'filterChildrenOlderThenThirteen' | pluginTranslate: pluginId | async"
     [margin]="true"
-    [defaultValue]="obs.prefill?.message"
+    [defaultValue]="obs.prefill?.filterChildrenOlderThenThirteen"
     [disabled]="obs.disabled"
-    [tooltip]="'messageTooltip' | pluginTranslate: pluginId | async"
-  ></v-input>
-  <v-input
-    name="filename"
-    [title]="'filename' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [defaultValue]="obs.prefill?.fileName"
-    [disabled]="obs.disabled"
-    [tooltip]="'filenameTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
 </v-form>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2024 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,15 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {PluginConfigurationComponent, PluginConfigurationData} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
+import {PluginConfigurationComponent} from '@valtimo/plugin';
+import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {BrpConfig} from '../../models';
-import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
-import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'valtimo-brp-configuration',
-  templateUrl: './brp-configuration.component.html'
+  templateUrl: './brp-plugin-configuration.component.html'
 })
-export class BrpConfigurationComponent
+export class BrpPluginConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy
 {
   @Input() save$!: Observable<void>;
@@ -33,29 +31,9 @@ export class BrpConfigurationComponent
   @Input() pluginId!: string;
   @Input() prefillConfiguration$!: Observable<BrpConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
+  @Output() configuration: EventEmitter<BrpConfig> = new EventEmitter<BrpConfig>();
 
-  constructor(
-      private readonly pluginManagementService: PluginManagementService,
-      private readonly translateService: TranslateService,
-      private readonly pluginTranslationService: PluginTranslationService
-  ) {}
 
-  readonly authenticationPluginSelectItems$: Observable<Array<{id?: string; text: string}>> =
-    combineLatest([
-      this.pluginManagementService.getPluginConfigurationsByCategory('slack-authentication'),
-      this.translateService.stream('key'),
-    ]).pipe(
-      map(([configurations]) =>
-        configurations.map(configuration => ({
-          id: configuration.id,
-          text: `${configuration.title} - ${this.pluginTranslationService.instant(
-            'title',
-            configuration.pluginDefinition!.key
-          )}`,
-        }))
-      )
-    );
   private saveSubscription!: Subscription;
   private readonly formValue$ = new BehaviorSubject<BrpConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
@@ -68,13 +46,13 @@ export class BrpConfigurationComponent
     this.saveSubscription?.unsubscribe();
   }
 
-  formValueChange(formValue: BrpConfig): void {
+  formValueChange(formValue: any): void {
     this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
   private handleValid(formValue: BrpConfig): void {
-    const valid = !!(formValue.configurationTitle && formValue.url && formValue.token);
+    const valid = !!(formValue.url && formValue.apiKeyHeaderName && formValue.apiKey && formValue.applicationId);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

@@ -16,5 +16,30 @@
 
 package com.ritense.valtimo.brp.service
 
-class BrpService {
+import com.ritense.valtimo.brp.client.BrpClient
+import com.ritense.valtimo.brp.domain.Persoon
+import com.ritense.valtimo.brp.dto.BrpPluginPropertiesDto
+import com.ritense.valtimo.brp.dto.FetchBrpDataPluginActionProperties
+import com.ritense.valtimo.brp.exception.PersonNotFoundException
+
+class BrpService(
+    private val brpClient: BrpClient
+) {
+
+    fun getBrpDataFromHaalCentraal(
+        bsn: String,
+        brpPropertiesDto: BrpPluginPropertiesDto,
+        fetchBrpDataPluginActionProperties: FetchBrpDataPluginActionProperties
+    ): Persoon {
+        val brpResponse = brpClient.getPersonByBsn(
+            burgerservicenummer = bsn,
+            brpProperties = brpPropertiesDto,
+            fetchBrpDataPluginActionProperties = fetchBrpDataPluginActionProperties
+        )
+
+        if (brpResponse == null || brpResponse.personen.isNullOrEmpty()) {
+            throw PersonNotFoundException("No person found with given BSN")
+        } else return Persoon.from(brpResponse, fetchBrpDataPluginActionProperties.filterChildrenOlderThenThirteen)
+    }
+
 }

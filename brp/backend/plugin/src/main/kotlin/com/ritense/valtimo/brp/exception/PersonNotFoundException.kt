@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-/*
- * Public API Surface of BRP
- */
+package com.ritense.valtimo.brp.exception
 
-export * from './lib/models';
-export * from './lib/brp.plugin.module';
-export * from './lib/brp.plugin.specification';
-export * from './lib/components/brp-configuration/brp-plugin-configuration.component';
-export * from './lib/components/fetch-brp-data/fetch-brp-data-configuration.component';
-
+class PersonNotFoundException(message: String) : Exception(message)

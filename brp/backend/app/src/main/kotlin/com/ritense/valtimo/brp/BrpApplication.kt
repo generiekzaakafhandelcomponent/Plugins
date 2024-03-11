@@ -22,14 +22,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(scanBasePackages = ["com.ritense.*"])
-class PublicTaskApplication {
+class BrpApplication {
 
     companion object {
         private val logger = KotlinLogging.logger {}
 
         @JvmStatic
         fun main(args: Array<String>) {
-            val app = runApplication<PublicTaskApplication>(*args)
+            val app = runApplication<BrpApplication>(*args)
 
             logger.info(
                 """

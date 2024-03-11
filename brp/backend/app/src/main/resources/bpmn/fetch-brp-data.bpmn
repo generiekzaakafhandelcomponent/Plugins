@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0s7obq8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:collaboration id="Collaboration_09p2149">
+    <bpmn:participant id="FetchBrpDataParticipant" name="Fetch BRP data" processRef="BrpExample" />
+  </bpmn:collaboration>
+  <bpmn:process id="BrpExample" name="fetch-brp-data-process" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="StartEvent">
+      <bpmn:outgoing>Flow_0g5x2xs</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="FetchBrpDataTask" name="Fetch BRP data and store in PV">
+      <bpmn:incoming>Flow_0g5x2xs</bpmn:incoming>
+      <bpmn:outgoing>Flow_11nl4fc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1ss3rhq">
+      <bpmn:incoming>Flow_11nl4fc</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0g5x2xs" sourceRef="StartEvent" targetRef="FetchBrpDataTask" />
+    <bpmn:sequenceFlow id="Flow_11nl4fc" sourceRef="FetchBrpDataTask" targetRef="Event_1ss3rhq" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_09p2149">
+      <bpmndi:BPMNShape id="Participant_0avhkfw_di" bpmnElement="FetchBrpDataParticipant" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="470" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent">
+        <dc:Bounds x="242" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0sg3ggs_di" bpmnElement="FetchBrpDataTask">
+        <dc:Bounds x="330" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ss3rhq_di" bpmnElement="Event_1ss3rhq">
+        <dc:Bounds x="482" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0g5x2xs_di" bpmnElement="Flow_0g5x2xs">
+        <di:waypoint x="278" y="200" />
+        <di:waypoint x="330" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11nl4fc_di" bpmnElement="Flow_11nl4fc">
+        <di:waypoint x="430" y="200" />
+        <di:waypoint x="482" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -62,7 +62,8 @@ import {BootstrapModule} from '@valtimo/bootstrap';
 import {ConfigModule, ConfigService, MultiTranslateHttpLoaderFactory} from '@valtimo/config';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
-import {SlackPluginModule, slackPluginSpecification} from '../../projects/valtimo/brp/src/public_api';
+import {BrpPluginModule} from "../../projects/valtimo/brp/src/lib/brp.plugin.module";
+import {brpPluginSpecification} from "../../projects/valtimo/brp/src/lib/brp.plugin.specification";
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
 import {
   PLUGINS_TOKEN,
@@ -119,7 +120,7 @@ export function tabsFactory() {
     DossierManagementModule,
     PluginManagementModule,
     AccessControlManagementModule,
-    SlackPluginModule,
+    BrpPluginModule,
     HttpClientModule, TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -131,7 +132,7 @@ export function tabsFactory() {
   providers: [{
     provide: PLUGINS_TOKEN,
     useValue: [
-      slackPluginSpecification,
+      brpPluginSpecification,
     ]
   }],
   bootstrap: [AppComponent]

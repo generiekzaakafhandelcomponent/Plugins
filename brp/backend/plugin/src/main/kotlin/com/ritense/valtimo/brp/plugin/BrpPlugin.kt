@@ -21,21 +21,33 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.ActivityType
-import java.net.URI
+import com.ritense.valtimo.brp.dto.BrpPluginPropertiesDto
+import com.ritense.valtimo.brp.dto.FetchBrpDataPluginActionProperties
+import com.ritense.valtimo.brp.service.BrpService
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 
 @Plugin(
     key = "brp",
     title = "BRP Plugin",
     description = "Fetch brp data with the BRP plugin"
 )
-class BrpPlugin {
+class BrpPlugin(
+    private val brpService: BrpService
+) {
 
     @PluginProperty(key = "url", secret = false)
-    lateinit var url: URI
+    lateinit var url: String
 
-    @PluginProperty(key = "token", secret = true)
-    lateinit var token: String
+    @PluginProperty(key = "apiKeyHeaderName", secret = false)
+    lateinit var apiKeyHeaderName: String
+
+    @PluginProperty(key = "apiKey", secret = true)
+    lateinit var apiKey: String
+
+    @PluginProperty(key = "applicationId", secret = false)
+    lateinit var applicationId: String
 
     @PluginAction(
         key = "fetch-brp-data",
@@ -45,13 +57,33 @@ class BrpPlugin {
     )
     fun fetchBrpData(
         execution: DelegateExecution,
-        @PluginActionProperty channel: String,
-        @PluginActionProperty message: String
+        @PluginActionProperty requestProcessId: String,
+        @PluginActionProperty requestSubjectIdentifier: String,
+        @PluginActionProperty filterChildrenOlderThenThirteen: Boolean?,
     ) {
+
+        val brpPluginPropertiesDto = BrpPluginPropertiesDto(
+            url = url,
+            apiKeyHeaderName = apiKeyHeaderName,
+            apiKey = apiKey,
+            applicationId = applicationId
+        )
+
+        val fetchBrpDataPluginActionProperties = FetchBrpDataPluginActionProperties(
+            requestUserId = getLoggedInUser(),
+            requestProcessId = requestProcessId, // Inzetten en uitvoeren instrumenten
+            requestSubjectIdentifier = requestSubjectIdentifier, // BSN
+            filterChildrenOlderThenThirteen = filterChildrenOlderThenThirteen ?: false
+        )
+
+        val persoon = brpService.getBrpDataFromHaalCentraal(
+            bsn = execution.getVariable("bsn") as String,
+            brpPropertiesDto = brpPluginPropertiesDto,
+            fetchBrpDataPluginActionProperties = fetchBrpDataPluginActionProperties
+        )
+
+        execution.setVariable("brpPersoon", persoon)
     }
 
-
-    companion object {
-        const val RESOURCE_ID_PROCESS_VAR = "resourceId"
-    }
+    private fun getLoggedInUser():String = (SecurityContextHolder.getContext().authentication.principal as UserDetails).username
 }

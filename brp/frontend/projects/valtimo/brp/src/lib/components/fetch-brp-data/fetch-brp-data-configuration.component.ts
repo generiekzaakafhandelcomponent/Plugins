@@ -18,12 +18,10 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {FetchBrpDataConfig} from '../../models';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 
 @Component({
-  selector: 'valtimo-post-message-with-file-configuration',
+  selector: 'valtimo-fetch-brp-data-configuration',
   templateUrl: './fetch-brp-data-configuration.component.html',
-  styleUrls: ['./fetch-brp-data-configuration.component.scss'],
 })
 export class FetchBrpDataConfigurationComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy
@@ -33,7 +31,7 @@ export class FetchBrpDataConfigurationComponent
   @Input() pluginId!: string;
   @Input() prefillConfiguration$!: Observable<FetchBrpDataConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
+  @Output() configuration: EventEmitter<FetchBrpDataConfig> = new EventEmitter<FetchBrpDataConfig>();
 
   private saveSubscription!: Subscription;
   private readonly formValue$ = new BehaviorSubject<FetchBrpDataConfig | null>(null);
@@ -53,7 +51,7 @@ export class FetchBrpDataConfigurationComponent
   }
 
   private handleValid(formValue: FetchBrpDataConfig): void {
-    const valid = !!formValue.channels;
+    const valid = !!formValue.requestProcessId && !!formValue.requestSubjectIdentifier;
 
     this.valid$.next(valid);
     this.valid.emit(valid);

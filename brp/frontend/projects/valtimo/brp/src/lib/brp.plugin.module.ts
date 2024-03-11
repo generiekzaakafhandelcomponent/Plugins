@@ -15,24 +15,26 @@
  */
 
 import {NgModule} from '@angular/core';
-import {BrpConfigurationComponent} from './components/brp-configuration/brp-configuration.component';
+import {BrpPluginConfigurationComponent} from './components/brp-configuration/brp-plugin-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
+import {FormModule, InputModule} from '@valtimo/components';
 import {FetchBrpDataConfigurationComponent} from './components/fetch-brp-data/fetch-brp-data-configuration.component';
-import {PostMessageConfigurationComponent} from './components/post-message/post-message-configuration.component';
 
 @NgModule({
-  declarations: [
-    BrpConfigurationComponent,
-    PostMessageConfigurationComponent,
-    FetchBrpDataConfigurationComponent,
-  ],
-  imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
-  exports: [
-    BrpConfigurationComponent,
-    PostMessageConfigurationComponent,
-    FetchBrpDataConfigurationComponent,
-  ],
+    declarations: [
+        BrpPluginConfigurationComponent,
+        FetchBrpDataConfigurationComponent,
+    ],
+    imports: [CommonModule,
+        PluginTranslatePipeModule,
+        FormModule,
+        InputModule
+    ],
+    exports: [
+        BrpPluginConfigurationComponent,
+        FetchBrpDataConfigurationComponent,
+    ],
 })
-export class BrpPluginModule {}
+export class BrpPluginModule {
+}

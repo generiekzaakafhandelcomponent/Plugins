@@ -26,4 +26,5 @@ import {SendMailConfigurationComponent} from "./components/send-mail/send-mail-c
   imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule],
   exports: [SmtpMailPluginConfigurationComponent, SendMailConfigurationComponent]
 })
-export class SmtpMailPluginModule {}
+export class SmtpMailPluginModule {
+}

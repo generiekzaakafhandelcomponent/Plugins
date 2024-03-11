@@ -21,25 +21,36 @@ import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.context.annotation.Bean
 import com.ritense.valtimo.brp.plugin.BrpPluginFactory
 import com.ritense.valtimo.brp.service.BrpService
-import com.ritense.valtimo.brp.client.HaalCentraalBrpClient
+import com.ritense.valtimo.brp.client.BrpClient
+import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.web.reactive.function.client.WebClient
+import reactor.netty.http.client.HttpClient
 
 @AutoConfiguration
 class BrpAutoConfiguration {
-    @Bean
-    fun haalCentraalBrpClient(
-    ): HaalCentraalBrpClient = HaalCentraalBrpClient(
-
-    )
 
     @Bean
-    fun brpService(
-    ): BrpService = BrpService(
-    )
+    fun webClient(): WebClient = WebClient
+        .builder()
+        .clientConnector(
+            ReactorClientHttpConnector(
+                HttpClient.create()
+            )
+        )
+        .build()
 
     @Bean
-    fun smtpMailPluginFactory(
+    fun brpClient(webClient: WebClient): BrpClient = BrpClient(webClient = webClient)
+
+    @Bean
+    fun brpService(brpClient: BrpClient): BrpService = BrpService(brpClient = brpClient)
+
+    @Bean
+    fun brpPluginFactory(
         pluginService: PluginService,
+        brpService: BrpService
     ): BrpPluginFactory = BrpPluginFactory(
         pluginService = pluginService,
+        brpService = brpService
     )
 }

@@ -28,9 +28,7 @@
     [disabled]="obs.disabled"
     [defaultValue]="obs.prefill?.configurationTitle"
     [required]="true"
-    [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
     [widthPx]="350"
-    placeholder="Slack Plugin"
   >
   </v-input>
   <v-input
@@ -41,20 +39,35 @@
     [disabled]="obs.disabled"
     [defaultValue]="obs.prefill?.url"
     [required]="true"
-    [tooltip]="'urlTooltip' | pluginTranslate: pluginId | async"
-    placeholder="https://www.slack.com/"
   >
   </v-input>
   <v-input
-    name="token"
-    type="password"
-    [title]="'token' | pluginTranslate: pluginId | async"
+    name="apiKeyHeaderName"
+    [title]="'apiKeyHeaderName' | pluginTranslate: pluginId | async"
     [margin]="true"
     [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.clientSecret"
+    [defaultValue]="obs.prefill?.apiKeyHeaderName"
     [required]="true"
     [fullWidth]="true"
-    [tooltip]="'tokenTooltip' | pluginTranslate: pluginId | async"
+  >
+  </v-input>  <v-input
+    name="apiKey"
+    [title]="'apiKey' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.apiKey"
+    [required]="true"
+    [fullWidth]="true"
+  >
+    </v-input>
+    <v-input
+    name="applicationId"
+    [title]="'applicationId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.applicationId"
+    [required]="true"
+    [fullWidth]="true"
   >
   </v-input>
 </v-form>

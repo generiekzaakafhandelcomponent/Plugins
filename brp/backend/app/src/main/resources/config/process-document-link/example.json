@@ -1,6 +1,6 @@
 [
     {
-        "processDefinitionKey": "PublicTaskExample",
+        "processDefinitionKey": "BrpExample",
         "canInitializeDocument": true,
         "startableByUser": true,
         "processIsVisibleInMenu": true
