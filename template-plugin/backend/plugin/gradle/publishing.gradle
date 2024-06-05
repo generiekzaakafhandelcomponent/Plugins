@@ -22,15 +22,8 @@ publishing {
             version = pluginVersion
 
             pom {
-                name = "Alfresco Authentication plugin module"
-                description = "The Alfresco Authentication plugin module arranges auth settings for communication with Alfresco DRC"
-                developers {
-                    developer {
-                        id = "haiko-ritense"
-                        name = "Haiko van der Schaaf"
-                        email = "haiko.van.der.schaaf@ritense.com"
-                    }
-                }
+                name = "MY_PLUGIN_NAME"
+                description = "MY_PLUGIN_NAME is a plugin for valtimo"
             }
 
             from components.java
