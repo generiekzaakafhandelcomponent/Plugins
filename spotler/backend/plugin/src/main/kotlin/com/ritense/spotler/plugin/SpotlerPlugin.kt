@@ -29,6 +29,7 @@ class SpotlerPlugin {
         activityTypes = [ActivityType.SERVICE_TASK_START]
     )
     fun sendMail(execution: DelegateExecution) {
+        throw NotImplementedError("sendMail has not yet been implemented")
     }
 
 }
