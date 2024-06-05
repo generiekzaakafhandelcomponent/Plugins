@@ -24,8 +24,14 @@ include(
         "amsterdam-email-api:backend:app",
         "amsterdam-email-api:backend:plugin",
         "amsterdam-email-api:frontend",
+
         "berkelybridge-textgenerator:backend",
         "berkelybridge-textgenerator:backend:app",
         "berkelybridge-textgenerator:backend:plugin",
-        "berkelybridge-textgenerator:frontend"
+        "berkelybridge-textgenerator:frontend",
+
+        "spotler:backend",
+        "spotler:backend:app",
+        "spotler:backend:plugin",
+        "spotler:frontend",
 )

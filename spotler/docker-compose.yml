@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+
+  example-core-db:
+    container_name: example-core-db
+    image: postgres:14.1
+    ports:
+      - "54340:5432"
+    environment:
+      POSTGRES_USER: example
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: example-core-db
+    volumes:
+      - example-core-db-data:/var/lib/postgres # persist data even if container shuts down
+
+  example-core-keycloak:
+    container_name: example-core-keycloak
+    depends_on:
+      - example-core-keycloak-db
+    image: quay.io/keycloak/keycloak:17.0.1-legacy
+    volumes:
+      - ./docker/imports/keycloak:/opt/jboss/keycloak/imports
+      - ./docker/imports/keycloak/exports:/opt/jboss/keycloak/exports
+    ports:
+      - "8082:8080"
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/core-realm-valtimo.json
+      DB_VENDOR: postgres
+      DB_ADDR: example-core-keycloak-db
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
+
+  example-core-keycloak-db:
+    image: postgres:14.1
+    container_name: example-core-keycloak-db
+    ports:
+      - "54329:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-keycloak}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-keycloak}
+
+volumes:
+  example-core-db-data: #enabled persistence
