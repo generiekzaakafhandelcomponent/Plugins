@@ -1,0 +1,39 @@
+.action-icon.mdi.mdi-delete {
+  display: none;
+}
+
+.action-icon.mdi.mdi-open-in-new:before {
+  content: none;
+}
+
+.action-icon.mdi.mdi-open-in-new:after {
+  content: "⬇ Download";
+  font-family: 'Roboto', Arial, sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.notes-input div textarea {
+  min-height: 8em;
+  background: #f7f7f7 !important;
+  padding: 0.5em;
+}
+
+.pointer {cursor: pointer;}
+
+th[sortable].desc:after, th[sortable].asc:after {
+  font-family: "Font Awesome 5 Free";
+  content: " \f0dd";
+  position: absolute;
+  margin: auto 0 auto 5px;
+  transition: all .15s ease;
+}
+th[sortable].asc:after {
+  transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+}
+
+valtimo-dossier-detail-tab-documents valtimo-dropzone {
+  display: none;
+}
