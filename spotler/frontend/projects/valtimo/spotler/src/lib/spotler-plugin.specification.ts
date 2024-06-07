@@ -22,12 +22,16 @@ import {SPOTLER_PLUGIN_LOGO_BASE64} from './assets';
 import {
   SpotlerPluginConfigurationComponent
 } from "./components/plugin-configuration/spotler-plugin-configuration.component";
+import {
+  SendMailActionConfigurationComponent
+} from "./components/send-mail-configuration/send-mail-action-configuration.component";
 
 const spotlerPluginSpecification: PluginSpecification = {
   pluginId: 'spotler',
   pluginConfigurationComponent: SpotlerPluginConfigurationComponent,
   pluginLogoBase64: SPOTLER_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
+    'send-mail': SendMailActionConfigurationComponent
   },
   pluginTranslations: {
     nl: {
@@ -40,17 +44,20 @@ const spotlerPluginSpecification: PluginSpecification = {
       clientId: 'Client ID',
       clientIdTooltip:
           'Vul hier het uw Spotler clientId in',
+      accountId: 'Account ID',
+      accountIdTooltip: 'Het ID van uw Spotler account',
       clientSecret: 'Secret',
       clientSecretTooltip: 'Vul de secret in die hoort bij de clientId hierboven',
-      toEmail: "Email verzend adres",
+      toAddress: "Email verzend adres",
       toName: "Naam van ontvanger",
-      fromAddress: "Afzender",
+      senderEmail: "Email van afzender",
+      senderName: "Naam van afzender",
       emailSubject: "Onderwerp",
-      contentHtml: "body van email",
-      ccEmail: "cc email",
-      ccName: "cc naam",
-      bccEmail: "bcc email",
-      bccName: "bcc naam",
+      mailTemplateIdentifier: "Spotler Email template ID",
+      mailTemplateIdentifierTooltip: "Vul hier de template identifier van uw Spotler email template in",
+      recipients: "Ontvangers",
+      addRecipient: "Voeg nieuwe ontvanger toe",
+      emailType: "Ontvanger type"
     },
     en: {
       title: 'Spotler',
@@ -62,9 +69,20 @@ const spotlerPluginSpecification: PluginSpecification = {
       clientId: 'Client ID',
       clientIdTooltip:
           'Enter your Spotler clientId here',
+      accountId: 'Account ID',
+      accountIdTooltip: 'Fill in the ID of your Spotler account',
       clientSecret: 'Secret',
       clientSecretTooltip: 'Enter the secret associated with the clientId above',
-      toEmail: "Email To address",
+      toAddress: "Email To address",
+      toName: "Name of recipient",
+      senderEmail: "Sender's email address",
+      senderName: "Sender's name",
+      emailSubject: "Subject",
+      mailTemplateIdentifier: "Spotler Email template ID",
+      mailTemplateIdentifierTooltip: "Enter the template identifier of your Spotler email template",
+      recipients: "Recipients",
+      addRecipient: "Add new recipient",
+      emailType: "Recipient type"
     },
     de: {
       title: 'Spotler',
@@ -76,8 +94,20 @@ const spotlerPluginSpecification: PluginSpecification = {
       clientId: 'Client ID',
       clientIdTooltip:
           'Geben Sie hier Ihre Spotler-Client-ID ein',
+      accountId: 'Konto-ID',
+      accountIdTooltip: 'Geben Sie die ID Ihres Spotler-Kontos ein',
       clientSecret: 'Secret',
       clientSecretTooltip: 'Geben Sie das mit der obigen clientId verknüpfte Geheimnis ein',
+    toAddress: "E-Mail-Adresse",
+    toName: "Name des Empfängers",
+    senderEmail: "E-Mail-Adresse des Absender",
+    senderName: "Name des Absender",
+    emailSubject: "E-Mail Betreff",
+    mailTemplateIdentifier: "Spotler E-Mail-Vorlagen-ID",
+    mailTemplateIdentifierTooltip: "Geben Sie die Vorlagenkennung Ihrer Spotler-E-Mail-Vorlage ein",
+    recipients: "Empfänger",
+    addRecipient: "Neuen Empfänger hinzufügen",
+    emailType: "Empfängertyp"
     },
   },
 };

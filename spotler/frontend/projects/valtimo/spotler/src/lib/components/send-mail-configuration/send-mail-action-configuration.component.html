@@ -1,0 +1,120 @@
+<!--
+  ~ Copyright 2015-2024. Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
+>
+    <v-input
+            name="subject"
+            [title]="'emailSubject' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.subject"
+            [widthPx]="350"
+            [required]="true"
+            placeholder="Subject"
+    >
+    </v-input>
+    <v-input
+            name="senderEmail"
+            [title]="'senderEmail' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.senderEmail"
+            [widthPx]="350"
+            [required]="true"
+            placeholder="Sender Email"
+    >
+    </v-input>
+    <v-input
+            name="senderName"
+            [title]="'senderName' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.senderName"
+            [widthPx]="350"
+            [required]="true"
+            placeholder="Sender Name"
+    >
+    </v-input>
+    <v-input
+            name="mailTemplateIdentifier"
+            [title]="'mailTemplateIdentifier' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.mailTemplateIdentifier"
+            [required]="true"
+            [fullWidth]="true"
+            [tooltip]="'mailTemplateIdentifier' | pluginTranslate: pluginId | async"
+    >
+    </v-input>
+    <v-multi-input-form
+            name="recipients"
+            [title]="'recipients' | pluginTranslate: pluginId | async"
+            [formTemplate]="recipient"
+            [addRowText]="'addRecipient' | pluginTranslate: pluginId | async"
+            [required]="false"
+            [initialAmountOfRows]="0"
+            [minimumAmountOfRows]="0"
+            [defaultValues]="obs.prefill?.recipients"
+    >
+    </v-multi-input-form>
+</v-form>
+
+<ng-template #recipient
+             let-index="index"
+             let-uuid="uuid"
+             let-changeFunction="changeFunction"
+             let-prefill="prefill">
+    <v-form (valueChange)="changeFunction($event, uuid);" [className]="'recipient'" class="recipient-form">
+    <v-input
+            name="email"
+            [title]="'toAddress' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [required]="true"
+            [fullWidth]="true"
+            [tooltip]="'toAddress' | pluginTranslate: pluginId | async"
+            [defaultValue]="prefill?.email"
+            class="recipient-item"
+    ></v-input>
+    <v-input
+            name="name"
+            [title]="'toName' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [required]="true"
+            [fullWidth]="true"
+            [tooltip]="'toName' | pluginTranslate: pluginId | async"
+            [defaultValue]="prefill?.name"
+            class="recipient-item"
+    ></v-input>
+    <v-select
+            name="type"
+            [items] = recipientTypes
+            [title]="'emailType' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [required]="true"
+            [defaultSelectionId]="prefill?.type ?? 'TO'"
+            class="recipient-item"
+    ></v-select>
+    </v-form>
+</ng-template>

@@ -30,22 +30,9 @@
           [margin]="true"
           [disabled]="obs.disabled"
           [defaultValue]="obs.prefill?.configurationTitle"
-          [widthPx]="350"
           [required]="true"
           [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
-          placeholder="Email API plugin"
-  >
-  </v-input>
-  <v-input
-          name="emailApiBaseUrl"
-          [title]="'emailApiBaseUrl' | pluginTranslate: pluginId | async"
-          [margin]="true"
-          [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.emailApiBaseUrl"
-          [widthPx]="350"
-          [required]="true"
-          [tooltip]="'emailApiBaseUrlTooltip' | pluginTranslate: pluginId | async"
-          placeholder="emailApiBaseUrl"
+          placeholder="Spotler plugin"
   >
   </v-input>
   <v-input
@@ -54,10 +41,20 @@
           [margin]="true"
           [disabled]="obs.disabled"
           [defaultValue]="obs.prefill?.clientId"
-          [widthPx]="350"
           [required]="true"
           [tooltip]="'clientIdTooltip' | pluginTranslate: pluginId | async"
           placeholder="client-id"
+  >
+  </v-input>
+  <v-input
+          name="accountId"
+          [title]="'accountId' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [disabled]="obs.disabled"
+          [defaultValue]="obs.prefill?.accountId"
+          [required]="true"
+          [tooltip]="'accountIdTooltip' | pluginTranslate: pluginId | async"
+          placeholder="account-id"
   >
   </v-input>
   <v-input
@@ -70,18 +67,6 @@
           [required]="true"
           [fullWidth]="true"
           [tooltip]="'clientSecretTooltip' | pluginTranslate: pluginId | async"
-  >
-  </v-input>
-  <v-input
-          name="tokenEndpoint"
-          [title]="'tokenEndpoint' | pluginTranslate: pluginId | async"
-          [margin]="true"
-          [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.tokenEndpoint"
-          [widthPx]="350"
-          [required]="true"
-          [tooltip]="'tokenEndpointTooltip' | pluginTranslate: pluginId | async"
-          placeholder="token-endpoint"
   >
   </v-input>
 </v-form>

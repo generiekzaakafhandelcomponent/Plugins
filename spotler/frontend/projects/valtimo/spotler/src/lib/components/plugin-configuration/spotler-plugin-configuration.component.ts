@@ -60,8 +60,7 @@ export class SpotlerPluginConfigurationComponent
     const valid = !!(formValue.configurationTitle
         && formValue.clientId
         && formValue.clientSecret
-        && formValue.emailApiBaseUrl
-        && formValue.tokenEndpoint);
+        && formValue.accountId);
 
     this.valid$.next(valid);
     this.valid.emit(valid);
