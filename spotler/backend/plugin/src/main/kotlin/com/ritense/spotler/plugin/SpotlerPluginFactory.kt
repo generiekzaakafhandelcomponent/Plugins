@@ -9,8 +9,6 @@ class SpotlerPluginFactory(
     val restTemplate: RestTemplate
 ) : PluginFactory<SpotlerPlugin>(pluginService) {
 
-    override fun create(): SpotlerPlugin {
-        return SpotlerPlugin(restTemplate)
-    }
+    override fun create() = SpotlerPlugin(restTemplate)
 
 }
