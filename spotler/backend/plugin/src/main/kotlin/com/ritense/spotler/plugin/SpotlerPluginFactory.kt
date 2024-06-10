@@ -7,8 +7,6 @@ class SpotlerPluginFactory(
     pluginService: PluginService
 ) : PluginFactory<SpotlerPlugin>(pluginService) {
 
-    override fun create(): SpotlerPlugin {
-        return SpotlerPlugin()
-    }
+    override fun create() = SpotlerPlugin()
 
 }
