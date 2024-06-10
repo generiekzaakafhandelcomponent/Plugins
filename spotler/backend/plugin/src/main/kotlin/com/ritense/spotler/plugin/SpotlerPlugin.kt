@@ -46,7 +46,7 @@ class SpotlerPlugin(
     private lateinit var flowmailerMailDispatcher: FlowmailerMailDispatcher
 
     @PluginAction(
-        key = "send-mail",
+        key = "sendMail",
         title = "Send an Email",
         description = "Use a spotler template to send an email",
         activityTypes = [ActivityType.SERVICE_TASK_START]
