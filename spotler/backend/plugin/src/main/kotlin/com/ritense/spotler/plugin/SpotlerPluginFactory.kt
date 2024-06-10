@@ -10,9 +10,7 @@ class SpotlerPluginFactory(
 ) : PluginFactory<SpotlerPlugin>(pluginService) {
 
     override fun create(): SpotlerPlugin {
-        return SpotlerPlugin(restTemplate).also {
-            println("Setup "+it)
-        }
+        return SpotlerPlugin(restTemplate)
     }
 
 }
