@@ -31,7 +31,7 @@ interface SendMailActionConfig {
     senderName: string;
     recipients: Array<Recipient>
     mailTemplateIdentifier: string;
-    placeholders: { [key: string]: any };
+    placeholders: Array<Placeholder>;
 }
 
 interface Recipient {
@@ -42,6 +42,11 @@ interface Recipient {
 
 enum RecipientType {
     TO, CC, BCC
+}
+
+interface Placeholder {
+    key: String,
+    value: String
 }
 
 export {SpotlerPluginConfig, SendMailActionConfig, Recipient};

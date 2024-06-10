@@ -79,43 +79,83 @@
             [defaultValues]="obs.prefill?.recipients"
     >
     </v-multi-input-form>
+    <v-multi-input-form
+            name="placeholders"
+            [title]="'placeholders' | pluginTranslate: pluginId | async"
+            [formTemplate]="placeholder"
+            [addRowText]="'addPlaceholder' | pluginTranslate: pluginId | async"
+            [required]="false"
+            [initialAmountOfRows]="0"
+            [minimumAmountOfRows]="0"
+            [defaultValues]="obs.prefill?.placeholders"
+    >
+    </v-multi-input-form>
 </v-form>
 
 <ng-template #recipient
-             let-index="index"
              let-uuid="uuid"
              let-changeFunction="changeFunction"
              let-prefill="prefill">
     <v-form (valueChange)="changeFunction($event, uuid);" [className]="'recipient'" class="recipient-form">
-    <v-input
-            name="email"
-            [title]="'toAddress' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [required]="true"
-            [fullWidth]="true"
-            [tooltip]="'toAddress' | pluginTranslate: pluginId | async"
-            [defaultValue]="prefill?.email"
-            [widthPx]="350"
-            class="recipient-item"
-    ></v-input>
-    <v-input
-            name="name"
-            [title]="'toName' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [required]="true"
-            [fullWidth]="true"
-            [tooltip]="'toName' | pluginTranslate: pluginId | async"
-            [defaultValue]="prefill?.name"
-            class="recipient-item"
-    ></v-input>
-    <v-select
-            name="type"
-            [items] = recipientTypes
-            [title]="'emailType' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [required]="true"
-            [defaultSelectionId]="prefill?.type ?? 'TO'"
-            class="recipient-item"
-    ></v-select>
+        <v-input
+                name="email"
+                [title]="'toAddress' | pluginTranslate: pluginId | async"
+                [margin]="true"
+                [required]="true"
+                [fullWidth]="true"
+                [tooltip]="'toAddress' | pluginTranslate: pluginId | async"
+                [defaultValue]="prefill?.email"
+                [widthPx]="350"
+                class="recipient-item"
+        ></v-input>
+        <v-input
+                name="name"
+                [title]="'toName' | pluginTranslate: pluginId | async"
+                [margin]="true"
+                [required]="true"
+                [fullWidth]="true"
+                [tooltip]="'toName' | pluginTranslate: pluginId | async"
+                [defaultValue]="prefill?.name"
+                class="recipient-item"
+        ></v-input>
+        <v-select
+                name="type"
+                [items] = recipientTypes
+                [title]="'emailType' | pluginTranslate: pluginId | async"
+                [margin]="true"
+                [required]="true"
+                [defaultSelectionId]="prefill?.type ?? 'TO'"
+                class="recipient-item"
+        ></v-select>
+    </v-form>
+</ng-template>
+
+<ng-template #placeholder
+             let-uuid="uuid"
+             let-changeFunction="changeFunction"
+             let-prefill="prefill">
+    <v-form (valueChange)="changeFunction($event, uuid);" [className]="'recipient'" class="recipient-form">
+        <v-input
+                name="key"
+                [title]="'placeholderKey' | pluginTranslate: pluginId | async"
+                [margin]="true"
+                [required]="true"
+                [fullWidth]="true"
+                [tooltip]="'placeholderKey' | pluginTranslate: pluginId | async"
+                [defaultValue]="prefill?.key"
+                [widthPx]="350"
+                class="recipient-item"
+        ></v-input>
+        <v-input
+                name="value"
+                [title]="'placeholderValue' | pluginTranslate: pluginId | async"
+                [margin]="true"
+                [required]="true"
+                [fullWidth]="true"
+                [tooltip]="'placeholderValue' | pluginTranslate: pluginId | async"
+                [defaultValue]="prefill?.value"
+                [widthPx]="350"
+                class="recipient-item"
+        ></v-input>
     </v-form>
 </ng-template>

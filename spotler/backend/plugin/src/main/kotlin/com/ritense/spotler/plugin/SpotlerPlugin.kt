@@ -5,11 +5,10 @@ import com.ritense.mail.flowmailer.service.FlowmailerTokenService
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
-import com.ritense.plugin.annotation.PluginEvent
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.ActivityType
-import com.ritense.plugin.domain.EventType
 import com.ritense.spotler.config.FlowmailerProperties
+import com.ritense.spotler.domain.Placeholder
 import com.ritense.spotler.domain.RecipientType
 import com.ritense.spotler.domain.SpotlerRecipient
 import com.ritense.valtimo.contract.basictype.EmailAddress
@@ -57,6 +56,7 @@ class SpotlerPlugin(
         @PluginActionProperty senderEmail: String,
         @PluginActionProperty senderName: String,
         @PluginActionProperty recipients: Array<SpotlerRecipient>,
+        @PluginActionProperty placeholders: Array<Placeholder>,
         @PluginActionProperty mailTemplateIdentifier: String
     ) {
         val flowMailerProperties = FlowmailerProperties(
@@ -77,8 +77,8 @@ class SpotlerPlugin(
 
         val recipientCollection = RecipientCollection.from(
             recipients.map {
-                val emailAddress = EmailAddress.from(it.email)
-                val name = SimpleName.from(it.name)
+                val emailAddress = EmailAddress.from(it.email.resolve(execution))
+                val name = SimpleName.from(it.name.resolve(execution))
                 when(it.type) {
                     RecipientType.TO -> Recipient.to(emailAddress, name)
                     RecipientType.CC -> Recipient.cc(emailAddress, name)
@@ -86,15 +86,20 @@ class SpotlerPlugin(
                 }
             }
         )
-        val mailTemplateIdentifier = MailTemplateIdentifier.from(mailTemplateIdentifier)
-        val sender = Sender.from(EmailAddress.from(senderEmail), SimpleName.from(senderName))
-        val subject = Subject.from(subject)
+        val mailTemplateIdentifier = MailTemplateIdentifier.from(mailTemplateIdentifier.resolve(execution))
+        val sender = Sender.from(EmailAddress.from(senderEmail.resolve(execution)), SimpleName.from(senderName.resolve(execution)))
+        val subject = Subject.from(subject.resolve(execution))
 
         val statuses = flowmailerMailDispatcher.send(
             TemplatedMailMessage
                 .with(recipientCollection, mailTemplateIdentifier)
                 .sender(sender)
                 .subject(subject)
+                .placeholders(
+                    placeholders.map {
+                        it.key to it.value.resolve(execution)
+                    }.toMap()
+                )
                 .build()
         )
         statuses.filter {
@@ -102,6 +107,18 @@ class SpotlerPlugin(
         }.forEach {
             logger.error { "Failed to send email to ${it.email} (${it.status}): ${it.rejectReason}" }
         }
+    }
+
+    private fun String.resolve(execution: DelegateExecution): String {
+        return if (this.startsWith("pv:")) {
+            resolveFromProcessVariable(this.substring("pv:".length), execution)
+        } else {
+            this
+        }
+    }
+
+    private fun resolveFromProcessVariable(value: String, execution: DelegateExecution): String {
+        return execution.variables[value].toString()
     }
 
     companion object {

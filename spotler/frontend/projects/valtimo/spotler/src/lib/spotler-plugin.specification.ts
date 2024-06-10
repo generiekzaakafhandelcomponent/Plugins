@@ -58,7 +58,13 @@ const spotlerPluginSpecification: PluginSpecification = {
       recipients: "Ontvangers",
       addRecipient: "Voeg nieuwe ontvanger toe",
       emailType: "Ontvanger type",
-      sendMail: "Email verzenden"
+      sendMail: "Email verzenden",
+      placeholders: "Placeholders",
+      addPlaceholder: "Voeg een nieuwe variabele toe",
+      placeholderKey: "Variabele",
+      placeholderKeyTooltip: "Vul een variabele in die in de Spotler email template staat geconfigureerd.",
+      placeholderValue: "Waarde",
+      placeholderValueTooltip: "De waarde die in de email ingevuld word. Start met pv: om een process waarde te gebruiken"
     },
     en: {
       title: 'Spotler',
@@ -84,7 +90,13 @@ const spotlerPluginSpecification: PluginSpecification = {
       recipients: "Recipients",
       addRecipient: "Add new recipient",
       emailType: "Recipient type",
-      sendMail: "Send an Email"
+      sendMail: "Send an Email",
+      placeholders: "Placeholders",
+      addPlaceholder: "Add a new placeholder",
+      placeholderKey: "Key",
+      placeholderKeyTooltip: "Fill in a placeholder name that was referenced in the Spotler email template",
+      placeholderValue: "Value",
+      placeholderValueTooltip: "The value that will replace the placeholder. Start with pv: to retrieve a process variable"
     },
     de: {
       title: 'Spotler',
@@ -110,7 +122,13 @@ const spotlerPluginSpecification: PluginSpecification = {
       recipients: "Empfänger",
       addRecipient: "Neuen Empfänger hinzufügen",
       emailType: "Empfängertyp",
-      sendMail: "E-Mail senden"
+      sendMail: "E-Mail senden",
+      placeholders: "Platzhalter",
+      addPlaceholder: "Fügen Sie einen neuen Platzhalter hinzu",
+      placeholderKey: "Schlüssel",
+      placeholderKeyTooltip: "Geben Sie einen Platzhalternamen ein, auf den in der Spotler-E-Mail-Vorlage verwiesen wurde",
+      placeholderValue: "Wert",
+      placeholderValueTooltip: "Der Wert, der den Platzhalter ersetzt. Beginnen Sie mit pv:, um eine Prozessvariable abzurufen."
     },
   },
 };

@@ -51,7 +51,6 @@ dependencies {
     implementation "com.ritense.valtimo:value-resolver:${valtimoVersion}"
     implementation "com.ritense.valtimo:mail:${valtimoVersion}"
 
-
     implementation "org.springframework.boot:spring-boot-starter-webflux:${springVersion}"
 
     implementation "io.github.microutils:kotlin-logging:3.0.5"
