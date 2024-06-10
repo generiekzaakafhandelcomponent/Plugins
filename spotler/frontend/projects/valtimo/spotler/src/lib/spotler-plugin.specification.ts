@@ -31,7 +31,7 @@ const spotlerPluginSpecification: PluginSpecification = {
   pluginConfigurationComponent: SpotlerPluginConfigurationComponent,
   pluginLogoBase64: SPOTLER_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
-    'send-mail': SendMailActionConfigurationComponent
+    sendMail: SendMailActionConfigurationComponent
   },
   pluginTranslations: {
     nl: {
@@ -57,7 +57,8 @@ const spotlerPluginSpecification: PluginSpecification = {
       mailTemplateIdentifierTooltip: "Vul hier de template identifier van uw Spotler email template in",
       recipients: "Ontvangers",
       addRecipient: "Voeg nieuwe ontvanger toe",
-      emailType: "Ontvanger type"
+      emailType: "Ontvanger type",
+      sendMail: "Email verzenden"
     },
     en: {
       title: 'Spotler',
@@ -82,7 +83,8 @@ const spotlerPluginSpecification: PluginSpecification = {
       mailTemplateIdentifierTooltip: "Enter the template identifier of your Spotler email template",
       recipients: "Recipients",
       addRecipient: "Add new recipient",
-      emailType: "Recipient type"
+      emailType: "Recipient type",
+      sendMail: "Send an Email"
     },
     de: {
       title: 'Spotler',
@@ -98,16 +100,17 @@ const spotlerPluginSpecification: PluginSpecification = {
       accountIdTooltip: 'Geben Sie die ID Ihres Spotler-Kontos ein',
       clientSecret: 'Secret',
       clientSecretTooltip: 'Geben Sie das mit der obigen clientId verknüpfte Geheimnis ein',
-    toAddress: "E-Mail-Adresse",
-    toName: "Name des Empfängers",
-    senderEmail: "E-Mail-Adresse des Absender",
-    senderName: "Name des Absender",
-    emailSubject: "E-Mail Betreff",
-    mailTemplateIdentifier: "Spotler E-Mail-Vorlagen-ID",
-    mailTemplateIdentifierTooltip: "Geben Sie die Vorlagenkennung Ihrer Spotler-E-Mail-Vorlage ein",
-    recipients: "Empfänger",
-    addRecipient: "Neuen Empfänger hinzufügen",
-    emailType: "Empfängertyp"
+      toAddress: "E-Mail-Adresse",
+      toName: "Name des Empfängers",
+      senderEmail: "E-Mail-Adresse des Absender",
+      senderName: "Name des Absender",
+      emailSubject: "E-Mail Betreff",
+      mailTemplateIdentifier: "Spotler E-Mail-Vorlagen-ID",
+      mailTemplateIdentifierTooltip: "Geben Sie die Vorlagenkennung Ihrer Spotler-E-Mail-Vorlage ein",
+      recipients: "Empfänger",
+      addRecipient: "Neuen Empfänger hinzufügen",
+      emailType: "Empfängertyp",
+      sendMail: "E-Mail senden"
     },
   },
 };
