@@ -22,18 +22,31 @@ import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from "@angular/forms";
-import {FormModule, InputModule} from "@valtimo/components";
+import {
+    CarbonListModule,
+    CarbonMultiInputModule,
+    FormModule,
+    InputModule,
+    MultiInputFormModule, SelectModule,
+    TableModule
+} from "@valtimo/components";
 import {
   SpotlerPluginConfigurationComponent
 } from "./components/plugin-configuration/spotler-plugin-configuration.component";
+import {
+  SendMailActionConfigurationComponent
+} from "./components/send-mail-configuration/send-mail-action-configuration.component";
+import {CheckboxModule, DropdownModule} from "carbon-components-angular";
 
 @NgModule({
   declarations: [
-      SpotlerPluginConfigurationComponent
+      SpotlerPluginConfigurationComponent,
+      SendMailActionConfigurationComponent
   ],
-  imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, CarbonMultiInputModule, TableModule, CarbonListModule, MultiInputFormModule, DropdownModule, SelectModule, CheckboxModule],
   exports: [
-    SpotlerPluginConfigurationComponent
+      SpotlerPluginConfigurationComponent,
+      SendMailActionConfigurationComponent
   ],
 })
 export class SpotlerPluginModule {}

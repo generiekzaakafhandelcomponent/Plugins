@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright 2015-2024. Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
@@ -16,32 +16,14 @@
  * limitations under the License.
  *
  */
-
-import {PluginConfigurationData} from '@valtimo/plugin';
-
-interface SpotlerPluginConfig extends PluginConfigurationData {
-    clientId: string;
-    accountId: string;
-    clientSecret: string;
+.recipient-form {
+  ::ng-deep {
+    .v-form {
+      flex-direction: row !important;
+    }
+  }
 }
 
-interface SendMailActionConfig {
-    subject: string;
-    senderEmail: string;
-    senderName: string;
-    recipients: Array<Recipient>
-    mailTemplateIdentifier: string;
-    placeholders: { [key: string]: any };
+.recipient-item {
+  margin: 4px;
 }
-
-interface Recipient {
-    email: string;
-    name: string;
-    type: RecipientType;
-}
-
-enum RecipientType {
-    TO, CC, BCC
-}
-
-export {SpotlerPluginConfig, SendMailActionConfig, Recipient};
