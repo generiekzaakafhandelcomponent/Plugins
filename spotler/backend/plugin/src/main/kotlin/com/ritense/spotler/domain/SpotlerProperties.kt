@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package com.ritense.spotler.config
+package com.ritense.spotler.domain
 
-import org.springframework.boot.context.properties.ConfigurationProperties
-
-@ConfigurationProperties(prefix = "valtimo.flowmailer")
-data class FlowmailerProperties (
+data class SpotlerProperties (
     val clientId: String,
     val clientSecret: String,
     val accountId: String

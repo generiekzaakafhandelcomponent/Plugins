@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.ritense.mail.flowmailer.service
+package com.ritense.spotler.service
 
-import com.ritense.spotler.config.FlowmailerProperties
+import com.ritense.spotler.domain.SpotlerProperties
 import com.ritense.spotler.domain.OauthTokenResponse
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.core.ResolvableType
@@ -29,8 +29,8 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 
-class FlowmailerTokenService(
-    private val flowmailerProperties: FlowmailerProperties,
+class SpotlerTokenService(
+    private val spotlerProperties: SpotlerProperties,
     private val restTemplate: RestTemplate
 ) {
 
@@ -40,8 +40,8 @@ class FlowmailerTokenService(
             httpHeaders.contentType = MediaType.APPLICATION_FORM_URLENCODED
 
             val params = LinkedMultiValueMap<String, String>()
-            params.add("client_id", flowmailerProperties.clientId)
-            params.add("client_secret", flowmailerProperties.clientSecret)
+            params.add("client_id", spotlerProperties.clientId)
+            params.add("client_secret", spotlerProperties.clientSecret)
             params.add("grant_type", "client_credentials")
 
             val httpEntity = HttpEntity(params, httpHeaders)

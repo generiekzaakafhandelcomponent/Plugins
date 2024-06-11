@@ -1,13 +1,29 @@
+/*
+ * Copyright 2015-2024 Ritense BV, the Netherlands.
+ *
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ritense.spotler.plugin
 
-import com.ritense.mail.flowmailer.service.FlowmailerMailDispatcher
-import com.ritense.mail.flowmailer.service.FlowmailerTokenService
+import com.ritense.spotler.service.SpotlerMailDispatcher
+import com.ritense.spotler.service.SpotlerTokenService
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.ActivityType
-import com.ritense.spotler.config.FlowmailerProperties
+import com.ritense.spotler.domain.SpotlerProperties
 import com.ritense.spotler.domain.Placeholder
 import com.ritense.spotler.domain.RecipientType
 import com.ritense.spotler.domain.SpotlerRecipient
@@ -42,7 +58,7 @@ class SpotlerPlugin(
     @PluginProperty(key = "clientSecret", secret = true)
     private lateinit var clientSecret: String
 
-    private lateinit var flowmailerMailDispatcher: FlowmailerMailDispatcher
+    private lateinit var spotlerMailDispatcher: SpotlerMailDispatcher
 
     @PluginAction(
         key = "sendMail",
@@ -59,18 +75,18 @@ class SpotlerPlugin(
         @PluginActionProperty placeholders: Array<Placeholder>,
         @PluginActionProperty mailTemplateIdentifier: String
     ) {
-        val flowMailerProperties = FlowmailerProperties(
+        val spotlerProperties = SpotlerProperties(
             clientId,
             clientSecret,
             accountId
         )
-        val flowmailerTokenService = FlowmailerTokenService(
-            flowMailerProperties,
+        val spotlerTokenService = SpotlerTokenService(
+            spotlerProperties,
             restTemplate
         )
-        flowmailerMailDispatcher = FlowmailerMailDispatcher(
-            flowMailerProperties,
-            flowmailerTokenService,
+        spotlerMailDispatcher = SpotlerMailDispatcher(
+            spotlerProperties,
+            spotlerTokenService,
             restTemplate,
             MapperSingleton.get()
         )
@@ -90,7 +106,7 @@ class SpotlerPlugin(
         val sender = Sender.from(EmailAddress.from(senderEmail.resolve(execution)), SimpleName.from(senderName.resolve(execution)))
         val subject = Subject.from(subject.resolve(execution))
 
-        val statuses = flowmailerMailDispatcher.send(
+        val statuses = spotlerMailDispatcher.send(
             TemplatedMailMessage
                 .with(recipientCollection, mailTemplateIdentifier)
                 .sender(sender)

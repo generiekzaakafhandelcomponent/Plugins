@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.ritense.mail.flowmailer.service
+package com.ritense.spotler.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.mail.MailDispatcher
-import com.ritense.spotler.config.FlowmailerProperties
+import com.ritense.spotler.domain.SpotlerProperties
 import com.ritense.spotler.domain.SubmitMessage
 import com.ritense.valtimo.contract.basictype.EmailAddress
 import com.ritense.valtimo.contract.mail.model.MailMessageStatus
@@ -34,9 +34,9 @@ import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 
-class FlowmailerMailDispatcher(
-    private val flowmailerProperties: FlowmailerProperties,
-    private val flowmailerTokenService: FlowmailerTokenService,
+class SpotlerMailDispatcher(
+    private val spotlerProperties: SpotlerProperties,
+    private val spotlerTokenService: SpotlerTokenService,
     private val restTemplate: RestTemplate,
     private val objectMapper: ObjectMapper
 ) : MailDispatcher {
@@ -48,7 +48,7 @@ class FlowmailerMailDispatcher(
     override fun send(templatedMailMessage: TemplatedMailMessage): MutableList<MailMessageStatus> {
         val mailMessageStatusList = mutableListOf<MailMessageStatus>()
         val messages = SubmitMessage.from(templatedMailMessage)
-        val submitMessageURI = "/${flowmailerProperties.accountId}/messages/submit"
+        val submitMessageURI = "/${spotlerProperties.accountId}/messages/submit"
         messages.forEach { message ->
             val mailMessageStatus = submitMessage(BASE_URL + submitMessageURI, message)
             mailMessageStatusList.add(mailMessageStatus)
@@ -57,12 +57,12 @@ class FlowmailerMailDispatcher(
     }
 
     override fun getMaximumSizeAttachments(): Int {
-        return MAX_SIZE_EMAIL_BODY_IN_BYTES // Flowmailer checks the entire body size
+        return MAX_SIZE_EMAIL_BODY_IN_BYTES // Spotler checks the entire body size
     }
 
     private fun submitMessage(url: String, submitMessage: SubmitMessage): MailMessageStatus {
         try {
-            val token = flowmailerTokenService.getToken()
+            val token = spotlerTokenService.getToken()
             val httpEntity = HttpEntity(objectMapper.writeValueAsString(submitMessage), getHttpHeaders(token))
             val response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String::class.java)
 
