@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package com.ritense.spotler.plugin
+package com.ritense.spotler.config
 
-import com.ritense.plugin.PluginFactory
-import com.ritense.plugin.service.PluginService
-import org.springframework.web.client.RestTemplate
+import org.springframework.boot.context.properties.ConfigurationProperties
 
-class SpotlerPluginFactory(
-    pluginService: PluginService,
-    val restTemplate: RestTemplate
-) : PluginFactory<SpotlerPlugin>(pluginService) {
-
-    override fun create() = SpotlerPlugin(restTemplate)
-
-}
+@ConfigurationProperties(prefix = "spotler")
+data class SpotlerConfigurationProperties (
+    val connectTimeout: Long?,
+    val durationTimeout: Long?
+)

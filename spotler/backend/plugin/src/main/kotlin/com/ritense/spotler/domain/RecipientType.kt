@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package com.ritense.spotler.plugin
+package com.ritense.spotler.domain
 
-import com.ritense.plugin.PluginFactory
-import com.ritense.plugin.service.PluginService
-import org.springframework.web.client.RestTemplate
-
-class SpotlerPluginFactory(
-    pluginService: PluginService,
-    val restTemplate: RestTemplate
-) : PluginFactory<SpotlerPlugin>(pluginService) {
-
-    override fun create() = SpotlerPlugin(restTemplate)
-
+enum class RecipientType {
+    TO, CC, BCC
 }

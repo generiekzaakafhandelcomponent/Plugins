@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package com.ritense.spotler.plugin
+package com.ritense.spotler.domain
 
-import com.ritense.plugin.PluginFactory
-import com.ritense.plugin.service.PluginService
-import org.springframework.web.client.RestTemplate
+import com.fasterxml.jackson.annotation.JsonProperty
 
-class SpotlerPluginFactory(
-    pluginService: PluginService,
-    val restTemplate: RestTemplate
-) : PluginFactory<SpotlerPlugin>(pluginService) {
-
-    override fun create() = SpotlerPlugin(restTemplate)
-
-}
+data class OauthTokenResponse(
+    @JsonProperty("access_token") val accessToken: String,
+    @JsonProperty("expires_in") val expiresIn: Int,
+    @JsonProperty("scope") val scope: String,
+    @JsonProperty("token_type") val tokenType: String
+)

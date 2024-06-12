@@ -67,12 +67,7 @@ export class SendMailActionConfigurationComponent
         this.handleValid(formValue);
     }
 
-    recipientFormChange(formValue: Recipient, uuid: string): void {
-        console.log(formValue, uuid);
-    }
-
     private handleValid(formValue: SendMailActionConfig): void {
-        console.log(formValue);
         const valid = !!(formValue.subject
             && formValue.senderEmail
             && this.validateEmail(formValue.senderEmail)
