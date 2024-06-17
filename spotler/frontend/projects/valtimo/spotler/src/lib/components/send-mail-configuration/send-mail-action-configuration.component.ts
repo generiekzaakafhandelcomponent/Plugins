@@ -99,6 +99,6 @@ export class SendMailActionConfigurationComponent
 
     private validateEmail(email: string) {
         const re = /\S+@\S+\.\S+/;
-        return re.test(email);
+        return email.startsWith("pv:") || re.test(email);
     }
 }
