@@ -1,0 +1,866 @@
+[
+  {
+    "code": "0",
+    "name": "Onbekend"
+  },
+  {
+    "code": "1",
+    "name": "Nederlandse"
+  },
+  {
+    "code": "2",
+    "name": "Behandeld als Nederlander"
+  },
+  {
+    "code": "27",
+    "name": "Slowaakse"
+  },
+  {
+    "code": "28",
+    "name": "Tsjechische"
+  },
+  {
+    "code": "29",
+    "name": "Burger van Bosnië-Herzegovina"
+  },
+  {
+    "code": "30",
+    "name": "Georgische"
+  },
+  {
+    "code": "31",
+    "name": "Turkmeense"
+  },
+  {
+    "code": "32",
+    "name": "Tadzjiekse"
+  },
+  {
+    "code": "33",
+    "name": "Oezbeekse"
+  },
+  {
+    "code": "34",
+    "name": "Oekraïense"
+  },
+  {
+    "code": "35",
+    "name": "Kirgizische"
+  },
+  {
+    "code": "36",
+    "name": "Moldavische"
+  },
+  {
+    "code": "37",
+    "name": "Kazachse"
+  },
+  {
+    "code": "38",
+    "name": "Belarussische"
+  },
+  {
+    "code": "39",
+    "name": "Azerbeidzjaanse"
+  },
+  {
+    "code": "40",
+    "name": "Armeense"
+  },
+  {
+    "code": "41",
+    "name": "Russische"
+  },
+  {
+    "code": "42",
+    "name": "Sloveense"
+  },
+  {
+    "code": "43",
+    "name": "Kroatische"
+  },
+  {
+    "code": "44",
+    "name": "Letse"
+  },
+  {
+    "code": "45",
+    "name": "Estische"
+  },
+  {
+    "code": "46",
+    "name": "Litouwse"
+  },
+  {
+    "code": "47",
+    "name": "Marshalleilandse"
+  },
+  {
+    "code": "48",
+    "name": "Myanmarese"
+  },
+  {
+    "code": "49",
+    "name": "Namibische"
+  },
+  {
+    "code": "50",
+    "name": "Albanese"
+  },
+  {
+    "code": "51",
+    "name": "Andorrese"
+  },
+  {
+    "code": "52",
+    "name": "Belgische"
+  },
+  {
+    "code": "53",
+    "name": "Bulgaarse"
+  },
+  {
+    "code": "54",
+    "name": "Deense"
+  },
+  {
+    "code": "55",
+    "name": "Burger van de Bondsrepubliek Duitsland"
+  },
+  {
+    "code": "56",
+    "name": "Finse"
+  },
+  {
+    "code": "57",
+    "name": "Franse"
+  },
+  {
+    "code": "58",
+    "name": "Jemenitische"
+  },
+  {
+    "code": "59",
+    "name": "Griekse"
+  },
+  {
+    "code": "60",
+    "name": "Brits burger"
+  },
+  {
+    "code": "61",
+    "name": "Hongaarse"
+  },
+  {
+    "code": "62",
+    "name": "Ierse"
+  },
+  {
+    "code": "63",
+    "name": "IJslandse"
+  },
+  {
+    "code": "64",
+    "name": "Italiaanse"
+  },
+  {
+    "code": "65",
+    "name": "Joegoslavische"
+  },
+  {
+    "code": "66",
+    "name": "Liechtensteinse"
+  },
+  {
+    "code": "67",
+    "name": "Luxemburgse"
+  },
+  {
+    "code": "68",
+    "name": "Maltese"
+  },
+  {
+    "code": "69",
+    "name": "Monegaskische"
+  },
+  {
+    "code": "70",
+    "name": "Noorse"
+  },
+  {
+    "code": "71",
+    "name": "Oostenrijkse"
+  },
+  {
+    "code": "72",
+    "name": "Poolse"
+  },
+  {
+    "code": "73",
+    "name": "Portugese"
+  },
+  {
+    "code": "74",
+    "name": "Roemeense"
+  },
+  {
+    "code": "75",
+    "name": "Burger van de Sovjet-Unie"
+  },
+  {
+    "code": "76",
+    "name": "San Marinese"
+  },
+  {
+    "code": "77",
+    "name": "Spaanse"
+  },
+  {
+    "code": "78",
+    "name": "Tsjecho-Slowaakse"
+  },
+  {
+    "code": "79",
+    "name": "Vaticaanse"
+  },
+  {
+    "code": "80",
+    "name": "Zweedse"
+  },
+  {
+    "code": "81",
+    "name": "Zwitserse"
+  },
+  {
+    "code": "82",
+    "name": "Oost-Duitse"
+  },
+  {
+    "code": "83",
+    "name": "Brits onderdaan"
+  },
+  {
+    "code": "84",
+    "name": "Eritrese"
+  },
+  {
+    "code": "85",
+    "name": "Brits overzees burger"
+  },
+  {
+    "code": "86",
+    "name": "Macedonische"
+  },
+  {
+    "code": "87",
+    "name": "Kosovaarse"
+  },
+  {
+    "code": "100",
+    "name": "Algerijnse"
+  },
+  {
+    "code": "101",
+    "name": "Angolese"
+  },
+  {
+    "code": "104",
+    "name": "Burundese"
+  },
+  {
+    "code": "105",
+    "name": "Botswaanse"
+  },
+  {
+    "code": "106",
+    "name": "Burkinese"
+  },
+  {
+    "code": "108",
+    "name": "Centraal-Afrikaanse"
+  },
+  {
+    "code": "109",
+    "name": "Comorese"
+  },
+  {
+    "code": "110",
+    "name": "Burger van Congo"
+  },
+  {
+    "code": "111",
+    "name": "Beninse"
+  },
+  {
+    "code": "112",
+    "name": "Egyptische"
+  },
+  {
+    "code": "113",
+    "name": "Equatoriaal-Guinese"
+  },
+  {
+    "code": "114",
+    "name": "Ethiopische"
+  },
+  {
+    "code": "115",
+    "name": "Djiboutiaanse"
+  },
+  {
+    "code": "116",
+    "name": "Gabonese"
+  },
+  {
+    "code": "117",
+    "name": "Gambiaanse"
+  },
+  {
+    "code": "118",
+    "name": "Ghanese"
+  },
+  {
+    "code": "119",
+    "name": "Guinese"
+  },
+  {
+    "code": "120",
+    "name": "Ivoriaanse"
+  },
+  {
+    "code": "121",
+    "name": "Kaapverdische"
+  },
+  {
+    "code": "122",
+    "name": "Kameroense"
+  },
+  {
+    "code": "123",
+    "name": "Kenyaanse"
+  },
+  {
+    "code": "124",
+    "name": "Zaïrese"
+  },
+  {
+    "code": "125",
+    "name": "Lesothaanse"
+  },
+  {
+    "code": "126",
+    "name": "Liberiaanse"
+  },
+  {
+    "code": "127",
+    "name": "Libische"
+  },
+  {
+    "code": "128",
+    "name": "Malagassische"
+  },
+  {
+    "code": "129",
+    "name": "Malawische"
+  },
+  {
+    "code": "130",
+    "name": "Malinese"
+  },
+  {
+    "code": "131",
+    "name": "Marokkaanse"
+  },
+  {
+    "code": "132",
+    "name": "Mauritaanse"
+  },
+  {
+    "code": "133",
+    "name": "Mauritiaanse"
+  },
+  {
+    "code": "134",
+    "name": "Mozambikaanse"
+  },
+  {
+    "code": "135",
+    "name": "Swazische"
+  },
+  {
+    "code": "136",
+    "name": "Nigerese"
+  },
+  {
+    "code": "137",
+    "name": "Nigeriaanse"
+  },
+  {
+    "code": "138",
+    "name": "Ugandese"
+  },
+  {
+    "code": "139",
+    "name": "Guinee-Bissause"
+  },
+  {
+    "code": "140",
+    "name": "Zuid-Afrikaanse"
+  },
+  {
+    "code": "142",
+    "name": "Zimbabwaanse"
+  },
+  {
+    "code": "143",
+    "name": "Rwandese"
+  },
+  {
+    "code": "144",
+    "name": "Burger van Sáo Tomé en Principe"
+  },
+  {
+    "code": "145",
+    "name": "Senegalese"
+  },
+  {
+    "code": "147",
+    "name": "Sierra Leoonse"
+  },
+  {
+    "code": "148",
+    "name": "Soedanese"
+  },
+  {
+    "code": "149",
+    "name": "Somalische"
+  },
+  {
+    "code": "151",
+    "name": "Tanzaniaanse"
+  },
+  {
+    "code": "152",
+    "name": "Togolese"
+  },
+  {
+    "code": "154",
+    "name": "Tsjadische"
+  },
+  {
+    "code": "155",
+    "name": "Tunesische"
+  },
+  {
+    "code": "156",
+    "name": "Zambiaanse"
+  },
+  {
+    "code": "157",
+    "name": "Zuid-Soedanese"
+  },
+  {
+    "code": "200",
+    "name": "Bahamaanse"
+  },
+  {
+    "code": "202",
+    "name": "Belizaanse"
+  },
+  {
+    "code": "204",
+    "name": "Canadese"
+  },
+  {
+    "code": "205",
+    "name": "Costa Ricaanse"
+  },
+  {
+    "code": "206",
+    "name": "Cubaanse"
+  },
+  {
+    "code": "207",
+    "name": "Dominicaanse"
+  },
+  {
+    "code": "208",
+    "name": "Salvadoraanse"
+  },
+  {
+    "code": "211",
+    "name": "Guatemalaanse"
+  },
+  {
+    "code": "212",
+    "name": "Haïtiaanse"
+  },
+  {
+    "code": "213",
+    "name": "Hondurese"
+  },
+  {
+    "code": "214",
+    "name": "Jamaicaanse"
+  },
+  {
+    "code": "216",
+    "name": "Mexicaanse"
+  },
+  {
+    "code": "218",
+    "name": "Nicaraguaanse"
+  },
+  {
+    "code": "219",
+    "name": "Panamese"
+  },
+  {
+    "code": "222",
+    "name": "Burger van Trinidad en Tobago"
+  },
+  {
+    "code": "223",
+    "name": "Amerikaans burger"
+  },
+  {
+    "code": "250",
+    "name": "Argentijnse"
+  },
+  {
+    "code": "251",
+    "name": "Barbadaanse"
+  },
+  {
+    "code": "252",
+    "name": "Boliviaanse"
+  },
+  {
+    "code": "253",
+    "name": "Braziliaanse"
+  },
+  {
+    "code": "254",
+    "name": "Chileense"
+  },
+  {
+    "code": "255",
+    "name": "Colombiaanse"
+  },
+  {
+    "code": "256",
+    "name": "Ecuadoraanse"
+  },
+  {
+    "code": "259",
+    "name": "Guyaanse"
+  },
+  {
+    "code": "261",
+    "name": "Paraguayaanse"
+  },
+  {
+    "code": "262",
+    "name": "Peruaanse"
+  },
+  {
+    "code": "263",
+    "name": "Surinaamse"
+  },
+  {
+    "code": "264",
+    "name": "Uruguayaanse"
+  },
+  {
+    "code": "265",
+    "name": "Venezolaanse"
+  },
+  {
+    "code": "267",
+    "name": "Grenadaanse"
+  },
+  {
+    "code": "268",
+    "name": "Burger van Saint Kitts en Nevis"
+  },
+  {
+    "code": "300",
+    "name": "Afghaanse"
+  },
+  {
+    "code": "301",
+    "name": "Bahreinse"
+  },
+  {
+    "code": "302",
+    "name": "Bhutaanse"
+  },
+  {
+    "code": "303",
+    "name": "Burmaanse"
+  },
+  {
+    "code": "304",
+    "name": "Bruneise"
+  },
+  {
+    "code": "305",
+    "name": "Cambodjaanse"
+  },
+  {
+    "code": "306",
+    "name": "Sri Lankaanse"
+  },
+  {
+    "code": "307",
+    "name": "Chinese"
+  },
+  {
+    "code": "308",
+    "name": "Cyprische"
+  },
+  {
+    "code": "309",
+    "name": "Filipijnse"
+  },
+  {
+    "code": "310",
+    "name": "Taiwanese"
+  },
+  {
+    "code": "312",
+    "name": "Indiase"
+  },
+  {
+    "code": "313",
+    "name": "Indonesische"
+  },
+  {
+    "code": "314",
+    "name": "Iraakse"
+  },
+  {
+    "code": "315",
+    "name": "Iraanse"
+  },
+  {
+    "code": "316",
+    "name": "Israïlische"
+  },
+  {
+    "code": "317",
+    "name": "Japanse"
+  },
+  {
+    "code": "318",
+    "name": "Noord-Jemenitische"
+  },
+  {
+    "code": "319",
+    "name": "Jordaanse"
+  },
+  {
+    "code": "320",
+    "name": "Koeweitse"
+  },
+  {
+    "code": "321",
+    "name": "Laotiaanse"
+  },
+  {
+    "code": "322",
+    "name": "Libanese"
+  },
+  {
+    "code": "324",
+    "name": "Maldivische"
+  },
+  {
+    "code": "325",
+    "name": "Maleisische"
+  },
+  {
+    "code": "326",
+    "name": "Mongolische"
+  },
+  {
+    "code": "327",
+    "name": "Omaanse"
+  },
+  {
+    "code": "328",
+    "name": "Nepalese"
+  },
+  {
+    "code": "329",
+    "name": "Noord-Koreaanse"
+  },
+  {
+    "code": "331",
+    "name": "Pakistaanse"
+  },
+  {
+    "code": "333",
+    "name": "Qatarese"
+  },
+  {
+    "code": "334",
+    "name": "Saoedi-Arabische"
+  },
+  {
+    "code": "335",
+    "name": "Singaporese"
+  },
+  {
+    "code": "336",
+    "name": "Syrische"
+  },
+  {
+    "code": "337",
+    "name": "Thaise"
+  },
+  {
+    "code": "338",
+    "name": "Burger van de Verenigde Arabische Emiraten"
+  },
+  {
+    "code": "339",
+    "name": "Turkse"
+  },
+  {
+    "code": "340",
+    "name": "Zuid-Jemenitische"
+  },
+  {
+    "code": "341",
+    "name": "Zuid-Koreaanse"
+  },
+  {
+    "code": "342",
+    "name": "Vietnamese"
+  },
+  {
+    "code": "345",
+    "name": "Bengalese"
+  },
+  {
+    "code": "400",
+    "name": "Australische"
+  },
+  {
+    "code": "401",
+    "name": "Papoea-Nieuw-Guinese"
+  },
+  {
+    "code": "402",
+    "name": "Nieuw-Zeelandse"
+  },
+  {
+    "code": "404",
+    "name": "West-Samoaanse"
+  },
+  {
+    "code": "405",
+    "name": "Samoaanse"
+  },
+  {
+    "code": "421",
+    "name": "Burger van Antigua en Barbuda"
+  },
+  {
+    "code": "424",
+    "name": "Vanuatuaanse"
+  },
+  {
+    "code": "425",
+    "name": "Fijische"
+  },
+  {
+    "code": "429",
+    "name": "Burger van Britse afhankelijke gebieden"
+  },
+  {
+    "code": "430",
+    "name": "Tongaanse"
+  },
+  {
+    "code": "431",
+    "name": "Nauruaanse"
+  },
+  {
+    "code": "432",
+    "name": "Palause"
+  },
+  {
+    "code": "437",
+    "name": "Amerikaans onderdaan"
+  },
+  {
+    "code": "442",
+    "name": "Salomonseilandse"
+  },
+  {
+    "code": "443",
+    "name": "Micronesische"
+  },
+  {
+    "code": "444",
+    "name": "Seychelse"
+  },
+  {
+    "code": "445",
+    "name": "Kiribatische"
+  },
+  {
+    "code": "446",
+    "name": "Tuvaluaanse"
+  },
+  {
+    "code": "447",
+    "name": "Saint Luciaanse"
+  },
+  {
+    "code": "448",
+    "name": "Burger van Dominica"
+  },
+  {
+    "code": "449",
+    "name": "Burger van Saint Vincent en de Grenadines"
+  },
+  {
+    "code": "450",
+    "name": "British National (overseas)"
+  },
+  {
+    "code": "451",
+    "name": "Burger van Democratische Republiek Congo"
+  },
+  {
+    "code": "452",
+    "name": "Burger van Timor Leste"
+  },
+  {
+    "code": "453",
+    "name": "Burger van Servië en Montenegro"
+  },
+  {
+    "code": "454",
+    "name": "Servische"
+  },
+  {
+    "code": "455",
+    "name": "Montenegrijnse"
+  },
+  {
+    "code": "499",
+    "name": "Staatloos"
+  },
+  {
+    "code": "500",
+    "name": "Vastgesteld niet-Nederlander"
+  },
+  {
+    "code": "86",
+    "name": "Burger van de Republiek Noord-Macedonië"
+  }
+]

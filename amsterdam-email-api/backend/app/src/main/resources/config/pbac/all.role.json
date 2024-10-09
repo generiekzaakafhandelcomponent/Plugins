@@ -1,7 +1,0 @@
-{
-    "changesetId": "pbac-roles",
-    "roles": [
-        "ROLE_USER",
-        "ROLE_ADMIN"
-    ]
-}

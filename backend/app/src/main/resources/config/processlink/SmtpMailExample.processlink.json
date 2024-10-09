@@ -1,0 +1,24 @@
+[
+  {
+    "activityId": "StartEvent",
+    "activityType": "bpmn:StartEvent:start",
+    "processLinkType": "form",
+    "formDefinitionName": "start-form-example"
+  },
+  {
+    "activityId": "SendSmtpMail",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "531935ce-e9ae-45d7-bf1a-08993e358482",
+    "pluginActionDefinitionKey": "send-mail",
+    "actionProperties": {
+      "sender": "sender",
+      "recipients": "recipients",
+      "cc": "cc",
+      "bcc": "bcc",
+      "subject": "subject",
+      "contentId": "resourceId",
+      "attachmentIds": "attachments"
+    }
+  }
+]

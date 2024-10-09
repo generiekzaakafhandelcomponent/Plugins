@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+    db:
+        image: postgres:14.9
+        #ports:
+           # - "5432:5432" #needs overriding "XXXX:5432" XXXX=your-own-port-per-module-test
+        environment:
+            POSTGRES_DB: example-test #needs overriding
+            POSTGRES_USER: test-user
+            POSTGRES_PASSWORD: password
+# Ports taken
+#   url: jdbc:postgresql://localhost:54341/slack-test

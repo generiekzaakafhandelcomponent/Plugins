@@ -1,0 +1,38 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2020",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2020", "dom", "dom.iterable"],
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": false,
+    "paths": {
+      "@src": ["src"],
+      "@src/*": ["src/*"],
+      "@valtimo/alfresco-auth": ["dist/valtimo/alfresco-auth"],
+      "@valtimo/amsterdam-emailapi": ["dist/valtimo/amsterdam-emailapi"],
+      "@valtimo/berkelybridge": ["dist/valtimo/berkelybridge"],
+      "@valtimo/publictask": ["dist/valtimo/publictask"],
+      "@valtimo/slack": ["dist/valtimo/slack"],
+      "@valtimo/smtpmail": ["dist/valtimo/smtpmail"],
+      "@valtimo/spotler": ["dist/valtimo/spotler"],
+      "@valtimo/suwinet": ["dist/valtimo/suwinet"],
+    }
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./src/tsconfig.app.json"
+    }
+  ]
+}

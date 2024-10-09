@@ -1,0 +1,58 @@
+[
+  {
+    "id": "8661ca7e-9ae7-4688-90be-68c3ca828de1",
+    "title": "Slack configuration",
+    "pluginDefinitionKey": "slack",
+    "properties": {
+      "url": "https://www.slack.com/",
+      "token": "xoxb-fake-token"
+    }
+  },
+  {
+    "id": "2fc20b94-19d3-4b20-ac90-efb77777d46a",
+    "title": "Alfresco Auth configuration",
+    "pluginDefinitionKey": "alfrescoauthentication",
+    "properties": {
+      "clientId": "testClient",
+      "clientSecret": "testSecret"
+    }
+  },
+  {
+    "id": "531935ce-e9ae-45d7-bf1a-08993e358482",
+    "title": "SMTP mail configuration",
+    "pluginDefinitionKey": "smtp-mail",
+    "properties": {
+      "host": "http://localhost/",
+      "port": "25"
+    }
+  },
+  {
+    "id": "9a100bdb-2825-4b7a-800c-5ae43a6b2fff",
+    "title": "Berkely Bridge Text generator",
+    "pluginDefinitionKey": "bbtextgenerator",
+    "properties": {
+      "berkelybridgeBaseUrl": "http://localhost/"
+    }
+  },
+  {
+    "id": "f727351b-18ab-43a8-b6a0-9673dce29c22",
+    "title": "Email API Amsterdam",
+    "pluginDefinitionKey": "amsterdamemailapi",
+    "properties": {
+      "emailApiBaseUrl": "https://emailurl/mail/api/v1/mail",
+      "clientId": "testClient",
+      "clientSecret": "testSecret",
+      "tokenEndpoint": "https://tokenendpoint/auth/realms/realm/protocol/openid-connect/token"
+    }
+  },
+  {
+    "id": "4c927c7c-02ea-4f77-bac8-09eac3eea96e",
+    "title": "Spotler configuration",
+    "pluginDefinitionKey": "spotler",
+    "properties": {
+      "clientId": "clientId",
+      "accountId": "accountId",
+      "clientSecret": "clientSecret"
+    }
+  }
+]

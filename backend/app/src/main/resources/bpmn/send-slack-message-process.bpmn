@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0dt8m0a"
+                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.18.0"
+                  modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+    <bpmn:process id="SlackMessageExample" name="Slack message example" isExecutable="true">
+        <bpmn:startEvent id="StartEvent">
+            <bpmn:outgoing>Flow_0m3mpzz</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="Flow_0m3mpzz" sourceRef="StartEvent" targetRef="SendSlackMessage"/>
+        <bpmn:endEvent id="EndEvent">
+            <bpmn:incoming>Flow_0dnfu37</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="Flow_0dnfu37" sourceRef="SendSlackMessage" targetRef="EndEvent"/>
+        <bpmn:serviceTask id="SendSlackMessage" name="Send Slack message" camunda:expression="${null}">
+            <bpmn:incoming>Flow_0m3mpzz</bpmn:incoming>
+            <bpmn:outgoing>Flow_0dnfu37</bpmn:outgoing>
+        </bpmn:serviceTask>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="SlackMessageExample">
+            <bpmndi:BPMNEdge id="Flow_0dnfu37_di" bpmnElement="Flow_0dnfu37">
+                <di:waypoint x="370" y="117"/>
+                <di:waypoint x="432" y="117"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0m3mpzz_di" bpmnElement="Flow_0m3mpzz">
+                <di:waypoint x="215" y="117"/>
+                <di:waypoint x="270" y="117"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent">
+                <dc:Bounds x="179" y="99" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="152" y="202" width="90" height="20"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_08iem4e_di" bpmnElement="EndEvent">
+                <dc:Bounds x="432" y="99" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0mome97_di" bpmnElement="SendSlackMessage">
+                <dc:Bounds x="270" y="77" width="100" height="80"/>
+                <bpmndi:BPMNLabel/>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

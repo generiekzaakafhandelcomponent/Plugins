@@ -1,8 +1,0 @@
-[
-    {
-        "processDefinitionKey": "PublicTaskExample",
-        "canInitializeDocument": true,
-        "startableByUser": true,
-        "processIsVisibleInMenu": true
-    }
-]

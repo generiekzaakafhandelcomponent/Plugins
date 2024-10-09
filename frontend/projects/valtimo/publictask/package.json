@@ -1,0 +1,14 @@
+{
+  "name": "@valtimo/publictask",
+  "license": "EUPL-1.2",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "@angular/common": "^17.2.2",
+    "@angular/core": "^17.2.2"
+  },
+  "dependencies": {
+    "ngx-spinner": "17.0.0",
+    "ngx-toastr": "19.0.0",
+    "tslib": "2.6.3"
+  }
+}

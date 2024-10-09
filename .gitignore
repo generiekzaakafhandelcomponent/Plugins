@@ -156,6 +156,7 @@ Desktop.ini
 
 
 **/.gradle
-**/build/
-**/node_modules/
-**/dist/
+**/build/**
+**/node_modules/**
+**/dist/**
+**/*.d.ts
