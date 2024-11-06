@@ -1,0 +1,12 @@
+[
+    {
+        "processDefinitionKey": "externeKlanttaak-process",
+        "canInitializeDocument": true,
+        "startableByUser": true
+    },
+    {
+        "processDefinitionKey": "externeKlanttaak-due-date-process",
+        "canInitializeDocument": true,
+        "startableByUser": true
+    }
+]
