@@ -18,6 +18,7 @@ dependencies {
     implementation(project(":backend:amsterdam-email-api"))
     implementation(project(":backend:berkelybridge-textgenerator"))
     implementation(project(":backend:freemarker"))
+    implementation(project(":backend:notify-nl"))
     implementation(project(":backend:publictask"))
     implementation(project(":backend:slack"))
     implementation(project(":backend:smtpmail"))

@@ -12,6 +12,7 @@ include(
     "backend:spotler",
     "backend:suwinet",
     "backend:kvk-handelsregister",
+    "backend:notify-nl",
     "frontend",
 )
 
