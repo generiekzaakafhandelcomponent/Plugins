@@ -34,15 +34,20 @@ import com.ritense.externeklanttaak.model.TaakSoort.OGONEBETALING
 import com.ritense.externeklanttaak.model.TaakSoort.PORTAALFORMULIER
 import com.ritense.externeklanttaak.model.TaakSoort.URL
 import com.ritense.externeklanttaak.model.TaakStatus
+import com.ritense.externeklanttaak.model.TaakStatus.AFGEROND
 import com.ritense.externeklanttaak.model.TaakStatus.OPEN
 import com.ritense.externeklanttaak.model.TaakStatus.VERWERKT
 import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
+import mu.KotlinLogging
+import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask
 import java.time.LocalDate
 import java.time.ZoneOffset
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ExterneKlanttaakV1x1x0(
+    @JsonProperty("verwerker_taak_id")
+    override val verwerkerTaakId: String,
     val titel: String,
     val status: TaakStatus,
     val soort: TaakSoort,
@@ -53,16 +58,25 @@ data class ExterneKlanttaakV1x1x0(
     val koppeling: TaakKoppeling? = null,
     val verloopdatum: LocalDate? = null,
     val eigenaar: String? = DEFAULT_EIGENAAR,
-    @JsonProperty("verwerker_taak_id")
-    val verwerkerTaakId: String,
 ) : IExterneKlanttaak {
     companion object {
         private const val DEFAULT_EIGENAAR = "GZAC"
+        private val logger = KotlinLogging.logger {}
 
-        fun complete(externeKlanttaak: IExterneKlanttaak): (UtilityService) -> IExterneKlanttaak =
-            { _ ->
+        fun complete(externeKlanttaak: IExterneKlanttaak): (DelegateExecution, UtilityService) -> IExterneKlanttaak? =
+            { execution, utilService ->
                 require(externeKlanttaak is ExterneKlanttaakV1x1x0)
-                externeKlanttaak.copy(status = VERWERKT)
+                require(utilService is DefaultUtilityService)
+                when (externeKlanttaak.status == AFGEROND) {
+                    true -> {
+                        utilService.handleFormulierTaakSubmission()
+                        externeKlanttaak.copy(status = VERWERKT)
+                    }
+                    false -> {
+                        logger.debug { "Task not completed due to unmatched criteria." }
+                        null
+                    }
+                }
             }
 
         fun create(): (IPluginActionConfig, DelegateTask, UtilityService) -> IExterneKlanttaak =

@@ -21,9 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
+import com.ritense.externeklanttaak.domain.FinalizerProcessVariables.EXTERNE_KLANTTAAK_OBJECT_URL
 import com.ritense.externeklanttaak.domain.KlanttaakVersion
+import com.ritense.externeklanttaak.model.IExterneKlanttaak
 import com.ritense.externeklanttaak.model.IPluginActionConfig
-import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
 import com.ritense.objectenapi.ObjectenApiPlugin
 import com.ritense.objectenapi.client.ObjectRecord
 import com.ritense.objectenapi.client.ObjectRequest
@@ -35,7 +36,6 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
-import jdk.jshell.execution.Util
 import mu.KLogger
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -78,8 +78,11 @@ open class ExterneKlanttaakService(
                 logger.info {
                     "Created Externe Klanttaak object with URL [${result.url}] for task with id [${delegateTask.id}]"
                 }
-                config.resultingKlanttaakObjectUrlVariable?.let {
-                    delegateTask.execution.setVariable(it, result.url)
+                config.resultingKlanttaakObjectUrlVariable?.let { variableName ->
+                    delegateTask.execution.setVariable(variableName, result.url)
+                        .also {
+                            logger.debug { "Created Klanttaak object url saved to variable [$variableName]" }
+                        }
                 }
             }
     }
@@ -92,28 +95,31 @@ open class ExterneKlanttaakService(
         logger.debug { "Completing Externe Klanttaak" }
         val objectManagement = objectManagementService.getById(objectManagementId)
             ?: throw IllegalStateException("Could not find Object Management Configuration by ID $objectManagementId")
-
-        val (verwerkerTaakId: String, externeKlanttaakObjectUrl: String) =
-            REQUIRED_FINALIZER_PROCESS_VARIABLES.map {
-                execution.getVariable(it).toString()
-            }
-        val externeKlanttaakObject = objectManagement.getObject(URI.create(externeKlanttaakObjectUrl))
-
-        val completedTaak = klanttaakVersion.complete(
-            externeTaak =
-            objectMapper.convertValue(
-                externeKlanttaakObject.record.data
-                    ?: throw RuntimeException("externeKlanttaak meta data was empty!")
-            ),
-            utilService = utilService
+        val klanttaakObjectUrl = execution.getVariable(EXTERNE_KLANTTAAK_OBJECT_URL.value).toString()
+        val externeKlanttaakObject = objectManagement.getObjectByUrl(klanttaakObjectUrl)
+        val externeKlanttaak: IExterneKlanttaak = objectMapper.convertValue(
+            externeKlanttaakObject.record.data
+                ?: throw RuntimeException("Failed to handle empty object as Externe Klanttaak")
         )
+        val completedTaak =
+            klanttaakVersion.complete(
+                externeTaak = externeKlanttaak,
+                execution = execution,
+                utilService = utilService
+            )
+                ?: run {
+                    logger.info {
+                        "Could not Complete External Task with id [${externeKlanttaakObject.uuid}]"
+                    }
+                    return
+                }
 
-        runWithoutAuthorization { taskService.complete(verwerkerTaakId) }
+        runWithoutAuthorization { taskService.complete(externeKlanttaak.verwerkerTaakId) }
 
         objectManagement.patchObject(externeKlanttaakObject.url, objectMapper.convertValue(completedTaak))
             .also {
                 logger.info {
-                    "Completed Externe Klanttaak with Id [${it.uuid}] and VerwerkerTaakId [$verwerkerTaakId]."
+                    "Completed Externe Klanttaak with Id [${it.uuid}] and VerwerkerTaakId [${externeKlanttaak.verwerkerTaakId}]."
                 }
             }
     }
@@ -123,29 +129,32 @@ open class ExterneKlanttaakService(
         execution: DelegateExecution
     ): IPluginActionConfig {
         val configProperties = objectMapper.valueToTree<ObjectNode>(config)
-        val requestedValues = configProperties.properties()
-            .filter { it.value.isTextual }
-            .mapNotNull { it.value.textValue() }
-        val resolvedValues = valueResolverService.resolveValues(
-            execution.processInstanceId,
-            execution,
-            requestedValues
-        )
+        val requestedValues =
+            configProperties.properties()
+                .filter { it.value.isTextual }
+                .mapNotNull { it.value.textValue() }
+        val resolvedValues =
+            valueResolverService.resolveValues(
+                execution.processInstanceId,
+                execution,
+                requestedValues
+            )
 
         return objectMapper.convertValue(
             configProperties.properties().associate { (key, value) ->
-                key to (resolvedValues.get(value.textValue()) ?: value)
+                key to (resolvedValues[value.textValue()] ?: value)
             }
         )
     }
 
-    private fun ObjectManagement.getObject(
-        objectUrl: URI,
+    private fun ObjectManagement.getObjectByUrl(
+        url: String,
     ): ObjectWrapper {
+        val objectUri = URI.create(url)
         val objectenApiPlugin: ObjectenApiPlugin =
             pluginService.createInstance(objectenApiPluginConfigurationId)
 
-        return objectenApiPlugin.getObject(objectUrl)
+        return objectenApiPlugin.getObject(objectUri)
     }
 
     private fun ObjectManagement.createObject(
@@ -190,7 +199,6 @@ open class ExterneKlanttaakService(
     }
 
     companion object {
-        val REQUIRED_FINALIZER_PROCESS_VARIABLES = listOf("verwerkerTaakId", "externeKlanttaakObjectUrl")
         private val logger: KLogger = KotlinLogging.logger {}
         private val objectMapper: ObjectMapper = MapperSingleton.get()
     }

@@ -31,7 +31,7 @@ import org.camunda.bpm.engine.delegate.DelegateTask
 import java.util.UUID
 
 @Plugin(
-    key = "externeKlanttaak",
+    key = "externeklanttaak",
     title = "Externe Klanttaak Plugin",
     description = "Lets you create and handle Externe Klanttaak specification compliant Objects"
 )
@@ -52,7 +52,7 @@ class ExterneKlanttaakPlugin(
 
     @PluginAction(
         key = "create-externeklanttaak",
-        title = "Create portal task",
+        title = "Create Externe Klanttaak",
         description = "Create a task for a portal by storing it in the Objecten-API",
         activityTypes = [ActivityTypeWithEventName.USER_TASK_CREATE]
     )
@@ -74,8 +74,8 @@ class ExterneKlanttaakPlugin(
     }
 
     @PluginAction(
-        key = "complete-externeKlanttaak",
-        title = "Complete externeKlanttaak",
+        key = "complete-externeklanttaak",
+        title = "Complete Externe Klanttaak",
         description = "Complete portal task and update status on Objects Api",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )

@@ -21,7 +21,7 @@ import com.ritense.externeklanttaak.model.IExterneKlanttaak
 import com.ritense.externeklanttaak.model.IPluginActionConfig
 import com.ritense.externeklanttaak.model.impl.ExterneKlanttaakV1x1x0
 import com.ritense.externeklanttaak.service.UtilityService
-import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
+import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction1
@@ -29,7 +29,7 @@ import kotlin.reflect.KFunction1
 enum class KlanttaakVersion(
     @JsonValue val taakVersion: String,
     private val creator: (IPluginActionConfig, DelegateTask, UtilityService) -> IExterneKlanttaak,
-    private val completer: KFunction1<ExterneKlanttaakV1x1x0, (UtilityService) -> IExterneKlanttaak>
+    private val completer: KFunction1<ExterneKlanttaakV1x1x0, (DelegateExecution, UtilityService) -> IExterneKlanttaak?>
 ) {
     V1_1_0(
         taakVersion = "1.1.0",
@@ -41,8 +41,8 @@ enum class KlanttaakVersion(
     fun create(config: IPluginActionConfig, delegateTask: DelegateTask, utilService: UtilityService) =
         creator.invoke(config, delegateTask, utilService)
 
-    fun complete(externeTaak: IExterneKlanttaak, utilService: UtilityService) =
-        completer.call(externeTaak).invoke(utilService)
+    fun complete(externeTaak: IExterneKlanttaak, execution: DelegateExecution, utilService: UtilityService) =
+        completer.call(externeTaak).invoke(execution, utilService)
 
     val version = Version.fromString(taakVersion)
     infix fun supports(kClass: KClass<*>): Boolean = version supports kClass

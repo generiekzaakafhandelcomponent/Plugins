@@ -48,7 +48,7 @@ class DefaultUtilityService(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
     private val zaakInstanceLinkService: ZaakInstanceLinkService,
-): UtilityService {
+) : UtilityService {
     internal fun stringAsInstantOrNull(input: String?): Instant? {
         val commonGzacDateTimeFormats = listOf(
             DateTimeFormatter.BASIC_ISO_DATE,
@@ -135,6 +135,8 @@ class DefaultUtilityService(
 
         return objectMapper.convertValue(taakData)
     }
+
+    internal fun handleFormulierTaakSubmission() {}
 
     companion object {
         private val logger: KLogger = KotlinLogging.logger {}

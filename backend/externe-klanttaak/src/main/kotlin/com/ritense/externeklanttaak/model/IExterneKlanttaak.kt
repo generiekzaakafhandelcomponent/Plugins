@@ -9,4 +9,6 @@ import com.ritense.externeklanttaak.model.impl.ExterneKlanttaakV1x1x0
     Type(ExterneKlanttaakV1x1x0::class),
 )
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-interface IExterneKlanttaak
+interface IExterneKlanttaak {
+    val verwerkerTaakId: String
+}
