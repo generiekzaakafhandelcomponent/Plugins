@@ -25,7 +25,7 @@ import com.ritense.externeklanttaak.model.TaakStatus
 import com.ritense.externeklanttaak.model.impl.CreateTaakActionV1x1x0
 import com.ritense.externeklanttaak.model.impl.ExterneKlanttaakV1x1x0
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
-import com.ritense.externeklanttaak.service.impl.UtilService
+import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
 import com.ritense.objectenapi.ObjectenApiPlugin
 import com.ritense.objectenapi.client.ObjectRequest
 import com.ritense.objectenapi.client.ObjectWrapper
@@ -65,7 +65,7 @@ internal class ExterneKlanttaakServiceTest {
     private lateinit var objecttypenApiPlugin: ObjecttypenApiPlugin
     private lateinit var valueResolverService: ValueResolverService
     private lateinit var taskService: CamundaTaskService
-    private lateinit var utilService: UtilService
+    private lateinit var utilService: DefaultUtilityService
     private lateinit var objectManagement: ObjectManagement
 
     private val externalUrl = "https://example.com/external-url"

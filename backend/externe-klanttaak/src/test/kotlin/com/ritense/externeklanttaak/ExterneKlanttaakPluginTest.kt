@@ -26,7 +26,7 @@ import com.ritense.externeklanttaak.model.TaakSoort.URL
 import com.ritense.externeklanttaak.model.impl.CreateTaakActionV1x1x0
 import com.ritense.externeklanttaak.plugin.ExterneKlanttaakPlugin
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
-import com.ritense.externeklanttaak.service.impl.UtilService
+import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
 import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
@@ -56,7 +56,7 @@ internal class ExterneKlanttaakPluginTest {
     private lateinit var zaakInstanceLinkService: ZaakInstanceLinkService
     private lateinit var externeKlanttaakPlugin: ExterneKlanttaakPlugin
     private lateinit var externeKlanttaakService: ExterneKlanttaakService
-    private lateinit var utilService: UtilService
+    private lateinit var utilService: DefaultUtilityService
     private lateinit var zakenApiPlugin: ZakenApiPlugin
     private lateinit var objectMapper: ObjectMapper
     private val delegateTask = mock<DelegateTask>()

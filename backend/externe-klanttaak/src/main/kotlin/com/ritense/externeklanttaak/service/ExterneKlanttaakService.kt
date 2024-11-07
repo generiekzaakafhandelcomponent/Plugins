@@ -23,7 +23,7 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
 import com.ritense.externeklanttaak.domain.KlanttaakVersion
 import com.ritense.externeklanttaak.model.IPluginActionConfig
-import com.ritense.externeklanttaak.service.impl.UtilService
+import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
 import com.ritense.objectenapi.ObjectenApiPlugin
 import com.ritense.objectenapi.client.ObjectRecord
 import com.ritense.objectenapi.client.ObjectRequest
@@ -35,6 +35,7 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
+import jdk.jshell.execution.Util
 import mu.KLogger
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -48,7 +49,7 @@ open class ExterneKlanttaakService(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
     private val taskService: CamundaTaskService,
-    private val utilService: UtilService,
+    private val utilService: UtilityService,
 ) {
     internal fun createExterneKlanttaak(
         klanttaakVersion: KlanttaakVersion,

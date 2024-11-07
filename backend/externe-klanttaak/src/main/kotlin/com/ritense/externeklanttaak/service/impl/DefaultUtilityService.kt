@@ -44,7 +44,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
-class UtilService(
+class DefaultUtilityService(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
     private val zaakInstanceLinkService: ZaakInstanceLinkService,

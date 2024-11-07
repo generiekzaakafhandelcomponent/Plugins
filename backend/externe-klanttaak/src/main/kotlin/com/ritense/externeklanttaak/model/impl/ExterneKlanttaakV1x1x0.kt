@@ -36,7 +36,7 @@ import com.ritense.externeklanttaak.model.TaakSoort.URL
 import com.ritense.externeklanttaak.model.TaakStatus
 import com.ritense.externeklanttaak.model.TaakStatus.OPEN
 import com.ritense.externeklanttaak.model.TaakStatus.VERWERKT
-import com.ritense.externeklanttaak.service.impl.UtilService
+import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
 import org.camunda.bpm.engine.delegate.DelegateTask
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -67,7 +67,7 @@ data class ExterneKlanttaakV1x1x0(
 
         fun create(): (IPluginActionConfig, DelegateTask, UtilityService) -> IExterneKlanttaak =
             { config, delegateTask, utilService ->
-                require(utilService is UtilService)
+                require(utilService is DefaultUtilityService)
                 require(config is CreateTaakActionV1x1x0)
 
                 ExterneKlanttaakV1x1x0(

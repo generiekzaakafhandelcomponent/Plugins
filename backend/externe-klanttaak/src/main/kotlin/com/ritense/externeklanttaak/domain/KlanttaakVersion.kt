@@ -21,7 +21,7 @@ import com.ritense.externeklanttaak.model.IExterneKlanttaak
 import com.ritense.externeklanttaak.model.IPluginActionConfig
 import com.ritense.externeklanttaak.model.impl.ExterneKlanttaakV1x1x0
 import com.ritense.externeklanttaak.service.UtilityService
-import com.ritense.externeklanttaak.service.impl.UtilService
+import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
 import org.camunda.bpm.engine.delegate.DelegateTask
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction1
@@ -41,7 +41,7 @@ enum class KlanttaakVersion(
     fun create(config: IPluginActionConfig, delegateTask: DelegateTask, utilService: UtilityService) =
         creator.invoke(config, delegateTask, utilService)
 
-    fun complete(externeTaak: IExterneKlanttaak, utilService: UtilService) =
+    fun complete(externeTaak: IExterneKlanttaak, utilService: UtilityService) =
         completer.call(externeTaak).invoke(utilService)
 
     val version = Version.fromString(taakVersion)
