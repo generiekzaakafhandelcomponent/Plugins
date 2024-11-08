@@ -75,6 +75,8 @@ import {PLUGINS_TOKEN} from '@valtimo/plugin';
 import {TaskManagementModule} from '@valtimo/task-management';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {MailTemplatePluginModule, mailTemplatePluginSpecification} from '@valtimo/freemarker';
+import {notifyNlPluginSpecification} from "../../projects/valtimo/notify-nl/src/lib/notify-nl-plugin.specification";
+import {NotifyNlPluginModule} from "../../projects/valtimo/notify-nl/src/lib/notify-nl-plugin-module";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -95,6 +97,7 @@ export function tabsFactory() {
     BerkelybridgeTextgeneratorPluginModule,
     MailTemplatePluginModule,
     PublictaskPluginModule,
+    NotifyNlPluginModule,
     SlackPluginModule,
     SmtpMailPluginModule,
     SpotlerPluginModule,
@@ -153,6 +156,7 @@ export function tabsFactory() {
       berkelybridgeTextgeneratorPluginSpecification,
       mailTemplatePluginSpecification,
       publictaskPluginSpecification,
+      notifyNlPluginSpecification,
       slackPluginSpecification,
       smtpmailPluginSpecification,
       spotlerPluginSpecification,
