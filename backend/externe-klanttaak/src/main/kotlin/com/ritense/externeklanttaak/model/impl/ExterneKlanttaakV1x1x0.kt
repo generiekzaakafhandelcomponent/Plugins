@@ -18,8 +18,11 @@ package com.ritense.externeklanttaak.model.impl
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.ritense.externeklanttaak.service.UtilityService
+import com.ritense.externeklanttaak.domain.DataBindingConfig
+import com.ritense.externeklanttaak.domain.FinalizerProcessVariables.EXTERNE_KLANTTAAK_OBJECT_URL
+import com.ritense.externeklanttaak.domain.SpecVersion
 import com.ritense.externeklanttaak.model.ExterneTaakUrl
+import com.ritense.externeklanttaak.model.FormulierSoort
 import com.ritense.externeklanttaak.model.IExterneKlanttaak
 import com.ritense.externeklanttaak.model.IPluginActionConfig
 import com.ritense.externeklanttaak.model.OgoneBetaling
@@ -27,6 +30,8 @@ import com.ritense.externeklanttaak.model.PortaalFormulier
 import com.ritense.externeklanttaak.model.TaakFormulier
 import com.ritense.externeklanttaak.model.TaakIdentificatie
 import com.ritense.externeklanttaak.model.TaakKoppeling
+import com.ritense.externeklanttaak.model.TaakKoppelingRegistratie
+import com.ritense.externeklanttaak.model.TaakReceiver
 import com.ritense.externeklanttaak.model.TaakReceiver.OTHER
 import com.ritense.externeklanttaak.model.TaakReceiver.ZAAK_INITIATOR
 import com.ritense.externeklanttaak.model.TaakSoort
@@ -37,6 +42,7 @@ import com.ritense.externeklanttaak.model.TaakStatus
 import com.ritense.externeklanttaak.model.TaakStatus.AFGEROND
 import com.ritense.externeklanttaak.model.TaakStatus.OPEN
 import com.ritense.externeklanttaak.model.TaakStatus.VERWERKT
+import com.ritense.externeklanttaak.service.UtilityService
 import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -63,15 +69,37 @@ data class ExterneKlanttaakV1x1x0(
         private const val DEFAULT_EIGENAAR = "GZAC"
         private val logger = KotlinLogging.logger {}
 
-        fun complete(externeKlanttaak: IExterneKlanttaak): (DelegateExecution, UtilityService) -> IExterneKlanttaak? =
-            { execution, utilService ->
+        fun complete(externeKlanttaak: IExterneKlanttaak): (IPluginActionConfig, DelegateExecution, UtilityService) -> IExterneKlanttaak? =
+            { config, execution, utilService ->
                 require(externeKlanttaak is ExterneKlanttaakV1x1x0)
+                require(config is CompleteTaakActionV1x1x0)
                 require(utilService is DefaultUtilityService)
                 when (externeKlanttaak.status == AFGEROND) {
                     true -> {
-                        utilService.handleFormulierTaakSubmission()
+                        if (externeKlanttaak.soort == PORTAALFORMULIER) {
+                            val verzondenData = requireNotNull(externeKlanttaak.portaalformulier?.verzondenData) {
+                                "Property [portaalformulier] is required when [taakSoort] is ${externeKlanttaak.soort}"
+                            }
+                            if (config.koppelDocumenten) {
+                                utilService.linkDocumentsToZaak(
+                                    documentPathsPath = config.documentPadenPad,
+                                    verzondenData = verzondenData,
+                                    delegateExecution = execution,
+                                )
+                            }
+
+                            if (config.storeSubmission) {
+                                utilService.handleFormulierTaakSubmission(
+                                    submission = verzondenData,
+                                    submissionMapping = config.verzondenDataMapping,
+                                    verwerkerTaakId = externeKlanttaak.verwerkerTaakId,
+                                    delegateExecution = execution,
+                                )
+                            }
+                        }
                         externeKlanttaak.copy(status = VERWERKT)
                     }
+
                     false -> {
                         logger.debug { "Task not completed due to unmatched criteria." }
                         null
@@ -157,3 +185,57 @@ data class ExterneKlanttaakV1x1x0(
             }
     }
 }
+
+@SpecVersion(min = "1.1.0")
+data class CreateTaakActionV1x1x0(
+    override val resultingKlanttaakObjectUrlVariable: String? = null,
+    override val klanttaakObjectUrl: String? = null,
+    val taakTitel: String? = null,
+    val taakSoort: TaakSoort,
+    val taakReceiver: TaakReceiver,
+    val url: String? = null,
+    val portaalformulierSoort: FormulierSoort? = null,
+    val portaalformulierValue: String? = null,
+    val portaalformulierData: List<DataBindingConfig> = emptyList(),
+    val ogoneBedrag: String? = null,
+    val ogoneBetaalkenmerk: String? = null,
+    val ogonePspid: String? = null,
+    val identificationKey: String? = null,
+    val identificationValue: String? = null,
+    val verloopdatum: String? = null,
+    val koppelingRegistratie: TaakKoppelingRegistratie? = null,
+    val koppelingUuid: String? = null,
+) : IPluginActionConfig {
+    init {
+        if (taakReceiver == OTHER) {
+            requireNotNull(identificationKey)
+            requireNotNull(identificationValue)
+        }
+        when (taakSoort) {
+            URL -> {
+                requireNotNull(url)
+            }
+
+            OGONEBETALING -> {
+                requireNotNull(ogoneBedrag)
+                requireNotNull(ogoneBetaalkenmerk)
+                requireNotNull(ogonePspid)
+            }
+
+            PORTAALFORMULIER -> {
+                requireNotNull(portaalformulierSoort)
+                requireNotNull(portaalformulierValue)
+            }
+        }
+    }
+}
+
+@SpecVersion(min = "1.1.0")
+data class CompleteTaakActionV1x1x0(
+    override val resultingKlanttaakObjectUrlVariable: String? = null,
+    override val klanttaakObjectUrl: String = "pv:$EXTERNE_KLANTTAAK_OBJECT_URL",
+    val storeSubmission: Boolean,
+    val verzondenDataMapping: List<DataBindingConfig> = emptyList(),
+    val koppelDocumenten: Boolean,
+    val documentPadenPad: String? = "/documenten",
+) : IPluginActionConfig

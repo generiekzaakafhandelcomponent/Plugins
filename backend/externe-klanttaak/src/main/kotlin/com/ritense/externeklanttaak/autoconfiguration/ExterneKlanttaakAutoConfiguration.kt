@@ -16,16 +16,18 @@
 
 package com.ritense.externeklanttaak.autoconfiguration
 
-import com.ritense.externeklanttaak.service.UtilityService
 import com.ritense.externeklanttaak.listener.ExterneKlanttaakEventListener
 import com.ritense.externeklanttaak.plugin.ExterneKlanttaakPluginFactory
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
+import com.ritense.externeklanttaak.service.UtilityService
 import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
 import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
+import com.ritense.valtimo.service.CamundaProcessService
 import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
+import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.link.ZaakInstanceLinkService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -39,12 +41,12 @@ class ExterneKlanttaakAutoConfiguration {
     fun utilService(
         pluginService: PluginService,
         valueResolverService: ValueResolverService,
-        zaakInstanceLinkService: ZaakInstanceLinkService,
+        zaakUrlProvider: ZaakUrlProvider,
     ): UtilityService {
         return DefaultUtilityService(
             pluginService,
             valueResolverService,
-            zaakInstanceLinkService,
+            zaakUrlProvider,
         )
     }
 
@@ -83,12 +85,18 @@ class ExterneKlanttaakAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(ExterneKlanttaakEventListener::class)
     fun externeKlanttaakEventListener(
-        externeKlanttaakService: ExterneKlanttaakService,
-        utilService: UtilityService,
+        pluginService: PluginService,
+        objectManagementService: ObjectManagementService,
+        taskService: CamundaTaskService,
+        processDocumentService: ProcessDocumentService,
+        processService: CamundaProcessService,
     ): ExterneKlanttaakEventListener {
         return ExterneKlanttaakEventListener(
-            externeKlanttaakService,
-            utilService,
+            objectManagementService,
+            pluginService,
+            taskService,
+            processDocumentService,
+            processService,
         )
     }
 }

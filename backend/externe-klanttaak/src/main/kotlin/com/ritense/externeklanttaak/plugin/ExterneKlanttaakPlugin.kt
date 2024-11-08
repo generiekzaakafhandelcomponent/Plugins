@@ -16,8 +16,8 @@
 
 package com.ritense.externeklanttaak.plugin
 
-import com.ritense.externeklanttaak.model.IPluginActionConfig
 import com.ritense.externeklanttaak.domain.KlanttaakVersion
+import com.ritense.externeklanttaak.model.IPluginActionConfig
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
 import com.ritense.notificatiesapi.NotificatiesApiPlugin
 import com.ritense.plugin.annotation.Plugin
@@ -65,10 +65,10 @@ class ExterneKlanttaakPlugin(
         }
         withLoggingContext(DelegateTask::class.java.canonicalName to delegateTask.id) {
             externeKlanttaakService.createExterneKlanttaak(
+                config = config,
                 klanttaakVersion = klanttaakVersion,
                 objectManagementId = objectManagementConfigurationId,
                 delegateTask = delegateTask,
-                config = config,
             )
         }
     }
@@ -79,11 +79,18 @@ class ExterneKlanttaakPlugin(
         description = "Complete portal task and update status on Objects Api",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-    fun completeExterneKlanttaak(execution: DelegateExecution) {
+    fun completeExterneKlanttaak(
+        execution: DelegateExecution,
+        @PluginActionProperty config: IPluginActionConfig,
+    ) {
+        require(klanttaakVersion supports config::class) {
+            "Externe Klanttaak Plugin version [${klanttaakVersion.version}] does not support the invoked Plugin Action."
+        }
         withLoggingContext(DelegateExecution::class.java.canonicalName to execution.id) {
             externeKlanttaakService.completeExterneKlanttaak(
-                objectManagementId = objectManagementConfigurationId,
+                config = config,
                 klanttaakVersion = klanttaakVersion,
+                objectManagementId = objectManagementConfigurationId,
                 execution = execution,
             )
         }

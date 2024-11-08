@@ -19,25 +19,31 @@ package com.ritense.externeklanttaak.service.impl
 import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.ritense.document.domain.patch.JsonPatchService
 import com.ritense.externeklanttaak.domain.DataBindingConfig
-import com.ritense.externeklanttaak.service.UtilityService
 import com.ritense.externeklanttaak.model.TaakIdentificatie
 import com.ritense.externeklanttaak.model.TaakIdentificatie.Companion.TYPE_BSN
 import com.ritense.externeklanttaak.model.TaakIdentificatie.Companion.TYPE_KVK
+import com.ritense.externeklanttaak.service.UtilityService
+import com.ritense.notificatiesapi.exception.NotificatiesNotificationEventException
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.contract.json.patch.JsonPatchBuilder
 import com.ritense.valueresolver.ValueResolverService
+import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
 import com.ritense.zakenapi.domain.rol.RolNatuurlijkPersoon
 import com.ritense.zakenapi.domain.rol.RolNietNatuurlijkPersoon
 import com.ritense.zakenapi.domain.rol.RolType
-import com.ritense.zakenapi.link.ZaakInstanceLinkService
 import mu.KLogger
 import mu.KotlinLogging
+import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask
+import java.net.MalformedURLException
+import java.net.URI
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -47,7 +53,7 @@ import java.util.UUID
 class DefaultUtilityService(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
-    private val zaakInstanceLinkService: ZaakInstanceLinkService,
+    private val getZaakUrl: ZaakUrlProvider,
 ) : UtilityService {
     internal fun stringAsInstantOrNull(input: String?): Instant? {
         val commonGzacDateTimeFormats = listOf(
@@ -72,14 +78,10 @@ class DefaultUtilityService(
     }
 
     internal fun getZaakinitiatorByDocumentId(businessKey: String): TaakIdentificatie {
-        val documentId = UUID.fromString(businessKey)
-        val zaakUrl = zaakInstanceLinkService.getByDocumentId(documentId).zaakInstanceUrl
-        val zakenPlugin = requireNotNull(
-            pluginService.createInstance(ZakenApiPlugin::class.java, ZakenApiPlugin.findConfigurationByUrl(zaakUrl))
-        ) { "No plugin configuration was found for zaak with URL $zaakUrl" }
+        val (zaakUrl, zakenApiPlugin) = getZaakUrlAndPluginByDocumentId(businessKey)
 
         val initiator = requireNotNull(
-            zakenPlugin.getZaakRollen(zaakUrl, RolType.INITIATOR).firstOrNull()
+            zakenApiPlugin.getZaakRollen(zaakUrl, RolType.INITIATOR).firstOrNull()
         ) { "No initiator role found for zaak with URL $zaakUrl" }
 
         return requireNotNull(
@@ -103,6 +105,15 @@ class DefaultUtilityService(
                 }
             }
         ) { "Could not map initiator identificatie (value=${initiator.betrokkeneIdentificatie}) for zaak with URL $zaakUrl to TaakIdentificatie" }
+    }
+
+    private fun getZaakUrlAndPluginByDocumentId(businessKey: String): Pair<URI, ZakenApiPlugin> {
+        val documentId = UUID.fromString(businessKey)
+        val zaakUrl = getZaakUrl.getZaakUrl(documentId)
+        val zakenApiPlugin = requireNotNull(
+            pluginService.createInstance(ZakenApiPlugin::class.java, ZakenApiPlugin.findConfigurationByUrl(zaakUrl))
+        ) { "No plugin configuration was found for zaak with URL $zaakUrl" }
+        return Pair(zaakUrl, zakenApiPlugin)
     }
 
     internal fun resolveFormulierTaakData(
@@ -136,9 +147,107 @@ class DefaultUtilityService(
         return objectMapper.convertValue(taakData)
     }
 
-    internal fun handleFormulierTaakSubmission() {}
+    internal fun handleFormulierTaakSubmission(
+        submission: Map<String, Any>,
+        submissionMapping: List<DataBindingConfig>,
+        verwerkerTaakId: String,
+        delegateExecution: DelegateExecution,
+    ) {
+        logger.debug {
+            "Handling Form Submission for Externe Klanttaak with [verwerkerTaakId]: $verwerkerTaakId"
+        }
+        if (submission.isNotEmpty()) {
+            val processInstanceId = delegateExecution.processInstanceId
+            val taakObjectData = objectMapper.valueToTree<JsonNode>(submission)
+            val resolvedValues = getResolvedValues(submissionMapping, taakObjectData)
+
+            if (resolvedValues.isNotEmpty()) {
+                valueResolverService.handleValues(
+                    processInstanceId = processInstanceId,
+                    variableScope = delegateExecution,
+                    values = resolvedValues,
+                )
+            }
+        } else {
+            logger.warn { "No data found in taakobject for task with id '$verwerkerTaakId'" }
+        }
+    }
+
+    internal fun linkDocumentsToZaak(
+        documentPathsPath: String? = "/documenten",
+        verzondenData: Map<String, Any>,
+        delegateExecution: DelegateExecution,
+    ) {
+        val documenten = getDocumentUrisFromSubmission(
+            documentPathsPath = documentPathsPath,
+            data = verzondenData,
+        )
+        if (documenten.isNotEmpty()) {
+            val (_, zakenApiPlugin) = getZaakUrlAndPluginByDocumentId(delegateExecution.processBusinessKey)
+            documenten.forEach { documentUri ->
+                zakenApiPlugin.linkDocumentToZaak(
+                    execution = delegateExecution,
+                    documentUrl = documentUri,
+                    titel = DEFAULT_ZAAKDOCUMENT_TITLE,
+                    beschrijving = DEFAULT_ZAAKDOCUMENT_OMSCHRIJVING
+                )
+            }
+        }
+    }
+
+    internal fun getDocumentUrisFromSubmission(
+        documentPathsPath: String? = "/documenten",
+        data: Map<String, Any>
+    ): List<String> {
+        val dataNode: ObjectNode = objectMapper.valueToTree(data)
+        val documentPathsNode = dataNode.at(documentPathsPath)
+        if (documentPathsNode.isMissingNode || documentPathsNode.isNull) {
+            return emptyList()
+        }
+        if (!documentPathsNode.isArray) {
+            throw NotificatiesNotificationEventException(
+                "Could not retrieve document Urls.'/documenten' is not an array"
+            )
+        }
+        val documentenUris = mutableListOf<String>()
+        for (documentPathNode in documentPathsNode) {
+            val documentUrlNode = dataNode.at(documentPathNode.textValue())
+            if (!documentUrlNode.isMissingNode && !documentUrlNode.isNull) {
+                try {
+                    if (documentUrlNode.isTextual) {
+                        documentenUris.add(documentUrlNode.textValue())
+                    } else if (documentUrlNode.isArray) {
+                        documentUrlNode.forEach { documentenUris.add(it.textValue()) }
+                    } else {
+                        throw NotificatiesNotificationEventException(
+                            "Could not retrieve document Urls. Found invalid URL in '/documenten'. ${documentUrlNode.toPrettyString()}"
+                        )
+                    }
+                } catch (e: MalformedURLException) {
+                    throw NotificatiesNotificationEventException(
+                        "Could not retrieve document Urls. Malformed URL in: '/documenten'"
+                    )
+                }
+            }
+        }
+        return documentenUris
+    }
+
+    private fun getResolvedValues(receiveData: List<DataBindingConfig>, data: JsonNode): Map<String, Any> {
+        return receiveData.associateBy({ it.key }, { getValue(data, it.value) })
+    }
+
+    private fun getValue(data: JsonNode, path: String): Any {
+        val valueNode = data.at(JsonPointer.valueOf(path))
+        if (valueNode.isMissingNode) {
+            throw RuntimeException("Failed to find path '$path' in data: \n${data.toPrettyString()}")
+        }
+        return objectMapper.treeToValue(valueNode)
+    }
 
     companion object {
+        private const val DEFAULT_ZAAKDOCUMENT_TITLE = "Externe Klanttaak Document"
+        private const val DEFAULT_ZAAKDOCUMENT_OMSCHRIJVING = "Een document die in een Externe Klanttaak geüpload was"
         private val logger: KLogger = KotlinLogging.logger {}
         private val objectMapper: ObjectMapper = MapperSingleton.get()
     }

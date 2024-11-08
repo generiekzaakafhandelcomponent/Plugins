@@ -27,9 +27,9 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KFunction1
 
 enum class KlanttaakVersion(
-    @JsonValue val taakVersion: String,
+    @JsonValue private val taakVersion: String,
     private val creator: (IPluginActionConfig, DelegateTask, UtilityService) -> IExterneKlanttaak,
-    private val completer: KFunction1<ExterneKlanttaakV1x1x0, (DelegateExecution, UtilityService) -> IExterneKlanttaak?>
+    private val completer: KFunction1<ExterneKlanttaakV1x1x0, (IPluginActionConfig, DelegateExecution, UtilityService) -> IExterneKlanttaak?>
 ) {
     V1_1_0(
         taakVersion = "1.1.0",
@@ -41,8 +41,8 @@ enum class KlanttaakVersion(
     fun create(config: IPluginActionConfig, delegateTask: DelegateTask, utilService: UtilityService) =
         creator.invoke(config, delegateTask, utilService)
 
-    fun complete(externeTaak: IExterneKlanttaak, execution: DelegateExecution, utilService: UtilityService) =
-        completer.call(externeTaak).invoke(execution, utilService)
+    fun complete(externeTaak: IExterneKlanttaak, config: IPluginActionConfig, execution: DelegateExecution, utilService: UtilityService) =
+        completer.call(externeTaak).invoke(config ,execution, utilService)
 
     val version = Version.fromString(taakVersion)
     infix fun supports(kClass: KClass<*>): Boolean = version supports kClass

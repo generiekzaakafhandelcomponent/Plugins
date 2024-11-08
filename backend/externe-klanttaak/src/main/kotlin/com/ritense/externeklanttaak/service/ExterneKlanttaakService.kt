@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
-import com.ritense.externeklanttaak.domain.FinalizerProcessVariables.EXTERNE_KLANTTAAK_OBJECT_URL
 import com.ritense.externeklanttaak.domain.KlanttaakVersion
 import com.ritense.externeklanttaak.model.IExterneKlanttaak
 import com.ritense.externeklanttaak.model.IPluginActionConfig
@@ -89,21 +88,35 @@ open class ExterneKlanttaakService(
 
     internal fun completeExterneKlanttaak(
         klanttaakVersion: KlanttaakVersion,
+        config: IPluginActionConfig,
         objectManagementId: UUID,
         execution: DelegateExecution
     ) {
         logger.debug { "Completing Externe Klanttaak" }
+        val resolvedConfig =
+            resolvePluginActionProperties(
+                config = config,
+                execution = execution
+            )
+
         val objectManagement = objectManagementService.getById(objectManagementId)
             ?: throw IllegalStateException("Could not find Object Management Configuration by ID $objectManagementId")
-        val klanttaakObjectUrl = execution.getVariable(EXTERNE_KLANTTAAK_OBJECT_URL.value).toString()
-        val externeKlanttaakObject = objectManagement.getObjectByUrl(klanttaakObjectUrl)
+
+        val externeKlanttaakObject =
+            objectManagement.getObjectByUrl(
+                config.klanttaakObjectUrl
+                    ?: throw RuntimeException("Failed resolve [klanttaakObjectUrl] from [${config.klanttaakObjectUrl}]")
+            )
+
         val externeKlanttaak: IExterneKlanttaak = objectMapper.convertValue(
             externeKlanttaakObject.record.data
                 ?: throw RuntimeException("Failed to handle empty object as Externe Klanttaak")
         )
+
         val completedTaak =
             klanttaakVersion.complete(
                 externeTaak = externeKlanttaak,
+                config = resolvedConfig,
                 execution = execution,
                 utilService = utilService
             )
