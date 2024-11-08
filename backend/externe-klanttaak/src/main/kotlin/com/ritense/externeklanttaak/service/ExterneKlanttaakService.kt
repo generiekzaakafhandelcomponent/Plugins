@@ -104,8 +104,8 @@ open class ExterneKlanttaakService(
 
         val externeKlanttaakObject =
             objectManagement.getObjectByUrl(
-                config.klanttaakObjectUrl
-                    ?: throw RuntimeException("Failed resolve [klanttaakObjectUrl] from [${config.klanttaakObjectUrl}]")
+                resolvedConfig.klanttaakObjectUrl
+                    ?: throw RuntimeException("Failed get Externe Klanttaak Object from [${resolvedConfig.klanttaakObjectUrl}]")
             )
 
         val externeKlanttaak: IExterneKlanttaak = objectMapper.convertValue(

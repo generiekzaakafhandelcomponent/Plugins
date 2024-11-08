@@ -88,7 +88,7 @@ data class ExterneKlanttaakV1x1x0(
                                 )
                             }
 
-                            if (config.storeSubmission) {
+                            if (config.bewaarIngediendeGegevens) {
                                 utilService.handleFormulierTaakSubmission(
                                     submission = verzondenData,
                                     submissionMapping = config.verzondenDataMapping,
@@ -234,7 +234,7 @@ data class CreateTaakActionV1x1x0(
 data class CompleteTaakActionV1x1x0(
     override val resultingKlanttaakObjectUrlVariable: String? = null,
     override val klanttaakObjectUrl: String = "pv:$EXTERNE_KLANTTAAK_OBJECT_URL",
-    val storeSubmission: Boolean,
+    val bewaarIngediendeGegevens: Boolean,
     val verzondenDataMapping: List<DataBindingConfig> = emptyList(),
     val koppelDocumenten: Boolean,
     val documentPadenPad: String? = "/documenten",

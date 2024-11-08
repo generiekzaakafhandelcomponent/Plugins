@@ -130,12 +130,14 @@ internal class ExterneKlanttaakPluginTest {
     companion object {
         @SpecVersion(min = "0.1.0", max = "1.0.0")
         class OldUnsupportedAction(
-            override val resultingKlanttaakObjectUrlVariable: String? = null
-        ): IPluginActionConfig
+            override val resultingKlanttaakObjectUrlVariable: String? = null,
+            override val klanttaakObjectUrl: String? = null,
+        ) : IPluginActionConfig
 
         @SpecVersion("2.0.0")
         class FutureUnsupportedAction(
-            override val resultingKlanttaakObjectUrlVariable: String? = null
-        ): IPluginActionConfig
+            override val resultingKlanttaakObjectUrlVariable: String? = null,
+            override val klanttaakObjectUrl: String? = null,
+        ) : IPluginActionConfig
     }
 }

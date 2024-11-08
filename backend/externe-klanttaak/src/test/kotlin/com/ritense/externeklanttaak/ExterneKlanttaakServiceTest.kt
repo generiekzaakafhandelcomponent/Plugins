@@ -22,6 +22,7 @@ import com.ritense.externeklanttaak.domain.KlanttaakVersion
 import com.ritense.externeklanttaak.model.TaakReceiver.OTHER
 import com.ritense.externeklanttaak.model.TaakSoort.URL
 import com.ritense.externeklanttaak.model.TaakStatus
+import com.ritense.externeklanttaak.model.impl.CompleteTaakActionV1x1x0
 import com.ritense.externeklanttaak.model.impl.CreateTaakActionV1x1x0
 import com.ritense.externeklanttaak.model.impl.ExterneKlanttaakV1x1x0
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
@@ -83,6 +84,58 @@ internal class ExterneKlanttaakServiceTest {
                     "data" : {
                       "titel" : "Fake Task",
                       "status" : "open",
+                      "soort" : "url",
+                      "url" : "https://example.com/",
+                      "identificatie" : {
+                        "type" : "bsn",
+                        "value" : "999990755"
+                      },
+                      "verloopdatum" : "2024-12-24",
+                      "eigenaar" : "GZAC",
+                      "verwerker_taak_id" : "fake-task-id"
+                    },
+                    "startAt" : "2024-11-07"
+                  }
+                }
+            """.trimIndent()
+    )
+    private val afgerondeTaakObject: JsonNode = objectMapper.readTree(
+        """
+                {
+                  "uuid": "${UUID.randomUUID()}",
+                  "url": "$objectUrl",
+                  "type" : "$objecttypeUrl",
+                  "record" : {
+                    "typeVersion" : 1,
+                    "data" : {
+                      "titel" : "Fake Task",
+                      "status" : "afgerond",
+                      "soort" : "url",
+                      "url" : "https://example.com/",
+                      "identificatie" : {
+                        "type" : "bsn",
+                        "value" : "999990755"
+                      },
+                      "verloopdatum" : "2024-12-24",
+                      "eigenaar" : "GZAC",
+                      "verwerker_taak_id" : "fake-task-id"
+                    },
+                    "startAt" : "2024-11-07"
+                  }
+                }
+            """.trimIndent()
+    )
+    private val verwerkteTaakObject: JsonNode = objectMapper.readTree(
+        """
+                {
+                  "uuid": "${UUID.randomUUID()}",
+                  "url": "$objectUrl",
+                  "type" : "$objecttypeUrl",
+                  "record" : {
+                    "typeVersion" : 1,
+                    "data" : {
+                      "titel" : "Fake Task",
+                      "status" : "verwerkt",
                       "soort" : "url",
                       "url" : "https://example.com/",
                       "identificatie" : {
@@ -225,7 +278,8 @@ internal class ExterneKlanttaakServiceTest {
             .thenReturn(objecttypenApiPlugin)
         whenever(objecttypenApiPlugin.getObjectTypeUrlById(any()))
             .thenReturn(URI.create("https://example.com/objecttypen/api/v1/${objectManagement.objecttypeId}"))
-        whenever(objectenApiPlugin.createObject(any())).thenReturn(klanttaakWrapped)
+        val requestCaptor: KArgumentCaptor<ObjectRequest> = argumentCaptor()
+        whenever(objectenApiPlugin.createObject(requestCaptor.capture())).thenReturn(klanttaakWrapped)
         whenever(
             valueResolverService.resolveValues(
                 any(),
@@ -243,8 +297,7 @@ internal class ExterneKlanttaakServiceTest {
         )
 
         // then
-        val requestCaptor: KArgumentCaptor<ObjectRequest> = argumentCaptor()
-        verify(objectenApiPlugin, times(1)).createObject(requestCaptor.capture())
+        verify(objectenApiPlugin, times(1)).createObject(any())
 
         val createdKlanttaak: ExterneKlanttaakV1x1x0 = objectMapper.treeToValue(requestCaptor.firstValue.record.data!!)
         assertEquals(taskFake.name, createdKlanttaak.titel)
@@ -267,14 +320,20 @@ internal class ExterneKlanttaakServiceTest {
             )
 
         val klanttaakVersion = KlanttaakVersion.V1_1_0
+        val config = CompleteTaakActionV1x1x0(
+            koppelDocumenten = true,
+            bewaarIngediendeGegevens = true,
+        )
         val executionFake = DelegateExecutionFake()
+            .withProcessInstanceId("processInstanceId")
             .withVariables(
                 mapOf(
                     "verwerkerTaakId" to "taak-id",
                     "externeKlanttaakObjectUrl" to objectUrl
                 )
             )
-        val klanttaakWrapped: ObjectWrapper = objectMapper.treeToValue(openTaakObject)
+        val afgerondeKlanttaakWrapped: ObjectWrapper = objectMapper.treeToValue(afgerondeTaakObject)
+        val verwerkteKlanttaakWrapped: ObjectWrapper = objectMapper.treeToValue(afgerondeTaakObject)
 
         whenever(objectManagementService.getById(objectManagement.id))
             .thenReturn(objectManagement)
@@ -282,8 +341,14 @@ internal class ExterneKlanttaakServiceTest {
             .thenReturn(objectenApiPlugin)
         whenever(pluginService.createInstance<ObjecttypenApiPlugin>(objectManagement.objecttypenApiPluginConfigurationId))
             .thenReturn(objecttypenApiPlugin)
-        whenever(objectenApiPlugin.getObject(any()))
-            .thenReturn(klanttaakWrapped)
+
+        val uriCaptor: KArgumentCaptor<URI> = argumentCaptor()
+        val requestCaptor: KArgumentCaptor<ObjectRequest> = argumentCaptor()
+
+        whenever(objectenApiPlugin.getObject(uriCaptor.capture()))
+            .thenReturn(afgerondeKlanttaakWrapped)
+        whenever(objectenApiPlugin.objectPatch(any(), requestCaptor.capture()))
+            .thenReturn(verwerkteKlanttaakWrapped)
         whenever(objecttypenApiPlugin.getObjectTypeUrlById(any()))
             .thenReturn(URI(objecttypeUrl))
         whenever(
@@ -292,20 +357,22 @@ internal class ExterneKlanttaakServiceTest {
                 any(),
                 any()
             )
-        ).thenReturn(mapOf("pv:external-url" to objecttypeUrl))
+        ).thenReturn(mapOf("pv:externeKlanttaakObjectUrl" to objectUrl))
 
         // when
         externeKlanttaakService.completeExterneKlanttaak(
             klanttaakVersion = klanttaakVersion,
             objectManagementId = objectManagement.id,
+            config = config,
             execution = executionFake,
         )
 
         // then
-        val requestCaptor: KArgumentCaptor<ObjectRequest> = argumentCaptor()
-        verify(objectenApiPlugin, times(1)).objectPatch(any(), requestCaptor.capture())
+        verify(objectenApiPlugin, times(1)).getObject(any())
+        verify(objectenApiPlugin, times(1)).objectPatch(any(), any())
 
         val patchedKlanttaak: ExterneKlanttaakV1x1x0 = objectMapper.treeToValue(requestCaptor.firstValue.record.data!!)
+        assertEquals(objectUrl, uriCaptor.firstValue.toString())
         assertEquals("https://example.com/", patchedKlanttaak.url!!.url)
         assertEquals(TaakStatus.VERWERKT, patchedKlanttaak.status)
     }
