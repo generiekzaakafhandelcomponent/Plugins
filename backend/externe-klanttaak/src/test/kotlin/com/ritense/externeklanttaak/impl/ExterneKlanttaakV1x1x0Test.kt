@@ -85,9 +85,9 @@ class ExterneKlanttaakV1x1x0Test {
         //then
         assertTrue(klanttaak is ExterneKlanttaakV1x1x0)
         assertEquals(delegateTask.id, klanttaak.verwerkerTaakId)
-        assertEquals(TaakSoort.URL, klanttaak.soort)
+        assertEquals(URL, klanttaak.soort)
         assertEquals(delegateTask.name, klanttaak.titel)
-        assertEquals(TaakIdentificatie.TYPE_BSN, klanttaak.identificatie.type)
+        assertEquals(TYPE_BSN, klanttaak.identificatie.type)
         assertEquals("000000000", klanttaak.identificatie.value)
     }
 
