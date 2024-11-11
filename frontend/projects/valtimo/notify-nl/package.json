@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo/notify-nl",
+  "name": "@valtimo-plugins/notify-nl",
   "license": "EUPL-1.2",
   "version": "0.1.0",
   "peerDependencies": {
