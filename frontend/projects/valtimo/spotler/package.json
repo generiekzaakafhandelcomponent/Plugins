@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo/spotler",
+  "name": "@valtimo-plugins/spotler",
   "license": "EUPL-1.2",
   "version": "1.0.0",
   "scripts": {

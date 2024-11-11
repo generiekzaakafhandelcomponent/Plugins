@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo/suwinet",
+  "name": "@valtimo-plugins/suwinet",
   "license": "EUPL-1.2",
   "version": "1.0.0",
   "scripts": {
@@ -16,3 +16,4 @@
     "ng-packagr": "^17.2.0"
   }
 }
+

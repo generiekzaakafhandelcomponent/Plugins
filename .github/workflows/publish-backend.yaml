@@ -6,7 +6,6 @@ on:
       - 'backend/**'
     branches:
       - main
-      - feature/github-actions-workflows
 
 jobs:
   # -------------------------------------------------------------

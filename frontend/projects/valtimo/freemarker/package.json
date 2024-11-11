@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo/freemarker",
+  "name": "@valtimo-plugins/freemarker",
   "license": "EUPL-1.2",
   "version": "5.0.0",
   "peerDependencies": {

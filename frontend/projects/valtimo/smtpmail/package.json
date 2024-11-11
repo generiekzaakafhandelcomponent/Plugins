@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo/smtpmail",
+  "name": "@valtimo-plugins/smtpmail",
   "license": "EUPL-1.2",
   "version": "1.0.0",
   "peerDependencies": {

@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo/publictask",
+  "name": "@valtimo-plugins/publictask",
   "license": "EUPL-1.2",
   "version": "1.0.0",
   "peerDependencies": {

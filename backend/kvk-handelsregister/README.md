@@ -1,4 +1,4 @@
-# Suwinet plugin
+# KVK Handelsregister plugin
 
 For retrieving data from Kvk handelsregister (https://developers.kvk.nl/documentation).
 

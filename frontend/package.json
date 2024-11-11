@@ -13,7 +13,6 @@
     "buildDev": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --configuration=dev --output-path=deployment/dist",
     "test": "ng test",
     "libs-build-all": "rimraf dist && npm-run-all libs:build:*",
-    "libs-increment-all": "node ./scripts/libs.increment.all.js",
     "libs-publish-all": "node ./scripts/libs.publish.all.js",
     "libs:build:alfresco-auth": "ng build @valtimo/alfresco-auth",
     "libs:build:amsterdam-emailapi": "ng build @valtimo/amsterdam-emailapi",

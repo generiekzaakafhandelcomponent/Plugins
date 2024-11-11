@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo/berkeylybridge",
+  "name": "@valtimo-plugins/berkeylybridge",
   "license": "EUPL-1.2",
   "version": "1.0.0",
   "scripts": {

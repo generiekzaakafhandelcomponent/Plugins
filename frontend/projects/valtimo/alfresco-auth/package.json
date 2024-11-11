@@ -1,5 +1,5 @@
 {
-  "name": "@valtimo/alfresco-auth",
+  "name": "@valtimo-plugins/alfresco-auth",
   "license": "EUPL-1.2",
   "version": "1.0.0",
   "scripts": {
