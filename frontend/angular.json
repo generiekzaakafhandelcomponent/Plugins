@@ -146,7 +146,7 @@
         }
       }
     },
-    "@valtimo/alfresco-auth": {
+    "@valtimo-plugins/alfresco-auth": {
       "projectType": "library",
       "root": "projects/valtimo/alfresco-auth",
       "sourceRoot": "projects/valtimo/alfresco-auth/src",
@@ -187,7 +187,7 @@
         }
       }
     },
-    "@valtimo/amsterdam-emailapi": {
+    "@valtimo-plugins/amsterdam-emailapi": {
       "projectType": "library",
       "root": "projects/valtimo/amsterdam-emailapi",
       "sourceRoot": "projects/valtimo/amsterdam-emailapi/src",
@@ -228,7 +228,7 @@
         }
       }
     },
-    "@valtimo/berkelybridge": {
+    "@valtimo-plugins/berkelybridge": {
       "projectType": "library",
       "root": "projects/valtimo/berkelybridge",
       "sourceRoot": "projects/valtimo/berkelybridge/src",
@@ -310,7 +310,7 @@
         }
       }
     },
-    "@valtimo/freemarker": {
+    "@valtimo-plugins/freemarker": {
       "projectType": "library",
       "root": "projects/valtimo/freemarker",
       "sourceRoot": "projects/valtimo/freemarker/src",
@@ -351,7 +351,7 @@
         }
       }
     },
-    "@valtimo/publictask": {
+    "@valtimo-plugins/publictask": {
       "projectType": "library",
       "root": "projects/valtimo/publictask",
       "sourceRoot": "projects/valtimo/publictask/src",
@@ -392,7 +392,7 @@
         }
       }
     },
-    "@valtimo/slack": {
+    "@valtimo-plugins/slack": {
       "projectType": "library",
       "root": "projects/valtimo/slack",
       "sourceRoot": "projects/valtimo/slack/src",
@@ -433,7 +433,7 @@
         }
       }
     },
-    "@valtimo/smtpmail": {
+    "@valtimo-plugins/smtpmail": {
       "projectType": "library",
       "root": "projects/valtimo/smtpmail",
       "sourceRoot": "projects/valtimo/smtpmail/src",
@@ -474,7 +474,7 @@
         }
       }
     },
-    "@valtimo/spotler": {
+    "@valtimo-plugins/spotler": {
       "projectType": "library",
       "root": "projects/valtimo/spotler",
       "sourceRoot": "projects/valtimo/spotler/src",
@@ -515,7 +515,7 @@
         }
       }
     },
-    "@valtimo/suwinet": {
+    "@valtimo-plugins/suwinet": {
       "projectType": "library",
       "root": "projects/valtimo/suwinet",
       "sourceRoot": "projects/valtimo/suwinet/src",
