@@ -20,7 +20,6 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
 import com.ritense.authorization.annotation.RunWithoutAuthorization
 import com.ritense.externeklanttaak.domain.FinalizerProcessVariables.EXTERNE_KLANTTAAK_OBJECT_URL
-import com.ritense.externeklanttaak.domain.FinalizerProcessVariables.VERWERKER_TAAK_ID
 import com.ritense.externeklanttaak.model.IExterneKlanttaak
 import com.ritense.externeklanttaak.plugin.ExterneKlanttaakPlugin
 import com.ritense.notificatiesapi.event.NotificatiesApiNotificationReceivedEvent
@@ -74,7 +73,12 @@ open class ExterneKlanttaakEventListener(
         val matchedPluginConfiguration =
             pluginService
                 .findPluginConfiguration(ExterneKlanttaakPlugin::class.java) { config ->
-                    config.get("objectManagementConfigurationId").textValue().equals(objectManagement.id.toString())
+                    config
+                        .get("objectManagementConfigurationId")
+                        .textValue()
+                        .equals(
+                            objectManagement.id.toString()
+                        )
                 }
                 ?: run {
                     logger.info {

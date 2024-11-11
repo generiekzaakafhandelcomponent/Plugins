@@ -16,8 +16,13 @@
 
 package com.ritense.externeklanttaak
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.treeToValue
+import com.ritense.externeklanttaak.TestHelper.afgerondeTaakObject
+import com.ritense.externeklanttaak.TestHelper.bsn
+import com.ritense.externeklanttaak.TestHelper.externalUrl
+import com.ritense.externeklanttaak.TestHelper.objectUrl
+import com.ritense.externeklanttaak.TestHelper.objecttypeUrl
+import com.ritense.externeklanttaak.TestHelper.openTaakObject
 import com.ritense.externeklanttaak.domain.KlanttaakVersion
 import com.ritense.externeklanttaak.model.TaakReceiver.OTHER
 import com.ritense.externeklanttaak.model.TaakSoort.URL
@@ -68,89 +73,6 @@ internal class ExterneKlanttaakServiceTest {
     private lateinit var taskService: CamundaTaskService
     private lateinit var utilService: DefaultUtilityService
     private lateinit var objectManagement: ObjectManagement
-
-    private val externalUrl = "https://example.com/external-url"
-    private val bsn = "999990755"
-    private val objectUrl = "https://example.com/objecten/api/v1/object-id"
-    private val objecttypeUrl = "https://example.com/objecttypen/api/v1/object-type"
-    private val openTaakObject: JsonNode = objectMapper.readTree(
-        """
-                {
-                  "uuid": "${UUID.randomUUID()}",
-                  "url": "$objectUrl",
-                  "type" : "$objecttypeUrl",
-                  "record" : {
-                    "typeVersion" : 1,
-                    "data" : {
-                      "titel" : "Fake Task",
-                      "status" : "open",
-                      "soort" : "url",
-                      "url" : "https://example.com/",
-                      "identificatie" : {
-                        "type" : "bsn",
-                        "value" : "999990755"
-                      },
-                      "verloopdatum" : "2024-12-24",
-                      "eigenaar" : "GZAC",
-                      "verwerker_taak_id" : "fake-task-id"
-                    },
-                    "startAt" : "2024-11-07"
-                  }
-                }
-            """.trimIndent()
-    )
-    private val afgerondeTaakObject: JsonNode = objectMapper.readTree(
-        """
-                {
-                  "uuid": "${UUID.randomUUID()}",
-                  "url": "$objectUrl",
-                  "type" : "$objecttypeUrl",
-                  "record" : {
-                    "typeVersion" : 1,
-                    "data" : {
-                      "titel" : "Fake Task",
-                      "status" : "afgerond",
-                      "soort" : "url",
-                      "url" : "https://example.com/",
-                      "identificatie" : {
-                        "type" : "bsn",
-                        "value" : "999990755"
-                      },
-                      "verloopdatum" : "2024-12-24",
-                      "eigenaar" : "GZAC",
-                      "verwerker_taak_id" : "fake-task-id"
-                    },
-                    "startAt" : "2024-11-07"
-                  }
-                }
-            """.trimIndent()
-    )
-    private val verwerkteTaakObject: JsonNode = objectMapper.readTree(
-        """
-                {
-                  "uuid": "${UUID.randomUUID()}",
-                  "url": "$objectUrl",
-                  "type" : "$objecttypeUrl",
-                  "record" : {
-                    "typeVersion" : 1,
-                    "data" : {
-                      "titel" : "Fake Task",
-                      "status" : "verwerkt",
-                      "soort" : "url",
-                      "url" : "https://example.com/",
-                      "identificatie" : {
-                        "type" : "bsn",
-                        "value" : "999990755"
-                      },
-                      "verloopdatum" : "2024-12-24",
-                      "eigenaar" : "GZAC",
-                      "verwerker_taak_id" : "fake-task-id"
-                    },
-                    "startAt" : "2024-11-07"
-                  }
-                }
-            """.trimIndent()
-    )
 
     @BeforeEach
     fun init() {
