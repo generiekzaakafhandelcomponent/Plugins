@@ -269,6 +269,47 @@
         }
       }
     },
+    "@valtimo/notify-nl": {
+      "projectType": "library",
+      "root": "projects/valtimo/notify-nl",
+      "sourceRoot": "projects/valtimo/notify-nl/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo/notify-nl/tsconfig.lib.json",
+            "project": "projects/valtimo/notify-nl/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo/notify-nl/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo/notify-nl/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo/notify-nl/src/test.ts",
+            "tsConfig": "projects/valtimo/notify-nl/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo/notify-nl/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo/notify-nl/src/**/*.ts",
+              "projects/valtimo/notify-nl/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/freemarker": {
       "projectType": "library",
       "root": "projects/valtimo-plugin/freemarker",
