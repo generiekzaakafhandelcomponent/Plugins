@@ -15,5 +15,5 @@ It also includes a Business Model Process as example to filter vestigingen based
 
 The source code is split up into 2 modules:
 
-1. [Frontend](../../frontend/projects/valtimo/kvk-handelsregister)
+1. [Frontend](../../frontend/projects/valtimo-plugin/kvk-handelsregister)
 2. [Backend](./)

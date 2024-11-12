@@ -1,6 +1,6 @@
-{
+  {
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../../dist/valtimo/smtpmail",
+  "dest": "../../../dist/valtimo-plugins/amsterdam-emailapi",
   "assets": ["./assets"],
   "lib": {
     "entryFile": "src/public_api.ts"
@@ -13,8 +13,6 @@
     "moment",
     "heatmap.js-fixed",
     "@angular-devkit/build-angular",
-    "@angular/animations",
-    "@valtimo/config",
     "@angular/animations",
     "@angular/cdk",
     "@angular/common",
@@ -35,7 +33,7 @@
     "@mdi/font",
     "@ng-bootstrap/ng-bootstrap",
     "@ngx-translate/http-loader",
-    "@valtimo/account",
+    "@valtimo/account:11.1.0",
     "@valtimo/analyse",
     "@valtimo/auth0",
     "@valtimo/authority",

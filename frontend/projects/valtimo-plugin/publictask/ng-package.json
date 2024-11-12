@@ -1,18 +1,17 @@
-  {
+{
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../../dist/valtimo/amsterdam-emailapi",
+  "dest": "../../../dist/valtimo-plugins/publictask",
   "assets": ["./assets"],
   "lib": {
     "entryFile": "src/public_api.ts"
   },
   "allowedNonPeerDependencies": [
-    "ngx-toastr",
-    "@foxythemes/bootstrap-datetime-picker-bs4",
     "bpmn-js",
-    "jquery",
     "moment",
     "heatmap.js-fixed",
     "@angular-devkit/build-angular",
+    "@angular/animations",
+    "@valtimo/config",
     "@angular/animations",
     "@angular/cdk",
     "@angular/common",
@@ -31,9 +30,7 @@
     "@babel/runtime",
     "@foxythemes/bootstrap-datetime-picker-bs4",
     "@mdi/font",
-    "@ng-bootstrap/ng-bootstrap",
-    "@ngx-translate/http-loader",
-    "@valtimo/account:11.1.0",
+    "@valtimo/account",
     "@valtimo/analyse",
     "@valtimo/auth0",
     "@valtimo/authority",
