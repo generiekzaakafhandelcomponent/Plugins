@@ -16,8 +16,8 @@
 
 package com.ritense.externeklanttaak.plugin
 
-import com.ritense.externeklanttaak.domain.KlanttaakVersion
-import com.ritense.externeklanttaak.model.IPluginActionConfig
+import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
 import com.ritense.notificatiesapi.NotificatiesApiPlugin
 import com.ritense.plugin.annotation.Plugin
@@ -36,13 +36,14 @@ import java.util.UUID
     description = "Lets you create and handle Externe Klanttaak specification compliant Objects"
 )
 class ExterneKlanttaakPlugin(
-    private val externeKlanttaakService: ExterneKlanttaakService
+    private val externeKlanttaakService: ExterneKlanttaakService,
+    private val supportedExterneKlanttaakVersions: List<ExterneKlanttaakVersion>,
 ) {
     @PluginProperty(key = "objectManagementConfigurationId", secret = false)
     internal lateinit var objectManagementConfigurationId: UUID
 
     @PluginProperty(key = "klanttaakVersion", secret = false)
-    internal lateinit var klanttaakVersion: KlanttaakVersion
+    internal lateinit var externeKlanttaakVersion: ExterneKlanttaakVersion
 
     @PluginProperty(key = "notificatiesApiPluginConfiguration", secret = false)
     internal lateinit var notificatiesApiPluginConfiguration: NotificatiesApiPlugin
@@ -60,13 +61,14 @@ class ExterneKlanttaakPlugin(
         delegateTask: DelegateTask,
         @PluginActionProperty config: IPluginActionConfig,
     ) {
-        require(klanttaakVersion supports config::class) {
-            "Plugin Action [create-externeklanttaak] does not support provided Plugin [config]."
+        require(externeKlanttaakVersion in supportedExterneKlanttaakVersions)
+        require(externeKlanttaakVersion supports config::class) {
+            "Externe Klanttaak Plugin version [$externeKlanttaakVersion] does not support the invoked Plugin Action."
         }
         withLoggingContext(DelegateTask::class.java.canonicalName to delegateTask.id) {
             externeKlanttaakService.createExterneKlanttaak(
                 config = config,
-                klanttaakVersion = klanttaakVersion,
+                klanttaakVersion = externeKlanttaakVersion,
                 objectManagementId = objectManagementConfigurationId,
                 delegateTask = delegateTask,
             )
@@ -83,13 +85,14 @@ class ExterneKlanttaakPlugin(
         execution: DelegateExecution,
         @PluginActionProperty config: IPluginActionConfig,
     ) {
-        require(klanttaakVersion supports config::class) {
-            "Externe Klanttaak Plugin version [${klanttaakVersion.version}] does not support the invoked Plugin Action."
+        require(externeKlanttaakVersion in supportedExterneKlanttaakVersions)
+        require(externeKlanttaakVersion supports config::class) {
+            "Externe Klanttaak Plugin version [$externeKlanttaakVersion] does not support the invoked Plugin Action."
         }
         withLoggingContext(DelegateExecution::class.java.canonicalName to execution.id) {
             externeKlanttaakService.completeExterneKlanttaak(
                 config = config,
-                klanttaakVersion = klanttaakVersion,
+                klanttaakVersion = externeKlanttaakVersion,
                 objectManagementId = objectManagementConfigurationId,
                 execution = execution,
             )

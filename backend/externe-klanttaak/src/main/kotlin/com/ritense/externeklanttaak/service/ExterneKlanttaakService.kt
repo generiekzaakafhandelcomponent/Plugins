@@ -21,9 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
-import com.ritense.externeklanttaak.domain.KlanttaakVersion
-import com.ritense.externeklanttaak.model.IExterneKlanttaak
-import com.ritense.externeklanttaak.model.IPluginActionConfig
+import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaak
+import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.objectenapi.ObjectenApiPlugin
 import com.ritense.objectenapi.client.ObjectRecord
 import com.ritense.objectenapi.client.ObjectRequest
@@ -48,10 +48,9 @@ open class ExterneKlanttaakService(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
     private val taskService: CamundaTaskService,
-    private val utilService: UtilityService,
 ) {
     internal fun createExterneKlanttaak(
-        klanttaakVersion: KlanttaakVersion,
+        klanttaakVersion: ExterneKlanttaakVersion,
         objectManagementId: UUID,
         delegateTask: DelegateTask,
         config: IPluginActionConfig,
@@ -67,9 +66,8 @@ open class ExterneKlanttaakService(
 
         val klanttaak =
             klanttaakVersion.create(
-                delegateTask = delegateTask,
-                config = resolvedConfig,
-                utilService = utilService
+                pluginActionConfig = resolvedConfig,
+                delegateTask = delegateTask
             )
 
         objectManagement.createObject(objectMapper.valueToTree(klanttaak))
@@ -87,7 +85,7 @@ open class ExterneKlanttaakService(
     }
 
     internal fun completeExterneKlanttaak(
-        klanttaakVersion: KlanttaakVersion,
+        klanttaakVersion: ExterneKlanttaakVersion,
         config: IPluginActionConfig,
         objectManagementId: UUID,
         execution: DelegateExecution
@@ -115,10 +113,9 @@ open class ExterneKlanttaakService(
 
         val completedTaak =
             klanttaakVersion.complete(
-                externeTaak = externeKlanttaak,
-                config = resolvedConfig,
-                execution = execution,
-                utilService = utilService
+                externeKlanttaak = externeKlanttaak,
+                pluginActionConfig = resolvedConfig,
+                delegateExecution = execution,
             )
                 ?: run {
                     logger.info {

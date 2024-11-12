@@ -1,3 +1,5 @@
+import io.spring.gradle.dependencymanagement.org.codehaus.plexus.interpolation.os.Os.FAMILY_MAC
+import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
@@ -73,8 +75,12 @@ subprojects {
             withJavadocJar()
         }
 
-        dockerCompose {
-            useDockerComposeV2 = true
+        if (Os.isFamily(FAMILY_MAC)) {
+            println("Configure docker compose for macOs")
+            dockerCompose {
+                executable = "/usr/local/bin/docker-compose"
+                dockerExecutable = "/usr/local/bin/docker"
+            }
         }
 
         tasks.test {

@@ -41,6 +41,8 @@ dependencies {
 
     implementation(kotlin("reflect"))
 
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
     implementation("io.github.microutils:kotlin-logging")
 
     // Testing
@@ -48,7 +50,7 @@ dependencies {
     testImplementation("com.ritense.valtimo:test-utils-common")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("org.mockito:mockito-core")

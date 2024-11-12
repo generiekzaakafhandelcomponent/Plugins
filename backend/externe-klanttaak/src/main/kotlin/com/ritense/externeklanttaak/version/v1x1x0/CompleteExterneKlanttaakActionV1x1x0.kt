@@ -1,111 +1,74 @@
-/*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
- *
- * Licensed under EUPL, Version 1.2 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package com.ritense.externeklanttaak.service.impl
+package com.ritense.externeklanttaak.version.v1x1x0
 
 import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.treeToValue
-import com.ritense.document.domain.patch.JsonPatchService
-import com.ritense.externeklanttaak.domain.DataBindingConfig
-import com.ritense.externeklanttaak.model.TaakIdentificatie
-import com.ritense.externeklanttaak.model.TaakIdentificatie.Companion.TYPE_BSN
-import com.ritense.externeklanttaak.model.TaakIdentificatie.Companion.TYPE_KVK
-import com.ritense.externeklanttaak.service.UtilityService
+import com.ritense.externeklanttaak.domain.FinalizerProcessVariables.EXTERNE_KLANTTAAK_OBJECT_URL
+import com.ritense.externeklanttaak.domain.IExterneKlanttaak
+import com.ritense.externeklanttaak.domain.IPluginAction
+import com.ritense.externeklanttaak.domain.IPluginActionConfig
+import com.ritense.externeklanttaak.domain.SpecVersion
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.DataBindingConfig
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSoort.PORTAALFORMULIER
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.AFGEROND
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.VERWERKT
 import com.ritense.notificatiesapi.exception.NotificatiesNotificationEventException
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
-import com.ritense.valtimo.contract.json.patch.JsonPatchBuilder
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
-import com.ritense.zakenapi.domain.rol.RolNatuurlijkPersoon
-import com.ritense.zakenapi.domain.rol.RolNietNatuurlijkPersoon
-import com.ritense.zakenapi.domain.rol.RolType
 import mu.KLogger
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
-import org.camunda.bpm.engine.delegate.DelegateTask
 import java.net.MalformedURLException
 import java.net.URI
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 
-class DefaultUtilityService(
+class CompleteExterneKlanttaakActionV1x1x0(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
     private val getZaakUrl: ZaakUrlProvider,
-) : UtilityService {
-    internal fun stringAsInstantOrNull(input: String?): Instant? {
-        val commonGzacDateTimeFormats = listOf(
-            DateTimeFormatter.BASIC_ISO_DATE,
-            DateTimeFormatter.ofPattern("d-MM-uuuu"), // mm-DD-yyyy
-            DateTimeFormatter.ISO_LOCAL_DATE,
-            DateTimeFormatter.ISO_LOCAL_DATE_TIME,
-            DateTimeFormatter.ISO_ZONED_DATE_TIME,
-            DateTimeFormatter.ISO_INSTANT,
-        )
+) : IPluginAction {
 
-        return input?.let {
-            commonGzacDateTimeFormats.firstNotNullOfOrNull {
-                try {
-                    LocalDate.parse(input, it).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()
-                } catch (ex: RuntimeException) {
-                    logger.debug { "Input string [$input] didn't match DateTimeFormatter [$it]" }
+    fun <C : IPluginActionConfig> complete(): (IExterneKlanttaak, C, DelegateExecution) -> IExterneKlanttaak? =
+        { externeKlanttaak, config, execution ->
+            require(externeKlanttaak is ExterneKlanttaakV1x1x0)
+            require(config is CompleteExterneKlanttaakActionConfigV1x1x0)
+            when (externeKlanttaak.status == AFGEROND) {
+                true -> {
+                    if (externeKlanttaak.soort == PORTAALFORMULIER) {
+                        val verzondenData = requireNotNull(externeKlanttaak.portaalformulier?.verzondenData) {
+                            "Property [portaalformulier] is required when [taakSoort] is ${externeKlanttaak.soort}"
+                        }
+                        if (config.koppelDocumenten) {
+                            linkDocumentsToZaak(
+                                documentPathsPath = config.documentPadenPad,
+                                verzondenData = verzondenData,
+                                delegateExecution = execution,
+                            )
+                        }
+
+                        if (config.bewaarIngediendeGegevens) {
+                            handleFormulierTaakSubmission(
+                                submission = verzondenData,
+                                submissionMapping = config.verzondenDataMapping,
+                                verwerkerTaakId = externeKlanttaak.verwerkerTaakId,
+                                delegateExecution = execution,
+                            )
+                        }
+                    }
+                    externeKlanttaak.copy(status = VERWERKT)
+                }
+
+                false -> {
+                    logger.debug { "Task not completed due to unmatched criteria." }
                     null
                 }
             }
         }
-    }
-
-    internal fun getZaakinitiatorByDocumentId(businessKey: String): TaakIdentificatie {
-        val (zaakUrl, zakenApiPlugin) = getZaakUrlAndPluginByDocumentId(businessKey)
-
-        val initiator = requireNotNull(
-            zakenApiPlugin.getZaakRollen(zaakUrl, RolType.INITIATOR).firstOrNull()
-        ) { "No initiator role found for zaak with URL $zaakUrl" }
-
-        return requireNotNull(
-            initiator.betrokkeneIdentificatie.let {
-                when (it) {
-                    is RolNatuurlijkPersoon -> TaakIdentificatie(
-                        TYPE_BSN,
-                        requireNotNull(it.inpBsn) {
-                            "Zaak initiator did not have valid inpBsn BSN"
-                        }
-                    )
-
-                    is RolNietNatuurlijkPersoon -> TaakIdentificatie(
-                        TYPE_KVK,
-                        requireNotNull(it.annIdentificatie) {
-                            "Zaak initiator did not have valid annIdentificatie KVK"
-                        }
-                    )
-
-                    else -> null
-                }
-            }
-        ) { "Could not map initiator identificatie (value=${initiator.betrokkeneIdentificatie}) for zaak with URL $zaakUrl to TaakIdentificatie" }
-    }
 
     private fun getZaakUrlAndPluginByDocumentId(businessKey: String): Pair<URI, ZakenApiPlugin> {
         val documentId = UUID.fromString(businessKey)
@@ -114,37 +77,6 @@ class DefaultUtilityService(
             pluginService.createInstance(ZakenApiPlugin::class.java, ZakenApiPlugin.findConfigurationByUrl(zaakUrl))
         ) { "No plugin configuration was found for zaak with URL $zaakUrl" }
         return Pair(zaakUrl, zakenApiPlugin)
-    }
-
-    internal fun resolveFormulierTaakData(
-        delegateTask: DelegateTask,
-        sendData: List<DataBindingConfig>,
-        documentId: String
-    ): Map<String, Any> {
-        val sendDataValuesResolvedMap = valueResolverService.resolveValues(documentId, sendData.map { it.key })
-
-        if (sendData.size != sendDataValuesResolvedMap.size) {
-            val failedValues = sendData
-                .filter { !sendDataValuesResolvedMap.containsKey(it.key) }
-                .joinToString(", ") { "'${it.key}' = '${it.value}'" }
-            throw IllegalArgumentException(
-                "Error in sendData for task: '${delegateTask.taskDefinitionKey}' and documentId: '${documentId}'. Failed to resolve values: $failedValues".trimMargin()
-            )
-        }
-
-        val sendDataResolvedMap = sendData.associate { it.value to sendDataValuesResolvedMap[it.key] }
-        val jsonPatchBuilder = JsonPatchBuilder()
-        val taakData = objectMapper.createObjectNode()
-
-        sendDataResolvedMap.forEach {
-            val path = JsonPointer.valueOf(it.key)
-            val valueNode = objectMapper.valueToTree<JsonNode>(it.value)
-            jsonPatchBuilder.addJsonNodeValue(taakData, path, valueNode)
-        }
-
-        JsonPatchService.apply(jsonPatchBuilder.build(), taakData)
-
-        return objectMapper.convertValue(taakData)
     }
 
     internal fun handleFormulierTaakSubmission(
@@ -244,6 +176,16 @@ class DefaultUtilityService(
         }
         return objectMapper.treeToValue(valueNode)
     }
+
+    @SpecVersion(min = "1.1.0")
+    data class CompleteExterneKlanttaakActionConfigV1x1x0(
+        override val resultingKlanttaakObjectUrlVariable: String? = null,
+        override val klanttaakObjectUrl: String = "pv:$EXTERNE_KLANTTAAK_OBJECT_URL",
+        val bewaarIngediendeGegevens: Boolean,
+        val verzondenDataMapping: List<DataBindingConfig> = emptyList(),
+        val koppelDocumenten: Boolean,
+        val documentPadenPad: String? = "/documenten",
+    ) : IPluginActionConfig
 
     companion object {
         private const val DEFAULT_ZAAKDOCUMENT_TITLE = "Externe Klanttaak Document"

@@ -1,8 +1,8 @@
 spring:
     datasource:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:3338/externeKlanttaak-test
-        username: valtimo
+        url: jdbc:postgresql://localhost:54341/externe-klanttaak
+        username: test-user
         password: password
         hikari:
             auto-commit: false

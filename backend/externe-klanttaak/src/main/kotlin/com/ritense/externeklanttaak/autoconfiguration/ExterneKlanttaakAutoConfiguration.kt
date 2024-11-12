@@ -16,38 +16,41 @@
 
 package com.ritense.externeklanttaak.autoconfiguration
 
+import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
 import com.ritense.externeklanttaak.listener.ExterneKlanttaakEventListener
 import com.ritense.externeklanttaak.plugin.ExterneKlanttaakPluginFactory
+import com.ritense.externeklanttaak.security.ExterneKlanttaakSecurityConfigurer
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
-import com.ritense.externeklanttaak.service.UtilityService
-import com.ritense.externeklanttaak.service.impl.DefaultUtilityService
+import com.ritense.externeklanttaak.web.rest.ExterneKlanttaakManagementResource
 import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
+import com.ritense.valtimo.contract.security.config.HttpSecurityConfigurer
 import com.ritense.valtimo.service.CamundaProcessService
 import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
-import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.link.ZaakInstanceLinkService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
+import org.springframework.core.annotation.Order
 
 @AutoConfiguration
 class ExterneKlanttaakAutoConfiguration {
 
+    @Order(390)
     @Bean
-    @ConditionalOnMissingBean(UtilityService::class)
-    fun utilService(
-        pluginService: PluginService,
-        valueResolverService: ValueResolverService,
-        zaakUrlProvider: ZaakUrlProvider,
-    ): UtilityService {
-        return DefaultUtilityService(
-            pluginService,
-            valueResolverService,
-            zaakUrlProvider,
-        )
+    @ConditionalOnMissingBean(ExterneKlanttaakSecurityConfigurer::class)
+    fun externeKlanttaakSecurityConfigurer(): HttpSecurityConfigurer {
+        return ExterneKlanttaakSecurityConfigurer()
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ExterneKlanttaakManagementResource::class)
+    fun externeKlanttaakPluginManagementResource(
+        externeKalnttaakVersions: List<ExterneKlanttaakVersion>
+    ): ExterneKlanttaakManagementResource {
+        return ExterneKlanttaakManagementResource(externeKalnttaakVersions)
     }
 
     @Bean
@@ -59,14 +62,12 @@ class ExterneKlanttaakAutoConfiguration {
         processDocumentService: ProcessDocumentService,
         zaakInstanceLinkService: ZaakInstanceLinkService,
         taskService: CamundaTaskService,
-        utilService: UtilityService,
     ): ExterneKlanttaakService {
         return ExterneKlanttaakService(
             objectManagementService,
             pluginService,
             valueResolverService,
             taskService,
-            utilService,
         )
     }
 
@@ -74,11 +75,13 @@ class ExterneKlanttaakAutoConfiguration {
     @ConditionalOnMissingBean(ExterneKlanttaakPluginFactory::class)
     fun externeKlanttaakPluginFactory(
         pluginService: PluginService,
-        externeKlanttaakService: ExterneKlanttaakService
+        externeKlanttaakService: ExterneKlanttaakService,
+        externeKalnttaakVersions: List<ExterneKlanttaakVersion>,
     ): ExterneKlanttaakPluginFactory {
         return ExterneKlanttaakPluginFactory(
             pluginService,
             externeKlanttaakService,
+            externeKalnttaakVersions,
         )
     }
 
