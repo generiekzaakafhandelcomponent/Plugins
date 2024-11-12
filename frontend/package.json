@@ -120,7 +120,7 @@
     "@valtimo-plugins/amsterdam-emailapi": "file:dist/valtimo-plugins/amsterdam-emailapi",
     "@valtimo-plugins/berkelybridge": "file:dist/valtimo-plugins/berkelybridge",
     "@valtimo-plugins/freemarker": "file:dist/valtimo-plugins/freemarker",
-    "@valtimo-plugins/notify-nl": "file:dist/valtimo/notify-nl",
+    "@valtimo-plugins/notify-nl": "file:dist/valtimo-plugins/notify-nl",
     "@valtimo-plugins/publictask": "file:dist/valtimo-plugins/publictask",
     "@valtimo-plugins/slack": "file:dist/valtimo-plugins/slack",
     "@valtimo-plugins/smtpmail": "file:dist/valtimo-plugins/smtpmail",
