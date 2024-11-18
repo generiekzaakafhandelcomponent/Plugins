@@ -112,11 +112,12 @@ open class ExterneKlanttaakService(
         )
 
         val completedTaak =
-            klanttaakVersion.complete(
-                externeKlanttaak = externeKlanttaak,
-                pluginActionConfig = resolvedConfig,
-                delegateExecution = execution,
-            )
+            klanttaakVersion
+                .complete(
+                    externeKlanttaak = externeKlanttaak,
+                    pluginActionConfig = resolvedConfig,
+                    delegateExecution = execution,
+                )
                 ?: run {
                     logger.info {
                         "Could not Complete External Task with id [${externeKlanttaakObject.uuid}]"

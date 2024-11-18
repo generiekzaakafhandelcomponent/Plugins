@@ -1,5 +1,6 @@
 package com.ritense.externeklanttaak.domain
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 
@@ -33,17 +34,20 @@ data class Version(
         return kClass
             .findAnnotation<SpecVersion>()
             ?.let { specVersion ->
-                val specMinimumVersion = fromString(specVersion.min)
+                val specMinimumVersion = fromVersionString(specVersion.min)
                 if (specVersion.max.isBlank()) {
                     return specMinimumVersion <= this
                 }
-                val specMaximumVersion = fromString(specVersion.max)
-                return this in specMinimumVersion .. specMaximumVersion
+                val specMaximumVersion = fromVersionString(specVersion.max)
+                return this in specMinimumVersion..specMaximumVersion
             }
             ?: true
     }
+
     companion object {
-        fun fromString(versionString: String): Version {
+        @JvmStatic
+        @JsonCreator
+        fun fromVersionString(versionString: String): Version {
             val (major, minor, patch) = versionString.split(".").map(String::toInt)
             return Version(major, minor, patch)
         }

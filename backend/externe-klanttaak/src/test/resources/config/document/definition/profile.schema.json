@@ -2,8 +2,12 @@
     "$id": "profile.schema",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
+    "additionalProperties": false,
     "properties": {
-        "lastname": {
+        "voornaam": {
+            "type": "string"
+        },
+        "achternaam": {
             "type": "string"
         }
     }

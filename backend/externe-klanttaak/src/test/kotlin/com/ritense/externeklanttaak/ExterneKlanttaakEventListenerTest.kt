@@ -66,7 +66,7 @@ class ExterneKlanttaakEventListenerTest {
         externeKlanttaakPlugin =
             ExterneKlanttaakPlugin(
                 externeKlanttaakService = externeKlanttaakService,
-                supportedExterneKlanttaakVersions = mock<List<ExterneKlanttaakVersion>>()
+                availableExterneKlanttaakVersions = mock<List<ExterneKlanttaakVersion>>()
             )
 
         externeklanttaakEventListener = ExterneKlanttaakEventListener(

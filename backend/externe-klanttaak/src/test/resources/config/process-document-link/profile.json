@@ -1,11 +1,6 @@
 [
     {
-        "processDefinitionKey": "externeKlanttaak-process",
-        "canInitializeDocument": true,
-        "startableByUser": true
-    },
-    {
-        "processDefinitionKey": "externeKlanttaak-due-date-process",
+        "processDefinitionKey": "create-externe-klanttaak",
         "canInitializeDocument": true,
         "startableByUser": true
     }

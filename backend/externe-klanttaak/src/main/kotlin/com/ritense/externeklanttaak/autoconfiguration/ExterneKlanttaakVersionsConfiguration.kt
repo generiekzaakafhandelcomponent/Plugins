@@ -17,8 +17,7 @@
 package com.ritense.externeklanttaak.autoconfiguration
 
 import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
-import com.ritense.externeklanttaak.version.v1x1x0.CompleteExterneKlanttaakActionV1x1x0
-import com.ritense.externeklanttaak.version.v1x1x0.CreateExterneKlanttaakActionV1x1x0
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakVersionV1x1x0
 import com.ritense.plugin.service.PluginService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
@@ -34,39 +33,10 @@ class ExterneKlanttaakVersionsConfiguration {
         valueResolverService: ValueResolverService,
         zaakUrlProvider: ZaakUrlProvider
     ): ExterneKlanttaakVersion {
-        return ExterneKlanttaakVersion(
-            version = "1.1.0",
-            create = CreateExterneKlanttaakActionV1x1x0(
-                pluginService,
-                valueResolverService,
-                zaakUrlProvider,
-            ).create(),
-            complete = CompleteExterneKlanttaakActionV1x1x0(
-                pluginService,
-                valueResolverService,
-                zaakUrlProvider,
-            ).complete()
-        )
-    }
-
-    @Bean
-    fun v1x1x1(
-        pluginService: PluginService,
-        valueResolverService: ValueResolverService,
-        zaakUrlProvider: ZaakUrlProvider,
-    ): ExterneKlanttaakVersion {
-        return ExterneKlanttaakVersion(
-            version = "1.1.1",
-            create = CreateExterneKlanttaakActionV1x1x0(
-                pluginService,
-                valueResolverService,
-                zaakUrlProvider,
-            ).create(),
-            complete = CompleteExterneKlanttaakActionV1x1x0(
-                pluginService,
-                valueResolverService,
-                zaakUrlProvider
-            ).complete()
+        return ExterneKlanttaakVersionV1x1x0(
+            pluginService,
+            valueResolverService,
+            zaakUrlProvider
         )
     }
 }

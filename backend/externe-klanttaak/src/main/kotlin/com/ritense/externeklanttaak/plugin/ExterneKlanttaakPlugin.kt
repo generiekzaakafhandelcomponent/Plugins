@@ -18,6 +18,7 @@ package com.ritense.externeklanttaak.plugin
 
 import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
+import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
 import com.ritense.notificatiesapi.NotificatiesApiPlugin
 import com.ritense.plugin.annotation.Plugin
@@ -37,13 +38,13 @@ import java.util.UUID
 )
 class ExterneKlanttaakPlugin(
     private val externeKlanttaakService: ExterneKlanttaakService,
-    private val supportedExterneKlanttaakVersions: List<ExterneKlanttaakVersion>,
+    private val availableExterneKlanttaakVersions: List<ExterneKlanttaakVersion>,
 ) {
+    @PluginProperty(key = "pluginVersion", secret = false)
+    internal lateinit var pluginVersion: Version
+
     @PluginProperty(key = "objectManagementConfigurationId", secret = false)
     internal lateinit var objectManagementConfigurationId: UUID
-
-    @PluginProperty(key = "klanttaakVersion", secret = false)
-    internal lateinit var externeKlanttaakVersion: ExterneKlanttaakVersion
 
     @PluginProperty(key = "notificatiesApiPluginConfiguration", secret = false)
     internal lateinit var notificatiesApiPluginConfiguration: NotificatiesApiPlugin
@@ -61,7 +62,7 @@ class ExterneKlanttaakPlugin(
         delegateTask: DelegateTask,
         @PluginActionProperty config: IPluginActionConfig,
     ) {
-        require(externeKlanttaakVersion in supportedExterneKlanttaakVersions)
+        val externeKlanttaakVersion = getExterneKlanttaakVersion()
         require(externeKlanttaakVersion supports config::class) {
             "Externe Klanttaak Plugin version [$externeKlanttaakVersion] does not support the invoked Plugin Action."
         }
@@ -85,7 +86,7 @@ class ExterneKlanttaakPlugin(
         execution: DelegateExecution,
         @PluginActionProperty config: IPluginActionConfig,
     ) {
-        require(externeKlanttaakVersion in supportedExterneKlanttaakVersions)
+        val externeKlanttaakVersion = getExterneKlanttaakVersion()
         require(externeKlanttaakVersion supports config::class) {
             "Externe Klanttaak Plugin version [$externeKlanttaakVersion] does not support the invoked Plugin Action."
         }
@@ -97,6 +98,12 @@ class ExterneKlanttaakPlugin(
                 execution = execution,
             )
         }
+    }
+
+    private fun getExterneKlanttaakVersion() = requireNotNull(
+        availableExterneKlanttaakVersions.firstOrNull { it supports pluginVersion }
+    ) {
+        "Externe Klanttaak Version supporting version [$pluginVersion] was not found."
     }
 
 }

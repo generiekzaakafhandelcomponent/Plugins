@@ -44,7 +44,7 @@ internal class ExterneKlanttaakPluginFactoryTest {
 
         val externeKlanttaakPluginProperties: String = """
             {
-              "klanttaakVersion": "1.1.0",
+              "pluginVersion": "1.1.0",
               "notificatiesApiPluginConfiguration": "4d9e7fe7-0671-4955-a106-fc71dc7527a6",
               "objectManagementConfigurationId": "cc713213-995d-494f-b1cd-61fecf40f86e"
             }
@@ -93,9 +93,9 @@ internal class ExterneKlanttaakPluginFactoryTest {
 
         propertyDefinitions.add(
             PluginProperty(
-                "klanttaakVersion", pluginDefinition, "title", required = true,
-                secret = false, "klanttaakVersion",
-                "com.ritense.externeklanttaak.domain.KlanttaakVersion"
+                "pluginVersion", pluginDefinition, "title", required = true,
+                secret = false, "pluginVersion",
+                "com.ritense.externeklanttaak.domain.Version"
             )
         )
 

@@ -16,29 +16,24 @@
 
 package com.ritense.externeklanttaak.domain
 
-import com.fasterxml.jackson.annotation.JsonValue
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask
 import kotlin.reflect.KClass
 
-data class ExterneKlanttaakVersion(
-    @JsonValue private val version: String,
-    private val create: (IPluginActionConfig, DelegateTask) -> IExterneKlanttaak,
-    private val complete: (IExterneKlanttaak, IPluginActionConfig, DelegateExecution) -> IExterneKlanttaak?,
-) {
-    fun create(
-        pluginActionConfig: IPluginActionConfig,
-        delegateTask: DelegateTask
-    ) =
-        create.invoke(pluginActionConfig, delegateTask)
+interface ExterneKlanttaakVersion {
+    val version: String
+    fun create(pluginActionConfig: IPluginActionConfig, delegateTask: DelegateTask): IExterneKlanttaak {
+        TODO("Not Implemented")
+    }
 
     fun complete(
         externeKlanttaak: IExterneKlanttaak,
         pluginActionConfig: IPluginActionConfig,
         delegateExecution: DelegateExecution
-    ) =
-        complete.invoke(externeKlanttaak, pluginActionConfig, delegateExecution)
+    ): IExterneKlanttaak? {
+        TODO("Not Implemented")
+    }
 
-    override fun toString(): String = version
-    infix fun supports(kClass: KClass<*>): Boolean = Version.fromString(version) supports kClass
+    infix fun supports(kClass: KClass<*>): Boolean = Version.fromVersionString(version) supports kClass
+    infix fun supports(subjectVersion: Version): Boolean = Version.fromVersionString(version) == subjectVersion
 }

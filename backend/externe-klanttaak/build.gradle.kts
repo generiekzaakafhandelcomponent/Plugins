@@ -50,6 +50,9 @@ dependencies {
     testImplementation("com.ritense.valtimo:test-utils-common")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation("org.springframework.data:spring-data-jpa")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
     testImplementation("org.hamcrest:hamcrest-library")
