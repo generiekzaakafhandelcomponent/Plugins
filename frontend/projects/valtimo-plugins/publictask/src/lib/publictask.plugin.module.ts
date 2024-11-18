@@ -17,13 +17,22 @@
 import {NgModule} from '@angular/core';
 import {PublictaskPluginConfigurationComponent} from './components/public-task-configuration/publictask-plugin-configuration.component';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule} from '@valtimo/components';
 import {CreatePublicTaskConfigurationComponent} from "./components/create-public-task/create-public-task-configuration.component";
+import {publictaskPluginSpecification} from './publictask.plugin.specification';
 
 @NgModule({
   declarations: [PublictaskPluginConfigurationComponent, CreatePublicTaskConfigurationComponent],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, PluginTranslatePipeModule],
-  exports: [PublictaskPluginConfigurationComponent, CreatePublicTaskConfigurationComponent]
+  exports: [PublictaskPluginConfigurationComponent, CreatePublicTaskConfigurationComponent],
+  providers: [
+    {
+      provide: PLUGINS_TOKEN,
+      useValue: [
+        publictaskPluginSpecification,
+      ]
+    }
+  ]
 })
 export class PublictaskPluginModule {}

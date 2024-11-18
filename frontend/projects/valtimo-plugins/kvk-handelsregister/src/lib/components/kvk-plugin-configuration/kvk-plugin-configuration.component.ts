@@ -7,7 +7,7 @@ import {TranslateService} from '@ngx-translate/core';
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'zgw-haalcentraal-handelsregister-plugin-configuration',
-    templateUrl: './kvk-plugin-configuration.component.html',
+    template: require('./kvk-plugin-configuration.component.html'),
     styleUrls: ['./kvk-plugin-configuration.component.scss']
 })
 export class KvkPluginConfigurationComponent
@@ -29,29 +29,6 @@ export class KvkPluginConfigurationComponent
 
     private readonly formValue$ = new BehaviorSubject<Config | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
-
-    readonly authenticationPluginSelectItems$: Observable<Array<{ id: string; text: string }>> =
-        combineLatest([
-            this.pluginManagementService.getPluginConfigurationsByCategory('suwinet'),
-            this.translateService.stream('key'),
-        ]).pipe(
-            map(([configurations]) =>
-                configurations.map(configuration => ({
-                    id: configuration.id,
-                    text: `${configuration.title} - ${this.pluginTranslationService.instant(
-                        'title',
-                        configuration.pluginDefinition.key
-                    )}`,
-                }))
-            )
-        );
-
-    constructor(
-        private readonly pluginManagementService: PluginManagementService,
-        private readonly translateService: TranslateService,
-        private readonly pluginTranslationService: PluginTranslationService
-    ) {
-    }
 
     ngOnInit(): void {
         this.openSaveSubscription();

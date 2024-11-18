@@ -18,6 +18,11 @@ package com.ritense.valtimoplugins.publictask.repository
 
 import com.ritense.valtimoplugins.publictask.domain.PublicTaskEntity
 import java.util.UUID
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
-interface PublicTaskRepository : JpaRepository<PublicTaskEntity, UUID>
+@Extension
+@Repository
+interface PublicTaskRepository : JpaRepository<PublicTaskEntity, UUID>, ExtensionPoint

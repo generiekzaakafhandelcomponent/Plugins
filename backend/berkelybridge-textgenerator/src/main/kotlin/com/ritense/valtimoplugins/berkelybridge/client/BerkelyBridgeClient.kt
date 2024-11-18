@@ -22,20 +22,25 @@ package com.ritense.valtimoplugins.berkelybridge.client
 import com.ritense.valtimoplugins.berkelybridge.plugin.BerkelyBridgeClientEvent
 import com.ritense.valtimoplugins.berkelybridge.plugin.TemplateProperty
 import mu.KotlinLogging
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
 
 private val logger = KotlinLogging.logger {}
 
+@Extension
+@Component
 class BerkelyBridgeClient(
     private val restTemplate: RestTemplate,
     private val eventPublisher: ApplicationEventPublisher,
-) {
+) : ExtensionPoint {
     fun generate(
         bbUrl: String,
         modelId: String,

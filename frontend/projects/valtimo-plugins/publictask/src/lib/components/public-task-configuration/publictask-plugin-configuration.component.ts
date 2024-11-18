@@ -21,7 +21,7 @@ import {PublicTaskConfig} from '../../models';
 
 @Component({
   selector: 'publictask-plugin-configuration',
-  templateUrl: './publictask-plugin-configuration.component.html',
+  template: require('./publictask-plugin-configuration.component.html'),
 })
 export class PublictaskPluginConfigurationComponent
   // The component explicitly implements the PluginConfigurationComponent interface

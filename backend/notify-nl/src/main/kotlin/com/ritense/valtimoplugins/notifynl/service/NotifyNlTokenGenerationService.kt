@@ -22,10 +22,15 @@ import mu.KotlinLogging
 import java.nio.charset.Charset
 import java.util.Date
 import java.util.UUID
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
 
-class NotifyNlTokenGenerationService {
+@Extension
+@Service
+class NotifyNlTokenGenerationService : ExtensionPoint {
     fun generateToken(serviceId: UUID, secretKey: UUID): String {
         logger.debug { "Generating a token for a request to NotifyNL" }
 

@@ -19,6 +19,7 @@ package com.ritense.valtimoplugins.freemarker.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.Document
+import com.ritense.valtimoplugins.freemarker.com.ritense.valtimoplugins.freemarker.config.TemplateFreemarkerConfiguration
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_MAIL
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
@@ -27,14 +28,14 @@ import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecifica
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKeyAndCaseDefinitionNameAndType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.query
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valueresolver.ValueResolverService
-import freemarker.template.Configuration
+import com.ritense.processdocument.service.ValueResolverDelegateService
 import freemarker.template.Template
 import freemarker.template.TemplateException
 import java.io.StringWriter
 import java.util.Stack
 import java.util.UUID
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -42,15 +43,15 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
 
+@Extension(ordinal = 1)
 @Service
-@SkipComponentScan
 @Transactional
 class TemplateService(
     private val templateRepository: TemplateRepository,
     private val objectMapper: ObjectMapper,
-    private val valueResolverService: ValueResolverService,
-    private val freemarkerConfiguration: Configuration,
-) {
+    private val valueResolverService: ValueResolverDelegateService,
+    private val freemarkerConfiguration: TemplateFreemarkerConfiguration,
+) : ExtensionPoint {
 
     fun generate(
         templateKey: String,

@@ -17,10 +17,11 @@
 import {NgModule} from '@angular/core';
 import {SlackConfigurationComponent} from './components/slack-configuration/slack-configuration.component';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
 import {PostMessageWithFileConfigurationComponent} from './components/post-message-with-file/post-message-with-file-configuration.component';
 import {PostMessageConfigurationComponent} from './components/post-message/post-message-configuration.component';
+import {slackPluginSpecification} from './slack-plugin.specification';
 
 @NgModule({
   declarations: [
@@ -34,5 +35,13 @@ import {PostMessageConfigurationComponent} from './components/post-message/post-
     PostMessageConfigurationComponent,
     PostMessageWithFileConfigurationComponent,
   ],
+  providers: [
+    {
+      provide: PLUGINS_TOKEN,
+      useValue: [
+        slackPluginSpecification,
+      ]
+    }
+  ]
 })
 export class SlackPluginModule {}

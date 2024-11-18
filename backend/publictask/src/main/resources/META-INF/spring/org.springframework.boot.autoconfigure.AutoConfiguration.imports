@@ -1,3 +1,0 @@
-com.ritense.valtimoplugins.publictask.autoconfiguration.PublicTaskAutoConfiguration
-com.ritense.valtimoplugins.publictask.autoconfiguration.PublicTaskLiquibaseAutoConfiguration
-com.ritense.valtimoplugins.publictask.autoconfiguration.PublicTaskAuditAutoConfiguration

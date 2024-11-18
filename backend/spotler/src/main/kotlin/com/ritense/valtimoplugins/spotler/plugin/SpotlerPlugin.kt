@@ -38,8 +38,11 @@ import com.ritense.valtimo.contract.mail.model.value.Sender
 import com.ritense.valtimo.contract.mail.model.value.Subject
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.web.client.RestTemplate
 
+@Extension(ordinal = 3)
 @Plugin(
     key = "spotler",
     title = "Spotler Plugin",
@@ -47,7 +50,7 @@ import org.springframework.web.client.RestTemplate
 )
 class SpotlerPlugin(
     val restTemplate: RestTemplate
-) {
+) : ExtensionPoint {
 
     @PluginProperty(key = "clientId", secret = false)
     private lateinit var clientId: String

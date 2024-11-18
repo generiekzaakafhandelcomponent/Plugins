@@ -18,18 +18,20 @@ package com.ritense.valtimoplugins.slack.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
-import com.ritense.resource.service.TemporaryResourceStorageService
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.resource.service.ResourceStorageDelegate
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimoplugins.slack.client.SlackClient
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.stereotype.Component
 
+@Extension(ordinal = 1)
 @Component
-@SkipComponentScan
 class SlackPluginFactory(
     pluginService: PluginService,
     val client: SlackClient,
-    val storageService: TemporaryResourceStorageService,
-) : PluginFactory<SlackPlugin>(pluginService) {
+    val storageService: ResourceStorageDelegate,
+) : PluginFactory<SlackPlugin>(pluginService), ExtensionPoint {
 
     override fun create(): SlackPlugin {
         return SlackPlugin(client, storageService)

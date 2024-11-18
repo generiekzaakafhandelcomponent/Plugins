@@ -25,6 +25,9 @@ pluginManagement {
     val ktlintVersion: String by settings
     val spotlessVersion: String by settings
     val dockerComposePluginVersion: String by settings
+    val kaptVersion: String by settings
+    val pf4jVersion: String by settings
+    val pf4jSpringVersion: String by settings
 
     plugins {
         // Idea
@@ -43,5 +46,6 @@ pluginManagement {
 
         // Other
         id("com.avast.gradle.docker-compose") version dockerComposePluginVersion
+        kotlin("kapt") version kaptVersion
     }
 }

@@ -4,12 +4,17 @@ import com.ritense.valtimo.kvk.model.ZoekenResponse
 import io.netty.channel.ChannelOption
 import io.netty.handler.ssl.SslContextBuilder
 import mu.KotlinLogging
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.netty.http.client.HttpClient
 
-class SimpleKvkHandelsregisterClient {
+@Extension
+@Component
+class SimpleKvkHandelsregisterClient : ExtensionPoint {
 
 
     fun search(kvkNumber: String, clientConfig: KvkHandelsregisterClientConfig): ZoekenResponse? {

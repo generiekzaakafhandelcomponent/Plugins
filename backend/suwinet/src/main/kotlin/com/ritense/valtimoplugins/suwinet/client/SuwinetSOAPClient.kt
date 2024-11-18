@@ -13,8 +13,13 @@ import org.apache.cxf.message.Message
 import org.apache.cxf.transport.http.HTTPConduit
 import org.apache.cxf.transports.http.configuration.ConnectionType
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Component
 
-class SuwinetSOAPClient {
+@Extension
+@Component
+class SuwinetSOAPClient : ExtensionPoint {
     private var keystoreManagerFactory: KeyManagerFactory? = null
     private var trustManagerFactory: TrustManagerFactory? = null
     private var basicAuthName: String? = null
@@ -47,7 +52,7 @@ class SuwinetSOAPClient {
         return this
     }
 
-    inline fun <reified T : Any> getService(url: String, connectionTimeout: Int?, receiveTimeout: Int?): T {
+    final inline fun <reified T : Any> getService(url: String, connectionTimeout: Int?, receiveTimeout: Int?): T {
         val clazz = T::class.java
 
         val soapService = with(JaxWsProxyFactoryBean()) {

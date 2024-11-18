@@ -24,8 +24,8 @@ import {AmsterdamEmailApiConfig} from "../../models";
 
 @Component({
   selector: 'valtimo-amsterdam-emailapi-configuration',
-  templateUrl: './amsterdam-emailapi-configuration.component.html',
-  styleUrls: ['./amsterdam-emailapi-configuration.component.scss'],
+  template: require('./amsterdam-emailapi-configuration.component.html'),
+  styles: [require('./amsterdam-emailapi-configuration.component.scss')],
 })
 export class AmsterdamEmailapiConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy

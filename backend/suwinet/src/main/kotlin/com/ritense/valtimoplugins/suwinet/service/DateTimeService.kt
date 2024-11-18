@@ -3,8 +3,13 @@ package com.ritense.valtimoplugins.suwinet.service
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Service
 
-class DateTimeService {
+@Extension
+@Service
+class DateTimeService : ExtensionPoint {
 
     fun getDifferenceInMilliseconds(from: String, to: String): Long =
         ZonedDateTime.parse(to).toInstant().toEpochMilli() - ZonedDateTime.parse(from).toInstant().toEpochMilli()

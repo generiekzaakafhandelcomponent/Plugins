@@ -3,7 +3,8 @@
   "license": "EUPL-1.2",
   "version": "1.0.0",
   "scripts": {
-    "build": "ng-packagr -p ng-package.json"
+    "build": "ng-packagr -p ng-package.json",
+    "webpack": "webpack"
   },
   "peerDependencies": {
     "@angular/common": "^17.3.12",

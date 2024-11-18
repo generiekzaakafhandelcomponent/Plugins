@@ -27,13 +27,18 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.ExecutionListener
 import org.camunda.bpm.extension.reactor.bus.CamundaSelector
 import org.camunda.bpm.extension.reactor.spring.listener.ReactorExecutionListener
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
+@Extension
+@Component
 @CamundaSelector(type = ActivityTypes.TASK_SEND_TASK, event = ExecutionListener.EVENTNAME_START)
 open class ProcessLinkSendTaskStartListener(
     private val pluginProcessLinkRepository: PluginProcessLinkRepository,
     private val pluginService: PluginService,
-) : ReactorExecutionListener() {
+) : ReactorExecutionListener(), ExtensionPoint {
 
     @Transactional
     override fun notify(execution: DelegateExecution) {

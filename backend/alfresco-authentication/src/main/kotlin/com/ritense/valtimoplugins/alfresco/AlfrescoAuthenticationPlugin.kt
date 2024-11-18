@@ -19,11 +19,14 @@ package com.ritense.valtimoplugins.alfresco
 import com.ritense.documentenapi.DocumentenApiAuthentication
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginProperty
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.web.reactive.function.client.ClientRequest
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.ExchangeFunction
 import reactor.core.publisher.Mono
 
+@Extension
 @Plugin(
     key = "alfrescoauthentication",
     title = "Alfresco Authentication",
@@ -31,7 +34,7 @@ import reactor.core.publisher.Mono
 )
 class AlfrescoAuthenticationPlugin(
     val tokenGeneratorService: AlfrescoTokenGeneratorService
-) : DocumentenApiAuthentication {
+) : DocumentenApiAuthentication, ExtensionPoint {
 
     @PluginProperty(key = "clientId", secret = false, required = true)
     lateinit var clientId: String

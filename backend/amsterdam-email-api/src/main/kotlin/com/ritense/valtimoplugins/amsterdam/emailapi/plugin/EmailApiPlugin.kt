@@ -29,7 +29,7 @@ import com.ritense.valtimoplugins.amsterdam.emailapi.client.BodyPart
 import com.ritense.valtimoplugins.amsterdam.emailapi.client.EmailClient
 import com.ritense.valtimoplugins.amsterdam.emailapi.client.EmailMessage
 import com.ritense.valtimoplugins.amsterdam.emailapi.client.Recipient
-import com.ritense.valueresolver.ValueResolverService
+import com.ritense.processdocument.service.ValueResolverDelegateService
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.springframework.http.*
 import org.springframework.util.MimeTypeUtils
@@ -37,10 +37,13 @@ import org.springframework.util.StringUtils
 import org.springframework.web.client.RestTemplate
 import java.net.URI
 import java.util.*
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
 
 private const val UTF8 = "utf-8"
 
+@Extension
 @Plugin(
     key = "amsterdamemailapi",
     title = "Email API Amsterdam",
@@ -49,8 +52,8 @@ private const val UTF8 = "utf-8"
 class EmailApiPlugin(
     private val emailClient: EmailClient,
     private val restTemplate: RestTemplate,
-    private val valueResolverService: ValueResolverService
-) {
+    private val valueResolverService: ValueResolverDelegateService
+) : ExtensionPoint {
 
     @PluginProperty(key = "emailApiBaseUrl", secret = false, required = true)
     lateinit var emailApiBaseUrl: String

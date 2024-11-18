@@ -16,10 +16,11 @@
 
 package com.ritense.valtimoplugins.slack.client
 
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import java.io.InputStream
 import java.net.URI
 import mu.KotlinLogging
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -32,16 +33,15 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
-import org.springframework.web.reactive.function.BodyInserters
-import org.springframework.web.reactive.function.client.bodyToMono
 
+@Extension
 @Component
-@SkipComponentScan
 class SlackClient(
     private val restClientBuilder: RestClient.Builder,
-    var baseUri: URI?,
-    var token: String?,
-) {
+) : ExtensionPoint {
+
+    var baseUri: URI? = null
+    var token: String? = null
 
     /**
      * https://api.slack.com/methods/chat.postMessage

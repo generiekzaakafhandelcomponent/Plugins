@@ -19,7 +19,7 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from "@angular/forms";
 import {
@@ -37,6 +37,7 @@ import {
   SendMailActionConfigurationComponent
 } from "./components/send-mail-configuration/send-mail-action-configuration.component";
 import {CheckboxModule, DropdownModule} from "carbon-components-angular";
+import {spotlerPluginSpecification} from './spotler-plugin.specification';
 
 @NgModule({
   declarations: [
@@ -48,5 +49,13 @@ import {CheckboxModule, DropdownModule} from "carbon-components-angular";
       SpotlerPluginConfigurationComponent,
       SendMailActionConfigurationComponent
   ],
+    providers: [
+        {
+            provide: PLUGINS_TOKEN,
+            useValue: [
+                spotlerPluginSpecification,
+            ]
+        }
+    ]
 })
 export class SpotlerPluginModule {}

@@ -22,8 +22,8 @@ import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 
 @Component({
   selector: 'valtimo-send-sms-configuration',
-  templateUrl: './send-sms-configuration.component.html',
-  styleUrls: ['./send-sms-configuration.component.scss'],
+  template: require('./send-sms-configuration.component.html'),
+  styles: [require('./send-sms-configuration.component.scss')],
 })
 export class SendSmsConfigurationComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy

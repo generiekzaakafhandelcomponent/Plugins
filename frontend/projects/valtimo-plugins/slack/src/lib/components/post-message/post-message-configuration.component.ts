@@ -22,8 +22,8 @@ import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 
 @Component({
   selector: 'valtimo-post-message-configuration',
-  templateUrl: './post-message-configuration.component.html',
-  styleUrls: ['./post-message-configuration.component.scss'],
+  template: require('./post-message-configuration.component.html'),
+  styles: [require('./post-message-configuration.component.scss')],
 })
 export class PostMessageConfigurationComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy

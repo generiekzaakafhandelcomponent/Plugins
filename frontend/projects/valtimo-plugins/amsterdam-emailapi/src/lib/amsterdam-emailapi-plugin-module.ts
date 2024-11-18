@@ -20,11 +20,12 @@
 import {NgModule} from '@angular/core';
 import {AmsterdamEmailapiConfigurationComponent} from './components/amsterdam-emailapi-configuration/amsterdam-emailapi-configuration.component';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from "@angular/forms";
 import {FormModule, InputModule} from "@valtimo/components";
 import {SendEmailConfigurationComponent} from "./components/send-email/send-email-configuration.component";
+import {amsterdamEmailapiPluginSpecification} from './amsterdam-emailapi-plugin.specification';
 
 @NgModule({
   declarations: [
@@ -36,5 +37,13 @@ import {SendEmailConfigurationComponent} from "./components/send-email/send-emai
     AmsterdamEmailapiConfigurationComponent,
     SendEmailConfigurationComponent
   ],
+  providers: [
+    {
+      provide: PLUGINS_TOKEN,
+      useValue: [
+        amsterdamEmailapiPluginSpecification,
+      ]
+    }
+  ]
 })
 export class AmsterdamEmailapiPluginModule {}

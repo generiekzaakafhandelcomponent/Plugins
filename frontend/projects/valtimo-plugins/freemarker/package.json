@@ -2,6 +2,10 @@
   "name": "@valtimo-plugins/freemarker",
   "license": "EUPL-1.2",
   "version": "5.0.0",
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json",
+    "webpack": "webpack"
+  },
   "peerDependencies": {
     "@angular/common": "^17.2.2",
     "@angular/core": "^17.2.2"

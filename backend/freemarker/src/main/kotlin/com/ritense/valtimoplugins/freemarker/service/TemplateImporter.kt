@@ -19,14 +19,15 @@ package com.ritense.valtimoplugins.freemarker.service
 import com.ritense.importer.ImportRequest
 import com.ritense.importer.Importer
 import com.ritense.importer.ValtimoImportTypes.Companion.DOCUMENT_DEFINITION
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.stereotype.Component
 
+@Extension(ordinal = 2)
 @Component
-@SkipComponentScan
 class TemplateImporter(
     private val templateDeploymentService: TemplateDeploymentService,
-) : Importer {
+) : Importer, ExtensionPoint {
     override fun type(): String = "template"
 
     override fun dependsOn(): Set<String> = setOf(DOCUMENT_DEFINITION)

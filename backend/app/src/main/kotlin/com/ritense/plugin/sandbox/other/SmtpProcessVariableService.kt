@@ -17,22 +17,25 @@
 package com.ritense.plugin.sandbox.other
 
 import com.ritense.resource.domain.MetadataType
-import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 
+@Extension
 @ProcessBean
 @Service
 class SmtpProcessVariableService(
-    private val storageService: TemporaryResourceStorageService,
+    private val storageService: ResourceStorageDelegate,
     @Value("classpath:file.txt")
     private val resourceFile: Resource
-) {
+) : ExtensionPoint {
 
     //Here you can set the variables to test the SmtpMail plugin action
     fun setVariablesForSmtpMail(execution: DelegateExecution) {

@@ -22,7 +22,7 @@ import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateListItem} from '../../../../models';
 
 @Component({
-    templateUrl: './mail-template-list.component.html',
+    template: require('./mail-template-list.component.html'),
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MailTemplateListComponent implements OnInit {

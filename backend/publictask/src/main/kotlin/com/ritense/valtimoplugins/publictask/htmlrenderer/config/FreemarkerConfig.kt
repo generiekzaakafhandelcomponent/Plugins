@@ -19,8 +19,13 @@ package com.ritense.valtimoplugins.publictask.htmlrenderer.config
 import freemarker.cache.ClassTemplateLoader
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Component
 
-class FreemarkerConfig : Configuration(VERSION_2_3_31) {
+@Extension
+@Component
+class FreemarkerConfig : Configuration(VERSION_2_3_31), ExtensionPoint {
     init {
         templateLoader = ClassTemplateLoader(javaClass, "/config/template")
         defaultEncoding = Charsets.UTF_8.toString()

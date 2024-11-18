@@ -19,10 +19,15 @@ package com.ritense.valtimoplugins.publictask.htmlrenderer.service
 import com.ritense.valtimoplugins.publictask.htmlrenderer.config.FreemarkerConfig
 import freemarker.template.Template
 import java.io.StringWriter
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Service
 
+@Extension
+@Service
 class HtmlRenderService(
     private val freemarkerConfig: FreemarkerConfig
-) {
+) : ExtensionPoint {
 
     fun generatePublicTaskHtml(
         fileName: String,

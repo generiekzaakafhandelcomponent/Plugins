@@ -18,7 +18,12 @@ package com.ritense.valtimoplugins.freemarker.repository
 
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
 import java.util.UUID
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
+import org.springframework.stereotype.Repository
 
-interface TemplateRepository : JpaRepository<ValtimoTemplate, UUID>, JpaSpecificationExecutor<ValtimoTemplate>
+@Extension
+@Repository
+interface TemplateRepository : JpaRepository<ValtimoTemplate, UUID>, JpaSpecificationExecutor<ValtimoTemplate>, ExtensionPoint

@@ -19,7 +19,7 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from "@angular/forms";
 import {CarbonMultiInputModule, FormModule, InputModule} from "@valtimo/components";
@@ -29,6 +29,7 @@ import {
 import {
     BerkelybridgeTextgeneratorConfigurationComponent
 } from './components/berkelybridge-textgenerator-configuration/berkelybridge-textgenerator-configuration.component';
+import {berkelybridgeTextgeneratorPluginSpecification} from './berkelybridge-textgenerator-plugin.specification';
 
 @NgModule({
     declarations: [
@@ -41,6 +42,14 @@ import {
         BerkelybridgeTextgeneratorConfigurationComponent,
         TextGenerationConfigurationComponent
     ],
+    providers: [
+        {
+            provide: PLUGINS_TOKEN,
+            useValue: [
+                berkelybridgeTextgeneratorPluginSpecification,
+            ]
+        }
+    ]
 })
 export class BerkelybridgeTextgeneratorPluginModule {
 }

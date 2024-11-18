@@ -18,18 +18,19 @@ package com.ritense.valtimoplugins.notifynl.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.notifynl.client.NotifyNlClient
 import com.ritense.valtimoplugins.notifynl.service.NotifyNlTokenGenerationService
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.stereotype.Component
 
+@Extension(ordinal = 1)
 @Component
-@SkipComponentScan
 class NotifyNlPluginFactory(
     pluginService: PluginService,
     val client: NotifyNlClient,
     val tokenGenerationService: NotifyNlTokenGenerationService,
-) : PluginFactory<NotifyNlPlugin>(pluginService) {
+) : PluginFactory<NotifyNlPlugin>(pluginService), ExtensionPoint {
 
     override fun create(): NotifyNlPlugin {
         return NotifyNlPlugin(client, tokenGenerationService)

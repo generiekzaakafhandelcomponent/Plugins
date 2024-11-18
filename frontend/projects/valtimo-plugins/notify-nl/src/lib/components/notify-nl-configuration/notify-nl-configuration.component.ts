@@ -23,8 +23,8 @@ import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'valtimo-notify-nl-configuration',
-  templateUrl: './notify-nl-configuration.component.html',
-  styleUrls: ['./notify-nl-configuration.component.scss'],
+  template: require('./notify-nl-configuration.component.html'),
+  styles: [require('./notify-nl-configuration.component.scss')],
 })
 export class NotifyNlConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy
@@ -35,12 +35,6 @@ export class NotifyNlConfigurationComponent
   @Input() prefillConfiguration$!: Observable<NotifyNlConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
-
-  constructor(
-      private readonly pluginManagementService: PluginManagementService,
-      private readonly translateService: TranslateService,
-      private readonly pluginTranslationService: PluginTranslationService
-  ) {}
 
   private saveSubscription!: Subscription;
   private readonly formValue$ = new BehaviorSubject<NotifyNlConfig | null>(null);

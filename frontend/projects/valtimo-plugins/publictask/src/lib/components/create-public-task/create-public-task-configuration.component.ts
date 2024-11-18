@@ -21,7 +21,7 @@ import {CreatePublicTaskConfig} from '../../models';
 
 @Component({
   selector: 'valtimo-create-public-task-configuration',
-  templateUrl: './create-public-task-configuration.component.html',
+  template: require('./create-public-task-configuration.component.html'),
 })
 
 export class CreatePublicTaskConfigurationComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {

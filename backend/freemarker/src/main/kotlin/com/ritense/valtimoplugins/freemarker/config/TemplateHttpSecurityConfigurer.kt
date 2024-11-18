@@ -19,14 +19,19 @@ package com.ritense.valtimoplugins.freemarker.config
 import com.ritense.valtimo.contract.authentication.AuthoritiesConstants.ADMIN
 import com.ritense.valtimo.contract.security.config.HttpConfigurerConfigurationException
 import com.ritense.valtimo.contract.security.config.HttpSecurityConfigurer
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.http.HttpMethod.DELETE
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
 import org.springframework.http.HttpMethod.PUT
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
+import org.springframework.stereotype.Component
 
-class TemplateHttpSecurityConfigurer : HttpSecurityConfigurer {
+@Extension
+@Component
+class TemplateHttpSecurityConfigurer : HttpSecurityConfigurer, ExtensionPoint {
 
     override fun configure(http: HttpSecurity) {
         try {

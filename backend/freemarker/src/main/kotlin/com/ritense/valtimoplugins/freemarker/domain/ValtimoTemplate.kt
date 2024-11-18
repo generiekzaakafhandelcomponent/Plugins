@@ -23,7 +23,10 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.util.UUID
 import org.hibernate.annotations.Type
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension(ordinal = -1)
 @Entity
 @Table(name = "valtimo_template")
 class ValtimoTemplate(
@@ -47,7 +50,7 @@ class ValtimoTemplate(
 
     @Column(name = "content")
     val content: String = ""
-) {
+) : ExtensionPoint {
 
     override fun toString(): String = (caseDefinitionName ?: "") + "/$type/$key"
 }

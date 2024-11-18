@@ -16,24 +16,24 @@
 
 package com.ritense.valtimoplugins.freemarker.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.exporter.ExportFile
 import com.ritense.exporter.ExportPrettyPrinter
 import com.ritense.exporter.ExportResult
 import com.ritense.exporter.Exporter
 import com.ritense.exporter.request.DocumentDefinitionExportRequest
 import com.ritense.valtimoplugins.freemarker.model.TemplateDeploymentMetadata
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
+@Extension(ordinal = 2)
 @Component
-@SkipComponentScan
 @Transactional(readOnly = true)
 class TemplateExporter(
-    private val objectMapper: ObjectMapper,
     private val templateService: TemplateService
-) : Exporter<DocumentDefinitionExportRequest> {
+) : Exporter<DocumentDefinitionExportRequest>, ExtensionPoint {
 
     override fun supports() = DocumentDefinitionExportRequest::class.java
 
@@ -57,7 +57,7 @@ class TemplateExporter(
         val exportFiles = templateDeploymentMetadataList.map { templateMetadata ->
             ExportFile(
                 PATH.format(templateMetadata.templateKey, templateMetadata.templateType),
-                objectMapper.writer(ExportPrettyPrinter()).writeValueAsBytes(templateMetadata)
+                jacksonObjectMapper().writer(ExportPrettyPrinter()).writeValueAsBytes(templateMetadata)
             )
         }
 

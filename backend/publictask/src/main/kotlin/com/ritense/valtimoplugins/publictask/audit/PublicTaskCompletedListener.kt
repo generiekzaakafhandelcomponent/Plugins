@@ -25,12 +25,17 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.UUID
 import org.camunda.bpm.engine.delegate.DelegateTask
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.stereotype.Component
 
+@Extension(ordinal = 1)
+@Component
 class PublicTaskCompletedListener(
     private val applicationEventPublisher: ApplicationEventPublisher,
     private val publicTaskRepository: PublicTaskRepository
-) : TaskCompletedListener(applicationEventPublisher) {
+) : TaskCompletedListener(applicationEventPublisher), ExtensionPoint {
 
     override fun notify(delegateTask: DelegateTask) {
         with(publicTaskRepository.findAll()) {

@@ -17,8 +17,8 @@ import {
 
 @Component({
     selector: 'spotler-send-mail-action-configuration',
-    templateUrl: './send-mail-action-configuration.component.html',
-    styleUrls: ['./send-mail-action-configuration.component.scss'],
+    template: require('./send-mail-action-configuration.component.html'),
+    styles: [require('./send-mail-action-configuration.component.scss')],
 })
 export class SendMailActionConfigurationComponent
     // The component explicitly implements the FunctionConfigurationComponent interface

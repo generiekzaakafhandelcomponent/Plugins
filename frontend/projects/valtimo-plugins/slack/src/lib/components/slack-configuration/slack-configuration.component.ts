@@ -16,15 +16,13 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PluginConfigurationComponent, PluginConfigurationData} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {SlackConfig} from '../../models';
-import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
-import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'valtimo-slack-configuration',
-  templateUrl: './slack-configuration.component.html',
-  styleUrls: ['./slack-configuration.component.scss'],
+  template: require('./slack-configuration.component.html'),
+  styles: [require('./slack-configuration.component.scss')],
 })
 export class SlackConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy
@@ -36,27 +34,6 @@ export class SlackConfigurationComponent
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
 
-  constructor(
-      private readonly pluginManagementService: PluginManagementService,
-      private readonly translateService: TranslateService,
-      private readonly pluginTranslationService: PluginTranslationService
-  ) {}
-
-  readonly authenticationPluginSelectItems$: Observable<Array<{id?: string; text: string}>> =
-    combineLatest([
-      this.pluginManagementService.getPluginConfigurationsByCategory('slack-authentication'),
-      this.translateService.stream('key'),
-    ]).pipe(
-      map(([configurations]) =>
-        configurations.map(configuration => ({
-          id: configuration.id,
-          text: `${configuration.title} - ${this.pluginTranslationService.instant(
-            'title',
-            configuration.pluginDefinition!.key
-          )}`,
-        }))
-      )
-    );
   private saveSubscription!: Subscription;
   private readonly formValue$ = new BehaviorSubject<SlackConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);

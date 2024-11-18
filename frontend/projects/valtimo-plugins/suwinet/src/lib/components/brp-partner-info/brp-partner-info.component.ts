@@ -21,8 +21,8 @@ import {BrpPartnerInfoConfig} from '../../models';
 
 @Component({
     selector: 'brp-partner-info',
-    templateUrl: './brp-partner-info.component.html',
-    styleUrls: ['./brp-partner-info.component.scss'],
+    template: require('./brp-partner-info.component.html'),
+    styles: [require('./brp-partner-info.component.scss')],
 })
 
 export class BrpPartnerInfoComponent

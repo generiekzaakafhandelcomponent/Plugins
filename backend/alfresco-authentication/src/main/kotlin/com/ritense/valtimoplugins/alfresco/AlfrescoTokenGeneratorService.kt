@@ -25,11 +25,16 @@ import io.jsonwebtoken.security.Keys
 import java.nio.charset.Charset
 import java.util.Date
 import mu.KotlinLogging
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Service
 
 private const val FALLBACK_USER = "System"
 private val logger = KotlinLogging.logger {}
 
-class AlfrescoTokenGeneratorService {
+@Extension
+@Service
+class AlfrescoTokenGeneratorService : ExtensionPoint {
 
     fun generateToken(secretKey: String, clientId: String): String {
         logger.debug { "generating a token" }

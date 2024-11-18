@@ -7,14 +7,19 @@ import com.ritense.valtimoplugins.suwinet.exception.ParseToDtoException
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import java.time.temporal.ChronoField
 import mu.KotlinLogging
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Service
 
+@Extension(ordinal = 1)
+@Service
 @Suppress("UNUSED")
 class SuwinetBrpStoreToDocService(
     private val documentWriterService: DocumentWriterService,
     private val documentService: DocumentService,
     private val dateTimeService: DateTimeService,
     private val maxAgeKindAlsThuiswonend: Int
-) {
+) : ExtensionPoint {
     fun storePersoonsgegevens(
         brpPersoonsgegevensInfo: Map<String, Any>?,
         targetPathPersoon: String,

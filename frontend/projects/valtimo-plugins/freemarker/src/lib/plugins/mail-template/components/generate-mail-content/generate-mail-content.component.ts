@@ -26,7 +26,7 @@ import {DocumentService} from '@valtimo/document';
 
 @Component({
     selector: 'valtimo-generate-mail-content-configuration',
-    templateUrl: './generate-mail-content.component.html',
+    template: require('./generate-mail-content.component.html'),
 })
 export class GenerateMailContentComponent
     implements FunctionConfigurationComponent, OnInit, OnDestroy {

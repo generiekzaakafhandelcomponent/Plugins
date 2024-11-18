@@ -21,14 +21,19 @@ package com.ritense.valtimoplugins.berkelybridge.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.processdocument.service.ValueResolverDelegateService
 import com.ritense.valtimoplugins.berkelybridge.client.BerkelyBridgeClient
-import com.ritense.valueresolver.ValueResolverService
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Component
 
+@Extension(ordinal = 1)
+@Component
 class BerkelyBridgePluginFactory(
     pluginService: PluginService,
     val bbClient: BerkelyBridgeClient,
-    val valueResolver: ValueResolverService
-) : PluginFactory<BerkelyBridgePlugin>(pluginService) {
+    val valueResolver: ValueResolverDelegateService
+) : PluginFactory<BerkelyBridgePlugin>(pluginService), ExtensionPoint {
 
     override fun create(): BerkelyBridgePlugin {
         return BerkelyBridgePlugin(bbClient, valueResolver)

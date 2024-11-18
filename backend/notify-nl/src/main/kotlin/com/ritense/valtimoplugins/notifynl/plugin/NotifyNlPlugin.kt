@@ -27,7 +27,10 @@ import com.ritense.valtimoplugins.notifynl.service.NotifyNlTokenGenerationServic
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 import java.util.UUID
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension
 @Plugin(
     key = "notify-nl",
     title = "NotifyNL",
@@ -36,7 +39,7 @@ import java.util.UUID
 open class NotifyNlPlugin(
     private val notifyNlClient: NotifyNlClient,
     private val tokenGenerationService: NotifyNlTokenGenerationService
-) {
+) : ExtensionPoint {
     @PluginProperty(key = "url", secret = false)
     lateinit var url: URI
 

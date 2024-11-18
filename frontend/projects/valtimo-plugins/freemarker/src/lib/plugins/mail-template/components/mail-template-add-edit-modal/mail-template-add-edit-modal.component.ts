@@ -21,7 +21,7 @@ import {CARBON_CONSTANTS, KeyGeneratorService} from '@valtimo/components';
 
 @Component({
     selector: 'valtimo-mail-template-add-edit-modal',
-    templateUrl: './mail-template-add-edit-modal.component.html',
+    template: require('./mail-template-add-edit-modal.component.html'),
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MailTemplateAddEditModalComponent implements OnInit {

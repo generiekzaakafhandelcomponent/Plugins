@@ -39,14 +39,19 @@ import com.ritense.valtimo.contract.documentgeneration.event.DossierDocumentGene
 import com.ritense.valtimo.contract.event.TaskAssignedEvent
 import com.ritense.valtimo.contract.event.TaskCompletedEvent
 import java.util.UUID
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
 
+@Extension
+@Service
 class PublicTaskCamundaProcessJsonSchemaDocumentAuditService(
     private val auditService: AuditService,
     private val documentService: JsonSchemaDocumentService,
     private val authorizationService: AuthorizationService
-) : ProcessDocumentAuditService {
+) : ProcessDocumentAuditService, ExtensionPoint {
 
     override fun getAuditLog(
         id: Document.Id,

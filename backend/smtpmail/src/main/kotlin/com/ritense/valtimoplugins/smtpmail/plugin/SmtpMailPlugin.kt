@@ -26,7 +26,10 @@ import com.ritense.valtimoplugins.smtpmail.dto.Email
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
 import com.ritense.valtimoplugins.smtpmail.service.SmtpMailService
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension(ordinal = 2)
 @Plugin(
     key = "smtp-mail",
     title = "SMTP mail Plugin",
@@ -34,7 +37,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 class SmtpMailPlugin(
     private val smtpMailService: SmtpMailService,
-) {
+) : ExtensionPoint {
 
     @PluginProperty(key = "host", secret = false, required = true)
     lateinit var host: String

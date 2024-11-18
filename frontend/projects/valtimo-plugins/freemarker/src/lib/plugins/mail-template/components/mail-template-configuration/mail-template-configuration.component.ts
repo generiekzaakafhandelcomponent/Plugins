@@ -21,7 +21,7 @@ import {MailTemplateConfig} from '../../models';
 
 @Component({
   selector: 'valtimo-mail-template-configuration',
-  templateUrl: './mail-template-configuration.component.html',
+  template: require('./mail-template-configuration.component.html'),
 })
 export class MailTemplateConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy
@@ -32,9 +32,6 @@ export class MailTemplateConfigurationComponent
   @Input() prefillConfiguration$!: Observable<MailTemplateConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
-
-  constructor(
-  ) {}
 
   private saveSubscription!: Subscription;
   private readonly formValue$ = new BehaviorSubject<MailTemplateConfig | null>(null);

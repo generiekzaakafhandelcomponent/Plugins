@@ -24,8 +24,8 @@ import {SpotlerPluginConfig} from "../../models";
 
 @Component({
   selector: 'spotler-plugin-configuration',
-  templateUrl: './spotler-plugin-configuration.component.html',
-  styleUrls: ['./spotler-plugin-configuration.component.scss'],
+  template: require('./spotler-plugin-configuration.component.html'),
+  styles: [require('./spotler-plugin-configuration.component.scss')],
 })
 export class SpotlerPluginConfigurationComponent
   implements SpotlerPluginConfigurationComponent, OnInit, OnDestroy

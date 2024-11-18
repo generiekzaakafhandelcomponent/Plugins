@@ -18,25 +18,27 @@ package com.ritense.valtimoplugins.freemarker.plugin.mail
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.processdocument.service.DocumentDelegateService
 import com.ritense.processdocument.service.ProcessDocumentService
-import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.stereotype.Component
 
+@Extension(ordinal = 2)
 @Component
-@SkipComponentScan
 class MailTemplatePluginFactory(
     pluginService: PluginService,
     private val templateService: TemplateService,
-    private val processDocumentService: ProcessDocumentService,
-    private val storageService: TemporaryResourceStorageService,
-) : PluginFactory<MailTemplatePlugin>(pluginService) {
+    private val documentDelegateService: DocumentDelegateService,
+    private val storageService: ResourceStorageDelegate,
+) : PluginFactory<MailTemplatePlugin>(pluginService), ExtensionPoint {
 
     override fun create(): MailTemplatePlugin {
         return MailTemplatePlugin(
             templateService,
-            processDocumentService,
+            documentDelegateService,
             storageService,
         )
     }

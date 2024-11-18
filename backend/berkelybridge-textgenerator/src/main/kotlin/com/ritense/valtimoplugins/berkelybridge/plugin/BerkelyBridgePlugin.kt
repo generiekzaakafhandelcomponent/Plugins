@@ -24,12 +24,14 @@ import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
+import com.ritense.processdocument.service.ValueResolverDelegateService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.valtimoplugins.berkelybridge.client.BerkelyBridgeClient
-
-import com.ritense.valueresolver.ValueResolverService
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension
 @Plugin(
     key = "bbtextgenerator",
     title = "Berkely Bridge tekst en PDF generator",
@@ -37,8 +39,8 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 class BerkelyBridgePlugin(
     private val bbClient: BerkelyBridgeClient,
-    private val valueResolverService: ValueResolverService
-) {
+    private val valueResolverService: ValueResolverDelegateService,
+) : ExtensionPoint {
 
     @PluginProperty(key = "berkelybridgeBaseUrl", secret = false, required = true)
     lateinit var berkelybridgeBaseUrl: String
@@ -74,12 +76,10 @@ class BerkelyBridgePlugin(
         return if (value == null) {
             null
         } else {
-            val resolvedValues = valueResolverService.resolveValues(
-                execution.processInstanceId,
+            valueResolverService.resolveValue(
                 execution,
-                listOf(value)
+                value
             )
-            resolvedValues[value]
         }
     }
 
@@ -91,12 +91,10 @@ class BerkelyBridgePlugin(
             null
         } else {
             keyValueList.map {
-                var resolvedValues = valueResolverService.resolveValues(
-                    execution.processInstanceId,
+                var resolvedValue = valueResolverService.resolveValue(
                     execution,
-                    listOf(it.value)
+                    it.value
                 )
-                var resolvedValue = resolvedValues[it.value]
                 TemplateProperty(it.key, resolvedValue as String)
             }
         }

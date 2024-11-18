@@ -19,7 +19,7 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from '@angular/forms';
 import {FormModule, InputModule} from '@valtimo/components';
@@ -27,6 +27,7 @@ import {SuwinetPluginConfigurationComponent} from './components/plugin-configura
 import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon-info.component';
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
 import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinderen-info.component';
+import {suwinetPluginSpecification} from './suwinet-plugin.specification';
 
 @NgModule({
     declarations: [
@@ -44,6 +45,14 @@ import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinde
         BrpKinderenInfoComponent
 
     ],
+    providers: [
+        {
+            provide: PLUGINS_TOKEN,
+            useValue: [
+                suwinetPluginSpecification,
+            ]
+        }
+    ]
 })
 export class SuwinetPluginModule {
 }

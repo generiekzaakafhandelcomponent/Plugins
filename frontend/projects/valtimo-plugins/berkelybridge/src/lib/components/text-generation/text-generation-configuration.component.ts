@@ -24,8 +24,8 @@ import {TextGeneratieConfig} from "../../models";
 
 @Component({
   selector: 'valtimo-text-generation-configuration',
-  templateUrl: './text-generation-configuration.component.html',
-  styleUrls: ['./text-generation-configuration.component.scss'],
+  template: require('./text-generation-configuration.component.html'),
+  styles: [require('./text-generation-configuration.component.scss')],
 })
 export class TextGenerationConfigurationComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy

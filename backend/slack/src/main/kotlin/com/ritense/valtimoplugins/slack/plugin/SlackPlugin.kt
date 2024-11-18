@@ -22,11 +22,15 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.resource.domain.MetadataType
-import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.resource.service.ResourceStorageDelegate
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimoplugins.slack.client.SlackClient
 import java.net.URI
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension
 @Plugin(
     key = "slack",
     title = "Slack Plugin",
@@ -34,8 +38,8 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 open class SlackPlugin(
     private val slackClient: SlackClient,
-    private val storageService: TemporaryResourceStorageService,
-) {
+    private val storageService: ResourceStorageDelegate,
+) : ExtensionPoint {
 
     @PluginProperty(key = "url", secret = false)
     lateinit var url: URI
@@ -77,14 +81,14 @@ open class SlackPlugin(
         val resourceId = execution.getVariable(RESOURCE_ID_PROCESS_VAR) as String?
             ?: throw IllegalStateException("Failed to post slack message. No process variable '$RESOURCE_ID_PROCESS_VAR' found.")
         val contentAsInputStream = storageService.getResourceContentAsInputStream(resourceId)
-        val metadata = storageService.getResourceMetadata(resourceId)
+        val metadataFileName = storageService.getMetadata(resourceId, MetadataType.FILE_NAME.key)
 
         slackClient.baseUri = url
         slackClient.token = token
         slackClient.filesUpload(
             channels = channels,
             message = message,
-            fileName = fileName ?: metadata[MetadataType.FILE_NAME.key] as String,
+            fileName = fileName ?: metadataFileName as String,
             file = contentAsInputStream
         )
     }

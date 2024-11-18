@@ -75,7 +75,6 @@ out/**
 ######################
 # Package Files
 ######################
-*.jar
 *.war
 *.ear
 *.db
@@ -158,7 +157,7 @@ Desktop.ini
 **/.gradle
 **/build/**
 **/sonatypeCentralStaging/**
-**/node_modules/**
+node_modules
 **/dist/**
 **/*.d.ts
 /.env.properties

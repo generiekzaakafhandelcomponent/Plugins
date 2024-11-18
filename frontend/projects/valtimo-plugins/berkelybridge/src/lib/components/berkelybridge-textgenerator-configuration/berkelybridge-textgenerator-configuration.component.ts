@@ -24,8 +24,8 @@ import {BerkelyBridgeTextGeneratorConfig} from "../../models";
 
 @Component({
   selector: 'valtimo-berkelybridge-textgenerator-configuration',
-  templateUrl: './berkelybridge-textgenerator-configuration.component.html',
-  styleUrls: ['./berkelybridge-textgenerator-configuration.component.scss'],
+  template: require('./berkelybridge-textgenerator-configuration.component.html'),
+  styles: [require('./berkelybridge-textgenerator-configuration.component.scss')],
 })
 export class BerkelybridgeTextgeneratorConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy

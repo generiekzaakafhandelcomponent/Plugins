@@ -22,10 +22,15 @@ import org.springframework.http.MediaType
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import java.net.URI
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Component
 
+@Extension
+@Component
 class NotifyNlClient(
     private val restClientBuilder: RestClient.Builder
-) {
+) : ExtensionPoint {
     fun sendSms(baseUri: URI, body: SendSmsRequest, token: String): SendSmsResponse {
         return restClientBuilder
             .clone()

@@ -24,8 +24,8 @@ import {SendEmailConfig} from "../../models";
 
 @Component({
   selector: 'valtimo-send-email-configuration',
-  templateUrl: './send-email-configuration.component.html',
-  styleUrls: ['./send-email-configuration.component.scss'],
+  template: require('./send-email-configuration.component.html'),
+  styles: [require('./send-email-configuration.component.scss')],
 })
 export class SendEmailConfigurationComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy

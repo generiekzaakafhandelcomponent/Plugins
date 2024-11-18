@@ -20,27 +20,26 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
 import com.ritense.valtimoplugins.freemarker.model.TemplateDeploymentMetadata
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import java.io.IOException
 import java.io.InputStream
 import mu.KLogger
 import mu.KotlinLogging
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.ResourcePatternUtils
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
+@Extension(ordinal = 2)
 @Service
-@SkipComponentScan
-@Transactional
 class TemplateDeploymentService(
     private val resourceLoader: ResourceLoader,
     private val templateService: TemplateService,
     private val objectMapper: ObjectMapper,
-) {
+) : ExtensionPoint {
 
     @EventListener(ApplicationReadyEvent::class)
     fun deployTemplates() {

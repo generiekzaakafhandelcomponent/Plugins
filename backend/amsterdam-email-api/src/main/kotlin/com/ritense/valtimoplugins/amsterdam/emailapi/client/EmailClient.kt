@@ -9,14 +9,19 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
 import java.net.URI
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Component
 
 
 private val logger = KotlinLogging.logger {}
 
+@Extension
+@Component
 class EmailClient(
     private val restTemplate: RestTemplate,
     private val eventPublisher: ApplicationEventPublisher,
-) {
+) : ExtensionPoint {
     fun send(message: EmailMessage, baseUri: URI, token: String) {
         try {
             logger.debug { "sending email naar " + message.to.toString() + " met onderwerp " + message.subject }

@@ -17,7 +17,7 @@
 import {NgModule} from '@angular/core';
 import {MailTemplateConfigurationComponent} from './components/mail-template-configuration/mail-template-configuration.component';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 import {
     CarbonListModule,
     ConfirmationModalModule,
@@ -46,6 +46,7 @@ import {MailTemplateDeleteModalComponent} from './components/mail-template-delet
 import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TemplateManagementRoutingModule} from './mail-template-management-routing.module';
+import {mailTemplatePluginSpecification} from './mail-template-plugin.specification';
 
 @NgModule({
     declarations: [
@@ -98,6 +99,12 @@ import {TemplateManagementRoutingModule} from './mail-template-management-routin
                 component: MailTemplateListComponent,
             },
             multi: true,
+        },
+        {
+            provide: PLUGINS_TOKEN,
+            useValue: [
+                mailTemplatePluginSpecification,
+            ]
         }
     ]
 })

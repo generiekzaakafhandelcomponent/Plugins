@@ -17,13 +17,22 @@
 import {NgModule} from '@angular/core';
 import {SmtpMailPluginConfigurationComponent} from './components/smtp-mail-configuration/smtpmail-plugin-configuration.component';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule} from '@valtimo/components';
 import {SendMailConfigurationComponent} from "./components/send-mail/send-mail-configuration.component";
+import {smtpmailPluginSpecification} from './smtpmail.plugin.specification';
 
 @NgModule({
   declarations: [SmtpMailPluginConfigurationComponent, SendMailConfigurationComponent],
   imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule],
-  exports: [SmtpMailPluginConfigurationComponent, SendMailConfigurationComponent]
+  exports: [SmtpMailPluginConfigurationComponent, SendMailConfigurationComponent],
+  providers: [
+    {
+      provide: PLUGINS_TOKEN,
+      useValue: [
+        smtpmailPluginSpecification,
+      ]
+    }
+  ]
 })
 export class SmtpMailPluginModule {}

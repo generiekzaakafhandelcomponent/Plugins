@@ -15,27 +15,26 @@
  */
 
 package com.ritense.valtimoplugins.smtpmail.client
-
 import com.ritense.plugin.service.PluginService
-import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContentDto
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailPluginPropertyDto
 import com.ritense.valtimoplugins.smtpmail.plugin.SmtpMailPlugin
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import jakarta.mail.internet.MimeMessage
-import org.springframework.mail.MailSendException
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
 
-@SkipComponentScan
+@Extension
 @Component
 class SmtpMailClient(
     private val pluginService: PluginService,
-    private val storageService: TemporaryResourceStorageService
-) {
+    private val storageService: ResourceStorageDelegate
+) : ExtensionPoint {
 
     fun sendEmail(
         mailContext: SmtpMailContextDto,
@@ -60,7 +59,7 @@ class SmtpMailClient(
                 javaMailSender.send(message)
             }
         } catch (e: Exception) {
-            throw MailSendException("Failed to send mail", e)
+            throw RuntimeException("Failed to send mail", e)
         }
     }
 

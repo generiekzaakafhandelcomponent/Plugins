@@ -12,7 +12,10 @@ import com.ritense.valtimo.kvk.service.KvkHandelsregisterService
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension
 @Plugin(
     key = "kvkhandelsregister",
     title = "Kvk Handelsregister Plugin",
@@ -21,7 +24,7 @@ import java.net.URI
 @Suppress("UNUSED")
 class KvkHandelsregisterPlugin(
     private val kvkHandelsregisterService: KvkHandelsregisterService
-) {
+) : ExtensionPoint {
     @PluginProperty(key = "handelsregisterBaseUrl", secret = false, required = true)
     lateinit var handelsregisterBaseUrl: URI
 

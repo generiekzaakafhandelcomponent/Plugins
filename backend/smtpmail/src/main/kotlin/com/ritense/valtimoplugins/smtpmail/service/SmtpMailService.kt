@@ -16,21 +16,22 @@
 package com.ritense.valtimoplugins.smtpmail.service
 
 import com.ritense.resource.domain.MetadataType
-import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimoplugins.smtpmail.client.SmtpMailClient
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContentDto
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import java.io.InputStream
 import mu.KotlinLogging
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.stereotype.Service
 
-@SkipComponentScan
+@Extension(ordinal = 1)
 @Service
 class SmtpMailService(
     private val smtpMailClient: SmtpMailClient,
-    private val storageService: TemporaryResourceStorageService
-) {
+    private val storageService: ResourceStorageDelegate
+) : ExtensionPoint {
 
     fun sendSmtpMail(
         mailContext: SmtpMailContextDto
@@ -59,9 +60,9 @@ class SmtpMailService(
                 totalAttachmentsSize
             )
 
-            val attachmentMetadata = storageService.getResourceMetadata(attachmentResourceId)
-            val fileName =
-                "${attachmentMetadata[MetadataType.FILE_NAME.key]}.${attachmentMetadata[MetadataType.CONTENT_TYPE.key]}"
+            val fileNameMetadata = storageService.getMetadata(attachmentResourceId, MetadataType.FILE_NAME.key)
+            val contentTypeMetadata = storageService.getMetadata(attachmentResourceId, MetadataType.CONTENT_TYPE.key)
+            val fileName = "$fileNameMetadata.$contentTypeMetadata"
 
             attachments.add(SmtpMailContentDto.Attachment(fileName, attachmentResourceId))
         }

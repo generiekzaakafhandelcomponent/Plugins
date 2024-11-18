@@ -25,7 +25,7 @@ import {FreemarkerTemplateManagementService} from '../../../../services';
 
 @Component({
     selector: 'valtimo-generate-mail-file-configuration',
-    templateUrl: './generate-mail-file.component.html',
+    template: require('./generate-mail-file.component.html'),
 })
 export class GenerateMailFileComponent
     implements FunctionConfigurationComponent, OnInit, OnDestroy {

@@ -21,8 +21,8 @@ import {BrpKinderenInfoConfig} from '../../models';
 
 @Component({
     selector: 'brp-partner-info',
-    templateUrl: './brp-kinderen-info.component.html',
-    styleUrls: ['./brp-kinderen-info.component.scss'],
+    template: require('./brp-kinderen-info.component.html'),
+    styles: [require('./brp-kinderen-info.component.scss')],
 })
 
 export class BrpKinderenInfoComponent

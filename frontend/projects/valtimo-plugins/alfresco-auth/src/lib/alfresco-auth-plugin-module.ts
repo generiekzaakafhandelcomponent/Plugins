@@ -20,8 +20,9 @@
 import {NgModule} from '@angular/core';
 import {AlfrescoAuthConfigurationComponent} from './components/alfresco-auth-configuration/alfresco-auth-configuration.component';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
+import {alfrescoAuthPluginSpecification} from './alfresco-auth-plugin.specification';
 
 @NgModule({
   declarations: [
@@ -31,5 +32,13 @@ import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
   exports: [
     AlfrescoAuthConfigurationComponent,
   ],
+  providers: [
+    {
+      provide: PLUGINS_TOKEN,
+      useValue: [
+        alfrescoAuthPluginSpecification,
+      ]
+    }
+  ]
 })
 export class AlfrescoAuthPluginModule {}

@@ -25,7 +25,7 @@ import com.ritense.plugin.web.rest.request.PluginProcessLinkCreateDto
 import com.ritense.processdocument.domain.impl.request.NewDocumentAndStartProcessRequest
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
-import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimo.contract.json.MapperSingleton
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -54,7 +54,7 @@ class SlackPluginIT : BaseIntegrationTest() {
     lateinit var repositoryService: RepositoryService
 
     @Autowired
-    lateinit var temporaryResourceStorageService: TemporaryResourceStorageService
+    lateinit var temporaryResourceStorageService: ResourceStorageDelegate
 
     lateinit var executedRequests: MutableList<RecordedRequest>
     lateinit var server: MockWebServer

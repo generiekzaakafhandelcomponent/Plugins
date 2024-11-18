@@ -22,7 +22,7 @@ import {SendMailConfig} from '../../models';
 
 @Component({
   selector: 'valtimo-send-mail-configuration',
-  templateUrl: './send-mail-configuration.component.html',
+  template: require('./send-mail-configuration.component.html'),
 })
 
 export class SendMailConfigurationComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {

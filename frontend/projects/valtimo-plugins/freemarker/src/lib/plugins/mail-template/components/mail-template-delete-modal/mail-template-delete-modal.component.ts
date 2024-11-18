@@ -19,7 +19,7 @@ import {Observable} from 'rxjs';
 
 @Component({
   selector: 'valtimo-mail-template-delete-modal',
-  templateUrl: './mail-template-delete-modal.component.html',
+  template: require('./mail-template-delete-modal.component.html'),
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MailTemplateDeleteModalComponent {

@@ -24,8 +24,8 @@ import {AlfrescoAuthConfig} from "../../models";
 
 @Component({
   selector: 'valtimo-alfresco-auth-configuration',
-  templateUrl: './alfresco-auth-configuration.component.html',
-  styleUrls: ['./alfresco-auth-configuration.component.scss'],
+  template: require('./alfresco-auth-configuration.component.html'),
+  styles: [require('./alfresco-auth-configuration.component.scss')],
 })
 export class AlfrescoAuthConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy

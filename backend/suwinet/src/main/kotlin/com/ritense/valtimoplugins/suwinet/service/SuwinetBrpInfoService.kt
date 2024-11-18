@@ -18,12 +18,17 @@ import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import mu.KotlinLogging
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Service
 
+@Extension(ordinal = 1)
+@Service
 class SuwinetBrpInfoService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
     private val nationaliteitenService: NationaliteitenService,
     private val dateTimeService: DateTimeService
-) {
+) : ExtensionPoint {
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
     fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {

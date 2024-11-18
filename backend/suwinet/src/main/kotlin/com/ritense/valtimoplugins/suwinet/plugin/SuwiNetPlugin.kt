@@ -12,14 +12,17 @@ import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import java.net.URI
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension(ordinal = 1)
 @Plugin(
     key = "suwinet", title = "SuwiNet Plugin", description = "Suwinet plugin description"
 )
 @Suppress("UNUSED")
 class SuwiNetPlugin(
     private val suwinetBrpInfoService: SuwinetBrpInfoService,
-) {
+) : ExtensionPoint {
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
 

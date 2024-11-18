@@ -24,7 +24,10 @@ import com.ritense.valtimoplugins.publictask.domain.PublicTaskData
 import com.ritense.valtimoplugins.publictask.service.PublicTaskService
 import java.util.UUID
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension
 @Plugin(
     key = "public-task",
     title = "Public Task Plugin",
@@ -32,7 +35,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 class PublicTaskPlugin(
     private val publicTaskService: PublicTaskService
-) {
+) : ExtensionPoint {
 
     @PluginAction(
         key = "create-public-task",

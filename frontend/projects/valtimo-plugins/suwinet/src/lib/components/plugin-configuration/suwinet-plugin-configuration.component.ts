@@ -24,8 +24,8 @@ import {SuwinetPluginConfig} from "../../models";
 
 @Component({
   selector: 'suwinet-plugin-configuration',
-  templateUrl: './suwinet-plugin-configuration.component.html',
-  styleUrls: ['./suwinet-plugin-configuration.component.scss'],
+  template: require('./suwinet-plugin-configuration.component.html'),
+  styles: [require('./suwinet-plugin-configuration.component.scss')],
 })
 export class SuwinetPluginConfigurationComponent
   implements SuwinetPluginConfigurationComponent, OnInit, OnDestroy

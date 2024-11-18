@@ -25,7 +25,7 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.domain.impl.request.NewDocumentAndStartProcessRequest
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processdocument.service.result.NewDocumentAndStartProcessResult
-import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimo.camunda.service.CamundaRuntimeService
 import com.ritense.valtimo.contract.json.MapperSingleton
 import java.util.UUID
@@ -49,7 +49,7 @@ class MailTemplatePluginIT : BaseIntegrationTest() {
     lateinit var camundaRuntimeService: CamundaRuntimeService
 
     @Autowired
-    lateinit var storageService: TemporaryResourceStorageService
+    lateinit var storageService: ResourceStorageDelegate
 
     lateinit var configuration: PluginConfiguration
 

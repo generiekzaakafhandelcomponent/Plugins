@@ -21,8 +21,8 @@ import {BrpPersoonInfoConfig} from '../../models';
 
 @Component({
     selector: 'brp-persoon-info',
-    templateUrl: './brp-persoon-info.component.html',
-    styleUrls: ['./brp-persoon-info.component.scss'],
+    template: require('./brp-persoon-info.component.html'),
+    styles: [require('./brp-persoon-info.component.scss')],
 })
 
 export class BrpPersoonInfoComponent

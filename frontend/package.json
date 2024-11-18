@@ -13,6 +13,7 @@
     "buildDev": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --configuration=dev --output-path=deployment/dist",
     "test": "ng test",
     "libs-build-all": "rimraf dist && npm-run-all libs:build:*",
+    "libs-webpack-all": "npm-run-all libs:webpack:*",
     "libs-publish-all": "node ./scripts/libs.publish.all.js",
     "libs:build:alfresco-auth": "ng build @valtimo-plugins/alfresco-auth",
     "libs:build:amsterdam-emailapi": "ng build @valtimo-plugins/amsterdam-emailapi",
@@ -24,6 +25,16 @@
     "libs:build:smtpmail": "ng build @valtimo-plugins/smtpmail",
     "libs:build:spotler": "ng build @valtimo-plugins/spotler",
     "libs:build:suwinet": "ng build @valtimo-plugins/suwinet",
+    "libs:webpack:alfresco-auth": "npm run webpack --prefix projects/valtimo-plugins/alfresco-auth",
+    "libs:webpack:amsterdam-emailapi": "npm run webpack --prefix projects/valtimo-plugins/amsterdam-emailapi",
+    "libs:webpack:berkelybridge": "npm run webpack --prefix projects/valtimo-plugins/berkelybridge",
+    "libs:webpack:freemarker": "npm run webpack --prefix projects/valtimo-plugins/freemarker",
+    "libs:webpack:notify-nl": "npm run webpack --prefix projects/valtimo-plugins/notify-nl",
+    "libs:webpack:publictask": "npm run webpack --prefix projects/valtimo-plugins/publictask",
+    "libs:webpack:slack": "npm run webpack --prefix projects/valtimo-plugins/slack",
+    "libs:webpack:smtpmail": "npm run webpack --prefix projects/valtimo-plugins/smtpmail",
+    "libs:webpack:spotler": "npm run webpack --prefix projects/valtimo-plugins/spotler",
+    "libs:webpack:suwinet": "npm run webpack --prefix projects/valtimo-plugins/suwinet",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "libs:watch:alfresco-auth": "ng build @valtimo-plugins/alfresco-auth --watch",
@@ -97,6 +108,7 @@
     "deepmerge-ts": "7.1.0",
     "dmn-js": "12.3.0",
     "dropzone": "6.0.0-beta.2",
+    "eslint": "8.57.0",
     "flatpickr": "4.6.13",
     "ng-packagr": "^17.2.0",
     "ngx-color-picker": "17.0.0",
@@ -113,6 +125,7 @@
     "zone.js": "0.14.10"
   },
   "devDependencies": {
+    "@angular/cli": "^17.2.1",
     "@types/jasmine": "5.1.4",
     "@types/jasminewd2": "2.0.13",
     "@types/node": "22.1.0",
@@ -126,6 +139,8 @@
     "@valtimo-plugins/smtpmail": "file:dist/valtimo-plugins/smtpmail",
     "@valtimo-plugins/spotler": "file:dist/valtimo-plugins/spotler",
     "@valtimo-plugins/suwinet": "file:dist/valtimo-plugins/suwinet",
+    "file-loader": "^6.2.0",
+    "html-loader": "^5.1.0",
     "jasmine-core": "5.2.0",
     "karma": "6.4.4",
     "karma-chrome-launcher": "3.2.0",
@@ -133,7 +148,12 @@
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.1.0",
     "puppeteer": "23.0.1",
-    "sass": "1.77.8"
+    "raw-loader": "^4.0.2",
+    "sass": "1.77.8",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.5",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
   },
   "overrides": {
     "@ng-bootstrap/ng-bootstrap": {

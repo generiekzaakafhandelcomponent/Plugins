@@ -19,16 +19,16 @@ package com.ritense.valtimoplugins.smtpmail.plugin
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.smtpmail.service.SmtpMailService
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valueresolver.ValueResolverService
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.stereotype.Component
 
-@SkipComponentScan
+@Extension(ordinal = 3)
 @Component
 class SmtpMailPluginFactory(
     pluginService: PluginService,
     private val smtpMailService: SmtpMailService,
-) : PluginFactory<SmtpMailPlugin>(pluginService) {
+) : PluginFactory<SmtpMailPlugin>(pluginService), ExtensionPoint {
 
     override fun create(): SmtpMailPlugin = SmtpMailPlugin(smtpMailService)
 }

@@ -18,12 +18,17 @@ package com.ritense.valtimoplugins.spotler.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
+@Extension(ordinal = 4)
+@Component
 class SpotlerPluginFactory(
     pluginService: PluginService,
     val restTemplate: RestTemplate
-) : PluginFactory<SpotlerPlugin>(pluginService) {
+) : PluginFactory<SpotlerPlugin>(pluginService), ExtensionPoint {
 
     override fun create() = SpotlerPlugin(restTemplate)
 

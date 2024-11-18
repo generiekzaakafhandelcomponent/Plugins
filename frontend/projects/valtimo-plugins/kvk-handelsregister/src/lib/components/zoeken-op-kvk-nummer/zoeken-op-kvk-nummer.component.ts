@@ -24,7 +24,7 @@ import {ZoekenConfig} from '../../models';
 
 @Component({
     selector: 'zoeken-op-kvk-nummer',
-    templateUrl: './zoeken-op-kvk-nummer.component.html',
+    template: require('./zoeken-op-kvk-nummer.component.html'),
     styleUrls: ['./zoeken-op-kvk-nummer.component.scss']
 })
 

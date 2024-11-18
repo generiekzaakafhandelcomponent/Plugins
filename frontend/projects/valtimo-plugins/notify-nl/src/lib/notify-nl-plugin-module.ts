@@ -16,10 +16,11 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {PLUGINS_TOKEN, PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
 import {NotifyNlConfigurationComponent} from "./components/notify-nl-configuration/notify-nl-configuration.component";
 import {SendSmsConfigurationComponent} from "./components/send-sms/send-sms-configuration.component";
+import {notifyNlPluginSpecification} from './notify-nl-plugin.specification';
 
 @NgModule({
   declarations: [
@@ -31,5 +32,13 @@ import {SendSmsConfigurationComponent} from "./components/send-sms/send-sms-conf
     NotifyNlConfigurationComponent,
     SendSmsConfigurationComponent
   ],
+  providers: [
+    {
+      provide: PLUGINS_TOKEN,
+      useValue: [
+        notifyNlPluginSpecification,
+      ]
+    }
+  ]
 })
 export class NotifyNlPluginModule {}

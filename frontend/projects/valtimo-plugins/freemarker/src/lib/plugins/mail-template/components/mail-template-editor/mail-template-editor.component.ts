@@ -24,9 +24,9 @@ import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
 
 @Component({
-    templateUrl: './mail-template-editor.component.html',
+    template: require('./mail-template-editor.component.html'),
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./mail-template-editor.component.scss'],
+    styles: [require('./mail-template-editor.component.scss')],
     providers: [NotificationService],
 })
 export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {

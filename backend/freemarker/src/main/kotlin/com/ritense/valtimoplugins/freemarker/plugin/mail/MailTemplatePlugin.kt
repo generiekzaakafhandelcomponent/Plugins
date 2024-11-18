@@ -20,13 +20,17 @@ import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
+import com.ritense.processdocument.service.DocumentDelegateService
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
-import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.resource.service.ResourceStorageDelegate
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_MAIL
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 
+@Extension
 @Plugin(
     key = "mail-template",
     title = "Mail template Plugin",
@@ -34,9 +38,9 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 open class MailTemplatePlugin(
     private val templateService: TemplateService,
-    private val processDocumentService: ProcessDocumentService,
-    private val storageService: TemporaryResourceStorageService,
-) {
+    private val documentDelegateService: DocumentDelegateService,
+    private val storageService: ResourceStorageDelegate,
+) : ExtensionPoint {
     @PluginAction(
         key = "generate-mail-file",
         title = "Generate Mail File",
@@ -69,10 +73,7 @@ open class MailTemplatePlugin(
     }
 
     private fun generateMailContent(execution: DelegateExecution, templateKey: String): String {
-        val document = processDocumentService.getDocument(
-            CamundaProcessInstanceId(execution.processInstanceId),
-            execution
-        )
+        val document = documentDelegateService.getDocument(execution)
         return templateService.generate(
             templateKey = templateKey,
             caseDefinitionName = document.definitionId().name(),

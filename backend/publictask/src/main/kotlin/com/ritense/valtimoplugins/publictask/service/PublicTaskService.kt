@@ -32,9 +32,14 @@ import mu.KotlinLogging
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Service
 
+@Extension(ordinal = 1)
+@Service
 class PublicTaskService(
     private val publicTaskRepository: PublicTaskRepository,
     private val runtimeService: RuntimeService,
@@ -42,7 +47,7 @@ class PublicTaskService(
     private val htmlRenderService: HtmlRenderService,
     private val defaultFormSubmissionService: DefaultFormSubmissionService,
     private val baseUrl: String
-) {
+) : ExtensionPoint {
 
     fun startNotifyAssigneeCandidateProcess(task: DelegateTask) {
         runtimeService.createMessageCorrelation(NOTIFY_ASSIGNEE_PROCESS_MESSAGE_NAME)

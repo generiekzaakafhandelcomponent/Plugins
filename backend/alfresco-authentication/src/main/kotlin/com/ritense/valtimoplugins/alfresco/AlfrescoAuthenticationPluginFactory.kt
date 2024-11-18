@@ -19,11 +19,16 @@ package com.ritense.valtimoplugins.alfresco
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import org.pf4j.Extension
+import org.pf4j.ExtensionPoint
+import org.springframework.stereotype.Component
 
+@Extension(ordinal = 1)
+@Component
 class AlfrescoAuthenticationPluginFactory(
     pluginService: PluginService,
     val tokenGeneratorService: AlfrescoTokenGeneratorService,
-) : PluginFactory<AlfrescoAuthenticationPlugin>(pluginService) {
+) : PluginFactory<AlfrescoAuthenticationPlugin>(pluginService), ExtensionPoint {
 
     override fun create(): AlfrescoAuthenticationPlugin {
         return AlfrescoAuthenticationPlugin(tokenGeneratorService)
