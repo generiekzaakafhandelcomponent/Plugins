@@ -17,15 +17,20 @@
 package com.ritense.externeklanttaak
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.ritense.BaseIntegrationTest
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
 import com.ritense.document.domain.impl.request.NewDocumentRequest
 import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0
 import com.ritense.externeklanttaak.web.rest.ExterneKlanttaakManagementResource
 import com.ritense.notificatiesapi.NotificatiesApiAuthentication
 import com.ritense.objectenapi.ObjectenApiAuthentication
+import com.ritense.objectenapi.client.ObjectRequest
 import com.ritense.objectmanagement.domain.ObjectManagement
 import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.objecttypenapi.ObjecttypenApiAuthentication
@@ -55,8 +60,11 @@ import org.camunda.bpm.engine.RepositoryService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.SpyBean
@@ -160,14 +168,15 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
     }
 
     @Test
-    fun `should create Externe Klanttaak`() {
-        val documentContent =
+    fun `should create Externe Klanttaak of type URL`() {
+        // given
+        val documentContentJson =
             """
                 {
                     "voornaam": "Jan"
                 }
             """.trimIndent()
-        val createActionConfig =
+        val createActionConfigJson =
             """
                 {
                     "config": {
@@ -180,16 +189,29 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                     }
                 }
             """.trimIndent()
+        val resolvedConfigCapture = argumentCaptor<IPluginActionConfig>()
 
+        // when
         createProcessLink(
             externeKlanttaakPluginConfiguration = externeKlanttaakPluginConfiguration,
-            createActionConfiguration = createActionConfig,
+            createActionConfiguration = createActionConfigJson,
         )
         startExterneKlanttaakProcess(
-            documentContent = documentContent
+            documentContent = documentContentJson
         )
 
-        assert(true)
+        // then
+        verify(externeKlanttaakService, times(1)).createExterneKlanttaak(any(), any(), any(), any())
+
+        val resultingObjectRecord: ObjectRequest =
+            objectMapper.readValue(executedRequests.last().body.inputStream())
+        val createdExterneKlanttaak: ExterneKlanttaakV1x1x0 =
+            objectMapper.treeToValue(resultingObjectRecord.record.data!!)
+
+        assertEquals("url", createdExterneKlanttaak.soort.toString())
+        assertEquals("https://example.com/taken/mytask", createdExterneKlanttaak.url?.url)
+        assertEquals("bsn", createdExterneKlanttaak.identificatie.type)
+        assertEquals("999990755", createdExterneKlanttaak.identificatie.value)
     }
 
     private fun startExterneKlanttaakProcess(
