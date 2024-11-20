@@ -23,7 +23,6 @@ import com.ritense.BaseIntegrationTest
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
 import com.ritense.document.domain.impl.request.NewDocumentRequest
 import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
-import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0
@@ -60,7 +59,6 @@ import org.camunda.bpm.engine.RepositoryService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
@@ -168,12 +166,13 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
     }
 
     @Test
-    fun `should create Externe Klanttaak of type URL`() {
+    fun `should create Externe Klanttaak`() {
         // given
         val documentContentJson =
             """
                 {
-                    "voornaam": "Jan"
+                    "voornaam": "Jan",
+                    "bsn": "999990755"
                 }
             """.trimIndent()
         val createActionConfigJson =
@@ -184,12 +183,11 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                         "url": "pv:external-url",
                         "taakReceiver": "other",
                         "identificationKey": "bsn",
-                        "identificationValue": "999990755",
+                        "identificationValue": "doc:/bsn",
                         "verloopdatum": "01-01-2025"
                     }
                 }
             """.trimIndent()
-        val resolvedConfigCapture = argumentCaptor<IPluginActionConfig>()
 
         // when
         createProcessLink(

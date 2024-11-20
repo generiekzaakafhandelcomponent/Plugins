@@ -7,7 +7,7 @@
         "voornaam": {
             "type": "string"
         },
-        "achternaam": {
+        "bsn": {
             "type": "string"
         }
     }
