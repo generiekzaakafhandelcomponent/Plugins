@@ -18,7 +18,6 @@ package com.ritense.externeklanttaak
 
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.treeToValue
-import com.ritense.externeklanttaak.TestHelper.afgerondeKlanttaak
 import com.ritense.externeklanttaak.TestHelper.afgerondeTaakObject
 import com.ritense.externeklanttaak.TestHelper.bsn
 import com.ritense.externeklanttaak.TestHelper.externalUrl
@@ -254,7 +253,6 @@ internal class ExterneKlanttaakServiceTest {
                     "externeKlanttaakObjectUrl" to objectUrl
                 )
             )
-        val afgerondeKlanttaak: ExterneKlanttaakV1x1x0 = objectMapper.treeToValue(afgerondeKlanttaak)
         val afgerondeKlanttaakWrapped: ObjectWrapper = objectMapper.treeToValue(afgerondeTaakObject)
         val verwerkteKlanttaakWrapped: ObjectWrapper = objectMapper.treeToValue(afgerondeTaakObject)
 
@@ -281,7 +279,7 @@ internal class ExterneKlanttaakServiceTest {
                 any()
             )
         ).thenReturn(mapOf("pv:externeKlanttaakObjectUrl" to objectUrl))
-        whenever(externeKlanttaakVersion.complete(any(),any(), any()))
+        whenever(externeKlanttaakVersion.complete(any(), any(), any()))
             .thenReturn(objectMapper.convertValue(verwerkteKlanttaak))
 
         // when

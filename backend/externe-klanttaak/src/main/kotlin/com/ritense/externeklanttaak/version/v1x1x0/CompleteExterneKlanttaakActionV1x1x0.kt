@@ -45,7 +45,7 @@ import java.util.UUID
 class CompleteExterneKlanttaakActionV1x1x0(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
-    private val getZaakUrl: ZaakUrlProvider,
+    private val zaakUrlProvider: ZaakUrlProvider,
 ) : IPluginAction {
     fun complete(
         externeKlanttaak: ExterneKlanttaakV1x1x0,
@@ -87,7 +87,7 @@ class CompleteExterneKlanttaakActionV1x1x0(
 
     private fun getZaakUrlAndPluginByDocumentId(businessKey: String): Pair<URI, ZakenApiPlugin> {
         val documentId = UUID.fromString(businessKey)
-        val zaakUrl = getZaakUrl.getZaakUrl(documentId)
+        val zaakUrl = zaakUrlProvider.getZaakUrl(documentId)
         val zakenApiPlugin = requireNotNull(
             pluginService.createInstance(ZakenApiPlugin::class.java, ZakenApiPlugin.findConfigurationByUrl(zaakUrl))
         ) { "No plugin configuration was found for zaak with URL $zaakUrl" }
@@ -105,8 +105,8 @@ class CompleteExterneKlanttaakActionV1x1x0(
         }
         if (submission.isNotEmpty()) {
             val processInstanceId = delegateExecution.processInstanceId
-            val taakObjectData = objectMapper.valueToTree<JsonNode>(submission)
-            val resolvedValues = getResolvedValues(submissionMapping, taakObjectData)
+            val submissionNode = objectMapper.valueToTree<JsonNode>(submission)
+            val resolvedValues = getResolvedValues(submissionMapping, submissionNode)
 
             if (resolvedValues.isNotEmpty()) {
                 valueResolverService.handleValues(

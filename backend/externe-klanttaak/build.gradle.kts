@@ -33,6 +33,7 @@ dependencies {
     implementation("com.ritense.valtimo:object-management")
     implementation("com.ritense.valtimo:objecten-api")
     implementation("com.ritense.valtimo:objecttypen-api")
+    implementation("com.ritense.valtimo:openzaak-plugin-authentication")
     implementation("com.ritense.valtimo:notificaties-api")
     implementation("com.ritense.valtimo:plugin")
     implementation("com.ritense.valtimo:process-document")
