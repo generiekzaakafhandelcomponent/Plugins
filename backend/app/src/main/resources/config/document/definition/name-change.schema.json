@@ -1,0 +1,18 @@
+{
+    "$id": "name-change.schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Name Change",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "bsn": {
+            "type": "string"
+        },
+        "currentName": {
+            "type": "string"
+        },
+        "desiredName": {
+            "type": "string"
+        }
+    }
+}
