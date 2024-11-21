@@ -310,6 +310,47 @@
         }
       }
     },
+    "@valtimo/externe-klanttaak": {
+      "projectType": "library",
+      "root": "projects/valtimo/externe-klanttaak",
+      "sourceRoot": "projects/valtimo/externe-klanttaak/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo/externe-klanttaak/tsconfig.lib.json",
+            "project": "projects/valtimo/externe-klanttaak/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo/externe-klanttaak/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo/externe-klanttaak/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo/externe-klanttaak/src/test.ts",
+            "tsConfig": "projects/valtimo/externe-klanttaak/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo/externe-klanttaak/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo/externe-klanttaak/src/**/*.ts",
+              "projects/valtimo/externe-klanttaak/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/object-management": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/object-management",

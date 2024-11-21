@@ -92,6 +92,7 @@ import {
   objectManagementPluginSpecification
 } from "../../projects/valtimo-plugins/object-management/src/lib/object-management-plugin.specification";
 import {ObjectManagementModule} from "@valtimo/object-management";
+import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo/externe-klanttaak';
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -110,6 +111,7 @@ export function tabsFactory() {
     AlfrescoAuthPluginModule,
     AmsterdamEmailapiPluginModule,
     BerkelybridgeTextgeneratorPluginModule,
+    ExterneKlanttaakPluginModule,
     MailTemplatePluginModule,
     PublictaskPluginModule,
     NotifyNlPluginModule,
@@ -174,6 +176,7 @@ export function tabsFactory() {
       alfrescoAuthPluginSpecification,
       amsterdamEmailapiPluginSpecification,
       berkelybridgeTextgeneratorPluginSpecification,
+      externeKlanttaakPluginSpecification,
       mailTemplatePluginSpecification,
       publictaskPluginSpecification,
       notifyNlPluginSpecification,
