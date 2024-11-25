@@ -22,6 +22,8 @@ export * from './lib/models';
 export * from './lib/externe-klanttaak-plugin.module';
 export * from './lib/externe-klanttaak-plugin.specification';
 export * from './lib/components/externe-klanttaak-configuration/externe-klanttaak-configuration.component';
-export * from './lib/components/version/v1x1x0/create-externe-klanttaak/create-externe-klanttaak.component';
-export * from './lib/components/version/v1x1x0/create-externe-klanttaak/components/portal-task-v2-form/portal-task-v2-form.component';
-export * from './lib/components/version/v1x1x0/complete-externe-klanttaak/complete-externe-klanttaak.component';
+
+export * from './lib/components/versions/v1x1x0/models';
+export * from './lib/components/versions/v1x1x0/components/create-externe-klanttaak/create-externe-klanttaak.component';
+export * from './lib/components/versions/v1x1x0/components/create-externe-klanttaak/components/portal-task-v2-form/portal-task-v2-form.component';
+export * from './lib/components/versions/v1x1x0/components/complete-externe-klanttaak/complete-externe-klanttaak.component';

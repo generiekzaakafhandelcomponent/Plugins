@@ -1,0 +1,14 @@
+[
+    {
+        "id": "744533ea-28c9-434c-80bb-542967b477eb",
+        "title": "Suwinet lokaal",
+        "pluginDefinitionKey": "suwinet",
+        "properties": {
+            "baseUrl": "http://localhost:8090/ws/",
+            "basicAuthName": "user",
+            "basicAuthSecret": "pwd",
+            "connectionTimeout": 10,
+            "receiveTimeout": 10
+        }
+    }
+]

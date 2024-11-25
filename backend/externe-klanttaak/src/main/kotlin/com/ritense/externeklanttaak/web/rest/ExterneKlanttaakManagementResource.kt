@@ -35,6 +35,6 @@ class ExterneKlanttaakManagementResource(
     @RunWithoutAuthorization
     @GetMapping("/v1/externe-klanttaak/supported-versions")
     fun getSupportedVersions(): ResponseEntity<List<String>> {
-        return ResponseEntity.ok(externeKalnttaakVersions.map { it.toString() })
+        return ResponseEntity.ok(externeKalnttaakVersions.map { it.version })
     }
 }

@@ -26,7 +26,7 @@ import {
     TaakSoort,
     FormulierSoort,
     ReceiverSource
-} from "../../../../../../models";
+} from "../../../../models";
 import {PluginTranslationService} from "@valtimo/plugin";
 
 @Component({

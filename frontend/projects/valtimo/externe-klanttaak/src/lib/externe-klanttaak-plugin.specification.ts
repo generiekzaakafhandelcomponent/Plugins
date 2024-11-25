@@ -19,10 +19,10 @@ import {EXTERNE_KLANTTAAK_PLUGIN_LOGO_BASE64} from './assets/externe-klanttaak-p
 import {PluginSpecification} from "@valtimo/plugin";
 import {
   CreateExterneKlanttaakComponent
-} from "./components/version/v1x1x0/create-externe-klanttaak/create-externe-klanttaak.component";
+} from "./components/versions/v1x1x0/components/create-externe-klanttaak/create-externe-klanttaak.component";
 import {
   CompleteExterneKlanttaakComponent
-} from "./components/version/v1x1x0/complete-externe-klanttaak/complete-externe-klanttaak.component";
+} from "./components/versions/v1x1x0/components/complete-externe-klanttaak/complete-externe-klanttaak.component";
 
 const externeKlanttaakPluginSpecification: PluginSpecification = {
   pluginId: 'externeklanttaak',

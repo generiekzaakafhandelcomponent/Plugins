@@ -14,5 +14,4 @@
  * limitations under the License.
  */
 
-export * from './object-management.service';
-export * from './externe-klanttaak-version.service';
+export * from './config';

@@ -35,13 +35,13 @@ import {TranslateModule} from '@ngx-translate/core';
 import {PluginTranslatePipeModule} from "@valtimo/plugin";
 import {
   CreateExterneKlanttaakComponent
-} from "./components/version/v1x1x0/create-externe-klanttaak/create-externe-klanttaak.component";
+} from "./components/versions/v1x1x0/components/create-externe-klanttaak/create-externe-klanttaak.component";
 import {
   PortalTaskV2FormComponent
-} from "./components/version/v1x1x0/create-externe-klanttaak/components/portal-task-v2-form/portal-task-v2-form.component";
+} from "./components/versions/v1x1x0/components/create-externe-klanttaak/components/portal-task-v2-form/portal-task-v2-form.component";
 import {
   CompleteExterneKlanttaakComponent
-} from "./components/version/v1x1x0/complete-externe-klanttaak/complete-externe-klanttaak.component";
+} from "./components/versions/v1x1x0/components/complete-externe-klanttaak/complete-externe-klanttaak.component";
 
 @NgModule({
   declarations: [

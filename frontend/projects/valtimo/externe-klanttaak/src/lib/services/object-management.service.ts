@@ -23,7 +23,7 @@ import {Objecttype} from '../models';
 @Injectable({
   providedIn: 'root',
 })
-export class ObjectService {
+export class ObjectManagementService {
   private valtimoEndpointUri: string;
 
   constructor(

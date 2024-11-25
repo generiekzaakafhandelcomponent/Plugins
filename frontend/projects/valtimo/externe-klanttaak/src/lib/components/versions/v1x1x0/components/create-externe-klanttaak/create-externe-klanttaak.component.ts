@@ -21,9 +21,8 @@ import {FunctionConfigurationComponent} from "@valtimo/plugin";
 import {
     CreatePortalTaskConfig,
     CreateTaskActionConfig,
-    ExterneKlanttaakPluginConfig,
     TaakVersion
-} from "../../../../models";
+} from "../../models";
 
 @Component({
     selector: 'valtimo-create-externe-klanttaak',
@@ -35,7 +34,6 @@ export class CreateExterneKlanttaakComponent
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
-    @Input() selectedPluginConfiguration$: Observable<ExterneKlanttaakPluginConfig>;
     @Input() prefillConfiguration$: Observable<CreatePortalTaskConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<CreatePortalTaskConfig> =
@@ -57,14 +55,11 @@ export class CreateExterneKlanttaakComponent
 
     private detectVersion() {
         combineLatest({
-            pluginVersion: this.selectedPluginConfiguration$.pipe(
-                map(pluginProperties => (pluginProperties ? pluginProperties.taakVersion : undefined))
-            ),
             prefillVersion: this.prefillConfiguration$.pipe(
                 map(config => (config ? config.taakVersion : undefined))
             ),
         })
-            .pipe(map(versions => versions.prefillVersion || versions.pluginVersion))
+            .pipe(map(versions => versions.prefillVersion))
             .subscribe(taakVersion => this.taakVersion$.next(taakVersion));
     }
 

@@ -20,6 +20,7 @@
     disabled: disabled$ | async,
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
     objectManagementConfigurationItems: objectManagementConfigurationItems$ | async,
+    taakVersionItems: taakVersionItems$ | async,
   } as obs"
 >
   <v-input
@@ -51,14 +52,14 @@
   <ng-container>
     <v-select
       #versionSelect
-      [items]="taakVersionItems$"
+      [items]="obs.taakVersionItems"
       [margin]="true"
       name="taakVersion"
       [title]="'taakVersion' | pluginTranslate: pluginId | async"
       [disabled]="obs.disabled"
-      [defaultSelectionId]="obs.prefill?.taakVersion"
+      [defaultSelectionId]="obs.prefill?.pluginVersion"
       [required]="true"
-      [loading]="!taakVersionItems$"
+      [loading]="!obs.taakVersionItems"
       [tooltip]="'taakVersionTooltip' | pluginTranslate: pluginId | async"
     ></v-select>
   </ng-container>
