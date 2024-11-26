@@ -72,6 +72,15 @@
         }
     },
     {
+        "model": "core.objecttype",
+        "pk": 9,
+        "fields": {
+            "service": 1,
+            "uuid": "0cc10112-67d7-46d6-a820-fa55df52039f",
+            "_name": "Externe Klanttaak V1.1.1"
+        }
+    },
+    {
         "model": "core.object",
         "pk": 1,
         "fields": {
@@ -3456,12 +3465,22 @@
             "object_type": 1,
             "mode": "read_and_write"
         }
-    },{
+    },
+    {
         "model": "token.permission",
         "pk": 8,
         "fields": {
             "token_auth": "182c13e2209161852c53cef53a879f7a2f923430",
             "object_type": 8,
+            "mode": "read_and_write"
+        }
+    },
+    {
+        "model": "token.permission",
+        "pk": 9,
+        "fields": {
+            "token_auth": "182c13e2209161852c53cef53a879f7a2f923430",
+            "object_type": 9,
             "mode": "read_and_write"
         }
     },

@@ -18,11 +18,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
-import {
-    CreatePortalTaskConfig,
-    CreateTaskActionConfig,
-    TaakVersion
-} from "../../models";
+import {CreatePortalTaskConfig, CreateTaskActionConfig, TaakVersion} from "../../models";
 
 @Component({
     selector: 'valtimo-create-externe-klanttaak',
@@ -41,7 +37,7 @@ export class CreateExterneKlanttaakComponent
     private saveSubscription!: Subscription;
     private readonly formValue$ = new BehaviorSubject<CreateTaskActionConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
-    protected readonly taakVersion$ = new BehaviorSubject<TaakVersion>(null);
+    protected readonly taakVersion$ = new BehaviorSubject<TaakVersion>(TaakVersion.V2);
 
     protected readonly TaakVersion = TaakVersion;
 

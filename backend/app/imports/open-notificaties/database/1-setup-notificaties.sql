@@ -37,5 +37,6 @@ INSERT INTO datamodel_kanaal VALUES(4, 'f4636227-e02c-4a49-8eaa-1908bb1a1e68', '
 INSERT INTO datamodel_kanaal VALUES(5, 'e3e3b1bc-8433-41a3-87b7-a08b83156e93', 'zaaktypen', '', '{}');
 INSERT INTO datamodel_kanaal VALUES(6, 'a6fcc591-f9a5-4e44-b789-f8a4a86914b9', 'informatieobjecttypen', '', '{}');
 INSERT INTO datamodel_kanaal VALUES(7, 'bffea38a-3aa2-4212-be7d-a7b1233a7408', 'besluittypen', '', '{}');
+INSERT INTO datamodel_kanaal VALUES(8, 'f03be3b0-01a1-46a7-b0ac-d39978e05878', 'objecten', '', '{}');
 
-SELECT pg_catalog.setval('datamodel_kanaal_id_seq', 7, true);
+SELECT pg_catalog.setval('datamodel_kanaal_id_seq', 8, true);

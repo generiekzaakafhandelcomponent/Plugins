@@ -18,7 +18,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 import {NgxLoggerLevel} from 'ngx-logger';
-import {ROLE_ADMIN, ROLE_USER, ValtimoConfig, UploadProvider} from '@valtimo/config';
+import {ROLE_ADMIN, ROLE_USER, ValtimoConfig, UploadProvider, IncludeFunction} from '@valtimo/config';
 import {authenticationKeycloak} from './auth/keycloak-config.dev';
 import {DARK_MODE_LOGO_BASE_64, LOGO_BASE_64} from './logo';
 
@@ -47,6 +47,13 @@ export const environment: ValtimoConfig = {
     menuItems: [
       {roles: [ROLE_USER], link: ['/'], title: 'Dashboard', iconClass: 'icon mdi mdi-view-dashboard', sequence: 0},
       {roles: [ROLE_USER], title: 'Dossiers', iconClass: 'icon mdi mdi-layers', sequence: 1, children: []},
+      {
+        roles: [ROLE_USER],
+        title: 'Objects',
+        iconClass: 'icon mdi mdi-archive',
+        sequence: 2,
+        includeFunction: IncludeFunction.ObjectManagementEnabled,
+      },
       {roles: [ROLE_USER], link: ['/tasks'], title: 'Tasks', iconClass: 'icon mdi mdi-check-all', sequence: 2},
       {roles: [ROLE_USER], link: ['/analysis'], title: 'Analysis', iconClass: 'icon mdi mdi-chart-bar', sequence: 3},
       {
@@ -89,13 +96,14 @@ export const environment: ValtimoConfig = {
   openZaak: {
     catalogus: '00000000-0000-0000-0000-000000000000',
   },
-  uploadProvider: UploadProvider.S3,
+  uploadProvider: UploadProvider.DOCUMENTEN_API,
   caseFileSizeUploadLimitMB: 100,
   defaultDefinitionTable: defaultDefinitionColumns,
   customDefinitionTables: {  },
   featureToggles: {
     disableCaseCount: true,
-    enableObjectManagement: false
+    enableObjectManagement: true,
+    compactModeOnByDefault: true
   }
 };
 

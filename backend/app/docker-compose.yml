@@ -180,6 +180,7 @@ services:
       - DB_NAME=notifications
       - DB_USER=notifications
       - DB_PASSWORD=notifications
+      - DISABLE_2FA=true
       - DEBUG=true
       - RABBITMQ_HOST=example-open-notificaties-rabbitmq
       - PUBLISH_BROKER_URL=redis://example-redis-open-notificaties:6379/0

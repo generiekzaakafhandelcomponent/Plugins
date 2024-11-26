@@ -15,15 +15,6 @@
   -->
 
 <ng-container [ngSwitch]="taakVersion$ | async">
-  <valtimo-portal-task-v1-form
-    *ngSwitchCase="TaakVersion.V1"
-    [disabled$]="disabled$"
-    [pluginId]="pluginId"
-    [prefillConfiguration$]="prefillConfiguration$"
-    (valid)="handleFormValid($event)"
-    (formValue$)="handleFormValue($event)"
-  >
-  </valtimo-portal-task-v1-form>
   <valtimo-portal-task-v2-form
     *ngSwitchCase="TaakVersion.V2"
     [disabled$]="disabled$"

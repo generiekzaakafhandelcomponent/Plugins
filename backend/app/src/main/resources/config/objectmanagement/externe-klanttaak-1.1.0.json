@@ -1,0 +1,11 @@
+{
+    "id": "8e31996b-20ed-4abf-b39b-312b98e649ab",
+    "title": "Externe Klanttaak V1.1.0",
+    "objecttypeId": "0cc10112-67d7-46d6-a820-fa55df52039f",
+    "objecttypeVersion": 1,
+    "objectenApiPluginConfigurationId": "a1a5e464-92db-41fc-9ab9-da663dd18471",
+    "objecttypenApiPluginConfigurationId": "bc109d5e-0388-4637-bcfa-b454f402bef8",
+    "showInDataMenu": true,
+    "formDefinitionView": "externe-klanttaak-v1.1.0.viewform",
+    "formDefinitionEdit": "externe-klanttaak-v1.1.0.editform"
+}

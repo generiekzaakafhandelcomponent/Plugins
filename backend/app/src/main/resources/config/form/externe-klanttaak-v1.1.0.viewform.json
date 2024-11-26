@@ -1,0 +1,12 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "content",
+      "content": "<h3>Object Content</h3><br/><pre>{{{JSON.parse(data, 4, null)}}}</pre>",
+      "type": "htmlelement",
+      "key": "data",
+      "input": true
+    }
+  ]
+}

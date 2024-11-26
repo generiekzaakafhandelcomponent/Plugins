@@ -3,7 +3,7 @@
   <bpmn:collaboration id="Collaboration_1gmd3lc">
     <bpmn:participant id="HandleNameChangeRequestParticipant" name="Handle Name Change Request" processRef="name-change-request" />
   </bpmn:collaboration>
-  <bpmn:process id="name-change-request" name="Suwinet: Retrieve BRP Personal Information" isExecutable="true">
+  <bpmn:process id="name-change-request" name="Handle Name Change Request" isExecutable="true">
     <bpmn:startEvent id="StartEvent" camunda:asyncAfter="true">
       <bpmn:outgoing>Flow_15ewkyi</bpmn:outgoing>
     </bpmn:startEvent>
