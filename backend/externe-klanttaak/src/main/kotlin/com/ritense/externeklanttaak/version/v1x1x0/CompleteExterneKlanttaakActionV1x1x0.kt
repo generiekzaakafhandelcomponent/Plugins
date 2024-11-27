@@ -25,6 +25,7 @@ import com.ritense.externeklanttaak.domain.IExterneKlanttaak
 import com.ritense.externeklanttaak.domain.IPluginAction
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.domain.SpecVersion
+import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.DataBindingConfig
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSoort.PORTAALFORMULIER
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.AFGEROND
@@ -194,6 +195,7 @@ class CompleteExterneKlanttaakActionV1x1x0(
 
     @SpecVersion(min = "1.1.0")
     data class CompleteExterneKlanttaakActionConfigV1x1x0(
+        override val externeKlanttaakVersion: Version = Version(1,1,0),
         override val resultingKlanttaakObjectUrlVariable: String? = null,
         override val klanttaakObjectUrl: String = "pv:$EXTERNE_KLANTTAAK_OBJECT_URL",
         val bewaarIngediendeGegevens: Boolean,

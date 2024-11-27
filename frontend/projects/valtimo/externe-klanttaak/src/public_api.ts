@@ -25,5 +25,5 @@ export * from './lib/components/externe-klanttaak-configuration/externe-klanttaa
 
 export * from './lib/components/versions/v1x1x0/models';
 export * from './lib/components/versions/v1x1x0/components/create-externe-klanttaak/create-externe-klanttaak.component';
-export * from './lib/components/versions/v1x1x0/components/create-externe-klanttaak/components/portal-task-v2-form/portal-task-v2-form.component';
+export * from './lib/components/versions/v1x1x0/components/create-externe-klanttaak/components/externe-klanttaak-v1x1x0-form/externe-klanttaak-v1x1x0-form.component';
 export * from './lib/components/versions/v1x1x0/components/complete-externe-klanttaak/complete-externe-klanttaak.component';

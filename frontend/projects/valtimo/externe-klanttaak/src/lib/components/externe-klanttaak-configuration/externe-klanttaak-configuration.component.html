@@ -15,94 +15,100 @@
   -->
 
 <v-form
-  (valueChange)="formValueChange($event)"
-  *ngIf="{
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
     disabled: disabled$ | async,
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
     objectManagementConfigurationItems: objectManagementConfigurationItems$ | async,
     taakVersionItems: taakVersionItems$ | async,
   } as obs"
 >
-  <v-input
-    name="configurationTitle"
-    [title]="'configurationTitle' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.configurationTitle"
-    [required]="true"
-    [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
-    placeholder="Portaaltaak Plugin"
-  >
-  </v-input>
-  <ng-container
-    *ngIf="notificatiesApiPluginSelectItems$ | async as notificatiesApiPluginSelectItems"
-  >
-    <v-select
-      [items]="notificatiesApiPluginSelectItems"
-      [margin]="true"
-      name="notificatiesApiPluginConfiguration"
-      [title]="'notificatiesApiPluginConfiguration' | pluginTranslate: pluginId | async"
-      [disabled]="obs.disabled"
-      [defaultSelectionId]="obs.prefill?.notificatiesApiPluginConfiguration"
-      [required]="true"
-      [loading]="!notificatiesApiPluginSelectItems"
-      [tooltip]="'notificatiesApiPluginConfigurationTooltip' | pluginTranslate: pluginId | async"
-    ></v-select>
-  </ng-container>
-  <ng-container>
-    <v-select
-      #versionSelect
-      [items]="obs.taakVersionItems"
-      [margin]="true"
-      name="taakVersion"
-      [title]="'taakVersion' | pluginTranslate: pluginId | async"
-      [disabled]="obs.disabled"
-      [defaultSelectionId]="obs.prefill?.pluginVersion"
-      [required]="true"
-      [loading]="!obs.taakVersionItems"
-      [tooltip]="'taakVersionTooltip' | pluginTranslate: pluginId | async"
-    ></v-select>
-  </ng-container>
-  <ng-container *ngIf="obs.objectManagementConfigurationItems && (versionSelect.selected$ | async)">
-    <cds-inline-notification
-      [notificationObj]="{
-        closeLabel: undefined,
-        duration: 0,
-        lowContrast: true,
-        smart: false,
-        target: '',
-        template: undefined,
-        title: '',
-        message: 'objectManagementConfigurationWarning' | pluginTranslate: pluginId | async,
-        type: 'warning',
-        showClose: false,
-      }"
+    <v-input
+            name="configurationTitle"
+            [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.configurationTitle"
+            [required]="true"
+            [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
+            placeholder="Portaaltaak Plugin"
     >
-    </cds-inline-notification>
-    <br />
-    <v-select
-      [items]="obs.objectManagementConfigurationItems"
-      [margin]="true"
-      name="objectManagementConfigurationId"
-      [title]="'objectManagementConfiguration' | pluginTranslate: pluginId | async"
-      [disabled]="obs.disabled"
-      [defaultSelectionId]="obs.prefill?.objectManagementConfigurationId"
-      [required]="true"
-      [loading]="!obs.objectManagementConfigurationItems"
-      [tooltip]="'objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
-    ></v-select>
-  </ng-container>
-  <ng-container *ngIf="{processSelectItems: processSelectItems$ | async} as vars">
-    <v-select
-      [items]="vars.processSelectItems"
-      [margin]="true"
-      name="completeTaakProcess"
-      [title]="'completeTaakProcess' | pluginTranslate: pluginId | async"
-      [disabled]="obs.disabled"
-      [defaultSelectionId]="obs.prefill?.completeTaakProcess"
-      [required]="true"
-      [loading]="!vars.processSelectItems"
-      [tooltip]="'completeTaakProcessTooltip' | pluginTranslate: pluginId | async"
-    ></v-select>
-  </ng-container>
+    </v-input>
+    <ng-container
+            *ngIf="notificatiesApiPluginSelectItems$ | async as notificatiesApiPluginSelectItems"
+    >
+        <v-select
+                [items]="notificatiesApiPluginSelectItems"
+                [margin]="true"
+                name="notificatiesApiPluginConfiguration"
+                [title]="'notificatiesApiPluginConfiguration' | pluginTranslate: pluginId | async"
+                [disabled]="obs.disabled"
+                [defaultSelectionId]="obs.prefill?.notificatiesApiPluginConfiguration"
+                [required]="true"
+                [loading]="!notificatiesApiPluginSelectItems"
+                [tooltip]="'notificatiesApiPluginConfigurationTooltip' | pluginTranslate: pluginId | async"
+        ></v-select>
+    </ng-container>
+    <ng-container>
+        <v-select
+            #versionSelect
+            [items]="obs.taakVersionItems"
+            [margin]="true"
+            name="taakVersion"
+            [title]="'taakVersion' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultSelectionId]="obs.prefill?.pluginVersion"
+            [required]="true"
+            [loading]="!obs.taakVersionItems"
+            [tooltip]="'taakVersionTooltip' | pluginTranslate: pluginId | async"
+        ></v-select>
+    </ng-container>
+    <ng-container
+            *ngIf="obs.objectManagementConfigurationItems && (versionSelect.selected$ | async)"
+    >
+        <cds-inline-notification
+                [ngStyle]="{
+                     'width': 'fit-content',
+                     'justify-self':'center'
+                 }"
+                [notificationObj]="{
+                    closeLabel: undefined,
+                    duration: 0,
+                    lowContrast: true,
+                    smart: false,
+                    target: '',
+                    template: undefined,
+                    title: '',
+                    message: 'objectManagementConfigurationWarning' | pluginTranslate: pluginId | async,
+                    type: 'warning',
+                    showClose: false,
+                }"
+        >
+        </cds-inline-notification>
+        <br/>
+        <v-select
+                [items]="obs.objectManagementConfigurationItems"
+                [margin]="true"
+                name="objectManagementConfigurationId"
+                [title]="'objectManagementConfiguration' | pluginTranslate: pluginId | async"
+                [disabled]="obs.disabled"
+                [defaultSelectionId]="obs.prefill?.objectManagementConfigurationId"
+                [required]="true"
+                [loading]="!obs.objectManagementConfigurationItems"
+                [tooltip]="'objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
+        ></v-select>
+    </ng-container>
+    <ng-container *ngIf="{processSelectItems: processSelectItems$ | async} as vars">
+        <v-select
+                [items]="vars.processSelectItems"
+                [margin]="true"
+                name="finalizerProcess"
+                [title]="'finalizerProcess' | pluginTranslate: pluginId | async"
+                [disabled]="obs.disabled"
+                [defaultSelectionId]="obs.prefill?.finalizerProcess"
+                [required]="true"
+                [loading]="!vars.processSelectItems"
+                [tooltip]="'finalizerProcessTooltip' | pluginTranslate: pluginId | async"
+        ></v-select>
+    </ng-container>
 </v-form>

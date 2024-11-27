@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-
-enum TaakVersion {
-  V1 = 'V1',
-  V2 = 'V2',
-}
+import {ExterneKlanttaakVersion} from "../../../../models";
 
 enum TaakSoort {
   URL = 'url',
@@ -46,32 +42,12 @@ enum OtherReceiverSoort {
   KVK = 'kvk',
 }
 
-interface CreatePortalTaskConfig {
-  taakVersion: TaakVersion;
-  config: CreateTaskActionConfig;
+interface CreateExterneKlanttaakConfig {
+  externeKlanttaakVersion: ExterneKlanttaakVersion;
+  [key: string]: any;
 }
 
-type FormType = 'id' | 'url';
-
-type Receiver = 'zaakInitiator' | 'other';
-
-type OtherReceiver = 'kvk' | 'bsn';
-
-interface CreateTaskActionConfig {}
-
-interface CreateTaskV1Config extends CreateTaskActionConfig {
-  formType: FormType;
-  formTypeId?: string;
-  formTypeUrl?: string;
-  sendData: Array<{key: string; value: string}>;
-  receiveData: Array<{key: string; value: string}>;
-  receiver: Receiver;
-  identificationKey?: string;
-  identificationValue?: string;
-  verloopDurationInDays?: number;
-}
-
-interface CreateTaskV2Config extends CreateTaskActionConfig {
+interface CreateExterneKlanttaakV1x1x0Config extends CreateExterneKlanttaakConfig {
   taakSoort: TaakSoort;
   taakUrl?: string;
   portaalformulierSoort?: FormulierSoort;
@@ -90,17 +66,11 @@ interface CreateTaskV2Config extends CreateTaskActionConfig {
 }
 
 export {
-  FormType,
-  Receiver,
   ReceiverSource,
   OtherReceiverSoort,
-  OtherReceiver,
-  TaakVersion,
   TaakSoort,
   FormulierSoort,
   TaakKoppelingRegistratie,
-  CreatePortalTaskConfig,
-  CreateTaskActionConfig,
-  CreateTaskV1Config,
-  CreateTaskV2Config,
+  CreateExterneKlanttaakConfig,
+  CreateExterneKlanttaakV1x1x0Config,
 };

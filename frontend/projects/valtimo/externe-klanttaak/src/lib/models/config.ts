@@ -19,9 +19,14 @@ import {PluginConfigurationData} from "@valtimo/plugin";
 interface ExterneKlanttaakPluginConfig extends PluginConfigurationData {
     notificatiesApiPluginConfiguration: string;
     objectManagementConfigurationId: string;
-    pluginVersion: string;
+    pluginVersion: ExterneKlanttaakVersion;
+}
+
+enum ExterneKlanttaakVersion {
+    V1x1x0 = '1.1.0',
 }
 
 export {
-    ExterneKlanttaakPluginConfig
+    ExterneKlanttaakPluginConfig,
+    ExterneKlanttaakVersion
 };

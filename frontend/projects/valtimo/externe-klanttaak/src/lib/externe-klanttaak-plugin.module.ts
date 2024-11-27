@@ -37,8 +37,8 @@ import {
   CreateExterneKlanttaakComponent
 } from "./components/versions/v1x1x0/components/create-externe-klanttaak/create-externe-klanttaak.component";
 import {
-  PortalTaskV2FormComponent
-} from "./components/versions/v1x1x0/components/create-externe-klanttaak/components/portal-task-v2-form/portal-task-v2-form.component";
+  ExterneKlanttaakV1x1x0FormComponent
+} from "./components/versions/v1x1x0/components/create-externe-klanttaak/components/externe-klanttaak-v1x1x0-form/externe-klanttaak-v1x1x0-form.component";
 import {
   CompleteExterneKlanttaakComponent
 } from "./components/versions/v1x1x0/components/complete-externe-klanttaak/complete-externe-klanttaak.component";
@@ -47,7 +47,7 @@ import {
   declarations: [
     ExterneKlanttaakConfigurationComponent,
     CreateExterneKlanttaakComponent,
-    PortalTaskV2FormComponent,
+    ExterneKlanttaakV1x1x0FormComponent,
     CompleteExterneKlanttaakComponent,
   ],
   imports: [
@@ -70,7 +70,7 @@ import {
   exports: [
     ExterneKlanttaakConfigurationComponent,
     CreateExterneKlanttaakComponent,
-    PortalTaskV2FormComponent,
+    ExterneKlanttaakV1x1x0FormComponent,
     CompleteExterneKlanttaakComponent,
   ],
 })

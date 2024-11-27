@@ -12,6 +12,7 @@ import com.ritense.externeklanttaak.version.v1x1x0.CreateExterneKlanttaakActionV
 )
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 interface IPluginActionConfig {
+    val externeKlanttaakVersion: Version
     val resultingKlanttaakObjectUrlVariable: String?
     val klanttaakObjectUrl: String?
 }

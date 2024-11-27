@@ -18,7 +18,8 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
-import {CreatePortalTaskConfig, CreateTaskActionConfig, TaakVersion} from "../../models";
+import {CreateExterneKlanttaakConfig} from "../../models";
+import {ExterneKlanttaakPluginConfig, ExterneKlanttaakVersion} from "../../../../../models";
 
 @Component({
     selector: 'valtimo-create-externe-klanttaak',
@@ -30,16 +31,16 @@ export class CreateExterneKlanttaakComponent
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
-    @Input() prefillConfiguration$: Observable<CreatePortalTaskConfig>;
+    @Input() selectedPluginConfiguration$: Observable<ExterneKlanttaakPluginConfig>;
+    @Input() prefillConfiguration$: Observable<CreateExterneKlanttaakConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<CreatePortalTaskConfig> =
-        new EventEmitter<CreatePortalTaskConfig>();
+    @Output() configuration: EventEmitter<CreateExterneKlanttaakConfig> =
+        new EventEmitter<CreateExterneKlanttaakConfig>();
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<CreateTaskActionConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<CreateExterneKlanttaakConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
-    protected readonly taakVersion$ = new BehaviorSubject<TaakVersion>(TaakVersion.V2);
-
-    protected readonly TaakVersion = TaakVersion;
+    protected readonly externeKlanttaakVersion = new BehaviorSubject<ExterneKlanttaakVersion>(ExterneKlanttaakVersion.V1x1x0);
+    protected readonly ExterneKlanttaakVersion = ExterneKlanttaakVersion;
 
     constructor() {
     }
@@ -51,12 +52,15 @@ export class CreateExterneKlanttaakComponent
 
     private detectVersion() {
         combineLatest({
+            pluginVersion: this.selectedPluginConfiguration$.pipe(
+                map(pluginProperties => (pluginProperties ? pluginProperties.pluginVersion : undefined))
+            ),
             prefillVersion: this.prefillConfiguration$.pipe(
-                map(config => (config ? config.taakVersion : undefined))
+                map(config => (config ? config.externeKlanttaakVersion : undefined))
             ),
         })
-            .pipe(map(versions => versions.prefillVersion))
-            .subscribe(taakVersion => this.taakVersion$.next(taakVersion));
+            .pipe(map(versions => versions.prefillVersion || versions.pluginVersion))
+            .subscribe(externeKlanttaakVersion => this.externeKlanttaakVersion.next(externeKlanttaakVersion));
     }
 
     ngOnDestroy(): void {
@@ -65,20 +69,20 @@ export class CreateExterneKlanttaakComponent
 
     private openSaveSubscription(): void {
         this.saveSubscription = this.save$?.subscribe(() => {
-            combineLatest([this.taakVersion$, this.formValue$, this.valid$])
+            combineLatest([this.externeKlanttaakVersion, this.formValue$, this.valid$])
                 .pipe(take(1))
-                .subscribe(([taakVersion, formValue, valid]) => {
+                .subscribe(([externeKlanttaakVersion, formValue, valid]) => {
                     if (valid) {
                         this.configuration.emit({
-                            taakVersion: taakVersion,
-                            config: formValue,
+                            externeKlanttaakVersion: externeKlanttaakVersion,
+                            ...formValue
                         });
                     }
                 });
         });
     }
 
-    handleFormValue(actionConfiguration: CreateTaskActionConfig): void {
+    handleFormValue(actionConfiguration: CreateExterneKlanttaakConfig): void {
         this.formValue$.next(actionConfiguration);
     }
 

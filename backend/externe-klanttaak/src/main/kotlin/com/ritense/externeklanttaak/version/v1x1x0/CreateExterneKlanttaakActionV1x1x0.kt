@@ -19,10 +19,12 @@ import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.patch.JsonPatchService
+import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.IExterneKlanttaak
 import com.ritense.externeklanttaak.domain.IPluginAction
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.domain.SpecVersion
+import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.DataBindingConfig
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.ExterneTaakUrl
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.FormulierSoort
@@ -236,6 +238,7 @@ class CreateExterneKlanttaakActionV1x1x0(
 
     @SpecVersion(min = "1.1.0")
     data class CreateExterneKlanttaakActionConfigV1x1x0(
+        override val externeKlanttaakVersion: Version = Version(1,1,0),
         override val resultingKlanttaakObjectUrlVariable: String? = null,
         override val klanttaakObjectUrl: String? = null,
         val taakTitel: String? = null,

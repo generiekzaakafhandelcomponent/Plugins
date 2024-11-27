@@ -53,7 +53,7 @@ class ExterneKlanttaakPlugin(
     internal lateinit var finalizerProcess: String
 
     @PluginAction(
-        key = "create-externeklanttaak",
+        key = "create-externe-klanttaak",
         title = "Create Externe Klanttaak",
         description = "Create a task for a portal by storing it in the Objecten-API",
         activityTypes = [ActivityTypeWithEventName.USER_TASK_CREATE]
@@ -77,7 +77,7 @@ class ExterneKlanttaakPlugin(
     }
 
     @PluginAction(
-        key = "complete-externeklanttaak",
+        key = "complete-externe-klanttaak",
         title = "Complete Externe Klanttaak",
         description = "Complete portal task and update status on Objects Api",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]

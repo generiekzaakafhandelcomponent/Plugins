@@ -18,7 +18,7 @@
   (valueChange)="formValueChange($event)"
   *ngIf="{
     disabled: disabled$ | async,
-    prefill: (prefillConfiguration$ | async)?.config,
+    prefill: (prefillConfiguration$ | async),
     formValue: formValue$ | async,
     taakSoortItems: taakSoortItems$ | async,
     formulierSoortItems: formulierSoortItems$ | async,
@@ -52,7 +52,7 @@
       name="ogoneBedrag"
       [title]="'ogoneBedrag' | pluginTranslate: pluginId | async"
       [margin]="true"
-      [defaultValue]="obs.prefill?.ogoneBedrag"
+      [defaultValue]="obs.prefill?.ogoneBedrag.toString()"
       [disabled]="obs.disabled"
       [tooltip]="'ogoneBedragTooltip' | pluginTranslate: pluginId | async"
       [required]="true"

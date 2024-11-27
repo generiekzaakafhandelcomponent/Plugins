@@ -14,17 +14,34 @@
   ~ limitations under the License.
   -->
 
-<ng-container [ngSwitch]="taakVersion$ | async">
-  <valtimo-portal-task-v2-form
-    *ngSwitchCase="TaakVersion.V2"
-    [disabled$]="disabled$"
-    [pluginId]="pluginId"
-    [prefillConfiguration$]="prefillConfiguration$"
-    (valid)="handleFormValid($event)"
-    (value$)="handleFormValue($event)"
-  >
-  </valtimo-portal-task-v2-form>
-  <p *ngSwitchDefault>
-    {{ 'unsupportedVersionMessage' | pluginTranslate: pluginId | async }}
-  </p>
+<ng-container [ngSwitch]="externeKlanttaakVersion | async">
+    <valtimo-externe-klanttaak-v1x1x0-form
+            *ngSwitchCase="ExterneKlanttaakVersion.V1x1x0"
+            [disabled$]="disabled$"
+            [pluginId]="pluginId"
+            [prefillConfiguration$]="prefillConfiguration$"
+            (valid)="handleFormValid($event)"
+            (value$)="handleFormValue($event)"
+    >
+    </valtimo-externe-klanttaak-v1x1x0-form>
+    <div *ngSwitchDefault [ngStyle]="{'justify-self': 'center'}">
+        <cds-inline-notification
+            [ngStyle]="{
+                'width': 'fit-content',
+            }"
+            [notificationObj]="{
+                closeLabel: undefined,
+                duration: 0,
+                lowContrast: true,
+                smart: false,
+                target: '',
+                template: undefined,
+                title: '',
+                message: 'unsupportedVersionMessage' | pluginTranslate: pluginId | async,
+                type: 'warning',
+                showClose: false,
+            }"
+        >
+        </cds-inline-notification>
+    </div>
 </ng-container>
