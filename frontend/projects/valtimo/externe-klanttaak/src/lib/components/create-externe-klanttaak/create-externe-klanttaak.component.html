@@ -15,7 +15,7 @@
   -->
 
 <ng-container [ngSwitch]="externeKlanttaakVersion | async">
-    <valtimo-externe-klanttaak-v1x1x0-form
+    <valtimo-create-externe-klanttaak-v1x1x0-form
             *ngSwitchCase="ExterneKlanttaakVersion.V1x1x0"
             [disabled$]="disabled$"
             [pluginId]="pluginId"
@@ -23,7 +23,7 @@
             (valid)="handleFormValid($event)"
             (value$)="handleFormValue($event)"
     >
-    </valtimo-externe-klanttaak-v1x1x0-form>
+    </valtimo-create-externe-klanttaak-v1x1x0-form>
     <div *ngSwitchDefault [ngStyle]="{'justify-self': 'center'}">
         <cds-inline-notification
             [ngStyle]="{

@@ -15,39 +15,37 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
-
+import {BehaviorSubject, combineLatest, map, Observable, Subscription} from 'rxjs';
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
-import {CreateExterneKlanttaakConfig} from "../../models";
-import {ExterneKlanttaakPluginConfig, ExterneKlanttaakVersion} from "../../../../../models";
+import {CompleteExterneKlanttaakConfig, ExterneKlanttaakPluginConfig, ExterneKlanttaakVersion} from "../../models";
 
 @Component({
-    selector: 'valtimo-create-externe-klanttaak',
-    templateUrl: './create-externe-klanttaak.component.html',
-    styleUrls: ['./create-externe-klanttaak.component.scss'],
+    selector: 'valtimo-complete-externe-klanttaak',
+    templateUrl: './complete-externe-klanttaak.component.html',
+    styleUrls: ['./complete-externe-klanttaak.component.scss'],
 })
-export class CreateExterneKlanttaakComponent
+export class CompleteExterneKlanttaakComponent
     implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
     @Input() selectedPluginConfiguration$: Observable<ExterneKlanttaakPluginConfig>;
-    @Input() prefillConfiguration$: Observable<CreateExterneKlanttaakConfig>;
+    @Input() prefillConfiguration$: Observable<CompleteExterneKlanttaakConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<CreateExterneKlanttaakConfig> =
-        new EventEmitter<CreateExterneKlanttaakConfig>();
+    @Output() configuration: EventEmitter<any> = new EventEmitter<any>();
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<CreateExterneKlanttaakConfig | null>(null);
-    private readonly valid$ = new BehaviorSubject<boolean>(false);
     protected readonly externeKlanttaakVersion = new BehaviorSubject<ExterneKlanttaakVersion>(ExterneKlanttaakVersion.V1x1x0);
-    protected readonly ExterneKlanttaakVersion = ExterneKlanttaakVersion;
-
-    constructor() {
-    }
+    private readonly formValue$ = new BehaviorSubject<CompleteExterneKlanttaakConfig | null>(null);
+    private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     ngOnInit(): void {
         this.detectVersion();
         this.openSaveSubscription();
+        this.valid.emit(true);
+    }
+
+    ngOnDestroy(): void {
+        this.saveSubscription?.unsubscribe();
     }
 
     private detectVersion() {
@@ -63,26 +61,15 @@ export class CreateExterneKlanttaakComponent
             .subscribe(externeKlanttaakVersion => this.externeKlanttaakVersion.next(externeKlanttaakVersion));
     }
 
-    ngOnDestroy(): void {
-        this.saveSubscription?.unsubscribe();
-    }
-
     private openSaveSubscription(): void {
-        this.saveSubscription = this.save$?.subscribe(() => {
-            combineLatest([this.externeKlanttaakVersion, this.formValue$, this.valid$])
-                .pipe(take(1))
-                .subscribe(([externeKlanttaakVersion, formValue, valid]) => {
-                    if (valid) {
-                        this.configuration.emit({
-                            externeKlanttaakVersion: externeKlanttaakVersion,
-                            ...formValue
-                        });
-                    }
-                });
+        this.saveSubscription = this.save$?.subscribe(save => {
+            this.configuration.emit({});
         });
     }
 
-    handleFormValue(actionConfiguration: CreateExterneKlanttaakConfig): void {
+    protected readonly ExterneKlanttaakVersion = ExterneKlanttaakVersion;
+
+    handleFormValue(actionConfiguration: CompleteExterneKlanttaakConfig): void {
         this.formValue$.next(actionConfiguration);
     }
 

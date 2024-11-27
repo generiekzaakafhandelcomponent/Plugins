@@ -14,63 +14,66 @@
  * limitations under the License.
  */
 
-import {ExterneKlanttaakVersion} from "../../../../models";
+import {CompleteExterneKlanttaakConfig, CreateExterneKlanttaakConfig} from "../../../../models";
 
 enum TaakSoort {
-  URL = 'url',
-  PORTAALFORMULIER = 'portaalformulier',
-  OGONEBETALING = 'ogonebetaling',
+    URL = 'url',
+    PORTAALFORMULIER = 'portaalformulier',
+    OGONEBETALING = 'ogonebetaling',
 }
 
 enum FormulierSoort {
-  URL = 'url',
-  ID = 'id',
+    URL = 'url',
+    ID = 'id',
 }
 
 enum TaakKoppelingRegistratie {
-  ZAAK = 'zaak',
-  PRODUCT = 'product',
+    ZAAK = 'zaak',
+    PRODUCT = 'product',
 }
 
 enum ReceiverSource {
-  ZAAKINITIATOR = 'zaakInitiator',
-  OTHER = 'other',
+    ZAAKINITIATOR = 'zaakInitiator',
+    OTHER = 'other',
 }
 
 enum OtherReceiverSoort {
-  BSN = 'bsn',
-  KVK = 'kvk',
-}
-
-interface CreateExterneKlanttaakConfig {
-  externeKlanttaakVersion: ExterneKlanttaakVersion;
-  [key: string]: any;
+    BSN = 'bsn',
+    KVK = 'kvk',
 }
 
 interface CreateExterneKlanttaakV1x1x0Config extends CreateExterneKlanttaakConfig {
-  taakSoort: TaakSoort;
-  taakUrl?: string;
-  portaalformulierSoort?: FormulierSoort;
-  portaalformulierValue?: string;
-  portaalformulierData?: Array<{key: string; value: string}>;
-  portaalformulierVerzondenData?: Array<{key: string; value: string}>;
-  ogoneBedrag?: number;
-  ogoneBetaalkenmerk?: string;
-  ogonePspid?: string;
-  receiver: ReceiverSource;
-  identificationKey?: OtherReceiverSoort;
-  identificationValue?: string;
-  verloopdatum?: string;
-  koppelingRegistratie?: TaakKoppelingRegistratie;
-  koppelingUuid?: string;
+    taakTitel?: string;
+    taakSoort: TaakSoort;
+    url?: string;
+    portaalformulierSoort?: FormulierSoort;
+    portaalformulierValue?: string;
+    portaalformulierData?: Array<{ key: string; value: string }>;
+    ogoneBedrag?: number;
+    ogoneBetaalkenmerk?: string;
+    ogonePspid?: string;
+    taakReceiver: ReceiverSource;
+    identificationKey?: OtherReceiverSoort;
+    identificationValue?: string;
+    verloopdatum?: string;
+    koppelingRegistratie?: TaakKoppelingRegistratie;
+    koppelingUuid?: string;
+}
+
+interface CompleteExterneKlanttaakV1x1x0Config extends CompleteExterneKlanttaakConfig {
+    bewaarIngediendeGegevens: boolean;
+    verzondenDataMapping?: Array<{ key: string; value: string }>;
+    koppelDocumenten: boolean;
+    documentPadenPad?: string;
 }
 
 export {
-  ReceiverSource,
-  OtherReceiverSoort,
-  TaakSoort,
-  FormulierSoort,
-  TaakKoppelingRegistratie,
-  CreateExterneKlanttaakConfig,
-  CreateExterneKlanttaakV1x1x0Config,
+    ReceiverSource,
+    OtherReceiverSoort,
+    TaakSoort,
+    FormulierSoort,
+    TaakKoppelingRegistratie,
+    CreateExterneKlanttaakConfig,
+    CreateExterneKlanttaakV1x1x0Config,
+    CompleteExterneKlanttaakV1x1x0Config,
 };

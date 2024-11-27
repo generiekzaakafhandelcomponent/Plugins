@@ -18,22 +18,16 @@ import {BehaviorSubject, map, Observable} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {SelectItem} from '@valtimo/components';
 import {Toggle} from 'carbon-components-angular';
-import {
-    CreateExterneKlanttaakV1x1x0Config,
-    FormulierSoort,
-    OtherReceiverSoort,
-    ReceiverSource,
-    TaakKoppelingRegistratie,
-    TaakSoort
-} from "../../../../models";
 import {PluginTranslationService} from "@valtimo/plugin";
+import {CreateExterneKlanttaakV1x1x0Config, FormulierSoort, OtherReceiverSoort,
+    ReceiverSource, TaakKoppelingRegistratie, TaakSoort} from "../../models";
 
 @Component({
-    selector: 'valtimo-externe-klanttaak-v1x1x0-form',
-    templateUrl: './externe-klanttaak-v1x1x0-form.component.html',
-    styleUrl: './externe-klanttaak-v1x1x0-form.component.scss',
+    selector: 'valtimo-create-externe-klanttaak-v1x1x0-form',
+    templateUrl: './create-externe-klanttaak-v1x1x0-form.component.html',
+    styleUrl: './create-externe-klanttaak-v1x1x0-form.component.scss',
 })
-export class ExterneKlanttaakV1x1x0FormComponent {
+export class CreateExterneKlanttaakV1x1x0FormComponent {
     @Input({required: true}) disabled$: Observable<boolean>;
     @Input({required: true}) pluginId: string;
     @Input() prefillConfiguration$: Observable<CreateExterneKlanttaakV1x1x0Config>;
@@ -41,6 +35,7 @@ export class ExterneKlanttaakV1x1x0FormComponent {
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @ViewChild('verloopdatumVanToepassing') verloopdatumVanToepassing: Toggle;
     @ViewChild('koppelingVanToepassing') koppelingVanToepassing: Toggle;
+    @ViewChild('storeResultingUrlVariableName') storeResultingUrlVariableName: Toggle;
     protected readonly formValue$ = new BehaviorSubject<CreateExterneKlanttaakV1x1x0Config | null>(null);
     protected readonly TAAK_SOORT_OPTIONS: string[] = Object.values(TaakSoort);
     protected readonly taakSoortItems$ = this.selectItemsToTranslatedItems(this.TAAK_SOORT_OPTIONS);
@@ -77,8 +72,7 @@ export class ExterneKlanttaakV1x1x0FormComponent {
                         !!(
                             !!formValue.portaalformulierSoort &&
                             !!formValue.portaalformulierValue &&
-                            !!formValue.portaalformulierData &&
-                            !!formValue.portaalformulierVerzondenData
+                            !!formValue.portaalformulierData
                         )) ||
                     !!(
                         formValue.taakSoort === TaakSoort.OGONEBETALING &&
@@ -93,7 +87,10 @@ export class ExterneKlanttaakV1x1x0FormComponent {
                 !this.koppelingVanToepassing?.checked ||
                 !!(!!formValue.koppelingRegistratie && !!formValue.koppelingUuid)
             ) &&
-            !!(!this.verloopdatumVanToepassing?.checked || !!formValue.verloopdatum);
+            !!(!this.verloopdatumVanToepassing?.checked || !!formValue.verloopdatum) &&
+            !!(!this.storeResultingUrlVariableName?.checked || !!formValue.resultingKlanttaakObjectUrlVariable);
+
+        console.log("formValue", formValue);
 
         if (valid) {
             this.value$.next(formValue);

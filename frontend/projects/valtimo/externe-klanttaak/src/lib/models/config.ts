@@ -26,7 +26,21 @@ enum ExterneKlanttaakVersion {
     V1x1x0 = '1.1.0',
 }
 
+interface CreateExterneKlanttaakConfig {
+    externeKlanttaakVersion: ExterneKlanttaakVersion;
+    resultingKlanttaakObjectUrlVariable?: string;
+    [key: string]: any;
+}
+
+interface CompleteExterneKlanttaakConfig {
+    externeKlanttaakVersion: ExterneKlanttaakVersion;
+    klanttaakObjectUrl?: string;
+    [key: string]: any;
+}
+
 export {
     ExterneKlanttaakPluginConfig,
-    ExterneKlanttaakVersion
+    ExterneKlanttaakVersion,
+    CreateExterneKlanttaakConfig,
+    CompleteExterneKlanttaakConfig,
 };

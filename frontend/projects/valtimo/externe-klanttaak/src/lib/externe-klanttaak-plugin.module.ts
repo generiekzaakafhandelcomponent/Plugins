@@ -35,20 +35,24 @@ import {TranslateModule} from '@ngx-translate/core';
 import {PluginTranslatePipeModule} from "@valtimo/plugin";
 import {
   CreateExterneKlanttaakComponent
-} from "./components/versions/v1x1x0/components/create-externe-klanttaak/create-externe-klanttaak.component";
-import {
-  ExterneKlanttaakV1x1x0FormComponent
-} from "./components/versions/v1x1x0/components/create-externe-klanttaak/components/externe-klanttaak-v1x1x0-form/externe-klanttaak-v1x1x0-form.component";
+} from "./components/create-externe-klanttaak/create-externe-klanttaak.component";
 import {
   CompleteExterneKlanttaakComponent
-} from "./components/versions/v1x1x0/components/complete-externe-klanttaak/complete-externe-klanttaak.component";
+} from "./components/complete-externe-klanttaak/complete-externe-klanttaak.component";
+import {
+  CreateExterneKlanttaakV1x1x0FormComponent
+} from "./components/versions/v1x1x0/components/create-externe-klanttaak-v1x1x0-form/create-externe-klanttaak-v1x1x0-form.component";
+import {
+  CompleteExterneKlanttaakV1x1x0FormComponent
+} from "./components/versions/v1x1x0/components/complete-externe-klanttaak-v1x1x0-form/complete-externe-klanttaak-v1x1x0-form.component";
 
 @NgModule({
   declarations: [
     ExterneKlanttaakConfigurationComponent,
     CreateExterneKlanttaakComponent,
-    ExterneKlanttaakV1x1x0FormComponent,
     CompleteExterneKlanttaakComponent,
+    CreateExterneKlanttaakV1x1x0FormComponent,
+    CompleteExterneKlanttaakV1x1x0FormComponent,
   ],
   imports: [
     CommonModule,
@@ -70,8 +74,9 @@ import {
   exports: [
     ExterneKlanttaakConfigurationComponent,
     CreateExterneKlanttaakComponent,
-    ExterneKlanttaakV1x1x0FormComponent,
     CompleteExterneKlanttaakComponent,
+    CreateExterneKlanttaakV1x1x0FormComponent,
+    CompleteExterneKlanttaakV1x1x0FormComponent,
   ],
 })
 export class ExterneKlanttaakPluginModule {}

@@ -22,8 +22,9 @@ export * from './lib/models';
 export * from './lib/externe-klanttaak-plugin.module';
 export * from './lib/externe-klanttaak-plugin.specification';
 export * from './lib/components/externe-klanttaak-configuration/externe-klanttaak-configuration.component';
+export * from './lib/components/create-externe-klanttaak/create-externe-klanttaak.component';
+export * from './lib/components/complete-externe-klanttaak/complete-externe-klanttaak.component';
 
 export * from './lib/components/versions/v1x1x0/models';
-export * from './lib/components/versions/v1x1x0/components/create-externe-klanttaak/create-externe-klanttaak.component';
-export * from './lib/components/versions/v1x1x0/components/create-externe-klanttaak/components/externe-klanttaak-v1x1x0-form/externe-klanttaak-v1x1x0-form.component';
-export * from './lib/components/versions/v1x1x0/components/complete-externe-klanttaak/complete-externe-klanttaak.component';
+export * from './lib/components/versions/v1x1x0/components/create-externe-klanttaak-v1x1x0-form/create-externe-klanttaak-v1x1x0-form.component';
+export * from './lib/components/versions/v1x1x0/components/complete-externe-klanttaak-v1x1x0-form/complete-externe-klanttaak-v1x1x0-form.component';
