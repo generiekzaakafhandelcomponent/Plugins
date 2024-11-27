@@ -30,7 +30,7 @@
               [ngClass]="'v-input--margin'"
               [onText]="'toggle.ja' | pluginTranslate: pluginId | async"
               [offText]="'toggle.nee' | pluginTranslate: pluginId | async"
-              [checked]="!!obs.prefill?.bewaarIngediendeGegevens"
+              [checked]="!!obs.prefill?.verzondenDataMapping"
               [disabled]="obs.disabled"
           >
           </cds-toggle>
@@ -59,7 +59,7 @@
               [ngClass]="'v-input--margin'"
               [onText]="'toggle.ja' | pluginTranslate: pluginId | async"
               [offText]="'toggle.nee' | pluginTranslate: pluginId | async"
-              [checked]="!!obs.prefill?.koppelDocumenten"
+              [checked]="!!obs.prefill?.documentPadenPad"
               [disabled]="obs.disabled"
           >
           </cds-toggle>

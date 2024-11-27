@@ -15,7 +15,7 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
 import {CompleteExterneKlanttaakConfig, ExterneKlanttaakPluginConfig, ExterneKlanttaakVersion} from "../../models";
 
@@ -62,8 +62,17 @@ export class CompleteExterneKlanttaakComponent
     }
 
     private openSaveSubscription(): void {
-        this.saveSubscription = this.save$?.subscribe(save => {
-            this.configuration.emit({});
+        this.saveSubscription = this.save$?.subscribe(() => {
+            combineLatest([this.externeKlanttaakVersion, this.formValue$, this.valid$])
+                .pipe(take(1))
+                .subscribe(([externeKlanttaakVersion, formValue, valid]) => {
+                    if (valid) {
+                        this.configuration.emit({
+                            externeKlanttaakVersion: externeKlanttaakVersion,
+                            ...formValue
+                        });
+                    }
+                });
         });
     }
 
