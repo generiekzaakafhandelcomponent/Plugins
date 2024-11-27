@@ -87,7 +87,7 @@ services:
       - ./imports/open-zaak:/docker-entrypoint-initdb.d
 
   example-objecten-api:
-    image: maykinmedia/objects-api:2.4.4
+    image: maykinmedia/objects-api:2.1.1
     container_name: example-objecten-api
     platform: linux/amd64
     ports:
@@ -113,7 +113,7 @@ services:
       - POSTGRES_DB=objects
 
   example-objecten-api-import:
-    image: maykinmedia/objects-api:2.4.4
+    image: maykinmedia/objects-api:2.1.1
     container_name: example-objects-api-import
     platform: linux/amd64
     environment: *objects-env
