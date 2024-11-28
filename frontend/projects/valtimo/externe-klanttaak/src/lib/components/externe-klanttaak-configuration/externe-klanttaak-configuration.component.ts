@@ -62,7 +62,7 @@ export class ExterneKlanttaakConfigurationComponent
             }))
         )
     );
-    readonly taakVersionItems$: Observable<Array<SelectItem>> = this.externeKlanttaakVersionService
+    readonly externeKlanttaakVersionItems$: Observable<Array<SelectItem>> = this.externeKlanttaakVersionService
         .getSupportedVersions()
         .pipe(
             map(versions => (

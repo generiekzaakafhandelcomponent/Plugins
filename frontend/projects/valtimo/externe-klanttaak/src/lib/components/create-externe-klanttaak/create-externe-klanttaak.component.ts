@@ -19,6 +19,7 @@ import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} fro
 
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
 import {CreateExterneKlanttaakConfig, ExterneKlanttaakPluginConfig, ExterneKlanttaakVersion} from "../../models";
+import {ExterneKlanttaakVersionService} from "../../services";
 
 @Component({
     selector: 'valtimo-create-externe-klanttaak',
@@ -41,25 +42,17 @@ export class CreateExterneKlanttaakComponent
     protected readonly externeKlanttaakVersion = new BehaviorSubject<ExterneKlanttaakVersion>(ExterneKlanttaakVersion.V1x1x0);
     protected readonly ExterneKlanttaakVersion = ExterneKlanttaakVersion;
 
-    constructor() {
+    constructor(
+        private readonly externeKlanttaakService: ExterneKlanttaakVersionService
+    ) {
     }
 
     ngOnInit(): void {
-        this.detectVersion();
+        this.externeKlanttaakService.detectVersion(this.selectedPluginConfiguration$,this.prefillConfiguration$)
+            .subscribe(
+                externeKlanttaakVersion => this.externeKlanttaakVersion.next(externeKlanttaakVersion)
+            );
         this.openSaveSubscription();
-    }
-
-    private detectVersion() {
-        combineLatest({
-            pluginVersion: this.selectedPluginConfiguration$.pipe(
-                map(pluginProperties => (pluginProperties ? pluginProperties.pluginVersion : undefined))
-            ),
-            prefillVersion: this.prefillConfiguration$.pipe(
-                map(config => (config ? config.externeKlanttaakVersion : undefined))
-            ),
-        })
-            .pipe(map(versions => versions.prefillVersion || versions.pluginVersion))
-            .subscribe(externeKlanttaakVersion => this.externeKlanttaakVersion.next(externeKlanttaakVersion));
     }
 
     ngOnDestroy(): void {

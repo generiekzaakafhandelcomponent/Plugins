@@ -15,9 +15,14 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {combineLatest, map, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {ConfigService} from '@valtimo/config';
+import {
+    ExterneKlanttaakPluginActionConfiguration,
+    ExterneKlanttaakPluginConfig,
+    ExterneKlanttaakVersion
+} from "../models";
 
 @Injectable({
     providedIn: 'root',
@@ -36,5 +41,20 @@ export class ExterneKlanttaakVersionService {
         return this.http.get<string[]>(
             `${this.valtimoEndpointUri}management/v1/externe-klanttaak/supported-versions`
         );
+    }
+
+    public detectVersion(
+        selectedPluginConfiguration$: Observable<ExterneKlanttaakPluginConfig>,
+        prefillConfiguration$: Observable<ExterneKlanttaakPluginActionConfiguration>
+    ): Observable<ExterneKlanttaakVersion> {
+        return combineLatest({
+            pluginVersion: selectedPluginConfiguration$.pipe(
+                map(pluginProperties => (pluginProperties ? pluginProperties.pluginVersion : undefined))
+            ),
+            prefillVersion: prefillConfiguration$.pipe(
+                map(config => (config ? config.externeKlanttaakVersion : undefined))
+            ),
+        })
+            .pipe(map(versions => versions.prefillVersion || versions.pluginVersion))
     }
 }

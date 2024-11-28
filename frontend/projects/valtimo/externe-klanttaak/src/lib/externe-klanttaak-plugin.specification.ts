@@ -86,12 +86,12 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
                 "De waarde waarmee de ontvanger wordt geïdentificeerd. Wanneer er bijvoorbeeld in het veld 'Identificatiesleutel' de waarde 'bsn' is ingevoerd, kan er in dit veld een burgerservicenummer worden ingevoerd (bijvoorbeeld 558099476).",
             verloopDurationInDays: 'Verlooptijd taak in dagen',
             verloopDurationInDaysTooltip:
-                'Het aantal dagen na aanmaken van een taak dat deze verloopt. Deze wordt alleen ingesteld voor de portaal taak, niet in het BPMN proces.',
+                'Het aantal dagen na aanmaken van een taak dat deze verloopt. Deze wordt alleen ingesteld voor de externe klanttaak, niet in het BPMN proces.',
             taakVersion: 'Externe Klanttaak Versie',
             taakVersionTooltip:
-                'De portaaltaakpatroon versie dat word gebruikt bij het aanmaken en verwerken van portaaltaken.',
+                'De patroon versie dat word gebruikt bij het aanmaken en verwerken van externe klanttaken.',
             unsupportedVersionMessage:
-                'Deze actie is niet gebruikbaar met de gekozen portaaltaak plugin instantie.',
+                'Deze actie is niet gebruikbaar met de gekozen Externe Klanttaak plugin instantie.',
             zaak: 'Zaak',
             product: 'Product',
             'toggle.ja': 'Ja',

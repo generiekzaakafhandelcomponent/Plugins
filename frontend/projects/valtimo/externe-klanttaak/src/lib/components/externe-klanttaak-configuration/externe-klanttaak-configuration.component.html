@@ -20,7 +20,7 @@
     disabled: disabled$ | async,
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
     objectManagementConfigurationItems: objectManagementConfigurationItems$ | async,
-    taakVersionItems: taakVersionItems$ | async,
+    externeKlanttaakVersionItems: externeKlanttaakVersionItems$ | async,
   } as obs"
 >
     <v-input
@@ -31,7 +31,7 @@
             [defaultValue]="obs.prefill?.configurationTitle"
             [required]="true"
             [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
-            placeholder="Portaaltaak Plugin"
+            placeholder="Externe Klanttaak Plugin"
     >
     </v-input>
     <ng-container
@@ -52,15 +52,15 @@
     <ng-container>
         <v-select
             #versionSelect
-            [items]="obs.taakVersionItems"
+            [items]="obs.externeKlanttaakVersionItems"
             [margin]="true"
-            name="taakVersion"
-            [title]="'taakVersion' | pluginTranslate: pluginId | async"
+            name="pluginVersion"
+            [title]="'pluginVersion' | pluginTranslate: pluginId | async"
             [disabled]="obs.disabled"
             [defaultSelectionId]="obs.prefill?.pluginVersion"
             [required]="true"
-            [loading]="!obs.taakVersionItems"
-            [tooltip]="'taakVersionTooltip' | pluginTranslate: pluginId | async"
+            [loading]="!obs.externeKlanttaakVersionItems"
+            [tooltip]="'pluginVersionTooltip' | pluginTranslate: pluginId | async"
         ></v-select>
     </ng-container>
     <ng-container

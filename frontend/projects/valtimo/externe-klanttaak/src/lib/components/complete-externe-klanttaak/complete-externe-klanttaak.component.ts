@@ -18,6 +18,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
 import {CompleteExterneKlanttaakConfig, ExterneKlanttaakPluginConfig, ExterneKlanttaakVersion} from "../../models";
+import {ExterneKlanttaakVersionService} from "../../services";
 
 @Component({
     selector: 'valtimo-complete-externe-klanttaak',
@@ -38,27 +39,22 @@ export class CompleteExterneKlanttaakComponent
     private readonly formValue$ = new BehaviorSubject<CompleteExterneKlanttaakConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    constructor(
+        private readonly externeKlanttaakService: ExterneKlanttaakVersionService
+    ) {
+    }
+
     ngOnInit(): void {
-        this.detectVersion();
+        this.externeKlanttaakService.detectVersion(this.selectedPluginConfiguration$,this.prefillConfiguration$)
+        .subscribe(
+            externeKlanttaakVersion => this.externeKlanttaakVersion.next(externeKlanttaakVersion)
+        );
         this.openSaveSubscription();
         this.valid.emit(true);
     }
 
     ngOnDestroy(): void {
         this.saveSubscription?.unsubscribe();
-    }
-
-    private detectVersion() {
-        combineLatest({
-            pluginVersion: this.selectedPluginConfiguration$.pipe(
-                map(pluginProperties => (pluginProperties ? pluginProperties.pluginVersion : undefined))
-            ),
-            prefillVersion: this.prefillConfiguration$.pipe(
-                map(config => (config ? config.externeKlanttaakVersion : undefined))
-            ),
-        })
-            .pipe(map(versions => versions.prefillVersion || versions.pluginVersion))
-            .subscribe(externeKlanttaakVersion => this.externeKlanttaakVersion.next(externeKlanttaakVersion));
     }
 
     private openSaveSubscription(): void {
