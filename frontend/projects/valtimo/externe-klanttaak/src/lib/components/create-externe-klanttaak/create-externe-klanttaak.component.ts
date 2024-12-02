@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
@@ -52,6 +52,7 @@ export class CreateExterneKlanttaakComponent
     protected readonly ExterneKlanttaakVersion = ExterneKlanttaakVersion;
 
     constructor(
+        private readonly changeDetection: ChangeDetectorRef,
         private readonly externeKlanttaakService: ExterneKlanttaakVersionService
     ) {
     }
@@ -62,7 +63,7 @@ export class CreateExterneKlanttaakComponent
                 externeKlanttaakVersion => this.externeKlanttaakVersion$.next(externeKlanttaakVersion)
             );
         this.prefillConfiguration$.pipe(
-            map(prefilledActionConfig => prefilledActionConfig.config),
+            map(prefilledActionConfig => prefilledActionConfig?.config),
         ).subscribe(
             prefilledFormData => this.prefilledFormValue$.next(prefilledFormData)
         );
@@ -90,6 +91,7 @@ export class CreateExterneKlanttaakComponent
 
     handleFormValue(actionConfiguration: CreateExterneKlanttaakConfigData): void {
         this.formValue$.next(actionConfiguration);
+        this.changeDetection.detectChanges();
     }
 
     handleFormValid(isValid: boolean): void {

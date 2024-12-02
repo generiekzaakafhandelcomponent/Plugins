@@ -64,8 +64,8 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             receiveData: 'Ingevulde gegevens door de ontvanger',
             receiveDataTooltip:
                 "Voor hier sleutels en waarden in voor data die ontvangen moet worden van de Objecten API. De sleutel is hier de locatie waar de data opgeslagen moet worden (bijvoorbeeld 'doc:/customer/signedAgreement'). De waarde wijst naar de sleutel van het Form.IO-veld waar de data vandaan moet komen (bijvoorbeeld '/signedAgreement').",
-            receiver: 'Ontvanger',
-            receiverTooltip: 'Bepaal hier bij wie de data van de afgeronde taak terecht moet komen.',
+            taakReceiver: 'Ontvanger',
+            taakReceiverTooltip: 'Bepaal hier bij wie de data van de afgeronde taak terecht moet komen.',
             zaakInitiator: 'Zaak-initiator',
             other: 'Anders',
             otherReceiver: 'Andere ontvanger',
@@ -87,7 +87,7 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             verloopDurationInDays: 'Verlooptijd taak in dagen',
             verloopDurationInDaysTooltip:
                 'Het aantal dagen na aanmaken van een taak dat deze verloopt. Deze wordt alleen ingesteld voor de externe klanttaak, niet in het BPMN proces.',
-            pluginVersion: 'Externe Klanttaak Versie',
+            pluginVersion: 'Externe Klanttaak versie',
             pluginVersionTooltip:
                 'De patroon versie dat word gebruikt bij het aanmaken en verwerken van externe klanttaken.',
             unsupportedVersionMessage:
@@ -96,9 +96,9 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             product: 'Product',
             'toggle.ja': 'Ja',
             'toggle.nee': 'Nee',
-            taakSoort: 'Taak type',
+            taakSoort: 'Klanttaak type',
             taakSoortTooltip:
-                'Het te tonen type van de taak voor de gebruiker. Dit wijst aan wat voor een interactie de gebruiker zal krijgen.',
+                'Het te tonen type van de klanttaak voor de gebruiker. Dit wijst aan wat voor een interactie de gebruiker zal krijgen.',
             ogonebetaling: 'Ogone betaling',
             ogoneBedrag: 'Bedrag',
             ogoneBedragTooltip: 'Het te betalen bedrag.',
@@ -107,7 +107,7 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             ogonePspid: 'Betalings aanbieder ID',
             ogonePspidTooltip:
                 'De ID van aanbieder van de betaling. Zie Ogone documentatie voor meer informatie.',
-            taakUrl: 'Taak URL',
+            taakUrl: 'Klanttaak URL',
             taakUrlTooltip: 'Een URL die naar iets verwijst.',
             portaalformulier: 'Portaalformulier',
             portaalformulierSoort: 'Portaalformulier referentietype',
@@ -116,13 +116,13 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             portaalformulierValue: 'Portaalformulier referentie',
             portaalformulierValueTooltip: 'De referentie van de weer te geven formulierdefinitie.',
             portaalformulierDataTooltip:
-                'De invoergegevenstoewijzing die definieert waar en welke informatie beschikbaar moet worden gemaakt in het taakformulier.',
+                'De invoergegevenstoewijzing die definieert welke informatie beschikbaar moet worden gemaakt in het portaalformulier en op welke pad.',
             portaalformulierDataKey: 'Bron van invoer',
-            portaalformulierDataValue: 'Formulier invoer data waarde',
-            portaalformulierVerzondenDataTooltip:
+            portaalformulierDataValue: 'Formulier invoer data pad',
+            verzondenDataMappingTooltip:
                 'De gedefinieerde gegevens bepalen waar en wat er van een ingediend taakformulier moet worden opgeslagen.',
-            portaalformulierVerzondenDataKey: 'Verzonden formilier data bron',
-            portaalformulierVerzondenDataValue: 'Uitvoer bestemming',
+            verzondenDataKey: 'Uitvoer bestemming',
+            verzondenDataValue: 'Pad van de vaarde binnen de verzonden portaalformilier data.',
             koppelingVanToepassing: 'Heeft relatie',
             koppelingRegistratie: 'Relatie type',
             koppelingRegistratieTooltip: 'Deze bepaalt met welk type entiteit de taak een relatie heeft.',
@@ -132,11 +132,17 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             verloopdatum: 'Verloopdatum',
             verloopdatumTooltip: 'Vervaldatum voor de klanttaak.',
             objectManagementConfigurationWarning:
-                'Zorg ervoor dat de Object Management configuratie compatibel is met de geselecteerde Externe Klanttaak Versie!',
+                'Zorg ervoor dat de Object Management configuratie compatibel is met de geselecteerde Externe Klanttaak versie!',
+            bewaarIngediendeGegevens: 'Bewaar ingediende gegevens (alleen bij portaalformulier)?',
+            koppelDocumenten: 'Koppel geüploade documenten aan Zaak (alleen bij portaalformulier)?',
+            documentPadenPad: 'Documenten paden pad',
+            documentPadenPadTooltip: 'Het pad bidden de verzonden portaalformulier data die upload component paden bevat.',
+            storeResultingUrlVariableName: 'Bewaar resulterende Klanttaak URL?',
+            resultingKlanttaakObjectUrlVariable: 'Naam van de processvariabele'
         },
         en: {
             title: 'External user task',
-            description: 'A component to access a portal task routing component.',
+            description: 'A plugin to create and handle External User Tasks.',
             configurationTitle: 'Configuration name',
             configurationTitleTooltip:
                 'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
@@ -163,8 +169,8 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             receiveData: 'Information entered by the recipient',
             receiveDataTooltip:
                 "Enter keys and values here for data to be received from the Objecten API. The key here is the location where the data should be stored (e.g. 'doc:/customer/signedAgreement'). The value points to the key of the Form.IO field where the data should come from (e.g. '/signedAgreement').",
-            receiver: 'Receiver',
-            receiverTooltip: 'Determine here who should receive the data of the completed task.',
+            taakReceiver: 'Receiver',
+            taakReceiverTooltip: 'Determine here who should receive the data of the completed task.',
             zaakInitiator: 'Case initiator',
             other: 'Other',
             otherReceiver: 'Other receiver',
@@ -215,12 +221,12 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             portaalformulierValueTooltip: 'The reference of the to be displayed form definition.',
             portaalformulierDataTooltip:
                 'The input data mapping that defines where and what information should be made available in the task form.',
-            portaalformulierDataKey: 'Input source',
-            portaalformulierDataValue: 'Form input data target',
-            portaalformulierVerzondenDataTooltip:
-                'The output data mapping that defines where and what from a submitted task form should be stored.',
-            portaalformulierVerzondenDataKey: 'Form output data source',
-            portaalformulierVerzondenDataValue: 'Output target',
+            portaalformulierDataKey: 'Source value or value resolver pointer',
+            portaalformulierDataValue: 'Target form data prefill path',
+            verzondenDataMappingTooltip:
+                'The output data mapping that defines where and what from a submitted portal form task should be stored.',
+            verzondenDataKey: 'Output target',
+            verzondenDataValue: 'Path of the value in the submission',
             koppelingVanToepassing: 'Has relation',
             koppelingRegistratie: 'Relation type',
             koppelingRegistratieTooltip:
@@ -232,103 +238,17 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             verloopdatumTooltip: 'The date that the task is due for.',
             objectManagementConfigurationWarning:
                 'Please make sure to select an Object Management configuration that is compatible with the chosen Task Version!',
+            bewaarIngediendeGegevens: 'Store submitted data (in case of portal form user task)?',
+            koppelDocumenten: 'Link uploaded document to Case (in case of portal form user task)?',
+            documentPadenPad: 'Path to document paths',
+            documentPadenPadTooltip: 'The path to an array containing document upload component paths.',
+            storeResultingUrlVariableName: 'Store resulting url reference?',
+            resultingKlanttaakObjectUrlVariable: 'Target process variable name'
         },
         de: {
-            title: 'Portalaufgabe',
+            title: 'Externe Kundenaufgabe',
             description:
-                'Eine Komponente für den Zugriff auf eine Portal-Aufgabenweiterleitungskomponente.',
-            configurationTitle: 'Konfigurationsname',
-            configurationTitleTooltip:
-                'Der Name der aktuellen Plugin-Konfiguration. Unter diesem Namen ist die Konfiguration im Rest der Anwendung zu finden.',
-            notificatiesApiPluginConfiguration: 'Benachrichtigungs-API plugin',
-            notificatiesApiPluginConfigurationTooltip:
-                'Wählen Sie das Benachrichtigungs-API-Plugin aus. Bleibt das Auswahlfeld leer, muss das Benachrichtigungs-API-Plugin erst erstellt werden',
-            objectManagementConfiguration: 'Objektverwaltungskonfiguration',
-            objectManagementConfigurationTooltip:
-                'Wählen Sie die Objektverwaltungskonfiguration aus. Bleibt das Auswahlfeld leer, muss zunächst die Objektverwaltungskonfiguration erstellt werden.',
-            'create-externe-klanttaak': 'Portalaufgabe erstellen',
-            'complete-externe-klanttaak': 'Externe Klanttaak komplett',
-            formType: 'Formulartyp',
-            formTypeTooltip:
-                'Wählen Sie hier aus, ob das anzuzeigende Formular aus einer Set-Definition oder von einer externen URL stammen soll.',
-            id: 'Formulardefinition',
-            url: 'URL',
-            sendData: 'Auftragsdaten für den Empfänger',
-            sendDataTooltip:
-                'Geben Sie hier Schlüssel und Werte für Daten ein, die an die Objecten API gesendet werden sollen. Der Schlüssel hier ist der Schlüssel des Form.IO-Felds, das gefüllt werden soll. Der Wert zeigt auf die Daten, mit denen dieses Feld gefüllt wird muss ausgefüllt werden.',
-            receiveData: 'Vom Empfänger eingegebene Informationen',
-            receiveDataTooltip:
-                'Geben Sie hier Schlüssel und Werte für Daten ein, die von der Objecten API empfangen werden sollen. Der Schlüssel hier ist der Ort, an dem die Daten gespeichert werden sollen. Der Wert zeigt auf den Schlüssel des Form.IO-Feld, aus dem die Daten stammen sollen.',
-            receiver: 'Empfänger',
-            receiverTooltip:
-                'Bestimmen Sie hier, wer die Daten der abgeschlossenen Aufgabe erhalten soll.',
-            zaakInitiator: 'Initiator des Falles',
-            other: 'Andere',
-            otherReceiver: 'Anderer Empfänger',
-            otherReceiverTooltip:
-                'Sie haben die Option für einen anderen Empfänger gewählt. Wählen Sie hier aus, welcher Typ das sein soll.',
-            kvk: 'KVK-Nummer',
-            bsn: 'Bürgerservicenummer (BSN)',
-            kvkTooltip: 'Die KVK-Nummer des gewünschten Empfängers.',
-            bsnTooltip: 'Die Bürgerservicenummer (BSN) des gewünschten Empfängers.',
-            completeTaakProcess: 'Handhabungsprozess für hochgeladene Dokumente',
-            completeTaakProcessTooltip:
-                'Der Prozess, der die hochgeladenen Dokumente im Portal handhaben soll.',
-            identificationKey: 'Identifikationsschlüssel',
-            identificationKeyTooltip:
-                "Der eingegebene Schlüssel bestimmt, wie der Empfänger identifiziert wird. Gültige Beispiele sind 'bsn' oder 'kvk'.",
-            identificationValue: 'Identifikationswert',
-            identificationValueTooltip:
-                "Der Wert, der den Empfänger identifiziert. Wird beispielsweise im Feld 'Identifikationsschlüssel' der Wert 'bsn' eingetragen, kann in diesem Feld eine Sozialversicherungsnummer eingetragen werden (z. B. 558099476).",
-            verloopDurationInDays: 'Ablaufzeit der Aufgabe in Tagen',
-            verloopDurationInDaysTooltip:
-                'Die Anzahl der Tage vom Erstellungszeitpunkt bis zum Ablauf der Aufgabe. Dies wird nur in der Portalaufgabe verwendet. Das BPMN-Fälligkeitsdatum muss separat konfiguriert werden.',
-            taakVersion: 'Portalaufgabe Version',
-            taakVersionTooltip: 'Die Version des Portal-Aufgabenmusters, die verwendet werden soll.',
-            unsupportedVersionMessage:
-                'Diese Aktion kann nicht mit dem gewählten Portal-Task-Plugin verwendet werden.',
-            zaak: 'Fall',
-            product: 'Produkt',
-            'toggle.ja': 'Ja',
-            'toggle.nee': 'Nein',
-            taakSoort: 'Aufgabentyp',
-            taakSoortToolTip:
-                'Der Aufgabentyp, der dem Benutzer angezeigt werden soll. Dies bestimmt, welche Art von Interaktion der Empfänger erhält.',
-            ogonebetaling: 'Ogone-Zahlung',
-            ogoneBedrag: 'Zahlungsbetrag',
-            ogoneBedragTooltip: 'Der Betrag, den der Benutzer bei dieser Zahlungsaufgabe zahlen muss.',
-            ogoneBetaalkenmerk: 'Zahlungsreferenz',
-            ogoneBetaalkenmerkTooltip: 'Eine Referenz zur Identifizierung der Zahlung.',
-            ogonePspid: 'ID des Zahlungsdienstleisters',
-            ogonePspidTooltip:
-                'Die ID des Zahlungsdienstleisters, die bei dieser Zahlung verwendet werden soll.',
-            taakUrl: 'Aufgaben-URL',
-            taakUrlTooltip: 'Eine URL, die die Aufgabe enthält, die der Benutzer ausführen muss',
-            portaalformulier: 'Portalformular',
-            portaalformulierSoort: 'Referenztyp des Portalformulars',
-            portaalformulierSoortTooltip:
-                'Wählen Sie den Referenztyp aus. Kann entweder eine Formular-ID einer Formulardefinition sein, die im verbundenen Portal vorhanden ist, oder eine externe URL zu einem Objekt, das die Formulardefinition enthält.',
-            portaalformulierValue: 'Portalformularreferenz',
-            portaalformulierValueTooltip: 'Die Referenz der anzuzeigenden Formulardefinition.',
-            portaalformulierDataTooltip:
-                'Die Eingabedatenzuordnung, die definiert, wo und welche Informationen im Aufgabenformular verfügbar gemacht werden sollen.',
-            portaalformulierDataKey: 'Eingabequelle',
-            portaalformulierDataValue: 'Formulareingabedatenziel',
-            portaalformulierVerzondenDataTooltip:
-                'Die Ausgabedatenzuordnung, die definiert, wo und was von einem übermittelten Aufgabenformular gespeichert werden soll.',
-            portaalformulierVerzondenDataKey: 'Formularausgabedatenquelle',
-            portaalformulierVerzondenDataValue: 'Ausgabeziel',
-            koppelingVanToepassing: 'Hat Beziehung',
-            koppelingRegistratie: 'Beziehung Typ',
-            koppelingRegistratieTooltip:
-                'Dies bestimmt, zu welcher Art von Entität diese Aufgabe eine Beziehung hat.',
-            koppelingUuid: 'Beziehungskennung',
-            koppelingUuidTooltip: 'Die eindeutige Kennung des Pakets oder Produkts',
-            verloopdatumVanToepassing: 'Hat Fälligkeitsdatum',
-            verloopdatum: 'Fälligkeitsdatum',
-            verloopdatumTooltip: 'Das Datum, an dem die Aufgabe fällig ist.',
-            objectManagementConfigurationWarning:
-                'Bitte achten Sie darauf, eine kompatible Objektverwaltungskonfiguration auszuwählen!',
+                'Ein Plugin zum Erstellen und Bearbeiten externer Kundenaufgaben.',
         },
     },
 };
