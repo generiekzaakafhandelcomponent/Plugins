@@ -92,7 +92,12 @@ import {
   objectManagementPluginSpecification
 } from "../../projects/valtimo-plugins/object-management/src/lib/object-management-plugin.specification";
 import {ObjectManagementModule} from "@valtimo/object-management";
-import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo/externe-klanttaak';
+import {
+  ExterneKlanttaakPluginModule
+} from "../../projects/valtimo-plugins/externe-klanttaak/src/lib/externe-klanttaak-plugin.module";
+import {
+  externeKlanttaakPluginSpecification
+} from "../../projects/valtimo-plugins/externe-klanttaak/src/lib/externe-klanttaak-plugin.specification";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -169,6 +174,7 @@ export function tabsFactory() {
     }),
     TranslationManagementModule,
     TaskManagementModule,
+    ExterneKlanttaakPluginModule,
   ],
   providers: [{
     provide: PLUGINS_TOKEN,
@@ -187,7 +193,8 @@ export function tabsFactory() {
       suwinetPluginSpecification,
       objectenApiPluginSpecification,
       objecttypenApiPluginSpecification,
-      objectTokenAuthenticationPluginSpecification
+      objectTokenAuthenticationPluginSpecification,
+      externeKlanttaakPluginSpecification,
     ]
   }],
   bootstrap: [AppComponent]

@@ -51,7 +51,7 @@
                 name="ogoneBedrag"
                 [title]="'ogoneBedrag' | pluginTranslate: pluginId | async"
                 [margin]="true"
-                [defaultValue]="obs.prefill?.ogoneBedrag.toString()"
+                [defaultValue]="obs.prefill?.ogoneBedrag?.toString()"
                 [disabled]="obs.disabled"
                 [tooltip]="'ogoneBedragTooltip' | pluginTranslate: pluginId | async"
                 [required]="true"
