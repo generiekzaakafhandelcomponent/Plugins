@@ -27,7 +27,7 @@ import {
 } from "./components/complete-externe-klanttaak/complete-externe-klanttaak.component";
 
 const externeKlanttaakPluginSpecification: PluginSpecification = {
-    pluginId: 'externeklanttaak',
+    pluginId: 'externe-klanttaak',
     pluginConfigurationComponent: ExterneKlanttaakConfigurationComponent,
     pluginLogoBase64: EXTERNE_KLANTTAAK_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
@@ -37,7 +37,7 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
     pluginTranslations: {
         nl: {
             title: 'Externe Klanttaak',
-            description: 'Een component om een portaaltaakrouteringscomponent te benaderen.',
+            description: 'Een plugin om Externe Klanttaken te creëren en afhandelen.',
             configurationTitle: 'Configuratienaam',
             configurationTitleTooltip:
                 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
@@ -75,9 +75,9 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             bsn: 'Burgerservicenummer (BSN)',
             kvkTooltip: 'Het KVK-nummer van de gewenste ontvanger.',
             bsnTooltip: 'Het Burgerservicenummer (BSN) van de gewenste ontvanger.',
-            completeTaakProcess: 'Geüploade documentverwerkingsproces',
-            completeTaakProcessTooltip:
-                'Het proces dat de geüploade documenten in de portal moet afhandelen.',
+            finalizerProcess: 'Verwerkingsproces',
+            finalizerProcessTooltip:
+                'Het proces dat een afgeronde klanttaak verwerkt.',
             identificationKey: 'Identificatiesleutel',
             identificationKeyTooltip:
                 "De ingevoerde sleutel bepaalt hoe de ontvanger wordt geïdentificeerd. Geldige voorbeelden zijn 'bsn' of 'kvk'.",
@@ -87,8 +87,8 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             verloopDurationInDays: 'Verlooptijd taak in dagen',
             verloopDurationInDaysTooltip:
                 'Het aantal dagen na aanmaken van een taak dat deze verloopt. Deze wordt alleen ingesteld voor de externe klanttaak, niet in het BPMN proces.',
-            taakVersion: 'Externe Klanttaak Versie',
-            taakVersionTooltip:
+            pluginVersion: 'Externe Klanttaak Versie',
+            pluginVersionTooltip:
                 'De patroon versie dat word gebruikt bij het aanmaken en verwerken van externe klanttaken.',
             unsupportedVersionMessage:
                 'Deze actie is niet gebruikbaar met de gekozen Externe Klanttaak plugin instantie.',
@@ -130,9 +130,9 @@ const externeKlanttaakPluginSpecification: PluginSpecification = {
             koppelingUuidTooltip: 'De unieke identificatie (UUID) van de zaak of het product',
             verloopdatumVanToepassing: 'Heeft verloopdatum',
             verloopdatum: 'Verloopdatum',
-            verloopdatumTooltip: 'Vervaldatum voor de taak. (jjjj-mm-dd)',
+            verloopdatumTooltip: 'Vervaldatum voor de klanttaak.',
             objectManagementConfigurationWarning:
-                'Zorg ervoor dat het door u geselecteerde Object Management configuratie compatibel is met de geselecteerde Externe Klanttaak Versie!',
+                'Zorg ervoor dat de Object Management configuratie compatibel is met de geselecteerde Externe Klanttaak Versie!',
         },
         en: {
             title: 'External user task',

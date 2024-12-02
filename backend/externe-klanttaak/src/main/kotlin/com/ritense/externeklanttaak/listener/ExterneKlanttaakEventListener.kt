@@ -53,7 +53,7 @@ open class ExterneKlanttaakEventListener(
     @RunWithoutAuthorization
     @EventListener(NotificatiesApiNotificationReceivedEvent::class)
     open fun handle(event: NotificatiesApiNotificationReceivedEvent) {
-        logger.debug {
+        logger.info {
             "Received Notification. Attempting to handle Resource as Externe Klanttaak Object"
         }
         val objectTypeId = event.getObjectTypeIdOrNull()
@@ -86,29 +86,60 @@ open class ExterneKlanttaakEventListener(
                     }
                     return@handle
                 }
-        logger.info {
-            "Handling notification resource with Externe Klanttaak Plugin id [${matchedPluginConfiguration.id}]]"
+
+        logger.debug {
+            "Attempting to handle notification resource with Externe Klanttaak Plugin id [${matchedPluginConfiguration.id}]]"
         }
 
-        handleResourceAsExterneKlanttaak(
+        handleIfOwnExterneKlanttaak(
             resourceUrl = event.resourceUrl,
             objectManagement = objectManagement,
             pluginConfigurationId = matchedPluginConfiguration.id,
         )
     }
 
-    private fun handleResourceAsExterneKlanttaak(
+    private fun handleIfOwnExterneKlanttaak(
         resourceUrl: String,
         objectManagement: ObjectManagement,
         pluginConfigurationId: PluginConfigurationId
     ) {
+        val resource = objectManagement.getObjectByUrl(resourceUrl)
         val klanttaak: IExterneKlanttaak =
             objectMapper.convertValue(
-                objectManagement.getObjectByUrl(resourceUrl).record.data
-                    ?: throw RuntimeException("Failed to handle empty object as Externe Klanttaak")
+                resource.record.data
+                    ?: throw RuntimeException("Failed to extract Externe Klanttaak body from ObjectWrapper")
             )
+
+        if (!klanttaak.canBeHandled()) {
+            logger.info {
+                "Skipping Event: Externe Klanttaak with verwerken taak id ${klanttaak.verwerkerTaakId} is already handled."
+            }
+            return
+        }
+        val camundaTask: CamundaTask =
+            try {
+                taskService.findTaskById(klanttaak.verwerkerTaakId)
+            } catch (ex: Exception) {
+                throw RuntimeException(
+                    "Task with id ${klanttaak.verwerkerTaakId} not found. Can not handle this Externe Klanttaak.",
+                    ex
+                )
+            }
+
+        handleResourceAsExterneKlanttaak(
+            resourceUrl = resource.url,
+            camundaTask = camundaTask,
+            pluginConfigurationId = pluginConfigurationId,
+        )
+    }
+
+    private fun handleResourceAsExterneKlanttaak(
+        resourceUrl: URI,
+        camundaTask: CamundaTask,
+        pluginConfigurationId: PluginConfigurationId
+    ) {
+
         val externeKlanttaakPlugin: ExterneKlanttaakPlugin = pluginService.createInstance(pluginConfigurationId.id)
-        val camundaTask: CamundaTask = taskService.findTaskById(klanttaak.verwerkerTaakId)
         val processInstanceId = CamundaProcessInstanceId(camundaTask.getProcessInstanceId())
         val documentId = runWithoutAuthorization {
             processDocumentService.getDocumentId(processInstanceId, camundaTask)
@@ -117,7 +148,7 @@ open class ExterneKlanttaakEventListener(
             EXTERNE_KLANTTAAK_OBJECT_URL.value to resourceUrl
         )
 
-        logger.debug { "Starting finalizer process for Externe Klanttaak with verwerker task id '${klanttaak.verwerkerTaakId}'" }
+        logger.debug { "Starting finalizer process for Externe Klanttaak with verwerker task id '${camundaTask.id}'" }
         startFinalizerProcess(
             processDefinitionKey = externeKlanttaakPlugin.finalizerProcess,
             businessKey = documentId.id.toString(),

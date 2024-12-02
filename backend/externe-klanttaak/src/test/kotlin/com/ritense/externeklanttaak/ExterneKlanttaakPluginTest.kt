@@ -31,6 +31,7 @@ import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimo.contract.json.MapperSingleton
+import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
@@ -57,6 +58,7 @@ internal class ExterneKlanttaakPluginTest {
     private lateinit var zaakInstanceLinkService: ZaakInstanceLinkService
     private lateinit var externeKlanttaakPlugin: ExterneKlanttaakPlugin
     private lateinit var externeKlanttaakService: ExterneKlanttaakService
+    private lateinit var taskService: CamundaTaskService
     private lateinit var zakenApiPlugin: ZakenApiPlugin
     private lateinit var zaakUrlProvider: ZaakUrlProvider
     private lateinit var objectMapper: ObjectMapper
@@ -72,16 +74,17 @@ internal class ExterneKlanttaakPluginTest {
         zaakInstanceLinkService = mock()
         externeKlanttaakService = mock()
         zaakUrlProvider = mock()
+        taskService = mock()
         zakenApiPlugin = mock()
         objectMapper = MapperSingleton.get()
         whenever(pluginService.getObjectMapper()).thenReturn(objectMapper)
         supportedExterneKlanttaakVersions = listOf(
-            ExterneKlanttaakVersionV1x1x0(pluginService,valueResolverService, zaakUrlProvider)
+            ExterneKlanttaakVersionV1x1x0(pluginService, valueResolverService, taskService, zaakUrlProvider)
         )
         externeKlanttaakPlugin = ExterneKlanttaakPlugin(
             externeKlanttaakService, supportedExterneKlanttaakVersions
         )
-        externeKlanttaakPlugin.pluginVersion = Version(1,1,0)
+        externeKlanttaakPlugin.pluginVersion = Version(1, 1, 0)
         externeKlanttaakPlugin.notificatiesApiPluginConfiguration = mock()
         externeKlanttaakPlugin.objectManagementConfigurationId = mock()
     }
@@ -128,14 +131,14 @@ internal class ExterneKlanttaakPluginTest {
     companion object {
         @SpecVersion(min = "0.1.0", max = "1.0.0")
         class OldUnsupportedAction(
-            override val externeKlanttaakVersion: Version = Version(0,1,0),
+            override val externeKlanttaakVersion: Version = Version(0, 1, 0),
             override val resultingKlanttaakObjectUrlVariable: String? = null,
             override val klanttaakObjectUrl: String? = null,
         ) : IPluginActionConfig
 
         @SpecVersion("2.0.0")
         class FutureUnsupportedAction(
-            override val externeKlanttaakVersion: Version = Version(2,0,0),
+            override val externeKlanttaakVersion: Version = Version(2, 0, 0),
             override val resultingKlanttaakObjectUrlVariable: String? = null,
             override val klanttaakObjectUrl: String? = null,
         ) : IPluginActionConfig

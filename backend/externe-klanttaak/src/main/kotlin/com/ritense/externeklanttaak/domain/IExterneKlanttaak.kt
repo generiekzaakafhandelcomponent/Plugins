@@ -11,4 +11,5 @@ import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 interface IExterneKlanttaak {
     val verwerkerTaakId: String
+    fun canBeHandled(): Boolean = false
 }

@@ -14,12 +14,12 @@
   ~ limitations under the License.
   -->
 
-<ng-container [ngSwitch]="externeKlanttaakVersion | async">
+<ng-container [ngSwitch]="externeKlanttaakVersion$ | async">
     <valtimo-complete-externe-klanttaak-v1x1x0-form
             *ngSwitchCase="ExterneKlanttaakVersion.V1x1x0"
             [disabled$]="disabled$"
             [pluginId]="pluginId"
-            [prefillConfiguration$]="prefillConfiguration$"
+            [prefillConfiguration$]="prefilledFormValue$"
             (valid)="handleFormValid($event)"
             (value$)="handleFormValue($event)"
     >

@@ -37,13 +37,13 @@
         ></v-select>
         <v-input
                 *ngIf="obs.formValue?.taakSoort === TaakSoort.URL"
-                name="taakUrl"
-                [title]="'taakUrl' | pluginTranslate: pluginId | async"
+                name="url"
+                [title]="'url' | pluginTranslate: pluginId | async"
                 [margin]="true"
                 [defaultValue]="obs.prefill?.url"
                 [disabled]="obs.disabled"
                 [placeholder]="'https://example.com'"
-                [tooltip]="'taakUrl' | pluginTranslate: pluginId | async"
+                [tooltip]="'url' | pluginTranslate: pluginId | async"
                 [required]="true"
         ></v-input>
         <v-input
@@ -114,17 +114,17 @@
                 [initialAmountOfRows]="0"
         ></valtimo-carbon-multi-input>
         <v-select
-                [title]="'receiver' | pluginTranslate: pluginId | async"
+                [title]="'taakReceiver' | pluginTranslate: pluginId | async"
                 [margin]="true"
-                name="receiver"
+                name="taakReceiver"
                 [items]="receiverSelectItems$ | async"
                 [disabled]="obs.disabled"
                 [defaultSelectionId]="obs.prefill?.taakReceiver || ReceiverSource.ZAAKINITIATOR"
-                [tooltip]="'receiverTooltip' | pluginTranslate: pluginId | async"
+                [tooltip]="'taakReceiverTooltip' | pluginTranslate: pluginId | async"
                 [required]="true"
         ></v-select>
         <v-select
-                *ngIf="obs.formValue?.receiver === ReceiverSource.OTHER"
+                *ngIf="obs.formValue?.taakReceiver === ReceiverSource.OTHER"
                 [items]="otherReceiverSelectItems$ | async"
                 [margin]="true"
                 name="identificationKey"
@@ -135,7 +135,7 @@
                 [required]="true"
         ></v-select>
         <v-input
-                *ngIf="obs.formValue?.receiver === ReceiverSource.OTHER && obs.formValue?.identificationKey"
+                *ngIf="obs.formValue?.taakReceiver === ReceiverSource.OTHER && obs.formValue?.identificationKey"
                 name="identificationValue"
                 [title]="'identificationValue' | pluginTranslate: pluginId | async"
                 [margin]="true"

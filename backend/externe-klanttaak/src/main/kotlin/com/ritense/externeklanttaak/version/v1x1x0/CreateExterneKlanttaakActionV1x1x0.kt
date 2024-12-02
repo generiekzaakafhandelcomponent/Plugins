@@ -19,7 +19,6 @@ import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.patch.JsonPatchService
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.IExterneKlanttaak
 import com.ritense.externeklanttaak.domain.IPluginAction
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
@@ -79,15 +78,15 @@ class CreateExterneKlanttaakActionV1x1x0(
             status = OPEN,
             soort = pluginActionConfig.taakSoort,
             url = if (pluginActionConfig.taakSoort == URL && !pluginActionConfig.url.isNullOrBlank()) {
-                ExterneTaakUrl(pluginActionConfig.url)
+                ExterneTaakUrl(uri = pluginActionConfig.url)
             } else null,
             ogonebetaling = if (pluginActionConfig.taakSoort == OGONEBETALING) {
                 OgoneBetaling(
                     bedrag =
-                    requireNotNull(pluginActionConfig.ogoneBedrag) {
-                        "Property [ogoneBedrag] is required when [taakSoort] is ${pluginActionConfig.taakSoort}"
-                    }
-                        .toDouble(),
+                        requireNotNull(pluginActionConfig.ogoneBedrag) {
+                            "Property [ogoneBedrag] is required when [taakSoort] is ${pluginActionConfig.taakSoort}"
+                        }
+                            .toDouble(),
                     betaalkenmerk = requireNotNull(pluginActionConfig.ogoneBetaalkenmerk) {
                         "Property [ogoneBetaalkenmerk] is required when [taakSoort] is ${pluginActionConfig.taakSoort}"
                     },
@@ -107,11 +106,11 @@ class CreateExterneKlanttaakActionV1x1x0(
                         },
                     ),
                     data =
-                    resolveFormulierTaakData(
-                        delegateTask = delegateTask,
-                        sendData = pluginActionConfig.portaalformulierData,
-                        documentId = delegateTask.execution.processInstanceId
-                    )
+                        resolveFormulierTaakData(
+                            delegateTask = delegateTask,
+                            sendData = pluginActionConfig.portaalformulierData,
+                            documentId = delegateTask.execution.businessKey
+                        )
                 )
             } else null,
             identificatie = when (pluginActionConfig.taakReceiver) {
@@ -238,7 +237,7 @@ class CreateExterneKlanttaakActionV1x1x0(
 
     @SpecVersion(min = "1.1.0")
     data class CreateExterneKlanttaakActionConfigV1x1x0(
-        override val externeKlanttaakVersion: Version = Version(1,1,0),
+        override val externeKlanttaakVersion: Version = Version(1, 1, 0),
         override val resultingKlanttaakObjectUrlVariable: String? = null,
         override val klanttaakObjectUrl: String? = null,
         val taakTitel: String? = null,

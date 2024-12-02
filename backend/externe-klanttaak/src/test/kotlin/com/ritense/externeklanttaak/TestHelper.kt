@@ -2,7 +2,6 @@ package com.ritense.externeklanttaak
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ObjectNode
-import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.util.UUID
 
@@ -21,7 +20,7 @@ object TestHelper {
                   "titel" : "Fake Task",
                   "status" : "open",
                   "soort" : "url",
-                  "url" : "https://example.com/external-url",
+                  "url" : { "uri": "https://example.com/external-url"},
                   "identificatie" : {
                     "type" : "bsn",
                     "value" : "999990755"
@@ -39,7 +38,7 @@ object TestHelper {
                   "titel" : "Fake Task",
                   "status" : "afgerond",
                   "soort" : "url",
-                  "url" : "https://example.com/external-url",
+                  "url" : { "uri": "https://example.com/external-url"},
                   "identificatie" : {
                     "type" : "bsn",
                     "value" : "999990755"
@@ -57,7 +56,7 @@ object TestHelper {
                   "titel" : "Fake Task",
                   "status" : "verwerkt",
                   "soort" : "url",
-                  "url" : "https://example.com/external-url",
+                  "url" : { "uri": "https://example.com/external-url"},
                   "identificatie" : {
                     "type" : "bsn",
                     "value" : "999990755"
@@ -81,7 +80,7 @@ object TestHelper {
                       "titel" : "Fake Task",
                       "status" : "open",
                       "soort" : "url",
-                      "url" : "https://example.com/external-url",
+                      "url" : { "uri": "https://example.com/external-url"},
                       "identificatie" : {
                         "type" : "bsn",
                         "value" : "999990755"
@@ -107,7 +106,7 @@ object TestHelper {
                       "titel" : "Fake Task",
                       "status" : "afgerond",
                       "soort" : "url",
-                      "url" : "https://example.com/external-url",
+                      "url" : { "uri": "https://example.com/external-url"},
                       "identificatie" : {
                         "type" : "bsn",
                         "value" : "999990755"
@@ -133,7 +132,7 @@ object TestHelper {
                       "titel" : "Fake Task",
                       "status" : "verwerkt",
                       "soort" : "url",
-                      "url" : "https://example.com/external-url",
+                      "url" : { "uri": "https://example.com/external-url"},
                       "identificatie" : {
                         "type" : "bsn",
                         "value" : "999990755"

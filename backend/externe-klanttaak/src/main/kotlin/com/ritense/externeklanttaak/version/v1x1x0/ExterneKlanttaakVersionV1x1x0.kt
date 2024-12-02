@@ -21,6 +21,7 @@ import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.version.v1x1x0.CompleteExterneKlanttaakActionV1x1x0.CompleteExterneKlanttaakActionConfigV1x1x0
 import com.ritense.externeklanttaak.version.v1x1x0.CreateExterneKlanttaakActionV1x1x0.CreateExterneKlanttaakActionConfigV1x1x0
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -29,6 +30,7 @@ import org.camunda.bpm.engine.delegate.DelegateTask
 class ExterneKlanttaakVersionV1x1x0(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
+    private val taskService: CamundaTaskService,
     private val zaakUrlProvider: ZaakUrlProvider,
 ) : ExterneKlanttaakVersion {
     override val version: String = "1.1.0"
@@ -53,6 +55,7 @@ class ExterneKlanttaakVersionV1x1x0(
         return CompleteExterneKlanttaakActionV1x1x0(
             pluginService,
             valueResolverService,
+            taskService,
             zaakUrlProvider,
         )
             .complete(

@@ -16,6 +16,7 @@ import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSo
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSoort.URL
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakVersionV1x1x0
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
@@ -41,6 +42,7 @@ class ExterneKlanttaakV1x1x0Test {
     private lateinit var pluginService: PluginService
     private lateinit var valueResolverService: ValueResolverService
     private lateinit var zaakUrlProvider: ZaakUrlProvider
+    private lateinit var taskservice: CamundaTaskService
     private lateinit var zakenApiPlugin: ZakenApiPlugin
 
     @BeforeEach
@@ -48,6 +50,7 @@ class ExterneKlanttaakV1x1x0Test {
         pluginService = mock()
         valueResolverService = mock()
         zaakUrlProvider = mock()
+        taskservice = mock()
         zakenApiPlugin = mock()
     }
 
@@ -88,6 +91,7 @@ class ExterneKlanttaakV1x1x0Test {
         val externeKlanttaakVersion = ExterneKlanttaakVersionV1x1x0(
             pluginService,
             valueResolverService,
+            taskservice,
             zaakUrlProvider
         )
         val createActionConfig =
@@ -126,7 +130,7 @@ class ExterneKlanttaakV1x1x0Test {
         val processInstanceId = UUID.randomUUID().toString()
         val delegateExecutionFake =
             DelegateExecutionFake()
-                .withProcessBusinessKey(processBusinessKey)
+                .withBusinessKey(processBusinessKey)
                 .withProcessInstanceId(processInstanceId)
         val delegateTask =
             DelegateTaskFake()

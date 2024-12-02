@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {CompleteExterneKlanttaakConfig, CreateExterneKlanttaakConfig} from "../../../../models";
+import {CompleteExterneKlanttaakConfigData, CreateExterneKlanttaakConfigData} from "../../../../models";
 
 enum TaakSoort {
     URL = 'url',
@@ -42,7 +42,7 @@ enum OtherReceiverSoort {
     KVK = 'kvk',
 }
 
-interface CreateExterneKlanttaakV1x1x0Config extends CreateExterneKlanttaakConfig {
+interface CreateExterneKlanttaakV1x1x0Config extends CreateExterneKlanttaakConfigData {
     taakTitel?: string;
     taakSoort: TaakSoort;
     url?: string;
@@ -60,7 +60,7 @@ interface CreateExterneKlanttaakV1x1x0Config extends CreateExterneKlanttaakConfi
     koppelingUuid?: string;
 }
 
-interface CompleteExterneKlanttaakV1x1x0Config extends CompleteExterneKlanttaakConfig {
+interface CompleteExterneKlanttaakV1x1x0Config extends CompleteExterneKlanttaakConfigData {
     bewaarIngediendeGegevens: boolean;
     verzondenDataMapping?: Array<{ key: string; value: string }>;
     koppelDocumenten: boolean;
@@ -73,7 +73,7 @@ export {
     TaakSoort,
     FormulierSoort,
     TaakKoppelingRegistratie,
-    CreateExterneKlanttaakConfig,
+    CreateExterneKlanttaakConfigData,
     CreateExterneKlanttaakV1x1x0Config,
     CompleteExterneKlanttaakV1x1x0Config,
 };

@@ -3508,13 +3508,13 @@
         "fields": {
             "label": "Notificaties",
             "api_type": "nrc",
-            "api_root": "http://open-notificaties:8000/api/v1/",
+            "api_root": "http://host.docker.internal:8002/api/v1/",
             "client_id": "objectsapi",
             "secret": "9wu2''Z`[x(eEk![:.$mBT6&:F!,%)EY74TS.AU+6",
             "auth_type": "zgw",
             "header_key": "",
             "header_value": "",
-            "oas": "http://open-notificaties:8000/api/v1/schema/openapi.yaml",
+            "oas": "http://host.docker.internal:8002/api/v1/schema/openapi.yaml",
             "nlx": "",
             "user_id": "objects-api",
             "user_representation": "Objects API"
@@ -3524,7 +3524,7 @@
         "model": "notifications.notificationsconfig",
         "pk": 1,
         "fields": {
-            "api_root": "http://open-notificaties:8000/api/v1/"
+            "api_root": "http://host.docker.internal:8002/api/v1/"
         }
     }
 ]

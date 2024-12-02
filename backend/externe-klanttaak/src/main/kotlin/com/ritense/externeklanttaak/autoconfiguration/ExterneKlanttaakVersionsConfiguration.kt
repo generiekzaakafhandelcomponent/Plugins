@@ -19,6 +19,7 @@ package com.ritense.externeklanttaak.autoconfiguration
 import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakVersionV1x1x0
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import org.springframework.boot.autoconfigure.AutoConfiguration
@@ -28,14 +29,16 @@ import org.springframework.context.annotation.Bean
 class ExterneKlanttaakVersionsConfiguration {
 
     @Bean
-    fun v1x1x0(
+    fun externeKlanttaakVersionV1x1x0(
         pluginService: PluginService,
         valueResolverService: ValueResolverService,
+        taskService: CamundaTaskService,
         zaakUrlProvider: ZaakUrlProvider
     ): ExterneKlanttaakVersion {
         return ExterneKlanttaakVersionV1x1x0(
             pluginService,
             valueResolverService,
+            taskService,
             zaakUrlProvider
         )
     }

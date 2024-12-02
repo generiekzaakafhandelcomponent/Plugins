@@ -17,7 +17,13 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
-import {CompleteExterneKlanttaakConfig, ExterneKlanttaakPluginConfig, ExterneKlanttaakVersion} from "../../models";
+import {
+    CompleteExterneKlanttaakConfigData,
+    ExterneKlanttaakPluginActionConfiguration,
+    ExterneKlanttaakPluginActionConfigurationData,
+    ExterneKlanttaakPluginConfig,
+    ExterneKlanttaakVersion
+} from "../../models";
 import {ExterneKlanttaakVersionService} from "../../services";
 
 @Component({
@@ -31,12 +37,17 @@ export class CompleteExterneKlanttaakComponent
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
     @Input() selectedPluginConfiguration$: Observable<ExterneKlanttaakPluginConfig>;
-    @Input() prefillConfiguration$: Observable<CompleteExterneKlanttaakConfig>;
+    @Input() prefillConfiguration$: Observable<ExterneKlanttaakPluginActionConfiguration>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<any> = new EventEmitter<any>();
+    @Output() configuration: EventEmitter<ExterneKlanttaakPluginActionConfiguration> =
+        new EventEmitter<ExterneKlanttaakPluginActionConfiguration>();
     private saveSubscription!: Subscription;
-    protected readonly externeKlanttaakVersion = new BehaviorSubject<ExterneKlanttaakVersion>(ExterneKlanttaakVersion.V1x1x0);
-    private readonly formValue$ = new BehaviorSubject<CompleteExterneKlanttaakConfig | null>(null);
+    protected readonly prefilledFormValue$ =
+        new BehaviorSubject<ExterneKlanttaakPluginActionConfigurationData | null>(null)
+    protected readonly externeKlanttaakVersion$ =
+        new BehaviorSubject<ExterneKlanttaakVersion>(ExterneKlanttaakVersion.V1x1x0);
+    private readonly formValue$ =
+        new BehaviorSubject<CompleteExterneKlanttaakConfigData | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     constructor(
@@ -45,9 +56,14 @@ export class CompleteExterneKlanttaakComponent
     }
 
     ngOnInit(): void {
-        this.externeKlanttaakService.detectVersion(this.selectedPluginConfiguration$,this.prefillConfiguration$)
-        .subscribe(
-            externeKlanttaakVersion => this.externeKlanttaakVersion.next(externeKlanttaakVersion)
+        this.externeKlanttaakService.detectVersion(this.selectedPluginConfiguration$, this.prefillConfiguration$)
+            .subscribe(
+                externeKlanttaakVersion => this.externeKlanttaakVersion$.next(externeKlanttaakVersion)
+            );
+        this.prefillConfiguration$.pipe(
+            map(prefilledActionConfig => prefilledActionConfig.config),
+        ).subscribe(
+            prefilledFormData => this.prefilledFormValue$.next(prefilledFormData)
         );
         this.openSaveSubscription();
         this.valid.emit(true);
@@ -59,13 +75,13 @@ export class CompleteExterneKlanttaakComponent
 
     private openSaveSubscription(): void {
         this.saveSubscription = this.save$?.subscribe(() => {
-            combineLatest([this.externeKlanttaakVersion, this.formValue$, this.valid$])
+            combineLatest([this.externeKlanttaakVersion$, this.formValue$, this.valid$])
                 .pipe(take(1))
                 .subscribe(([externeKlanttaakVersion, formValue, valid]) => {
                     if (valid) {
                         this.configuration.emit({
                             externeKlanttaakVersion: externeKlanttaakVersion,
-                            ...formValue
+                            config: formValue
                         });
                     }
                 });
@@ -74,7 +90,7 @@ export class CompleteExterneKlanttaakComponent
 
     protected readonly ExterneKlanttaakVersion = ExterneKlanttaakVersion;
 
-    handleFormValue(actionConfiguration: CompleteExterneKlanttaakConfig): void {
+    handleFormValue(actionConfiguration: CompleteExterneKlanttaakConfigData): void {
         this.formValue$.next(actionConfiguration);
     }
 

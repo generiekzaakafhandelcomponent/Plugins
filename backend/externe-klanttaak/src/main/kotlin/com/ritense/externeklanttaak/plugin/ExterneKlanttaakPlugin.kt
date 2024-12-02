@@ -32,7 +32,7 @@ import org.camunda.bpm.engine.delegate.DelegateTask
 import java.util.UUID
 
 @Plugin(
-    key = "externeklanttaak",
+    key = "externe-klanttaak",
     title = "Externe Klanttaak Plugin",
     description = "Lets you create and handle Externe Klanttaak specification compliant Objects"
 )

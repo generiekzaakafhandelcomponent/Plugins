@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
 import com.ritense.externeklanttaak.domain.IExterneKlanttaak
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.AFGEROND
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.GESLOTEN
+import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.VERWERKT
 import java.time.LocalDate
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,6 +40,7 @@ data class ExterneKlanttaakV1x1x0(
     val verloopdatum: LocalDate? = null,
     val eigenaar: String? = DEFAULT_EIGENAAR,
 ) : IExterneKlanttaak {
+    override fun canBeHandled(): Boolean = status == AFGEROND
 
     enum class FormulierSoort(@JsonValue val value: String) {
         ID("id"),
@@ -52,7 +56,7 @@ data class ExterneKlanttaakV1x1x0(
     )
 
     data class ExterneTaakUrl(
-        @JsonValue val url: String
+        val uri: String
     )
 
     data class OgoneBetaling(

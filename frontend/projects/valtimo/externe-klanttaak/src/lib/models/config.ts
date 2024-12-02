@@ -25,26 +25,29 @@ interface ExterneKlanttaakPluginConfig extends PluginConfigurationData {
 
 interface ExterneKlanttaakPluginActionConfiguration {
     externeKlanttaakVersion: ExterneKlanttaakVersion;
+    config: ExterneKlanttaakPluginActionConfigurationData;
+}
+
+interface ExterneKlanttaakPluginActionConfigurationData {
 }
 
 enum ExterneKlanttaakVersion {
     V1x1x0 = '1.1.0',
 }
 
-interface CreateExterneKlanttaakConfig extends ExterneKlanttaakPluginActionConfiguration {
+interface CreateExterneKlanttaakConfigData extends ExterneKlanttaakPluginActionConfigurationData {
     resultingKlanttaakObjectUrlVariable?: string;
-    [key: string]: any;
 }
 
-interface CompleteExterneKlanttaakConfig extends ExterneKlanttaakPluginActionConfiguration {
+interface CompleteExterneKlanttaakConfigData extends ExterneKlanttaakPluginActionConfigurationData {
     klanttaakObjectUrl?: string;
-    [key: string]: any;
 }
 
 export {
     ExterneKlanttaakPluginConfig,
-    ExterneKlanttaakPluginActionConfiguration,
     ExterneKlanttaakVersion,
-    CreateExterneKlanttaakConfig,
-    CompleteExterneKlanttaakConfig,
+    ExterneKlanttaakPluginActionConfiguration,
+    ExterneKlanttaakPluginActionConfigurationData,
+    CreateExterneKlanttaakConfigData,
+    CompleteExterneKlanttaakConfigData,
 };

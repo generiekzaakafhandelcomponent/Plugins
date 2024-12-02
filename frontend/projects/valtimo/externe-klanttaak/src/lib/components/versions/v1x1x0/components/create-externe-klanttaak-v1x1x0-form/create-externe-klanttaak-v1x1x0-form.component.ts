@@ -66,7 +66,7 @@ export class CreateExterneKlanttaakV1x1x0FormComponent {
     formValueChange(formValue: CreateExterneKlanttaakV1x1x0Config): void {
         let valid =
             !!formValue.taakSoort &&
-            (!!(formValue.taakSoort === TaakSoort.URL && !!formValue.taakUrl) ||
+            (!!(formValue.taakSoort === TaakSoort.URL && !!formValue.url) ||
                 !!(
                     (formValue.taakSoort === TaakSoort.PORTAALFORMULIER &&
                         !!(
@@ -79,9 +79,9 @@ export class CreateExterneKlanttaakV1x1x0FormComponent {
                         !!(!!formValue.ogoneBedrag && !!formValue.ogoneBetaalkenmerk && !!formValue.ogonePspid)
                     )
                 )) &&
-            !!formValue.receiver &&
-            (formValue.receiver === ReceiverSource.ZAAKINITIATOR ||
-                (formValue.receiver === ReceiverSource.OTHER &&
+            !!formValue.taakReceiver &&
+            (formValue.taakReceiver === ReceiverSource.ZAAKINITIATOR ||
+                (formValue.taakReceiver === ReceiverSource.OTHER &&
                     !!(!!formValue.identificationKey && !!formValue.identificationValue))) &&
             !!(
                 !this.koppelingVanToepassing?.checked ||
@@ -89,8 +89,6 @@ export class CreateExterneKlanttaakV1x1x0FormComponent {
             ) &&
             !!(!this.verloopdatumVanToepassing?.checked || !!formValue.verloopdatum) &&
             !!(!this.storeResultingUrlVariableName?.checked || !!formValue.resultingKlanttaakObjectUrlVariable);
-
-        console.log("formValue", formValue);
 
         if (valid) {
             this.value$.next(formValue);

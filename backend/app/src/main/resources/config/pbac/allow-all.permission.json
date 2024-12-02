@@ -1,5 +1,5 @@
 {
-    "changesetId": "allow-all-v7",
+    "changesetId": "allow-all-v8",
     "permissions": [
         {
             "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
@@ -136,6 +136,12 @@
         },
         {
             "resourceType": "com.ritense.case.domain.CaseTab",
+            "action": "view",
+            "roleKey": "ROLE_USER",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
             "action": "view",
             "roleKey": "ROLE_USER",
             "conditions": []

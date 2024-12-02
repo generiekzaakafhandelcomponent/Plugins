@@ -248,7 +248,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
 
         assertEquals("http://example.com", processVariables["resultingKlanttaakUrl"].toString())
         assertEquals("url", createdExterneKlanttaak.soort.toString())
-        assertEquals("https://example.com/taken/mytask", createdExterneKlanttaak.url?.url)
+        assertEquals("https://example.com/taken/mytask", createdExterneKlanttaak.url?.uri)
         assertEquals("bsn", createdExterneKlanttaak.identificatie.type)
         assertEquals("999990755", createdExterneKlanttaak.identificatie.value)
     }
@@ -404,7 +404,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
             objectMapper.readTree(
                 pluginPropertiesJson
             ) as ObjectNode,
-            "externeklanttaak"
+            "externe-klanttaak"
         )
         return configuration
     }
@@ -500,7 +500,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                 "user_task",
                 objectMapper.readTree(createActionConfiguration) as ObjectNode,
                 externeKlanttaakPluginConfiguration.id,
-                "create-externeklanttaak",
+                "create-externe-klanttaak",
                 activityType = ActivityTypeWithEventName.USER_TASK_CREATE
             )
         )
@@ -524,7 +524,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                 "VerwerkExterneKlanttaakTask",
                 objectMapper.readTree(completeActionConfiguration) as ObjectNode,
                 externeKlanttaakPluginConfiguration.id,
-                "complete-externeklanttaak",
+                "complete-externe-klanttaak",
                 activityType = ActivityTypeWithEventName.SERVICE_TASK_START
             )
         )
@@ -658,7 +658,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                                 ]
                             }
                         },
-                        "url": "https://example.com/external-url",
+                        "url": {"uri": "https://example.com/external-url"},
                         "identificatie": {
                             "type": "bsn",
                             "value": "999990755"
@@ -703,7 +703,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                                 ]
                             }
                         },
-                        "url": "https://example.com/external-url",
+                        "url": {"uri": "https://example.com/external-url"},
                         "identificatie": {
                             "type": "bsn",
                             "value": "999990755"

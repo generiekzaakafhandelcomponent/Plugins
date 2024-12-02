@@ -66,6 +66,17 @@
     <ng-container
             *ngIf="obs.objectManagementConfigurationItems && (versionSelect.selected$ | async)"
     >
+        <v-select
+                [items]="obs.objectManagementConfigurationItems"
+                [margin]="true"
+                name="objectManagementConfigurationId"
+                [title]="'objectManagementConfiguration' | pluginTranslate: pluginId | async"
+                [disabled]="obs.disabled"
+                [defaultSelectionId]="obs.prefill?.objectManagementConfigurationId"
+                [required]="true"
+                [loading]="!obs.objectManagementConfigurationItems"
+                [tooltip]="'objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
+        ></v-select>
         <cds-inline-notification
                 [ngStyle]="{
                      'width': 'fit-content',
@@ -86,17 +97,6 @@
         >
         </cds-inline-notification>
         <br/>
-        <v-select
-                [items]="obs.objectManagementConfigurationItems"
-                [margin]="true"
-                name="objectManagementConfigurationId"
-                [title]="'objectManagementConfiguration' | pluginTranslate: pluginId | async"
-                [disabled]="obs.disabled"
-                [defaultSelectionId]="obs.prefill?.objectManagementConfigurationId"
-                [required]="true"
-                [loading]="!obs.objectManagementConfigurationItems"
-                [tooltip]="'objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
-        ></v-select>
     </ng-container>
     <ng-container *ngIf="{processSelectItems: processSelectItems$ | async} as vars">
         <v-select

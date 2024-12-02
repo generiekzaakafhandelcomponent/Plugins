@@ -211,6 +211,6 @@ open class ExterneKlanttaakService(
 
     companion object {
         private val logger: KLogger = KotlinLogging.logger {}
-        private val objectMapper: ObjectMapper = MapperSingleton.get()
+        private val objectMapper: ObjectMapper = MapperSingleton.get().findAndRegisterModules()
     }
 }

@@ -33,6 +33,7 @@ import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSt
 import com.ritense.notificatiesapi.exception.NotificatiesNotificationEventException
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
+import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
@@ -46,6 +47,7 @@ import java.util.UUID
 class CompleteExterneKlanttaakActionV1x1x0(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
+    private val taskService: CamundaTaskService,
     private val zaakUrlProvider: ZaakUrlProvider,
 ) : IPluginAction {
     fun complete(
@@ -72,7 +74,6 @@ class CompleteExterneKlanttaakActionV1x1x0(
                             submission = verzondenData,
                             submissionMapping = pluginActionConfig.verzondenDataMapping,
                             verwerkerTaakId = externeKlanttaak.verwerkerTaakId,
-                            delegateExecution = delegateExecution,
                         )
                     }
                 }
@@ -99,20 +100,19 @@ class CompleteExterneKlanttaakActionV1x1x0(
         submission: Map<String, Any>,
         submissionMapping: List<DataBindingConfig>,
         verwerkerTaakId: String,
-        delegateExecution: DelegateExecution,
     ) {
         logger.debug {
             "Handling Form Submission for Externe Klanttaak with [verwerkerTaakId]: $verwerkerTaakId"
         }
         if (submission.isNotEmpty()) {
-            val processInstanceId = delegateExecution.processInstanceId
+            val task = taskService.findTaskById(verwerkerTaakId)
             val submissionNode = objectMapper.valueToTree<JsonNode>(submission)
             val resolvedValues = getResolvedValues(submissionMapping, submissionNode)
 
             if (resolvedValues.isNotEmpty()) {
                 valueResolverService.handleValues(
-                    processInstanceId = processInstanceId,
-                    variableScope = delegateExecution,
+                    processInstanceId = task.getProcessInstanceId(),
+                    variableScope = task,
                     values = resolvedValues,
                 )
             }
@@ -195,7 +195,7 @@ class CompleteExterneKlanttaakActionV1x1x0(
 
     @SpecVersion(min = "1.1.0")
     data class CompleteExterneKlanttaakActionConfigV1x1x0(
-        override val externeKlanttaakVersion: Version = Version(1,1,0),
+        override val externeKlanttaakVersion: Version = Version(1, 1, 0),
         override val resultingKlanttaakObjectUrlVariable: String? = null,
         override val klanttaakObjectUrl: String = "pv:$EXTERNE_KLANTTAAK_OBJECT_URL",
         val bewaarIngediendeGegevens: Boolean,

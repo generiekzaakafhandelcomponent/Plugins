@@ -43,11 +43,12 @@ export class CompleteExterneKlanttaakV1x1x0FormComponent {
             !!(!this.bewaarIngediendeGegevens?.checked || !!formValue.verzondenDataMapping) &&
             !!(!this.koppelDocumenten?.checked || !!formValue.documentPadenPad);
 
-
-        console.log("formValue", formValue);
-
         if (valid) {
-            this.value$.next(formValue);
+            this.value$.next({
+                bewaarIngediendeGegevens: this.bewaarIngediendeGegevens.checked,
+                koppelDocumenten: this.koppelDocumenten.checked,
+                ...formValue
+            });
         }
 
         this.valid.emit(valid);

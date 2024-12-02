@@ -1,7 +1,7 @@
 #!/bin/bash
 
 c=0
-while ! curl http://example-objecttypen-api:8000
+while ! curl http://objecttypen-api:8000
 do
     c=$((c+1))
     if [ "$c" = "12" ]; then

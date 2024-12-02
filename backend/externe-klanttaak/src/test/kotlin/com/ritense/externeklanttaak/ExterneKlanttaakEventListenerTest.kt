@@ -106,10 +106,11 @@ class ExterneKlanttaakEventListenerTest {
         whenever(pluginService.createInstance<ObjectenApiPlugin>(objectenApiPluginId))
             .thenReturn(objectenApiPlugin)
         whenever(pluginService.createInstance<ExterneKlanttaakPlugin>(externeKlanttaakPluginId))
-            .thenReturn(externeKlanttaakPlugin
-                .also {
-                    it.finalizerProcess = finalizerProcess
-                }
+            .thenReturn(
+                externeKlanttaakPlugin
+                    .also {
+                        it.finalizerProcess = finalizerProcess
+                    }
             )
         whenever(taskService.findTaskById(any()))
             .thenReturn(camundaTask)

@@ -158,7 +158,7 @@ internal class ExterneKlanttaakServiceTest {
         val createdKlanttaak: ExterneKlanttaakV1x1x0 = objectMapper.treeToValue(requestCaptor.firstValue.record.data!!)
         assertEquals(taskFake.name, createdKlanttaak.titel)
         assertEquals(bsn, createdKlanttaak.identificatie.value)
-        assertEquals(externalUrl, createdKlanttaak.url!!.url)
+        assertEquals(externalUrl, createdKlanttaak.url!!.uri)
     }
 
     @Test
@@ -226,7 +226,7 @@ internal class ExterneKlanttaakServiceTest {
         val createdKlanttaak: ExterneKlanttaakV1x1x0 = objectMapper.treeToValue(requestCaptor.firstValue.record.data!!)
         assertEquals(taskFake.name, createdKlanttaak.titel)
         assertEquals(bsn, createdKlanttaak.identificatie.value)
-        assertEquals(externalUrl, createdKlanttaak.url!!.url)
+        assertEquals(externalUrl, createdKlanttaak.url!!.uri)
         assertTrue(executionFake.variables.containsKey("klanttaakUrl"))
         assertEquals(klanttaakWrapped.url, executionFake.getVariable("klanttaakUrl"))
     }
@@ -296,7 +296,7 @@ internal class ExterneKlanttaakServiceTest {
 
         val patchedKlanttaak: ExterneKlanttaakV1x1x0 = objectMapper.treeToValue(requestCaptor.firstValue.record.data!!)
         assertEquals(objectUrl, uriCaptor.firstValue.toString())
-        assertEquals("https://example.com/external-url", patchedKlanttaak.url!!.url)
+        assertEquals("https://example.com/external-url", patchedKlanttaak.url!!.uri)
         assertEquals(TaakStatus.VERWERKT, patchedKlanttaak.status)
     }
 
