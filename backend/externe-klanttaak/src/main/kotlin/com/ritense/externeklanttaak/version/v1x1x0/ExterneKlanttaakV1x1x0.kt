@@ -21,8 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
 import com.ritense.externeklanttaak.domain.IExterneKlanttaak
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.AFGEROND
-import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.GESLOTEN
-import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.VERWERKT
 import java.time.LocalDate
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

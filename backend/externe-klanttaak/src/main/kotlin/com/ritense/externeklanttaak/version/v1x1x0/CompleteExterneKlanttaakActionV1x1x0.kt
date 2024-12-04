@@ -28,7 +28,6 @@ import com.ritense.externeklanttaak.domain.SpecVersion
 import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.DataBindingConfig
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSoort.PORTAALFORMULIER
-import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.AFGEROND
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.VERWERKT
 import com.ritense.notificatiesapi.exception.NotificatiesNotificationEventException
 import com.ritense.plugin.service.PluginService
@@ -55,7 +54,7 @@ class CompleteExterneKlanttaakActionV1x1x0(
         pluginActionConfig: CompleteExterneKlanttaakActionConfigV1x1x0,
         delegateExecution: DelegateExecution
     ): IExterneKlanttaak? {
-        return when (externeKlanttaak.status == AFGEROND) {
+        return when (externeKlanttaak.canBeHandled()) {
             true -> {
                 if (externeKlanttaak.soort == PORTAALFORMULIER) {
                     val verzondenData = requireNotNull(externeKlanttaak.portaalformulier?.verzondenData) {
