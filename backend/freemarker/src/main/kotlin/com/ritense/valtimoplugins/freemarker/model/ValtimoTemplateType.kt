@@ -17,3 +17,4 @@
 package com.ritense.valtimoplugins.freemarker.model
 
 val TEMPLATE_TYPE_MAIL = "mail"
+val TEMPLATE_TYPE_TEXT = "text"

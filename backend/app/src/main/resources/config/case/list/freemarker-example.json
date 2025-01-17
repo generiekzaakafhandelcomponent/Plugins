@@ -1,0 +1,36 @@
+[
+  {
+    "key": "sequence",
+    "path": "case:sequence",
+    "displayType": {
+      "type": "text",
+      "displayTypeParameters": {}
+    },
+    "sortable": true,
+    "order": 0
+  },
+  {
+    "key": "createdOn",
+    "path": "case:createdOn",
+    "displayType": {
+      "type": "date",
+      "displayTypeParameters": {
+        "dateFormat": null
+      }
+    },
+    "sortable": true,
+    "defaultSort": "DESC",
+    "order": 1
+  },
+  {
+    "title": "Full name",
+    "key": "fullname",
+    "path": "template:full-name",
+    "displayType": {
+      "type": "text",
+      "displayTypeParameters": {}
+    },
+    "sortable": false,
+    "order": 2
+  }
+]

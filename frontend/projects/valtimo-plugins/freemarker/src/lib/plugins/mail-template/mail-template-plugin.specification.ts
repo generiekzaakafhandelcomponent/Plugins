@@ -16,14 +16,14 @@
 
 import {PluginSpecification} from '@valtimo/plugin';
 import {MailTemplateConfigurationComponent} from './components/mail-template-configuration/mail-template-configuration.component';
-import {FREEMARKER_PLUGIN_LOGO_BASE64} from './assets';
+import {MAIL_TEMPLATE_PLUGIN_LOGO_BASE64} from './assets';
 import {GenerateMailContentComponent} from './components/generate-mail-content/generate-mail-content.component';
 import {GenerateMailFileComponent} from './components/generate-mail-file/generate-mail-file.component';
 
 const mailTemplatePluginSpecification: PluginSpecification = {
   pluginId: 'mail-template',
   pluginConfigurationComponent: MailTemplateConfigurationComponent,
-  pluginLogoBase64: FREEMARKER_PLUGIN_LOGO_BASE64,
+  pluginLogoBase64: MAIL_TEMPLATE_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
     'generate-mail-file': GenerateMailFileComponent,
     'generate-mail-content': GenerateMailContentComponent,

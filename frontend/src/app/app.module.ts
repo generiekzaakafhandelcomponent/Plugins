@@ -80,7 +80,12 @@ import {ProcessLinkModule} from '@valtimo/process-link';
 import {AlfrescoAuthPluginModule, alfrescoAuthPluginSpecification} from '@valtimo-plugins/alfresco-auth';
 import {AmsterdamEmailapiPluginModule, amsterdamEmailapiPluginSpecification} from '@valtimo-plugins/amsterdam-emailapi';
 import {BerkelybridgeTextgeneratorPluginModule, berkelybridgeTextgeneratorPluginSpecification} from '@valtimo-plugins/berkelybridge';
-import {MailTemplatePluginModule, mailTemplatePluginSpecification} from '@valtimo-plugins/freemarker';
+import {
+    MailTemplatePluginModule,
+    mailTemplatePluginSpecification,
+    TextTemplatePluginModule,
+    textTemplatePluginSpecification
+} from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {SlackPluginModule, slackPluginSpecification} from '@valtimo-plugins/slack';
@@ -115,6 +120,7 @@ export function tabsFactory() {
         AmsterdamEmailapiPluginModule,
         BerkelybridgeTextgeneratorPluginModule,
         MailTemplatePluginModule,
+        TextTemplatePluginModule,
         PublictaskPluginModule,
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
@@ -180,6 +186,7 @@ export function tabsFactory() {
             amsterdamEmailapiPluginSpecification,
             berkelybridgeTextgeneratorPluginSpecification,
             mailTemplatePluginSpecification,
+            textTemplatePluginSpecification,
             publictaskPluginSpecification,
             notifyNlPluginSpecification,
             objectManagementPluginSpecification,

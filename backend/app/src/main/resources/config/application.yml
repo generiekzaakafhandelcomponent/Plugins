@@ -73,7 +73,7 @@ valtimo:
     pbac:
       clear-tables: false
     case-tabs:
-      clear-tables: false
+      clear-tables: true
   web:
     cors:
       corsConfiguration:

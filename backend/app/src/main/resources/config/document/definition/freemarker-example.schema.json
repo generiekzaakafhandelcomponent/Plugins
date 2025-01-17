@@ -1,0 +1,9 @@
+{
+  "$id": "freemarker-example.schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freemarker example",
+  "type": "object",
+  "properties": {
+    "additionalProperties": true
+  }
+}

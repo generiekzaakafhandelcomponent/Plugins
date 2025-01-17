@@ -38,6 +38,10 @@ export class FreemarkerTemplateManagementService {
         return this.getTemplates(caseDefinitionName, 'mail', undefined, 0, 10000);
     }
 
+    public getAllTextTemplates(caseDefinitionName?: string): Observable<Page<TemplateListItem>> {
+        return this.getTemplates(caseDefinitionName, 'text', undefined, 0, 10000);
+    }
+
     public getTemplates(
         caseDefinitionName?: string,
         templateType?: TemplateType,
@@ -65,6 +69,10 @@ export class FreemarkerTemplateManagementService {
 
     public getMailTemplate(caseDefinitionName: string, key: string): Observable<TemplateResponse> {
         return this.getTemplate(caseDefinitionName, 'mail', key);
+    }
+
+    public getTextTemplate(caseDefinitionName: string, key: string): Observable<TemplateResponse> {
+        return this.getTemplate(caseDefinitionName, 'text', key);
     }
 
     public getTemplate(caseDefinitionName: string, templateType: TemplateType, key: string): Observable<TemplateResponse> {
