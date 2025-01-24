@@ -58,7 +58,7 @@ interface TemplateResponse {
 }
 
 type TemplateMetadataModal = 'add' | 'edit';
-type TemplateType = 'mail';
+type TemplateType = 'mail' | 'text';
 
 export {
     TemplateListItem,

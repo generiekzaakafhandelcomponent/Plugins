@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "TextTemplatePluginExample",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  }
+]

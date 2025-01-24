@@ -1,0 +1,15 @@
+[
+    {
+        "id": "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
+        "title": "Xential",
+        "properties": {
+            "applicationName": "${XENTIAL_ACCOUNT_NAME}",
+            "applicationPassword": "${XENTIAL_ACCOUNT_PASSWORD}",
+            "baseUrl": "${XENTIAL_BASEURL}",
+            "serverCertificate": "${PKIO_FULLCHAIN}",
+            "clientPrivateKey": "${PKIO_PRIVATE_KEY}",
+            "clientCertificate": "${PKIO_CERT}"
+        },
+        "pluginDefinitionKey": "xential"
+    }
+]

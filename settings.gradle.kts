@@ -14,6 +14,7 @@ include(
     "backend:smtpmail",
     "backend:spotler",
     "backend:suwinet",
+    "backend:xential",
     "backend:kvk-handelsregister",
     "frontend",
 )

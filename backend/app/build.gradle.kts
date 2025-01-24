@@ -26,6 +26,7 @@ dependencies {
     implementation(project(":backend:smtpmail"))
     implementation(project(":backend:spotler"))
     implementation(project(":backend:suwinet"))
+    implementation(project(":backend:xential"))
 }
 
 tasks.jar {

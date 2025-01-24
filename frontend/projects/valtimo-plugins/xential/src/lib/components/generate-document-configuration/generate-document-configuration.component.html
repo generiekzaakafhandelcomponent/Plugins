@@ -1,0 +1,23 @@
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+        disabled: disabled$ | async,
+        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+    } as obs"
+>
+
+    <div>
+        <v-input-label
+                [title]="'generate doc'"
+        ></v-input-label>
+    </div>
+
+    <v-input
+            name="xentialContentId"
+            [title]="'xentialContentId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.xentialContentId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+</v-form>

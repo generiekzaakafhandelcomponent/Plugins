@@ -1,0 +1,349 @@
+openapi: 3.0.2
+info:
+  title: Document Creatie Services Gateway (DCSG) API
+  description: 'Deze specificatie beschrijft generiek koppelvlak voor documentcreatie diensten van de gemeente Rotterdam.\
+  \n\
+  \nVoor alle functies geldt dat de volgende twee parameters als onderdeel van Basic authenticatie
+   meegestuurd moeten worden:\
+   \n* Taakapplicatie naam\
+   \n* Taakapplicatie wachtwoord'
+  contact:
+    url: https://www.rotterdam.nl
+    email: noreply@rotterdam.nl
+  version: 1.1.0
+paths:
+  /sjablonenlijst:
+    get:
+      operationId: geefSjablonenlijst
+      summary: Ophalen sjablonenlijst
+      description: "Documentsjablonen worden beheerd als een boom met sjabloongroepen en sjablonen
+      (geneste boomstructuur vergelijkbaar met mappenboom). Gebruikers worden geautoriseerd voor
+      de toegang tot een bepaald sjabloongroep. Daarmee krijgen gebruikers de toegang tot alle
+      onderliggende subgroepen en sjablonen op alle hiërarchische onderliggende niveaus.
+      Deze functie biedt de mogelijkheid om de lijst van sjablonen en sjabloongroepen binnen
+      een sjabloongroep op te halen. Indien sjabloongroep niet is opgegeven in het request
+      dan retourneert deze functie de inhoud van de hoofdgroep (root)."
+      parameters:
+        - name: gebruikersId
+          in: query
+          description: Gebruikersnaam van de gebruiker die de sjablonen ophaalt (medewerkerid)
+          required: true
+          example: '123456'
+          schema:
+            type: string
+        - name: sjabloongroepId
+          in: query
+          description: Optioneel ID van bovenliggende sjabloongroep. Als die niet is geleverd dan wordt de inhoud van de hoofdgroep geretourneerd.
+          required: false
+          example: bc9f22c4-9db8-4724-8424-c2b88404cf5e
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK, lijsten met sjablonen en sjabloongroepen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sjabloonitems'
+        '400':
+          description: Bad request, mogelijke invalide parameter; PARAMETER_FOUT; HEADER_FOUT
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '401':
+          description: Unauthorized, authenticatie problemen; AUTHENTICATIE_FOUT of ONBEKENDE_GEBRUIKER
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '403':
+          description: Forbidden, autorisatie problemen; ONVOLDOENDE_RECHTEN
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '408':
+          description: Time-out, request time-out opgetreden; TIME_OUT
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: Internal Server Error; ONBEKENDE_FOUT
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '503':
+          description: Service Unavailable, Xential of ESB niet bereikbaar (mogelijk in onderhoud)
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+  /documentcreatie:
+    post:
+      operationId: creeerDocument
+      summary: Initiëren document creatie
+      description: "Middels deze functie initieert de taakapplicatie de creatie van het document op
+      basis van een sjabloon. Het wordt hier nadrukkelijk gesproken over initiatie omdat deze functie
+      niet direct (synchroon) het gecreëerde document teruglevert. Het document wordt op achtergrond
+      gecreëerd en asynchroon op een ander moment geleverd via de queue. Zie formaat van het bericht
+      op de queue in het schema DocumentData"
+      parameters:
+        - name: gebruikersId
+          in: query
+          description: Gebruikersnaam van de gebruiker die het document creëert (medewerkerid)
+          required: true
+          example: '123456'
+          schema:
+            type: string
+        - name: accepteerOnbekend
+          in: query
+          description: "Optionele indicatie of een onbekende gebruiker acceptabel is of niet.
+          Indien een onbekende gebruiker acceptabel is, wordt er een 'startDocumentUrl'
+          geretourneerd waarmee de gebruiker zich kan bekend maken bij Xential"
+          schema:
+            type: boolean
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sjabloondata'
+      responses:
+        '200':
+          description: OK, start van documentcreatie is gelukt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentCreatieResultaat'
+        '400':
+          description: Bad request, mogelijke invalide parameter; PARAMETER_FOUT; INVALIDE_INPUT; HEADER_FOUT
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '401':
+          description: Unauthorized, authenticatie problemen; AUTHENTICATIE_FOUT of ONBEKENDE_GEBRUIKER
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '403':
+          description: Forbidden, autorisatie problemen; ONVOLDOENDE_RECHTEN
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '408':
+          description: Time-out, request time-out opgetreden; TIME_OUT
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: Internal Server Error; ONBEKENDE_FOUT
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '503':
+          description: Service Unavailable, Xential of ESB niet bereikbaar (mogelijk vanwege onderhoud)
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Fout:
+      description: 'Dit schema beschrijft formaat van het synchrone response van functies bij fouten.\
+      \n\
+      \nIn uitzonderingsgevallen (bij HTTP400 Bad request of HTTP500 Internal server error) kunnen echter
+      json-responses in het volgende formaat geretourneerd worden:
+       {\"timestamp\": \"2021-08-10\",\"status\": 500,\"error\": \"Internal Server Error\",\"message\": \"\",\"path\": \"/document\/generatie\/documentcreatie\"}'
+      required:
+        - code
+        - detail
+      type: object
+      properties:
+        type:
+          title: Type
+          description: URI referentie naar het type fout (wordt nog niet gevuld)
+          example: ''
+          type: string
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          example: 'INVALIDE_INPUT'
+          minLength: 1
+        title:
+          title: Title
+          description: Generieke titel voor het type fout  (wordt nog niet gevuld)
+          type: string
+          example: ''
+          minLength: 1
+        status:
+          title: Status
+          description: De HTTP status code
+          type: integer
+          example: 400
+        detail:
+          title: Detail
+          description: Extra informatie bij de fout
+          type: string
+          example: 'XML data fout'
+          minLength: 1
+        instance:
+          title: Instance
+          description: "End-to-end Request ID (uuid) die automatisch door ESB wordt gegeneerd bij elk request
+          en die ook in e-mail berichten FoutAfhandelaar is opgenomen"
+          type: string
+          example: 80a48aa5-3ada-4d5e-b378-765991c5cf66
+          minLength: 0
+    Sjabloonitems:
+      description: "Dit schema beschrijft formaat van het response van de functie Ophalen sjablonen"
+      required:
+        - sjablonen
+        - sjabloongroepen
+      type: object
+      properties:
+        sjablonen:
+          title: Sjablonen
+          description: Lijst van sjablonen
+          type: array
+          items:
+            $ref: '#/components/schemas/Sjabloonitem'
+        sjabloongroepen:
+          title: Sjabloongroepen
+          description: Lijst van sjabloongroepen
+          type: array
+          items:
+            $ref: '#/components/schemas/Sjabloonitem'
+    Sjabloonitem:
+      required:
+        - id
+        - naam
+      type: object
+      properties:
+        id:
+          title: Id
+          description: Unieke id van sjabloon/ sjabloongroep
+          type: string
+          example: 'e0a8ace5-06df-4ef7-bcbb-9d694d25e03b'
+        naam:
+          title: Naam
+          description: Naam van sjabloon/ sjabloongroep
+          type: string
+          example: 'Lorem ipsum'
+    Sjabloondata:
+      description: "Dit schema beschrijft formaat van het request voor de functie Initieren documentcreatie"
+      type: object
+      properties:
+        sjabloonId:
+          title: SjabloonId
+          description: "Optionele ID van het sjabloon. Indien niet meegegeven zal de eindgebruiker
+          dit sjabloon moet gaan selecteren via de client (zie Resume URL parameter in het response)"
+          type: string
+          example: 3e09b238-0617-47c1-8e6a-f6227b3d542e
+        bestandsFormaat:
+          title: BestandsFormaat
+          description: Optionele keuze van het bestandsformaat (WORD of PDF), WORD is default
+          type: string
+          enum:
+            - WORD
+            - PDF
+        documentkenmerk:
+          title: Documentkenmerk
+          description: "Kenmerk van het document dat samen met gecreëerd document zal worden geretourneerd
+          in het resultaat van documentcreatie. Dit kan zijn, bv, bestandsnaam, map Id of welke andere
+          identificatie dan ook die voor taakapplicaties waardevol kan zijn te ontvangen samen met
+          het gecreëerd document waardoor verdere afhandeling van dit document (bv, opslag) in de
+          taakapplicaties gefaciliteerd kan worden"
+          type: string
+          example: 'Lorem ipsum'
+        sjabloonVulData:
+          title: SjabloonVulData
+          description: "Optionele data in XML-formaat die zal worden gebruikt voor het vullen van
+          sjabloondata tijdens documentcreatie. Het formaat van deze data wordt gezamenlijk bepaald
+          door ontwikkelaars van taakapplicaties en ontwerpers van documentsjablonen, ESB ziet
+          deze data als een blackbox en controleert het alleen op well-formedness."
+          type: string
+          example: "<root><textq1>test</textq1></root>"
+    DocumentData:
+      description: "Dit schema beschrijft het berichtformaat van het eindresultaat van documentcreatie
+      welke in de queue wordt geplaatst."
+      required:
+        - taakapplicatie
+        - gebruiker
+        - documentCreatieSessieId
+        - formaat
+        - data
+      type: object
+      properties:
+        taakapplicatie:
+          title: Taakapplicatie
+          description: De naam van de taakapplicatie
+          type: string
+          example: 'applicatiexyz'
+        gebruiker:
+          title: Gebruiker
+          description: De naam van de gebruiker
+          type: string
+          example: '123456'
+        documentCreatieSessieId:
+          title: Document Creatie Sessie ID
+          description: "Unieke ID toegewezen door de ESB aan het document dat was geretourneerd
+          als resultaat van de functie Initiëren document creatie"
+          type: string
+          example: 6d4b2fa2-5d02-4949-ace3-53c9b0ff1e4e
+        formaat:
+          title: Bestandsformaat
+          description: Bestandsformaat (WORD of PDF) waarin het document is gecreëerd
+          type: string
+          enum:
+            - WORD
+            - PDF
+        documentkenmerk:
+          title: Documentkenmerk
+          description: Kenmerk van het document dat bij het initiëren documentcreatie is opgegeven.
+          type: string
+          example: 'Lorem ipsum'
+        data:
+          title: Data
+          description: Inhoud van document in base64-encoding zonder linebreaks
+          type: string
+          example: 'UEsDBBQACAgIA...'
+    DocumentCreatieResultaat:
+      description: "Dit schema beschrijft formaat van het response van de functie Initieren documentcreatie"
+      required:
+        - documentCreatieSessieId
+        - status
+      type: object
+      properties:
+        documentCreatieSessieId:
+          description: Unieke ID toegewezen door de ESB aan het document dat wordt gecreëerd.
+          type: string
+          example: 6d4b2fa2-5d02-4949-ace3-53c9b0ff1e4e
+        status:
+          description: "Dit veld geeft aan of het document volledig zonder interactie met
+          eindgebruiker opgebouwd zal worden (VOLTOOID), of dat er nog input van eindgebruiker
+          benodigd is (ONVOLTOOID). In het laatste geval wordt ook het veld Resume URL geretourneerd."
+          type: string
+          enum:
+            - VOLTOOID
+            - ONVOLTOOID
+        resumeUrl:
+          description: "Link naar de webpagina waarin eindgebruiker ontbrekende data benodigd voor
+          documentcreatie kan invullen. Wordt alleen geretourneerd indien status = ONVOLTOOID"
+          type: string
+          format: uri
+          example: "https://rotterdam.xentiallabs.com/xential?resumeApplication=b85c58db-e50a-4c11-a6a8-2b522b87483d&loginTicketUuid=0b9077f3-e662-4a85-b9f9-e7418fbecc73&afterBuildAction=close"
+security:
+  - basicAuth: []

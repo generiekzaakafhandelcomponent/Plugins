@@ -34,7 +34,7 @@
         <cds-tab [active]="true" [heading]="'Editor'">
             <valtimo-editor
                     [model]="obs.model"
-                    [disabled]="(editorDisabled$ | async) || obs.template.readOnly"
+                    [disabled]="(editorDisabled$ | async) || obs.template?.readOnly"
                     (validEvent)="onValid($event)"
                     (valueChangeEvent)="onValueChange($event)"
                     [fitPage]="true"
@@ -59,7 +59,7 @@
         >
             <cds-overflow-menu class="overflow-button">
                 <cds-overflow-menu-option
-                        [disabled]="obs.moreDisabled || obs.template.readOnly"
+                        [disabled]="obs.moreDisabled || obs.template?.readOnly"
                         type="danger"
                         (selected)="showDeleteModal()"
                 >{{ 'interface.delete' | translate }}
@@ -68,7 +68,7 @@
             </cds-overflow-menu>
 
             <button
-                    [disabled]="(saveDisabled$ | async) || obs.template.readOnly"
+                    [disabled]="(saveDisabled$ | async) || obs.template?.readOnly"
                     cdsButton="primary"
                     size="md"
                     (click)="updateTemplate()"

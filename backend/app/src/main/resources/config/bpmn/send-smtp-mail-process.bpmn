@@ -15,6 +15,7 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0ndg7zz" sourceRef="SendMail" targetRef="Event_1i2t034" />
     <bpmn:serviceTask id="SendMail" name="Send mail" implementation="##WebService" camunda:expression="${null}">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_0ux7rym</bpmn:incoming>
       <bpmn:outgoing>Flow_0ndg7zz</bpmn:outgoing>
     </bpmn:serviceTask>

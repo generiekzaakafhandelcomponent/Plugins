@@ -5,7 +5,7 @@
     "pluginDefinitionKey": "smtp-mail",
     "properties": {
       "host": "${SMTP_MAIL_CONFIGURATION_HOST}",
-      "port": 587,
+      "port": "${SMTP_MAIL_CONFIGURATION_PORT}",
       "username": "${SMTP_MAIL_CONFIGURATION_USERNAME}",
       "password": "${SMTP_MAIL_CONFIGURATION_PASSWORD}",
       "auth": true,

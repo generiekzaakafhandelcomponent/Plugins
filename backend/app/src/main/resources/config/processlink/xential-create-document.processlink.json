@@ -1,0 +1,14 @@
+[
+  {
+    "activityId": "OpenXentialWizardTask",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "xential-test.wizard"
+  },
+  {
+    "activityId": "XentialDocumentReady",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "xential-test.klaar"
+  }
+]

@@ -1,2 +1,3 @@
 com.ritense.valtimoplugins.freemarker.plugin.mail.MailTemplateAutoConfiguration
+com.ritense.valtimoplugins.freemarker.plugin.text.TextTemplateAutoConfiguration
 com.ritense.valtimoplugins.freemarker.autoconfiguration.TemplateAutoConfiguration

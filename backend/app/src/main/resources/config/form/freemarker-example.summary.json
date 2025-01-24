@@ -1,0 +1,36 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "fullName",
+      "type": "container",
+      "input": true,
+      "label": "Full name",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "example.summary-person"
+      },
+      "components": [
+        {
+          "key": "html",
+          "tag": "div",
+          "type": "htmlelement",
+          "attrs": [
+            {
+              "attr": "",
+              "value": ""
+            }
+          ],
+          "input": false,
+          "label": "HTML",
+          "content": "<h4>Personal information</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Full name</dd>\n        <dt class=\"col-6\">{{{ data.fullName || '-'}}}</dt>\n    </dl>\n </section>",
+          "tableView": false,
+          "refreshOnChange": false
+        }
+      ],
+      "properties": {
+        "sourceKey": "template:full-name"
+      }
+    }
+  ]
+}

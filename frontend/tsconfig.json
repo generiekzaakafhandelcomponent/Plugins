@@ -28,6 +28,7 @@
       "@valtimo-plugins/smtpmail": ["dist/valtimo-plugins/smtpmail"],
       "@valtimo-plugins/spotler": ["dist/valtimo-plugins/spotler"],
       "@valtimo-plugins/suwinet": ["dist/valtimo-plugins/suwinet"],
+      "@valtimo-plugins/xential": ["dist/valtimo-plugins/xential"]
     }
   },
   "files": [],

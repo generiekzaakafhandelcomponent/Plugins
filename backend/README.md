@@ -1,6 +1,6 @@
 # Example application
 
-This project also contains a working example application which is meant to showcase all plugins.
+TThis project also contains a working example application which is meant to showcase all plugins.
 
 ## Running the example application
 

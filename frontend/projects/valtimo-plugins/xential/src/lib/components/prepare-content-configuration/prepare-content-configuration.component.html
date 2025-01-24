@@ -1,0 +1,93 @@
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+        disabled: disabled$ | async,
+        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+        fileFormats: fileFormats$ | async,
+    } as obs"
+>
+
+    <div>
+        <v-input-label
+                [title]="'preparing doc creation'"
+        ></v-input-label>
+    </div>
+
+    <v-input
+            name="xentialContentId"
+            [title]="'xentialContentId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.xentialContentId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
+            name="templateId"
+            [title]="'templateId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.templateId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-select
+            name="fileFormat"
+            [title]="'fileFormat' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultSelectionId]="obs.prefill?.fileFormat"
+            [disabled]="obs.disabled"
+            [required]="true"
+            [items]="obs.fileFormats"
+    />
+    <v-input
+            name="documentId"
+            [title]="'documentId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.documentId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
+            name="eventMessageName"
+            [title]="'eventMessageName' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.eventMessageName"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <valtimo-carbon-multi-input
+            name="verzendAdresData"
+            [title]="'verzendAdresData' | pluginTranslate: pluginId | async"
+            type="keyValue"
+            [disabled]="obs.disabled"
+            [defaultValues]="obs.prefill?.verzendAdresData"
+            [margin]="true"
+            [required]="false"
+            [tooltip]="'verzendAdresDataTooltip' | pluginTranslate: pluginId | async"
+            [minimumAmountOfRows]="0"
+            [initialAmountOfRows]="0"
+    ></valtimo-carbon-multi-input>
+    <valtimo-carbon-multi-input
+            name="colofonData"
+            [title]="'colofonData' | pluginTranslate: pluginId | async"
+            type="keyValue"
+            [disabled]="obs.disabled"
+            [defaultValues]="obs.prefill?.colofonData"
+            [margin]="true"
+            [required]="false"
+            [tooltip]="'colofonDataTooltip' | pluginTranslate: pluginId | async"
+            [minimumAmountOfRows]="0"
+            [initialAmountOfRows]="0"
+    ></valtimo-carbon-multi-input>
+    <valtimo-carbon-multi-input
+            name="documentDetailsData"
+            [title]="'documentDetailsData' | pluginTranslate: pluginId | async"
+            type="keyValue"
+            [disabled]="obs.disabled"
+            [defaultValues]="obs.prefill?.documentDetailsData"
+            [margin]="true"
+            [required]="false"
+            [tooltip]="'documentDetailsDataTooltip' | pluginTranslate: pluginId | async"
+            [minimumAmountOfRows]="0"
+            [initialAmountOfRows]="0"
+    ></valtimo-carbon-multi-input>
+</v-form>

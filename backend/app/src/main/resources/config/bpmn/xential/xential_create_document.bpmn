@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0a6u1ke" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:collaboration id="Collaboration_0d8bhbl">
+    <bpmn:participant id="Participant_163vbcv" name="Genereren Document met Xential" processRef="xential-create-document" />
+    <bpmn:textAnnotation id="TextAnnotation_1w3qlyq">
+      <bpmn:text>Plugin action
+Input:
+pv:xentialContentId</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1w3pbja" associationDirection="None" sourceRef="XentialDocumentCreateTask" targetRef="TextAnnotation_1w3qlyq" />
+    <bpmn:textAnnotation id="TextAnnotation_1sls0ft">
+      <bpmn:text>ResumeURL ontvangen van aanmaken document verzoek</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1km10fa">
+      <bpmn:text>Wacht op event 'document gegeneerd' van Callback URL</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1arii53">
+      <bpmn:text>Wacht op event 'document gegeneerd' van Callback URL</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_037p71w" associationDirection="None" sourceRef="Event_1ad785s" targetRef="TextAnnotation_1arii53" />
+    <bpmn:association id="Association_0exucm4" associationDirection="None" sourceRef="OpenXentialWizardTask" targetRef="TextAnnotation_1sls0ft" />
+  </bpmn:collaboration>
+  <bpmn:process id="xential-create-document" name="Xential: create document" isExecutable="true">
+    <bpmn:exclusiveGateway id="Gateway_1psi3ng" default="Flow_18q77u9">
+      <bpmn:incoming>Flow_17vpvkk</bpmn:incoming>
+      <bpmn:outgoing>Flow_18cgt1d</bpmn:outgoing>
+      <bpmn:outgoing>Flow_18q77u9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1g7zi1o</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_17vpvkk" sourceRef="XentialDocumentCreateTask" targetRef="Gateway_1psi3ng" />
+    <bpmn:sequenceFlow id="Flow_18cgt1d" name="Meer informatie nodig" sourceRef="Gateway_1psi3ng" targetRef="OpenXentialWizardTask">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable('xentialStatus') &amp;&amp; execution.getVariable('xentialStatus') == 'ONVOLTOOID' }</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1irr9bb" sourceRef="Event_1fk7r3m" targetRef="Gateway_0s6m9yq" />
+    <bpmn:sequenceFlow id="Flow_1g7zi1o" sourceRef="StartEvent_1" targetRef="XentialDocumentCreateTask" />
+    <bpmn:serviceTask id="XentialDocumentCreateTask" name="Stuur &#39;Genereer document&#39; verzoek naar Xential" camunda:asyncAfter="true" camunda:expression="${true}">
+      <bpmn:incoming>Flow_1g7zi1o</bpmn:incoming>
+      <bpmn:outgoing>Flow_17vpvkk</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_18q77u9" sourceRef="Gateway_1psi3ng" targetRef="Event_1fk7r3m" />
+    <bpmn:sequenceFlow id="Flow_0pbuwfb" sourceRef="Event_1ad785s" targetRef="Gateway_0s6m9yq" />
+    <bpmn:sequenceFlow id="Flow_1sjm2wu" sourceRef="Gateway_0s6m9yq" targetRef="Event_1y7ui8g" />
+    <bpmn:userTask id="OpenXentialWizardTask" name="Open Xential wizard" camunda:candidateGroups="ROLE_ADMIN">
+      <bpmn:incoming>Flow_18cgt1d</bpmn:incoming>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Event_1fk7r3m" name="Xential document ontvangen" camunda:asyncBefore="true" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_18q77u9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1irr9bb</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0omvrk2" messageRef="Message_3h41r7d" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="Gateway_0s6m9yq">
+      <bpmn:incoming>Flow_1irr9bb</bpmn:incoming>
+      <bpmn:incoming>Flow_0pbuwfb</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sjm2wu</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1y7ui8g">
+      <bpmn:incoming>Flow_1sjm2wu</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Event_1ad785s" name="Xential document ontvangen" camunda:asyncBefore="true" camunda:asyncAfter="true" attachedToRef="OpenXentialWizardTask">
+      <bpmn:outgoing>Flow_0pbuwfb</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0d6462q" messageRef="Message_3h41r7d" />
+    </bpmn:boundaryEvent>
+    <bpmn:association id="Association_0zx3118" associationDirection="None" sourceRef="Event_1fk7r3m" targetRef="TextAnnotation_1km10fa" />
+  </bpmn:process>
+  <bpmn:message id="Message_3h41r7d" name="XENTIAL_TEST_DOC_RECEIVED" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0d8bhbl">
+      <bpmndi:BPMNShape id="Participant_163vbcv_di" bpmnElement="Participant_163vbcv" isHorizontal="true">
+        <dc:Bounds x="180" y="40" width="860" height="470" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1psi3ng_di" bpmnElement="Gateway_1psi3ng" isMarkerVisible="true">
+        <dc:Bounds x="506" y="152" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="253" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ttc9nr_di" bpmnElement="XentialDocumentCreateTask">
+        <dc:Bounds x="351" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0gj74jm_di" bpmnElement="OpenXentialWizardTask">
+        <dc:Bounds x="620" y="270" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0i7elvn_di" bpmnElement="Event_1fk7r3m">
+        <dc:Bounds x="652" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="630" y="202" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0s6m9yq_di" bpmnElement="Gateway_0s6m9yq" isMarkerVisible="true">
+        <dc:Bounds x="795" y="152" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1y7ui8g_di" bpmnElement="Event_1y7ui8g">
+        <dc:Bounds x="952" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0zx3118_di" bpmnElement="Association_0zx3118">
+        <di:waypoint x="668" y="159" />
+        <di:waypoint x="665" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1qiucql_di" bpmnElement="Event_1ad785s">
+        <dc:Bounds x="702" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="678" y="378" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_17vpvkk_di" bpmnElement="Flow_17vpvkk">
+        <di:waypoint x="451" y="177" />
+        <di:waypoint x="506" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18cgt1d_di" bpmnElement="Flow_18cgt1d">
+        <di:waypoint x="531" y="202" />
+        <di:waypoint x="531" y="310" />
+        <di:waypoint x="620" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="538" y="270" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1irr9bb_di" bpmnElement="Flow_1irr9bb">
+        <di:waypoint x="688" y="177" />
+        <di:waypoint x="795" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1g7zi1o_di" bpmnElement="Flow_1g7zi1o">
+        <di:waypoint x="289" y="177" />
+        <di:waypoint x="351" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18q77u9_di" bpmnElement="Flow_18q77u9">
+        <di:waypoint x="556" y="177" />
+        <di:waypoint x="652" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pbuwfb_di" bpmnElement="Flow_0pbuwfb">
+        <di:waypoint x="738" y="350" />
+        <di:waypoint x="820" y="350" />
+        <di:waypoint x="820" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1sjm2wu_di" bpmnElement="Flow_1sjm2wu">
+        <di:waypoint x="845" y="177" />
+        <di:waypoint x="952" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_037p71w_di" bpmnElement="Association_037p71w">
+        <di:waypoint x="730" y="364" />
+        <di:waypoint x="771" y="421" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0exucm4_di" bpmnElement="Association_0exucm4">
+        <di:waypoint x="646" y="350" />
+        <di:waypoint x="605" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1w3qlyq_di" bpmnElement="TextAnnotation_1w3qlyq">
+        <dc:Bounds x="351" y="250" width="129" height="53" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1km10fa_di" bpmnElement="TextAnnotation_1km10fa">
+        <dc:Bounds x="610" y="70" width="120" height="68" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1w3pbja_di" bpmnElement="Association_1w3pbja">
+        <di:waypoint x="401" y="217" />
+        <di:waypoint x="401" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1arii53_di" bpmnElement="TextAnnotation_1arii53">
+        <dc:Bounds x="750" y="421" width="120" height="68" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1sls0ft_di" bpmnElement="TextAnnotation_1sls0ft">
+        <dc:Bounds x="530" y="420" width="130" height="70" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

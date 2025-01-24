@@ -19,6 +19,7 @@ package com.ritense.valtimoplugins.alfresco
 import com.ritense.documentenapi.DocumentenApiAuthentication
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginProperty
+import org.springframework.web.client.RestClient
 import org.springframework.web.reactive.function.client.ClientRequest
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.ExchangeFunction
@@ -48,5 +49,15 @@ class AlfrescoAuthenticationPlugin(
             headers.setBearerAuth(generatedToken)
         }.build()
         return next.exchange(filteredRequest)
+    }
+
+    override fun applyAuth(builder: RestClient.Builder): RestClient.Builder {
+        val generatedToken = tokenGeneratorService.generateToken(
+            clientSecret,
+            clientId
+        )
+        return builder.defaultHeaders { headers ->
+            headers.setBearerAuth(generatedToken)
+        }
     }
 }

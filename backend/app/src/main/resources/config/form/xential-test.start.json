@@ -1,0 +1,38 @@
+{
+    "components": [
+        {
+            "label": "Wizard testen",
+            "optionsLabelPosition": "right",
+            "inline": false,
+            "tableView": false,
+            "validate": {
+                "required": true
+            },
+            "values": [
+                {
+                    "label": "Ja",
+                    "value": "JA",
+                    "shortcut": ""
+                },
+                {
+                    "label": "Nee",
+                    "value": "NEE",
+                    "shortcut": ""
+                }
+            ],
+            "key": "pv.testWizard",
+            "type": "radio",
+            "input": true,
+            "defaultValue": "JA"
+        },
+        {
+            "type": "button",
+            "label": "Genereer doc",
+            "showValidations": false,
+            "disableOnInvalid": true,
+            "tableView": false,
+            "key": "submit",
+            "input": true
+        }
+    ]
+}

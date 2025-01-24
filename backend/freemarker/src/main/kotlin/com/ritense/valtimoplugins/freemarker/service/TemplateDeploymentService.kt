@@ -27,6 +27,7 @@ import mu.KLogger
 import mu.KotlinLogging
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
+import org.springframework.core.annotation.Order
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.ResourcePatternUtils
@@ -42,6 +43,7 @@ class TemplateDeploymentService(
     private val objectMapper: ObjectMapper,
 ) {
 
+    @Order(-1)
     @EventListener(ApplicationReadyEvent::class)
     fun deployTemplates() {
         logger.info { "Deploying all templates from $PATH" }

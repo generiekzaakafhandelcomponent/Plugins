@@ -19,15 +19,14 @@ package com.ritense.valtimoplugins.freemarker.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.Document
+import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
-import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_MAIL
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byCaseDefinitionName
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKey
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKeyAndCaseDefinitionNameAndType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.query
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valueresolver.ValueResolverService
 import freemarker.template.Configuration
 import freemarker.template.Template
@@ -35,6 +34,7 @@ import freemarker.template.TemplateException
 import java.io.StringWriter
 import java.util.Stack
 import java.util.UUID
+import mu.KotlinLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -56,18 +56,24 @@ class TemplateService(
         templateKey: String,
         caseDefinitionName: String,
         templateType: String,
-        document: Document
-    ) = generate(templateKey, caseDefinitionName, templateType, document, emptyMap())
+        document: Document,
+    ): String = generate(
+        templateKey = templateKey,
+        caseDefinitionName = caseDefinitionName,
+        templateType = templateType,
+        document = document
+    )
 
     fun generate(
         templateKey: String,
         caseDefinitionName: String,
         templateType: String,
         document: Document,
-        processVariables: Map<String, Any?>
+        processVariables: Map<String, Any?> = emptyMap(),
+        strict: Boolean = true,
     ): String {
-        val template = getTemplate(templateKey, document.definitionId().name(), TEMPLATE_TYPE_MAIL)
-        return generate(template, document, processVariables)
+        val template = getTemplate(templateKey, document.definitionId().name(), templateType)
+        return generate(template, document, processVariables, strict)
     }
 
     fun generate(template: ValtimoTemplate, document: Document) = generate(template, document, emptyMap())
@@ -75,7 +81,8 @@ class TemplateService(
     fun generate(
         valtimoTemplate: ValtimoTemplate,
         document: Document,
-        processVariables: Map<String, Any?>
+        processVariables: Map<String, Any?>,
+        strict: Boolean = true,
     ): String {
         val dataModel = mutableMapOf<String, Any?>(
             "doc" to objectMapper.convertValue<Map<String, Any?>>(document.content().asJson()),
@@ -91,7 +98,7 @@ class TemplateService(
                 template.createProcessingEnvironment(dataModel, writer).process()
                 return writer.toString()
             } catch (e: TemplateException) {
-                if (!resolveDataModel(document, valtimoTemplate, dataModel)) {
+                if (!resolveDataModel(document, valtimoTemplate, dataModel, strict)) {
                     throw e
                 }
                 exceptionCaught = e
@@ -227,16 +234,21 @@ class TemplateService(
     private fun resolveDataModel(
         document: Document,
         template: ValtimoTemplate,
-        incompleteDataModel: MutableMap<String, Any?>
+        incompleteDataModel: MutableMap<String, Any?>,
+        strict: Boolean = true
     ): Boolean {
         val resolvedPlaceholders = getPlaceholdersFromDataModel(incompleteDataModel)
         val newPlaceholders = findPlaceholders(template, incompleteDataModel)
             .filter { !resolvedPlaceholders.contains(it) }
         valueResolverService.resolveValues(document.id().toString(), newPlaceholders).forEach { (placeholder, value) ->
-            require(value != null && placeholder != value) {
-                throw IllegalStateException("Failed to resolve '$placeholder' for template: '$template'")
+            if (value != null && placeholder != value) {
+                putPlaceholder(placeholder, value, incompleteDataModel)
+            } else if (!strict) {
+                logger.warn { "Unresolved placeholder '$placeholder'. Template: '$template', document: '${document.id()}'" }
+                putPlaceholder(placeholder, "", incompleteDataModel)
+            } else {
+                error("Failed to resolve '$placeholder' for template: '$template'")
             }
-            putPlaceholder(placeholder, value, incompleteDataModel)
         }
         return newPlaceholders.isNotEmpty()
     }
@@ -333,5 +345,9 @@ class TemplateService(
             2 -> listOf<Any>()
             else -> mutableMapOf<String, Any>()
         }
+    }
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
     }
 }

@@ -40,7 +40,7 @@ open class MailTemplatePlugin(
     @PluginAction(
         key = "generate-mail-file",
         title = "Generate Mail File",
-        description = "Generates an Mail based on the template and saves it to a temporary file",
+        description = "Generates an Mail based on the template and saves it in a temporary file",
         activityTypes = [SERVICE_TASK_START]
     )
     open fun generateMailFile(
@@ -56,7 +56,7 @@ open class MailTemplatePlugin(
     @PluginAction(
         key = "generate-mail-content",
         title = "Generate Mail content",
-        description = "Generates An Mail based on the template and saves it to a process variable",
+        description = "Generates Mail text based on the template and saves the text in a process variable",
         activityTypes = [SERVICE_TASK_START]
     )
     open fun generateMailContent(

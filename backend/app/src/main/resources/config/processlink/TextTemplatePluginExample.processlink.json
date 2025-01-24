@@ -1,0 +1,23 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "full-name-form",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": null,
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "Activity_0nzp1ol",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "4ac9a49e-4aeb-4f91-86d9-853fd95a1b33",
+    "pluginActionDefinitionKey": "generate-text-file",
+    "actionProperties": {
+      "processVariableName": "contentId",
+      "textTemplateKey": "full-name"
+    },
+    "processLinkType": "plugin"
+  }
+]

@@ -1,0 +1,85 @@
+<!--
+  ~ Copyright 2015-2023 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<ng-container
+        *ngIf="{
+    model: model$ | async,
+    updatedModelValue: updatedModelValue$ | async,
+    template: template$ | async,
+  } as obs">
+
+    <div class="template-explanation">
+        Text Templates use <a target="_blank" href="https://freemarker.apache.org/docs/dgui_quickstart_basics.html">FreeMarker</a>
+        to create placeholders inside the text. The data-model for FreeMarker is based upon nested <a
+            target="_blank" href="https://docs.valtimo.nl/reference/modules/value-resolver">Valtimo value-resolvers</a>
+        with a slightly different notation. For example: $&#123;doc.firstName&#125;. Retrieves
+        the `firstName` from the case.
+
+        Text Templates can be used as value resolvers. For example: $&#123;template.my-text-template&#125; or
+        `template:my-text-template`.
+    </div>
+
+    <valtimo-editor
+            [model]="obs.model"
+            [disabled]="(editorDisabled$ | async) || obs.template?.readOnly"
+            (validEvent)="onValid($event)"
+            (valueChangeEvent)="onValueChange($event)"
+            [fitPage]="true"
+            [fitPageExtraSpace]="80"
+    ></valtimo-editor>
+</ng-container>
+
+<ng-container renderInPageHeader>
+    <ng-template>
+        <div *ngIf="{
+                model: model$ | async,
+                moreDisabled: moreDisabled$ | async,
+                template: template$ | async,
+             } as obs"
+             class="buttons-container"
+        >
+            <cds-overflow-menu class="overflow-button">
+                <cds-overflow-menu-option
+                        [disabled]="obs.moreDisabled || obs.template?.readOnly"
+                        type="danger"
+                        (selected)="showDeleteModal()"
+                >{{ 'interface.delete' | translate }}
+                </cds-overflow-menu-option
+                >
+            </cds-overflow-menu>
+
+            <button
+                    [disabled]="(saveDisabled$ | async) || obs.template?.readOnly"
+                    cdsButton="primary"
+                    size="md"
+                    (click)="updateTemplate()"
+            >
+                {{ 'interface.save' | translate }}
+
+                <svg class="cds--btn__icon" cdsIcon="save" size="16"></svg>
+            </button>
+        </div>
+    </ng-template>
+</ng-container>
+
+<ng-container *ngIf="{templateKey: templateKey$ | async} as obs">
+    <valtimo-text-template-delete-modal
+            [deleteRowKeys]="[obs.templateKey]"
+            [showDeleteModal$]="showDeleteModal$"
+            (deleteEvent)="onDelete($event)"
+    >
+    </valtimo-text-template-delete-modal>
+</ng-container>
