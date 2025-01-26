@@ -12,11 +12,11 @@
                 "verzondenDataMapping": [
                     {
                         "key": "doc:/desiredName",
-                        "value": "/desiredName"
+                        "value": "/newName"
                     },
                     {
                         "key": "pv:confirmed",
-                        "value": "/confirmed"
+                        "value": "/doYouAgree"
                     }
                 ]
             }

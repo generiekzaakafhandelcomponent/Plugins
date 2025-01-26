@@ -75,6 +75,8 @@ valtimo:
       clear-tables: false
     case-tabs:
       clear-tables: true
+    case-widget-tab:
+      clear-tables: true
   web:
     cors:
       corsConfiguration:

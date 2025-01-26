@@ -113,11 +113,16 @@
       "rows": 15,
       "tableView": true,
       "validateWhenHidden": false,
-      "defaultValue": null,
       "conditional": {
         "show": true,
         "when": "soort",
         "eq": "portaalformulier"
+      },
+      "defaultValue": {
+        "newName": "Julia",
+        "doYouAgree": true,
+        "documenten": "/nameChangeProof",
+        "nameChangeProof": []
       },
       "key": "portaalformulier.verzonden_data",
       "wysiwyg": true,

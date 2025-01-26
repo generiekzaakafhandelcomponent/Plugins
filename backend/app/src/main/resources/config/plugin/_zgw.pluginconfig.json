@@ -29,7 +29,7 @@
         "title": "Objecttypes API (Autodeployed)",
         "pluginDefinitionKey": "objecttypenapi",
         "properties": {
-            "url": "http://localhost:8011/api/v1/",
+            "url": "http://host.docker.internal:8011/api/v1/",
             "authenticationPluginConfiguration": "55c0d693-954f-44df-a6b4-d1d0eef72948"
         }
     },

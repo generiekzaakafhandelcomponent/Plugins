@@ -106,6 +106,7 @@ import {
 import {
   externeKlanttaakPluginSpecification
 } from "../../projects/valtimo-plugins/externe-klanttaak/src/lib/externe-klanttaak-plugin.specification";
+import {ObjectModule} from "@valtimo/object";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -173,6 +174,7 @@ export function tabsFactory() {
         ObjectenApiPluginModule,
         ObjecttypenApiPluginModule,
         ObjectTokenAuthenticationPluginModule,
+        ObjectModule,
         ObjectManagementModule,
         HttpClientModule,
         TranslateModule.forRoot({
@@ -205,7 +207,7 @@ export function tabsFactory() {
             XentialPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
-            objectTokenAuthenticationPluginSpecification
+            objectTokenAuthenticationPluginSpecification,
             externeKlanttaakPluginSpecification,
         ]
     }],

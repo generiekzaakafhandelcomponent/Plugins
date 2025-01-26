@@ -36,7 +36,7 @@ export class CreateExterneKlanttaakComponent
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
-    @Input() selectedPluginConfiguration$: Observable<ExterneKlanttaakPluginConfig>;
+    @Input() selectedPluginConfigurationData$: Observable<ExterneKlanttaakPluginConfig>;
     @Input() prefillConfiguration$: Observable<ExterneKlanttaakPluginActionConfiguration>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<ExterneKlanttaakPluginActionConfigurationData> =
@@ -58,7 +58,7 @@ export class CreateExterneKlanttaakComponent
     }
 
     ngOnInit(): void {
-        this.externeKlanttaakService.detectVersion(this.selectedPluginConfiguration$,this.prefillConfiguration$)
+        this.externeKlanttaakService.detectVersion(this.selectedPluginConfigurationData$,this.prefillConfiguration$)
             .subscribe(
                 externeKlanttaakVersion => this.externeKlanttaakVersion$.next(externeKlanttaakVersion)
             );
