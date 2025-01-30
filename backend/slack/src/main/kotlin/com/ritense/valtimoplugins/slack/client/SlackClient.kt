@@ -19,7 +19,7 @@ package com.ritense.valtimoplugins.slack.client
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import java.io.InputStream
 import java.net.URI
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders

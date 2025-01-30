@@ -16,7 +16,7 @@
 
 package com.ritense.externeklanttaak.plugin
 
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
@@ -26,7 +26,7 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import mu.withLoggingContext
+import io.github.oshai.kotlinlogging.withLoggingContext
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask
 import java.util.UUID
@@ -38,7 +38,7 @@ import java.util.UUID
 )
 class ExterneKlanttaakPlugin(
     private val externeKlanttaakService: ExterneKlanttaakService,
-    private val availableExterneKlanttaakVersions: List<ExterneKlanttaakVersion>,
+    private val availableExterneKlanttaakVersions: List<IExterneKlanttaakVersion>,
 ) {
     @PluginProperty(key = "pluginVersion", secret = false)
     internal lateinit var pluginVersion: Version
@@ -100,10 +100,12 @@ class ExterneKlanttaakPlugin(
         }
     }
 
-    private fun getExterneKlanttaakVersion() = requireNotNull(
-        availableExterneKlanttaakVersions.firstOrNull { it supports pluginVersion }
-    ) {
-        "Externe Klanttaak Version supporting version [$pluginVersion] was not found."
+    private fun getExterneKlanttaakVersion(): IExterneKlanttaakVersion {
+        val matchedVersions = availableExterneKlanttaakVersions.filter { it supports pluginVersion }
+        return requireNotNull(
+            matchedVersions.singleOrNull()
+        ) {
+            "Could not get Externe Klanttaak Version. Expected exactly 1 ExterneKlanttaakVersion bean to match the configured version [$pluginVersion], but found ${matchedVersions.joinToString { it.javaClass.simpleName }}]"
+        }
     }
-
 }

@@ -6,7 +6,7 @@ import com.ritense.document.service.DocumentService
 import com.ritense.valtimoplugins.suwinet.exception.ParseToDtoException
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import java.time.temporal.ChronoField
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 @Suppress("UNUSED")
 class SuwinetBrpStoreToDocService(

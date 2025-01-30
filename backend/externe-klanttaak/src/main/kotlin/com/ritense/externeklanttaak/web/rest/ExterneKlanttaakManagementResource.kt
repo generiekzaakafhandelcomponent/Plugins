@@ -17,7 +17,7 @@
 package com.ritense.externeklanttaak.web.rest
 
 import com.ritense.authorization.annotation.RunWithoutAuthorization
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimo.contract.domain.ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE
 import org.springframework.http.ResponseEntity
@@ -29,12 +29,12 @@ import org.springframework.web.bind.annotation.RestController
 @SkipComponentScan
 @RequestMapping("/api/management", produces = [APPLICATION_JSON_UTF8_VALUE])
 class ExterneKlanttaakManagementResource(
-    private val externeKalnttaakVersions: List<ExterneKlanttaakVersion>
+    private val externeKlanttaakVersions: List<IExterneKlanttaakVersion>
 ) {
 
     @RunWithoutAuthorization
     @GetMapping("/v1/externe-klanttaak/supported-versions")
     fun getSupportedVersions(): ResponseEntity<List<String>> {
-        return ResponseEntity.ok(externeKalnttaakVersions.map { it.version })
+        return ResponseEntity.ok(externeKlanttaakVersions.map { it.version })
     }
 }

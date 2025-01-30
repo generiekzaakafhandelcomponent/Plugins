@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.IExterneKlanttaak
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.objectenapi.ObjectenApiPlugin
@@ -35,8 +35,8 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
-import mu.KLogger
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KLogger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask
 import java.net.URI
@@ -50,7 +50,7 @@ open class ExterneKlanttaakService(
     private val taskService: CamundaTaskService,
 ) {
     internal fun createExterneKlanttaak(
-        klanttaakVersion: ExterneKlanttaakVersion,
+        klanttaakVersion: IExterneKlanttaakVersion,
         objectManagementId: UUID,
         delegateTask: DelegateTask,
         config: IPluginActionConfig,
@@ -85,7 +85,7 @@ open class ExterneKlanttaakService(
     }
 
     internal fun completeExterneKlanttaak(
-        klanttaakVersion: ExterneKlanttaakVersion,
+        klanttaakVersion: IExterneKlanttaakVersion,
         config: IPluginActionConfig,
         objectManagementId: UUID,
         execution: DelegateExecution

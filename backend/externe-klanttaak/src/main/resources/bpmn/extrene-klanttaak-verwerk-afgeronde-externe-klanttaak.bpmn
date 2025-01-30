@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0v1ejyk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.29.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0v1ejyk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.31.0">
   <bpmn:collaboration id="Collaboration_1hhep9j">
     <bpmn:extensionElements />
-    <bpmn:participant id="VerwerkAfgerondeExterneKlanttaakParticipant" name="Verwerk afgeronde externe klanttaak" processRef="verwerk-afgeronde-externe-klanttaak" />
+    <bpmn:participant id="ExterneKlanttaakVerwerkAfgerondeExterneKlanttaakParticipant" name="Externe Klanttaak: Verwerk afgeronde externe klanttaak" processRef="externe-klanttaak-verwerk-afgeronde-externe-klanttaak" />
   </bpmn:collaboration>
-  <bpmn:process id="verwerk-afgeronde-externe-klanttaak" name="Verwerk afgeronde externe klanttaak" isExecutable="true">
+  <bpmn:process id="externe-klanttaak-verwerk-afgeronde-externe-klanttaak" name="Externe Klanttaak: Verwerk afgeronde externe klanttaak" isExecutable="true">
     <bpmn:extensionElements>
       <camunda:properties>
         <camunda:property name="systemProcess" value="true" />
@@ -26,7 +26,7 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1hhep9j">
-      <bpmndi:BPMNShape id="Participant_0q24bm9_di" bpmnElement="VerwerkAfgerondeExterneKlanttaakParticipant" isHorizontal="true">
+      <bpmndi:BPMNShape id="Participant_0q24bm9_di" bpmnElement="ExterneKlanttaakVerwerkAfgerondeExterneKlanttaakParticipant" isHorizontal="true">
         <dc:Bounds x="160" y="70" width="430" height="160" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>

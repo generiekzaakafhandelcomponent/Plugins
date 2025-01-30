@@ -21,7 +21,7 @@ package com.ritense.valtimoplugins.berkelybridge.client
 
 import com.ritense.valtimoplugins.berkelybridge.plugin.BerkelyBridgeClientEvent
 import com.ritense.valtimoplugins.berkelybridge.plugin.TemplateProperty
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders

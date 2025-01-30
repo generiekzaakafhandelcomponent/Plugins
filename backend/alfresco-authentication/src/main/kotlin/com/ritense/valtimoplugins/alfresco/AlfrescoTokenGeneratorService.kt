@@ -24,7 +24,7 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import java.nio.charset.Charset
 import java.util.Date
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 private const val FALLBACK_USER = "System"
 private val logger = KotlinLogging.logger {}

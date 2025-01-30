@@ -26,7 +26,7 @@ import com.ritense.externeklanttaak.TestHelper.objecttypeUrl
 import com.ritense.externeklanttaak.TestHelper.openKlanttaak
 import com.ritense.externeklanttaak.TestHelper.openTaakObject
 import com.ritense.externeklanttaak.TestHelper.verwerkteKlanttaak
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
 import com.ritense.externeklanttaak.version.v1x1x0.CompleteExterneKlanttaakActionV1x1x0.CompleteExterneKlanttaakActionConfigV1x1x0
 import com.ritense.externeklanttaak.version.v1x1x0.CreateExterneKlanttaakActionV1x1x0.CreateExterneKlanttaakActionConfigV1x1x0
@@ -74,7 +74,7 @@ internal class ExterneKlanttaakServiceTest {
     private lateinit var valueResolverService: ValueResolverService
     private lateinit var taskService: CamundaTaskService
     private lateinit var objectManagement: ObjectManagement
-    private lateinit var externeKlanttaakVersion: ExterneKlanttaakVersion
+    private lateinit var externeKlanttaakVersion: IExterneKlanttaakVersion
 
     @BeforeEach
     fun init() {

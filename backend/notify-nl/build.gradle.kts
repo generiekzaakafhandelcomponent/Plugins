@@ -31,7 +31,7 @@ dependencies {
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
 
-    implementation("io.github.microutils:kotlin-logging")
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
     // Testing
     testImplementation("com.ritense.valtimo:local-resource")

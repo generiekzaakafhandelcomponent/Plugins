@@ -7,7 +7,7 @@ import com.ritense.externeklanttaak.TestHelper.objectMapper
 import com.ritense.externeklanttaak.TestHelper.objectUrl
 import com.ritense.externeklanttaak.TestHelper.objecttypeId
 import com.ritense.externeklanttaak.TestHelper.objecttypeUrl
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.listener.ExterneKlanttaakEventListener
 import com.ritense.externeklanttaak.plugin.ExterneKlanttaakPlugin
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
@@ -66,7 +66,7 @@ class ExterneKlanttaakEventListenerTest {
         externeKlanttaakPlugin =
             ExterneKlanttaakPlugin(
                 externeKlanttaakService = externeKlanttaakService,
-                availableExterneKlanttaakVersions = mock<List<ExterneKlanttaakVersion>>()
+                availableExterneKlanttaakVersions = mock<List<IExterneKlanttaakVersion>>()
             )
 
         externeklanttaakEventListener = ExterneKlanttaakEventListener(

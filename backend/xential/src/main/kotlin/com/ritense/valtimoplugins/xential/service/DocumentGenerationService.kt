@@ -26,7 +26,7 @@ import com.ritense.valtimoplugins.xential.plugin.TemplateDataEntry
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.ritense.valueresolver.ValueResolverService
 import com.rotterdam.xential.model.Sjabloondata
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.io.ByteArrayInputStream

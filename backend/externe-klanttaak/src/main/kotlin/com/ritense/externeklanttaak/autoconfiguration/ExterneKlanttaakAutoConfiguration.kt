@@ -16,7 +16,7 @@
 
 package com.ritense.externeklanttaak.autoconfiguration
 
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.listener.ExterneKlanttaakEventListener
 import com.ritense.externeklanttaak.plugin.ExterneKlanttaakPluginFactory
 import com.ritense.externeklanttaak.security.ExterneKlanttaakSecurityConfigurer
@@ -48,9 +48,9 @@ class ExterneKlanttaakAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(ExterneKlanttaakManagementResource::class)
     fun externeKlanttaakPluginManagementResource(
-        externeKalnttaakVersions: List<ExterneKlanttaakVersion>
+        externeKlanttaakVersions: List<IExterneKlanttaakVersion>
     ): ExterneKlanttaakManagementResource {
-        return ExterneKlanttaakManagementResource(externeKalnttaakVersions)
+        return ExterneKlanttaakManagementResource(externeKlanttaakVersions)
     }
 
     @Bean
@@ -76,12 +76,12 @@ class ExterneKlanttaakAutoConfiguration {
     fun externeKlanttaakPluginFactory(
         pluginService: PluginService,
         externeKlanttaakService: ExterneKlanttaakService,
-        externeKalnttaakVersions: List<ExterneKlanttaakVersion>,
+        externeKlanttaakVersions: List<IExterneKlanttaakVersion>,
     ): ExterneKlanttaakPluginFactory {
         return ExterneKlanttaakPluginFactory(
             pluginService,
             externeKlanttaakService,
-            externeKalnttaakVersions,
+            externeKlanttaakVersions,
         )
     }
 

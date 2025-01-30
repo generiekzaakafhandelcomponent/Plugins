@@ -18,7 +18,7 @@ package com.ritense.valtimoplugins.notifynl.service
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.nio.charset.Charset
 import java.util.Date
 import java.util.UUID

@@ -17,7 +17,7 @@ import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundExcepti
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 class SuwinetBrpInfoService(
     private val suwinetSOAPClient: SuwinetSOAPClient,

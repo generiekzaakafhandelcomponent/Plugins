@@ -28,7 +28,7 @@ import com.ritense.valtimoplugins.publictask.htmlrenderer.service.HtmlRenderServ
 import com.ritense.valtimoplugins.publictask.repository.PublicTaskRepository
 import java.time.LocalDate
 import java.util.UUID
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask

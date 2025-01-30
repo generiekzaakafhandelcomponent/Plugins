@@ -17,7 +17,7 @@
 package com.ritense.externeklanttaak
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.domain.SpecVersion
 import com.ritense.externeklanttaak.domain.Version
@@ -62,7 +62,7 @@ internal class ExterneKlanttaakPluginTest {
     private lateinit var zakenApiPlugin: ZakenApiPlugin
     private lateinit var zaakUrlProvider: ZaakUrlProvider
     private lateinit var objectMapper: ObjectMapper
-    private lateinit var supportedExterneKlanttaakVersions: List<ExterneKlanttaakVersion>
+    private lateinit var supportedExterneKlanttaakVersions: List<IExterneKlanttaakVersion>
     private val delegateTask = mock<DelegateTask>()
 
     @BeforeEach

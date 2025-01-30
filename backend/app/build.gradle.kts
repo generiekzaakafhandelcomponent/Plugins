@@ -7,7 +7,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.postgresql:postgresql")
-    implementation("io.github.microutils:kotlin-logging")
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
     if (System.getProperty("os.arch") == "aarch64") {
         runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.105.Final:osx-aarch_64")

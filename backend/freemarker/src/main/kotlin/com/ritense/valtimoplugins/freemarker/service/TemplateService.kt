@@ -34,7 +34,7 @@ import freemarker.template.TemplateException
 import java.io.StringWriter
 import java.util.Stack
 import java.util.UUID
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification

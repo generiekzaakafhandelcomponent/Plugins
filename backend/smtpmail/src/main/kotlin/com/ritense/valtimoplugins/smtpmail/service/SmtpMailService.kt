@@ -22,7 +22,7 @@ import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContentDto
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import java.io.InputStream
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 
 @SkipComponentScan

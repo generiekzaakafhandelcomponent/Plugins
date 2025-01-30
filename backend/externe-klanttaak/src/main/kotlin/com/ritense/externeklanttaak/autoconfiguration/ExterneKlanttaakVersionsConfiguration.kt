@@ -16,7 +16,7 @@
 
 package com.ritense.externeklanttaak.autoconfiguration
 
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakVersionV1x1x0
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.service.CamundaTaskService
@@ -24,9 +24,22 @@ import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 
 @AutoConfiguration
 class ExterneKlanttaakVersionsConfiguration {
+
+    @Bean
+    @Order(Ordered.LOWEST_PRECEDENCE)
+    fun ensureUniqueExterneKlanttaakVersions(
+        externeKlanttaakVersions: List<IExterneKlanttaakVersion>
+    ): Nothing? {
+        if (externeKlanttaakVersions.distinctBy { it.version }.size != externeKlanttaakVersions.size) {
+            throw IllegalStateException("Externe Klanttaak Versions must be unique.")
+        }
+        return null
+    }
 
     @Bean
     fun externeKlanttaakVersionV1x1x0(
@@ -34,7 +47,7 @@ class ExterneKlanttaakVersionsConfiguration {
         valueResolverService: ValueResolverService,
         taskService: CamundaTaskService,
         zaakUrlProvider: ZaakUrlProvider
-    ): ExterneKlanttaakVersion {
+    ): IExterneKlanttaakVersion {
         return ExterneKlanttaakVersionV1x1x0(
             pluginService,
             valueResolverService,

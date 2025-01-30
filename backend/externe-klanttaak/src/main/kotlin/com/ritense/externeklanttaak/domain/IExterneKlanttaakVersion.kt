@@ -20,7 +20,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.DelegateTask
 import kotlin.reflect.KClass
 
-interface ExterneKlanttaakVersion {
+interface IExterneKlanttaakVersion {
     val version: String
     fun create(pluginActionConfig: IPluginActionConfig, delegateTask: DelegateTask): IExterneKlanttaak {
         TODO("Not Implemented")

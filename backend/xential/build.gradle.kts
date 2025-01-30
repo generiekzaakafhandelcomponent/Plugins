@@ -38,7 +38,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    implementation("io.github.microutils:kotlin-logging:3.0.5")
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
     implementation("jakarta.inject:jakarta.inject-api:2.0.1")
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")

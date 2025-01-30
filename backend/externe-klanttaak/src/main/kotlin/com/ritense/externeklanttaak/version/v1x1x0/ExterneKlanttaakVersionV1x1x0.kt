@@ -15,7 +15,7 @@
  */
 package com.ritense.externeklanttaak.version.v1x1x0
 
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.IExterneKlanttaak
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.version.v1x1x0.CompleteExterneKlanttaakActionV1x1x0.CompleteExterneKlanttaakActionConfigV1x1x0
@@ -32,7 +32,7 @@ class ExterneKlanttaakVersionV1x1x0(
     private val valueResolverService: ValueResolverService,
     private val taskService: CamundaTaskService,
     private val zaakUrlProvider: ZaakUrlProvider,
-) : ExterneKlanttaakVersion {
+) : IExterneKlanttaakVersion {
     override val version: String = "1.1.0"
 
     override fun create(pluginActionConfig: IPluginActionConfig, delegateTask: DelegateTask): IExterneKlanttaak {

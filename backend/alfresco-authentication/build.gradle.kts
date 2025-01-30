@@ -33,7 +33,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
-    implementation("io.github.microutils:kotlin-logging:3.0.5")
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.14.2")
     implementation("com.fasterxml.jackson.core:jackson-core:2.14.2")

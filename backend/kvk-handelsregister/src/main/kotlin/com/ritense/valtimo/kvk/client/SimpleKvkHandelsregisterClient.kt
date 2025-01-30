@@ -3,7 +3,7 @@ package com.ritense.valtimo.kvk.client
 import com.ritense.valtimo.kvk.model.ZoekenResponse
 import io.netty.channel.ChannelOption
 import io.netty.handler.ssl.SslContextBuilder
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException

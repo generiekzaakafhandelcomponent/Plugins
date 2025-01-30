@@ -9,7 +9,7 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimo.kvk.client.KvkHandelsregisterClientConfig
 import com.ritense.valtimo.kvk.service.KvkHandelsregisterService
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 

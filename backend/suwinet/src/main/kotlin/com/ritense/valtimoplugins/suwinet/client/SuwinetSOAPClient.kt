@@ -4,7 +4,7 @@ import java.io.FileInputStream
 import java.security.KeyStore
 import javax.net.ssl.KeyManagerFactory
 import javax.net.ssl.TrustManagerFactory
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.cxf.configuration.jsse.TLSClientParameters
 import org.apache.cxf.configuration.security.AuthorizationPolicy
 import org.apache.cxf.frontend.ClientProxy

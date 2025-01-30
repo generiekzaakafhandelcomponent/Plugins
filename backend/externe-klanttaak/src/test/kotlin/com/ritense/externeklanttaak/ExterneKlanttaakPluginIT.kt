@@ -24,7 +24,7 @@ import com.ritense.BaseIntegrationTest
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
 import com.ritense.document.domain.impl.request.NewDocumentRequest
 import com.ritense.document.service.DocumentService
-import com.ritense.externeklanttaak.domain.ExterneKlanttaakVersion
+import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.listener.ExterneKlanttaakEventListener
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
@@ -76,6 +76,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpMethod
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.RestClient.Builder
 import org.springframework.web.reactive.function.client.ClientRequest
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.ExchangeFunction
@@ -89,7 +90,7 @@ import kotlin.test.assertEquals
 class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
 
     @Autowired
-    lateinit var externeKlanttaakVersions: List<ExterneKlanttaakVersion>
+    lateinit var externeKlanttaakVersions: List<IExterneKlanttaakVersion>
 
     @Autowired
     lateinit var externeKlanttaakPluginManagementResource: ExterneKlanttaakManagementResource
@@ -395,7 +396,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
               "notificatiesApiPluginConfiguration": "${notificatiesApiPlugin.id.id}",
               "objectManagementConfigurationId": "${objectManagement.id}",
               "pluginVersion": "$version",
-              "finalizerProcess": "verwerk-afgeronde-externe-klanttaak"
+              "finalizerProcess": "$COMPLETE_PROCESS_DEFINITION_KEY"
             }
         """.trimIndent()
 
@@ -732,6 +733,13 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
     }
 
     class TestAuthentication : ObjectenApiAuthentication, ObjecttypenApiAuthentication, NotificatiesApiAuthentication {
+        override val configurationId: PluginConfigurationId
+            get() = PluginConfigurationId.newId()
+
+        override fun applyAuth(builder: Builder): Builder {
+            return builder
+        }
+
         override fun filter(request: ClientRequest, next: ExchangeFunction): Mono<ClientResponse> {
             return next.exchange(request)
         }
@@ -740,7 +748,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
     companion object {
         private val objectMapper = MapperSingleton.get()
         private const val CREATE_PROCESS_DEFINITION_KEY = "create-externe-klanttaak"
-        private const val COMPLETE_PROCESS_DEFINITION_KEY = "verwerk-afgeronde-externe-klanttaak"
+        private const val COMPLETE_PROCESS_DEFINITION_KEY = "externe-klanttaak-verwerk-afgeronde-externe-klanttaak"
         private const val DOCUMENT_DEFINITION_KEY = "profile"
     }
 }

@@ -10,7 +10,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_STA
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import java.net.URI
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
