@@ -101,6 +101,7 @@ class XentialPlugin(
         @PluginActionProperty templateId: UUID,
         @PluginActionProperty fileFormat: FileFormat,
         @PluginActionProperty documentId: String,
+        @PluginActionProperty gebruikersId: String,
         @PluginActionProperty eventMessageName: String,
         @PluginActionProperty xentialContentId: String,
         @PluginActionProperty verzendAdresData: Array<TemplateDataEntry>,
@@ -117,6 +118,7 @@ class XentialPlugin(
             ).let {
                 val xentialDocumentProperties = XentialDocumentProperties(
                     templateId,
+                    gebruikersId,
                     fileFormat,
                     documentId,
                     eventMessageName,

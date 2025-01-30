@@ -22,6 +22,14 @@
             [required]="true"
     />
     <v-input
+            name="gebruikersId"
+            [title]="'gebruikersId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.gebruikersId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
             name="templateId"
             [title]="'templateId' | pluginTranslate: pluginId | async"
             [margin]="true"

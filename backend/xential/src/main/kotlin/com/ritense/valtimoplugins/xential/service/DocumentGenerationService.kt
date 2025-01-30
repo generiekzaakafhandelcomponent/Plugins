@@ -62,7 +62,7 @@ class DocumentGenerationService(
         val api = httpClientConfig.configureClient(httpClientProperties)
         val sjabloonVulData = generateXml(xentialDocumentProperties.content)
         val result = api.creeerDocument(
-            gebruikersId = httpClientProperties.applicationName,
+            gebruikersId = xentialDocumentProperties.gebruikersId,
             accepteerOnbekend = false,
             sjabloondata = Sjabloondata(
                 sjabloonId = xentialDocumentProperties.templateId.toString(),

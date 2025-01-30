@@ -3,6 +3,7 @@ import {PluginConfigurationData} from "@valtimo/plugin";
 export interface PrepareContentTemplate extends PluginConfigurationData {
     xentialContentId: string;
     templateId: string;
+    gebruikersId: string;
     fileFormat: FileFormat;
     documentId: string;
     eventMessageName: string;
