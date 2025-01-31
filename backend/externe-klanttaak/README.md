@@ -42,6 +42,15 @@ For example usage run the Plugins Example app in this repository or look at the 
 following path: `/backend/app/src/resources/config`. This example only includes version `1.1.1` of the Externe Klanttaak
 contract.
 
+##### Example Usage Instructions
+
+* Create a new `Name Change` case
+* Verify that an `Externe Klantaak V1.1.0` object has been created in objecten api (or within GZAC from the Object
+  Management page)
+* Modify above object with an answer from the user and set the status of the Externe Klanttaak to `afgerond`
+* See changes being caught and processed by gzac shortly after
+  * Case should reflect user input and modify both the process instance variable and json schema document values.
+
 ### Development
 
 ##### Adding a new version
