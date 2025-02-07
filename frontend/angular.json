@@ -392,6 +392,47 @@
         }
       }
     },
+    "@valtimo-plugins/ollama": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/ollama",
+      "sourceRoot": "projects/valtimo-plugins/ollama/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/ollama/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/ollama/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/ollama/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/ollama/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/ollama/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/ollama/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/ollama/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/ollama/src/**/*.ts",
+              "projects/valtimo-plugins/ollama/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/freemarker": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/freemarker",

@@ -21,6 +21,7 @@ dependencies {
     implementation(project(":backend:freemarker"))
     implementation(project(":backend:notify-nl"))
     implementation(project(":backend:object-management"))
+    implementation(project(":backend:ollama"))
     implementation(project(":backend:publictask"))
     implementation(project(":backend:slack"))
     implementation(project(":backend:smtpmail"))

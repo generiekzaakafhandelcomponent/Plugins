@@ -9,6 +9,7 @@ include(
     "backend:freemarker",
     "backend:notify-nl",
     "backend:object-management",
+    "backend:ollama",
     "backend:publictask",
     "backend:slack",
     "backend:smtpmail",
