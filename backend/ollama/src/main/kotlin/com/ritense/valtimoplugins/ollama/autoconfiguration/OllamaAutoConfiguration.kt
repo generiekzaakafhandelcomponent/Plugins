@@ -33,7 +33,7 @@ class OllamaAutoConfiguration {
     fun ollamaClient(
         restClientBuilder: RestClient.Builder,
     ): OllamaClient {
-        return OllamaClient(restClientBuilder, null, null)
+        return OllamaClient(restClientBuilder)
     }
 
     @Bean
@@ -43,7 +43,7 @@ class OllamaAutoConfiguration {
         ollamaClient: OllamaClient,
         storageService: TemporaryResourceStorageService,
     ): OllamaPluginFactory {
-        return OllamaPluginFactory(pluginService, ollamaClient, storageService)
+        return OllamaPluginFactory(pluginService, ollamaClient)
     }
 
 }

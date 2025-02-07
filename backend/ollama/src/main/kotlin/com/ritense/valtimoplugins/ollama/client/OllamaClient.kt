@@ -17,14 +17,10 @@
 package com.ritense.valtimoplugins.ollama.client
 
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import java.io.InputStream
-import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.core.io.InputStreamResource
-import org.springframework.http.MediaType
-import org.springframework.http.MediaType.MULTIPART_FORM_DATA
+import java.net.URI
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component
-import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 
@@ -32,73 +28,33 @@ import org.springframework.web.client.body
 @SkipComponentScan
 class OllamaClient(
     private val restClientBuilder: RestClient.Builder,
-    var baseUri: URI?,
-    var token: String?,
 ) {
 
-    /**
-     * https://api.ollama.com/methods/chat.postMessage
-     */
-    fun chatPostMessage(channel: String, message: String) {
-        logger.debug { "Post message in ollama ('$message')" }
+    fun sendPrompt(baseUrl: URI, message: String): String {
+        logger.debug { "Post message to ollama ('$message')" }
 
-        val multipartFormData = mutableMapOf(
-            "channel" to channel,
-            "text" to message,
-        )
-
-        post("/api/chat.postMessage", multipartFormData)
-    }
-
-    /**
-     * https://api.ollama.com/methods/files.upload
-     */
-    fun filesUpload(channels: String, message: String?, fileName: String, file: InputStream) {
-        logger.debug { "Post message with file in ollama ('$message', '$fileName')" }
-        val fileNameParts = fileName.split('.')
-
-        val multipartFormData = mutableMapOf(
-            "channels" to channels,
-            "filename" to fileName,
-            "title" to fileNameParts[0],
-            "filetype" to fileNameParts[1],
-            "content" to InputStreamResource(file)
-        )
-
-        message?.let { multipartFormData["initial_message"] = it }
-
-        post("/api/files.upload", multipartFormData)
-    }
-
-    private fun post(path: String, multipartFormData: Map<String, Any>) {
-        val body = LinkedMultiValueMap<String, Any>()
-        multipartFormData.forEach { body.add(it.key, it.value) }
+        val body = OllamaPromptBody(message)
 
         val response = restClientBuilder
             .clone()
+            .baseUrl(baseUrl.toString())
             .build()
             .post()
-            .uri {
-                it.scheme(baseUri!!.scheme)
-                    .host(baseUri!!.host)
-                    .path(baseUri!!.path)
-                    .path(path)
-                    .port(baseUri!!.port)
-                    .build()
-            }
-            .headers {
-                it.contentType = MULTIPART_FORM_DATA
-                it.setBearerAuth(token!!)
-            }
-            .accept(MediaType.APPLICATION_JSON)
+            .uri("/api/generate")
+            .accept(APPLICATION_JSON)
             .body(body)
             .retrieve()
             .body<OllamaResponse>()
 
-        if (response?.ok != true) {
-            throw OllamaException(response?.error)
-        }
+        return response?.response
+            ?: error("Could not generate Ollama prompt: $response")
     }
+
+    class OllamaPromptBody(
+        val prompt: String,
+        val model: String = "deepseek-r1:1.5b", //for now to use this one to test because it seemed relatively low resource cost
+        val stream: Boolean = false
+    )
 
     companion object {
         private val logger = KotlinLogging.logger {}

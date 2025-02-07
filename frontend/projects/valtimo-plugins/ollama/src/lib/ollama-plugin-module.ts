@@ -19,20 +19,17 @@ import {OllamaConfigurationComponent} from './components/ollama-configuration/ol
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
-import {PostMessageWithFileConfigurationComponent} from './components/post-message-with-file/post-message-with-file-configuration.component';
-import {PostMessageConfigurationComponent} from './components/post-message/post-message-configuration.component';
+import {SendPromptConfigurationComponent} from './components/send-prompt/send-prompt-configuration.component';
 
 @NgModule({
   declarations: [
     OllamaConfigurationComponent,
-    PostMessageConfigurationComponent,
-    PostMessageWithFileConfigurationComponent,
+    SendPromptConfigurationComponent,
   ],
   imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
   exports: [
     OllamaConfigurationComponent,
-    PostMessageConfigurationComponent,
-    PostMessageWithFileConfigurationComponent,
+    SendPromptConfigurationComponent,
   ],
 })
 export class OllamaPluginModule {}

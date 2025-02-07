@@ -21,8 +21,6 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.resource.domain.MetadataType
-import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.ollama.client.OllamaClient
 import java.net.URI
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -34,62 +32,22 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 open class OllamaPlugin(
     private val ollamaClient: OllamaClient,
-    private val storageService: TemporaryResourceStorageService,
 ) {
 
     @PluginProperty(key = "url", secret = false)
     lateinit var url: URI
 
-    @PluginProperty(key = "token", secret = true)
-    lateinit var token: String
-
     @PluginAction(
-        key = "post-message",
+        key = "send-prompt",
         title = "Post message",
-        description = "Sends a message to a Ollama channel",
+        description = "Sends a message to an Ollama endpoint",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
     open fun postMessage(
         execution: DelegateExecution,
-        @PluginActionProperty channel: String,
-        @PluginActionProperty message: String
+        @PluginActionProperty message: String, // template:myQuestion -> 'Why is the sky blue?'
+        @PluginActionProperty reponseVariable: String,
     ) {
-        ollamaClient.baseUri = url
-        ollamaClient.token = token
-        ollamaClient.chatPostMessage(
-            channel = channel,
-            message = message,
-        )
-    }
-
-    @PluginAction(
-        key = "post-message-with-file",
-        title = "Post message with file",
-        description = "Sends a message to a channel with a file",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
-    )
-    open fun postMessageWithFile(
-        execution: DelegateExecution,
-        @PluginActionProperty channels: String,
-        @PluginActionProperty message: String?,
-        @PluginActionProperty fileName: String?,
-    ) {
-        val resourceId = execution.getVariable(RESOURCE_ID_PROCESS_VAR) as String?
-            ?: throw IllegalStateException("Failed to post ollama message. No process variable '$RESOURCE_ID_PROCESS_VAR' found.")
-        val contentAsInputStream = storageService.getResourceContentAsInputStream(resourceId)
-        val metadata = storageService.getResourceMetadata(resourceId)
-
-        ollamaClient.baseUri = url
-        ollamaClient.token = token
-        ollamaClient.filesUpload(
-            channels = channels,
-            message = message,
-            fileName = fileName ?: metadata[MetadataType.FILE_NAME.key] as String,
-            file = contentAsInputStream
-        )
-    }
-
-    companion object {
-        const val RESOURCE_ID_PROCESS_VAR = "resourceId"
+        val response = ollamaClient.sendPrompt(url, message)
     }
 }

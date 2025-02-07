@@ -28,10 +28,9 @@ import org.springframework.stereotype.Component
 class OllamaPluginFactory(
     pluginService: PluginService,
     val client: OllamaClient,
-    val storageService: TemporaryResourceStorageService,
 ) : PluginFactory<OllamaPlugin>(pluginService) {
 
     override fun create(): OllamaPlugin {
-        return OllamaPlugin(client, storageService)
+        return OllamaPlugin(client)
     }
 }

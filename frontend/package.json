@@ -36,7 +36,7 @@
     "libs:watch:freemarker": "ng build @valtimo-plugins/freemarker --watch",
     "libs:watch:notify-nl": "ng build @valtimo-plugins/notify-nl --watch",
     "libs:watch:object-management": "ng build @valtimo-plugins/object-management --watch",
-    "libs:watch:slack": "ng build @valtimo-plugins/ollama --watch",
+    "libs:watch:ollama": "ng build @valtimo-plugins/ollama --watch",
     "libs:watch:publictask": "ng build @valtimo-plugins/publictask --watch",
     "libs:watch:slack": "ng build @valtimo-plugins/slack --watch",
     "libs:watch:smtpmail": "ng build @valtimo-plugins/smtpmail --watch",

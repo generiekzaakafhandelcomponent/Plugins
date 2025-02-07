@@ -18,18 +18,10 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface OllamaConfig extends PluginConfigurationData {
   url: string;
-  token: string;
 }
 
-interface PostMessageConfig {
-  channel: string;
+interface SendPromptConfig {
   message: string;
 }
 
-interface PostMessageWithFileConfig {
-  channels: string;
-  message?: string;
-  fileName?: string;
-}
-
-export {OllamaConfig, PostMessageConfig, PostMessageWithFileConfig};
+export {OllamaConfig, SendPromptConfig};

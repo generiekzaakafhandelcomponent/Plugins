@@ -16,7 +16,19 @@
 
 package com.ritense.valtimoplugins.ollama.client
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class OllamaResponse(
-    val ok: Boolean,
-    val error: String? = null
+    val model: String,
+    @JsonProperty("created_at") val createdAt: String,
+    val response: String,
+    val done: Boolean,
+    @JsonProperty("done_reason") val doneReason: String,
+    val context: List<Long>,
+    @JsonProperty("total_duration") val totalDuration: Long,
+    @JsonProperty("load_duration") val loadDuration: Long,
+    @JsonProperty("prompt_eval_count") val promptEvalCount: Long,
+    @JsonProperty("prompt_eval_duration") val promptEvalDuration: Long,
+    @JsonProperty("eval_count") val evalCount: Long,
+    @JsonProperty("eval_duration") val evalDuration: Long,
 )

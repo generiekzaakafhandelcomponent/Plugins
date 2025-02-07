@@ -17,26 +17,26 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {PostMessageWithFileConfig} from '../../models';
+import {SendPromptConfig} from '../../models';
 import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 
 @Component({
-  selector: 'valtimo-post-message-with-file-configuration',
-  templateUrl: './post-message-with-file-configuration.component.html',
-  styleUrls: ['./post-message-with-file-configuration.component.scss'],
+  selector: 'valtimo-send-prompt-configuration',
+  templateUrl: './send-prompt-configuration.component.html',
+  styleUrls: ['./send-prompt-configuration.component.scss'],
 })
-export class PostMessageWithFileConfigurationComponent
+export class SendPromptConfigurationComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy
 {
   @Input() save$!: Observable<void>;
   @Input() disabled$!: Observable<boolean>;
   @Input() pluginId!: string;
-  @Input() prefillConfiguration$!: Observable<PostMessageWithFileConfig>;
+  @Input() prefillConfiguration$!: Observable<SendPromptConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
   private saveSubscription!: Subscription;
-  private readonly formValue$ = new BehaviorSubject<PostMessageWithFileConfig | null>(null);
+  private readonly formValue$ = new BehaviorSubject<SendPromptConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
@@ -47,13 +47,13 @@ export class PostMessageWithFileConfigurationComponent
     this.saveSubscription?.unsubscribe();
   }
 
-  formValueChange(formValue: PostMessageWithFileConfig): void {
+  formValueChange(formValue: SendPromptConfig): void {
     this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: PostMessageWithFileConfig): void {
-    const valid = !!formValue.channels;
+  private handleValid(formValue: SendPromptConfig): void {
+    const valid = !!(formValue.message);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

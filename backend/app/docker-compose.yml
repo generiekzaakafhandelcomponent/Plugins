@@ -41,6 +41,21 @@ services:
       - POSTGRES_USER=${DB_USER:-keycloak}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-keycloak}
 
+  # AI
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ~/.ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    command: []
+    deploy:
+      resources:
+        limits:
+          memory: 8G    # Set maximum memory
+        reservations:
+          memory: 8G    # Set minimum memory reservation
+
   #zgw
   openzaak:
     image: openzaak/open-zaak:1.12.4

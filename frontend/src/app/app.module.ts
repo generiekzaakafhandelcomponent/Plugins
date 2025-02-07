@@ -107,6 +107,8 @@ import {
   externeKlanttaakPluginSpecification
 } from "../../projects/valtimo-plugins/externe-klanttaak/src/lib/externe-klanttaak-plugin.specification";
 import {ObjectModule} from "@valtimo/object";
+import {OllamaPluginModule} from '../../projects/valtimo-plugins/ollama/src/lib/ollama-plugin-module';
+import {ollamaPluginSpecification} from '../../projects/valtimo-plugins/ollama/src/lib/ollama-plugin.specification';
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -131,6 +133,7 @@ export function tabsFactory() {
         PublictaskPluginModule,
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
+        OllamaPluginModule,
         SlackPluginModule,
         SmtpMailPluginModule,
         SpotlerPluginModule,
@@ -200,6 +203,7 @@ export function tabsFactory() {
             publictaskPluginSpecification,
             notifyNlPluginSpecification,
             objectManagementPluginSpecification,
+            ollamaPluginSpecification,
             slackPluginSpecification,
             smtpmailPluginSpecification,
             spotlerPluginSpecification,

@@ -22,5 +22,4 @@ export * from './lib/models';
 export * from './lib/ollama-plugin-module';
 export * from './lib/ollama-plugin.specification';
 export * from './lib/components/ollama-configuration/ollama-configuration.component';
-export * from './lib/components/post-message/post-message-configuration.component';
-export * from './lib/components/post-message-with-file/post-message-with-file-configuration.component';
+export * from './lib/components/send-prompt/send-prompt-configuration.component';

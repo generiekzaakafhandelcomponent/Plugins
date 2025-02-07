@@ -45,16 +45,4 @@
     placeholder="https://www.ollama.com/"
   >
   </v-input>
-  <v-input
-    name="token"
-    type="password"
-    [title]="'token' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.clientSecret"
-    [required]="true"
-    [fullWidth]="true"
-    [tooltip]="'tokenTooltip' | pluginTranslate: pluginId | async"
-  >
-  </v-input>
 </v-form>

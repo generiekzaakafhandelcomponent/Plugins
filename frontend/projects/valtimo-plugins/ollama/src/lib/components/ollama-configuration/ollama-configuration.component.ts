@@ -75,7 +75,7 @@ export class OllamaConfigurationComponent
   }
 
   private handleValid(formValue: OllamaConfig): void {
-    const valid = !!(formValue.configurationTitle && formValue.url && formValue.token);
+    const valid = !!(formValue.configurationTitle && formValue.url);
 
     this.valid$.next(valid);
     this.valid.emit(valid);
