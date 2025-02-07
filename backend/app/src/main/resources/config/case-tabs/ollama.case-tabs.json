@@ -1,0 +1,22 @@
+{
+  "changesetId": "ollama.case-tabs.1738931309302",
+  "case-definitions": [
+    {
+      "key": "ollama",
+      "tabs": [
+        {
+          "key": "summary",
+          "name": null,
+          "type": "widgets",
+          "contentKey": "-"
+        },
+        {
+          "key": "progress",
+          "name": null,
+          "type": "standard",
+          "contentKey": "progress"
+        }
+      ]
+    }
+  ]
+}

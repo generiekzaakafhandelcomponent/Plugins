@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "ollama-process",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

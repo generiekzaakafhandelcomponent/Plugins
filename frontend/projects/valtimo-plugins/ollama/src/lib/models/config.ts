@@ -22,6 +22,7 @@ interface OllamaConfig extends PluginConfigurationData {
 
 interface SendPromptConfig {
   message: string;
+  responseVariable: string;
 }
 
 export {OllamaConfig, SendPromptConfig};

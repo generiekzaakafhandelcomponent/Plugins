@@ -30,4 +30,13 @@
     [required]="true"
     [tooltip]="'messageTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
+  <v-input
+    name="responseVariable"
+    [title]="'responseVariable' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.responseVariable"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'responseVariableTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
 </v-form>

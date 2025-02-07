@@ -1,0 +1,8 @@
+{
+  "$id": "ollama.schema",
+  "type": "object",
+  "title": "Ollama",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {},
+  "additionalProperties": false
+}

@@ -37,6 +37,9 @@ open class OllamaPlugin(
     @PluginProperty(key = "url", secret = false)
     lateinit var url: URI
 
+    @PluginProperty(key = "languageModel", secret = false)
+    lateinit var languageModel: String
+
     @PluginAction(
         key = "send-prompt",
         title = "Post message",
@@ -45,9 +48,14 @@ open class OllamaPlugin(
     )
     open fun postMessage(
         execution: DelegateExecution,
-        @PluginActionProperty message: String, // template:myQuestion -> 'Why is the sky blue?'
-        @PluginActionProperty reponseVariable: String,
+        @PluginActionProperty message: String,
+        @PluginActionProperty responseVariable: String,
     ) {
-        val response = ollamaClient.sendPrompt(url, message)
+        val response = ollamaClient.sendPrompt(url, languageModel, message)
+
+        //strip think output
+        val cleanResponse = response.replace(Regex("<think>[.|\\n]*?</think>\\n*"), "")
+
+        execution.setVariable(responseVariable, cleanResponse)
     }
 }

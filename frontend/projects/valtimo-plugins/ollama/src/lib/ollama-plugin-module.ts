@@ -18,7 +18,7 @@ import {NgModule} from '@angular/core';
 import {OllamaConfigurationComponent} from './components/ollama-configuration/ollama-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
+import {FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
 import {SendPromptConfigurationComponent} from './components/send-prompt/send-prompt-configuration.component';
 
 @NgModule({
@@ -26,7 +26,7 @@ import {SendPromptConfigurationComponent} from './components/send-prompt/send-pr
     OllamaConfigurationComponent,
     SendPromptConfigurationComponent,
   ],
-  imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
+  imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule, SelectModule],
   exports: [
     OllamaConfigurationComponent,
     SendPromptConfigurationComponent,

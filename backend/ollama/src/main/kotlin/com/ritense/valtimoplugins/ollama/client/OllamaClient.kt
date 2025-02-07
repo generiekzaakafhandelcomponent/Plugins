@@ -30,10 +30,10 @@ class OllamaClient(
     private val restClientBuilder: RestClient.Builder,
 ) {
 
-    fun sendPrompt(baseUrl: URI, message: String): String {
+    fun sendPrompt(baseUrl: URI, languageModel: String, message: String): String {
         logger.debug { "Post message to ollama ('$message')" }
 
-        val body = OllamaPromptBody(message)
+        val body = OllamaPromptBody(message, languageModel)
 
         val response = restClientBuilder
             .clone()
@@ -52,7 +52,7 @@ class OllamaClient(
 
     class OllamaPromptBody(
         val prompt: String,
-        val model: String = "deepseek-r1:1.5b", //for now to use this one to test because it seemed relatively low resource cost
+        val model: String,
         val stream: Boolean = false
     )
 

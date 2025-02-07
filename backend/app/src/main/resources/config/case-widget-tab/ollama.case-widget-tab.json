@@ -1,0 +1,40 @@
+{
+  "changesetId": "ollama.case-widget-tab.1738931309366",
+  "tabs": [
+    {
+      "caseDefinitionName": "ollama",
+      "key": "summary",
+      "widgets": [
+        {
+          "type": "fields",
+          "key": "q-a",
+          "title": "Q&A",
+          "width": 1,
+          "highContrast": false,
+          "properties": {
+            "columns": [
+              [
+                {
+                  "key": "question",
+                  "title": "Question",
+                  "value": "template:skyquestion",
+                  "displayProperties": {
+                    "type": "text"
+                  }
+                },
+                {
+                  "key": "answer",
+                  "title": "Answer",
+                  "value": "pv:answer",
+                  "displayProperties": {
+                    "type": "text"
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

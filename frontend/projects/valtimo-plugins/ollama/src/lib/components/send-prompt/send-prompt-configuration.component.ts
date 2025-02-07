@@ -53,7 +53,7 @@ export class SendPromptConfigurationComponent
   }
 
   private handleValid(formValue: SendPromptConfig): void {
-    const valid = !!(formValue.message);
+    const valid = !!(formValue.message && formValue.responseVariable);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

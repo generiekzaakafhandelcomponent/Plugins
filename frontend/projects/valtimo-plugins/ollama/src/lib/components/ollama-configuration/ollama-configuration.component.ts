@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} fro
 import {OllamaConfig} from '../../models';
 import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
 import {TranslateService} from '@ngx-translate/core';
+import {SelectItem} from '@valtimo/components';
 
 @Component({
   selector: 'valtimo-ollama-configuration',
@@ -41,6 +42,19 @@ export class OllamaConfigurationComponent
       private readonly translateService: TranslateService,
       private readonly pluginTranslationService: PluginTranslationService
   ) {}
+
+  public readonly languageModels: SelectItem[] = [
+    {
+      id: "smollm:135m",
+      text: "smollm:135m",
+      translationKey: "smollm"
+    },
+    {
+      id: "deepseek-r1:1.5b",
+      text: "deepseek-r1:1.5b",
+      translationKey: "deepseek"
+    },
+  ]
 
   readonly authenticationPluginSelectItems$: Observable<Array<{id?: string; text: string}>> =
     combineLatest([

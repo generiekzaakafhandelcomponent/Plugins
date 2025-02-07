@@ -45,4 +45,16 @@
     placeholder="https://www.ollama.com/"
   >
   </v-input>
+
+    <v-select
+        name="languageModel"
+        [title]="'languageModel' | pluginTranslate: pluginId | async"
+        [tooltip]="'languageModelTooltip' | pluginTranslate: pluginId | async"
+        [defaultSelectionId]="'smollm:135m'"
+        [items]="languageModels"
+        [margin]="true"
+        [required]="true">
+    </v-select>
+
+
 </v-form>
