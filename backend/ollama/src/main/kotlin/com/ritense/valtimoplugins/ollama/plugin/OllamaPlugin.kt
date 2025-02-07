@@ -54,8 +54,14 @@ open class OllamaPlugin(
         val response = ollamaClient.sendPrompt(url, languageModel, message)
 
         //strip think output
-        val cleanResponse = response.replace(Regex("<think>[.|\\n]*?</think>\\n*"), "")
+        val cleanResponse = response
+            .replace(Regex("<think>[^<]*?</think>\\n*"), "")
 
-        execution.setVariable(responseVariable, cleanResponse)
+        val cleanerResponse = if (cleanResponse.length > 3000) {
+            cleanResponse.substring(0, 3000)
+        } else {
+            cleanResponse
+        }
+        execution.setVariable(responseVariable, cleanerResponse)
     }
 }

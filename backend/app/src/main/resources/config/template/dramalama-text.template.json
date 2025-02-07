@@ -1,0 +1,7 @@
+{
+  "templateKey": "dramalama",
+  "caseDefinitionName": "ollama",
+  "templateType": "text",
+  "metadata": {},
+  "content": "Can you answer the following question in a very dramatic way?\n${pv.question}"
+}

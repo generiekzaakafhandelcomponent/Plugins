@@ -17,7 +17,7 @@
                 {
                   "key": "question",
                   "title": "Question",
-                  "value": "template:skyquestion",
+                  "value": "template:dramalama",
                   "displayProperties": {
                     "type": "text"
                   }

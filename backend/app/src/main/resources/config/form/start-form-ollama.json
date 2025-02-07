@@ -1,0 +1,24 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "pv.question",
+      "type": "textfield",
+      "input": true,
+      "label": "Question",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "start-form-ollama-question"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

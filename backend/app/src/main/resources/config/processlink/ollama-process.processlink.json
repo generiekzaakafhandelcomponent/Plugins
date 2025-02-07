@@ -2,11 +2,11 @@
   {
     "activityId": "StartEvent_1",
     "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "start-form-example",
+    "formDefinitionName": "start-form-ollama",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
-    "subtitles": null,
+    "subtitles": [],
     "processLinkType": "form"
   },
   {
@@ -15,7 +15,7 @@
     "pluginConfigurationId": "31e1cb96-f508-4d24-891a-a1ef551bbb0b",
     "pluginActionDefinitionKey": "send-prompt",
     "actionProperties": {
-      "message": "template:skyquestion",
+      "message": "template:dramalama",
       "responseVariable": "answer"
     },
     "processLinkType": "plugin"

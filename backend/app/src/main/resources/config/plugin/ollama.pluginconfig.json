@@ -1,7 +1,7 @@
 [
   {
     "id": "31e1cb96-f508-4d24-891a-a1ef551bbb0b",
-    "definitionKey": "ollama",
+    "pluginDefinitionKey": "ollama",
     "title": "Ollama Plugin",
     "properties": {
       "url": "http://localhost:11434/",

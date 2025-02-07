@@ -1,8 +1,0 @@
-{
-  "templateKey": "skyquestion",
-  "caseDefinitionName": "ollama",
-  "templateType": "text",
-  "metadata": {},
-  "content": "Why is the sky blue?",
-  "contentRef": null
-}
