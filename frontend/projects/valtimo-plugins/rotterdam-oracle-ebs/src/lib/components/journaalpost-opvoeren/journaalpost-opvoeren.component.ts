@@ -21,13 +21,17 @@ import {
     PluginManagementService,
     PluginTranslationService
 } from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {JournaalpostOpvoerenConfig} from '../../models';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
+import {BoekingType, JournaalpostOpvoerenConfig, SaldoSoort} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
+// import {SelectItem} from "@valtimo/components";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ListItem} from 'carbon-components-angular';
 
 @Component({
     selector: 'valtimo-rotterdam-oracle-ebs-journaalpost-opvoeren',
     templateUrl: './journaalpost-opvoeren.component.html',
+    styleUrl: './journaalpost-opvoeren.component.scss'
 })
 export class JournaalpostOpvoerenComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$!: Observable<void>;
@@ -41,11 +45,40 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     private readonly formValue$ = new BehaviorSubject<JournaalpostOpvoerenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    // protected readonly saldoSoortSelectItems: Array<SelectItem> = Object.values(SaldoSoort).map(item => ({
+    //     id: item,
+    //     text: item,
+    // }));
+    protected readonly saldoSoortItems: Array<ListItem> = Object.values(SaldoSoort).map(item => ({
+        content: item,
+        selected: false,
+    }));
+    protected readonly boekingTypeItems: Array<ListItem> = Object.values(BoekingType).map(item => ({
+        content: item,
+        selected: false
+    }));
+
+    public pluginActionForm: FormGroup = this.fb.group({
+        procesCode: this.fb.control('', Validators.required),
+        referentieNummer: this.fb.control('', Validators.required),
+        sleutel: this.fb.control('', Validators.required),
+        boekdatum: this.fb.control('', Validators.required),
+        categorie: this.fb.control('', Validators.required),
+        saldoSoort: this.fb.control('', Validators.required),
+        omschrijving: this.fb.control('', Validators.required),
+        boekjaar: this.fb.control('', Validators.required),
+        boekperiode: this.fb.control('', Validators.required),
+        regels: this.fb.array([])
+    });
+
     constructor(
         private readonly pluginManagementService: PluginManagementService,
         private readonly translateService: TranslateService,
-        private readonly pluginTranslationService: PluginTranslationService
-    ) {}
+        private readonly pluginTranslationService: PluginTranslationService,
+        private fb: FormBuilder
+    ) {
+        this.addLine()
+    }
 
     ngOnInit(): void {
         this.openSaveSubscription();
@@ -63,9 +96,12 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     private handleValid(formValue: JournaalpostOpvoerenConfig): void {
         const valid = !!(
             formValue.procesCode &&
-            formValue.grootboekSleutel &&
+            formValue.referentieNummer &&
             formValue.sleutel &&
-            formValue.categorie
+            formValue.boekdatumTijd &&
+            formValue.categorie &&
+            formValue.saldoSoort &&
+            formValue.regels.length > 0
         );
 
         this.valid$.next(valid);
@@ -82,5 +118,32 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                     }
                 });
         });
+    }
+
+    submitForm(): void {
+        if (this.pluginActionForm.valid) {
+          console.log(this.pluginActionForm.value);
+        }
+    }
+
+    get lines(): FormArray {
+        return this.pluginActionForm.get('regels') as FormArray;
+    }
+
+    createLine(): FormGroup {
+        return this.fb.group({
+            grootboekSleutel: ['', Validators.required],
+            boekingType: ['', [Validators.required]],
+            omschrijving: [''],
+            bedrag: [0, [Validators.required, Validators.min(0)]],
+        });
+    }
+
+    addLine(): void {
+        this.lines.push(this.createLine());
+    }
+
+    removeLine(index: number): void {
+        this.lines.removeAt(index);
     }
 }

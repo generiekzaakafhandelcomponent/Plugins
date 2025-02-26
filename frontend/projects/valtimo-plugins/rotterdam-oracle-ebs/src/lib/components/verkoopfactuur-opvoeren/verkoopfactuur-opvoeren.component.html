@@ -34,13 +34,69 @@
     </v-input>
     <v-input
         type="text"
-        name="grootboekSleutel"
+        name="referentieNummer"
         required="true"
         margin="true"
-        [title]="'grootboekSleutel' | pluginTranslate: pluginId | async"
+        [title]="'referentieNummer' | pluginTranslate: pluginId | async"
         [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.grootboekSleutel"
-        [tooltip]="'grootboekSleutelTooltip' | pluginTranslate: pluginId | async"
+        [defaultValue]="obs.prefill?.referentieNummer"
+        [tooltip]="'referentieNummerTooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-input>
+    <v-select
+        type="text"
+        name="factuurKlasse"
+        required="true"
+        margin="true"
+        [title]="'factuurKlasse' | pluginTranslate: pluginId | async"
+        [disabled]="obs.disabled"
+        [defaultSelectionId]="obs.prefill?.factuurKlasse"
+        [tooltip]="'factuurKlasseTooltip' | pluginTranslate: pluginId | async"
+        [items]="factuurKlasseItems"
+    >
+    </v-select>
+    <v-input
+        type="text"
+        name="inkoopOrderReferentie"
+        required="true"
+        margin="true"
+        [title]="'inkoopOrderReferentie' | pluginTranslate: pluginId | async"
+        [disabled]="obs.disabled"
+        [defaultValue]="obs.prefill?.inkoopOrderReferentie"
+        [tooltip]="'inkoopOrderReferentieTooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-input>
+    <v-input
+        type="text"
+        name="natuurlijkPersoonAchternaam"
+        required="true"
+        margin="true"
+        [title]="'natuurlijkPersoon.achternaam' | pluginTranslate: pluginId | async"
+        [disabled]="obs.disabled"
+        [defaultValue]="obs.prefill?.natuurlijkPersoon.achternaam"
+        [tooltip]="'natuurlijkPersoonAchternaamTooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-input>
+    <v-input
+        type="text"
+        name="natuurlijkPersoon.voornamen"
+        required="true"
+        margin="true"
+        [title]="'natuurlijkPersoonVoornamen' | pluginTranslate: pluginId | async"
+        [disabled]="obs.disabled"
+        [defaultValue]="obs.prefill?.natuurlijkPersoon.voornamen"
+        [tooltip]="'natuurlijkPersoonVoornamenTooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-input>
+    <v-input
+        type="text"
+        name="nietNatuurlijkPersoon.statutaireNaam"
+        required="true"
+        margin="true"
+        [title]="'nietNatuurlijkPersoonStatutaireNaam' | pluginTranslate: pluginId | async"
+        [disabled]="obs.disabled"
+        [defaultValue]="obs.prefill?.nietNatuurlijkPersoon.statutaireNaam"
+        [tooltip]="'nietNatuurlijkPersoonStatutaireNaamTooltip' | pluginTranslate: pluginId | async"
     >
     </v-input>
 </v-form>
