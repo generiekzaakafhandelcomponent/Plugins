@@ -26,14 +26,77 @@ interface RotterdamEsbConfig extends PluginConfigurationData {
 
 interface JournaalpostOpvoerenConfig {
     procesCode: string;
-    grootboekSleutel: string;
+    referentieNummer: string;
     sleutel: string;
+    boekdatumTijd: Date;
     categorie: string;
+    saldoSoort: SaldoSoort;
+    omschrijving?: string;
+    boekjaar?: bigint;
+    boekperiode?: bigint;
+    regels: Array<JournaalpostRegel>;
+}
+
+interface JournaalpostRegel {
+    grootboekSleutel: string;
+    boekingType: BoekingType;
+    bedrag: number;
+    omschrijving?: string;
 }
 
 interface VerkoopfactuurOpvoerenConfig {
     procesCode: string;
-    grootboekSleutel: string;
+    referentieNummer: string;
+    factuurKlasse: FactuurKlasse;
+    inkoopOrderReferentie: string;
+    natuurlijkPersoon: NatuurlijkPersoon;
+    nietNatuurlijkPersoon: NietNatuurlijkPersoon;
+    regels: Array<FactuurRegel>;
 }
 
-export {RotterdamEsbConfig, JournaalpostOpvoerenConfig, VerkoopfactuurOpvoerenConfig}
+interface NatuurlijkPersoon {
+    achternaam: string;
+    voornamen: string;
+}
+
+interface NietNatuurlijkPersoon {
+    statutaireNaam: string;
+}
+
+interface FactuurRegel {
+    hoeveelheid: number;
+    tarief: number;
+    btwPercentage: string;
+    grootboekSleutel: string;
+    omschrijving: string;
+}
+
+enum FactuurKlasse {
+    Creditnota = "Creditnota",
+    Debetnota = "Debetnota",
+    Correctienota = "Correctienota"
+}
+
+enum BoekingType {
+    Credit = "Credit",
+    Debet = "Debet"
+}
+
+enum SaldoSoort {
+    Budget = "Budget",
+    Reservering = "Reservering",
+    Werkelijk = "Werkelijk"
+}
+
+export {
+    RotterdamEsbConfig,
+    JournaalpostOpvoerenConfig,
+    JournaalpostRegel,
+    VerkoopfactuurOpvoerenConfig,
+    NatuurlijkPersoon,
+    NietNatuurlijkPersoon,
+    FactuurRegel,
+    FactuurKlasse,
+    BoekingType,
+    SaldoSoort
+}

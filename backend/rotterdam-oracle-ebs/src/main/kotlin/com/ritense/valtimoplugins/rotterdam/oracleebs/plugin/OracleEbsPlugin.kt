@@ -71,7 +71,7 @@ class OracleEbsPlugin(
         @PluginActionProperty omschrijving: String? = null,
         @PluginActionProperty boekjaar: Int? = null,
         @PluginActionProperty boekperiode: Int? = null,
-        @PluginActionProperty regels: List<JournaalpostRegel>,
+        @PluginActionProperty regels: List<JournaalpostRegel>
     ) {
         logger.info {
             "Journaalpost Opvoeren(" +
@@ -138,7 +138,7 @@ class OracleEbsPlugin(
         @PluginActionProperty inkoopOrderReferentie: String,
         @PluginActionProperty natuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon,
         @PluginActionProperty nietNatuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon,
-        @PluginActionProperty factuurRegels: List<FactuurRegel>,
+        @PluginActionProperty regels: List<FactuurRegel>,
     ) {
         logger.info {
             "Verkoopfactuur Opvoeren(" +
@@ -185,7 +185,7 @@ class OracleEbsPlugin(
                     ),
                     relatienummerRotterdam = null
                 ),
-                factuurregels = factuurRegels.map { factuurRegel ->
+                factuurregels = regels.map { factuurRegel ->
                     Factuurregel(
                         factuurregelFacturatieHoeveelheid = factuurRegel.hoeveelheid,
                         factuurregelFacturatieTarief = factuurRegel.tarief,
@@ -194,7 +194,7 @@ class OracleEbsPlugin(
                             grootboeksleutel = factuurRegel.grootboekSleutel,
                             bronsleutel = null,
                         ),
-                        factuurregelomschrijving = null,
+                        factuurregelomschrijving = factuurRegel.omschrijving,
                         factuurregelFacturatieEenheid = null,
                         boekingsregel = null,
                         boekingsregelStartdatum = null,

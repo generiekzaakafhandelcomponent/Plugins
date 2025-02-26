@@ -22,8 +22,9 @@ import {
     PluginTranslationService
 } from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {VerkoopfactuurOpvoerenConfig} from '../../models';
+import {FactuurKlasse, SaldoSoort, VerkoopfactuurOpvoerenConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
+import {SelectItem} from "@valtimo/components";
 
 @Component({
     selector: 'valtimo-rotterdam-oracle-ebs-verkoopfactuur-opvoeren',
@@ -40,6 +41,11 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     private saveSubscription!: Subscription;
     private readonly formValue$ = new BehaviorSubject<VerkoopfactuurOpvoerenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
+
+    protected readonly factuurKlasseItems: Array<SelectItem> = Object.values(FactuurKlasse).map(item => ({
+        id: item,
+        text: item,
+    }));
 
     constructor(
         private readonly pluginManagementService: PluginManagementService,
@@ -63,7 +69,12 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     private handleValid(formValue: VerkoopfactuurOpvoerenConfig): void {
         const valid = !!(
             formValue.procesCode &&
-            formValue.grootboekSleutel
+            formValue.referentieNummer &&
+            formValue.factuurKlasse &&
+            formValue.natuurlijkPersoon &&
+            formValue.natuurlijkPersoon &&
+            formValue.inkoopOrderReferentie &&
+            formValue.regels.length > 0
         );
 
         this.valid$.next(valid);

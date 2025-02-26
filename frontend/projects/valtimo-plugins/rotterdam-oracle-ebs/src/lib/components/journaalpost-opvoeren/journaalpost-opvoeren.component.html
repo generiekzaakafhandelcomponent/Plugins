@@ -1,4 +1,4 @@
-<!--
+ <!--
   ~ Copyright 2015-2025 Ritense BV, the Netherlands.
   ~
   ~ Licensed under EUPL, Version 1.2 (the "License");
@@ -14,55 +14,362 @@
   ~ limitations under the License.
   -->
 
-<v-form
-    (valueChange)="formValueChange($event)"
-    *ngIf="{
-        disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
-    } as obs"
->
-    <v-input
-        type="text"
-        name="procesCode"
-        required="true"
-        margin="true"
-        [title]="'procesCode' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.procesCode"
-        [tooltip]="'procesCodeTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-    <v-input
-        type="text"
-        name="grootboekSleutel"
-        required="true"
-        margin="true"
-        [title]="'grootboekSleutel' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.grootboekSleutel"
-        [tooltip]="'grootboekSleutelTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-    <v-input
-        type="text"
-        name="sleutel"
-        required="true"
-        margin="true"
-        [title]="'sleutel' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.sleutel"
-        [tooltip]="'sleutelTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-    <v-input
-        type="text"
-        name="categorie"
-        required="true"
-        margin="true"
-        [title]="'categorie' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.categorie"
-        [tooltip]="'categorieTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-</v-form>
+<ng-container *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+} as obs">
+<!--
+    <v-form (valueChange)="formValueChange($event)">
+        <v-input
+            type="text"
+            name="procesCode"
+            required="true"
+            margin="true"
+            [title]="'procesCode' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.procesCode"
+            [tooltip]="'procesCodeTooltip' | pluginTranslate: pluginId | async"
+        >
+        </v-input>
+        <v-input
+            type="text"
+            name="referentieNummer"
+            required="true"
+            margin="true"
+            [title]="'referentieNummer' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.referentieNummer"
+            [tooltip]="'referentieNummerTooltip' | pluginTranslate: pluginId | async"
+        >
+        </v-input>
+        <v-input
+            type="text"
+            name="sleutel"
+            required="true"
+            margin="true"
+            [title]="'sleutel' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.sleutel"
+            [tooltip]="'sleutelTooltip' | pluginTranslate: pluginId | async"
+        >
+        </v-input>
+        <v-input
+            type="text"
+            name="boekdatumTijd"
+            required="true"
+            margin="true"
+            [title]="'boekdatumTijd' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.boekdatumTijd"
+            [tooltip]="'boekdatumTijdTooltip' | pluginTranslate: pluginId | async"
+        >
+        </v-input>
+        <v-input
+            type="text"
+            name="categorie"
+            required="true"
+            margin="true"
+            [title]="'categorie' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.categorie"
+            [tooltip]="'categorieTooltip' | pluginTranslate: pluginId | async"
+        >
+        </v-input>
+        <v-select
+            name="saldoSoort"
+            required="true"
+            margin="true"
+            [title]="'saldoSoort' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultSelectionId]="obs.prefill?.saldoSoort"
+            [tooltip]="'saldoSoortTooltip' | pluginTranslate: pluginId | async"
+            [items]="saldoSoortItems"
+        >
+        </v-select>
+        <v-input
+            type="text"
+            name="omschrijving"
+            required="true"
+            margin="true"
+            [title]="'omschrijving' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.omschrijving"
+            [tooltip]="'omschrijvingTooltip' | pluginTranslate: pluginId | async"
+        >
+        </v-input>
+        <v-input
+            type="digitOnly"
+            name="boekjaar"
+            required="false"
+            margin="true"
+            maxLength="4"
+            [title]="'boekjaar' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.boekjaar.toString()"
+            [tooltip]="'boekjaarTooltip' | pluginTranslate: pluginId | async"
+        >
+        </v-input>
+        <v-input
+            type="digitOnly"
+            name="boekperiode"
+            required="false"
+            margin="true"
+            maxLength="4"
+            [title]="'boekperiode' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.boekperiode.toString()"
+            [tooltip]="'boekperiodeTooltip' | pluginTranslate: pluginId | async"
+        >
+        </v-input>
+    </v-form>
+-->
+
+    <form [formGroup]="pluginActionForm" (ngSubmit)="submitForm()">
+
+        <ng-container
+            [ngTemplateOutlet]="inputFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'procesCode',
+                tooltip: 'procesCodeTooltip',
+                controlName: 'procesCode',
+                required: true,
+                disabled: obs.disabled
+            }"
+        />
+
+        <ng-container
+            [ngTemplateOutlet]="inputFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'referentieNummer',
+                tooltip: 'referentieNummerTooltip',
+                controlName: 'referentieNummer',
+                required: true,
+                disabled: obs.disabled
+            }"
+        />
+
+        <ng-container
+            [ngTemplateOutlet]="inputFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'sleutel',
+                tooltip: 'sleutelTooltip',
+                controlName: 'sleutel',
+                required: true,
+                disabled: obs.disabled
+            }"
+        />
+
+        <ng-container
+            [ngTemplateOutlet]="inputFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'boekdatum',
+                tooltip: 'boekdatumTooltip',
+                controlName: 'boekdatum',
+                required: true,
+                disabled: obs.disabled
+            }"
+        />
+
+        <ng-container
+            [ngTemplateOutlet]="inputFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'categorie',
+                tooltip: 'categorieTooltip',
+                controlName: 'categorie',
+                required: true,
+                disabled: obs.disabled
+            }"
+        />
+
+        <ng-container
+            [ngTemplateOutlet]="selectFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'saldoSoort',
+                tooltip: 'saldoSoortTooltip',
+                controlName: 'saldoSoort',
+                required: true,
+                disabled: obs.disabled,
+                items: saldoSoortItems
+            }"
+        />
+
+        <ng-container
+            [ngTemplateOutlet]="inputFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'omschrijving',
+                tooltip: 'omschrijvingTooltip',
+                controlName: 'omschrijving',
+                disabled: obs.disabled
+            }"
+        />
+
+        <ng-container
+            [ngTemplateOutlet]="inputFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'boekjaar',
+                tooltip: 'boekjaarTooltip',
+                controlName: 'boekjaar',
+                disabled: obs.disabled
+            }"
+        />
+
+        <ng-container
+            [ngTemplateOutlet]="inputFieldTemplate"
+            [ngTemplateOutletContext]="{
+                title: 'boekperiode',
+                tooltip: 'boekperiodeTooltip',
+                controlName: 'boekperiode',
+                required: true,
+                disabled: obs.disabled
+            }"
+        />
+
+        <div>
+            <v-input-label
+                required="true"
+                [title]="'journaalpostRegels' | pluginTranslate: pluginId | async"
+                [tooltip]="'journaalpostTooltip' | pluginTranslate: pluginId | async"
+            >
+            </v-input-label>
+            <div formArrayName="regels" class="lines-wrapper">
+                <div class="line-wrapper"
+                     *ngFor="let line of lines.controls; let i = index"
+                     [formGroupName]="i">
+                    <ng-container
+                        [ngTemplateOutlet]="lineInputFieldTemplate"
+                        [ngTemplateOutletContext]="{
+                            title: 'grootboekSleutel',
+                            controlName: 'grootboekSleutel',
+                            required: true,
+                            disabled: obs.disabled
+                        }"
+                    />
+                    <ng-container
+                        [ngTemplateOutlet]="lineSelectFieldTemplate"
+                        [ngTemplateOutletContext]="{
+                            title: 'boekingType',
+                            controlName: 'boekingType',
+                            required: true,
+                            disabled: obs.disabled,
+                            items: boekingTypeItems
+                        }"
+                    />
+                    <ng-container
+                        [ngTemplateOutlet]="lineInputFieldTemplate"
+                        [ngTemplateOutletContext]="{
+                            title: 'regelOmschrijving',
+                            controlName: 'omschrijving',
+                            disabled: obs.disabled
+                        }"
+                    />
+                    <ng-container
+                        [ngTemplateOutlet]="lineInputFieldTemplate"
+                        [ngTemplateOutletContext]="{
+                            title: 'bedrag',
+                            controlName: 'bedrag',
+                            required: true,
+                            disabled: obs.disabled
+                        }"
+                    />
+                    <div class="remove-line-wrapper">
+                        <button type="button"
+                                cdsButton="secondary"
+                                (click)="removeLine(i)">
+                            {{'regelVerwijderen' | pluginTranslate: pluginId | async}}
+                            <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="add-line-wrapper">
+                <button type="button"
+                        cdsButton="secondary"
+                        (click)="addLine()">
+                    {{'regelToevoegen' | pluginTranslate: pluginId | async}}
+                    <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
+                </button>
+            </div>
+        </div>
+    </form>
+
+</ng-container>
+
+<ng-template #inputFieldTemplate
+    let-type="type ?? 'text'"
+    let-title="title"
+    let-tooltip="tooltip"
+    let-controlName="controlName"
+    let-required="required ?? false"
+    let-disabled="disabled?? false">
+    <div class="field-wrapper">
+        <v-input-label
+            [title]="title | pluginTranslate: pluginId | async"
+            [tooltip]="tooltip | pluginTranslate: pluginId | async"
+            [required]="required"
+        >
+        </v-input-label>
+        <input cdsText
+               [type]="type"
+               [formControlName]="controlName"
+               [disabled]="disabled">
+    </div>
+</ng-template>
+
+ <ng-template #selectFieldTemplate
+    let-title="title"
+    let-tooltip="tooltip"
+    let-controlName="controlName"
+    let-required="required ?? false"
+    let-disabled="disabled?? false"
+    let-items="items ?? []">
+    <div class="field-wrapper">
+        <v-input-label
+            [title]="title | pluginTranslate: pluginId | async"
+            [tooltip]="tooltip | pluginTranslate: pluginId | async"
+            [required]="required"
+        >
+        </v-input-label>
+        <cds-dropdown   [formControlName]="controlName"
+                        [disabled]="disabled">
+            <cds-dropdown-list [items]="items"></cds-dropdown-list>
+        </cds-dropdown>
+    </div>
+</ng-template>
+
+ <ng-template #lineInputFieldTemplate
+    let-type="type ?? 'text'"
+    let-title="title"
+    let-controlName="controlName"
+    let-required="required ?? false"
+    let-disabled="disabled?? false">
+    <div class="line-field-wrapper">
+        <v-input-label
+            [title]="title | pluginTranslate: pluginId | async"
+            [required]="required"
+        >
+        </v-input-label>
+        <input cdsText
+               [type]="type"
+               [formControlName]="controlName"
+               [disabled]="disabled">
+    </div>
+</ng-template>
+
+  <ng-template #lineSelectFieldTemplate
+    let-title="title"
+    let-controlName="controlName"
+    let-required="required ?? false"
+    let-disabled="disabled?? false"
+    let-items="items ?? []">
+    <div class="line-field-wrapper">
+        <v-input-label
+            [title]="title | pluginTranslate: pluginId | async"
+            [required]="required"
+        >
+        </v-input-label>
+        <cds-dropdown   [formControlName]="controlName"
+                        [disabled]="disabled">
+            <cds-dropdown-list [items]="items"></cds-dropdown-list>
+        </cds-dropdown>
+    </div>
+</ng-template>

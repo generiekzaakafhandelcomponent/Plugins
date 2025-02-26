@@ -17,11 +17,19 @@
 import {NgModule} from '@angular/core';
 import {AsyncPipe, CommonModule, NgIf} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {FormModule, InputLabelModule, InputModule} from '@valtimo/components';
+import {CarbonMultiInputModule, FormModule, InputLabelModule, InputModule, SelectModule} from '@valtimo/components';
 import {ConfigurationComponent} from './components/configuration/configuration.component';
 import {JournaalpostOpvoerenComponent} from "./components/journaalpost-opvoeren/journaalpost-opvoeren.component";
-import {NotificationModule, ToggleModule} from "carbon-components-angular";
+import {
+    ButtonModule,
+    DropdownModule,
+    IconModule,
+    InputModule as CarbonInputModule,
+    NotificationModule,
+    ToggleModule
+} from "carbon-components-angular";
 import {VerkoopfactuurOpvoerenComponent} from "./components/verkoopfactuur-opvoeren/verkoopfactuur-opvoeren.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -30,16 +38,22 @@ import {VerkoopfactuurOpvoerenComponent} from "./components/verkoopfactuur-opvoe
         VerkoopfactuurOpvoerenComponent
     ],
     imports: [
+        AsyncPipe,
         CommonModule,
-        PluginTranslatePipeModule,
-        FormModule,
-        InputModule,
-        InputLabelModule,
-        AsyncPipe,
-        NotificationModule,
-        AsyncPipe,
-        ToggleModule,
         NgIf,
+        PluginTranslatePipeModule,
+        CarbonMultiInputModule,
+        FormModule,
+        InputLabelModule,
+        InputModule,
+        SelectModule,
+        NotificationModule,
+        ToggleModule,
+        ReactiveFormsModule,
+        ButtonModule,
+        DropdownModule,
+        IconModule,
+        CarbonInputModule
     ],
     exports: [
         ConfigurationComponent,
@@ -47,5 +61,4 @@ import {VerkoopfactuurOpvoerenComponent} from "./components/verkoopfactuur-opvoe
         VerkoopfactuurOpvoerenComponent
     ],
 })
-export class RotterdamOracleEbsPluginModule {
-}
+export class RotterdamOracleEbsPluginModule {}
