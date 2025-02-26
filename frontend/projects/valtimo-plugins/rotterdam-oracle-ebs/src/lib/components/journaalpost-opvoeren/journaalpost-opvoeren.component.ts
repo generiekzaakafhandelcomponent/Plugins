@@ -71,14 +71,19 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
         regels: this.fb.array([])
     });
 
+    public lineForm: FormGroup = this.fb.group({
+        grootboekSleutel: ['', Validators.required],
+        boekingType: ['', [Validators.required]],
+        omschrijving: [''],
+        bedrag: [0, [Validators.required, Validators.min(0)]],
+    });
+
     constructor(
         private readonly pluginManagementService: PluginManagementService,
         private readonly translateService: TranslateService,
         private readonly pluginTranslationService: PluginTranslationService,
         private fb: FormBuilder
-    ) {
-        this.addLine()
-    }
+    ) { }
 
     ngOnInit(): void {
         this.openSaveSubscription();
@@ -130,17 +135,8 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
         return this.pluginActionForm.get('regels') as FormArray;
     }
 
-    createLine(): FormGroup {
-        return this.fb.group({
-            grootboekSleutel: ['', Validators.required],
-            boekingType: ['', [Validators.required]],
-            omschrijving: [''],
-            bedrag: [0, [Validators.required, Validators.min(0)]],
-        });
-    }
-
     addLine(): void {
-        this.lines.push(this.createLine());
+        this.lines.push(this.lineForm);
     }
 
     removeLine(index: number): void {
