@@ -5,6 +5,10 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.rotterdam.esb.opvoeren.models.Factuurregel
 import com.rotterdam.esb.opvoeren.models.Grootboekrekening
@@ -20,7 +24,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestClientResponseException
-import java.math.BigDecimal
 import java.net.URI
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -60,41 +63,49 @@ class OracleEbsPlugin(
     fun journaalpostOpvoeren(
         execution: DelegateExecution,
         @PluginActionProperty procesCode: String,
-        @PluginActionProperty grootboekSleutel: String,
+        @PluginActionProperty referentieNummer: String,
         @PluginActionProperty sleutel: String,
+        @PluginActionProperty boekdatumTijd: OffsetDateTime,
         @PluginActionProperty categorie: String,
+        @PluginActionProperty saldoSoort: SaldoSoort,
+        @PluginActionProperty omschrijving: String? = null,
+        @PluginActionProperty boekjaar: Int? = null,
+        @PluginActionProperty boekperiode: Int? = null,
+        @PluginActionProperty regels: List<JournaalpostRegel>,
     ) {
         logger.info {
             "Journaalpost Opvoeren(" +
                 "processCode: $procesCode, " +
-                "grootboekSleutel: $grootboekSleutel, " +
+                "referentieNummer: $referentieNummer, " +
                 "sleutel: $sleutel, " +
                 "categorie: $categorie" +
             ")"
         }
         OpvoerenJournaalpostVraag(
             procescode = procesCode,
-            referentieNummer = "",
+            referentieNummer = referentieNummer,
             journaalpost = Journaalpost(
                 journaalpostsleutel = sleutel,
-                journaalpostboekdatumTijd = OffsetDateTime.parse("2020-06-25T00:00:00.000Z"),
+                journaalpostboekdatumTijd = boekdatumTijd,
                 journaalpostcategorie = categorie,
-                journaalpostsaldosoort = Journaalpost.Journaalpostsaldosoort.Werkelijk,
+                journaalpostsaldosoort = Journaalpost.Journaalpostsaldosoort.valueOf(saldoSoort.name),
                 valutacode = Journaalpost.Valutacode.EUR,
-                journaalpostregels = listOf(Journaalpostregel(
-                    grootboekrekening = Grootboekrekening(
-                        grootboeksleutel = grootboekSleutel,
-                        bronsleutel = null
-                    ),
-                    journaalpostregelboekingtype = Journaalpostregel.Journaalpostregelboekingtype.Debet,
-                    journaalpostregelbedrag = 0.0,
-                    journaalpostregelomschrijving = null,
-                    bronspecifiekewaarden = null
-                )),
-                journaalpostomschrijving = null,
+                journaalpostregels = regels.map { regel ->
+                    Journaalpostregel(
+                        grootboekrekening = Grootboekrekening(
+                            grootboeksleutel = regel.grootboekSleutel,
+                            bronsleutel = null
+                        ),
+                        journaalpostregelboekingtype = Journaalpostregel.Journaalpostregelboekingtype.valueOf(regel.boekingType.name),
+                        journaalpostregelbedrag = regel.bedrag,
+                        journaalpostregelomschrijving = regel.omschrijving,
+                        bronspecifiekewaarden = null
+                    )
+                },
+                journaalpostomschrijving = omschrijving,
                 grootboek = null,
-                boekjaar = null,
-                boekperiode = null
+                boekjaar = boekjaar,
+                boekperiode = boekperiode
             )
         ).let { request ->
             try {
@@ -122,26 +133,31 @@ class OracleEbsPlugin(
     fun verkoopfactuurOpvoeren(
         execution: DelegateExecution,
         @PluginActionProperty procesCode: String,
-        @PluginActionProperty grootboekSleutel: String
+        @PluginActionProperty referentieNummer: String,
+        @PluginActionProperty factuurKlasse: FactuurKlasse,
+        @PluginActionProperty inkoopOrderReferentie: String,
+        @PluginActionProperty natuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon,
+        @PluginActionProperty nietNatuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon,
+        @PluginActionProperty factuurRegels: List<FactuurRegel>,
     ) {
         logger.info {
             "Verkoopfactuur Opvoeren(" +
                 "processCode: $procesCode, " +
-                "grootboekSleutel: $grootboekSleutel" +
+                "referentieNummer: $referentieNummer" +
             ")"
         }
         OpvoerenVerkoopfactuurVraag(
             procescode = procesCode,
-            referentieNummer = "",
+            referentieNummer = referentieNummer,
             factuur = Verkoopfactuur(
                 factuurtype = Verkoopfactuur.Factuurtype.Verkoopfactuur,
-                factuurklasse= Verkoopfactuur.Factuurklasse.Debetnota,
+                factuurklasse= Verkoopfactuur.Factuurklasse.valueOf(factuurKlasse.name),
                 factuurdatum = LocalDate.now(),
-                inkooporderreferentie = "",
+                inkooporderreferentie = inkoopOrderReferentie,
                 koper = RelatieRotterdam(
                     natuurlijkPersoon = NatuurlijkPersoon(
-                        achternaam = "",
-                        voornamen = "",
+                        achternaam = natuurlijkPersoon.achternaam,
+                        voornamen = natuurlijkPersoon.voornamen,
                         bsn = null,
                         relatienaam = null,
                         tussenvoegsel = null,
@@ -152,7 +168,7 @@ class OracleEbsPlugin(
                         vestigingsadres = null
                     ),
                     nietNatuurlijkPersoon = NietNatuurlijkPersoon(
-                        statutaireNaam = "",
+                        statutaireNaam = nietNatuurlijkPersoon.statutaireNaam,
                         kvknummer = null,
                         kvkvestigingsnummer = null,
                         rsin = null,
@@ -169,24 +185,26 @@ class OracleEbsPlugin(
                     ),
                     relatienummerRotterdam = null
                 ),
-                factuurregels = listOf(Factuurregel(
-                    factuurregelFacturatieHoeveelheid = BigDecimal(0),
-                    factuurregelFacturatieTarief = BigDecimal(0),
-                    btwPercentage = "",
-                    grootboekrekening = Grootboekrekening(
-                        grootboeksleutel = grootboekSleutel,
-                        bronsleutel = null,
-                    ),
-                    factuurregelomschrijving = null,
-                    factuurregelFacturatieEenheid = null,
-                    boekingsregel = null,
-                    boekingsregelStartdatum = null,
-                    ontvangstenGrootboekrekening = null,
-                    factuurregelToeslagKortingen = null,
-                    bronspecifiekewaarden = null,
-                    artikel = null,
-                    regelnummer = null
-                )),
+                factuurregels = factuurRegels.map { factuurRegel ->
+                    Factuurregel(
+                        factuurregelFacturatieHoeveelheid = factuurRegel.hoeveelheid,
+                        factuurregelFacturatieTarief = factuurRegel.tarief,
+                        btwPercentage = factuurRegel.btwPercentage,
+                        grootboekrekening = Grootboekrekening(
+                            grootboeksleutel = factuurRegel.grootboekSleutel,
+                            bronsleutel = null,
+                        ),
+                        factuurregelomschrijving = null,
+                        factuurregelFacturatieEenheid = null,
+                        boekingsregel = null,
+                        boekingsregelStartdatum = null,
+                        ontvangstenGrootboekrekening = null,
+                        factuurregelToeslagKortingen = null,
+                        bronspecifiekewaarden = null,
+                        artikel = null,
+                        regelnummer = null
+                    )
+                },
                 transactiesoort = null,
                 factuurnummer = null,
                 factuurvervaldatum = null,
