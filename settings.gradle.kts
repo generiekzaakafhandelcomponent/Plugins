@@ -7,6 +7,7 @@ include(
     "backend:berkelybridge-textgenerator",
     "backend:externe-klanttaak",
     "backend:freemarker",
+    "backend:hugging-face-ai",
     "backend:notify-nl",
     "backend:object-management",
     "backend:publictask",

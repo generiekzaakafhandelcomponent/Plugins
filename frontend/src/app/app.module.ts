@@ -107,6 +107,10 @@ import {
   externeKlanttaakPluginSpecification
 } from "../../projects/valtimo-plugins/externe-klanttaak/src/lib/externe-klanttaak-plugin.specification";
 import {ObjectModule} from "@valtimo/object";
+import {HuggingFacePluginModule} from "../../projects/valtimo-plugins/huggingface/src/lib/hugging-face-plugin-module";
+import {
+    huggingFacePluginSpecification
+} from "../../projects/valtimo-plugins/huggingface/src/lib/hugging-face-plugin.specification";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -128,6 +132,7 @@ export function tabsFactory() {
         BerkelybridgeTextgeneratorPluginModule,
         MailTemplatePluginModule,
         TextTemplatePluginModule,
+        HuggingFacePluginModule,
         PublictaskPluginModule,
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
@@ -195,6 +200,7 @@ export function tabsFactory() {
             amsterdamEmailapiPluginSpecification,
             berkelybridgeTextgeneratorPluginSpecification,
             mailTemplatePluginSpecification,
+            huggingFacePluginSpecification,
             externeKlanttaakPluginSpecification,
             textTemplatePluginSpecification,
             publictaskPluginSpecification,

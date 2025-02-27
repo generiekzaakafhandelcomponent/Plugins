@@ -1,0 +1,6 @@
+services:
+  db:
+    ports:
+      - "54391:5432"
+    environment:
+      - POSTGRES_DB=hugging-face-ai-test
