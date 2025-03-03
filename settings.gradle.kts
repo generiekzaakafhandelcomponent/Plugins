@@ -1,6 +1,7 @@
 rootProject.name = "Plugins"
 include(
     "backend",
+    "backend:ai-agent",
     "backend:app",
     "backend:alfresco-authentication",
     "backend:amsterdam-email-api",
