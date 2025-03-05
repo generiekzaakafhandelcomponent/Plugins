@@ -124,8 +124,7 @@
     </v-form>
 -->
 
-    <form [formGroup]="pluginActionForm" (ngSubmit)="submitForm()">
-
+    <form [formGroup]="pluginActionForm">
         <ng-container
             [ngTemplateOutlet]="inputFieldTemplate"
             [ngTemplateOutletContext]="{
@@ -133,8 +132,7 @@
                 controlName: 'procesCode',
                 title: 'procesCode',
                 tooltip: 'procesCodeTooltip',
-                required: true,
-                disabled: obs.disabled
+                required: true
             }"
         />
 
@@ -145,8 +143,7 @@
                 controlName: 'referentieNummer',
                 title: 'referentieNummer',
                 tooltip: 'referentieNummerTooltip',
-                required: true,
-                disabled: obs.disabled
+                required: true
             }"
         />
 
@@ -157,8 +154,7 @@
                 controlName: 'sleutel',
                 title: 'sleutel',
                 tooltip: 'sleutelTooltip',
-                required: true,
-                disabled: obs.disabled
+                required: true
             }"
         />
 
@@ -166,11 +162,10 @@
             [ngTemplateOutlet]="inputFieldTemplate"
             [ngTemplateOutletContext]="{
                 formGroup: pluginActionForm,
-                controlName: 'boekdatum',
+                controlName: 'boekdatumTijd',
                 title: 'boekdatum',
                 tooltip: 'boekdatumTooltip',
-                required: true,
-                disabled: obs.disabled
+                required: true
             }"
         />
 
@@ -181,8 +176,7 @@
                 controlName: 'categorie',
                 title: 'categorie',
                 tooltip: 'categorieTooltip',
-                required: true,
-                disabled: obs.disabled
+                required: true
             }"
         />
 
@@ -194,7 +188,6 @@
                 title: 'saldoSoort',
                 tooltip: 'saldoSoortTooltip',
                 required: true,
-                disabled: obs.disabled,
                 items: saldoSoortItems
             }"
         />
@@ -205,8 +198,7 @@
                 formGroup: pluginActionForm,
                 controlName: 'omschrijving',
                 title: 'omschrijving',
-                tooltip: 'omschrijvingTooltip',
-                disabled: obs.disabled
+                tooltip: 'omschrijvingTooltip'
             }"
         />
 
@@ -216,8 +208,7 @@
                 formGroup: pluginActionForm,
                 controlName: 'boekjaar',
                 title: 'boekjaar',
-                tooltip: 'boekjaarTooltip',
-                disabled: obs.disabled
+                tooltip: 'boekjaarTooltip'
             }"
         />
 
@@ -228,8 +219,7 @@
                 controlName: 'boekperiode',
                 title: 'boekperiode',
                 tooltip: 'boekperiodeTooltip',
-                required: true,
-                disabled: obs.disabled
+                required: true
             }"
         />
 
@@ -242,52 +232,49 @@
             </v-input-label>
             <div formArrayName="regels" class="lines-wrapper">
                 <div class="line-wrapper"
-                     *ngFor="let line of lines.controls; let i = index"
-                     [formGroupName]="i">
+                     *ngFor="let line of lines.controls; let i = index">
                     <ng-container
                         [ngTemplateOutlet]="lineInputFieldTemplate"
                         [ngTemplateOutletContext]="{
-                            formGroup: lines[i],
+                            formGroup: line,
                             controlName: 'grootboekSleutel',
                             title: 'grootboekSleutel',
-                            required: true,
-                            disabled: obs.disabled
+                            required: true
                         }"
                     />
                     <ng-container
                         [ngTemplateOutlet]="lineSelectFieldTemplate"
                         [ngTemplateOutletContext]="{
-                            formGroup: lines[i],
+                            formGroup: line,
                             controlName: 'boekingType',
                             title: 'boekingType',
                             required: true,
-                            disabled: obs.disabled,
-                            items: boekingTypeItems
+                            items: linesBoekingTypeItems[i]
                         }"
                     />
                     <ng-container
                         [ngTemplateOutlet]="lineInputFieldTemplate"
                         [ngTemplateOutletContext]="{
-                            formGroup: lines[i],
+                            formGroup: line,
                             controlName: 'omschrijving',
-                            title: 'regelOmschrijving',
-                            disabled: obs.disabled
+                            title: 'regelOmschrijving'
                         }"
                     />
                     <ng-container
                         [ngTemplateOutlet]="lineInputFieldTemplate"
                         [ngTemplateOutletContext]="{
-                            formGroup: lines[i],
+                            formGroup: line,
                             controlName: 'bedrag',
                             title: 'bedrag',
-                            required: true,
-                            disabled: obs.disabled
+                            required: true
                         }"
                     />
                     <div class="remove-line-wrapper">
                         <button type="button"
                                 cdsButton="secondary"
-                                (click)="removeLine(i)">
+                                (click)="removeLine(i)"
+                                [disabled]="obs.disabled"
+                        >
                             {{'regelVerwijderen' | pluginTranslate: pluginId | async}}
                             <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
                         </button>
@@ -297,7 +284,8 @@
             <div class="add-line-wrapper">
                 <button type="button"
                         cdsButton="secondary"
-                        (click)="addLine()">
+                        (click)="addLine()"
+                        [disabled]="obs.disabled">
                     {{'regelToevoegen' | pluginTranslate: pluginId | async}}
                     <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
                 </button>
@@ -313,8 +301,7 @@
     let-type="type ?? 'text'"
     let-title="title"
     let-tooltip="tooltip"
-    let-required="required ?? false"
-    let-disabled="disabled?? false">
+    let-required="required ?? false">
     <div [formGroup]="formGroup" class="field-wrapper">
         <v-input-label
             [title]="title | pluginTranslate: pluginId | async"
@@ -324,8 +311,7 @@
         </v-input-label>
         <input cdsText
                [type]="type"
-               [formControlName]="controlName"
-               [disabled]="disabled">
+               [formControlName]="controlName">
     </div>
 </ng-template>
 
@@ -335,7 +321,6 @@
     let-title="title"
     let-tooltip="tooltip"
     let-required="required ?? false"
-    let-disabled="disabled?? false"
     let-items="items ?? []">
     <div [formGroup]="formGroup" class="field-wrapper">
         <v-input-label
@@ -344,8 +329,7 @@
             [required]="required"
         >
         </v-input-label>
-        <cds-dropdown   [formControlName]="controlName"
-                        [disabled]="disabled">
+        <cds-dropdown [formControlName]="controlName">
             <cds-dropdown-list [items]="items"></cds-dropdown-list>
         </cds-dropdown>
     </div>
@@ -356,8 +340,7 @@
     let-controlName="controlName"
     let-type="type ?? 'text'"
     let-title="title"
-    let-required="required ?? false"
-    let-disabled="disabled?? false">
+    let-required="required ?? false">
     <div [formGroup]="formGroup" class="line-field-wrapper">
         <v-input-label
             [title]="title | pluginTranslate: pluginId | async"
@@ -366,8 +349,7 @@
         </v-input-label>
         <input cdsText
                [type]="type"
-               [formControlName]="controlName"
-               [disabled]="disabled">
+               [formControlName]="controlName">
     </div>
 </ng-template>
 
@@ -376,7 +358,6 @@
     let-controlName="controlName"
     let-title="title"
     let-required="required ?? false"
-    let-disabled="disabled?? false"
     let-items="items ?? []">
     <div [formGroup]="formGroup" class="line-field-wrapper">
         <v-input-label
@@ -384,8 +365,7 @@
             [required]="required"
         >
         </v-input-label>
-        <cds-dropdown   [formControlName]="controlName"
-                        [disabled]="disabled">
+        <cds-dropdown [formControlName]="controlName">
             <cds-dropdown-list [items]="items"></cds-dropdown-list>
         </cds-dropdown>
     </div>
