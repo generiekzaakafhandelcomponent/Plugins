@@ -98,6 +98,7 @@ import {SmtpMailPluginModule, smtpmailPluginSpecification} from '@valtimo-plugin
 import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/spotler';
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
+import {MtlsSslcontextPluginModule,mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -122,6 +123,7 @@ export function tabsFactory() {
         PublictaskPluginModule,
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
+        MtlsSslcontextPluginModule,
         SlackPluginModule,
         SmtpMailPluginModule,
         SpotlerPluginModule,
@@ -200,7 +202,8 @@ export function tabsFactory() {
             spotlerPluginSpecification,
             suwinetPluginSpecification,
             textTemplatePluginSpecification,
-            XentialPluginSpecification,
+            mTlsSslcontextPluginSpecification,
+            XentialPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]

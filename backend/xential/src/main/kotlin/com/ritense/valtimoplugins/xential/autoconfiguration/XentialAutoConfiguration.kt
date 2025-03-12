@@ -24,7 +24,7 @@ import com.ritense.valtimoplugins.xential.plugin.XentialPluginFactory
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.ritense.valtimoplugins.xential.security.config.XentialApiHttpSecurityConfigurer
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
-import com.ritense.valtimoplugins.xential.service.HttpClientConfig
+import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
 import com.ritense.valtimoplugins.xential.web.rest.DocumentResource
 import com.ritense.valueresolver.ValueResolverService
 import org.camunda.bpm.engine.RuntimeService
@@ -45,11 +45,16 @@ class XentialAutoConfiguration {
     @ConditionalOnMissingBean(XentialPluginFactory::class)
     fun xentialPluginFactory(
         pluginService: PluginService,
+        esbClient: OpentunnelEsbClient,
         documentGenerationService: DocumentGenerationService
     ) = XentialPluginFactory(
             pluginService,
+            esbClient,
             documentGenerationService,
         )
+
+    @Bean
+    fun opentunnelEsbClient() = OpentunnelEsbClient()
 
     @Bean
     @ConditionalOnMissingBean(name = ["xentialLiquibaseMasterChangeLogLocation"])
@@ -57,23 +62,17 @@ class XentialAutoConfiguration {
         LiquibaseMasterChangeLogLocation("config/liquibase/xential-plugin-master.xml")
 
     @Bean
-    fun xentialHttpClientConfig() = HttpClientConfig()
-
-
-    @Bean
     @ConditionalOnMissingBean
     fun documentGenerationService(
         xentialTokenRepository: XentialTokenRepository,
         temporaryResourceStorageService: TemporaryResourceStorageService,
         runtimeService: RuntimeService,
-        valueResolverService: ValueResolverService,
-        httpClientConfig: HttpClientConfig
+        valueResolverService: ValueResolverService
     ) = DocumentGenerationService(
         xentialTokenRepository,
         temporaryResourceStorageService,
         runtimeService,
-        valueResolverService,
-        httpClientConfig
+        valueResolverService
     )
 
     @Bean

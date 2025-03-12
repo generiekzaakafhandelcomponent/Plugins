@@ -5,10 +5,7 @@
         "properties": {
             "applicationName": "${XENTIAL_ACCOUNT_NAME}",
             "applicationPassword": "${XENTIAL_ACCOUNT_PASSWORD}",
-            "baseUrl": "${XENTIAL_BASEURL}",
-            "serverCertificate": "${PKIO_FULLCHAIN}",
-            "clientPrivateKey": "${PKIO_PRIVATE_KEY}",
-            "clientCertificate": "${PKIO_CERT}"
+            "baseUrl": "${XENTIAL_BASEURL}"
         },
         "pluginDefinitionKey": "xential"
     }

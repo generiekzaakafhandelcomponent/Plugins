@@ -24,13 +24,15 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimoplugins.xential.domain.HttpClientProperties
+import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.ritense.valtimoplugins.xential.domain.FileFormat
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.valtimoplugins.xential.plugin.XentialPlugin.Companion.PLUGIN_KEY
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
+import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.springframework.web.client.RestClient
 import java.net.URI
 import java.util.UUID
 
@@ -41,6 +43,7 @@ import java.util.UUID
 )
 @Suppress("UNUSED")
 class XentialPlugin(
+    private val esbClient: OpentunnelEsbClient,
     private val documentGenerationService: DocumentGenerationService
 ) {
     @PluginProperty(key = "applicationName", secret = false, required = true)
@@ -52,14 +55,8 @@ class XentialPlugin(
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
 
-    @PluginProperty(key = "serverCertificate", secret = true, required = false)
-    var serverCertificate: String? = null
-
-    @PluginProperty(key = "clientPrivateKey", secret = true, required = false)
-    var clientPrivateKey: String? = null
-
-    @PluginProperty(key = "clientCertificate", secret = true, required = false)
-    var clientCertificate: String? = null
+    @PluginProperty(key = "mTlsSslContextAutoConfiguration", secret = false, required = true)
+    private lateinit var mTlsSslContextAutoConfiguration: MTlsSslContext
 
     @PluginAction(
         key = "generate-document",
@@ -72,23 +69,12 @@ class XentialPlugin(
         execution: DelegateExecution
     ) {
 
-        logger.info { "xentialContentId: $xentialContentId" }
-
-        val xentialDocumentProperties: XentialDocumentProperties = objectMapper.convertValue(xentialContentId)
-
-        val httpClientProperties = HttpClientProperties(
-            applicationName,
-            applicationPassword,
-            baseUrl,
-            serverCertificate,
-            clientPrivateKey,
-            clientCertificate
-        )
+        logger.info { "generating document with XentialContent: $xentialContentId" }
 
         documentGenerationService.generateDocument(
-            httpClientProperties,
+            esbClient.documentApi(restClient(mTlsSslContextAutoConfiguration)),
             UUID.fromString(execution.processInstanceId),
-            xentialDocumentProperties,
+            objectMapper.convertValue(xentialContentId) as XentialDocumentProperties,
             execution
         )
     }
@@ -153,6 +139,7 @@ class XentialPlugin(
         execution: DelegateExecution
     ) {
         try {
+            logger.info { "ha toch hier" }
             val xentialDocumentProperties = XentialDocumentProperties(
                 templateId,
                 gebruikersId,
@@ -161,6 +148,8 @@ class XentialPlugin(
                 eventMessageName,
                 textTemplateId
             )
+
+            logger.info { "ha toch hier" }
             execution.processInstance.setVariable(
                 xentialContentId, objectMapper.convertValue(xentialDocumentProperties)
             )
@@ -168,6 +157,16 @@ class XentialPlugin(
             logger.error("Exiting scope due to nested error.", e)
             return
         }
+    }
+
+    private fun restClient(mTlsSslContextAutoConfiguration: MTlsSslContext?): RestClient {
+
+        return esbClient.createRestClient(
+            baseUrl = baseUrl.toString(),
+            applicationName = applicationName,
+            applicationPassword = applicationPassword,
+            mTlsSslContextAutoConfiguration?.createSslContext()
+        )
     }
 
     companion object {

@@ -35,6 +35,8 @@ dependencies {
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
+
+    implementation("com.ritense.valtimoplugins:mTLS-SSLContext:1.0.1")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
@@ -46,6 +48,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.moshi:moshi:1.15.1")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+
+    implementation("org.apache.httpcomponents.core5:httpcore5")
+    implementation("org.apache.httpcomponents.client5:httpclient5")
 
     implementation("org.openapitools:openapi-generator-gradle-plugin:7.10.0")
 
@@ -74,12 +79,21 @@ dependencies {
 apply(from = "gradle/publishing.gradle")
 
 openApiGenerate {
-    inputSpec.set("$rootDir/backend/xential/src/main/resources/dcsg_xential.yaml")
-    generatorName.set("kotlin")
-    outputDir.set("${getLayout().buildDirectory.get()}/generated")
-    apiPackage.set("com.rotterdam.xential.api")
-    invokerPackage.set("com.rotterdam.xential.invoker")
-    modelPackage.set("com.rotterdam.xential.model")
+    generatorName = "kotlin"
+    inputSpec = "$rootDir/backend/xential/src/main/resources/dcsg_xential.yaml"
+    outputDir = "${getLayout().buildDirectory.get()}/generated"
+    generateApiDocumentation = false
+    generateApiTests = false
+    generateModelDocumentation = false
+    generateModelTests = false
+    apiPackage = "com.rotterdam.esb.xential.api"
+    invokerPackage = "com.rotterdam.esb.xential.invoker"
+    modelPackage = "com.rotterdam.esb.xential.model"
+    configOptions = mapOf(
+        "useSpringBoot3" to "true",
+        "library" to "jvm-spring-restclient",
+        "serializationLibrary" to "jackson"
+    )
 }
 
 sourceSets {

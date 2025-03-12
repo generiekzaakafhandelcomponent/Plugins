@@ -77,37 +77,19 @@
     >
     </v-input>
     <hr/>
-    <v-input
-            name="serverCertificate"
-            type="textarea"
-            [title]="'serverCertificate' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.serverCertificate"
-            [disabled]="obs.disabled"
-            [required]="false"
+    <ng-container
+            *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
     >
-    </v-input>
-    <v-input
-            name="clientPrivateKey"
-            type="textarea"
-            [title]="'clientPrivateKey' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.clientPrivateKey"
-            [disabled]="obs.disabled"
-            [required]="false"
-    >
-    </v-input>
-    <v-input
-            name="clientCertificate"
-            type="textarea"
-            [title]="'clientCertificate' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.clientCertificate"
-            [disabled]="obs.disabled"
-            [required]="false"
-    >
-    </v-input>
+        <v-select
+                [items]="authObs.authenticationPluginSelectItems"
+                [margin]="true"
+                name="mTlsSslContextAutoConfiguration"
+                [title]="'mTlsSslContextAutoConfiguration' | pluginTranslate: pluginId | async"
+                [disabled]="obs.disabled"
+                [defaultSelectionId]="obs.prefill?.mTlsSslContextAutoConfiguration"
+                [required]="true"
+                [loading]="!authObs.authenticationPluginSelectItems"
+        ></v-select>
+    </ng-container>
+
 </v-form>

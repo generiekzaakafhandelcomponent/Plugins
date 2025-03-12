@@ -19,13 +19,15 @@ package com.ritense.valtimoplugins.xential.plugin
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
+import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
 
 class XentialPluginFactory(
     pluginService: PluginService,
+    val esbClient: OpentunnelEsbClient,
     val documentGenerationService: DocumentGenerationService
 ) : PluginFactory<XentialPlugin>(pluginService) {
 
     override fun create(): XentialPlugin {
-        return XentialPlugin(documentGenerationService)
+        return XentialPlugin(esbClient,documentGenerationService)
     }
 }

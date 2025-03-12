@@ -41,9 +41,9 @@
     "title": "Spotler configuration",
     "pluginDefinitionKey": "spotler",
     "properties": {
-      "clientId": "clientId",
-      "accountId": "accountId",
-      "clientSecret": "clientSecret"
+      "clientId": "${SPOTLER_CLIENTID}",
+      "accountId": "${SPOTLER_ACCOUNTID}",
+      "clientSecret": "${SPOTLER_CLIENTSECRET}"
     }
   }
 ]

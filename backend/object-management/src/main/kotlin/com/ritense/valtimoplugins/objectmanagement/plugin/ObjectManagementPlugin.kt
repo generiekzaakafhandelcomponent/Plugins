@@ -20,7 +20,6 @@ import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.patch.JsonPatchService
-import com.ritense.objectenapi.ObjectenApiPlugin
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
@@ -29,6 +28,8 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimo.contract.json.patch.JsonPatchBuilder
 import com.ritense.valtimoplugins.objectmanagement.service.ObjectManagementCrudService
 import com.ritense.valueresolver.ValueResolverService
+import io.github.oshai.kotlinlogging.KLogger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 import java.util.UUID
@@ -39,9 +40,9 @@ import java.util.UUID
     description = "Plugin for CRUD actions on the Objects registration"
 )
 open class ObjectManagementPlugin(
-    val pluginService: PluginService,
-    val objectManagementCrudService: ObjectManagementCrudService,
-    val valueResolverService: ValueResolverService
+    pluginService: PluginService,
+    private val objectManagementCrudService: ObjectManagementCrudService,
+    private val valueResolverService: ValueResolverService
 ) {
     private val objectMapper = pluginService.getObjectMapper()
 
@@ -90,6 +91,24 @@ open class ObjectManagementPlugin(
 
     }
 
+    @PluginAction(
+        key = "get-objects-unpaged",
+        title = "Get Objects Unpaged",
+        description = "Retrieve all Objects of a given object-management id",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun getObjectsUnpaged(
+        execution: DelegateExecution,
+        @PluginActionProperty objectManagementConfigurationTitle: String,
+        @PluginActionProperty listOfObjectProcessVariableName: String
+    ) {
+        val objects = objectManagementCrudService.getObjectsByObjectManagementTitle(objectManagementConfigurationTitle)
+        val processedObject = objects.results.map { it.record.data }
+
+        execution.setVariable(listOfObjectProcessVariableName, processedObject)
+        logger.info { "Successfully retrieved ${objects.results.size} objects for object management: $objectManagementConfigurationTitle" }
+    }
+
     private fun getObjectData(keyValueMap: List<DataBindingConfig>, documentId: String): JsonNode {
         val resolvedValuesMap = valueResolverService.resolveValues(
             documentId, keyValueMap.map { it.value }
@@ -118,5 +137,9 @@ open class ObjectManagementPlugin(
         JsonPatchService.apply(jsonPatchBuilder.build(), objectData)
 
         return objectMapper.convertValue(objectData)
+    }
+
+    companion object {
+        private val logger: KLogger = KotlinLogging.logger { }
     }
 }

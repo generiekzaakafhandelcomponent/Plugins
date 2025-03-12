@@ -18,14 +18,14 @@ package com.ritense.valtimoplugins.xential.service
 
 import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
-import com.ritense.valtimoplugins.xential.domain.HttpClientProperties
 import com.ritense.valtimoplugins.xential.domain.DocumentCreatedMessage
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.plugin.TemplateDataEntry
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.ritense.valueresolver.ValueResolverService
-import com.rotterdam.xential.model.Sjabloondata
+import com.rotterdam.esb.xential.api.DefaultApi
+import com.rotterdam.esb.xential.model.Sjabloondata
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -37,8 +37,7 @@ class DocumentGenerationService(
     private val xentialTokenRepository: XentialTokenRepository,
     private val temporaryResourceStorageService: TemporaryResourceStorageService,
     private val runtimeService: RuntimeService,
-    private val valueResolverService: ValueResolverService,
-    private val httpClientConfig: HttpClientConfig
+    private val valueResolverService: ValueResolverService
 ) {
     @Suppress("UNCHECKED_CAST")
     fun generateContent(
@@ -54,14 +53,12 @@ class DocumentGenerationService(
 
     @Suppress("UNCHECKED_CAST")
     fun generateDocument(
-        httpClientProperties: HttpClientProperties,
+        api: DefaultApi,
         processId: UUID,
         xentialDocumentProperties: XentialDocumentProperties,
         execution: DelegateExecution,
     ) {
-        logger.info { "generating xential document with gebruikersId: ${httpClientProperties.applicationName}" }
-
-        val api = httpClientConfig.configureClient(httpClientProperties)
+        logger.info { "generating xential document" }
 
         val result = api.creeerDocument(
             gebruikersId = xentialDocumentProperties.gebruikersId,

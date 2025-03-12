@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.objectmanagement.autoconfiguration
 
 import com.ritense.objectmanagement.repository.ObjectManagementRepository
+import com.ritense.objectmanagement.service.ObjectManagementFacade
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.objectmanagement.plugin.ObjectManagementPluginFactory
 import com.ritense.valtimoplugins.objectmanagement.service.ObjectManagementCrudService
@@ -45,11 +46,13 @@ class ObjectManagementAutoConfiguration {
     @ConditionalOnMissingBean(ObjectManagementCrudService::class)
     fun objectManagementCrudService(
         pluginService: PluginService,
-        objectManagementRepository: ObjectManagementRepository
+        objectManagementRepository: ObjectManagementRepository,
+        objectManagementFacade: ObjectManagementFacade
     ): ObjectManagementCrudService {
         return ObjectManagementCrudService(
             pluginService,
-            objectManagementRepository
+            objectManagementRepository,
+            objectManagementFacade
         )
     }
 }

@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":backend:berkelybridge-textgenerator"))
     implementation(project(":backend:externe-klanttaak"))
     implementation(project(":backend:freemarker"))
+    implementation(project(":backend:mTLS-SSLContext"))
     implementation(project(":backend:notify-nl"))
     implementation(project(":backend:object-management"))
     implementation(project(":backend:publictask"))

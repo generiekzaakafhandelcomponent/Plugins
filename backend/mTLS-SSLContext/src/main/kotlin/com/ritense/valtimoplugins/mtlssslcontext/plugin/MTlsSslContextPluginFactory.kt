@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.xential.domain
+package com.ritense.valtimoplugins.mtlssslcontext.plugin
 
-import java.net.URI
+import com.ritense.plugin.PluginFactory
+import com.ritense.plugin.service.PluginService
 
-data class HttpClientProperties(
-    val applicationName: String,
-    val applicationPassword: String,
-    val baseUrl: URI,
-    val serverCertificate: String? = null,
-    val clientPrivateKey: String? = null,
-    val clientCertificate: String? = null,
-)
+class MTlsSslContextPluginFactory(
+    pluginService: PluginService,
+) : PluginFactory<MTlsSslContextPlugin>(pluginService) {
+
+    override fun create(): MTlsSslContextPlugin {
+        return MTlsSslContextPlugin()
+    }
+}

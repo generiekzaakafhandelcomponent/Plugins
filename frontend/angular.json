@@ -433,6 +433,47 @@
         }
       }
     },
+    "@valtimo-plugins/mtls-sslcontext": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/mtls-sslcontext",
+      "sourceRoot": "projects/valtimo-plugins/mtls-sslcontext/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/mtls-sslcontext/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/mtls-sslcontext/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/mtls-sslcontext/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/mtls-sslcontext/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/mtls-sslcontext/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/mtls-sslcontext/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/mtls-sslcontextr/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/mtls-sslcontext/src/**/*.ts",
+              "projects/valtimo-plugins/mtls-sslcontext/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/publictask": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/publictask",

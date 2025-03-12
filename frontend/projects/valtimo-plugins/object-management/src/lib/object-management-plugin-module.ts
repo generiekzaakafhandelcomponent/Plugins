@@ -20,16 +20,19 @@ import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {CarbonMultiInputModule, FormModule, InputModule, ParagraphModule} from '@valtimo/components';
 import {ObjectManagementConfigurationComponent} from "./components/object-management-configuration/object-management-configuration.component";
 import {CreateObjectConfigurationComponent} from "./components/create-object/create-object-configuration.component";
+import {GetObjectsConfigurationComponent} from "./components/get-objects/get-objects-configuration.component";
 
 @NgModule({
   declarations: [
     ObjectManagementConfigurationComponent,
-    CreateObjectConfigurationComponent
+    CreateObjectConfigurationComponent,
+    GetObjectsConfigurationComponent
   ],
   imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule, CarbonMultiInputModule],
   exports: [
     ObjectManagementConfigurationComponent,
-    CreateObjectConfigurationComponent
+    CreateObjectConfigurationComponent,
+    GetObjectsConfigurationComponent
   ],
 })
 export class ObjectManagementPluginModule {}

@@ -26,4 +26,9 @@ interface CreateObjectConfig {
   objectUrlProcessVariableName: string;
 }
 
-export {ObjectManagementConfig, CreateObjectConfig};
+interface GetObjectsConfig {
+  objectManagementConfigurationTitle: string;
+  listOfObjectProcessVariableName: string;
+}
+
+export {ObjectManagementConfig, CreateObjectConfig, GetObjectsConfig};
