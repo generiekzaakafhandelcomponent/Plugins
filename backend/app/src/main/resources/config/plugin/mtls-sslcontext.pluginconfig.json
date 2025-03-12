@@ -1,11 +1,11 @@
 [
     {
-        "id": "728b6a32-b315-4318-a7fb-eaee8ca0921a",
+        "id": "63b44b21-9bd2-42f2-a11e-a4f68837e076",
         "title": "mTLS-SSLContext",
         "properties": {
-            "base64ServerCert": "${BASE64-SERVER-CERTIFICATE}",
-            "base64PrivateKey": "${BASE64-PRIVATE-KEY}",
-            "base64ClientCert": "${BASE64-CLIENT-CERTIFICATE}"
+            "base64ServerCert": "${MTLS_SSLCTX_SERVER_CERT_BASE64}",
+            "base64PrivateKey": "${MTLS_SSLCTX_PRIVATE_KEY_BASE64}",
+            "base64ClientCert": "${MTLS_SSLCTX_CLIENT_CERT_BASE64}"
         },
         "pluginDefinitionKey": "mTLS-SSLContext"
     }
