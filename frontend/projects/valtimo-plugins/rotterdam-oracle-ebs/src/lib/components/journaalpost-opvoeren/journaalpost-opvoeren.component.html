@@ -18,112 +18,6 @@
     disabled: disabled$ | async,
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
 } as obs">
-<!--
-    <v-form (valueChange)="formValueChange($event)">
-        <v-input
-            type="text"
-            name="procesCode"
-            required="true"
-            margin="true"
-            [title]="'procesCode' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.procesCode"
-            [tooltip]="'procesCodeTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-input
-            type="text"
-            name="referentieNummer"
-            required="true"
-            margin="true"
-            [title]="'referentieNummer' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.referentieNummer"
-            [tooltip]="'referentieNummerTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-input
-            type="text"
-            name="sleutel"
-            required="true"
-            margin="true"
-            [title]="'sleutel' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.sleutel"
-            [tooltip]="'sleutelTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-input
-            type="text"
-            name="boekdatumTijd"
-            required="true"
-            margin="true"
-            [title]="'boekdatumTijd' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.boekdatumTijd"
-            [tooltip]="'boekdatumTijdTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-input
-            type="text"
-            name="categorie"
-            required="true"
-            margin="true"
-            [title]="'categorie' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.categorie"
-            [tooltip]="'categorieTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-select
-            name="saldoSoort"
-            required="true"
-            margin="true"
-            [title]="'saldoSoort' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultSelectionId]="obs.prefill?.saldoSoort"
-            [tooltip]="'saldoSoortTooltip' | pluginTranslate: pluginId | async"
-            [items]="saldoSoortItems"
-        >
-        </v-select>
-        <v-input
-            type="text"
-            name="omschrijving"
-            required="true"
-            margin="true"
-            [title]="'omschrijving' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.omschrijving"
-            [tooltip]="'omschrijvingTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-input
-            type="digitOnly"
-            name="boekjaar"
-            required="false"
-            margin="true"
-            maxLength="4"
-            [title]="'boekjaar' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.boekjaar.toString()"
-            [tooltip]="'boekjaarTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-input
-            type="digitOnly"
-            name="boekperiode"
-            required="false"
-            margin="true"
-            maxLength="4"
-            [title]="'boekperiode' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.boekperiode.toString()"
-            [tooltip]="'boekperiodeTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-    </v-form>
--->
-
     <form [formGroup]="pluginActionForm">
         <ng-container
             [ngTemplateOutlet]="inputFieldTemplate"
@@ -244,6 +138,7 @@
                             required: true
                         }"
                     />
+                    <!-- items: linesBoekingTypeItems[i] -->
                     <ng-container
                         [ngTemplateOutlet]="lineSelectFieldTemplate"
                         [ngTemplateOutletContext]="{
