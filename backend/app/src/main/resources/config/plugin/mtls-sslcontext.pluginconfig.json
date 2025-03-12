@@ -1,0 +1,12 @@
+[
+    {
+        "id": "63b44b21-9bd2-42f2-a11e-a4f68837e076",
+        "title": "mTls SSLContext",
+        "properties": {
+            "base64ServerCert": "${MTLS_SSLCTX_SERVER_CERT_BASE64}",
+            "base64PrivateKey": "${MTLS_SSLCTX_PRIVATE_KEY_BASE64}",
+            "base64ClientCert": "${MTLS_SSLCTX_CLIENT_CERT_BASE64}"
+        },
+        "pluginDefinitionKey": "mTLS-SSLContext"
+    }
+]
