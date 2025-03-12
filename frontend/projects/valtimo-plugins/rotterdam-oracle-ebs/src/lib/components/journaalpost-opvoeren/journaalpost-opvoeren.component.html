@@ -198,7 +198,8 @@
                 formGroup: pluginActionForm,
                 controlName: 'omschrijving',
                 title: 'omschrijving',
-                tooltip: 'omschrijvingTooltip'
+                tooltip: 'omschrijvingTooltip',
+                required: true
             }"
         />
 
@@ -208,7 +209,8 @@
                 formGroup: pluginActionForm,
                 controlName: 'boekjaar',
                 title: 'boekjaar',
-                tooltip: 'boekjaarTooltip'
+                tooltip: 'boekjaarTooltip',
+                required: true
             }"
         />
 
@@ -249,7 +251,7 @@
                             controlName: 'boekingType',
                             title: 'boekingType',
                             required: true,
-                            items: linesBoekingTypeItems[i]
+                            items: boekingTypeItems
                         }"
                     />
                     <ng-container
