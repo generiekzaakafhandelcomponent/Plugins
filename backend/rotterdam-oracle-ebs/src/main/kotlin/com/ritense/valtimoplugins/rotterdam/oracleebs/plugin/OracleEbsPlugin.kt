@@ -166,18 +166,34 @@ class OracleEbsPlugin(
                 "referentieNummer: $referentieNummer" +
             ")"
         }
+        val resolvedValues = resolveValuesFor(execution, mapOf(
+            "processCode" to procesCode,
+            "referentieNummer" to referentieNummer,
+            "inkoopOrderReferentie" to inkoopOrderReferentie
+        ))
+        logger.debug { "Resolved values: $resolvedValues" }
+        val resolvedNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
+            "achternaam" to natuurlijkPersoon.achternaam,
+            "voornamen" to natuurlijkPersoon.voornamen
+        ))
+        logger.debug { "Resolved natuurlijk persoon values: $resolvedNatuurlijkPersoonValues" }
+        val resolvedNietNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
+            "statutaireNaam" to nietNatuurlijkPersoon.statutaireNaam
+        ))
+        logger.debug { "Resolved niet natuurlijk persoon values: $resolvedNietNatuurlijkPersoonValues" }
+
         OpvoerenVerkoopfactuurVraag(
-            procescode = procesCode,
-            referentieNummer = referentieNummer,
+            procescode = stringFrom(resolvedValues["procesCode"]!!),
+            referentieNummer = stringFrom(resolvedValues["referentieNummer"]!!),
             factuur = Verkoopfactuur(
                 factuurtype = Verkoopfactuur.Factuurtype.Verkoopfactuur,
                 factuurklasse= Verkoopfactuur.Factuurklasse.valueOf(factuurKlasse.name),
                 factuurdatum = LocalDate.now(),
-                inkooporderreferentie = inkoopOrderReferentie,
+                inkooporderreferentie = stringFrom(resolvedValues["inkoopOrderReferentie"]!!),
                 koper = RelatieRotterdam(
                     natuurlijkPersoon = NatuurlijkPersoon(
-                        achternaam = natuurlijkPersoon.achternaam,
-                        voornamen = natuurlijkPersoon.voornamen,
+                        achternaam = stringFrom(resolvedNatuurlijkPersoonValues["achternaam"]!!),
+                        voornamen = stringFrom(resolvedNatuurlijkPersoonValues["voornamen"]!!),
                         bsn = null,
                         relatienaam = null,
                         tussenvoegsel = null,
@@ -188,7 +204,7 @@ class OracleEbsPlugin(
                         vestigingsadres = null
                     ),
                     nietNatuurlijkPersoon = NietNatuurlijkPersoon(
-                        statutaireNaam = nietNatuurlijkPersoon.statutaireNaam,
+                        statutaireNaam = stringFrom(resolvedNietNatuurlijkPersoonValues["statutaireNaam"]!!),
                         kvknummer = null,
                         kvkvestigingsnummer = null,
                         rsin = null,
@@ -206,15 +222,23 @@ class OracleEbsPlugin(
                     relatienummerRotterdam = null
                 ),
                 factuurregels = regels.map { factuurRegel ->
+                    val resolvedLineValues = resolveValuesFor(execution, mapOf(
+                        "hoeveelheid" to factuurRegel.hoeveelheid,
+                        "tarief" to factuurRegel.tarief,
+                        "btwPercentage" to factuurRegel.btwPercentage,
+                        "grootboekSleutel" to factuurRegel.grootboekSleutel,
+                        "omschrijving" to factuurRegel.omschrijving
+                    ))
+                    logger.debug { "Resolved line values: $resolvedLineValues" }
                     Factuurregel(
-                        factuurregelFacturatieHoeveelheid = valueAsBigDecimal(factuurRegel.hoeveelheid),
-                        factuurregelFacturatieTarief = valueAsBigDecimal(factuurRegel.tarief),
-                        btwPercentage = factuurRegel.btwPercentage,
+                        factuurregelFacturatieHoeveelheid = valueAsBigDecimal(resolvedLineValues["hoeveelheid"]!!),
+                        factuurregelFacturatieTarief = valueAsBigDecimal(resolvedLineValues["tarief"]!!),
+                        btwPercentage = stringFrom(resolvedLineValues["btwPercentage"]!!),
                         grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = factuurRegel.grootboekSleutel,
+                            grootboeksleutel = stringFrom(resolvedLineValues["grootboekSleutel"]!!),
                             bronsleutel = null,
                         ),
-                        factuurregelomschrijving = factuurRegel.omschrijving,
+                        factuurregelomschrijving = stringOrNullFrom(resolvedLineValues["omschrijving"]),
                         factuurregelFacturatieEenheid = null,
                         boekingsregel = null,
                         boekingsregelStartdatum = null,
