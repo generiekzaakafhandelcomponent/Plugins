@@ -50,8 +50,8 @@
         #authenticationEnabled
         [label]="'authenticationEnabled' | pluginTranslate: pluginId | async"
         [ngClass]="'v-input--margin'"
-        [onText]="'toggle.yes' | pluginTranslate: pluginId | async"
-        [offText]="'toggle.no' | pluginTranslate: pluginId | async"
+        [onText]="'yes' | pluginTranslate: pluginId | async"
+        [offText]="'no' | pluginTranslate: pluginId | async"
         [checked]="!!obs.prefill?.authenticationEnabled"
         [disabled]="obs.disabled"
     >
