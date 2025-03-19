@@ -28,19 +28,19 @@ interface JournaalpostOpvoerenConfig {
     procesCode: string;
     referentieNummer: string;
     sleutel: string;
-    boekdatumTijd: Date;
+    boekdatumTijd: string;
     categorie: string;
     saldoSoort: SaldoSoort;
     omschrijving?: string;
-    boekjaar?: bigint;
-    boekperiode?: bigint;
+    boekjaar?: string;
+    boekperiode?: string;
     regels: Array<JournaalpostRegel>;
 }
 
 interface JournaalpostRegel {
     grootboekSleutel: string;
     boekingType: BoekingType;
-    bedrag: number;
+    bedrag: string;
     omschrijving?: string;
 }
 
@@ -64,8 +64,8 @@ interface NietNatuurlijkPersoon {
 }
 
 interface FactuurRegel {
-    hoeveelheid: number;
-    tarief: number;
+    hoeveelheid: string;
+    tarief: string;
     btwPercentage: string;
     grootboekSleutel: string;
     omschrijving: string;

@@ -10,6 +10,7 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
+import com.ritense.valueresolver.ValueResolverService
 import com.rotterdam.esb.opvoeren.models.Factuurregel
 import com.rotterdam.esb.opvoeren.models.Grootboekrekening
 import com.rotterdam.esb.opvoeren.models.Journaalpost
@@ -24,6 +25,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestClientResponseException
+import java.math.BigDecimal
 import java.net.URI
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -35,6 +37,7 @@ import java.time.OffsetDateTime
 )
 class OracleEbsPlugin(
     private val esbClient: EsbClient,
+    private val valueResolverService: ValueResolverService
 ) {
 
     @PluginProperty(key = "baseUrl", secret = false, required = true)
@@ -65,12 +68,12 @@ class OracleEbsPlugin(
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
         @PluginActionProperty sleutel: String,
-        @PluginActionProperty boekdatumTijd: OffsetDateTime,
+        @PluginActionProperty boekdatumTijd: String,
         @PluginActionProperty categorie: String,
         @PluginActionProperty saldoSoort: SaldoSoort,
         @PluginActionProperty omschrijving: String? = null,
-        @PluginActionProperty boekjaar: Int? = null,
-        @PluginActionProperty boekperiode: Int? = null,
+        @PluginActionProperty boekjaar: String? = null,
+        @PluginActionProperty boekperiode: String? = null,
         @PluginActionProperty regels: List<JournaalpostRegel>
     ) {
         logger.info {
@@ -81,31 +84,48 @@ class OracleEbsPlugin(
                 "categorie: $categorie" +
             ")"
         }
+        val resolvedValues = resolveValuesFor(execution, mapOf(
+            "processCode" to procesCode,
+            "referentieNummer" to referentieNummer,
+            "sleutel" to sleutel,
+            "boekdatumTijd" to boekdatumTijd,
+            "categorie" to categorie,
+            "omschrijving" to omschrijving,
+            "boekjaar" to boekjaar,
+            "boekperiode" to boekperiode
+        ))
+        logger.debug { "Resolved values: $resolvedValues" }
         OpvoerenJournaalpostVraag(
-            procescode = procesCode,
-            referentieNummer = referentieNummer,
+            procescode = stringFrom(resolvedValues["procesCode"]!!),
+            referentieNummer = stringFrom(resolvedValues["referentieNummer"]!!),
             journaalpost = Journaalpost(
-                journaalpostsleutel = sleutel,
-                journaalpostboekdatumTijd = boekdatumTijd,
-                journaalpostcategorie = categorie,
+                journaalpostsleutel = stringFrom(resolvedValues["sleutel"]!!),
+                journaalpostboekdatumTijd = offsetDateTimeFrom(resolvedValues["boekdatumTijd"]!!),
+                journaalpostcategorie = stringFrom(resolvedValues["categorie"]!!),
                 journaalpostsaldosoort = Journaalpost.Journaalpostsaldosoort.valueOf(saldoSoort.name),
                 valutacode = Journaalpost.Valutacode.EUR,
                 journaalpostregels = regels.map { regel ->
+                    val resolvedLineValues = resolveValuesFor(execution, mapOf(
+                        "grootboeksleutel" to regel.grootboekSleutel,
+                        "bedrag" to regel.bedrag,
+                        "omschrijving" to regel.omschrijving
+                    ))
+                    logger.debug { "Resolved line values: $resolvedLineValues" }
                     Journaalpostregel(
                         grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = regel.grootboekSleutel,
+                            grootboeksleutel = stringFrom(resolvedLineValues["grootboekSleutel"]!!),
                             bronsleutel = null
                         ),
                         journaalpostregelboekingtype = Journaalpostregel.Journaalpostregelboekingtype.valueOf(regel.boekingType.name),
-                        journaalpostregelbedrag = regel.bedrag,
-                        journaalpostregelomschrijving = regel.omschrijving,
+                        journaalpostregelbedrag = doubleFrom(resolvedLineValues["bedrag"]!!),
+                        journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues["omschrijving"]!!),
                         bronspecifiekewaarden = null
                     )
                 },
-                journaalpostomschrijving = omschrijving,
+                journaalpostomschrijving = stringOrNullFrom(resolvedValues["omschrijving"]!!),
                 grootboek = null,
-                boekjaar = boekjaar,
-                boekperiode = boekperiode
+                boekjaar = integerOrNullFrom(resolvedValues["boekjaar"]!!),
+                boekperiode = integerOrNullFrom(resolvedValues["boekperiode"]!!)
             )
         ).let { request ->
             try {
@@ -138,7 +158,7 @@ class OracleEbsPlugin(
         @PluginActionProperty inkoopOrderReferentie: String,
         @PluginActionProperty natuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon,
         @PluginActionProperty nietNatuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon,
-        @PluginActionProperty regels: List<FactuurRegel>,
+        @PluginActionProperty regels: List<FactuurRegel>
     ) {
         logger.info {
             "Verkoopfactuur Opvoeren(" +
@@ -187,8 +207,8 @@ class OracleEbsPlugin(
                 ),
                 factuurregels = regels.map { factuurRegel ->
                     Factuurregel(
-                        factuurregelFacturatieHoeveelheid = factuurRegel.hoeveelheid,
-                        factuurregelFacturatieTarief = factuurRegel.tarief,
+                        factuurregelFacturatieHoeveelheid = valueAsBigDecimal(factuurRegel.hoeveelheid),
+                        factuurregelFacturatieTarief = valueAsBigDecimal(factuurRegel.tarief),
                         btwPercentage = factuurRegel.btwPercentage,
                         grootboekrekening = Grootboekrekening(
                             grootboeksleutel = factuurRegel.grootboekSleutel,
@@ -234,6 +254,84 @@ class OracleEbsPlugin(
             }
         }
     }
+
+    fun resolveValuesFor(
+        execution: DelegateExecution,
+        params: Map<String, Any?>
+    ): Map<String, Any?> {
+        val resolvedValues = params.filter {
+            if (it.value is String) {
+                isResolvableValue(it.value as String)
+            } else false
+        }
+        .let { filteredParams ->
+            logger.debug { "Trying to resolve values for: $filteredParams" }
+            valueResolverService.resolveValues(
+                execution.processInstanceId,
+                execution,
+                filteredParams.map { it.value as String }
+            ).let { resolvedValues ->
+                logger.debug { "Resolved values: $resolvedValues" }
+                filteredParams.toMutableMap().apply {
+                    this.entries.forEach { (key, value) ->
+                        this.put(key, resolvedValues[value])
+                    }
+                }
+            }
+        }
+        return params.toMutableMap().apply {
+            this.putAll(resolvedValues)
+            return this
+        }.toMap()
+    }
+
+    private fun isResolvableValue(value: String): Boolean =
+        value.isNotBlank() &&
+        (
+            value.startsWith("case:") ||
+            value.startsWith("doc:") ||
+            value.startsWith("pv:")
+        )
+
+    private fun offsetDateTimeFrom(value: Any): OffsetDateTime =
+        when (value) {
+            is OffsetDateTime -> value
+            is String -> OffsetDateTime.parse(value)
+            else -> throw IllegalArgumentException("Unsupported type ${value::class}")
+        }
+
+    private fun doubleFrom(value: Any): Double =
+        when (value) {
+            is Double -> value
+            is String -> value.toDouble()
+            else -> 0.0
+        }
+
+    private fun valueAsBigDecimal(value: Any): BigDecimal =
+        when (value) {
+            is BigDecimal -> value
+            is String -> value.toBigDecimal()
+            else -> BigDecimal.ZERO
+        }
+
+    private fun integerOrNullFrom(value: Any?): Int? =
+        when (value) {
+            is Int -> value
+            is String -> value.toInt()
+            else -> null
+        }
+
+    private fun stringFrom(value: Any): String =
+        when (value) {
+            is String -> value
+            else -> ""
+        }
+
+    private fun stringOrNullFrom(value: Any?): String? =
+        when (value) {
+            is String -> value
+            else -> null
+        }
 
     private fun restClient(): RestClient =
         esbClient.createRestClient(
