@@ -11,7 +11,6 @@ class OracleEbsPluginFactory(
     private val valueResolverService: ValueResolverService
 ) : PluginFactory<OracleEbsPlugin>(pluginService) {
 
-    override fun create(): OracleEbsPlugin {
-        return OracleEbsPlugin(esbClient, valueResolverService)
-    }
+    override fun create(): OracleEbsPlugin =
+        OracleEbsPlugin(esbClient, valueResolverService)
 }
