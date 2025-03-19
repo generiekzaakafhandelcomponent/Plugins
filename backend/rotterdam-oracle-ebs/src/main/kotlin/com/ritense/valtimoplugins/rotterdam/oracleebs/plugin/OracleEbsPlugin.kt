@@ -93,8 +93,9 @@ class OracleEbsPlugin(
             "omschrijving" to omschrijving,
             "boekjaar" to boekjaar,
             "boekperiode" to boekperiode
-        ))
-        logger.debug { "Resolved values: $resolvedValues" }
+        )).also {
+            logger.debug { "Resolved values: $it" }
+        }
         OpvoerenJournaalpostVraag(
             procescode = stringFrom(resolvedValues["procesCode"]!!),
             referentieNummer = stringFrom(resolvedValues["referentieNummer"]!!),
@@ -109,8 +110,9 @@ class OracleEbsPlugin(
                         "grootboeksleutel" to regel.grootboekSleutel,
                         "bedrag" to regel.bedrag,
                         "omschrijving" to regel.omschrijving
-                    ))
-                    logger.debug { "Resolved line values: $resolvedLineValues" }
+                    )).also {
+                        logger.debug { "Resolved line values: $it" }
+                    }
                     Journaalpostregel(
                         grootboekrekening = Grootboekrekening(
                             grootboeksleutel = stringFrom(resolvedLineValues["grootboekSleutel"]!!),
@@ -170,18 +172,20 @@ class OracleEbsPlugin(
             "processCode" to procesCode,
             "referentieNummer" to referentieNummer,
             "inkoopOrderReferentie" to inkoopOrderReferentie
-        ))
-        logger.debug { "Resolved values: $resolvedValues" }
+        )).also {
+            logger.debug { "Resolved values: $it" }
+        }
         val resolvedNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
             "achternaam" to natuurlijkPersoon.achternaam,
             "voornamen" to natuurlijkPersoon.voornamen
-        ))
-        logger.debug { "Resolved natuurlijk persoon values: $resolvedNatuurlijkPersoonValues" }
+        )).also {
+            logger.debug { "Resolved natuurlijk persoon values: $it" }
+        }
         val resolvedNietNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
             "statutaireNaam" to nietNatuurlijkPersoon.statutaireNaam
-        ))
-        logger.debug { "Resolved niet natuurlijk persoon values: $resolvedNietNatuurlijkPersoonValues" }
-
+        )).also {
+            logger.debug { "Resolved niet natuurlijk persoon values: $it" }
+        }
         OpvoerenVerkoopfactuurVraag(
             procescode = stringFrom(resolvedValues["procesCode"]!!),
             referentieNummer = stringFrom(resolvedValues["referentieNummer"]!!),
@@ -228,8 +232,9 @@ class OracleEbsPlugin(
                         "btwPercentage" to factuurRegel.btwPercentage,
                         "grootboekSleutel" to factuurRegel.grootboekSleutel,
                         "omschrijving" to factuurRegel.omschrijving
-                    ))
-                    logger.debug { "Resolved line values: $resolvedLineValues" }
+                    )).also {
+                        logger.debug { "Resolved line values: $it" }
+                    }
                     Factuurregel(
                         factuurregelFacturatieHoeveelheid = valueAsBigDecimal(resolvedLineValues["hoeveelheid"]!!),
                         factuurregelFacturatieTarief = valueAsBigDecimal(resolvedLineValues["tarief"]!!),
