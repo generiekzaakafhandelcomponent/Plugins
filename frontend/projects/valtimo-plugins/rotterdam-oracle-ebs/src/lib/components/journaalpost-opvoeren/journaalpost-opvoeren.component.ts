@@ -25,7 +25,6 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {BoekingType, JournaalpostOpvoerenConfig, SaldoSoort} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ListItem} from 'carbon-components-angular';
 import {NGXLogger} from "ngx-logger";
 
 @Component({
@@ -44,16 +43,8 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     private readonly formValue$ = new BehaviorSubject<JournaalpostOpvoerenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
-    readonly saldoSoortItems: Array<any> = Object.values(SaldoSoort).map(item => ({
-        content: item.toString(),
-        selected: false
-    }));
-    readonly boekingTypeItems: Array<ListItem> = Object.values(BoekingType).map(item => ({
-        content: item.toString(),
-        selected: false
-    }));
-
-    //linesBoekingTypeItems: Array<Array<ListItem>> = []
+    readonly saldoSoortItems: Array<string> = Object.values(SaldoSoort).map(item => (item.toString()));
+    readonly boekingTypeItems: Array<string> = Object.values(BoekingType).map(item => (item.toString()));
 
     public pluginActionForm: FormGroup;
 
@@ -70,10 +61,10 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     ngOnInit(): void {
         this.logger.debug('Journaalpost opvoeren - onInit');
         this.initForm();
+        this.prefillForm();
         this.subscribeToFormValueChanges();
         this.subscribeToDisableAndToggleFormState();
         this.subscribeToSave();
-        setTimeout(() => this.prefillForm(), 150);
     }
 
     ngOnDestroy() {
@@ -86,18 +77,15 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     }
 
     addLine(): void {
-        // add container for this specific line with a deep copy of boekingTypeItems
-        //this.linesBoekingTypeItems.push(JSON.parse(JSON.stringify(this.boekingTypeItems)));
         this.lines.push(this.createLineFormGroup());
     }
 
     removeLine(index: number): void {
         this.lines.removeAt(index);
-        // remove the lines specific boekingTypeItems container
-        //this.linesBoekingTypeItems.splice(index);
     }
 
     private initForm() {
+        this.logger.debug('initForm');
         this.pluginActionForm = this.fb.group({
             procesCode: this.fb.control('', Validators.required),
             referentieNummer: this.fb.control('', Validators.required),
@@ -113,6 +101,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     }
 
     private createLineFormGroup(): FormGroup {
+        this.logger.debug('createLineFormGroup');
         return this.fb.group({
             grootboekSleutel: this.fb.control('', Validators.required),
             boekingType: this.fb.control(null, Validators.required),
@@ -134,24 +123,19 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                     sleutel: configuration.sleutel,
                     boekdatumTijd: configuration.boekdatumTijd,
                     categorie: configuration.categorie,
-                    saldoSoort: this.selectedListItem(this.saldoSoortItems, configuration.saldoSoort),
+                    saldoSoort: configuration.saldoSoort,
                     omschrijving: configuration.omschrijving,
                     boekjaar: configuration.boekjaar,
                     boekperiode: configuration.boekperiode,
                     regels: configuration.regels.map( regel => ({
                         grootboekSleutel: regel.grootboekSleutel,
-                        boekingType: this.selectedListItem(this.boekingTypeItems, regel.boekingType),
+                        boekingType: regel.boekingType,
                         omschrijving: regel.omschrijving,
                         bedrag: regel.bedrag
                     }))
                 });
             }
         })
-    }
-
-    private selectedListItem(listItems: ListItem[], selectedValue: string): ListItem {
-        let theItem = listItems.find(item => item.content == selectedValue);
-        return theItem ? { content: theItem.content, selected: true } : null;
     }
 
     private subscribeToDisableAndToggleFormState(): void {
@@ -165,31 +149,34 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     private subscribeToFormValueChanges(): void {
         this._subscriptions.add(
             this.pluginActionForm.valueChanges.subscribe(formValue => {
-                this.logger.debug('pluginActionForm.valid', this.pluginActionForm.valid);
-                if (this.pluginActionForm.valid) {
-                    // map form values to model
-                    this.formValueChange({
-                        procesCode: this.pluginActionForm.get('procesCode')?.value,
-                        referentieNummer: this.pluginActionForm.get('referentieNummer')?.value,
-                        sleutel: this.pluginActionForm.get('sleutel')?.value,
-                        boekdatumTijd: this.pluginActionForm.get('boekdatumTijd')?.value,
-                        categorie: this.pluginActionForm.get('categorie')?.value,
-                        saldoSoort: this.pluginActionForm.get('saldoSoort')?.value ? (this.pluginActionForm.get('saldoSoort').value as ListItem).content as SaldoSoort : null,
-                        omschrijving: this.pluginActionForm.get('omschrijving')?.value,
-                        boekjaar: this.pluginActionForm.get('boekjaar')?.value,
-                        boekperiode: this.pluginActionForm.get('boekperiode')?.value,
-                        regels: this.lines.getRawValue().map(line => (
-                            {
-                                grootboekSleutel: line.grootboekSleutel,
-                                boekingType: line.boekingType ? (line.boekingType as ListItem).content as BoekingType : null,
-                                omschrijving: line.omschrijving,
-                                bedrag: line.bedrag
-                            }
-                        ))
-                    });
-                }
+                // map form values to model
+                this.formValueChange({
+                    procesCode: formValue.procesCode,
+                    referentieNummer: formValue.referentieNummer,
+                    sleutel: formValue.sleutel,
+                    boekdatumTijd: formValue.boekdatumTijd,
+                    categorie: formValue.categorie,
+                    saldoSoort: this.toSaldoSoort(formValue.saldoSoort),
+                    omschrijving: formValue.omschrijving,
+                    boekjaar: formValue.boekjaar,
+                    boekperiode: formValue.boekperiode,
+                    regels: formValue.regels.map(regel => ({
+                        grootboekSleutel: regel.grootboekSleutel,
+                        boekingType: this.toBoekingType(regel.boekingType),
+                        omschrijving: regel.omschrijving,
+                        bedrag: regel.bedrag
+                    }))
+                });
             })
         );
+    }
+
+    private toSaldoSoort(value: string): SaldoSoort | undefined {
+        return Object.values(SaldoSoort).includes(value as SaldoSoort) ? (value as SaldoSoort) : undefined;
+    }
+
+    private toBoekingType(value: string): BoekingType | undefined {
+        return Object.values(BoekingType).includes(value as BoekingType) ? (value as BoekingType) : undefined;
     }
 
     private formValueChange(formValue: JournaalpostOpvoerenConfig): void {
@@ -198,8 +185,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     }
 
     private handleValid(formValue: JournaalpostOpvoerenConfig): void {
-        this.logger.debug('formValue', formValue)
-        const valid = !!(
+        const genericFieldsValid = !!(
             formValue.procesCode &&
             formValue.referentieNummer &&
             formValue.sleutel &&
@@ -210,7 +196,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
         );
         // validate lines
         let linesValid = false
-        if (valid) {
+        if (genericFieldsValid) {
             for (let i = 0; i < formValue.regels.length; i++) {
                 linesValid = !!(
                     formValue.regels[i].grootboekSleutel &&
@@ -221,9 +207,9 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                     break;
             }
         }
-        this.logger.debug('handleValid', 'valid', valid, 'linesValid', linesValid);
-        this.valid$.next(valid && linesValid);
-        this.valid.emit(valid && linesValid);
+        this.logger.debug('handleValid', 'genericFieldsValid', genericFieldsValid, 'linesValid', linesValid);
+        this.valid$.next(genericFieldsValid && linesValid);
+        this.valid.emit(genericFieldsValid && linesValid);
     }
 
     private subscribeToSave(): void {

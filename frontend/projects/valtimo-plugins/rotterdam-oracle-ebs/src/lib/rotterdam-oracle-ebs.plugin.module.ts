@@ -22,10 +22,10 @@ import {ConfigurationComponent} from './components/configuration/configuration.c
 import {JournaalpostOpvoerenComponent} from "./components/journaalpost-opvoeren/journaalpost-opvoeren.component";
 import {
     ButtonModule,
-    DropdownModule,
     IconModule,
     InputModule as CarbonInputModule,
     NotificationModule,
+    SelectModule as CarbonSelectModule,
     ToggleModule
 } from "carbon-components-angular";
 import {VerkoopfactuurOpvoerenComponent} from "./components/verkoopfactuur-opvoeren/verkoopfactuur-opvoeren.component";
@@ -51,9 +51,9 @@ import {ReactiveFormsModule} from "@angular/forms";
         ToggleModule,
         ReactiveFormsModule,
         ButtonModule,
-        DropdownModule,
         IconModule,
-        CarbonInputModule
+        CarbonInputModule,
+        CarbonSelectModule
     ],
     exports: [
         ConfigurationComponent,

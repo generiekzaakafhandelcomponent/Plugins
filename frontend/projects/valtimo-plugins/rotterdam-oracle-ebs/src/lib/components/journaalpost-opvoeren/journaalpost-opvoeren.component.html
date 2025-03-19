@@ -81,6 +81,7 @@
                 controlName: 'saldoSoort',
                 title: 'saldoSoort',
                 tooltip: 'saldoSoortTooltip',
+                placeholder: 'saldoSoortPlaceholder',
                 required: true,
                 items: saldoSoortItems
             }"
@@ -138,13 +139,13 @@
                             required: true
                         }"
                     />
-                    <!-- items: linesBoekingTypeItems[i] -->
                     <ng-container
                         [ngTemplateOutlet]="lineSelectFieldTemplate"
                         [ngTemplateOutletContext]="{
                             formGroup: line,
                             controlName: 'boekingType',
                             title: 'boekingType',
+                            placeholder: 'boekingTypePlaceholder',
                             required: true,
                             items: boekingTypeItems
                         }"
@@ -217,6 +218,7 @@
     let-controlName="controlName"
     let-title="title"
     let-tooltip="tooltip"
+    let-placeholder="placeholder"
     let-required="required ?? false"
     let-items="items ?? []">
     <div [formGroup]="formGroup" class="field-wrapper">
@@ -226,9 +228,10 @@
             [required]="required"
         >
         </v-input-label>
-        <cds-dropdown [formControlName]="controlName">
-            <cds-dropdown-list [items]="items"></cds-dropdown-list>
-        </cds-dropdown>
+        <cds-select [formControlName]="controlName">
+            <option value="default" disabled selected>{{ placeholder | pluginTranslate: pluginId | async }}</option>
+            <option *ngFor="let item of items" [value]="item">{{ item }}</option>
+        </cds-select>
     </div>
 </ng-template>
 
@@ -254,6 +257,7 @@
     let-formGroup="formGroup"
     let-controlName="controlName"
     let-title="title"
+    let-placeholder="placeholder"
     let-required="required ?? false"
     let-items="items ?? []">
     <div [formGroup]="formGroup" class="line-field-wrapper">
@@ -262,8 +266,9 @@
             [required]="required"
         >
         </v-input-label>
-        <cds-dropdown [formControlName]="controlName">
-            <cds-dropdown-list [items]="items"></cds-dropdown-list>
-        </cds-dropdown>
+        <cds-select [formControlName]="controlName">
+            <option value="default" disabled selected>{{ placeholder | pluginTranslate: pluginId | async }}</option>
+            <option *ngFor="let item of items" [value]="item">{{ item }}</option>
+        </cds-select>
     </div>
 </ng-template>
