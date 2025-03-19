@@ -99,6 +99,7 @@ import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule,mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
+import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -125,6 +126,7 @@ export function tabsFactory() {
         ObjectManagementPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
+        HuggingFacePluginModule,
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
@@ -198,6 +200,7 @@ export function tabsFactory() {
             publictaskPluginSpecification,
             rotterdamOracleEbsPluginSpecification,
             slackPluginSpecification,
+            huggingFacePluginSpecification,
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,

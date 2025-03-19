@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":backend:spotler"))
     implementation(project(":backend:suwinet"))
     implementation(project(":backend:xential"))
+    implementation(project(":backend:hugging-face"))
 }
 
 tasks.jar {

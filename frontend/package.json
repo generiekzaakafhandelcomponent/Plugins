@@ -29,6 +29,7 @@
     "libs:build:spotler": "ng build @valtimo-plugins/spotler",
     "libs:build:suwinet": "ng build @valtimo-plugins/suwinet",
     "libs:build:xential": "ng build @valtimo-plugins/xential",
+    "libs:build:hugging-face": "ng build @valtimo-plugins/hugging-face",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "libs:watch:mtls-sslcontext": "ng build @valtimo-plugins/mtls-sslcontext --watch",
@@ -45,7 +46,8 @@
     "libs:watch:smtpmail": "ng build @valtimo-plugins/smtpmail --watch",
     "libs:watch:spotler": "ng build @valtimo-plugins/spotler --watch",
     "libs:watch:suwinet": "ng build @valtimo-plugins/suwinet --watch",
-    "libs:watch:xential": "ng build @valtimo-plugins/xential --watch"
+    "libs:watch:xential": "ng build @valtimo-plugins/xential --watch",
+    "libs:watch:hugging-face": "ng build @valtimo-plugins/hugging-face --watch"
   },
   "private": true,
   "dependencies": {
@@ -141,6 +143,7 @@
     "@valtimo-plugins/spotler": "file:dist/valtimo-plugins/spotler",
     "@valtimo-plugins/suwinet": "file:dist/valtimo-plugins/suwinet",
     "@valtimo-plugins/xential": "file:dist/valtimo-plugins/xential",
+    "@valtimo-plugins/hugging-face": "file:dist/valtimo-plugins/hugging-face",
     "jasmine-core": "5.2.0",
     "karma": "6.4.4",
     "karma-chrome-launcher": "3.2.0",

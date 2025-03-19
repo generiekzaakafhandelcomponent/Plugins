@@ -55,8 +55,8 @@ class XentialPlugin(
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
 
-    @PluginProperty(key = "mTlsSslContextAutoConfiguration", secret = false, required = true)
-    private lateinit var mTlsSslContextAutoConfiguration: MTlsSslContext
+    @PluginProperty(key = "mTlsSslContextAutoConfigurationId", secret = false, required = true)
+    private lateinit var mTlsSslContextAutoConfigurationId: MTlsSslContext
 
     @PluginAction(
         key = "generate-document",
@@ -72,7 +72,7 @@ class XentialPlugin(
         logger.info { "generating document with XentialContent: $xentialContentId" }
 
         documentGenerationService.generateDocument(
-            esbClient.documentApi(restClient(mTlsSslContextAutoConfiguration)),
+            esbClient.documentApi(restClient(mTlsSslContextAutoConfigurationId)),
             UUID.fromString(execution.processInstanceId),
             objectMapper.convertValue(xentialContentId) as XentialDocumentProperties,
             execution
@@ -117,7 +117,7 @@ class XentialPlugin(
                 )
             }
         } catch (e: Exception) {
-            logger.error("Exiting scope due to nested error.", e)
+            logger.error{ "Exiting scope due to nested error. $e"}
             return
         }
     }
@@ -154,7 +154,7 @@ class XentialPlugin(
                 xentialContentId, objectMapper.convertValue(xentialDocumentProperties)
             )
         } catch (e: Exception) {
-            logger.error("Exiting scope due to nested error.", e)
+            logger.error{"Exiting scope due to nested error. $e"}
             return
         }
     }

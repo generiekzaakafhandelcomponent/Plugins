@@ -83,10 +83,10 @@
         <v-select
                 [items]="authObs.authenticationPluginSelectItems"
                 [margin]="true"
-                name="mTlsSslContextAutoConfiguration"
-                [title]="'mTlsSslContextAutoConfiguration' | pluginTranslate: pluginId | async"
+                name="mTlsSslContextAutoConfigurationId"
+                [title]="'mTlsSslContextAutoConfigurationId' | pluginTranslate: pluginId | async"
                 [disabled]="obs.disabled"
-                [defaultSelectionId]="obs.prefill?.mTlsSslContextAutoConfiguration"
+                [defaultSelectionId]="obs.prefill?.mTlsSslContextAutoConfigurationId"
                 [required]="true"
                 [loading]="!authObs.authenticationPluginSelectItems"
         ></v-select>
