@@ -89,6 +89,26 @@
     <valtimo-carbon-multi-input
             name="documentDetailsData"
             [title]="'documentDetailsData' | pluginTranslate: pluginId | async"
+            type="keyValuePathSelector"
+            [disabled]="obs.disabled"
+            [defaultValues]="obs.prefill?.documentDetailsData"
+            [margin]="true"
+            [fullWidth]="true"
+            [dropdownWidth]="70"
+            [required]="false"
+            [tooltip]="'documentDetailsDataTooltip' | pluginTranslate: pluginId | async"
+            [minimumAmountOfRows]="3"
+            [initialAmountOfRows]="3"
+            [valuePathSelectorShowDocumentDefinitionSelector]="false"
+            [valuePathSelectorPrefixes]="[ValuePathSelectorPrefix.DOC]"
+            [valuePathSelectorDocumentDefinitionName]="documentDefinitionName"
+    ></valtimo-carbon-multi-input>
+    <!--
+            [dropdownColumnFlex]="2"
+            [valuePathSelectorDocumentDefinitionName]="documentDefinitionName"
+    <valtimo-carbon-multi-input
+            name="documentDetailsData"
+            [title]="'documentDetailsData' | pluginTranslate: pluginId | async"
             type="keyValue"
             [disabled]="obs.disabled"
             [defaultValues]="obs.prefill?.documentDetailsData"
@@ -98,4 +118,25 @@
             [minimumAmountOfRows]="0"
             [initialAmountOfRows]="0"
     ></valtimo-carbon-multi-input>
+    <valtimo-carbon-multi-input
+            name="documentDetailsData"
+            [title]="'documentDetailsData' | pluginTranslate: pluginId | async"
+            type="valuePathSelectorValue"
+            [disabled]="obs.disabled"
+            [defaultValues]="obs.prefill?.documentDetailsData"
+            [margin]="true"
+            [required]="true"
+            [tooltip]="'documentDetailsDataTooltip' | pluginTranslate: pluginId | async"
+            [minimumAmountOfRows]="0"
+            [initialAmountOfRows]="0"
+            [fullWidth]="true"
+            [valuePathSelectorPrefixes]="[ValuePathSelectorPrefix.DOC]"
+            [valuePathSelectorDocumentDefinitionName]="documentDefinitionName"
+            [valuePathSelectorShowDocumentDefinitionSelector]="true"
+            [keyColumnFlex]="2"
+            [valueColumnFlex]="1"
+            [keyColumnTitle]="'key' | pluginTranslate: pluginId | async"
+            [valueColumnTitle]="'value' | pluginTranslate: pluginId | async"
+    ></valtimo-carbon-multi-input>
+    -->
 </v-form>

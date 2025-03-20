@@ -2,7 +2,8 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {PrepareContentTemplate} from "../../models";
-import {SelectItem} from "@valtimo/components";
+import {SelectItem,ValuePathSelectorPrefix} from "@valtimo/components";
+import {ProcessManagementModule} from "@valtimo/process-management";
 
 @Component({
     selector: 'xential-prepare-content-configuration',
@@ -16,6 +17,11 @@ export class PrepareContentConfigurationComponent implements FunctionConfigurati
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<PrepareContentTemplate> =
         new EventEmitter<PrepareContentTemplate>();
+
+    protected readonly ValuePathSelectorPrefix = ValuePathSelectorPrefix;
+    documentDefinitionName: string = "xential-test";
+
+    protected readonly ProcessManagementModule = ProcessManagementModule;
 
     public fileFormats$ = new BehaviorSubject<SelectItem[]>(
         ['WORD', 'PDF']
@@ -34,6 +40,7 @@ export class PrepareContentConfigurationComponent implements FunctionConfigurati
 
     ngOnInit(): void {
         this.openSaveSubscription();
+        console.log("ProcessManagementModule.name: " + this.ProcessManagementModule.name)
     }
 
     ngOnDestroy() {
@@ -46,6 +53,7 @@ export class PrepareContentConfigurationComponent implements FunctionConfigurati
     }
 
     private handleValid(formValue: PrepareContentTemplate): void {
+
         const valid = !!(
             formValue.xentialContentId &&
             formValue.gebruikersId &&
@@ -57,7 +65,8 @@ export class PrepareContentConfigurationComponent implements FunctionConfigurati
             !formValue.colofonData.find((entry) => !(entry.key && entry.value)) &&
             !formValue.verzendAdresData.find((entry) => !(entry.key && entry.value))
         );
-
+        console.log("---- is valid: " + valid)
+        console.log("formValues: documentDetailsData ", formValue.documentDetailsData)
         this.valid$.next(valid);
         this.valid.emit(valid);
     }
