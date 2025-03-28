@@ -19,110 +19,93 @@
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
 } as obs">
     <form [formGroup]="pluginActionForm">
-        <ng-container
-            [ngTemplateOutlet]="inputFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'procesCode',
-                title: 'procesCode',
-                tooltip: 'procesCodeTooltip',
-                required: true
-            }"
-        />
 
-        <ng-container
-            [ngTemplateOutlet]="inputFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'referentieNummer',
-                title: 'referentieNummer',
-                tooltip: 'referentieNummerTooltip',
-                required: true
-            }"
-        />
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="procesCode"
+            title="procesCode"
+            tooltip="procesCodeTooltip"
+            [required]="true"
+        ></app-input-field>
 
-        <ng-container
-            [ngTemplateOutlet]="inputFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'sleutel',
-                title: 'sleutel',
-                tooltip: 'sleutelTooltip',
-                required: true
-            }"
-        />
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="referentieNummer"
+            title="referentieNummer"
+            tooltip="referentieNummerTooltip"
+            [required]="true"
+        ></app-input-field>
 
-        <ng-container
-            [ngTemplateOutlet]="inputFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'boekdatumTijd',
-                title: 'boekdatum',
-                tooltip: 'boekdatumTooltip',
-                required: true
-            }"
-        />
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="sleutel"
+            title="sleutel"
+            tooltip="sleutelTooltip"
+            [required]="true"
+        ></app-input-field>
 
-        <ng-container
-            [ngTemplateOutlet]="inputFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'categorie',
-                title: 'categorie',
-                tooltip: 'categorieTooltip',
-                required: true
-            }"
-        />
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="boekdatumTijd"
+            title="boekdatum"
+            tooltip="boekdatumTooltip"
+            [required]="true"
+        ></app-input-field>
 
-        <ng-container
-            [ngTemplateOutlet]="selectFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'saldoSoort',
-                title: 'saldoSoort',
-                tooltip: 'saldoSoortTooltip',
-                placeholder: 'saldoSoortPlaceholder',
-                required: true,
-                items: saldoSoortItems
-            }"
-        />
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="categorie"
+            title="categorie"
+            tooltip="categorieTooltip"
+            [required]="true"
+        ></app-input-field>
 
-        <ng-container
-            [ngTemplateOutlet]="inputFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'omschrijving',
-                title: 'omschrijving',
-                tooltip: 'omschrijvingTooltip',
-                required: true
-            }"
-        />
+        <app-select-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="saldoSoort"
+            title="saldoSoort"
+            tooltip="saldoSoortTooltip"
+            placeholder="saldoSoortPlaceholder"
+            [required]="true"
+            [items]="saldoSoortItems"
+        ></app-select-field>
 
-        <ng-container
-            [ngTemplateOutlet]="inputFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'boekjaar',
-                title: 'boekjaar',
-                tooltip: 'boekjaarTooltip',
-                required: true
-            }"
-        />
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="omschrijving"
+            title="omschrijving"
+            tooltip="omschrijvingTooltip"
+            [required]="true"
+        ></app-input-field>
 
-        <ng-container
-            [ngTemplateOutlet]="inputFieldTemplate"
-            [ngTemplateOutletContext]="{
-                formGroup: pluginActionForm,
-                controlName: 'boekperiode',
-                title: 'boekperiode',
-                tooltip: 'boekperiodeTooltip',
-                required: true
-            }"
-        />
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="boekjaar"
+            title="boekjaar"
+            tooltip="boekjaarTooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]=pluginActionForm
+            controlName="boekperiode"
+            title="boekperiode"
+            tooltip="boekperiodeTooltip"
+            [required]="true"
+        ></app-input-field>
 
         <div>
             <v-input-label
-                required="true"
+                [required]="true"
                 [title]="'journaalpostRegels' | pluginTranslate: pluginId | async"
                 [tooltip]="'journaalpostTooltip' | pluginTranslate: pluginId | async"
             >
@@ -130,43 +113,44 @@
             <div formArrayName="regels" class="lines-wrapper">
                 <div class="line-wrapper"
                      *ngFor="let line of lines.controls; let i = index">
-                    <ng-container
-                        [ngTemplateOutlet]="lineInputFieldTemplate"
-                        [ngTemplateOutletContext]="{
-                            formGroup: line,
-                            controlName: 'grootboekSleutel',
-                            title: 'grootboekSleutel',
-                            required: true
-                        }"
-                    />
-                    <ng-container
-                        [ngTemplateOutlet]="lineSelectFieldTemplate"
-                        [ngTemplateOutletContext]="{
-                            formGroup: line,
-                            controlName: 'boekingType',
-                            title: 'boekingType',
-                            placeholder: 'boekingTypePlaceholder',
-                            required: true,
-                            items: boekingTypeItems
-                        }"
-                    />
-                    <ng-container
-                        [ngTemplateOutlet]="lineInputFieldTemplate"
-                        [ngTemplateOutletContext]="{
-                            formGroup: line,
-                            controlName: 'omschrijving',
-                            title: 'regelOmschrijving'
-                        }"
-                    />
-                    <ng-container
-                        [ngTemplateOutlet]="lineInputFieldTemplate"
-                        [ngTemplateOutletContext]="{
-                            formGroup: line,
-                            controlName: 'bedrag',
-                            title: 'bedrag',
-                            required: true
-                        }"
-                    />
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]=pluginActionForm
+                        controlName="grootboekSleutel"
+                        wrapperClass="line-field-wrapper"
+                        title="grootboekSleutel"
+                        [required]="true"
+                    ></app-input-field>
+
+                    <app-select-field
+                        [pluginId]="pluginId"
+                        [formGroup]=pluginActionForm
+                        controlName="boekingType"
+                        wrapperClass="line-field-wrapper"
+                        title="boekingType"
+                        placeholder="boekingTypePlaceholder"
+                        [required]="true"
+                        [items]="boekingTypeItems"
+                    ></app-select-field>
+
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]=pluginActionForm
+                        controlName="omschrijving"
+                        wrapperClass="line-field-wrapper"
+                        title="regelOmschrijving"
+                        [required]="false"
+                    ></app-input-field>
+
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]=pluginActionForm
+                        controlName="bedrag"
+                        wrapperClass="line-field-wrapper"
+                        title="bedrag"
+                        [required]="true"
+                    ></app-input-field>
+
                     <div class="remove-line-wrapper">
                         <button type="button"
                                 cdsButton="secondary"
@@ -192,83 +176,3 @@
     </form>
 
 </ng-container>
-
-<ng-template #inputFieldTemplate
-    let-formGroup="formGroup"
-    let-controlName="controlName"
-    let-type="type ?? 'text'"
-    let-title="title"
-    let-tooltip="tooltip"
-    let-required="required ?? false">
-    <div [formGroup]="formGroup" class="field-wrapper">
-        <v-input-label
-            [title]="title | pluginTranslate: pluginId | async"
-            [tooltip]="tooltip | pluginTranslate: pluginId | async"
-            [required]="required"
-        >
-        </v-input-label>
-        <input cdsText
-               [type]="type"
-               [formControlName]="controlName">
-    </div>
-</ng-template>
-
- <ng-template #selectFieldTemplate
-    let-formGroup="formGroup"
-    let-controlName="controlName"
-    let-title="title"
-    let-tooltip="tooltip"
-    let-placeholder="placeholder"
-    let-required="required ?? false"
-    let-items="items ?? []">
-    <div [formGroup]="formGroup" class="field-wrapper">
-        <v-input-label
-            [title]="title | pluginTranslate: pluginId | async"
-            [tooltip]="tooltip | pluginTranslate: pluginId | async"
-            [required]="required"
-        >
-        </v-input-label>
-        <cds-select [formControlName]="controlName">
-            <option value="default" disabled selected>{{ placeholder | pluginTranslate: pluginId | async }}</option>
-            <option *ngFor="let item of items" [value]="item">{{ item }}</option>
-        </cds-select>
-    </div>
-</ng-template>
-
-<ng-template #lineInputFieldTemplate
-    let-formGroup="formGroup"
-    let-controlName="controlName"
-    let-type="type ?? 'text'"
-    let-title="title"
-    let-required="required ?? false">
-    <div [formGroup]="formGroup" class="line-field-wrapper">
-        <v-input-label
-            [title]="title | pluginTranslate: pluginId | async"
-            [required]="required"
-        >
-        </v-input-label>
-        <input cdsText
-               [type]="type"
-               [formControlName]="controlName">
-    </div>
-</ng-template>
-
-<ng-template #lineSelectFieldTemplate
-    let-formGroup="formGroup"
-    let-controlName="controlName"
-    let-title="title"
-    let-placeholder="placeholder"
-    let-required="required ?? false"
-    let-items="items ?? []">
-    <div [formGroup]="formGroup" class="line-field-wrapper">
-        <v-input-label
-            [title]="title | pluginTranslate: pluginId | async"
-            [required]="required"
-        >
-        </v-input-label>
-        <cds-select [formControlName]="controlName">
-            <option value="default" disabled selected>{{ placeholder | pluginTranslate: pluginId | async }}</option>
-            <option *ngFor="let item of items" [value]="item">{{ item }}</option>
-        </cds-select>
-    </div>
-</ng-template>

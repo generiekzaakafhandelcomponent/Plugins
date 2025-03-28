@@ -30,9 +30,13 @@ import {
 } from "carbon-components-angular";
 import {VerkoopfactuurOpvoerenComponent} from "./components/verkoopfactuur-opvoeren/verkoopfactuur-opvoeren.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {InputFieldComponent} from "./components/fields/input-field/input-field.component";
+import {SelectFieldComponent} from "./components/fields/select-field/select-field.component";
 
 @NgModule({
     declarations: [
+        InputFieldComponent,
+        SelectFieldComponent,
         ConfigurationComponent,
         JournaalpostOpvoerenComponent,
         VerkoopfactuurOpvoerenComponent
