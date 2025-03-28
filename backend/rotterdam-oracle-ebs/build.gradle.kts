@@ -53,10 +53,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
-//    testImplementation("org.hamcrest:hamcrest-library")
-//    testImplementation("com.ritense.valtimo:document")
-//    testImplementation("com.ritense.valtimo:test-utils-common")
-//    testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("com.squareup.okhttp3:mockwebserver")
 }
 
 apply(from = "gradle/publishing.gradle")
