@@ -1,0 +1,12 @@
+<div [formGroup]="formGroup" class="{{ wrapperClass }}">
+    <v-input-label
+        [title]="title | pluginTranslate: pluginId | async"
+        [tooltip]="tooltip ? (tooltip | pluginTranslate: pluginId | async) : null"
+        [required]="required"
+    >
+    </v-input-label>
+    <cds-select [formControlName]="controlName">
+        <option value="default" disabled selected>{{ placeholder | pluginTranslate: pluginId | async }}</option>
+        <option *ngFor="let item of items" [value]="item">{{ item }}</option>
+    </cds-select>
+</div>
