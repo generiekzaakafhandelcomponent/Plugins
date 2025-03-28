@@ -78,56 +78,56 @@ class OracleEbsPlugin(
     ) {
         logger.info {
             "Journaalpost Opvoeren(" +
-                "processCode: $procesCode, " +
+                "procesCode: $procesCode, " +
                 "referentieNummer: $referentieNummer, " +
                 "sleutel: $sleutel, " +
                 "categorie: $categorie" +
             ")"
         }
         val resolvedValues = resolveValuesFor(execution, mapOf(
-            "processCode" to procesCode,
-            "referentieNummer" to referentieNummer,
-            "sleutel" to sleutel,
-            "boekdatumTijd" to boekdatumTijd,
-            "categorie" to categorie,
-            "omschrijving" to omschrijving,
-            "boekjaar" to boekjaar,
-            "boekperiode" to boekperiode
+            PROCES_CODE_KEY to procesCode,
+            REFERENTIE_NUMMER_KEY to referentieNummer,
+            SLEUTEL_KEY to sleutel,
+            BOEKDATUM_TIJD_KEY to boekdatumTijd,
+            CATEGORIE_KEY to categorie,
+            OMSCHRIJVING_KEY to omschrijving,
+            BOEKJAAR_KEY to boekjaar,
+            BOEKPERIODE_KEY to boekperiode
         )).also {
             logger.debug { "Resolved values: $it" }
         }
         OpvoerenJournaalpostVraag(
-            procescode = stringFrom(resolvedValues["procesCode"]!!),
-            referentieNummer = stringFrom(resolvedValues["referentieNummer"]!!),
+            procescode = stringFrom(resolvedValues[PROCES_CODE_KEY]!!),
+            referentieNummer = stringFrom(resolvedValues[REFERENTIE_NUMMER_KEY]!!),
             journaalpost = Journaalpost(
-                journaalpostsleutel = stringFrom(resolvedValues["sleutel"]!!),
-                journaalpostboekdatumTijd = offsetDateTimeFrom(resolvedValues["boekdatumTijd"]!!),
-                journaalpostcategorie = stringFrom(resolvedValues["categorie"]!!),
+                journaalpostsleutel = stringFrom(resolvedValues[SLEUTEL_KEY]!!),
+                journaalpostboekdatumTijd = offsetDateTimeFrom(resolvedValues[BOEKDATUM_TIJD_KEY]!!),
+                journaalpostcategorie = stringFrom(resolvedValues[CATEGORIE_KEY]!!),
                 journaalpostsaldosoort = Journaalpost.Journaalpostsaldosoort.valueOf(saldoSoort.name),
                 valutacode = Journaalpost.Valutacode.EUR,
                 journaalpostregels = regels.map { regel ->
                     val resolvedLineValues = resolveValuesFor(execution, mapOf(
-                        "grootboeksleutel" to regel.grootboekSleutel,
-                        "bedrag" to regel.bedrag,
-                        "omschrijving" to regel.omschrijving
+                        GROOTBOEK_SLEUTEL_KEY to regel.grootboekSleutel,
+                        BEDRAG_KEY to regel.bedrag,
+                        OMSCHRIJVING_KEY to regel.omschrijving
                     )).also {
                         logger.debug { "Resolved line values: $it" }
                     }
                     Journaalpostregel(
                         grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = stringFrom(resolvedLineValues["grootboekSleutel"]!!),
+                            grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
                             bronsleutel = null
                         ),
                         journaalpostregelboekingtype = Journaalpostregel.Journaalpostregelboekingtype.valueOf(regel.boekingType.name),
-                        journaalpostregelbedrag = doubleFrom(resolvedLineValues["bedrag"]!!),
-                        journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues["omschrijving"]!!),
+                        journaalpostregelbedrag = doubleFrom(resolvedLineValues[BEDRAG_KEY]!!),
+                        journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]!!),
                         bronspecifiekewaarden = null
                     )
                 },
-                journaalpostomschrijving = stringOrNullFrom(resolvedValues["omschrijving"]!!),
+                journaalpostomschrijving = stringOrNullFrom(resolvedValues[OMSCHRIJVING_KEY]!!),
                 grootboek = null,
-                boekjaar = integerOrNullFrom(resolvedValues["boekjaar"]!!),
-                boekperiode = integerOrNullFrom(resolvedValues["boekperiode"]!!)
+                boekjaar = integerOrNullFrom(resolvedValues[BOEKJAAR_KEY]!!),
+                boekperiode = integerOrNullFrom(resolvedValues[BOEKPERIODE_KEY]!!)
             )
         ).let { request ->
             try {
@@ -164,40 +164,40 @@ class OracleEbsPlugin(
     ) {
         logger.info {
             "Verkoopfactuur Opvoeren(" +
-                "processCode: $procesCode, " +
+                "procesCode: $procesCode, " +
                 "referentieNummer: $referentieNummer" +
             ")"
         }
         val resolvedValues = resolveValuesFor(execution, mapOf(
-            "processCode" to procesCode,
-            "referentieNummer" to referentieNummer,
-            "inkoopOrderReferentie" to inkoopOrderReferentie
+            PROCES_CODE_KEY to procesCode,
+            REFERENTIE_NUMMER_KEY to referentieNummer,
+            INKOOP_ORDER_REFERENTIE_KEY to inkoopOrderReferentie
         )).also {
             logger.debug { "Resolved values: $it" }
         }
         val resolvedNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
-            "achternaam" to natuurlijkPersoon.achternaam,
-            "voornamen" to natuurlijkPersoon.voornamen
+            ACHTERNAAM_KEY to natuurlijkPersoon.achternaam,
+            VOORNAMEN_KEY to natuurlijkPersoon.voornamen
         )).also {
             logger.debug { "Resolved natuurlijk persoon values: $it" }
         }
         val resolvedNietNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
-            "statutaireNaam" to nietNatuurlijkPersoon.statutaireNaam
+            STATUTAIRE_NAAM_KEY to nietNatuurlijkPersoon.statutaireNaam
         )).also {
             logger.debug { "Resolved niet natuurlijk persoon values: $it" }
         }
         OpvoerenVerkoopfactuurVraag(
-            procescode = stringFrom(resolvedValues["procesCode"]!!),
-            referentieNummer = stringFrom(resolvedValues["referentieNummer"]!!),
+            procescode = stringFrom(resolvedValues[PROCES_CODE_KEY]!!),
+            referentieNummer = stringFrom(resolvedValues[REFERENTIE_NUMMER_KEY]!!),
             factuur = Verkoopfactuur(
                 factuurtype = Verkoopfactuur.Factuurtype.Verkoopfactuur,
                 factuurklasse= Verkoopfactuur.Factuurklasse.valueOf(factuurKlasse.name),
                 factuurdatum = LocalDate.now(),
-                inkooporderreferentie = stringFrom(resolvedValues["inkoopOrderReferentie"]!!),
+                inkooporderreferentie = stringFrom(resolvedValues[INKOOP_ORDER_REFERENTIE_KEY]!!),
                 koper = RelatieRotterdam(
                     natuurlijkPersoon = NatuurlijkPersoon(
-                        achternaam = stringFrom(resolvedNatuurlijkPersoonValues["achternaam"]!!),
-                        voornamen = stringFrom(resolvedNatuurlijkPersoonValues["voornamen"]!!),
+                        achternaam = stringFrom(resolvedNatuurlijkPersoonValues[ACHTERNAAM_KEY]!!),
+                        voornamen = stringFrom(resolvedNatuurlijkPersoonValues[VOORNAMEN_KEY]!!),
                         bsn = null,
                         relatienaam = null,
                         tussenvoegsel = null,
@@ -208,7 +208,7 @@ class OracleEbsPlugin(
                         vestigingsadres = null
                     ),
                     nietNatuurlijkPersoon = NietNatuurlijkPersoon(
-                        statutaireNaam = stringFrom(resolvedNietNatuurlijkPersoonValues["statutaireNaam"]!!),
+                        statutaireNaam = stringFrom(resolvedNietNatuurlijkPersoonValues[STATUTAIRE_NAAM_KEY]!!),
                         kvknummer = null,
                         kvkvestigingsnummer = null,
                         rsin = null,
@@ -227,23 +227,23 @@ class OracleEbsPlugin(
                 ),
                 factuurregels = regels.map { factuurRegel ->
                     val resolvedLineValues = resolveValuesFor(execution, mapOf(
-                        "hoeveelheid" to factuurRegel.hoeveelheid,
-                        "tarief" to factuurRegel.tarief,
-                        "btwPercentage" to factuurRegel.btwPercentage,
-                        "grootboekSleutel" to factuurRegel.grootboekSleutel,
-                        "omschrijving" to factuurRegel.omschrijving
+                        HOEVEELHEID_KEY to factuurRegel.hoeveelheid,
+                        TARIEF_KEY to factuurRegel.tarief,
+                        BTW_PERCENTAGE_KEY to factuurRegel.btwPercentage,
+                        GROOTBOEK_SLEUTEL_KEY to factuurRegel.grootboekSleutel,
+                        OMSCHRIJVING_KEY to factuurRegel.omschrijving
                     )).also {
                         logger.debug { "Resolved line values: $it" }
                     }
                     Factuurregel(
-                        factuurregelFacturatieHoeveelheid = valueAsBigDecimal(resolvedLineValues["hoeveelheid"]!!),
-                        factuurregelFacturatieTarief = valueAsBigDecimal(resolvedLineValues["tarief"]!!),
-                        btwPercentage = stringFrom(resolvedLineValues["btwPercentage"]!!),
+                        factuurregelFacturatieHoeveelheid = valueAsBigDecimal(resolvedLineValues[HOEVEELHEID_KEY]!!),
+                        factuurregelFacturatieTarief = valueAsBigDecimal(resolvedLineValues[TARIEF_KEY]!!),
+                        btwPercentage = stringFrom(resolvedLineValues[BTW_PERCENTAGE_KEY]!!),
                         grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = stringFrom(resolvedLineValues["grootboekSleutel"]!!),
+                            grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
                             bronsleutel = null,
                         ),
-                        factuurregelomschrijving = stringOrNullFrom(resolvedLineValues["omschrijving"]),
+                        factuurregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]),
                         factuurregelFacturatieEenheid = null,
                         boekingsregel = null,
                         boekingsregelStartdatum = null,
@@ -262,8 +262,7 @@ class OracleEbsPlugin(
                 factuurtoelichting = null,
                 gerelateerdFactuurnummer = null,
                 factuuradres = null,
-                // Alleen EUR wordt ondersteund
-                valutacode = "EUR",
+                valutacode = VALUTACODE_EURO, // Alleen EUR wordt ondersteund
                 grootboekdatum = null,
                 grootboekjaar = null,
                 bronspecifiekewaarden = null
@@ -325,21 +324,21 @@ class OracleEbsPlugin(
     private fun offsetDateTimeFrom(value: Any): OffsetDateTime =
         when (value) {
             is OffsetDateTime -> value
-            is String -> OffsetDateTime.parse(value)
+            is String -> OffsetDateTime.parse(value.trim())
             else -> throw IllegalArgumentException("Unsupported type ${value::class}")
         }
 
     private fun doubleFrom(value: Any): Double =
         when (value) {
             is Double -> value
-            is String -> value.toDouble()
+            is String -> replaceCommaWithDotAsDecimalSeparator(value.trim()).toDouble()
             else -> 0.0
         }
 
     private fun valueAsBigDecimal(value: Any): BigDecimal =
         when (value) {
             is BigDecimal -> value
-            is String -> value.toBigDecimal()
+            is String -> replaceCommaWithDotAsDecimalSeparator(value.trim()).toBigDecimal()
             else -> BigDecimal.ZERO
         }
 
@@ -352,14 +351,33 @@ class OracleEbsPlugin(
 
     private fun stringFrom(value: Any): String =
         when (value) {
-            is String -> value
+            is String -> value.trim()
             else -> ""
         }
 
     private fun stringOrNullFrom(value: Any?): String? =
         when (value) {
-            is String -> value
+            is String -> value.trim()
             else -> null
+        }
+
+    private fun replaceCommaWithDotAsDecimalSeparator(value: String): String =
+        when {
+            value.contains(",") && value.contains(".") -> {
+                // Based on the index, determine the decimal separator
+                if (value.indexOf(",") > value.indexOf(".")) {
+                    // Assume comma is the separator ("1.234,56")
+                    value.replace(".", "").replace(",", ".")
+                } else {
+                    // Assume dot is the separator ("1,234.56")
+                    value.replace(",", "")
+                }
+            }
+            value.contains(",") -> {
+                // Assume comma is separator ("1234,56")
+                value.replace(",", ".")
+            }
+            else -> value // Assume dot is separator or no decimal ("1234.56", "1234")
         }
 
     private fun restClient(): RestClient =
@@ -373,5 +391,25 @@ class OracleEbsPlugin(
 
     companion object {
         private val logger = KotlinLogging.logger {}
+
+        private const val VALUTACODE_EURO = "EUR"
+
+        private const val PROCES_CODE_KEY = "procesCode"
+        private const val REFERENTIE_NUMMER_KEY = "referentieNummer"
+        private const val SLEUTEL_KEY = "sleutel"
+        private const val BOEKDATUM_TIJD_KEY = "boekdatumTijd"
+        private const val CATEGORIE_KEY = "categorie"
+        private const val OMSCHRIJVING_KEY = "omschrijving"
+        private const val BOEKJAAR_KEY = "boekjaar"
+        private const val BOEKPERIODE_KEY = "boekperiode"
+        private const val GROOTBOEK_SLEUTEL_KEY = "grootboeksleutel"
+        private const val BEDRAG_KEY = "bedrag"
+        private const val INKOOP_ORDER_REFERENTIE_KEY = "inkoopOrderReferentie"
+        private const val ACHTERNAAM_KEY = "achternaam"
+        private const val VOORNAMEN_KEY = "voornamen"
+        private const val STATUTAIRE_NAAM_KEY = "statutaireNaam"
+        private const val HOEVEELHEID_KEY = "hoeveelheid"
+        private const val TARIEF_KEY = "tarief"
+        private const val BTW_PERCENTAGE_KEY = "btwPercentage"
     }
 }
