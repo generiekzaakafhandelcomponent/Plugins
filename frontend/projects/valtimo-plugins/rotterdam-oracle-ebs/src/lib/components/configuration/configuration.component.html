@@ -27,11 +27,11 @@
         required="true"
         margin="true"
         widthPx="350"
-        placeholder="Gemeente Rotterdam Oracle EBS Plugin"
-        [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+        [placeholder]="'configuration.title.placeholder' | pluginTranslate: pluginId | async"
+        [title]="'configuration.title' | pluginTranslate: pluginId | async"
         [disabled]="obs.disabled"
         [defaultValue]="obs.prefill?.configurationTitle"
-        [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
+        [tooltip]="'configuration.title.tooltip' | pluginTranslate: pluginId | async"
     >
     </v-input>
     <v-input
@@ -39,19 +39,19 @@
         name="baseUrl"
         required="true"
         margin="true"
-        [title]="'baseUrl' | pluginTranslate: pluginId | async"
+        [title]="'configuration.baseUrl' | pluginTranslate: pluginId | async"
         [disabled]="obs.disabled"
         [defaultValue]="obs.prefill?.baseUrl"
-        [tooltip]="'baseUrlTooltip' | pluginTranslate: pluginId | async"
+        [tooltip]="'configuration.baseUrl.tooltip' | pluginTranslate: pluginId | async"
     >
     </v-input>
 
     <cds-toggle
         #authenticationEnabled
-        [label]="'authenticationEnabled' | pluginTranslate: pluginId | async"
+        [label]="'configuration.authenticationEnabled' | pluginTranslate: pluginId | async"
         [ngClass]="'v-input--margin'"
-        [onText]="'yes' | pluginTranslate: pluginId | async"
-        [offText]="'no' | pluginTranslate: pluginId | async"
+        [onText]="'configuration.authenticationEnabled.yes' | pluginTranslate: pluginId | async"
+        [offText]="'configuration.authenticationEnabled.no' | pluginTranslate: pluginId | async"
         [checked]="!!obs.prefill?.authenticationEnabled"
         [disabled]="obs.disabled"
     >
@@ -67,7 +67,7 @@
                     target: '',
                     template: undefined,
                     title: '',
-                    message: 'certificateConfigurationInfo' | pluginTranslate: pluginId | async,
+                    message: 'configuration.certificateConfigurationInfo' | pluginTranslate: pluginId | async,
                     type: 'info',
                     showClose: false,
                 }"
@@ -79,10 +79,10 @@
             type="textarea"
             margin="true"
             rows="5"
-            [title]="'serverCertificate' | pluginTranslate: pluginId | async"
+            [title]="'configuration.serverCertificate' | pluginTranslate: pluginId | async"
             [disabled]="obs.disabled"
             [defaultValue]="obs.prefill?.base64ServerCertificate"
-            [tooltip]="'serverCertificateTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'configuration.serverCertificate.tooltip' | pluginTranslate: pluginId | async"
         >
         </v-input>
         <v-input
@@ -90,10 +90,10 @@
             name="base64ClientCertificate"
             margin="true"
             rows="5"
-            [title]="'serverCertificate' | pluginTranslate: pluginId | async"
+            [title]="'configuration.serverCertificate' | pluginTranslate: pluginId | async"
             [disabled]="obs.disabled"
             [defaultValue]="obs.prefill?.base64ClientCertificate"
-            [tooltip]="'serverCertificateTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'configuration.serverCertificate.tooltip' | pluginTranslate: pluginId | async"
         >
         </v-input>
         <v-input
@@ -101,10 +101,10 @@
             name="base64ClientPrivateKey"
             margin="true"
             rows="5"
-            [title]="'clientPrivateKey' | pluginTranslate: pluginId | async"
+            [title]="'configuration.clientPrivateKey' | pluginTranslate: pluginId | async"
             [disabled]="obs.disabled"
             [defaultValue]="obs.prefill?.base64ClientPrivateKey"
-            [tooltip]="'clientPrivateKeyTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'configuration.clientPrivateKey.tooltip' | pluginTranslate: pluginId | async"
         >
         </v-input>
     </ng-container>
