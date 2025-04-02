@@ -5,6 +5,7 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
@@ -33,7 +34,7 @@ import java.time.OffsetDateTime
 @Plugin(
     key = "rotterdam-oracle-ebs",
     title = "Gemeente Rotterdam - Oracle EBS plugin",
-    description = "Deze plugin maakt het mogelijk om Journaalpost acties uit te voeren in Oracle E-Business Suite via de ESB van de Gemeente Rotterdam"
+    description = "Deze plugin maakt het mogelijk om Journaalpost en Verkoopfactuur acties uit te voeren in Oracle E-Business Suite via de ESB van de Gemeente Rotterdam"
 )
 class OracleEbsPlugin(
     private val esbClient: EsbClient,
@@ -41,19 +42,10 @@ class OracleEbsPlugin(
 ) {
 
     @PluginProperty(key = "baseUrl", secret = false, required = true)
-    lateinit var baseUrl: URI
+    internal lateinit var baseUrl: URI
 
-    @PluginProperty(key = "authenticationEnabled", secret = false, required = true)
-    var authenticationEnabled: String = "false"
-
-    @PluginProperty(key = "base64ServerCertificate", secret = true, required = false)
-    var base64ServerCertificate: String? = null
-
-    @PluginProperty(key = "base64ClientPrivateKey", secret = true, required = false)
-    var base64ClientPrivateKey: String? = null
-
-    @PluginProperty(key = "base64ClientCertificate", secret = true, required = false)
-    var base64ClientCertificate: String? = null
+    @PluginProperty(key = "mTlsSslContextConfiguration", secret = false, required = true)
+    internal lateinit var mTlsSslContextConfiguration: MTlsSslContext
 
     @PluginAction(
         key = "journaalpost-opvoeren",
@@ -383,10 +375,8 @@ class OracleEbsPlugin(
     private fun restClient(): RestClient =
         esbClient.createRestClient(
             baseUrl = baseUrl.toString(),
-            authenticationEnabled = authenticationEnabled.toBoolean(),
-            base64PrivateKey = base64ClientPrivateKey,
-            base64ClientCert = base64ClientCertificate,
-            base64ServerCert = base64ServerCertificate
+            authenticationEnabled = true,
+            mTlsSslContext = mTlsSslContextConfiguration
         )
 
     companion object {
