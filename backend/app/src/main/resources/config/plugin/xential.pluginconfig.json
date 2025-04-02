@@ -5,6 +5,8 @@
         "properties": {
             "applicationName": "${XENTIAL_ACCOUNT_NAME}",
             "applicationPassword": "${XENTIAL_ACCOUNT_PASSWORD}",
+            "gebruikersId": "",
+            "templateGroupId": "",
             "baseUrl": "${XENTIAL_BASEURL}",
             "mTlsSslContextAutoConfigurationId": "63b44b21-9bd2-42f2-a11e-a4f68837e076"
         },
