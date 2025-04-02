@@ -18,10 +18,7 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface RotterdamEsbConfig extends PluginConfigurationData {
     baseUrl: string;
-    authenticationEnabled: boolean;
-    base64ServerCertificate: string;
-    base64ClientPrivateKey: string;
-    base64ClientCertificate: string;
+    mTlsSslContextConfiguration: string
 }
 
 interface JournaalpostOpvoerenConfig {
