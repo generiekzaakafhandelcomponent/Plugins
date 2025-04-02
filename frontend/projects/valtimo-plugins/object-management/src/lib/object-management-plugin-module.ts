@@ -18,21 +18,33 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {CarbonMultiInputModule, FormModule, InputModule, ParagraphModule} from '@valtimo/components';
-import {ObjectManagementConfigurationComponent} from "./components/object-management-configuration/object-management-configuration.component";
+import {
+    ObjectManagementConfigurationComponent
+} from "./components/object-management-configuration/object-management-configuration.component";
 import {CreateObjectConfigurationComponent} from "./components/create-object/create-object-configuration.component";
 import {GetObjectsConfigurationComponent} from "./components/get-objects/get-objects-configuration.component";
+import {DeleteObjectConfigurationComponent} from "./components/delete-object/delete-object-configuration.component";
+import {UpdateObjectConfigurationComponent} from "./components/update-object/update-object-configuration.component";
+import {FindObjectsConfigurationComponent} from "./components/find-object/find-objects-configuration.component";
 
 @NgModule({
-  declarations: [
-    ObjectManagementConfigurationComponent,
-    CreateObjectConfigurationComponent,
-    GetObjectsConfigurationComponent
-  ],
-  imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule, CarbonMultiInputModule],
-  exports: [
-    ObjectManagementConfigurationComponent,
-    CreateObjectConfigurationComponent,
-    GetObjectsConfigurationComponent
-  ],
+    declarations: [
+        ObjectManagementConfigurationComponent,
+        CreateObjectConfigurationComponent,
+        GetObjectsConfigurationComponent,
+        DeleteObjectConfigurationComponent,
+        UpdateObjectConfigurationComponent,
+        FindObjectsConfigurationComponent
+    ],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule, CarbonMultiInputModule],
+    exports: [
+        ObjectManagementConfigurationComponent,
+        CreateObjectConfigurationComponent,
+        GetObjectsConfigurationComponent,
+        DeleteObjectConfigurationComponent,
+        UpdateObjectConfigurationComponent,
+        FindObjectsConfigurationComponent
+    ],
 })
-export class ObjectManagementPluginModule {}
+export class ObjectManagementPluginModule {
+}
