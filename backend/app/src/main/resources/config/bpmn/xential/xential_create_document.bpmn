@@ -5,7 +5,8 @@
     <bpmn:textAnnotation id="TextAnnotation_1w3qlyq">
       <bpmn:text>Plugin action
 Input:
-pv:xentialContentId</bpmn:text>
+pv:xentialContentId
+pv:xentialSjabloonId</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_1w3pbja" associationDirection="None" sourceRef="XentialDocumentCreateTask" targetRef="TextAnnotation_1w3qlyq" />
     <bpmn:textAnnotation id="TextAnnotation_1sls0ft">
@@ -97,10 +98,6 @@ pv:xentialContentId</bpmn:text>
       <bpmndi:BPMNShape id="Event_1y7ui8g_di" bpmnElement="Event_1y7ui8g">
         <dc:Bounds x="952" y="159" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_0zx3118_di" bpmnElement="Association_0zx3118">
-        <di:waypoint x="668" y="159" />
-        <di:waypoint x="665" y="138" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1qiucql_di" bpmnElement="Event_1ad785s">
         <dc:Bounds x="702" y="332" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -140,6 +137,30 @@ pv:xentialContentId</bpmn:text>
         <di:waypoint x="845" y="177" />
         <di:waypoint x="952" y="177" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0zx3118_di" bpmnElement="Association_0zx3118">
+        <di:waypoint x="668" y="159" />
+        <di:waypoint x="665" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1w3qlyq_di" bpmnElement="TextAnnotation_1w3qlyq">
+        <dc:Bounds x="351" y="250" width="129" height="68" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1sls0ft_di" bpmnElement="TextAnnotation_1sls0ft">
+        <dc:Bounds x="530" y="420" width="130" height="70" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1km10fa_di" bpmnElement="TextAnnotation_1km10fa">
+        <dc:Bounds x="610" y="70" width="120" height="68" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1arii53_di" bpmnElement="TextAnnotation_1arii53">
+        <dc:Bounds x="750" y="421" width="120" height="68" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1w3pbja_di" bpmnElement="Association_1w3pbja">
+        <di:waypoint x="401" y="217" />
+        <di:waypoint x="401" y="250" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_037p71w_di" bpmnElement="Association_037p71w">
         <di:waypoint x="730" y="364" />
         <di:waypoint x="771" y="421" />
@@ -148,26 +169,6 @@ pv:xentialContentId</bpmn:text>
         <di:waypoint x="646" y="350" />
         <di:waypoint x="605" y="420" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="TextAnnotation_1w3qlyq_di" bpmnElement="TextAnnotation_1w3qlyq">
-        <dc:Bounds x="351" y="250" width="129" height="53" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1km10fa_di" bpmnElement="TextAnnotation_1km10fa">
-        <dc:Bounds x="610" y="70" width="120" height="68" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_1w3pbja_di" bpmnElement="Association_1w3pbja">
-        <di:waypoint x="401" y="217" />
-        <di:waypoint x="401" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="TextAnnotation_1arii53_di" bpmnElement="TextAnnotation_1arii53">
-        <dc:Bounds x="750" y="421" width="120" height="68" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1sls0ft_di" bpmnElement="TextAnnotation_1sls0ft">
-        <dc:Bounds x="530" y="420" width="130" height="70" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

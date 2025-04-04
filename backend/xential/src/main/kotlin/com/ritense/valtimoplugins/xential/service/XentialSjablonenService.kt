@@ -21,6 +21,7 @@ import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.ritense.valtimoplugins.mtlssslcontext.plugin.MTlsSslContextPlugin
 import com.ritense.valtimoplugins.xential.plugin.XentialPlugin
 import com.rotterdam.esb.xential.model.Sjabloonitems
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.web.client.RestClient
 
 class XentialSjablonenService(
@@ -43,9 +44,10 @@ class XentialSjablonenService(
                     mTlsSslContextPlugin.createSslContext()
                 )
                 val api = esbClient.documentApi(restClient(mTlsSslContextPlugin))
+                logger.info { "getting sjabloongroep with ${sjabloongroepId.takeIf { !it.isNullOrBlank() }?: "geen id"}" }
                 return api.geefSjablonenlijst(
                     gebruikersId = xentialPlugin.gebruikersId,
-                    sjabloongroepId = sjabloongroepId.takeIf { !it.isNullOrBlank()}?: xentialPlugin.templateGroupId
+                    sjabloongroepId = sjabloongroepId.takeIf { !it.isNullOrBlank()}
                 )
             }
         }
@@ -61,5 +63,9 @@ class XentialSjablonenService(
                 mTlsSslContextAutoConfiguration?.createSslContext()
             )
         }
+    }
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
     }
 }

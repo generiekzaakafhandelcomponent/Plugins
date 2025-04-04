@@ -4,6 +4,10 @@
         disabled: disabled$ | async,
         prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
         fileFormats: fileFormats$ | async,
+        xentialSjabloonGroupSelectItems: xentialFirstGroupSelectItems$ | async,
+        xentialSecondGroupSelectItems: xentialSecondGroupSelectItems$ | async,
+        xentialThirdGroupSelectItems: xentialThirdGroupSelectItems$ | async
+
     } as obs"
 >
 
@@ -22,27 +26,44 @@
             [required]="true"
     />
     <v-input
-            name="gebruikersId"
-            [title]="'gebruikersId' | pluginTranslate: pluginId | async"
+            name="textTemplateId"
+            [title]="'textTemplateId' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.gebruikersId"
+            [defaultValue]="obs.prefill?.textTemplateId"
             [disabled]="obs.disabled"
             [required]="true"
     />
-    <ng-container
-            *ngIf="{xentialSjablonenSelectItems: xentialSjablonenSelectItems$ | async} as authObs"
-    >
-        <v-select
-                [items]="authObs.xentialSjablonenSelectItems"
-                [margin]="true"
-                name="templateId"
-                [title]="'templateId' | pluginTranslate: pluginId | async"
-                [disabled]="obs.disabled"
-                [defaultSelectionId]="obs.prefill?.templateId"
-                [required]="true"
-                [loading]="!authObs.xentialSjablonenSelectItems"
-        ></v-select>
-    </ng-container>
+    <v-select
+            [items]="obs?.xentialSjabloonGroupSelectItems || []"
+            [margin]="true"
+            name="firstTemplateGroupId"
+            [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
+            [required]="true"
+            [loading]="!obs?.xentialSjabloonGroupSelectItems"
+    ></v-select>
+
+    <v-select
+            [items]="obs?.xentialSecondGroupSelectItems || []"
+            [margin]="true"
+            name="secondTemplateGroupId"
+            [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled || (obs?.xentialSecondGroupSelectItems || [])?.length === 0"
+            [required]="true"
+            [loading]="!obs?.xentialSecondGroupSelectItems"
+    ></v-select>
+
+    <v-select
+            [items]="obs?.xentialThirdGroupSelectItems || []"
+            [margin]="true"
+            name="thirdTemplateGroupId"
+            [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled || (obs?.xentialThirdGroupSelectItems || [])?.length === 0"
+            [required]="true"
+            [loading]="!obs?.xentialThirdGroupSelectItems"
+    ></v-select>
+
     <v-select
             name="fileFormat"
             [title]="'fileFormat' | pluginTranslate: pluginId | async"
@@ -65,14 +86,6 @@
             [title]="'eventMessageName' | pluginTranslate: pluginId | async"
             [margin]="true"
             [defaultValue]="obs.prefill?.eventMessageName"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
-    <v-input
-            name="textTemplateId"
-            [title]="'textTemplateId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.textTemplateId"
             [disabled]="obs.disabled"
             [required]="true"
     />

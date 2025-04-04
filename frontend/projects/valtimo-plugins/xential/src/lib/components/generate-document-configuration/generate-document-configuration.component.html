@@ -20,4 +20,12 @@
             [disabled]="obs.disabled"
             [required]="true"
     />
+    <v-input
+            name="xentialSjabloonId"
+            [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.xentialSjabloonId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
 </v-form>

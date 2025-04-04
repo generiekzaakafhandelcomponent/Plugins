@@ -67,16 +67,6 @@
             [disabled]="obs.disabled"
             [required]="true"
     />
-    <v-input
-            name="templateGroupId"
-            [title]="'templateGroupId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.templateGroupId"
-            [disabled]="obs.disabled"
-            [required]="true"
-    >
-    </v-input>
     <hr/>
     <ng-container
             *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
@@ -92,5 +82,4 @@
                 [loading]="!authObs.authenticationPluginSelectItems"
         ></v-select>
     </ng-container>
-
 </v-form>
