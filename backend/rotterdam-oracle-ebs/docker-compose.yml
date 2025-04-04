@@ -1,0 +1,17 @@
+services:
+
+  mockserver:
+    container_name: opentunnel-mock-server
+    image: mockserver/mockserver:5.15.0
+    ports:
+      - 1080:1080
+    environment:
+      - MOCKSERVER_CERTIFICATE_AUTHORITY_PRIVATE_KEY=/config/ca-pkcs8.key
+      - MOCKSERVER_CERTIFICATE_AUTHORITY_X509_CERTIFICATE=/config/ca.pem
+      - MOCKSERVER_SERVER_SSL_KEY_STORE=/config/server-keystore.p12
+      - MOCKSERVER_SERVER_SSL_KEY_STORE_PASSWORD=password
+      - MOCKSERVER_TLS_MUTUAL_AUTHENTICATION_REQUIRED=true
+    volumes:
+      - ./imports/cert/server-keystore.p12:/config/server-keystore.p12
+      - ./imports/cert/ca.pem:/config/ca.pem
+      - ./imports/cert/ca-pkcs8.key:/config/ca-pkcs8.key
