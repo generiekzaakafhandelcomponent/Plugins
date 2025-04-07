@@ -7,6 +7,7 @@ include(
     "backend:berkelybridge-textgenerator",
     "backend:externe-klanttaak",
     "backend:freemarker",
+    "backend:haal-centraal-auth",
     "backend:mTLS-SSLContext",
     "backend:notify-nl",
     "backend:object-management",
