@@ -55,16 +55,18 @@ class DocumentGenerationService(
     fun generateDocument(
         api: DefaultApi,
         processId: UUID,
+        gebruikersId: String,
+        sjabloonId: String,
         xentialDocumentProperties: XentialDocumentProperties,
         execution: DelegateExecution,
     ) {
         logger.info { "generating xential document" }
 
         val result = api.creeerDocument(
-            gebruikersId = xentialDocumentProperties.gebruikersId,
+            gebruikersId = gebruikersId,
             accepteerOnbekend = false,
             sjabloondata = Sjabloondata(
-                sjabloonId = xentialDocumentProperties.templateId.toString(),
+                sjabloonId = sjabloonId,
                 bestandsFormaat = Sjabloondata.BestandsFormaat.valueOf(xentialDocumentProperties.fileFormat.name),
                 documentkenmerk = xentialDocumentProperties.documentId,
                 sjabloonVulData = if ( xentialDocumentProperties.content is String ) {

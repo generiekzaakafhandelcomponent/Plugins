@@ -14,33 +14,153 @@
   ~ limitations under the License.
   -->
 
-<v-form
-    (valueChange)="formValueChange($event)"
-    *ngIf="{
-        disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
-    } as obs"
->
-    <v-input
-        type="text"
-        name="procesCode"
-        required="true"
-        margin="true"
-        [title]="'procesCode' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.procesCode"
-        [tooltip]="'procesCodeTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-    <v-input
-        type="text"
-        name="grootboekSleutel"
-        required="true"
-        margin="true"
-        [title]="'grootboekSleutel' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.grootboekSleutel"
-        [tooltip]="'grootboekSleutelTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-</v-form>
+<ng-container *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+} as obs">
+    <form [formGroup]="pluginActionForm">
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="procesCode"
+            title="verkoopfactuur.procesCode"
+            tooltip="verkoopfactuur.procesCode.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="referentieNummer"
+            title="verkoopfactuur.referentieNummer"
+            tooltip="verkoopfactuur.referentieNummer.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-select-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="factuurKlasse"
+            title="verkoopfactuur.factuurKlasse"
+            tooltip="verkoopfactuur.factuurKlasse.tooltip"
+            placeholder="verkoopfactuur.factuurKlasse.placeholder"
+            [required]="true"
+            [items]="factuurKlasseItems"
+        ></app-select-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="inkoopOrderReferentie"
+            title="verkoopfactuur.inkoopOrderReferentie"
+            tooltip="verkoopfactuur.inkoopOrderReferentie.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="natuurlijkPersoonAchternaam"
+            title="verkoopfactuur.natuurlijkPersoonAchternaam"
+            tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="natuurlijkPersoonVoornamen"
+            title="verkoopfactuur.natuurlijkPersoonVoornamen"
+            tooltip="verkoopfactuur.natuurlijkPersoonVoornamen.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="nietNatuurlijkPersoonStatutaireNaam"
+            title="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam"
+            tooltip="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <div>
+            <v-input-label
+                [required]="true"
+                [title]="'verkoopfactuur.regels' | pluginTranslate: pluginId | async"
+                [tooltip]="'verkoopfactuur.regels.tooltip' | pluginTranslate: pluginId | async"
+            >
+            </v-input-label>
+            <div formArrayName="regels" class="lines-wrapper">
+                <div class="line-wrapper"
+                     *ngFor="let line of lines.controls; let i = index">
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="hoeveelheid"
+                        wrapperClass="line-field-wrapper"
+                        title="verkoopfactuur.regel.hoeveelheid"
+                        [required]="true"
+                    ></app-input-field>
+
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="tarief"
+                        wrapperClass="line-field-wrapper"
+                        title="verkoopfactuur.regel.tarief"
+                        [required]="true"
+                    ></app-input-field>
+
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="btwPercentage"
+                        wrapperClass="line-field-wrapper"
+                        title="verkoopfactuur.regel.btwPercentage"
+                        [required]="true"
+                    ></app-input-field>
+
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="grootboekSleutel"
+                        wrapperClass="line-field-wrapper"
+                        title="verkoopfactuur.regel.grootboekSleutel"
+                        [required]="true"
+                    ></app-input-field>
+
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="omschrijving"
+                        wrapperClass="line-field-wrapper"
+                        title="verkoopfactuur.regel.omschrijving"
+                        [required]="false"
+                    ></app-input-field>
+
+                    <div class="remove-line-wrapper">
+                        <button type="button"
+                                cdsButton="secondary"
+                                (click)="removeLine(i)"
+                                [disabled]="obs.disabled"
+                        >
+                            {{'verkoopfactuur.regel.verwijderen' | pluginTranslate: pluginId | async}}
+                            <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="add-line-wrapper">
+                <button type="button"
+                        cdsButton="secondary"
+                        (click)="addLine()"
+                        [disabled]="obs.disabled">
+                    {{'verkoopfactuur.regel.toevoegen' | pluginTranslate: pluginId | async}}
+                    <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
+                </button>
+            </div>
+        </div>
+    </form>
+</ng-container>

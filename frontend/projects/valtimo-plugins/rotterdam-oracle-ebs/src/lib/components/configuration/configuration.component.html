@@ -18,7 +18,8 @@
   (valueChange)="formValueChange($event)"
   *ngIf="{
     disabled: disabled$ | async,
-    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+    mTlsSllContextConfigurationItems: mTlsSllContextConfigurationItems$ | async
   } as obs"
 >
     <v-input
@@ -27,11 +28,11 @@
         required="true"
         margin="true"
         widthPx="350"
-        placeholder="Gemeente Rotterdam Oracle EBS Plugin"
-        [title]="'configurationTitle' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
+        [title]="'configuration.title' | pluginTranslate: pluginId | async"
+        [tooltip]="'configuration.title.tooltip' | pluginTranslate: pluginId | async"
+        [placeholder]="'configuration.title.placeholder' | pluginTranslate: pluginId | async"
         [defaultValue]="obs.prefill?.configurationTitle"
-        [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
+        [disabled]="obs.disabled"
     >
     </v-input>
     <v-input
@@ -39,73 +40,23 @@
         name="baseUrl"
         required="true"
         margin="true"
-        [title]="'baseUrl' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
+        [title]="'configuration.baseUrl' | pluginTranslate: pluginId | async"
+        [tooltip]="'configuration.baseUrl.tooltip' | pluginTranslate: pluginId | async"
         [defaultValue]="obs.prefill?.baseUrl"
-        [tooltip]="'baseUrlTooltip' | pluginTranslate: pluginId | async"
+        [disabled]="obs.disabled"
     >
     </v-input>
 
-    <cds-toggle
-        #authenticationEnabled
-        [label]="'authenticationEnabled' | pluginTranslate: pluginId | async"
-        [ngClass]="'v-input--margin'"
-        [onText]="'toggle.yes' | pluginTranslate: pluginId | async"
-        [offText]="'toggle.no' | pluginTranslate: pluginId | async"
-        [checked]="!!obs.prefill?.authenticationEnabled"
+    <v-select
+        name="mTlsSslContextConfiguration"
+        margin="true"
+        [title]="'configuration.mTlsSslContextConfiguration' | pluginTranslate: pluginId | async"
+        [tooltip]="'configuration.mTlsSslContextConfiguration.tooltip' | pluginTranslate: pluginId | async"
+        [defaultSelectionId]="obs.prefill?.mTlsSslContextConfiguration"
+        [required]="true"
         [disabled]="obs.disabled"
+        [items]="obs.mTlsSllContextConfigurationItems"
+        [loading]="!obs.mTlsSllContextConfigurationItems"
     >
-    </cds-toggle>
-    <ng-container *ngIf="authenticationEnabled.checked">
-        <div class="certificate-configuration-info">
-            <cds-inline-notification
-                [notificationObj]="{
-                    closeLabel: undefined,
-                    duration: 0,
-                    lowContrast: true,
-                    smart: false,
-                    target: '',
-                    template: undefined,
-                    title: '',
-                    message: 'certificateConfigurationInfo' | pluginTranslate: pluginId | async,
-                    type: 'info',
-                    showClose: false,
-                }"
-            >
-            </cds-inline-notification>
-        </div>
-        <v-input
-            name="base64ServerCertificate"
-            type="textarea"
-            margin="true"
-            rows="5"
-            [title]="'serverCertificate' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.base64ServerCertificate"
-            [tooltip]="'serverCertificateTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-input
-            type="textarea"
-            name="base64ClientCertificate"
-            margin="true"
-            rows="5"
-            [title]="'serverCertificate' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.base64ClientCertificate"
-            [tooltip]="'serverCertificateTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-        <v-input
-            type="textarea"
-            name="base64ClientPrivateKey"
-            margin="true"
-            rows="5"
-            [title]="'clientPrivateKey' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.base64ClientPrivateKey"
-            [tooltip]="'clientPrivateKeyTooltip' | pluginTranslate: pluginId | async"
-        >
-        </v-input>
-    </ng-container>
+    </v-select>
 </v-form>

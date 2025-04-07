@@ -16,9 +16,16 @@
 
 interface XentialApiSjabloon {
   sjablonen: Sjabloon[];
+  sjabloongroepen: SjabloonGroep[];
 }
 
 interface Sjabloon {
+  id: string;
+  naam: string;
+}
+
+
+interface SjabloonGroep {
   id: string;
   naam: string;
 }

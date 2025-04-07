@@ -1,0 +1,11 @@
+<div [formGroup]="formGroup" class="{{ wrapperClass }}">
+    <v-input-label
+        [title]="title | pluginTranslate: pluginId | async"
+        [tooltip]="tooltip ? (tooltip | pluginTranslate: pluginId | async) : null"
+        [required]="required"
+    >
+    </v-input-label>
+    <input cdsText
+           [type]="type"
+           [formControlName]="controlName">
+</div>
