@@ -1,3 +1,5 @@
+name: valtimo-plugins-local
+
 services:
 
   example-core-db:

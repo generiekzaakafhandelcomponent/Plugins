@@ -1,4 +1,4 @@
-<!--
+ <!--
   ~ Copyright 2015-2025 Ritense BV, the Netherlands.
   ~
   ~ Licensed under EUPL, Version 1.2 (the "License");
@@ -14,55 +14,165 @@
   ~ limitations under the License.
   -->
 
-<v-form
-    (valueChange)="formValueChange($event)"
-    *ngIf="{
-        disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
-    } as obs"
->
-    <v-input
-        type="text"
-        name="procesCode"
-        required="true"
-        margin="true"
-        [title]="'procesCode' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.procesCode"
-        [tooltip]="'procesCodeTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-    <v-input
-        type="text"
-        name="grootboekSleutel"
-        required="true"
-        margin="true"
-        [title]="'grootboekSleutel' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.grootboekSleutel"
-        [tooltip]="'grootboekSleutelTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-    <v-input
-        type="text"
-        name="sleutel"
-        required="true"
-        margin="true"
-        [title]="'sleutel' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.sleutel"
-        [tooltip]="'sleutelTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-    <v-input
-        type="text"
-        name="categorie"
-        required="true"
-        margin="true"
-        [title]="'categorie' | pluginTranslate: pluginId | async"
-        [disabled]="obs.disabled"
-        [defaultValue]="obs.prefill?.categorie"
-        [tooltip]="'categorieTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-</v-form>
+<ng-container *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+} as obs">
+    <form [formGroup]="pluginActionForm">
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="procesCode"
+            title="journaalpost.procesCode"
+            tooltip="journaalpost.procesCode.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="referentieNummer"
+            title="journaalpost.referentieNummer"
+            tooltip="journaalpost.referentieNummer.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="sleutel"
+            title="journaalpost.sleutel"
+            tooltip="journaalpost.sleutel.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="boekdatumTijd"
+            title="journaalpost.boekdatumTijd"
+            tooltip="journaalpost.boekdatumTijd.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="categorie"
+            title="journaalpost.categorie"
+            tooltip="journaalpost.categorie.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-select-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="saldoSoort"
+            title="journaalpost.saldoSoort"
+            tooltip="journaalpost.saldoSoort.tooltip"
+            placeholder="journaalpost.saldoSoort.placeholder"
+            [required]="true"
+            [items]="saldoSoortItems"
+        ></app-select-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="omschrijving"
+            title="journaalpost.omschrijving"
+            tooltip="journaalpost.omschrijving.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="boekjaar"
+            title="journaalpost.boekjaar"
+            tooltip="journaalpost.boekjaar.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="boekperiode"
+            title="journaalpost.boekperiode"
+            tooltip="journaalpost.boekperiode.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <div>
+            <v-input-label
+                [required]="true"
+                [title]="'journaalpost.regels' | pluginTranslate: pluginId | async"
+                [tooltip]="'journaalpost.regels.tooltip' | pluginTranslate: pluginId | async"
+            >
+            </v-input-label>
+            <div formArrayName="regels" class="lines-wrapper">
+                <div class="line-wrapper"
+                     *ngFor="let line of lines.controls; let i = index">
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="grootboekSleutel"
+                        wrapperClass="line-field-wrapper"
+                        title="journaalpost.regel.grootboekSleutel"
+                        [required]="true"
+                    ></app-input-field>
+
+                    <app-select-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="boekingType"
+                        wrapperClass="line-field-wrapper"
+                        title="journaalpost.regel.boekingType"
+                        placeholder="journaalpost.regel.boekingType.placeholder"
+                        [required]="true"
+                        [items]="boekingTypeItems"
+                    ></app-select-field>
+
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="omschrijving"
+                        wrapperClass="line-field-wrapper"
+                        title="journaalpost.regel.omschrijving"
+                        [required]="false"
+                    ></app-input-field>
+
+                    <app-input-field
+                        [pluginId]="pluginId"
+                        [formGroup]="line"
+                        controlName="bedrag"
+                        wrapperClass="line-field-wrapper"
+                        title="journaalpost.regel.bedrag"
+                        [required]="true"
+                    ></app-input-field>
+
+                    <div class="remove-line-wrapper">
+                        <button type="button"
+                                cdsButton="secondary"
+                                (click)="removeLine(i)"
+                                [disabled]="obs.disabled"
+                        >
+                            {{'journaalpost.regel.verwijderen' | pluginTranslate: pluginId | async}}
+                            <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="add-line-wrapper">
+                <button type="button"
+                        cdsButton="secondary"
+                        (click)="addLine()"
+                        [disabled]="obs.disabled">
+                    {{'journaalpost.regel.toevoegen' | pluginTranslate: pluginId | async}}
+                    <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
+                </button>
+            </div>
+        </div>
+    </form>
+
+</ng-container>

@@ -1,5 +1,6 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.service
 
+import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient
 import org.apache.hc.client5.http.impl.classic.HttpClients
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder
@@ -24,6 +25,21 @@ object HttpClientHelper {
     fun createDefaultHttpClient(): CloseableHttpClient {
         return HttpClients.createDefault()
     }
+
+    fun createSecureHttpClient(mTlsSslContext: MTlsSslContext): CloseableHttpClient =
+        mTlsSslContext.createSslContext().let { sslContext ->
+            PoolingHttpClientConnectionManagerBuilder.create()
+                .setSSLSocketFactory(
+                    SSLConnectionSocketFactoryBuilder.create()
+                        .setSslContext(sslContext)
+                        .build()
+                )
+                .build().let { connectionManager ->
+                    HttpClients.custom()
+                        .setConnectionManager(connectionManager)
+                        .build()
+                }
+        }
 
     fun createSecureHttpClient(
         base64PrivateKey: String,

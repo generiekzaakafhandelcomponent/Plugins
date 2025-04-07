@@ -30,6 +30,9 @@ dockerCompose {
 dependencies {
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")
+    implementation("com.ritense.valtimo:value-resolver")
+
+    implementation("com.ritense.valtimoplugins:mTLS-SSLContext:1.0.1")
 
     // Spring core web functionality
     implementation("org.springframework:spring-web")
@@ -46,15 +49,12 @@ dependencies {
 
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.mockito:mockito-core")
-    testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
-    testImplementation("com.ritense.valtimo:document")
-    testImplementation("com.ritense.valtimo:test-utils-common")
-
+//    testImplementation("org.camunda.bpm:camunda-bpm-junit5:7.21.0")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
     testImplementation("com.squareup.okhttp3:mockwebserver")
 }
 

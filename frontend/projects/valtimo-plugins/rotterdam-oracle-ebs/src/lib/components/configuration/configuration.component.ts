@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {
     PluginConfigurationComponent,
     PluginConfigurationData,
     PluginManagementService,
     PluginTranslationService
 } from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {RotterdamEsbConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
-import {Toggle} from "carbon-components-angular";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
     selector: 'valtimo-rotterdam-oracle-ebs-configuration',
@@ -38,27 +38,43 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
     @Input() prefillConfiguration$!: Observable<RotterdamEsbConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
-    @ViewChild('authenticationEnabled') authenticationEnabled: Toggle;
 
     private saveSubscription!: Subscription;
     private readonly formValue$ = new BehaviorSubject<RotterdamEsbConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    readonly mTlsSllContextConfigurationItems$: Observable<Array<{ id: string; text: string }>> =
+        combineLatest([
+            this.pluginManagementService.getPluginConfigurationsByCategory('mtls-sslcontext-plugin'),
+            this.translateService.stream('key'),
+        ]).pipe(
+            map(([configurations]) =>
+                configurations.map(configuration => ({
+                    id: configuration.id,
+                    text: `[${this.pluginTranslationService.instant('title', configuration.pluginDefinition.key)}] ${configuration.title}`,
+                }))
+            )
+        );
+
     constructor(
         private readonly pluginManagementService: PluginManagementService,
         private readonly translateService: TranslateService,
-        private readonly pluginTranslationService: PluginTranslationService
+        private readonly pluginTranslationService: PluginTranslationService,
+        private readonly logger: NGXLogger
     ) {}
 
     ngOnInit(): void {
+        this.logger.debug('Plugin configuration - onInit');
         this.openSaveSubscription();
     }
 
     ngOnDestroy() {
+        this.logger.debug('Plugin configuration - onDestroy');
         this.saveSubscription?.unsubscribe();
     }
 
     formValueChange(formValue: RotterdamEsbConfig): void {
+        this.logger.debug('formValueChange', formValue);
         this.formValue$.next(formValue);
         this.handleValid(formValue);
     }
@@ -66,9 +82,10 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
     private handleValid(formValue: RotterdamEsbConfig): void {
         const valid = !!(
             formValue.configurationTitle &&
-            formValue.baseUrl
+            formValue.baseUrl &&
+            formValue.mTlsSslContextConfiguration
         );
-
+        this.logger.debug('handleValid', valid);
         this.valid$.next(valid);
         this.valid.emit(valid);
     }
@@ -78,22 +95,9 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
             combineLatest([this.formValue$, this.valid$])
                 .pipe(take(1))
                 .subscribe(([formValue, valid]) => {
-                    console.log('formValue', formValue)
+                    this.logger.debug('formValue', formValue);
                     if (valid) {
-                        if (this.authenticationEnabled.checked) {
-                            this.configuration.emit({
-                                authenticationEnabled: true,
-                                ...formValue
-                            }!);
-                        } else {
-                            this.configuration.emit({
-                                authenticationEnabled: false,
-                                base64ServerCertificate: "",
-                                base64ClientPrivateKey: "",
-                                base64ClientCertificate: "",
-                                ...formValue
-                            }!);
-                        }
+                        this.configuration.emit(formValue!);
                     }
                 });
         });

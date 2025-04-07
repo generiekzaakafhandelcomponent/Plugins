@@ -18,22 +18,82 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface RotterdamEsbConfig extends PluginConfigurationData {
     baseUrl: string;
-    authenticationEnabled: boolean;
-    base64ServerCertificate: string;
-    base64ClientPrivateKey: string;
-    base64ClientCertificate: string;
+    mTlsSslContextConfiguration: string
 }
 
 interface JournaalpostOpvoerenConfig {
     procesCode: string;
-    grootboekSleutel: string;
+    referentieNummer: string;
     sleutel: string;
+    boekdatumTijd: string;
     categorie: string;
+    saldoSoort: SaldoSoort;
+    omschrijving?: string;
+    boekjaar?: string;
+    boekperiode?: string;
+    regels: Array<JournaalpostRegel>;
+}
+
+interface JournaalpostRegel {
+    grootboekSleutel: string;
+    boekingType: BoekingType;
+    bedrag: string;
+    omschrijving?: string;
 }
 
 interface VerkoopfactuurOpvoerenConfig {
     procesCode: string;
-    grootboekSleutel: string;
+    referentieNummer: string;
+    factuurKlasse: FactuurKlasse;
+    inkoopOrderReferentie: string;
+    natuurlijkPersoon: NatuurlijkPersoon;
+    nietNatuurlijkPersoon: NietNatuurlijkPersoon;
+    regels: Array<FactuurRegel>;
 }
 
-export {RotterdamEsbConfig, JournaalpostOpvoerenConfig, VerkoopfactuurOpvoerenConfig}
+interface NatuurlijkPersoon {
+    achternaam: string;
+    voornamen: string;
+}
+
+interface NietNatuurlijkPersoon {
+    statutaireNaam: string;
+}
+
+interface FactuurRegel {
+    hoeveelheid: string;
+    tarief: string;
+    btwPercentage: string;
+    grootboekSleutel: string;
+    omschrijving: string;
+}
+
+enum FactuurKlasse {
+    Creditnota = "Creditnota",
+    Debetnota = "Debetnota",
+    Correctienota = "Correctienota"
+}
+
+enum BoekingType {
+    Credit = "Credit",
+    Debet = "Debet"
+}
+
+enum SaldoSoort {
+    Budget = "Budget",
+    Reservering = "Reservering",
+    Werkelijk = "Werkelijk"
+}
+
+export {
+    RotterdamEsbConfig,
+    JournaalpostOpvoerenConfig,
+    JournaalpostRegel,
+    VerkoopfactuurOpvoerenConfig,
+    NatuurlijkPersoon,
+    NietNatuurlijkPersoon,
+    FactuurRegel,
+    FactuurKlasse,
+    BoekingType,
+    SaldoSoort
+}

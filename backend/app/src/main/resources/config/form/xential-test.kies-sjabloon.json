@@ -1,0 +1,59 @@
+{
+    "components": [
+        {
+            "label": "pv sjabloon groep",
+            "tableView": false,
+            "key": "pv.xentialContentId",
+            "type": "hidden",
+            "input": true
+        },
+        {
+            "label": "HTML",
+            "content": "<h2 style='font-weight: bold; margin-bottom: 10px;'>Kies Sjabloon</h2>",
+            "refreshOnChange": false,
+            "key": "html",
+            "type": "htmlelement",
+            "input": false,
+            "tableView": false
+        },
+        {
+            "label": "Sjabloon id",
+            "key": "pv.xentialSjabloonId",
+            "validate": {
+                "required": true
+            },
+            "data": {
+                "url": "../api/v1/xential/sjablonen?sjabloonGroupId={{ data.pv.xentialContentId.xentialGroupId }}",
+                "method": "GET",
+                "headers": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{localStorage.getItem('formioToken')}}"
+                    }
+                ]
+            },
+            "type": "select",
+            "selectValues": "sjablonen",
+            "lazyLoad": false,
+            "input": true,
+            "widget": "choicesjs",
+            "dataSrc": "url",
+            "valueProperty": "id",
+            "template": "<span>{{ item.naam }}</span>",
+            "tableView": true
+        },
+        {
+            "type": "button",
+            "label": "Afronden",
+            "showValidations": false,
+            "disableOnInvalid": true,
+            "tableView": false,
+            "key": "submit",
+            "input": true
+        }
+    ]
+}

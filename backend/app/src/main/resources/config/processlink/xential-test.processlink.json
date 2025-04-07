@@ -4,5 +4,26 @@
     "activityType": "bpmn:StartEvent:start",
     "processLinkType": "form",
     "formDefinitionName": "xential-test.start"
+  },
+  {
+    "activityId": "XentialChooseSjabloon",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "xential-test.kies-sjabloon"
+  },
+  {
+    "activityId": "PrepareContentTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
+    "pluginActionDefinitionKey": "prepare-content-with-template",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "fileFormat": "PDF",
+      "documentId": "docId",
+      "eventMessageName": "XENTIAL_DOC_RECEIVED",
+      "xentialContentId": "xentialContentId",
+      "textTemplateId": "template:texttemplate",
+      "firstTemplateGroupId": "415cf276-2af0-4192-923d-4391c4d7b2a8"
+    }
   }
 ]

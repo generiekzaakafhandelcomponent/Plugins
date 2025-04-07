@@ -64,8 +64,7 @@ export class XentialConfigurationComponent
         private readonly pluginManagementService: PluginManagementService,
         private readonly translateService: TranslateService,
         private readonly pluginTranslationService: PluginTranslationService
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
         this.openSaveSubscription();
@@ -85,7 +84,6 @@ export class XentialConfigurationComponent
             formValue.applicationName &&
             formValue.applicationPassword &&
             formValue.baseUrl &&
-            formValue.templateGroupId &&
             formValue.gebruikersId &&
             formValue.mTlsSslContextAutoConfigurationId
         );

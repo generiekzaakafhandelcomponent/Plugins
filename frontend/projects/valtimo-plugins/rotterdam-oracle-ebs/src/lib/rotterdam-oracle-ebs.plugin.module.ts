@@ -17,29 +17,48 @@
 import {NgModule} from '@angular/core';
 import {AsyncPipe, CommonModule, NgIf} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {FormModule, InputLabelModule, InputModule} from '@valtimo/components';
+import {CarbonMultiInputModule, FormModule, InputLabelModule, InputModule, SelectModule} from '@valtimo/components';
 import {ConfigurationComponent} from './components/configuration/configuration.component';
 import {JournaalpostOpvoerenComponent} from "./components/journaalpost-opvoeren/journaalpost-opvoeren.component";
-import {NotificationModule, ToggleModule} from "carbon-components-angular";
+import {
+    ButtonModule,
+    IconModule,
+    InputModule as CarbonInputModule,
+    NotificationModule,
+    SelectModule as CarbonSelectModule
+} from "carbon-components-angular";
 import {VerkoopfactuurOpvoerenComponent} from "./components/verkoopfactuur-opvoeren/verkoopfactuur-opvoeren.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {InputFieldComponent} from "./components/fields/input-field/input-field.component";
+import {SelectFieldComponent} from "./components/fields/select-field/select-field.component";
 
 @NgModule({
     declarations: [
+        InputFieldComponent,
+        SelectFieldComponent,
         ConfigurationComponent,
         JournaalpostOpvoerenComponent,
         VerkoopfactuurOpvoerenComponent
     ],
     imports: [
+        AsyncPipe,
         CommonModule,
-        PluginTranslatePipeModule,
-        FormModule,
-        InputModule,
-        InputLabelModule,
-        AsyncPipe,
-        NotificationModule,
-        AsyncPipe,
-        ToggleModule,
         NgIf,
+        PluginTranslatePipeModule,
+        CarbonMultiInputModule,
+        FormModule,
+        InputLabelModule,
+        InputModule,
+        SelectModule,
+        NotificationModule,
+        ReactiveFormsModule,
+        ButtonModule,
+        IconModule,
+        CarbonInputModule,
+        CarbonSelectModule,
+        AsyncPipe,
+        NgIf,
+        AsyncPipe
     ],
     exports: [
         ConfigurationComponent,
@@ -47,5 +66,4 @@ import {VerkoopfactuurOpvoerenComponent} from "./components/verkoopfactuur-opvoe
         VerkoopfactuurOpvoerenComponent
     ],
 })
-export class RotterdamOracleEbsPluginModule {
-}
+export class RotterdamOracleEbsPluginModule {}
