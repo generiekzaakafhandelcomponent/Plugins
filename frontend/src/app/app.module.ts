@@ -101,6 +101,12 @@ import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/
 import {MtlsSslcontextPluginModule,mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
 import {
+    haalCentraalBrpPluginSpecification
+} from "../../projects/valtimo-plugins/haal-centraal/src/lib/brp/haal-centraal-brp.plugin.specification";
+import {
+    HaalCentraalBrpPluginModule
+} from "../../projects/valtimo-plugins/haal-centraal/src/lib/brp/haal-centraal-brp.plugin.module";
+import {
     HaalCentraalBrpAuthPluginModule
 } from "../../projects/valtimo-plugins/haal-centraal-auth/src/lib/haal-centraal-brp-auth.plugin.module";
 import {
@@ -134,6 +140,7 @@ export function tabsFactory() {
         MtlsSslcontextPluginModule,
         SlackPluginModule,
         HuggingFacePluginModule,
+        HaalCentraalBrpPluginModule,
         HaalCentraalBrpAuthPluginModule,
         SmtpMailPluginModule,
         SpotlerPluginModule,
@@ -201,6 +208,7 @@ export function tabsFactory() {
             externeKlanttaakPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
+            haalCentraalBrpPluginSpecification,
             haalCentraalBrpAuthPluginSpecification,
             objectManagementPluginSpecification,
             objectTokenAuthenticationPluginSpecification,

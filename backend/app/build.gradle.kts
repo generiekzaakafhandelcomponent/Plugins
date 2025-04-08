@@ -18,7 +18,7 @@ dependencies {
     implementation(project(":backend:amsterdam-email-api"))
     implementation(project(":backend:berkelybridge-textgenerator"))
     implementation(project(":backend:externe-klanttaak"))
-    implementation(project(":backend:freemarker"))
+    implementation(project(":backend:haal-centraal"))
     implementation(project(":backend:haal-centraal-auth"))
     implementation(project(":backend:mTLS-SSLContext"))
     implementation(project(":backend:notify-nl"))

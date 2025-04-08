@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2020 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,25 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {FindObjectsConfig} from '../../models';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
+import {BewoningenConfig} from '../../models';
 
 @Component({
-    selector: 'valtimo-find-object-configuration',
-    templateUrl: './find-objects-configuration.component.html',
+    selector: 'brp-get-bewoningen',
+    templateUrl: './haal-centraal-brp-bewoningen.component.html',
+    styleUrls: ['./haal-centraal-brp-bewoningen.component.scss']
 })
-export class FindObjectsConfigurationComponent
+
+export class HaalCentraalBrpBewoningenComponent
     implements FunctionConfigurationComponent, OnInit, OnDestroy {
-    @Input() save$!: Observable<void>;
-    @Input() disabled$!: Observable<boolean>;
-    @Input() pluginId!: string;
-    @Input() prefillConfiguration$!: Observable<FindObjectsConfig>;
+    @Input() save$: Observable<void>;
+    @Input() disabled$: Observable<boolean>;
+    @Input() pluginId: string;
+    @Input() prefillConfiguration$: Observable<BewoningenConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
+    @Output() configuration: EventEmitter<BewoningenConfig> = new EventEmitter<BewoningenConfig>();
 
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<FindObjectsConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<BewoningenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     ngOnInit(): void {
@@ -45,27 +46,29 @@ export class FindObjectsConfigurationComponent
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: FindObjectsConfig): void {
-        console.log(formValue)
-
+    formValueChange(formValue: BewoningenConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: FindObjectsConfig): void {
-        const valid = !!(formValue.objectManagementConfigurationId && formValue.objectType && formValue.searchString && formValue.pagesize && formValue.pagenumber && formValue.listOfObjectsProcessVariableName);
+    private handleValid(formValue: BewoningenConfig): void {
+        const valid = !!(
+            formValue.adresseerbaarObjectIdentificatie &&
+            formValue.peildatum &&
+            formValue.resultProcessVariableName
+        );
 
         this.valid$.next(valid);
         this.valid.emit(valid);
     }
 
     private openSaveSubscription(): void {
-        this.saveSubscription = this.save$?.subscribe(save => {
+        this.saveSubscription = this.save$?.subscribe(() => {
             combineLatest([this.formValue$, this.valid$])
                 .pipe(take(1))
                 .subscribe(([formValue, valid]) => {
                     if (valid) {
-                        this.configuration.emit(formValue!);
+                        this.configuration.emit(formValue);
                     }
                 });
         });
