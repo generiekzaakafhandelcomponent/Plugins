@@ -3,7 +3,7 @@ name: valtimo-plugins-local
 services:
 
   example-core-db:
-    container_name: example-core-db
+    container_name: example-core-db-3
     image: postgres:15
     ports:
       - "54340:5432"
@@ -13,7 +13,7 @@ services:
       POSTGRES_DB: example-core-db
 
   example-core-keycloak:
-    container_name: example-core-keycloak
+    container_name: example-core-keycloak-3
     depends_on:
       - example-core-keycloak-db
     image: quay.io/keycloak/keycloak:17.0.1-legacy
@@ -36,17 +36,16 @@ services:
 
   example-core-keycloak-db:
     image: postgres:15
-    container_name: example-core-keycloak-db
+    container_name: example-core-keycloak-db-3
     ports:
       - "54329:5432"
     environment:
       - POSTGRES_USER=${DB_USER:-keycloak}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-keycloak}
 
-  #zgw
   openzaak:
     image: openzaak/open-zaak:1.12.4
-    container_name: openzaak
+    container_name: openzaak-3
     platform: linux/amd64
     environment:
       - DB_HOST=openzaak-database
@@ -68,14 +67,14 @@ services:
     ports:
       - "8001:8000"
     depends_on:
-      -   openzaak-database
-      -   redis
+      - openzaak-database
+      - redis
     volumes:
-      - openzaak-private-media:/app/private-media # persist data even if container shuts down
+      - openzaak-private-media-3:/app/private-media  # persist data even if container shuts down
 
   openzaak-database:
     image: mdillon/postgis:11
-    container_name: openzaak-database
+    container_name: openzaak-database-3
     platform: linux/amd64
     ports:
       - "8091:5432"
@@ -88,11 +87,11 @@ services:
 
   redis:
     image: redis:6.2.6
-    container_name: redis
+    container_name: redis-3
 
   objecten-api:
     image: maykinmedia/objects-api:2.1.1
-    container_name: objecten-api
+    container_name: objecten-api-3
     platform: linux/amd64
     ports:
       - "8010:8000"
@@ -109,7 +108,7 @@ services:
 
   objecten-api-database:
     image: postgis/postgis:13-3.1
-    container_name: objecten-api-database
+    container_name: objecten-api-database-3
     platform: linux/amd64
     environment:
       - POSTGRES_USER=objects
@@ -118,7 +117,7 @@ services:
 
   objecten-api-import:
     image: maykinmedia/objects-api:2.1.1
-    container_name: objects-api-import
+    container_name: objects-api-import-3
     platform: linux/amd64
     environment: *objects-env
     # in the current version of django it is not possible to create a new user with password without user interaction by using the createsuperuser command
@@ -131,7 +130,7 @@ services:
 
   objecttypen-api:
     image: maykinmedia/objecttypes-api:2.1.0
-    container_name: objecttypen-api
+    container_name: objecttypen-api-3
     platform: linux/amd64
     ports:
       - "8011:8000"
@@ -148,7 +147,7 @@ services:
 
   objecttypen-api-database:
     image: postgres:14.1
-    container_name: objecttypen-api-database
+    container_name: objecttypen-api-database-3
     environment:
       - POSTGRES_USER=objecttypes
       - POSTGRES_PASSWORD=objecttypes
@@ -156,7 +155,7 @@ services:
 
   objecttypen-api-import:
     image: maykinmedia/objecttypes-api:2.1.0
-    container_name: objecttypen-api-import
+    container_name: objecttypen-api-import-3
     platform: linux/amd64
     environment: *objecttypes-env
     command: sh init/init.sh
@@ -168,14 +167,14 @@ services:
 
   open-notificaties-rabbitmq:
     image: rabbitmq:3.9-management
-    container_name: open-notificaties-rabbitmq
+    container_name: open-notificaties-rabbitmq-3
     expose:
       - 5672
       - 15672
 
   open-notificaties:
     image: openzaak/open-notificaties:1.4.3
-    container_name: open-notificaties
+    container_name: open-notificaties-3
     platform: linux/amd64
     ports:
       - "8002:8000"
@@ -200,14 +199,14 @@ services:
 
   open-notificaties-celery:
     image: openzaak/open-notificaties:1.4.3
-    container_name: open-notificaties-celery
+    container_name: open-notificaties-celery-3
     platform: linux/amd64
     environment: *notificaties-env
     command: /celery_worker.sh
 
   open-notificaties-database:
     image: postgres:13.5  # open-notificaties doesn't work with postgres 14.
-    container_name: open-notificaties-database
+    container_name: open-notificaties-database-3
     ports:
       - "54319:5432"
     environment:
@@ -219,10 +218,10 @@ services:
 
   redis-open-notificaties:
     image: redis:6.2.6
-    container_name: redis-open-notificaties
+    container_name: redis-open-notificaties-3
 
   bewoningen-mock:
-    container_name: bewoningen-mock
+    container_name: bewoningen-mock-2
     image: ghcr.io/brp-api/bewoning-service-mock:2.0.1-latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Release
@@ -238,4 +237,4 @@ networks:
   brp-api-network:
     name: brp-api-network
 volumes:
-  openzaak-private-media:
+  openzaak-private-media-3:
