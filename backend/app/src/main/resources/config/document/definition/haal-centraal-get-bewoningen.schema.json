@@ -1,0 +1,12 @@
+{
+  "$id": "haal-centraal-get-bewoningen.schema",
+  "type": "object",
+  "title": "Haal Centraal Get Bewoningen",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "results": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}

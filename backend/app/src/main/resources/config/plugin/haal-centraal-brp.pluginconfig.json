@@ -1,0 +1,19 @@
+[
+  {
+    "id": "6a6a3adc-ad44-4774-bcb0-b1a34c426561",
+    "title": "Haal Centraal BRP AUTH (autodeployed)",
+    "pluginDefinitionKey": "haal-centraal-auth",
+    "properties": {
+      "authenticationSecret": "secret"
+    }
+  },
+  {
+    "id": "a7a8487a-7ad6-42ac-9df2-e6cb2fc1e1e6",
+    "title": "Haal Centraal BRP (autodeployed)",
+    "pluginDefinitionKey": "haalcentraalbrp",
+    "properties": {
+      "brpBaseUrl": "http://localhost:5010/haalcentraal/api/bewoning",
+      "authenticationPluginConfiguration": "6a6a3adc-ad44-4774-bcb0-b1a34c426561"
+    }
+  }
+]

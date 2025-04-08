@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "Process_HCBRPGB",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  }
+]
