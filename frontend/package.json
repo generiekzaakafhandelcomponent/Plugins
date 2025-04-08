@@ -125,6 +125,8 @@
     "zone.js": "0.14.10"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.11",
+    "@angular/compiler-cli": "^17.3.0",
     "@types/jasmine": "5.1.4",
     "@types/jasminewd2": "2.0.13",
     "@types/node": "22.1.0",
@@ -150,8 +152,10 @@
     "karma-coverage-istanbul-reporter": "3.0.3",
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.1.0",
+    "ng-packagr": "^17.3.0",
     "puppeteer": "23.0.1",
-    "sass": "1.77.8"
+    "sass": "1.77.8",
+    "typescript": "~5.4.2"
   },
   "overrides": {
     "@ng-bootstrap/ng-bootstrap": {
