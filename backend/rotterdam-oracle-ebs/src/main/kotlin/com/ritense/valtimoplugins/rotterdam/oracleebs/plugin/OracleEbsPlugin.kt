@@ -122,6 +122,8 @@ class OracleEbsPlugin(
                 boekperiode = integerOrNullFrom(resolvedValues[BOEKPERIODE_KEY]!!)
             )
         ).let { request ->
+            logger.debug { "Trying to send OpvoerenJournaalpostVraag" }
+            logger.trace { "OpvoerenJournaalpostVraag: $request" }
             try {
                 esbClient.journaalPostenApi(restClient()).opvoerenJournaalpost(request).let { response ->
                     logger.debug { "Journaalpost Opvoeren response: $response" }
@@ -261,6 +263,8 @@ class OracleEbsPlugin(
             ),
             bijlage = null
         ).let { request ->
+            logger.debug { "Trying to send OpvoerenVerkoopfactuurVraag" }
+            logger.trace { "OpvoerenVerkoopfactuurVraag: $request" }
             try {
                 esbClient.verkoopFacturenApi(restClient()).opvoerenVerkoopfactuur(request).let { response ->
                     logger.debug { "Verkoopfactuur Opvoeren response: $response" }
