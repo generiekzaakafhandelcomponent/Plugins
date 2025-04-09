@@ -90,7 +90,7 @@ const rotterdamOracleEbsPluginSpecification: PluginSpecification = {
             'verkoopfactuur.regel.verwijderen': 'Regel verwijderen',
             'verkoopfactuur.regel.hoeveelheid': 'Hoeveelheid',
             'verkoopfactuur.regel.tarief': 'Tarief',
-            'verkoopfactuur.regel.btwPercentage': 'BTW pPercentage',
+            'verkoopfactuur.regel.btwPercentage': 'BTW percentage',
             'verkoopfactuur.regel.grootboekSleutel': 'Grootboek sleutel',
             'verkoopfactuur.regel.omschrijving': 'Omschrijving'
         },
