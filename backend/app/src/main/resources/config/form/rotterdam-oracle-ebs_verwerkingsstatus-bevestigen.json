@@ -2,16 +2,48 @@
   "display": "form",
   "components": [
     {
-      "label": "Verwerkingsstatus",
-      "applyMaskOn": "change",
-      "autoExpand": false,
-      "tableView": true,
-      "inputFormat": "plain",
-      "validateWhenHidden": false,
-      "key": "pv:verwerkingsstatus",
-      "type": "textarea",
+      "label": "Geslaagd",
+      "key": "isGeslaagd",
+      "type": "textfield",
       "input": true,
-      "readonly": true
+      "persistent": "client-only",
+      "readonly": true,
+      "properties": {
+        "sourceKey": "pv:verwerkingsstatus.isGeslaagd"
+      }
+    },
+    {
+      "label": "Melding",
+      "key": "melding",
+      "type": "textfield",
+      "input": true,
+      "persistent": "client-only",
+      "readonly": true,
+      "properties": {
+        "sourceKey": "pv:verwerkingsstatus.melding"
+      }
+    },
+    {
+      "label": "Foutcode",
+      "key": "foutcode",
+      "type": "textfield",
+      "input": true,
+      "persistent": "client-only",
+      "readonly": true,
+      "properties": {
+        "sourceKey": "pv:verwerkingsstatus.foutcode"
+      }
+    },
+    {
+      "label": "Foutmelding",
+      "key": "foutmelding",
+      "type": "textfield",
+      "input": true,
+      "persistent": "client-only",
+      "readonly": true,
+      "properties": {
+        "sourceKey": "pv:verwerkingsstatus.foutmelding"
+      }
     },
     {
       "type": "button",
