@@ -10,7 +10,6 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
-import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.Verwerkingsstatus
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
 import com.rotterdam.esb.opvoeren.models.Factuurregel
@@ -48,6 +47,9 @@ class OracleEbsPlugin(
     @PluginProperty(key = "mTlsSslContextConfiguration", secret = false, required = true)
     internal lateinit var mTlsSslContextConfiguration: MTlsSslContext
 
+    @PluginProperty(key = "authenticationEnabled", secret = false, required = true)
+    internal var authenticationEnabled: String = "true"
+
     @PluginAction(
         key = "journaalpost-opvoeren",
         title = "Journaalpost Opvoeren",
@@ -58,6 +60,7 @@ class OracleEbsPlugin(
     )
     fun journaalpostOpvoeren(
         execution: DelegateExecution,
+        @PluginActionProperty pvResultContainer: String,
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
         @PluginActionProperty sleutel: String,
@@ -68,7 +71,7 @@ class OracleEbsPlugin(
         @PluginActionProperty boekjaar: String? = null,
         @PluginActionProperty boekperiode: String? = null,
         @PluginActionProperty regels: List<JournaalpostRegel>
-    ): Verwerkingsstatus {
+    ) {
         logger.info {
             "Journaalpost Opvoeren(" +
                 "procesCode: $procesCode, " +
@@ -128,12 +131,12 @@ class OracleEbsPlugin(
             try {
                 esbClient.journaalPostenApi(restClient()).opvoerenJournaalpost(request).let { response ->
                     logger.debug { "Journaalpost Opvoeren response: $response" }
-                    return Verwerkingsstatus(
-                        isGeslaagd = response.isGeslaagd,
-                        melding = response.melding,
-                        foutcode = response.foutcode,
-                        foutmelding = response.foutmelding,
-                    )
+                    execution.setVariable(pvResultContainer, mapOf(
+                        "isGeslaagd" to response.isGeslaagd,
+                        "melding" to response.melding,
+                        "foutcode" to response.foutcode,
+                        "foutmelding" to response.foutmelding
+                    ))
                 }
             } catch (ex: RestClientResponseException) {
                 logger.error(ex) { "Something went wrong. ${ex.message}" }
@@ -152,6 +155,7 @@ class OracleEbsPlugin(
     )
     fun verkoopfactuurOpvoeren(
         execution: DelegateExecution,
+        @PluginActionProperty pvResultContainer: String,
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
         @PluginActionProperty factuurKlasse: FactuurKlasse,
@@ -159,7 +163,7 @@ class OracleEbsPlugin(
         @PluginActionProperty natuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon,
         @PluginActionProperty nietNatuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon,
         @PluginActionProperty regels: List<FactuurRegel>
-    ): Verwerkingsstatus {
+    ) {
         logger.info {
             "Verkoopfactuur Opvoeren(" +
                 "procesCode: $procesCode, " +
@@ -272,12 +276,12 @@ class OracleEbsPlugin(
             try {
                 esbClient.verkoopFacturenApi(restClient()).opvoerenVerkoopfactuur(request).let { response ->
                     logger.debug { "Verkoopfactuur Opvoeren response: $response" }
-                    return Verwerkingsstatus(
-                        isGeslaagd = response.isGeslaagd,
-                        melding = response.melding,
-                        foutcode = response.foutcode,
-                        foutmelding = response.foutmelding,
-                    )
+                    execution.setVariable(pvResultContainer, mapOf(
+                        "isGeslaagd" to response.isGeslaagd,
+                        "melding" to response.melding,
+                        "foutcode" to response.foutcode,
+                        "foutmelding" to response.foutmelding
+                    ))
                 }
             } catch (ex: RestClientResponseException) {
                 logger.error(ex) { "Something went wrong. ${ex.message}" }
@@ -386,7 +390,7 @@ class OracleEbsPlugin(
     private fun restClient(): RestClient =
         esbClient.createRestClient(
             baseUrl = baseUrl.toString(),
-            authenticationEnabled = true,
+            authenticationEnabled = authenticationEnabled.toBoolean(),
             mTlsSslContext = mTlsSslContextConfiguration
         )
 

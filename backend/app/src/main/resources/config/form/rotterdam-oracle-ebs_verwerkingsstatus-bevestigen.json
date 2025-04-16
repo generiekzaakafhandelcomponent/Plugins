@@ -1,0 +1,25 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Verwerkingsstatus",
+      "applyMaskOn": "change",
+      "autoExpand": false,
+      "tableView": true,
+      "inputFormat": "plain",
+      "validateWhenHidden": false,
+      "key": "pv:verwerkingsstatus",
+      "type": "textarea",
+      "input": true,
+      "readonly": true
+    },
+    {
+      "type": "button",
+      "label": "Submit",
+      "key": "submit",
+      "disableOnInvalid": true,
+      "input": true,
+      "tableView": false
+    }
+  ]
+}

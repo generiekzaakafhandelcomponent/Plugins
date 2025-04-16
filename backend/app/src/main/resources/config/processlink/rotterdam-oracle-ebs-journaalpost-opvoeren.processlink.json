@@ -9,13 +9,13 @@
     "activityId": "vergunning-verzoek-indienen",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "vergunning-verzoek-indienen"
+    "formDefinitionName": "rotterdam-oracle-ebs_vergunning-verzoek-indienen"
   },
   {
     "activityId": "ideal-betaling",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "ideal-betaling-simulatie"
+    "formDefinitionName": "rotterdam-oracle-ebs_ideal-betaling-simulatie"
   },
   {
     "activityId": "journaalpost-opvoeren",
@@ -24,6 +24,7 @@
     "pluginConfigurationId": "4a8627e0-bd7b-401d-a86f-fe14ab3ec313",
     "pluginActionDefinitionKey": "journaalpost-opvoeren",
     "actionProperties": {
+      "pvResultContainer": "verwerkingsstatus",
       "procesCode": "pv:procescode",
       "referentieNummer": "pv:referentienummer",
       "sleutel": "pv:sleutel",
@@ -42,5 +43,11 @@
         }
       ]
     }
+  },
+  {
+    "activityId": "journaalpost-opvoeren-resultaat-bevestigen",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "rotterdam-oracle-ebs_verwerkingsstatus-bevestigen"
   }
 ]

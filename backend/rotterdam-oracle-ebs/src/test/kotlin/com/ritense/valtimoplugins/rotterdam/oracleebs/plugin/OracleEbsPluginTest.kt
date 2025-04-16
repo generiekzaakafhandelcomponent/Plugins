@@ -9,7 +9,6 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
-import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.Verwerkingsstatus
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
 import okhttp3.mockwebserver.MockResponse
@@ -119,6 +118,7 @@ class OracleEbsPluginTest {
         assertDoesNotThrow {
             plugin.journaalpostOpvoeren(
                 execution = execution,
+                pvResultContainer = "verwerkingsstatus",
                 procesCode = "98332",
                 referentieNummer= "2025-AGV-123456",
                 sleutel= "784",
@@ -165,6 +165,7 @@ class OracleEbsPluginTest {
         assertDoesNotThrow {
             plugin.verkoopfactuurOpvoeren(
                 execution = execution,
+                pvResultContainer = "verwerkingsstatus",
                 procesCode = "98332",
                 referentieNummer= "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.Creditnota,
@@ -196,11 +197,11 @@ class OracleEbsPluginTest {
         }
     }
 
-    private fun verwerkingsstatusGeslaagdAsJson(): String = objectMapper.writeValueAsString(Verwerkingsstatus(
-        isGeslaagd = true,
-        foutcode = null,
-        foutmelding = null,
-        melding = null
+    private fun verwerkingsstatusGeslaagdAsJson(): String = objectMapper.writeValueAsString(mapOf(
+        "isGeslaagd" to true,
+        "foutcode" to null,
+        "foutmelding" to null,
+        "melding" to null
     ))
 
     private fun mockOkResponse(body: String) {
