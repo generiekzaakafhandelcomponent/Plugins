@@ -1,5 +1,7 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.BoekingType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
@@ -7,6 +9,7 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.Verwerkingsstatus
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
 import okhttp3.mockwebserver.MockResponse
@@ -27,10 +30,13 @@ import java.time.LocalDateTime
 
 class OracleEbsPluginTest {
 
+    private val objectMapper = jacksonObjectMapper()
+
     private lateinit var mockWebServer: MockWebServer
 
     private lateinit var esbClient: EsbClient
     private lateinit var valueResolverService: ValueResolverService
+    private lateinit var mTlsSslContext: MTlsSslContext
 
     private lateinit var plugin: OracleEbsPlugin
 
@@ -42,12 +48,13 @@ class OracleEbsPluginTest {
 
         esbClient = EsbClient()
         valueResolverService = mock()
+        mTlsSslContext = mock()
 
         plugin = OracleEbsPlugin(
             esbClient, valueResolverService
         ).apply {
             this.baseUrl = mockWebServer.url("/").toUri()
-            this.authenticationEnabled = "false"
+            this.mTlsSslContextConfiguration = mTlsSslContext
         }
     }
 
@@ -106,12 +113,7 @@ class OracleEbsPluginTest {
         val execution = DelegateExecutionFake()
             .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
 
-        mockOkResponse("""{
-            "isGeslaagd": true,
-            "foutcode": null,
-            "foutmelding": null,
-            "melding": null
-        }""".trimIndent())
+        mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
         // when & then
         assertDoesNotThrow {
@@ -157,12 +159,7 @@ class OracleEbsPluginTest {
         val execution = DelegateExecutionFake()
             .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
 
-        mockOkResponse("""{
-            "isGeslaagd": true,
-            "foutcode": null,
-            "foutmelding": null,
-            "melding": null
-        }""".trimIndent())
+        mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
         // when & then
         assertDoesNotThrow {
@@ -198,6 +195,13 @@ class OracleEbsPluginTest {
                 .isEqualTo("/verkoopfactuur/opvoeren")
         }
     }
+
+    private fun verwerkingsstatusGeslaagdAsJson(): String = objectMapper.writeValueAsString(Verwerkingsstatus(
+        isGeslaagd = true,
+        foutcode = null,
+        foutmelding = null,
+        melding = null
+    ))
 
     private fun mockOkResponse(body: String) {
         MockResponse()

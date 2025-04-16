@@ -10,6 +10,7 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.Verwerkingsstatus
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
 import com.rotterdam.esb.opvoeren.models.Factuurregel
@@ -67,7 +68,7 @@ class OracleEbsPlugin(
         @PluginActionProperty boekjaar: String? = null,
         @PluginActionProperty boekperiode: String? = null,
         @PluginActionProperty regels: List<JournaalpostRegel>
-    ) {
+    ): Verwerkingsstatus {
         logger.info {
             "Journaalpost Opvoeren(" +
                 "procesCode: $procesCode, " +
@@ -127,9 +128,12 @@ class OracleEbsPlugin(
             try {
                 esbClient.journaalPostenApi(restClient()).opvoerenJournaalpost(request).let { response ->
                     logger.debug { "Journaalpost Opvoeren response: $response" }
-                    if (!response.isGeslaagd) {
-                        throw RuntimeException("Journaalpost Opvoeren response: $response")
-                    }
+                    return Verwerkingsstatus(
+                        isGeslaagd = response.isGeslaagd,
+                        melding = response.melding,
+                        foutcode = response.foutcode,
+                        foutmelding = response.foutmelding,
+                    )
                 }
             } catch (ex: RestClientResponseException) {
                 logger.error(ex) { "Something went wrong. ${ex.message}" }
@@ -155,7 +159,7 @@ class OracleEbsPlugin(
         @PluginActionProperty natuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon,
         @PluginActionProperty nietNatuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon,
         @PluginActionProperty regels: List<FactuurRegel>
-    ) {
+    ): Verwerkingsstatus {
         logger.info {
             "Verkoopfactuur Opvoeren(" +
                 "procesCode: $procesCode, " +
@@ -268,9 +272,12 @@ class OracleEbsPlugin(
             try {
                 esbClient.verkoopFacturenApi(restClient()).opvoerenVerkoopfactuur(request).let { response ->
                     logger.debug { "Verkoopfactuur Opvoeren response: $response" }
-                    if (!response.isGeslaagd) {
-                        throw RuntimeException("Verkoopfactuur Opvoeren response: $response")
-                    }
+                    return Verwerkingsstatus(
+                        isGeslaagd = response.isGeslaagd,
+                        melding = response.melding,
+                        foutcode = response.foutcode,
+                        foutmelding = response.foutmelding,
+                    )
                 }
             } catch (ex: RestClientResponseException) {
                 logger.error(ex) { "Something went wrong. ${ex.message}" }
