@@ -19,9 +19,11 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 interface RotterdamEsbConfig extends PluginConfigurationData {
     baseUrl: string;
     mTlsSslContextConfiguration: string
+    authenticationEnabled: boolean
 }
 
 interface JournaalpostOpvoerenConfig {
+    pvResultContainer: string;
     procesCode: string;
     referentieNummer: string;
     sleutel: string;
@@ -42,6 +44,7 @@ interface JournaalpostRegel {
 }
 
 interface VerkoopfactuurOpvoerenConfig {
+    pvResultContainer: string;
     procesCode: string;
     referentieNummer: string;
     factuurKlasse: FactuurKlasse;

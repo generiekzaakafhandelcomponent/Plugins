@@ -1,0 +1,44 @@
+[
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/journaalpost/opvoeren"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "values": ["application/json"]
+        }
+      ],
+      "body": {
+        "isGeslaagd": true,
+        "melding": "Journaalpost is ontvangen en geldig; de Journaalpost moet nog verwerkt worden!",
+        "foutcode": "ERROR",
+        "foutmelding": "Ketenverwerking niet geslaagd:Er is iets misgegaan bij CFA"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/verkoopfactuur/opvoeren"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "values": ["application/json"]
+        }
+      ],
+      "body": {
+        "isGeslaagd": true,
+        "melding": "Journaalpost is ontvangen en geldig; de Journaalpost moet nog verwerkt worden!",
+        "foutcode": "ERROR",
+        "foutmelding": "Ketenverwerking niet geslaagd:Er is iets misgegaan bij CFA"
+      }
+    }
+  }
+]

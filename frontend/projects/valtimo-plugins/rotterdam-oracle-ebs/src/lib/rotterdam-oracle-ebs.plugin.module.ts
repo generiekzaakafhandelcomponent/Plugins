@@ -25,7 +25,8 @@ import {
     IconModule,
     InputModule as CarbonInputModule,
     NotificationModule,
-    SelectModule as CarbonSelectModule
+    SelectModule as CarbonSelectModule,
+    ToggleModule
 } from "carbon-components-angular";
 import {VerkoopfactuurOpvoerenComponent} from "./components/verkoopfactuur-opvoeren/verkoopfactuur-opvoeren.component";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -51,14 +52,12 @@ import {SelectFieldComponent} from "./components/fields/select-field/select-fiel
         InputModule,
         SelectModule,
         NotificationModule,
+        ToggleModule,
         ReactiveFormsModule,
         ButtonModule,
         IconModule,
         CarbonInputModule,
-        CarbonSelectModule,
-        AsyncPipe,
-        NgIf,
-        AsyncPipe
+        CarbonSelectModule
     ],
     exports: [
         ConfigurationComponent,

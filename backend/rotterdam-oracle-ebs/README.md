@@ -17,5 +17,5 @@ Using the plugin comes down to a few simple steps:
 
 * Create a configuration instance for the plugin and configure the following properties:
     * `baseUrl` - The URL of the ESB.
-    * `authenticationEnabled` - Is mTLS SSL authentication applicable for the connection to the ESB.
     * `mTlsSllContextConfigurationId` - The mTLS SSL Context configuration that should be used.
+    * `authenticationEnabled` - Is mTLS SSL authentication applicable for the connection to the ESB.
