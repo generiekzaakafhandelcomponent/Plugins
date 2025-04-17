@@ -1,0 +1,23 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "Start",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": null,
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "Activity_11jg92w",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "bc71b26b-6f91-4433-80b5-fdbc8e42cf1b",
+    "pluginActionDefinitionKey": "get-objects-unpaged",
+    "actionProperties": {
+      "objectManagementConfigurationTitle": "Boom",
+      "listOfObjectProcessVariableName": "results"
+    },
+    "processLinkType": "plugin"
+  }
+]

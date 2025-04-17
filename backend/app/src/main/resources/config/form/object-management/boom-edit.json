@@ -1,0 +1,70 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Type",
+      "applyMaskOn": "change",
+      "tableView": true,
+      "key": "type",
+      "properties": {
+        "targetKey": "doc:type"
+      },
+      "attributes": {
+        "data-testid": "boom-edit-kiemjaar"
+      },
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "Haag"
+    },
+    {
+      "label": "Leeftijd",
+      "applyMaskOn": "change",
+      "mask": false,
+      "tableView": false,
+      "delimiter": false,
+      "requireDecimal": false,
+      "inputFormat": "plain",
+      "truncateMultipleSpaces": false,
+      "key": "leeftijd",
+      "properties": {
+        "targetKey": "doc:/leeftijd"
+      },
+      "attributes": {
+        "data-testid": "boom-edit-leeftijd"
+      },
+      "type": "number",
+      "input": true,
+      "defaultValue": 212
+    },
+    {
+      "label": "Boomhoogteactueel",
+      "applyMaskOn": "change",
+      "mask": false,
+      "tableView": false,
+      "delimiter": false,
+      "requireDecimal": false,
+      "inputFormat": "plain",
+      "truncateMultipleSpaces": false,
+      "key": "boomhoogteactueel",
+      "properties": {
+        "targetKey": "doc:/boomhoogteactueel"
+      },
+      "attributes": {
+        "data-testid": "boom-edit-boomhoogteactueel"
+      },
+      "type": "number",
+      "input": true,
+      "defaultValue": 505
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false
+    }
+  ]
+}

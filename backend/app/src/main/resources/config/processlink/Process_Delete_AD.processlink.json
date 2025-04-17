@@ -1,0 +1,23 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "DeleteFormStart",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "Activity_04rvf4e",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "bc71b26b-6f91-4433-80b5-fdbc8e42cf1b",
+    "pluginActionDefinitionKey": "delete-object",
+    "actionProperties": {
+      "objectManagementConfigurationId": "b668aefa-1191-476b-9e08-0e7f7a907a3e",
+      "objectUrlVariableName": "doc:/id"
+    },
+    "processLinkType": "plugin"
+  }
+]
