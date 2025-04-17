@@ -31,12 +31,12 @@
             [required]="true"
             [tooltip]="'objectManagementConfigurationIdTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
-    <v-input name="objectUrlProcessVariableName"
-             [title]="'objectUrlProcessVariableName' | pluginTranslate: pluginId | async"
+    <v-input name="objectUrlVariableName"
+             [title]="'objectUrlVariableName' | pluginTranslate: pluginId | async"
              [margin]="true"
-             [defaultValue]="obs.prefill?.objectUrlProcessVariableName"
+             [defaultValue]="obs.prefill?.objectUrlVariableName"
              [disabled]="obs.disabled"
              [required]="true"
-             [tooltip]="'objectUrlProcessVariableNameTooltip' | pluginTranslate: pluginId | async">
+             [tooltip]="'objectUrlVariableNameTooltip' | pluginTranslate: pluginId | async">
     </v-input>
 </v-form>

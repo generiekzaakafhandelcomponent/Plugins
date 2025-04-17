@@ -33,7 +33,7 @@ interface GetObjectsConfig {
 
 interface DeleteObjectConfig {
     objectManagementConfigurationId: string;
-    objectUrlProcessVariableName: string;
+    objectUrlVariableName: string;
 }
 
 interface UpdateObjectConfig {

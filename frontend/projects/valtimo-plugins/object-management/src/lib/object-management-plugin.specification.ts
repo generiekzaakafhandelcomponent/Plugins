@@ -18,7 +18,7 @@ import {PluginSpecification} from '@valtimo/plugin';
 import {
     ObjectManagementConfigurationComponent
 } from "./components/object-management-configuration/object-management-configuration.component";
-import {OBJECT_MANAGEMENT_PLUGIN_LOGO_BASE64} from "./assets/object-management-plugin-logo";
+import {OBJECT_MANAGEMENT_PLUGIN_LOGO_BASE64} from "./assets";
 import {CreateObjectConfigurationComponent} from "./components/create-object/create-object-configuration.component";
 import {GetObjectsConfigurationComponent} from "./components/get-objects/get-objects-configuration.component";
 import {DeleteObjectConfigurationComponent} from "./components/delete-object/delete-object-configuration.component";
@@ -49,8 +49,10 @@ const objectManagementPluginSpecification: PluginSpecification = {
             'create-object': "Object aanmaken",
             'update-object': "Object bijwerken",
             'find-objects': "Objecten zoeken",
+            objectManagementConfigurationIdTooltip: 'De id van de geconfigureerde object management instantie',
             listOfObjectProcessVariableName: 'Procesvariabele naam voor de objectlijst',
             listOfObjectProcessVariableNameTooltip: 'Bepaalt de procesvariabele naam die wordt gebruikt voor het opslaan van de objectlijst',
+            objectUrlProcessNameTooltip: 'Bepaalt de variabele naam die wordt gebruikt waar de URL word opgehaald',
         },
         en: {
             title: 'Object management',
@@ -64,8 +66,10 @@ const objectManagementPluginSpecification: PluginSpecification = {
             'create-object': "Create object",
             'update-object': "Update object",
             'find-objects': "Find objects",
+            objectManagementConfigurationIdTooltip: 'The id of the configured object management instance',
             listOfObjectProcessVariableName: 'Process variable name for the object list',
             listOfObjectProcessVariableNameTooltip: 'Defines the process variable name used for storing the object list',
+            objectUrlProcessNameTooltip: 'Defines the variable name used to retrieve the URL',
         }
     },
 };
