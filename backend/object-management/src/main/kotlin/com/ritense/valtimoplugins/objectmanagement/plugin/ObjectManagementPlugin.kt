@@ -68,27 +68,6 @@ open class ObjectManagementPlugin(
     }
 
     @PluginAction(
-        key = "update-object",
-        title = "Update Object",
-        description = "Update an existing Object",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
-    )
-    open fun updateObject(
-        execution: DelegateExecution,
-        @PluginActionProperty objectUrl: URI,
-        @PluginActionProperty objectManagementConfigurationId: UUID,
-        @PluginActionProperty objectData: List<DataBindingConfig>,
-    ) {
-        objectManagementCrudService.updateObject(
-            objectManagementConfigurationId,
-            objectUrl,
-            getObjectData(objectData, execution.businessKey)
-        )
-
-        logger.info { "Successfully updated object with url: $objectUrl" }
-    }
-
-    @PluginAction(
         key = "delete-object",
         title = "Delete Object",
         description = "Delete an existing Object",
