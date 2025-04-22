@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
     
-  <bpmn:process id="Process_Get_AD" isClosed="false" isExecutable="true" name=" Object Management Get" processType="None">
+  <bpmn:process id="Process_Delete_AD" isClosed="false" isExecutable="true" name="Object Management Delete" processType="None">
         
     <bpmn:startEvent id="StartEvent_1" isInterrupting="true" name="Start" parallelMultiple="false">
             
-      <bpmn:outgoing>Flow_1psxuqr</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1d667xk</bpmn:outgoing>
           
     </bpmn:startEvent>
         
-    <bpmn:sequenceFlow id="Flow_1psxuqr" sourceRef="StartEvent_1" targetRef="Activity_11jg92w"/>
+    <bpmn:sequenceFlow id="Flow_1d667xk" sourceRef="StartEvent_1" targetRef="Activity_04rvf4e"/>
         
-    <bpmn:endEvent id="Event_17hswd0" name="End">
+    <bpmn:endEvent id="Event_17hp8b3" name="End">
             
-      <bpmn:incoming>Flow_1oofzgd</bpmn:incoming>
+      <bpmn:incoming>Flow_0ml22by</bpmn:incoming>
           
     </bpmn:endEvent>
         
-    <bpmn:sequenceFlow id="Flow_1oofzgd" sourceRef="Activity_11jg92w" targetRef="Event_17hswd0"/>
+    <bpmn:sequenceFlow id="Flow_0ml22by" sourceRef="Activity_04rvf4e" targetRef="Event_17hp8b3"/>
         
-    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="Activity_11jg92w" implementation="##WebService" isForCompensation="false" name="Get" startQuantity="1">
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="Activity_04rvf4e" implementation="##WebService" isForCompensation="false" name="Delete" startQuantity="1">
             
-      <bpmn:incoming>Flow_1psxuqr</bpmn:incoming>
+      <bpmn:incoming>Flow_1d667xk</bpmn:incoming>
             
-      <bpmn:outgoing>Flow_1oofzgd</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ml22by</bpmn:outgoing>
           
     </bpmn:serviceTask>
       
@@ -31,21 +31,21 @@
     
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
         
-    <bpmndi:BPMNPlane bpmnElement="Process_Get" id="BPMNPlane_1">
+    <bpmndi:BPMNPlane bpmnElement="Process_Delete" id="BPMNPlane_1">
             
-      <bpmndi:BPMNEdge bpmnElement="Flow_1psxuqr" id="Flow_1psxuqr_di">
-                
-        <di:waypoint x="209" y="120"/>
-                
-        <di:waypoint x="260" y="120"/>
-              
-      </bpmndi:BPMNEdge>
-            
-      <bpmndi:BPMNEdge bpmnElement="Flow_1oofzgd" id="Flow_1oofzgd_di">
+      <bpmndi:BPMNEdge bpmnElement="Flow_0ml22by" id="Flow_0ml22by_di">
                 
         <di:waypoint x="360" y="120"/>
                 
         <di:waypoint x="412" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_1d667xk" id="Flow_1d667xk_di">
+                
+        <di:waypoint x="209" y="120"/>
+                
+        <di:waypoint x="260" y="120"/>
               
       </bpmndi:BPMNEdge>
             
@@ -61,7 +61,7 @@
               
       </bpmndi:BPMNShape>
             
-      <bpmndi:BPMNShape bpmnElement="Event_17hswd0" id="Event_17hswd0_di">
+      <bpmndi:BPMNShape bpmnElement="Event_17hp8b3" id="Event_17hp8b3_di">
                 
         <dc:Bounds height="36" width="36" x="412" y="102"/>
                 
@@ -73,7 +73,7 @@
               
       </bpmndi:BPMNShape>
             
-      <bpmndi:BPMNShape bpmnElement="Activity_11jg92w" id="Activity_1pem8n4_di">
+      <bpmndi:BPMNShape bpmnElement="Activity_04rvf4e" id="Activity_0nsng61_di">
                 
         <dc:Bounds height="80" width="100" x="260" y="80"/>
               

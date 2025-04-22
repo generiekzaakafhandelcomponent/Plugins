@@ -1,7 +1,6 @@
 [
   {
     "processDefinitionKey": "Process_Create_AD",
-    
     "canInitializeDocument": true,
     "startableByUser": false
   },

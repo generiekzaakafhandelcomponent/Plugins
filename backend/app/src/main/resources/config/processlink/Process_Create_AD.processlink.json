@@ -1,15 +1,5 @@
 [
   {
-    "activityId": "StartEvent_1",
-    "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "boom-edit",
-    "viewModelEnabled": false,
-    "formDisplayType": "modal",
-    "formSize": "medium",
-    "subtitles": [],
-    "processLinkType": "form"
-  },
-  {
     "activityId": "Activity_1qaehnu",
     "activityType": "bpmn:ServiceTask:start",
     "pluginConfigurationId": "bc71b26b-6f91-4433-80b5-fdbc8e42cf1b",
@@ -33,5 +23,15 @@
       ]
     },
     "processLinkType": "plugin"
+  },
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "boom-edit",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
   }
 ]

@@ -8,7 +8,7 @@
       "objectManagementConfigurationId": "b668aefa-1191-476b-9e08-0e7f7a907a3e",
       "objectType": "feeaa795-d212-4fa2-bb38-2c34996e5702",
       "searchString": "type__exact__Haag",
-      "ordering": "hoi",
+      "ordering": null,
       "pagenumber": "0",
       "pagesize": "10",
       "listOfObjectsProcessVariableName": "results"
@@ -18,7 +18,7 @@
   {
     "activityId": "StartEvent_1",
     "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "Start",
+    "formDefinitionName": "start",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
