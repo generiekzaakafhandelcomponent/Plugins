@@ -1,21 +1,6 @@
 [
   {
-    "processDefinitionKey": "Process_Create_AD",
-    "canInitializeDocument": true,
-    "startableByUser": false
-  },
-  {
-    "processDefinitionKey": "Process_Delete_AD",
-    "canInitializeDocument": true,
-    "startableByUser": false
-  },
-  {
-    "processDefinitionKey": "Process_Find_AD",
-    "canInitializeDocument": true,
-    "startableByUser": false
-  },
-  {
-    "processDefinitionKey": "Process_Get_AD",
+    "processDefinitionKey": "Process_CUD",
     "canInitializeDocument": true,
     "startableByUser": false
   }

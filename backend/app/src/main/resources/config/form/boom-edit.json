@@ -2,59 +2,59 @@
   "display": "form",
   "components": [
     {
-      "label": "Type",
-      "applyMaskOn": "change",
-      "tableView": true,
       "key": "type",
-      "properties": {
-        "targetKey": "doc:type"
-      },
+      "type": "textfield",
+      "input": true,
+      "label": "Type",
+      "tableView": true,
       "attributes": {
         "data-testid": "boom-edit-kiemjaar"
       },
-      "type": "textfield",
-      "input": true,
+      "properties": {
+        "targetKey": "doc:type"
+      },
+      "applyMaskOn": "change",
       "defaultValue": "Haag"
     },
     {
-      "label": "Leeftijd",
-      "applyMaskOn": "change",
-      "mask": false,
-      "tableView": false,
-      "delimiter": false,
-      "requireDecimal": false,
-      "inputFormat": "plain",
-      "truncateMultipleSpaces": false,
       "key": "leeftijd",
-      "properties": {
-        "targetKey": "doc:/leeftijd"
-      },
+      "mask": false,
+      "type": "number",
+      "input": true,
+      "label": "Leeftijd",
+      "delimiter": false,
+      "tableView": false,
       "attributes": {
         "data-testid": "boom-edit-leeftijd"
       },
-      "type": "number",
-      "input": true,
-      "defaultValue": 212
+      "properties": {
+        "targetKey": "doc:/leeftijd"
+      },
+      "applyMaskOn": "change",
+      "inputFormat": "plain",
+      "defaultValue": 212,
+      "requireDecimal": false,
+      "truncateMultipleSpaces": false
     },
     {
-      "label": "Boomhoogteactueel",
-      "applyMaskOn": "change",
-      "mask": false,
-      "tableView": false,
-      "delimiter": false,
-      "requireDecimal": false,
-      "inputFormat": "plain",
-      "truncateMultipleSpaces": false,
       "key": "boomhoogteactueel",
-      "properties": {
-        "targetKey": "doc:/boomhoogteactueel"
-      },
+      "mask": false,
+      "type": "number",
+      "input": true,
+      "label": "Boomhoogteactueel",
+      "delimiter": false,
+      "tableView": false,
       "attributes": {
         "data-testid": "boom-edit-boomhoogteactueel"
       },
-      "type": "number",
-      "input": true,
-      "defaultValue": 505
+      "properties": {
+        "targetKey": "doc:/boomhoogteactueel"
+      },
+      "applyMaskOn": "change",
+      "inputFormat": "plain",
+      "defaultValue": 505,
+      "requireDecimal": false,
+      "truncateMultipleSpaces": false
     },
     {
       "key": "submit",
