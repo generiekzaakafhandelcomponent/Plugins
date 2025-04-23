@@ -31,7 +31,6 @@ import com.ritense.valueresolver.ValueResolverService
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
-import org.springframework.data.domain.PageRequest
 import java.net.URI
 import java.util.*
 
@@ -127,38 +126,6 @@ open class ObjectManagementPlugin(
 
         execution.setVariable(listOfObjectProcessVariableName, processedObject)
         logger.info { "Successfully retrieved ${objects.results.size} objects for object management: $objectManagementConfigurationTitle" }
-    }
-
-    @PluginAction(
-        key = "find-objects",
-        title = "find Objects",
-        description = "Find objects based on a query",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
-    )
-    fun findObjects(
-        execution: DelegateExecution,
-        @PluginActionProperty objectManagementConfigurationId: UUID,
-        @PluginActionProperty objectType: String,
-        @PluginActionProperty searchString: String,
-        @PluginActionProperty ordering: String?,
-        @PluginActionProperty pagenumber: String,
-        @PluginActionProperty pagesize: String,
-        @PluginActionProperty listOfObjectsProcessVariableName: String
-    ) {
-        val pageable = PageRequest.of(pagenumber.toInt(), pagesize.toInt())
-
-        val objects = objectManagementCrudService.getObjectsByObjectTypeIdWithSearchParams(
-            objectManagementConfigurationId,
-            objectType,
-            searchString,
-            ordering,
-            pageable
-        )
-
-        val processedObjects = objects.results.map { it.record.data }
-
-        execution.setVariable(listOfObjectsProcessVariableName, processedObjects)
-        logger.info { "Successfully retrieved ${objects.results} objects for object management: $objectManagementConfigurationId. And stored in the process variable: $listOfObjectsProcessVariableName" }
     }
 
     private fun getObjectData(keyValueMap: List<DataBindingConfig>, documentId: String): JsonNode {
