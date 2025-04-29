@@ -33,11 +33,12 @@ class ObjectManagementAutoConfiguration {
     fun objectManagementPluginFactory(
         pluginService: PluginService,
         objectManagementCrudService: ObjectManagementCrudService,
+        objectManagementFacade: ObjectManagementFacade,
         valueResolverService: ValueResolverService,
     ): ObjectManagementPluginFactory {
         return ObjectManagementPluginFactory(
             pluginService,
-            objectManagementCrudService,
+            objectManagementFacade,
             valueResolverService,
         )
     }

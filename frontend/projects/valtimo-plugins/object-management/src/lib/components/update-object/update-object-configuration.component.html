@@ -22,22 +22,22 @@
   } as obs"
 >
     <v-input
-            name="objectManagementConfigurationId"
-            [title]="'objectManagementConfigurationId' | pluginTranslate: pluginId | async"
+            name="objectManagementConfigurationTitle"
+            [title]="'objectManagementConfigurationTitle' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.objectManagementConfigurationId"
+            [defaultValue]="obs.prefill?.objectManagementConfigurationTitle"
             [disabled]="obs.disabled"
             [required]="true"
-            [tooltip]="'objectManagementConfigurationIdTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'objectManagementConfigurationTitleTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
     <v-input
-            name="objectUrl"
-            [title]="'objectUrl' | pluginTranslate: pluginId | async"
+            name="objectUUID"
+            [title]="'objectUUID' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.objectUrl"
+            [defaultValue]="obs.prefill?.objectUUID"
             [disabled]="obs.disabled"
             [required]="true"
-            [tooltip]="'objectUrlTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'objectUUIDTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
     <valtimo-carbon-multi-input
             name="objectData"

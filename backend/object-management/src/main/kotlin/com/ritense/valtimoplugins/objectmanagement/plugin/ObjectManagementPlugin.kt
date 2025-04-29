@@ -20,18 +20,17 @@ import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.patch.JsonPatchService
+import com.ritense.objectmanagement.service.ObjectManagementFacade
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.service.PluginService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimo.contract.json.patch.JsonPatchBuilder
-import com.ritense.valtimoplugins.objectmanagement.service.ObjectManagementCrudService
 import com.ritense.valueresolver.ValueResolverService
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
-import java.net.URI
 import java.util.*
 
 @Plugin(
@@ -41,7 +40,7 @@ import java.util.*
 )
 open class ObjectManagementPlugin(
     pluginService: PluginService,
-    private val objectManagementCrudService: ObjectManagementCrudService,
+    private val objectManagementFacade: ObjectManagementFacade,
     private val valueResolverService: ValueResolverService
 ) {
     private val objectMapper = pluginService.getObjectMapper()
@@ -54,16 +53,16 @@ open class ObjectManagementPlugin(
     )
     open fun createObject(
         execution: DelegateExecution,
-        @PluginActionProperty objectManagementConfigurationId: UUID,
+        @PluginActionProperty objectManagementConfigurationTitle: String,
         @PluginActionProperty objectData: List<DataBindingConfig>,
-        @PluginActionProperty objectUrlProcessVariableName: String
+        @PluginActionProperty objectUUID: String?,
     ) {
-        val objectUrl = objectManagementCrudService.createObject(
-            objectManagementConfigurationId,
+        val result = objectManagementFacade.createObject(
+            objectManagementConfigurationTitle,
             getObjectData(objectData, execution.businessKey),
         )
 
-        execution.setVariable(objectUrlProcessVariableName, objectUrl.toString())
+        execution.setVariable(objectUUID, result.uuid)
     }
 
     @PluginAction(
@@ -74,16 +73,16 @@ open class ObjectManagementPlugin(
     )
     open fun updateObject(
         execution: DelegateExecution,
-        @PluginActionProperty objectUrl: URI,
-        @PluginActionProperty objectManagementConfigurationId: UUID,
+        @PluginActionProperty objectManagementConfigurationTitle: String,
+        @PluginActionProperty objectUUID: UUID,
         @PluginActionProperty objectData: List<DataBindingConfig>,
-        ) {
-        objectManagementCrudService.updateObject(
-            objectManagementConfigurationId,
-            objectUrl,
+    ) {
+        objectManagementFacade.updateObject(
+            objectUUID,
+            objectManagementConfigurationTitle,
             getObjectData(objectData, execution.businessKey)
         )
-        logger.info { "Successfully updated object with url: $objectUrl" }
+        logger.info { "Successfully updated object with UUID: $objectUUID" }
     }
 
     @PluginAction(
@@ -94,20 +93,12 @@ open class ObjectManagementPlugin(
     )
     open fun deleteObject(
         execution: DelegateExecution,
-        @PluginActionProperty objectUrlVariableName: String,
-        @PluginActionProperty objectManagementConfigurationId: UUID
+        @PluginActionProperty objectManagementConfigurationTitle: String,
+        @PluginActionProperty objectUUID: UUID
     ) {
-        val resolvedValue = valueResolverService.resolveValues(
-            execution.businessKey,
-            execution,
-            listOf(objectUrlVariableName)
-        )
+        objectManagementFacade.deleteObject(objectManagementConfigurationTitle, objectUUID)
 
-        val url = resolvedValue[objectUrlVariableName].toString()
-
-        objectManagementCrudService.deleteObject(url, objectManagementConfigurationId)
-
-        logger.info { "Successfully deleted object with url: $url" }
+        logger.info { "Successfully deleted object with UUID: $objectUUID" }
     }
 
     @PluginAction(
@@ -119,9 +110,12 @@ open class ObjectManagementPlugin(
     open fun getObjectsUnpaged(
         execution: DelegateExecution,
         @PluginActionProperty objectManagementConfigurationTitle: String,
-        @PluginActionProperty listOfObjectProcessVariableName: String
+        @PluginActionProperty searchString: String?,
+        @PluginActionProperty ordering: String?,
+        @PluginActionProperty listOfObjectProcessVariableName: String,
     ) {
-        val objects = objectManagementCrudService.getObjectsByObjectManagementTitle(objectManagementConfigurationTitle)
+        val objects =
+            objectManagementFacade.getObjectsUnpaged(objectManagementConfigurationTitle, searchString, ordering)
         val processedObject = objects.results.map { it.record.data }
 
         execution.setVariable(listOfObjectProcessVariableName, processedObject)

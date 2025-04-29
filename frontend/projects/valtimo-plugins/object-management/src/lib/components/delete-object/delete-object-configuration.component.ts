@@ -52,7 +52,7 @@ export class DeleteObjectConfigurationComponent
     }
 
     private handleValid(formValue: DeleteObjectConfig): void {
-        const valid = !!(formValue.objectManagementConfigurationId && formValue.objectUrlVariableName);
+        const valid = !!(formValue.objectManagementConfigurationTitle && formValue.objectUUID);
 
         this.valid$.next(valid);
         this.valid.emit(valid);

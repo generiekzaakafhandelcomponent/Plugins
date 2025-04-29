@@ -21,9 +21,9 @@ interface ObjectManagementConfig extends PluginConfigurationData {
 }
 
 interface CreateObjectConfig {
-    objectManagementConfigurationId: string;
+    objectManagementConfigurationTitle: string;
     objectData: Array<{ key: string; value: string }>;
-    objectUrlProcessVariableName: string;
+    objectUUID: string;
 }
 
 interface GetObjectsConfig {
@@ -32,24 +32,14 @@ interface GetObjectsConfig {
 }
 
 interface DeleteObjectConfig {
-    objectManagementConfigurationId: string;
-    objectUrlVariableName: string;
+    objectManagementConfigurationTitle: string;
+    objectUUID: string;
 }
 
 interface UpdateObjectConfig {
-    objectManagementConfigurationId: string;
+    objectManagementConfigurationTitle: string;
+    objectUUID: string;
     objectData: Array<{ key: string; value: string }>;
-    objectUrl: string;
-}
-
-interface FindObjectsConfig {
-    objectManagementConfigurationId: string;
-    objectType: string;
-    searchString: string;
-    ordering: string;
-    pagenumber: string;
-    pagesize: string;
-    listOfObjectsProcessVariableName: string;
 }
 
 export {
@@ -58,5 +48,4 @@ export {
     GetObjectsConfig,
     DeleteObjectConfig,
     UpdateObjectConfig,
-    FindObjectsConfig
 };

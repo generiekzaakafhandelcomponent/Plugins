@@ -53,37 +53,6 @@ class ObjectManagementCrudService(
         return objectenApiPlugin.createObject(objectRequest).url
     }
 
-    fun updateObject(
-        objectManagementId: UUID,
-        objectUrl: URI,
-        objectData: JsonNode
-    ): URI {
-        val objectManagement = getObjectManagement(objectManagementId)
-        val objectenApiPlugin = getObjectenApiPlugin(objectManagement.objectenApiPluginConfigurationId)
-        val objecttypenApiPlugin = getObjecttypenApiPlugin(objectManagement.objecttypenApiPluginConfigurationId)
-
-        val objectRequest = ObjectRequest(
-            objecttypenApiPlugin.getObjectTypeUrlById(objectManagement.objecttypeId),
-            ObjectRecord(
-                typeVersion = objectManagement.objecttypeVersion,
-                data = objectData,
-                startAt = LocalDate.now()
-            )
-        )
-
-        return objectenApiPlugin.objectPatch(objectUrl, objectRequest).url
-    }
-
-    fun deleteObject(
-        objectUrl: String,
-        objectManagementConfigurationId: UUID
-    ) {
-        val objectManagement = getObjectManagement(objectManagementConfigurationId)
-        val objectenApiPlugin = getObjectenApiPlugin(objectManagement.objectenApiPluginConfigurationId)
-        val uri = URI.create(objectUrl)
-        objectenApiPlugin.deleteObject(uri)
-    }
-
     fun getObjectsByObjectManagementTitle(
         objectManagementTitle: String,
         searchString: String? = null,

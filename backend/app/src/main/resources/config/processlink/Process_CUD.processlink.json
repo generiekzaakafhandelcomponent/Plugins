@@ -1,15 +1,5 @@
 [
   {
-    "activityId": "StartEvent_1",
-    "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "boom-edit",
-    "viewModelEnabled": false,
-    "formDisplayType": "modal",
-    "formSize": "medium",
-    "subtitles": null,
-    "processLinkType": "form"
-  },
-  {
     "activityId": "Activity_0ly0cv1",
     "activityType": "bpmn:UserTask:create",
     "formDefinitionName": "boom-edit",
@@ -30,13 +20,23 @@
     "processLinkType": "form"
   },
   {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "boom-edit",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
+  },
+  {
     "activityId": "Activity_02a9sa3",
     "activityType": "bpmn:ServiceTask:start",
     "pluginConfigurationId": "bc71b26b-6f91-4433-80b5-fdbc8e42cf1b",
     "pluginActionDefinitionKey": "create-object",
     "actionProperties": {
-      "objectManagementConfigurationId": "b668aefa-1191-476b-9e08-0e7f7a907a3e",
-      "objectUrlProcessVariableName": "url",
+      "objectManagementConfigurationTitle": "Boom",
+      "objectUUID": "UUID",
       "objectData": [
         {
           "key": "/type",
@@ -60,8 +60,8 @@
     "pluginConfigurationId": "bc71b26b-6f91-4433-80b5-fdbc8e42cf1b",
     "pluginActionDefinitionKey": "update-object",
     "actionProperties": {
-      "objectManagementConfigurationId": "b668aefa-1191-476b-9e08-0e7f7a907a3e",
-      "objectUrl": "pv:/url",
+      "objectManagementConfigurationTitle": "Boom",
+      "objectUUID": "pv:/UUID",
       "objectData": [
         {
           "key": "/type",
@@ -85,8 +85,8 @@
     "pluginConfigurationId": "bc71b26b-6f91-4433-80b5-fdbc8e42cf1b",
     "pluginActionDefinitionKey": "delete-object",
     "actionProperties": {
-      "objectManagementConfigurationId": "b668aefa-1191-476b-9e08-0e7f7a907a3e",
-      "objectUrlVariableName": "pv:/url"
+      "objectManagementConfigurationTitle": "Boom",
+      "objectUUID": "pv:/UUID"
     },
     "processLinkType": "plugin"
   }
