@@ -4,7 +4,6 @@
     {
       "label": "Proces code",
       "applyMaskOn": "change",
-      "tableView": true,
       "validate": {
         "required": true
       },
@@ -17,7 +16,6 @@
     {
       "label": "Referentienummer",
       "applyMaskOn": "change",
-      "tableView": true,
       "validate": {
         "required": true
       },
@@ -35,7 +33,6 @@
       "validate": {
         "required": true
       },
-      "tableView": true,
       "applyMaskOn": "change",
       "defaultValue": "Jan"
     },
@@ -47,14 +44,12 @@
       "validate": {
         "required": true
       },
-      "tableView": true,
       "applyMaskOn": "change",
       "defaultValue": "Janssen"
     },
     {
       "label": "Statutaire naam",
       "applyMaskOn": "change",
-      "tableView": true,
       "validateWhenHidden": false,
       "key": "pv:nietNatuurlijkPersoonStatutaireNaam",
       "type": "textfield",
@@ -63,41 +58,23 @@
     },
     {
       "label": "Factuur klasse",
-      "widget": "choicesjs",
-      "tableView": true,
-      "data": {
-        "values": [
-          {
-            "label": "Creditnota",
-            "value": "Creditnota"
-          },
-          {
-            "label": "Debetnota",
-            "value": "Debetnota"
-          },
-          {
-            "label": "Correctienota",
-            "value": "Correctienota"
-          }
-        ]
-      },
       "validate": {
         "required": true
       },
       "validateWhenHidden": false,
       "key": "pv:factuurKlasse",
-      "type": "select",
+      "type": "textfield",
       "input": true,
       "defaultValue": "Debetnota"
     },
     {
       "label": "Inkoop Order referentie",
       "applyMaskOn": "change",
-      "tableView": true,
       "validateWhenHidden": false,
       "key": "pv:inkoopOrderReferentie",
       "type": "textfield",
-      "input": true
+      "input": true,
+      "defaultValue": "INK2025OPB2"
     },
     {
       "legend": "Factuur regel",
@@ -146,7 +123,6 @@
         {
           "label": "BTW percentage",
           "widget": "choicesjs",
-          "tableView": true,
           "data": {
             "values": [
               {
@@ -180,14 +156,12 @@
           "validate": {
             "required": true
           },
-          "tableView": true,
           "applyMaskOn": "change",
           "defaultValue": "700"
         },
         {
           "label": "Omschrijving",
           "applyMaskOn": "change",
-          "tableView": true,
           "validateWhenHidden": false,
           "key": "pv:regelOmschrijving",
           "type": "textfield",

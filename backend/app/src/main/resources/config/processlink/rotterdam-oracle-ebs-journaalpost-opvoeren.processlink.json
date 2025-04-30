@@ -24,20 +24,20 @@
     "pluginConfigurationId": "4a8627e0-bd7b-401d-a86f-fe14ab3ec313",
     "pluginActionDefinitionKey": "journaalpost-opvoeren",
     "actionProperties": {
-      "pvResultContainer": "verwerkingsstatus",
+      "pvResultVariable": "verwerkingsstatus",
       "procesCode": "pv:procescode",
       "referentieNummer": "pv:referentienummer",
       "sleutel": "pv:sleutel",
       "boekdatumTijd": "pv:boekdatum",
       "categorie": "pv:categorie",
-      "saldoSoort": "Werkelijk",
+      "saldoSoort": "pv:saldoSoort",
       "omschrijving": "pv:omschrijving",
       "boekjaar": "pv:boekjaar",
       "boekperiode": "pv:boekperiode",
       "regels": [
         {
           "grootboekSleutel": "pv:regelGrootboeksleutel",
-          "boekingType": "Credit",
+          "boekingType": "pv:regelBoekingType",
           "bedrag": "pv:regelBedrag",
           "omschrijving": "pv:regelOmschrijving"
         }

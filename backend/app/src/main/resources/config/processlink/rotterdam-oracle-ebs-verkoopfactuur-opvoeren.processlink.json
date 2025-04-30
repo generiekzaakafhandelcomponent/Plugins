@@ -18,10 +18,10 @@
     "pluginConfigurationId": "4a8627e0-bd7b-401d-a86f-fe14ab3ec313",
     "pluginActionDefinitionKey": "verkoopfactuur-opvoeren",
     "actionProperties": {
-      "pvResultContainer": "verwerkingsstatus",
+      "pvResultVariable": "verwerkingsstatus",
       "procesCode": "pv:procescode",
       "referentieNummer": "pv:referentienummer",
-      "factuurKlasse": "Debetnota",
+      "factuurKlasse": "pv:factuurKlasse",
       "inkoopOrderReferentie": "pv:inkoopOrderReferentie",
       "natuurlijkPersoon": {
         "achternaam": "pv:natuurlijkPersoonAchternaam",

@@ -111,6 +111,14 @@
           "defaultValue": "Leges"
         },
         {
+          "label": "Saldo soort",
+          "key": "pv:saldoSoort",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "Werkelijk"
+        },
+        {
           "label": "Omschrijving",
           "key": "pv:omschrijving",
           "type": "textfield",
@@ -151,6 +159,14 @@
           "input": true,
           "tableView": false,
           "defaultValue": "400"
+        },
+        {
+          "label": "Regel - Boeking type",
+          "key": "pv:regelBoekingType",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "Debet"
         },
         {
           "label": "Regel - Omschrijving",
