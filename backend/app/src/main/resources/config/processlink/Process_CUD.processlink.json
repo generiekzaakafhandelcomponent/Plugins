@@ -86,7 +86,7 @@
     "pluginActionDefinitionKey": "delete-object",
     "actionProperties": {
       "objectManagementConfigurationId": "b668aefa-1191-476b-9e08-0e7f7a907a3e",
-      "objectUrlVariableName": "pv:/url"
+      "objectUrl": "pv:/url"
     },
     "processLinkType": "plugin"
   }

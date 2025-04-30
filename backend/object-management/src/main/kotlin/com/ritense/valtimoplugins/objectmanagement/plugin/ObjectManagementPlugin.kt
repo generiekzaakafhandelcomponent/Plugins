@@ -94,20 +94,13 @@ open class ObjectManagementPlugin(
     )
     open fun deleteObject(
         execution: DelegateExecution,
-        @PluginActionProperty objectUrlVariableName: String,
+        @PluginActionProperty objectUrl: String,
         @PluginActionProperty objectManagementConfigurationId: UUID
     ) {
-        val resolvedValue = valueResolverService.resolveValues(
-            execution.businessKey,
-            execution,
-            listOf(objectUrlVariableName)
-        )
 
-        val url = resolvedValue[objectUrlVariableName].toString()
+        objectManagementCrudService.deleteObject(objectUrl, objectManagementConfigurationId)
 
-        objectManagementCrudService.deleteObject(url, objectManagementConfigurationId)
-
-        logger.info { "Successfully deleted object with url: $url" }
+        logger.info { "Successfully deleted object with url: $objectUrl" }
     }
 
     @PluginAction(

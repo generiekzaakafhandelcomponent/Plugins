@@ -33,7 +33,7 @@ interface GetObjectsConfig {
 
 interface DeleteObjectConfig {
     objectManagementConfigurationId: string;
-    objectUrlVariableName: string;
+    objectUrl: string;
 }
 
 interface UpdateObjectConfig {
@@ -42,21 +42,10 @@ interface UpdateObjectConfig {
     objectUrl: string;
 }
 
-interface FindObjectsConfig {
-    objectManagementConfigurationId: string;
-    objectType: string;
-    searchString: string;
-    ordering: string;
-    pagenumber: string;
-    pagesize: string;
-    listOfObjectsProcessVariableName: string;
-}
-
 export {
     ObjectManagementConfig,
     CreateObjectConfig,
     GetObjectsConfig,
     DeleteObjectConfig,
     UpdateObjectConfig,
-    FindObjectsConfig
 };
