@@ -9,7 +9,7 @@
     "activityId": "factuur-informatie-aanleveren",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "rotterdam-oracle-ebs_verkoopfactuur-informatie-aanleveren"
+    "formDefinitionName": "rotterdam-oracle-ebs_verkoopfactuur-informatie-aanleveren-2"
   },
   {
     "activityId": "verkoopfactuur-opvoeren",
@@ -30,15 +30,7 @@
       "nietNatuurlijkPersoon": {
         "statutaireNaam": "pv:nietNatuurlijkPersoonStatutaireNaam"
       },
-      "regels": [
-        {
-          "hoeveelheid": "pv:regelHoeveelheid",
-          "tarief": "pv:regelTarief",
-          "btwPercentage": "pv:regelBtwPercentage",
-          "grootboekSleutel": "pv:regelGrootboekSleutel",
-          "omschrijving": "pv:regelOmschrijving"
-        }
-      ]
+      "regelsViaResolver": "pv:regels"
     }
   },
   {

@@ -33,7 +33,8 @@ interface JournaalpostOpvoerenConfig {
     omschrijving?: string;
     boekjaar?: string;
     boekperiode?: string;
-    regels: Array<JournaalpostRegel>;
+    regels?: Array<JournaalpostRegel>;
+    regelsViaResolver?: string;
 }
 
 interface JournaalpostRegel {
@@ -51,7 +52,8 @@ interface VerkoopfactuurOpvoerenConfig {
     inkoopOrderReferentie: string;
     natuurlijkPersoon: NatuurlijkPersoon;
     nietNatuurlijkPersoon: NietNatuurlijkPersoon;
-    regels: Array<FactuurRegel>;
+    regels?: Array<FactuurRegel>;
+    regelsViaResolver?: string;
 }
 
 interface NatuurlijkPersoon {

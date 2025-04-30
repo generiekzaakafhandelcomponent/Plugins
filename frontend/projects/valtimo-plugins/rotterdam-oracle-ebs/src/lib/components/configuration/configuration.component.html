@@ -58,12 +58,16 @@
         [loading]="!obs.mTlsSllContextConfigurationItems"
     >
     </v-select>
+
+    <v-input-label
+        [title]="'configuration.authenticationEnabled' | pluginTranslate: pluginId | async"
+        [tooltip]="'configuration.authenticationEnabled.tooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-input-label>
     <cds-toggle
         #authenticationEnabled
-        [label]="'configuration.authenticationEnabled' | pluginTranslate: pluginId | async"
-        [ngClass]="'v-input--margin'"
-        [onText]="'configuration.authenticationEnabled.yes' | pluginTranslate: pluginId | async"
-        [offText]="'configuration.authenticationEnabled.no' | pluginTranslate: pluginId | async"
+        [onText]="'toggle.yes' | pluginTranslate: pluginId | async"
+        [offText]="'toggle.no' | pluginTranslate: pluginId | async"
         [checked]="obs.prefill.authenticationEnabled == true"
         [disabled]="obs.disabled"
     >

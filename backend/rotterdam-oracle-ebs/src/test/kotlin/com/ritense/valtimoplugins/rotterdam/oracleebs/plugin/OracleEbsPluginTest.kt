@@ -50,7 +50,9 @@ class OracleEbsPluginTest {
         mTlsSslContext = mock()
 
         plugin = OracleEbsPlugin(
-            esbClient, valueResolverService
+            esbClient = esbClient,
+            valueResolverService = valueResolverService,
+            objectMapper = objectMapper
         ).apply {
             this.baseUrl = mockWebServer.url("/").toUri()
             this.mTlsSslContextConfiguration = mTlsSslContext
@@ -186,6 +188,57 @@ class OracleEbsPluginTest {
                         omschrijving = "Kilo kruimige aardappelen"
                     )
                 )
+            )
+        }
+
+        mockWebServer.takeRequest().let { recordedRequest ->
+            assertThat(recordedRequest.method)
+                .isEqualTo(HttpMethod.POST.name())
+            assertThat(recordedRequest.path)
+                .isEqualTo("/verkoopfactuur/opvoeren")
+        }
+    }
+
+    @Test
+    fun `should push verkoopfactuur (regels via resolver)`() {
+        // given
+        val regels = listOf(
+            FactuurRegel(
+                hoeveelheid = "25",
+                tarief = "3,58",
+                btwPercentage = "21",
+                grootboekSleutel = "700",
+                omschrijving = "Kilo kruimige aardappelen"
+            )
+        )
+        val execution = DelegateExecutionFake()
+            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+            //.withVariable("regels", regels)
+
+        whenever(valueResolverService.resolveValues(any<String>(), any<DelegateExecution>(), any()))
+            .thenReturn(mapOf(
+                "pv:regels" to objectMapper.writeValueAsString(regels)
+            ))
+
+        mockOkResponse(verwerkingsstatusGeslaagdAsJson())
+
+        // when & then
+        assertDoesNotThrow {
+            plugin.verkoopfactuurOpvoeren(
+                execution = execution,
+                pvResultVariable = "verwerkingsstatus",
+                procesCode = "98332",
+                referentieNummer= "2025-AGV-123456",
+                factuurKlasse = FactuurKlasse.Creditnota.name,
+                inkoopOrderReferentie = "20250328-098",
+                natuurlijkPersoon = NatuurlijkPersoon(
+                    achternaam = "Janssen",
+                    voornamen = "Jan"
+                ),
+                nietNatuurlijkPersoon = NietNatuurlijkPersoon(
+                    statutaireNaam = "J.Janssen - Groenten en Fruit"
+                ),
+                regelsViaResolver = "pv:regels"
             )
         }
 

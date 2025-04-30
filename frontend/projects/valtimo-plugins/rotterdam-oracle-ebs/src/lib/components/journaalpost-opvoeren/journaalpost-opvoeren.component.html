@@ -124,89 +124,121 @@
             required="true"
         ></app-input-field>
 
-        <div>
-            <v-input-label
-                required="true"
-                [title]="'journaalpost.regels' | pluginTranslate: pluginId | async"
-                [tooltip]="'journaalpost.regels.tooltip' | pluginTranslate: pluginId | async"
-            >
-            </v-input-label>
-            <div formArrayName="regels" class="lines-wrapper">
-                <div class="line-wrapper"
-                     *ngFor="let line of lines.controls; let i = index">
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="grootboekSleutel"
-                        wrapperClass="line-field-wrapper"
-                        title="journaalpost.regel.grootboekSleutel"
-                        required="true"
-                    ></app-input-field>
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="regelsViaResolver"
+            title="journaalpost.regelsViaResolver"
+            tooltip="journaalpost.regelsViaResolver.tooltip"
+            required="true"
+        ></app-input-field>
 
-                    <!--
-                    <app-select-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="boekingType"
-                        wrapperClass="line-field-wrapper"
-                        title="journaalpost.regel.boekingType"
-                        placeholder="journaalpost.regel.boekingType.select.placeholder"
-                        required="true"
-                        [items]="boekingTypeItems"
-                    ></app-select-field>
-                    -->
+        <cds-toggle
+            #regelsViaResolverToggle
+            class="toggle"
+            [label]="'journaalpost.viaResolverToggle' | pluginTranslate: pluginId | async"
+            [onText]="'toggle.yes' | pluginTranslate: pluginId | async"
+            [offText]="'toggle.no' | pluginTranslate: pluginId | async"
+            (checkedChange)="onCheckedChanged($event)"
+        >
+        </cds-toggle>
 
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="boekingType"
-                        wrapperClass="line-field-wrapper"
-                        title="journaalpost.regel.boekingType"
-                        tooltip="journaalpost.regel.boekingType.input.tooltip"
-                        required="true"
-                        [presets]="boekingTypeItems"
-                    ></app-input-field>
+        <ng-template [ngIf]="!regelsViaResolverToggle.checked">
+            <div>
+                <v-input-label
+                    required="true"
+                    [title]="'journaalpost.regels' | pluginTranslate: pluginId | async"
+                    [tooltip]="'journaalpost.regels.tooltip' | pluginTranslate: pluginId | async"
+                >
+                </v-input-label>
+                <div formArrayName="regels" class="lines-wrapper">
+                    <div class="line-wrapper"
+                         *ngFor="let line of lines.controls; let i = index">
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="grootboekSleutel"
+                            wrapperClass="line-field-wrapper"
+                            title="journaalpost.regel.grootboekSleutel"
+                            required="true"
+                        ></app-input-field>
 
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="omschrijving"
-                        wrapperClass="line-field-wrapper"
-                        title="journaalpost.regel.omschrijving"
-                        required="false"
-                    ></app-input-field>
+                        <!--
+                        <app-select-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="boekingType"
+                            wrapperClass="line-field-wrapper"
+                            title="journaalpost.regel.boekingType"
+                            placeholder="journaalpost.regel.boekingType.select.placeholder"
+                            required="true"
+                            [items]="boekingTypeItems"
+                        ></app-select-field>
+                        -->
 
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="bedrag"
-                        wrapperClass="line-field-wrapper"
-                        title="journaalpost.regel.bedrag"
-                        required="true"
-                    ></app-input-field>
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="boekingType"
+                            wrapperClass="line-field-wrapper"
+                            title="journaalpost.regel.boekingType"
+                            tooltip="journaalpost.regel.boekingType.input.tooltip"
+                            required="true"
+                            [presets]="boekingTypeItems"
+                        ></app-input-field>
 
-                    <div class="remove-line-wrapper">
-                        <button type="button"
-                                cdsButton="secondary"
-                                (click)="removeLine(i)"
-                                [disabled]="obs.disabled"
-                        >
-                            {{'journaalpost.regel.verwijderen' | pluginTranslate: pluginId | async}}
-                            <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
-                        </button>
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="omschrijving"
+                            wrapperClass="line-field-wrapper"
+                            title="journaalpost.regel.omschrijving"
+                            required="false"
+                        ></app-input-field>
+
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="bedrag"
+                            wrapperClass="line-field-wrapper"
+                            title="journaalpost.regel.bedrag"
+                            required="true"
+                        ></app-input-field>
+
+                        <div class="remove-line-wrapper">
+                            <button type="button"
+                                    cdsButton="secondary"
+                                    (click)="removeLine(i)"
+                                    [disabled]="obs.disabled"
+                            >
+                                {{'journaalpost.regel.verwijderen' | pluginTranslate: pluginId | async}}
+                                <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <div class="add-line-wrapper">
+                    <button type="button"
+                            cdsButton="secondary"
+                            (click)="addLine()"
+                            [disabled]="obs.disabled">
+                        {{'journaalpost.regel.toevoegen' | pluginTranslate: pluginId | async}}
+                        <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
+                    </button>
+                </div>
             </div>
-            <div class="add-line-wrapper">
-                <button type="button"
-                        cdsButton="secondary"
-                        (click)="addLine()"
-                        [disabled]="obs.disabled">
-                    {{'journaalpost.regel.toevoegen' | pluginTranslate: pluginId | async}}
-                    <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
-                </button>
-            </div>
-        </div>
+        </ng-template>
+
+        <ng-template [ngIf]="regelsViaResolverToggle.checked">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="regelsViaResolver"
+                title="journaalpost.regelsViaResolver"
+                tooltip="journaalpost.regelsViaResolver.tooltip"
+                required="true"
+            ></app-input-field>
+        </ng-template>
     </form>
 
 </ng-container>
