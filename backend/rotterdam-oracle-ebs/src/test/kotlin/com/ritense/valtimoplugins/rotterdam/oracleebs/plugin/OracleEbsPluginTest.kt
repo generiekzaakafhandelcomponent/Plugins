@@ -213,12 +213,6 @@ class OracleEbsPluginTest {
         )
         val execution = DelegateExecutionFake()
             .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
-            //.withVariable("regels", regels)
-
-        whenever(valueResolverService.resolveValues(any<String>(), any<DelegateExecution>(), any()))
-            .thenReturn(mapOf(
-                "pv:regels" to objectMapper.writeValueAsString(regels)
-            ))
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -238,7 +232,7 @@ class OracleEbsPluginTest {
                 nietNatuurlijkPersoon = NietNatuurlijkPersoon(
                     statutaireNaam = "J.Janssen - Groenten en Fruit"
                 ),
-                regelsViaResolver = "pv:regels"
+                regelsViaResolver = objectMapper.writeValueAsString(regels)
             )
         }
 
