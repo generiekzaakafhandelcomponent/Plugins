@@ -41,6 +41,7 @@ val configureEnvironment = extra["configureEnvironment"] as (task: ProcessForkOp
 
 tasks.bootRun {
     dependsOn("composeUp")
+    systemProperty("spring.profiles.include", "dev")
     val t = this
     doFirst {
         configureEnvironment(t)

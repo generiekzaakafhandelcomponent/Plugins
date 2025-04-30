@@ -23,7 +23,7 @@ import {GiveSummaryConfigurationComponent} from './components/give-summary/give-
 import {ChatConfigurationComponent} from "./components/chat/chat-configuration.component";
 
 const huggingFacePluginSpecification: PluginSpecification = {
-    pluginId: 'hugging-face',
+    pluginId: 'smart-task-plugin',
     pluginConfigurationComponent: HuggingFaceConfigurationComponent,
     pluginLogoBase64: HUGGING_FACE_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
@@ -32,44 +32,42 @@ const huggingFacePluginSpecification: PluginSpecification = {
     },
     pluginTranslations: {
         nl: {
-            title: 'Hugging Face AI',
-            'give-summary': 'Vat een lange tekst samen met het BART-model.',
-            'chat': 'Stel een vraag aan Google Gemma model',
-            url: 'Hugging Face Inference API URL',
-            urlTooltip: 'Een URL naar de REST API van Hugging Face.',
-            description: 'Interactie met Hugging Face AI-modellen. Vat een lange tekst samen met het BART-model of stel een vraag aan het Google Gemma-model.',
+            title: 'Smart Task Plugin',
+            'give-summary': 'Vat een lange tekst samen met het BART-model',
+            chat: 'Stel een vraag aan een chatmodel',
+            url: 'API-URL',
+            urlTooltip: 'URL van de Hugging Face REST-API',
+            description:
+                'Interactie met Hugging Face-modellen: vat tekst samen met het BART-model of stel vragen aan een chatmodel.',
             configurationTitle: 'Configuratienaam',
             configurationTitleTooltip:
-                'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
+                'Naam waaronder deze pluginconfiguratie binnen de applicatie beschikbaar is.',
             token: 'Token',
-            tokenTooltip: 'Authenticatie token met vereiste scopes.',
-            longText: 'Give a long text input to be summarized',
-            longTextTooltip: 'Give a long text input to be summarized',
-            question : "Stel een vraag aan het Google Gemma model",
-            questionTooltip : "Stel een vraag aan het Google Gemma model",
-            caseKey : "Welke case key moet worden gebruikt?",
-            caseKeyTooltip : "",
+            tokenTooltip: 'Authenticatietoken met de vereiste scopes.',
+            longText: 'Tekst om samen te vatten',
+            longTextTooltip: 'Voer de tekst in die je wilt samenvatten.',
+            question: 'Vraag aan een chatmodel',
+            questionTooltip: 'Voer je vraag voor het chatmodel in.',
         },
         en: {
-            title: 'Hugging Face AI',
-            'give-summary': 'Summarize a long text using the BART model',
-            'chat': 'Ask a question to the Google Gemma model',
+            title: 'Smart Task Plugin',
+            'give-summary': 'Summarize long text with the BART model',
+            chat: 'Ask a question to a chat model',
             url: 'API URL',
-            urlTooltip: 'A URL to the REST API of HuggingFace',
-            description: 'Interact with Hugging Face AI models. Summarize long text using the BART model. Or ask a question to the Google Gemma model.',
+            urlTooltip: 'URL of the Hugging Face REST API',
+            description:
+                'Interact with Hugging Face models: summarize text with the BART model or ask questions to a chat model.',
             configurationTitle: 'Configuration name',
             configurationTitleTooltip:
-                'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
+                'Name under which this plugin configuration is available in the application.',
             token: 'Token',
-            tokenTooltip: 'Authentication token bearing required scopes.',
-            longText: 'Give a long text input to be summarized',
-            longTextTooltip: 'Give a long text input to be summarized',
-            question : "Ask a question to the Google Gemma model",
-            questionTooltip : "Ask a question to the Google Gemma model",
-            caseKey : "Which caseKey is to be used to combine with the question?",
-            caseKeyTooltip : "lalal",
-        }
-    },
+            tokenTooltip: 'Authentication token with the required scopes.',
+            longText: 'Text to summarize',
+            longTextTooltip: 'Enter the text you want summarized.',
+            question: 'Question for the chat model',
+            questionTooltip: 'Enter your question for the chat model.',
+        },
+    }
 };
 
 export {huggingFacePluginSpecification};
