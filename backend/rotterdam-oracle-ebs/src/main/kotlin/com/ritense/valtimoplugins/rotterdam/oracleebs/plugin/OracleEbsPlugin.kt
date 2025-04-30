@@ -6,9 +6,12 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.BoekingType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
@@ -16,8 +19,6 @@ import com.rotterdam.esb.opvoeren.models.Factuurregel
 import com.rotterdam.esb.opvoeren.models.Grootboekrekening
 import com.rotterdam.esb.opvoeren.models.Journaalpost
 import com.rotterdam.esb.opvoeren.models.Journaalpostregel
-import com.rotterdam.esb.opvoeren.models.NatuurlijkPersoon
-import com.rotterdam.esb.opvoeren.models.NietNatuurlijkPersoon
 import com.rotterdam.esb.opvoeren.models.OpvoerenJournaalpostVraag
 import com.rotterdam.esb.opvoeren.models.OpvoerenVerkoopfactuurVraag
 import com.rotterdam.esb.opvoeren.models.RelatieRotterdam
@@ -60,13 +61,13 @@ class OracleEbsPlugin(
     )
     fun journaalpostOpvoeren(
         execution: DelegateExecution,
-        @PluginActionProperty pvResultContainer: String,
+        @PluginActionProperty pvResultVariable: String,
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
         @PluginActionProperty sleutel: String,
         @PluginActionProperty boekdatumTijd: String,
         @PluginActionProperty categorie: String,
-        @PluginActionProperty saldoSoort: SaldoSoort,
+        @PluginActionProperty saldoSoort: String,
         @PluginActionProperty omschrijving: String? = null,
         @PluginActionProperty boekjaar: String? = null,
         @PluginActionProperty boekperiode: String? = null,
@@ -86,6 +87,7 @@ class OracleEbsPlugin(
             SLEUTEL_KEY to sleutel,
             BOEKDATUM_TIJD_KEY to boekdatumTijd,
             CATEGORIE_KEY to categorie,
+            SALDO_SOORT_KEY to saldoSoort,
             OMSCHRIJVING_KEY to omschrijving,
             BOEKJAAR_KEY to boekjaar,
             BOEKPERIODE_KEY to boekperiode
@@ -99,11 +101,12 @@ class OracleEbsPlugin(
                 journaalpostsleutel = stringFrom(resolvedValues[SLEUTEL_KEY]!!),
                 journaalpostboekdatumTijd = offsetDateTimeFrom(resolvedValues[BOEKDATUM_TIJD_KEY]!!),
                 journaalpostcategorie = stringFrom(resolvedValues[CATEGORIE_KEY]!!),
-                journaalpostsaldosoort = Journaalpost.Journaalpostsaldosoort.valueOf(saldoSoort.name),
+                journaalpostsaldosoort = saldoSoortFrom(resolvedValues[SALDO_SOORT_KEY]!!),
                 valutacode = Journaalpost.Valutacode.EUR,
                 journaalpostregels = regels.map { regel ->
                     val resolvedLineValues = resolveValuesFor(execution, mapOf(
                         GROOTBOEK_SLEUTEL_KEY to regel.grootboekSleutel,
+                        BOEKING_TYPE_KEY to regel.boekingType,
                         BEDRAG_KEY to regel.bedrag,
                         OMSCHRIJVING_KEY to regel.omschrijving
                     )).also {
@@ -114,7 +117,7 @@ class OracleEbsPlugin(
                             grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
                             bronsleutel = null
                         ),
-                        journaalpostregelboekingtype = Journaalpostregel.Journaalpostregelboekingtype.valueOf(regel.boekingType.name),
+                        journaalpostregelboekingtype = boekingTypeFrom(resolvedLineValues[BOEKING_TYPE_KEY]!!),
                         journaalpostregelbedrag = doubleFrom(resolvedLineValues[BEDRAG_KEY]!!),
                         journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]!!),
                         bronspecifiekewaarden = null
@@ -131,7 +134,7 @@ class OracleEbsPlugin(
             try {
                 esbClient.journaalPostenApi(restClient()).opvoerenJournaalpost(request).let { response ->
                     logger.debug { "Journaalpost Opvoeren response: $response" }
-                    execution.setVariable(pvResultContainer, mapOf(
+                    execution.setVariable(pvResultVariable, mapOf(
                         "isGeslaagd" to response.isGeslaagd,
                         "melding" to response.melding,
                         "foutcode" to response.foutcode,
@@ -155,13 +158,13 @@ class OracleEbsPlugin(
     )
     fun verkoopfactuurOpvoeren(
         execution: DelegateExecution,
-        @PluginActionProperty pvResultContainer: String,
+        @PluginActionProperty pvResultVariable: String,
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
-        @PluginActionProperty factuurKlasse: FactuurKlasse,
+        @PluginActionProperty factuurKlasse: String,
         @PluginActionProperty inkoopOrderReferentie: String,
-        @PluginActionProperty natuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon,
-        @PluginActionProperty nietNatuurlijkPersoon: com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon,
+        @PluginActionProperty natuurlijkPersoon: NatuurlijkPersoon,
+        @PluginActionProperty nietNatuurlijkPersoon: NietNatuurlijkPersoon,
         @PluginActionProperty regels: List<FactuurRegel>
     ) {
         logger.info {
@@ -173,6 +176,7 @@ class OracleEbsPlugin(
         val resolvedValues = resolveValuesFor(execution, mapOf(
             PROCES_CODE_KEY to procesCode,
             REFERENTIE_NUMMER_KEY to referentieNummer,
+            FACTUUR_KLASSE_KEY to factuurKlasse,
             INKOOP_ORDER_REFERENTIE_KEY to inkoopOrderReferentie
         )).also {
             logger.debug { "Resolved values: $it" }
@@ -193,11 +197,11 @@ class OracleEbsPlugin(
             referentieNummer = stringFrom(resolvedValues[REFERENTIE_NUMMER_KEY]!!),
             factuur = Verkoopfactuur(
                 factuurtype = Verkoopfactuur.Factuurtype.Verkoopfactuur,
-                factuurklasse= Verkoopfactuur.Factuurklasse.valueOf(factuurKlasse.name),
+                factuurklasse= factuurKlasseFrom(resolvedValues[FACTUUR_KLASSE_KEY]!!),
                 factuurdatum = LocalDate.now(),
                 inkooporderreferentie = stringFrom(resolvedValues[INKOOP_ORDER_REFERENTIE_KEY]!!),
                 koper = RelatieRotterdam(
-                    natuurlijkPersoon = NatuurlijkPersoon(
+                    natuurlijkPersoon = com.rotterdam.esb.opvoeren.models.NatuurlijkPersoon(
                         achternaam = stringFrom(resolvedNatuurlijkPersoonValues[ACHTERNAAM_KEY]!!),
                         voornamen = stringFrom(resolvedNatuurlijkPersoonValues[VOORNAMEN_KEY]!!),
                         bsn = null,
@@ -209,7 +213,7 @@ class OracleEbsPlugin(
                         email = null,
                         vestigingsadres = null
                     ),
-                    nietNatuurlijkPersoon = NietNatuurlijkPersoon(
+                    nietNatuurlijkPersoon = com.rotterdam.esb.opvoeren.models.NietNatuurlijkPersoon(
                         statutaireNaam = stringFrom(resolvedNietNatuurlijkPersoonValues[STATUTAIRE_NAAM_KEY]!!),
                         kvknummer = null,
                         kvkvestigingsnummer = null,
@@ -276,7 +280,7 @@ class OracleEbsPlugin(
             try {
                 esbClient.verkoopFacturenApi(restClient()).opvoerenVerkoopfactuur(request).let { response ->
                     logger.debug { "Verkoopfactuur Opvoeren response: $response" }
-                    execution.setVariable(pvResultContainer, mapOf(
+                    execution.setVariable(pvResultVariable, mapOf(
                         "isGeslaagd" to response.isGeslaagd,
                         "melding" to response.melding,
                         "foutcode" to response.foutcode,
@@ -316,9 +320,18 @@ class OracleEbsPlugin(
         }
         return params.toMutableMap().apply {
             this.putAll(resolvedValues)
-            return this
-        }.toMap()
+            this.toMap()
+        }
     }
+
+    private fun saldoSoortFrom(value: Any): Journaalpost.Journaalpostsaldosoort =
+        Journaalpost.Journaalpostsaldosoort.valueOf(stringFrom(value))
+
+    private fun boekingTypeFrom(value: Any): Journaalpostregel.Journaalpostregelboekingtype =
+        Journaalpostregel.Journaalpostregelboekingtype.valueOf(stringFrom(value))
+
+    private fun factuurKlasseFrom(value: Any): Verkoopfactuur.Factuurklasse =
+        Verkoopfactuur.Factuurklasse.valueOf(stringFrom(value))
 
     private fun isResolvableValue(value: String): Boolean =
         value.isNotBlank() &&
@@ -404,11 +417,14 @@ class OracleEbsPlugin(
         private const val SLEUTEL_KEY = "sleutel"
         private const val BOEKDATUM_TIJD_KEY = "boekdatumTijd"
         private const val CATEGORIE_KEY = "categorie"
+        private const val SALDO_SOORT_KEY = "saldoSoort"
         private const val OMSCHRIJVING_KEY = "omschrijving"
         private const val BOEKJAAR_KEY = "boekjaar"
         private const val BOEKPERIODE_KEY = "boekperiode"
         private const val GROOTBOEK_SLEUTEL_KEY = "grootboeksleutel"
+        private const val BOEKING_TYPE_KEY = "boekingType"
         private const val BEDRAG_KEY = "bedrag"
+        private const val FACTUUR_KLASSE_KEY = "factuurKlasse"
         private const val INKOOP_ORDER_REFERENTIE_KEY = "inkoopOrderReferentie"
         private const val ACHTERNAAM_KEY = "achternaam"
         private const val VOORNAMEN_KEY = "voornamen"

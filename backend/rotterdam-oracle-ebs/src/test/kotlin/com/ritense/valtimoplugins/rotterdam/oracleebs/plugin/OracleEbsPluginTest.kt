@@ -118,26 +118,26 @@ class OracleEbsPluginTest {
         assertDoesNotThrow {
             plugin.journaalpostOpvoeren(
                 execution = execution,
-                pvResultContainer = "verwerkingsstatus",
+                pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
                 referentieNummer= "2025-AGV-123456",
                 sleutel= "784",
                 boekdatumTijd= "2025-03-28T13:34:26+02:00",
                 categorie= "Vergunningen",
-                saldoSoort = SaldoSoort.Werkelijk,
+                saldoSoort = SaldoSoort.Werkelijk.name,
                 omschrijving= "Aanvraag Omgevingsvergunning",
                 boekjaar= "2025",
                 boekperiode= "2",
                 regels = listOf(
                     JournaalpostRegel(
                         grootboekSleutel = "600",
-                        boekingType = BoekingType.Credit,
+                        boekingType = BoekingType.Credit.name,
                         bedrag = "150,00",
                         omschrijving = "Afboeken"
                     ),
                     JournaalpostRegel(
                         grootboekSleutel = "400",
-                        boekingType = BoekingType.Debet,
+                        boekingType = BoekingType.Debet.name,
                         bedrag = "150",
                         omschrijving = "Inboeken"
                     )
@@ -165,10 +165,10 @@ class OracleEbsPluginTest {
         assertDoesNotThrow {
             plugin.verkoopfactuurOpvoeren(
                 execution = execution,
-                pvResultContainer = "verwerkingsstatus",
+                pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
                 referentieNummer= "2025-AGV-123456",
-                factuurKlasse = FactuurKlasse.Creditnota,
+                factuurKlasse = FactuurKlasse.Creditnota.name,
                 inkoopOrderReferentie = "20250328-098",
                 natuurlijkPersoon = NatuurlijkPersoon(
                     achternaam = "Janssen",

@@ -86,7 +86,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     private initForm() {
         this.logger.debug('initForm');
         this.pluginActionForm = this.fb.group({
-            pvResultContainer: this.fb.control('', Validators.required),
+            pvResultVariable: this.fb.control('', Validators.required),
             procesCode: this.fb.control('', Validators.required),
             referentieNummer: this.fb.control('', Validators.required),
             factuurKlasse: this.fb.control('', Validators.required),
@@ -117,7 +117,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                 configuration.regels.forEach( () => this.addLine());
                 // prefill form values
                 this.pluginActionForm.patchValue({
-                    pvResultContainer: configuration.pvResultContainer,
+                    pvResultVariable: configuration.pvResultVariable,
                     procesCode: configuration.procesCode,
                     referentieNummer: configuration.referentieNummer,
                     factuurKlasse: configuration.factuurKlasse,
@@ -153,7 +153,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
 
                 // map form values to model
                 this.formValueChange({
-                    pvResultContainer: formValue.pvResultContainer,
+                    pvResultVariable: formValue.pvResultVariable,
                     procesCode: formValue.procesCode,
                     referentieNummer: formValue.referentieNummer,
                     factuurKlasse: this.toFactuurKlasse(formValue.factuurKlasse),
@@ -190,7 +190,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         this.logger.debug('handleValid', formValue);
 
         const genericFieldsValid = !!(
-            formValue.pvResultContainer &&
+            formValue.pvResultVariable &&
             formValue.procesCode &&
             formValue.referentieNummer &&
             formValue.factuurKlasse &&

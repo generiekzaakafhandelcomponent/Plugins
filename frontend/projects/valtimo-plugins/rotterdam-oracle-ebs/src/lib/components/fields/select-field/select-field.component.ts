@@ -10,7 +10,7 @@ export class SelectFieldComponent {
   @Input() pluginId!: string;
   @Input() formGroup!: FormGroup;
   @Input() controlName!: string;
-  @Input() wrapperClass: string = "field-wrapper";
+  @Input() wrapperClass: string = 'field-wrapper';
   @Input() title!: string;
   @Input() tooltip: string = null;
   @Input() placeholder!: string;

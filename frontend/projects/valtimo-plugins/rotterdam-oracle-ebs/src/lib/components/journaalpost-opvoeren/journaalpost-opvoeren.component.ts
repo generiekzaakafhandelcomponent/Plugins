@@ -87,7 +87,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     private initForm() {
         this.logger.debug('initForm');
         this.pluginActionForm = this.fb.group({
-            pvResultContainer: this.fb.control('', Validators.required),
+            pvResultVariable: this.fb.control('', Validators.required),
             procesCode: this.fb.control('', Validators.required),
             referentieNummer: this.fb.control('', Validators.required),
             sleutel: this.fb.control('', Validators.required),
@@ -119,7 +119,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                 configuration.regels.forEach( () => this.addLine());
                 // prefill form values
                 this.pluginActionForm.patchValue({
-                    pvResultContainer: configuration.pvResultContainer,
+                    pvResultVariable: configuration.pvResultVariable,
                     procesCode: configuration.procesCode,
                     referentieNummer: configuration.referentieNummer,
                     sleutel: configuration.sleutel,
@@ -153,7 +153,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
             this.pluginActionForm.valueChanges.subscribe(formValue => {
                 // map form values to model
                 this.formValueChange({
-                    pvResultContainer: formValue.pvResultContainer,
+                    pvResultVariable: formValue.pvResultVariable,
                     procesCode: formValue.procesCode,
                     referentieNummer: formValue.referentieNummer,
                     sleutel: formValue.sleutel,
@@ -189,7 +189,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
 
     private handleValid(formValue: JournaalpostOpvoerenConfig): void {
         const genericFieldsValid = !!(
-            formValue.pvResultContainer &&
+            formValue.pvResultVariable &&
             formValue.procesCode &&
             formValue.referentieNummer &&
             formValue.sleutel &&
