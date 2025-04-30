@@ -1,8 +1,8 @@
-package com.ritense.valtimoplugins.huggingface.client
+package com.ritense.valtimoplugins.huggingface.client.mistral
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class GemmaResponse(
+data class MistralResponse(
     @JsonProperty("choices") val choices: List<Choice>
 )
 

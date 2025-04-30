@@ -100,6 +100,7 @@ import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule,mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
+import {LoggingModule} from '@valtimo/logging';
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -163,6 +164,7 @@ export function tabsFactory() {
         FormManagementModule,
         ProcessLinkModule,
         MigrationModule,
+        LoggingModule,
         DossierManagementModule,
         PluginManagementModule,
         AccessControlManagementModule,

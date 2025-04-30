@@ -39,12 +39,6 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-logging:
-  level:
-    root: INFO
-    org.springframework.beans: DEBUG
-    reactor.netty.http.client.HttpClient: DEBUG
-
 server:
   port: 8080
   compression:
@@ -70,6 +64,9 @@ valtimo:
         - localhost
   plugin:
     encryption-secret: "abcdefghijklmnop"
+  docker:
+    filter:
+      ports: 8001,8002,8003,8006,8010,8011,8080
   changelog:
     pbac:
       clear-tables: false

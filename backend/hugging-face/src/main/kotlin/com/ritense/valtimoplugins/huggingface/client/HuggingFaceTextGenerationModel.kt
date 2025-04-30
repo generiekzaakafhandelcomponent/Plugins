@@ -18,6 +18,9 @@ package com.ritense.valtimoplugins.huggingface.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimoplugins.huggingface.client.gemma.GemmaMessage
+import com.ritense.valtimoplugins.huggingface.client.gemma.GemmaRequest
+import com.ritense.valtimoplugins.huggingface.client.gemma.GemmaResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
@@ -32,11 +35,27 @@ class HuggingFaceTextGenerationModel(
     var token: String? = null,
 ) {
 
-    fun chat(question: String): String {
+    fun mistralChat(question: String): String {
         val result = post(
-            "google/gemma-2-2b-it/v1/chat/completions",
+            "together/v1/chat/completions",
             GemmaRequest(
-                model = "google/gemma-2-2b-it",
+                model = "mistralai/Mistral-7B-Instruct-v0.3",
+                messages = listOf(
+                    GemmaMessage(
+                        role = "user",
+                        content = question
+                    )
+                )
+            )
+        )
+        return result
+    }
+
+    fun gemmaChat(question: String): String {
+        val result = post(
+            "nebius/v1/chat/completions",
+            GemmaRequest(
+                model = "google/gemma-2-2b-it-fast",
                 messages = listOf(
                     GemmaMessage(
                         role = "user",

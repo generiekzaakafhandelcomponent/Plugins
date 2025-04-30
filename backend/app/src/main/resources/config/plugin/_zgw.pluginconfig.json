@@ -29,7 +29,7 @@
         "title": "Objecttypes API (Autodeployed)",
         "pluginDefinitionKey": "objecttypenapi",
         "properties": {
-            "url": "http://host.docker.internal:8011/api/v1/",
+            "url": "http://localhost:8011/api/v1/",
             "authenticationPluginConfiguration": "55c0d693-954f-44df-a6b4-d1d0eef72948"
         }
     },
@@ -48,7 +48,7 @@
         "pluginDefinitionKey": "notificatiesapi",
         "properties": {
             "url": "http://localhost:8002/api/v1/",
-            "callbackUrl": "http://host.docker.internal:8080/api/v1/notificatiesapi/callback",
+            "callbackUrl": "http://localhost:8080/api/v1/notificatiesapi/callback",
             "authenticationPluginConfiguration": "e2116590-1dbe-43b8-ad26-1f5e0398b6e0"
         }
     }

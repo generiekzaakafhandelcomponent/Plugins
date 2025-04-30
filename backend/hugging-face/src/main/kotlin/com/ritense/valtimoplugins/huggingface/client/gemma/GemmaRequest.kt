@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.huggingface.client
+package com.ritense.valtimoplugins.huggingface.client.gemma
 
 data class GemmaRequest(
     val model: String,

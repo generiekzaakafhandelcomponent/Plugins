@@ -102,6 +102,7 @@ export const environment: ValtimoConfig = {
                     {link: ['/process-links'], title: 'Process links', sequence: 10},
                     {link: ['/dashboard-management'], title: 'Dashboard', sequence: 11},
                     {link: ['/access-control'], title: 'Access Control', sequence: 12},
+                    {link: ['/logging'], title: 'Logs', sequence: 13},
                     {title: 'Other', textClass: 'text-dark font-weight-bold c-default', sequence: 14},
                     {link: ['/process-migration'], title: 'Process migration', sequence: 15},
                     {link: ['/choice-fields'], title: 'Choice fields', sequence: 16},
