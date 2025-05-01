@@ -238,6 +238,18 @@
                 tooltip="journaalpost.regelsViaResolver.tooltip"
                 required="true"
             ></app-input-field>
+            <div>
+                {{'journaalpost.regelsViaResolver.example' | pluginTranslate: pluginId | async}}
+<pre><code>[
+    &#123;
+        "grootboekSleutel": "",
+        "boekingType": "", // [One of: Credit | Debet]
+        "bedrag": "",
+        "omschrijving": "" // Optional
+    &#125;,
+    ...
+]</code></pre>
+            </div>
         </ng-template>
     </form>
 

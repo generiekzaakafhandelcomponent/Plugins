@@ -80,6 +80,7 @@ const rotterdamOracleEbsPluginSpecification: PluginSpecification = {
             'journaalpost.regel.bedrag': 'Bedrag',
             'journaalpost.regelsViaResolver': 'Regels (via value resolver)',
             'journaalpost.regelsViaResolver.tooltip': 'Vul hier de naam van de Valtimo value resolver in. Dit is een van de Valtimo value-resolvers (case:, doc: of pv:)',
+            'journaalpost.regelsViaResolver.example': 'Voorbeeld van de verwachte gegevensstructuur van de regels',
             'verkoopfactuur.pvResultVariable': 'Proces variable referentie',
             'verkoopfactuur.pvResultVariable.tooltip': 'Vul hier de naam van de proces variable in waar de Verwerkingsstatus van de verkoopfactuur opvoeren actie in wordt opgeslagen.',
             'verkoopfactuur.procesCode': 'Proces code',
@@ -109,7 +110,8 @@ const rotterdamOracleEbsPluginSpecification: PluginSpecification = {
             'verkoopfactuur.regel.grootboekSleutel': 'Grootboek sleutel',
             'verkoopfactuur.regel.omschrijving': 'Omschrijving',
             'verkoopfactuur.regelsViaResolver': 'Regels (via value resolver)',
-            'verkoopfactuur.regelsViaResolver.tooltip': 'Vul hier de naam van de Valtimo value resolver in. Dit is een van de Valtimo value-resolvers (case:, doc: of pv:)'
+            'verkoopfactuur.regelsViaResolver.tooltip': 'Vul hier de naam van de Valtimo value resolver in. Dit is een van de Valtimo value-resolvers (case:, doc: of pv:)',
+            'verkoopfactuur.regelsViaResolver.example': 'Voorbeeld van de verwachte gegevensstructuur van de regels',
         },
         en: {
             title: 'Municipality of Rotterdam: Oracle E-Business Suite connection',
@@ -161,6 +163,7 @@ const rotterdamOracleEbsPluginSpecification: PluginSpecification = {
             'journaalpost.regel.bedrag': 'Amount',
             'journaalpost.regelsViaResolver': 'Rules (via value resolver)',
             'journaalpost.regelsViaResolver.tooltip': 'Enter the name of the Valtimo value resolver here. This is one of the Valtimo value resolvers (case:, doc: or pv:)',
+            'journaalpost.regelsViaResolver.example': 'Example of the expected data structure of the entries',
             'verkoopfactuur.pvResultVariable': 'Process variable reference',
             'verkoopfactuur.pvResultVariable.tooltip': 'Enter here the name of the process variable in which the Processing status of the sales invoice entry action is stored.',
             'verkoopfactuur.procesCode': 'Process code',
@@ -190,7 +193,8 @@ const rotterdamOracleEbsPluginSpecification: PluginSpecification = {
             'verkoopfactuur.regel.grootboekSleutel': 'General ledger key',
             'verkoopfactuur.regel.omschrijving': 'Description',
             'verkoopfactuur.regelsViaResolver': 'Rules (via value resolver)',
-            'verkoopfactuur.regelsViaResolver.tooltip': 'Enter the name of the Valtimo value resolver here. This is one of the Valtimo value resolvers (case:, doc: or pv:)'
+            'verkoopfactuur.regelsViaResolver.tooltip': 'Enter the name of the Valtimo value resolver here. This is one of the Valtimo value resolvers (case:, doc: or pv:)',
+            'verkoopfactuur.regelsViaResolver.example': 'Example of the expected data structure of the entries',
         },
         de: {
             title: 'Gemeinde Rotterdam: Oracle E-Business Suite-Anbindung',
@@ -243,6 +247,7 @@ const rotterdamOracleEbsPluginSpecification: PluginSpecification = {
             'journaalpost.regel.bedrag': 'Betrag',
             'journaalpost.regelsViaResolver': 'Regeln (über Wertauflöser)',
             'journaalpost.regelsViaResolver.tooltip': 'Geben Sie hier den Namen des Valtimo-Wertauflösers ein. Dies ist einer der Valtimo-Wertauflöser (case:, doc: oder pv:)',
+            'journaalpost.regelsViaResolver.example': 'eispiel für die erwartete Datenstruktur der Regeln',
             'verkoopfactuur.pvResultVariable': 'Prozessvariablenreferenz',
             'verkoopfactuur.pvResultVariable.tooltip': 'Geben Sie hier den Namen der Prozessvariable ein, in der der Verarbeitungsstatus der Aktion „Verkaufsrechnung eingeben“ gespeichert wird.',
             'verkoopfactuur.procesCode': 'Prozesscode',
@@ -272,7 +277,8 @@ const rotterdamOracleEbsPluginSpecification: PluginSpecification = {
             'verkoopfactuur.regel.grootboekSleutel': 'Hauptbuchschlüssel',
             'verkoopfactuur.regel.omschrijving': 'Beschreibung',
             'verkoopfactuur.regelsViaResolver': 'Regeln (über Wertauflöser)',
-            'verkoopfactuur.regelsViaResolver.tooltip': 'Geben Sie hier den Namen des Valtimo-Wertauflösers ein. Dies ist einer der Valtimo-Wertauflöser (case:, doc: oder pv:)'
+            'verkoopfactuur.regelsViaResolver.tooltip': 'Geben Sie hier den Namen des Valtimo-Wertauflösers ein. Dies ist einer der Valtimo-Wertauflöser (case:, doc: oder pv:)',
+            'verkoopfactuur.regelsViaResolver.example': 'Beispiel für die erwartete Datenstruktur der Regeln',
         },
     },
 };
