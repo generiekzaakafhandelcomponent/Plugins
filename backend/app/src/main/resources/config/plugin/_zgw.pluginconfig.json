@@ -48,7 +48,7 @@
         "pluginDefinitionKey": "notificatiesapi",
         "properties": {
             "url": "http://localhost:8002/api/v1/",
-            "callbackUrl": "http://localhost:8080/api/v1/notificatiesapi/callback",
+            "callbackUrl": "http://host.docker.internal:8080/api/v1/notificatiesapi/callback",
             "authenticationPluginConfiguration": "e2116590-1dbe-43b8-ad26-1f5e0398b6e0"
         }
     }
