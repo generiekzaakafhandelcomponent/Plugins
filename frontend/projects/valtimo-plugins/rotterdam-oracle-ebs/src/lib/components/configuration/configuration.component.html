@@ -42,21 +42,30 @@
         margin="true"
         [title]="'configuration.baseUrl' | pluginTranslate: pluginId | async"
         [tooltip]="'configuration.baseUrl.tooltip' | pluginTranslate: pluginId | async"
-        [defaultValue]="obs.prefill?.baseUrl"
+        [defaultValue]="obs.prefill.baseUrl"
         [disabled]="obs.disabled"
     >
     </v-input>
-
     <v-select
         name="mTlsSslContextConfiguration"
         margin="true"
         [title]="'configuration.mTlsSslContextConfiguration' | pluginTranslate: pluginId | async"
         [tooltip]="'configuration.mTlsSslContextConfiguration.tooltip' | pluginTranslate: pluginId | async"
-        [defaultSelectionId]="obs.prefill?.mTlsSslContextConfiguration"
+        [defaultSelectionId]="obs.prefill.mTlsSslContextConfiguration"
         [required]="true"
         [disabled]="obs.disabled"
         [items]="obs.mTlsSllContextConfigurationItems"
         [loading]="!obs.mTlsSllContextConfigurationItems"
     >
     </v-select>
+    <cds-toggle
+        #authenticationEnabled
+        [label]="'configuration.authenticationEnabled' | pluginTranslate: pluginId | async"
+        [ngClass]="'v-input--margin'"
+        [onText]="'configuration.authenticationEnabled.yes' | pluginTranslate: pluginId | async"
+        [offText]="'configuration.authenticationEnabled.no' | pluginTranslate: pluginId | async"
+        [checked]="obs.prefill.authenticationEnabled == true"
+        [disabled]="obs.disabled"
+    >
+    </cds-toggle>
 </v-form>

@@ -26,7 +26,6 @@ import com.ritense.objectmanagement.repository.ObjectManagementRepository
 import com.ritense.objectmanagement.service.ObjectManagementFacade
 import com.ritense.objecttypenapi.ObjecttypenApiPlugin
 import com.ritense.plugin.service.PluginService
-import org.springframework.data.domain.Pageable
 import java.net.URI
 import java.time.LocalDate
 import java.util.*
@@ -54,37 +53,6 @@ class ObjectManagementCrudService(
         return objectenApiPlugin.createObject(objectRequest).url
     }
 
-    fun updateObject(
-        objectManagementId: UUID,
-        objectUrl: URI,
-        objectData: JsonNode
-    ): URI {
-        val objectManagement = getObjectManagement(objectManagementId)
-        val objectenApiPlugin = getObjectenApiPlugin(objectManagement.objectenApiPluginConfigurationId)
-        val objecttypenApiPlugin = getObjecttypenApiPlugin(objectManagement.objecttypenApiPluginConfigurationId)
-
-        val objectRequest = ObjectRequest(
-            objecttypenApiPlugin.getObjectTypeUrlById(objectManagement.objecttypeId),
-            ObjectRecord(
-                typeVersion = objectManagement.objecttypeVersion,
-                data = objectData,
-                startAt = LocalDate.now()
-            )
-        )
-
-        return objectenApiPlugin.objectPatch(objectUrl, objectRequest).url
-    }
-
-    fun deleteObject(
-        objectUrl: String,
-        objectManagementConfigurationId: UUID
-    ) {
-        val objectManagement = getObjectManagement(objectManagementConfigurationId)
-        val objectenApiPlugin = getObjectenApiPlugin(objectManagement.objectenApiPluginConfigurationId)
-        val uri = URI.create(objectUrl)
-        objectenApiPlugin.deleteObject(uri)
-    }
-
     fun getObjectsByObjectManagementTitle(
         objectManagementTitle: String,
         searchString: String? = null,
@@ -99,26 +67,6 @@ class ObjectManagementCrudService(
         } catch (e: Exception) {
             throw RuntimeException("Failed to fetch objects for objectManagement: $objectManagementTitle", e)
         }
-    }
-
-    fun getObjectsByObjectTypeIdWithSearchParams(
-        objectManagementId: UUID,
-        objectTypeId: String,
-        searchString: String,
-        ordering: String?,
-        pageable: Pageable
-    ): ObjectsList {
-        val objectManagement = getObjectManagement(objectManagementId)
-        val objectenApiPlugin = getObjectenApiPlugin(objectManagement.objectenApiPluginConfigurationId)
-        val objecttypenApiPlugin = getObjecttypenApiPlugin(objectManagement.objecttypenApiPluginConfigurationId)
-
-        return objectenApiPlugin.getObjectsByObjectTypeIdWithSearchParams(
-            objecttypenApiPlugin.getObjectTypeUrlById(objectManagement.objecttypeId),
-            objectTypeId,
-            searchString,
-            ordering,
-            pageable
-        )
     }
 
     private fun getObjectenApiPlugin(objectenApiPluginConfigurationId: UUID): ObjectenApiPlugin {

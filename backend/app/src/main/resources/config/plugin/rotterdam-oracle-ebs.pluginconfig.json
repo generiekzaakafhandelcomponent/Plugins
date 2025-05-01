@@ -1,0 +1,12 @@
+[
+    {
+        "id": "4a8627e0-bd7b-401d-a86f-fe14ab3ec313",
+        "title": "Gemeente Rotterdam - Oracle EBS plugin",
+        "properties": {
+            "baseUrl": "http://localhost:1080",
+            "mTlsSslContextConfiguration": "63b44b21-9bd2-42f2-a11e-a4f68837e076",
+            "authenticationEnabled": "false"
+        },
+        "pluginDefinitionKey": "rotterdam-oracle-ebs"
+    }
+]

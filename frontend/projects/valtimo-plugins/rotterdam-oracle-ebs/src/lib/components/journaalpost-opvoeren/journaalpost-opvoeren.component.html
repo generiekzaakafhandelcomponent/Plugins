@@ -23,6 +23,15 @@
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
+            controlName="pvResultContainer"
+            title="journaalpost.pvResultContainer"
+            tooltip="journaalpost.pvResultContainer.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
             controlName="procesCode"
             title="journaalpost.procesCode"
             tooltip="journaalpost.procesCode.tooltip"

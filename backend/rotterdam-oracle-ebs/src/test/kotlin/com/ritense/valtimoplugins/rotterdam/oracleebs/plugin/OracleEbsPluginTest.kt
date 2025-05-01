@@ -1,5 +1,7 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.BoekingType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
@@ -27,10 +29,13 @@ import java.time.LocalDateTime
 
 class OracleEbsPluginTest {
 
+    private val objectMapper = jacksonObjectMapper()
+
     private lateinit var mockWebServer: MockWebServer
 
     private lateinit var esbClient: EsbClient
     private lateinit var valueResolverService: ValueResolverService
+    private lateinit var mTlsSslContext: MTlsSslContext
 
     private lateinit var plugin: OracleEbsPlugin
 
@@ -42,12 +47,13 @@ class OracleEbsPluginTest {
 
         esbClient = EsbClient()
         valueResolverService = mock()
+        mTlsSslContext = mock()
 
         plugin = OracleEbsPlugin(
             esbClient, valueResolverService
         ).apply {
             this.baseUrl = mockWebServer.url("/").toUri()
-            this.authenticationEnabled = "false"
+            this.mTlsSslContextConfiguration = mTlsSslContext
         }
     }
 
@@ -106,17 +112,13 @@ class OracleEbsPluginTest {
         val execution = DelegateExecutionFake()
             .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
 
-        mockOkResponse("""{
-            "isGeslaagd": true,
-            "foutcode": null,
-            "foutmelding": null,
-            "melding": null
-        }""".trimIndent())
+        mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
         // when & then
         assertDoesNotThrow {
             plugin.journaalpostOpvoeren(
                 execution = execution,
+                pvResultContainer = "verwerkingsstatus",
                 procesCode = "98332",
                 referentieNummer= "2025-AGV-123456",
                 sleutel= "784",
@@ -157,17 +159,13 @@ class OracleEbsPluginTest {
         val execution = DelegateExecutionFake()
             .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
 
-        mockOkResponse("""{
-            "isGeslaagd": true,
-            "foutcode": null,
-            "foutmelding": null,
-            "melding": null
-        }""".trimIndent())
+        mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
         // when & then
         assertDoesNotThrow {
             plugin.verkoopfactuurOpvoeren(
                 execution = execution,
+                pvResultContainer = "verwerkingsstatus",
                 procesCode = "98332",
                 referentieNummer= "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.Creditnota,
@@ -198,6 +196,13 @@ class OracleEbsPluginTest {
                 .isEqualTo("/verkoopfactuur/opvoeren")
         }
     }
+
+    private fun verwerkingsstatusGeslaagdAsJson(): String = objectMapper.writeValueAsString(mapOf(
+        "isGeslaagd" to true,
+        "foutcode" to null,
+        "foutmelding" to null,
+        "melding" to null
+    ))
 
     private fun mockOkResponse(body: String) {
         MockResponse()

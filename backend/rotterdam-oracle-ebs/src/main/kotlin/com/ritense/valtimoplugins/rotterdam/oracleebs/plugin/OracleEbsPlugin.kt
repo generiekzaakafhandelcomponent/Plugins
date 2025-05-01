@@ -47,6 +47,9 @@ class OracleEbsPlugin(
     @PluginProperty(key = "mTlsSslContextConfiguration", secret = false, required = true)
     internal lateinit var mTlsSslContextConfiguration: MTlsSslContext
 
+    @PluginProperty(key = "authenticationEnabled", secret = false, required = true)
+    internal var authenticationEnabled: String = "true"
+
     @PluginAction(
         key = "journaalpost-opvoeren",
         title = "Journaalpost Opvoeren",
@@ -57,6 +60,7 @@ class OracleEbsPlugin(
     )
     fun journaalpostOpvoeren(
         execution: DelegateExecution,
+        @PluginActionProperty pvResultContainer: String,
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
         @PluginActionProperty sleutel: String,
@@ -122,12 +126,17 @@ class OracleEbsPlugin(
                 boekperiode = integerOrNullFrom(resolvedValues[BOEKPERIODE_KEY]!!)
             )
         ).let { request ->
+            logger.debug { "Trying to send OpvoerenJournaalpostVraag" }
+            logger.trace { "OpvoerenJournaalpostVraag: $request" }
             try {
                 esbClient.journaalPostenApi(restClient()).opvoerenJournaalpost(request).let { response ->
                     logger.debug { "Journaalpost Opvoeren response: $response" }
-                    if (!response.isGeslaagd) {
-                        throw RuntimeException("Journaalpost Opvoeren response: $response")
-                    }
+                    execution.setVariable(pvResultContainer, mapOf(
+                        "isGeslaagd" to response.isGeslaagd,
+                        "melding" to response.melding,
+                        "foutcode" to response.foutcode,
+                        "foutmelding" to response.foutmelding
+                    ))
                 }
             } catch (ex: RestClientResponseException) {
                 logger.error(ex) { "Something went wrong. ${ex.message}" }
@@ -146,6 +155,7 @@ class OracleEbsPlugin(
     )
     fun verkoopfactuurOpvoeren(
         execution: DelegateExecution,
+        @PluginActionProperty pvResultContainer: String,
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
         @PluginActionProperty factuurKlasse: FactuurKlasse,
@@ -261,12 +271,17 @@ class OracleEbsPlugin(
             ),
             bijlage = null
         ).let { request ->
+            logger.debug { "Trying to send OpvoerenVerkoopfactuurVraag" }
+            logger.trace { "OpvoerenVerkoopfactuurVraag: $request" }
             try {
                 esbClient.verkoopFacturenApi(restClient()).opvoerenVerkoopfactuur(request).let { response ->
                     logger.debug { "Verkoopfactuur Opvoeren response: $response" }
-                    if (!response.isGeslaagd) {
-                        throw RuntimeException("Verkoopfactuur Opvoeren response: $response")
-                    }
+                    execution.setVariable(pvResultContainer, mapOf(
+                        "isGeslaagd" to response.isGeslaagd,
+                        "melding" to response.melding,
+                        "foutcode" to response.foutcode,
+                        "foutmelding" to response.foutmelding
+                    ))
                 }
             } catch (ex: RestClientResponseException) {
                 logger.error(ex) { "Something went wrong. ${ex.message}" }
@@ -375,7 +390,7 @@ class OracleEbsPlugin(
     private fun restClient(): RestClient =
         esbClient.createRestClient(
             baseUrl = baseUrl.toString(),
-            authenticationEnabled = true,
+            authenticationEnabled = authenticationEnabled.toBoolean(),
             mTlsSslContext = mTlsSslContextConfiguration
         )
 

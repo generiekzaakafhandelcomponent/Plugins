@@ -8,5 +8,15 @@
     "processDefinitionKey": "send-smtp-mail-process",
     "canInitializeDocument": true,
     "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "rotterdam-oracle-ebs-journaalpost-opvoeren",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "rotterdam-oracle-ebs-verkoopfactuur-opvoeren",
+    "canInitializeDocument": true,
+    "startableByUser": true
   }
 ]

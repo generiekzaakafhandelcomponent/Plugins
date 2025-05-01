@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {
     PluginConfigurationComponent,
     PluginConfigurationData,
@@ -24,6 +24,7 @@ import {
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {RotterdamEsbConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
+import {Toggle} from "carbon-components-angular";
 import {NGXLogger} from "ngx-logger";
 
 @Component({
@@ -38,6 +39,7 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
     @Input() prefillConfiguration$!: Observable<RotterdamEsbConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
+    @ViewChild('authenticationEnabled') authenticationEnabled: Toggle;
 
     private saveSubscription!: Subscription;
     private readonly formValue$ = new BehaviorSubject<RotterdamEsbConfig | null>(null);
@@ -97,7 +99,10 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
                 .subscribe(([formValue, valid]) => {
                     this.logger.debug('formValue', formValue);
                     if (valid) {
-                        this.configuration.emit(formValue!);
+                        this.configuration.emit({
+                            authenticationEnabled: this.authenticationEnabled.checked,
+                            ...formValue
+                        }!);
                     }
                 });
         });

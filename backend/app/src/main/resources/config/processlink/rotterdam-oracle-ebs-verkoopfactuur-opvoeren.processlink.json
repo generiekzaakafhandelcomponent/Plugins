@@ -1,0 +1,50 @@
+[
+  {
+    "activityId": "StartEvent",
+    "activityType": "bpmn:StartEvent:start",
+    "processLinkType": "form",
+    "formDefinitionName": "start-form-example"
+  },
+  {
+    "activityId": "factuur-informatie-aanleveren",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "rotterdam-oracle-ebs_verkoopfactuur-informatie-aanleveren"
+  },
+  {
+    "activityId": "verkoopfactuur-opvoeren",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "4a8627e0-bd7b-401d-a86f-fe14ab3ec313",
+    "pluginActionDefinitionKey": "verkoopfactuur-opvoeren",
+    "actionProperties": {
+      "pvResultContainer": "verwerkingsstatus",
+      "procesCode": "pv:procescode",
+      "referentieNummer": "pv:referentienummer",
+      "factuurKlasse": "Debetnota",
+      "inkoopOrderReferentie": "pv:inkoopOrderReferentie",
+      "natuurlijkPersoon": {
+        "achternaam": "pv:natuurlijkPersoonAchternaam",
+        "voornamen": "pv:natuurlijkPersoonVoornamen"
+      },
+      "nietNatuurlijkPersoon": {
+        "statutaireNaam": "pv:nietNatuurlijkPersoonStatutaireNaam"
+      },
+      "regels": [
+        {
+          "hoeveelheid": "pv:regelHoeveelheid",
+          "tarief": "pv:regelTarief",
+          "btwPercentage": "pv:regelBtwPercentage",
+          "grootboekSleutel": "pv:regelGrootboekSleutel",
+          "omschrijving": "pv:regelOmschrijving"
+        }
+      ]
+    }
+  },
+  {
+    "activityId": "verkoopfactuur-opvoeren-resultaat-bevestigen",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "rotterdam-oracle-ebs_verwerkingsstatus-bevestigen"
+  }
+]
