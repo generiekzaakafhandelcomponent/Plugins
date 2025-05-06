@@ -1,3 +1,3 @@
-package com.ritense.valtimo.haalcentraal.brp.exception
+package com.ritense.valtimoplugins.haalcentraal.brp.exception
 
 class HcBewoningenNotFoundException(message: String) : RuntimeException("$message Adresseerbaar Object Identificatie")

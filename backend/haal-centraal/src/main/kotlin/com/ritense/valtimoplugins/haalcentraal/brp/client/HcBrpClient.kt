@@ -1,13 +1,13 @@
-package com.ritense.valtimo.haalcentraal.brp.client
+package com.ritense.valtimoplugins.haalcentraal.brp.client
 
-import com.ritense.valtimo.haalcentraal.brp.exception.HcBewoningenNotFoundException
-import com.ritense.valtimo.haalcentraal.brp.model.BewoningenRequest
-import com.ritense.valtimo.haalcentraal.brp.model.BewoningenResponse
-import com.ritense.valtimo.haalcentraal.shared.HaalCentraalWebClient
-import com.ritense.valtimo.haalcentraal.shared.exception.HaalCentraalBadRequestException
-import com.ritense.valtimo.haalcentraal.shared.exception.HaalCentraalNotFoundException
-import com.ritense.valtimoplugins.haalcentraalauth.plugin.HaalCentraalAuthPlugin
-import mu.KotlinLogging
+import com.ritense.valtimoplugins.haalcentraal.brp.exception.HcBewoningenNotFoundException
+import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
+import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenResponse
+import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService.Companion.logger
+import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
+import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalBadRequestException
+import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
+import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
 import java.net.URI
 
 class HcBrpClient(
@@ -17,7 +17,7 @@ class HcBrpClient(
     fun getBewoningen(
         baseUrl: URI,
         bewoningenRequest: BewoningenRequest,
-        authentication: HaalCentraalAuthPlugin
+        authentication: HaalCentraalAuthentication
     ): BewoningenResponse? {
         val uri = URI("${baseUrl}/bewoningen")
 
@@ -30,9 +30,5 @@ class HcBrpClient(
             logger.warn("Bad request exception: ${e.message} for Adresseerbaar Object Identificatie: ${bewoningenRequest.adresseerbaarObjectIdentificatie}")
             throw HcBewoningenNotFoundException(e.message!!)
         }
-    }
-
-    companion object {
-        val logger = KotlinLogging.logger {}
     }
 }

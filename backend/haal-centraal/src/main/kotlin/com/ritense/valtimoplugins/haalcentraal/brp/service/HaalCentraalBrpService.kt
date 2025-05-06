@@ -1,9 +1,9 @@
 package com.ritense.valtimoplugins.haalcentraal.brp.service
 
-import com.ritense.valtimo.haalcentraal.brp.client.HcBrpClient
-import com.ritense.valtimo.haalcentraal.brp.model.BewoningDto
-import com.ritense.valtimo.haalcentraal.brp.model.BewoningenRequest
-import com.ritense.valtimoplugins.haalcentraalauth.plugin.HaalCentraalAuthPlugin
+import com.ritense.valtimoplugins.haalcentraal.brp.client.HcBrpClient
+import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningDto
+import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
+import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
 import mu.KotlinLogging
 import java.net.URI
 import java.time.OffsetDateTime
@@ -16,7 +16,7 @@ class HaalCentraalBrpService(
     fun getBewoningen(
         baseUrl: URI,
         bewoningenRequest: BewoningenRequest,
-        authentication: HaalCentraalAuthPlugin
+        authentication: HaalCentraalAuthentication
     ): List<BewoningDto>? {
         logger.info("Retrieving bewoningen for adresseerbaarObjectIdentificatie: ${bewoningenRequest.adresseerbaarObjectIdentificatie}")
 
@@ -43,6 +43,6 @@ class HaalCentraalBrpService(
     }
 
     companion object {
-        private val logger = KotlinLogging.logger {}
+        val logger = KotlinLogging.logger {}
     }
 }

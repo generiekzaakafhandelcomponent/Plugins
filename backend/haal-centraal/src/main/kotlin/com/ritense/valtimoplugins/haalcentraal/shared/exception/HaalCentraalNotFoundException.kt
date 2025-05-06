@@ -1,3 +1,3 @@
-package com.ritense.valtimo.haalcentraal.shared.exception
+package com.ritense.valtimoplugins.haalcentraal.shared.exception
 
 class HaalCentraalNotFoundException(message: String) : RuntimeException("HaalCentraal: $message")

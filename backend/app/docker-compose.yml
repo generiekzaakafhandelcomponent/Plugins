@@ -218,7 +218,15 @@ services:
 
   redis-open-notificaties:
     image: redis:6.2.6
-    container_name: redis-open-notificaties-3
+    container_name: redis-open-notificaties-4
+
+  bag-api-simulator:
+    image: erikritense/bag-api-simulator-tmp:0.1
+    ports:
+      - "5020:5020"
+    environment:
+      - AUTH_API_SECRET=SECRET
+
 
   bewoningen-mock:
     container_name: bewoningen-mock-2
@@ -236,5 +244,6 @@ services:
 networks:
   brp-api-network:
     name: brp-api-network
+
 volumes:
   openzaak-private-media-3:

@@ -1,10 +1,10 @@
-package com.ritense.valtimo.haalcentraal.brp.autoconfigure
+package com.ritense.valtimoplugins.haalcentraal.brp.autoconfigure
 
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimo.haalcentraal.brp.client.HcBrpClient
+import com.ritense.valtimoplugins.haalcentraal.brp.client.HcBrpClient
 import com.ritense.valtimoplugins.haalcentraal.brp.plugin.HaalCentraalBrpPluginFactory
 import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService
-import com.ritense.valtimo.haalcentraal.shared.HaalCentraalWebClient
+import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

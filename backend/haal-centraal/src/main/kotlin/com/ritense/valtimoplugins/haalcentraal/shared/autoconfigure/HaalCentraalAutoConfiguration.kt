@@ -1,6 +1,6 @@
-package com.ritense.valtimo.haalcentraal.shared.autoconfigure
+package com.ritense.valtimoplugins.haalcentraal.shared.autoconfigure
 
-import com.ritense.valtimo.haalcentraal.shared.HaalCentraalWebClient
+import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
