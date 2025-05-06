@@ -7,10 +7,10 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimo.haalcentraal.brp.exception.HcBewoningenNotFoundException
-import com.ritense.valtimo.haalcentraal.brp.model.BewoningenRequest
+import com.ritense.valtimoplugins.haalcentraal.brp.exception.HcBewoningenNotFoundException
+import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
 import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService
-import com.ritense.valtimoplugins.haalcentraalauth.plugin.HaalCentraalAuthPlugin
+import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
@@ -29,7 +29,7 @@ class HaalCentraalBrpPlugin(
     lateinit var brpBaseUrl: URI
 
     @PluginProperty(key = "authenticationPluginConfiguration", secret = false, required = true)
-    lateinit var authenticationPluginConfiguration: HaalCentraalAuthPlugin
+    lateinit var authenticationPluginConfiguration: HaalCentraalAuthentication
 
 
     @PluginAction(
