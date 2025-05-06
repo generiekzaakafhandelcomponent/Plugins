@@ -21,3 +21,4 @@
 export * from './lib/haal-centraal-brp-auth.plugin.module';
 export * from './lib/haal-centraal-brp-auth.plugin.specification';
 export * from './lib/models/haal-centraal-auth-plugin-config'
+export * from './lib/components/haal-centraal-auth-plugin-configuration.component';

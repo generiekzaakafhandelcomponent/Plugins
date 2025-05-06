@@ -41,7 +41,7 @@ export class HaalCentraalAuthPluginConfigurationComponent
 
     private handleValid(formValue: HaalCentraalAuthPluginConfig): void {
         // The configuration is valid when a configuration title is defined
-        const valid = !!(formValue.configurationTitle );
+        const valid = !!(formValue.configurationTitle);
 
         this.valid$.next(valid);
         this.valid.emit(valid);
