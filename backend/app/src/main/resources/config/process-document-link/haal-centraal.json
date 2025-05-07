@@ -3,5 +3,10 @@
     "processDefinitionKey": "Process_HCBRPGB",
     "canInitializeDocument": true,
     "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "Process_HCBAGGA",
+    "canInitializeDocument": true,
+    "startableByUser": false
   }
 ]
