@@ -23,10 +23,10 @@
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
-            controlName="pvResultContainer"
-            title="journaalpost.pvResultContainer"
-            tooltip="journaalpost.pvResultContainer.tooltip"
-            [required]="true"
+            controlName="pvResultVariable"
+            title="verkoopfactuur.pvResultVariable"
+            tooltip="verkoopfactuur.pvResultVariable.tooltip"
+            required="true"
         ></app-input-field>
 
         <app-input-field
@@ -35,7 +35,7 @@
             controlName="procesCode"
             title="verkoopfactuur.procesCode"
             tooltip="verkoopfactuur.procesCode.tooltip"
-            [required]="true"
+            required="true"
         ></app-input-field>
 
         <app-input-field
@@ -44,19 +44,31 @@
             controlName="referentieNummer"
             title="verkoopfactuur.referentieNummer"
             tooltip="verkoopfactuur.referentieNummer.tooltip"
-            [required]="true"
+            required="true"
         ></app-input-field>
 
+        <!--
         <app-select-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
             controlName="factuurKlasse"
             title="verkoopfactuur.factuurKlasse"
-            tooltip="verkoopfactuur.factuurKlasse.tooltip"
-            placeholder="verkoopfactuur.factuurKlasse.placeholder"
-            [required]="true"
+            tooltip="verkoopfactuur.factuurKlasse.select.tooltip"
+            placeholder="verkoopfactuur.factuurKlasse.select.placeholder"
+            required="true"
             [items]="factuurKlasseItems"
         ></app-select-field>
+        -->
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="factuurKlasse"
+            title="verkoopfactuur.factuurKlasse"
+            tooltip="verkoopfactuur.factuurKlasse.input.tooltip"
+            required="true"
+            [presets]="factuurKlasseItems"
+        ></app-input-field>
 
         <app-input-field
             [pluginId]="pluginId"
@@ -64,7 +76,7 @@
             controlName="inkoopOrderReferentie"
             title="verkoopfactuur.inkoopOrderReferentie"
             tooltip="verkoopfactuur.inkoopOrderReferentie.tooltip"
-            [required]="true"
+            required="true"
         ></app-input-field>
 
         <app-input-field
@@ -73,7 +85,7 @@
             controlName="natuurlijkPersoonAchternaam"
             title="verkoopfactuur.natuurlijkPersoonAchternaam"
             tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"
-            [required]="true"
+            required="true"
         ></app-input-field>
 
         <app-input-field
@@ -82,7 +94,7 @@
             controlName="natuurlijkPersoonVoornamen"
             title="verkoopfactuur.natuurlijkPersoonVoornamen"
             tooltip="verkoopfactuur.natuurlijkPersoonVoornamen.tooltip"
-            [required]="true"
+            required="true"
         ></app-input-field>
 
         <app-input-field
@@ -91,85 +103,121 @@
             controlName="nietNatuurlijkPersoonStatutaireNaam"
             title="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam"
             tooltip="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam.tooltip"
-            [required]="true"
+            required="true"
         ></app-input-field>
 
-        <div>
-            <v-input-label
-                [required]="true"
-                [title]="'verkoopfactuur.regels' | pluginTranslate: pluginId | async"
-                [tooltip]="'verkoopfactuur.regels.tooltip' | pluginTranslate: pluginId | async"
-            >
-            </v-input-label>
-            <div formArrayName="regels" class="lines-wrapper">
-                <div class="line-wrapper"
-                     *ngFor="let line of lines.controls; let i = index">
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="hoeveelheid"
-                        wrapperClass="line-field-wrapper"
-                        title="verkoopfactuur.regel.hoeveelheid"
-                        [required]="true"
-                    ></app-input-field>
+        <cds-toggle
+            #regelsViaResolverToggle
+            class="toggle"
+            [label]="'verkoopfactuur.viaResolverToggle' | pluginTranslate: pluginId | async"
+            [onText]="'toggle.yes' | pluginTranslate: pluginId | async"
+            [offText]="'toggle.no' | pluginTranslate: pluginId | async"
+            (checkedChange)="onCheckedChanged($event)"
+        >
+        </cds-toggle>
 
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="tarief"
-                        wrapperClass="line-field-wrapper"
-                        title="verkoopfactuur.regel.tarief"
-                        [required]="true"
-                    ></app-input-field>
+        <ng-template [ngIf]="!regelsViaResolverToggle.checked">
+            <div>
+                <v-input-label
+                    required="true"
+                    [title]="'verkoopfactuur.regels' | pluginTranslate: pluginId | async"
+                    [tooltip]="'verkoopfactuur.regels.tooltip' | pluginTranslate: pluginId | async"
+                >
+                </v-input-label>
+                <div formArrayName="regels" class="lines-wrapper">
+                    <div class="line-wrapper"
+                         *ngFor="let line of lines.controls; let i = index">
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="hoeveelheid"
+                            wrapperClass="line-field-wrapper"
+                            title="verkoopfactuur.regel.hoeveelheid"
+                            required="true"
+                        ></app-input-field>
 
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="btwPercentage"
-                        wrapperClass="line-field-wrapper"
-                        title="verkoopfactuur.regel.btwPercentage"
-                        [required]="true"
-                    ></app-input-field>
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="tarief"
+                            wrapperClass="line-field-wrapper"
+                            title="verkoopfactuur.regel.tarief"
+                            required="true"
+                        ></app-input-field>
 
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="grootboekSleutel"
-                        wrapperClass="line-field-wrapper"
-                        title="verkoopfactuur.regel.grootboekSleutel"
-                        [required]="true"
-                    ></app-input-field>
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="btwPercentage"
+                            wrapperClass="line-field-wrapper"
+                            title="verkoopfactuur.regel.btwPercentage"
+                            required="true"
+                        ></app-input-field>
 
-                    <app-input-field
-                        [pluginId]="pluginId"
-                        [formGroup]="line"
-                        controlName="omschrijving"
-                        wrapperClass="line-field-wrapper"
-                        title="verkoopfactuur.regel.omschrijving"
-                        [required]="false"
-                    ></app-input-field>
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="grootboekSleutel"
+                            wrapperClass="line-field-wrapper"
+                            title="verkoopfactuur.regel.grootboekSleutel"
+                            required="true"
+                        ></app-input-field>
 
-                    <div class="remove-line-wrapper">
-                        <button type="button"
-                                cdsButton="secondary"
-                                (click)="removeLine(i)"
-                                [disabled]="obs.disabled"
-                        >
-                            {{'verkoopfactuur.regel.verwijderen' | pluginTranslate: pluginId | async}}
-                            <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
-                        </button>
+                        <app-input-field
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="omschrijving"
+                            wrapperClass="line-field-wrapper"
+                            title="verkoopfactuur.regel.omschrijving"
+                            required="false"
+                        ></app-input-field>
+
+                        <div class="remove-line-wrapper">
+                            <button type="button"
+                                    cdsButton="secondary"
+                                    (click)="removeLine(i)"
+                                    [disabled]="obs.disabled"
+                            >
+                                {{'verkoopfactuur.regel.verwijderen' | pluginTranslate: pluginId | async}}
+                                <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <div class="add-line-wrapper">
+                    <button type="button"
+                            cdsButton="secondary"
+                            (click)="addLine()"
+                            [disabled]="obs.disabled">
+                        {{'verkoopfactuur.regel.toevoegen' | pluginTranslate: pluginId | async}}
+                        <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
+                    </button>
+                </div>
             </div>
-            <div class="add-line-wrapper">
-                <button type="button"
-                        cdsButton="secondary"
-                        (click)="addLine()"
-                        [disabled]="obs.disabled">
-                    {{'verkoopfactuur.regel.toevoegen' | pluginTranslate: pluginId | async}}
-                    <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
-                </button>
+        </ng-template>
+
+        <ng-template [ngIf]="regelsViaResolverToggle.checked">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="regelsViaResolver"
+                title="verkoopfactuur.regelsViaResolver"
+                tooltip="verkoopfactuur.regelsViaResolver.tooltip"
+                required="true"
+            ></app-input-field>
+            <div>
+                {{'verkoopfactuur.regelsViaResolver.example' | pluginTranslate: pluginId | async}}
+<pre><code>[
+    &#123;
+        "hoeveelheid": "",
+        "tarief": "",
+        "btwPercentage": "",
+        "grootboekSleutel": "",
+        "omschrijving": "" // Optional
+    &#125;,
+    ...
+]</code></pre>
             </div>
-        </div>
+        </ng-template>
     </form>
 </ng-container>

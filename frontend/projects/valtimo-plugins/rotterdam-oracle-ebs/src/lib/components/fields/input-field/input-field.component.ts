@@ -10,9 +10,16 @@ export class InputFieldComponent {
   @Input() pluginId!: string;
   @Input() formGroup!: FormGroup;
   @Input() controlName!: string;
-  @Input() wrapperClass: string = "field-wrapper";
+  @Input() wrapperClass: string = 'field-wrapper';
   @Input() type: string = 'text';
   @Input() title!: string;
   @Input() tooltip: string = null;
   @Input() required: boolean = false;
+  @Input() presets: string[] = [];
+
+  presetWithValue(value: string) {
+    this.formGroup.patchValue({
+      [this.controlName]: value
+    })
+  }
 }

@@ -1,4 +1,4 @@
-<div [formGroup]="formGroup" class="{{ wrapperClass }}">
+<div [formGroup]="formGroup" [class]="wrapperClass">
     <v-input-label
         [title]="title | pluginTranslate: pluginId | async"
         [tooltip]="tooltip ? (tooltip | pluginTranslate: pluginId | async) : null"

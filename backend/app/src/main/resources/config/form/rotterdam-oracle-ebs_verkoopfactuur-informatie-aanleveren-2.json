@@ -1,0 +1,87 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Proces code",
+      "key": "pv:procescode",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "COMBIPAC"
+    },
+    {
+      "label": "Referentienummer",
+      "key": "pv:referentienummer",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "123456789"
+    },
+    {
+      "label": "Voornaam",
+      "key": "pv:natuurlijkPersoonVoornamen",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Jan"
+    },
+    {
+      "label": "Achternaam",
+      "key": "pv:natuurlijkPersoonAchternaam",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Janssen"
+    },
+    {
+      "label": "Statutaire naam",
+      "key": "pv:nietNatuurlijkPersoonStatutaireNaam",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": ""
+    },
+    {
+      "label": "Factuur klasse",
+      "key": "pv:factuurKlasse",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Debetnota"
+    },
+    {
+      "label": "Inkoop Order referentie",
+      "key": "pv:inkoopOrderReferentie",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "INK2025OPB2"
+    },
+    {
+      "label": "Factuur regels via resolver",
+      "key": "pv:regels",
+      "type": "textarea",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "[{\"hoeveelheid\":\"3\",\"tarief\":\"34.50\",\"btwPercentage\":\"21%\",\"grootboekSleutel\":\"740\",\"omschrijving\":\"Regel 1\"},{\"hoeveelheid\":\"6\",\"tarief\":\"14.50\",\"btwPercentage\":\"9%\",\"grootboekSleutel\":\"450\",\"omschrijving\":\"Regel 2\"}]"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

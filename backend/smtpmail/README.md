@@ -23,6 +23,8 @@ dependencies {
 }
 ```
 
+The most recent version can be found [here](https://mvnrepository.com/artifact/com.ritense.valtimoplugins/smtpmail).
+
 ## Frontend
 
 The following dependency can be added to your `package.json` file:
@@ -34,6 +36,8 @@ The following dependency can be added to your `package.json` file:
   }
 }
 ```
+
+The most recent version can be found [here](https://www.npmjs.com/package/@valtimo-plugins/smtpmail?activeTab=versions).
 
 In order to use the plugin in the frontend, the following must be added to your `app.module.ts`:
 

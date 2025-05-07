@@ -3,59 +3,46 @@
   "components": [
     {
       "label": "Proces code",
-      "applyMaskOn": "change",
-      "tableView": true,
-      "validate": {
-        "required": true
-      },
-      "validateWhenHidden": false,
       "key": "pv:procescode",
       "type": "textfield",
       "input": true,
+      "validate": {
+        "required": true
+      },
       "defaultValue": "COMBIPAC"
     },
     {
       "label": "Referentienummer",
-      "applyMaskOn": "change",
-      "tableView": true,
-      "validate": {
-        "required": true
-      },
-      "validateWhenHidden": false,
       "key": "pv:referentienummer",
       "type": "textfield",
       "input": true,
+      "validate": {
+        "required": true
+      },
       "defaultValue": "123456789"
     },
     {
+      "label": "Voornaam",
       "key": "pv:natuurlijkPersoonVoornamen",
       "type": "textfield",
       "input": true,
-      "label": "Voornaam",
       "validate": {
         "required": true
       },
-      "tableView": true,
-      "applyMaskOn": "change",
       "defaultValue": "Jan"
     },
     {
+      "label": "Achternaam",
       "key": "pv:natuurlijkPersoonAchternaam",
       "type": "textfield",
       "input": true,
-      "label": "Achternaam",
       "validate": {
         "required": true
       },
-      "tableView": true,
-      "applyMaskOn": "change",
       "defaultValue": "Janssen"
     },
     {
       "label": "Statutaire naam",
-      "applyMaskOn": "change",
-      "tableView": true,
-      "validateWhenHidden": false,
       "key": "pv:nietNatuurlijkPersoonStatutaireNaam",
       "type": "textfield",
       "input": true,
@@ -63,41 +50,20 @@
     },
     {
       "label": "Factuur klasse",
-      "widget": "choicesjs",
-      "tableView": true,
-      "data": {
-        "values": [
-          {
-            "label": "Creditnota",
-            "value": "Creditnota"
-          },
-          {
-            "label": "Debetnota",
-            "value": "Debetnota"
-          },
-          {
-            "label": "Correctienota",
-            "value": "Correctienota"
-          }
-        ]
-      },
+      "key": "pv:factuurKlasse",
+      "type": "textfield",
+      "input": true,
       "validate": {
         "required": true
       },
-      "validateWhenHidden": false,
-      "key": "pv:factuurKlasse",
-      "type": "select",
-      "input": true,
       "defaultValue": "Debetnota"
     },
     {
       "label": "Inkoop Order referentie",
-      "applyMaskOn": "change",
-      "tableView": true,
-      "validateWhenHidden": false,
       "key": "pv:inkoopOrderReferentie",
       "type": "textfield",
-      "input": true
+      "input": true,
+      "defaultValue": "INK2025OPB2"
     },
     {
       "legend": "Factuur regel",
@@ -109,44 +75,45 @@
       "components": [
         {
           "label": "Hoeveelheid",
+          "key": "pv:regelHoeveelheid",
+          "type": "number",
+          "input": true,
+          "validate": {
+            "required": true
+          },
           "applyMaskOn": "change",
           "mask": false,
-          "tableView": false,
           "delimiter": false,
           "requireDecimal": false,
           "inputFormat": "plain",
           "truncateMultipleSpaces": false,
-          "validate": {
-            "required": true
-          },
-          "validateWhenHidden": false,
-          "key": "pv:regelHoeveelheid",
-          "type": "number",
-          "input": true,
           "defaultValue": "4"
         },
         {
           "label": "Tarief",
-          "applyMaskOn": "change",
-          "mask": false,
-          "tableView": false,
-          "currency": "EUR",
-          "inputFormat": "plain",
-          "truncateMultipleSpaces": false,
-          "validate": {
-            "required": true
-          },
-          "validateWhenHidden": false,
           "key": "pv:regelTarief",
           "type": "currency",
           "input": true,
+          "validate": {
+            "required": true
+          },
+          "applyMaskOn": "change",
+          "mask": false,
+          "currency": "EUR",
+          "inputFormat": "plain",
+          "truncateMultipleSpaces": false,
           "delimiter": true,
           "defaultValue": "125"
         },
         {
           "label": "BTW percentage",
+          "key": "pv:regelBtwPercentage",
+          "type": "select",
+          "input": true,
+          "validate": {
+            "required": true
+          },
           "widget": "choicesjs",
-          "tableView": true,
           "data": {
             "values": [
               {
@@ -163,32 +130,20 @@
               }
             ]
           },
-          "validate": {
-            "required": true
-          },
-          "validateWhenHidden": false,
-          "key": "pv:regelBtwPercentage",
-          "type": "select",
-          "input": true,
           "defaultValue": "21%"
         },
         {
+          "label": "Grootboeksleutel",
           "key": "pv:regelGrootboekSleutel",
           "type": "textfield",
           "input": true,
-          "label": "Grootboeksleutel",
           "validate": {
             "required": true
           },
-          "tableView": true,
-          "applyMaskOn": "change",
           "defaultValue": "700"
         },
         {
           "label": "Omschrijving",
-          "applyMaskOn": "change",
-          "tableView": true,
-          "validateWhenHidden": false,
           "key": "pv:regelOmschrijving",
           "type": "textfield",
           "input": true

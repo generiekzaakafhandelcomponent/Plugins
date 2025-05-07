@@ -1,4 +1,4 @@
-<div [formGroup]="formGroup" class="{{ wrapperClass }}">
+<div [formGroup]="formGroup" [class]="wrapperClass">
     <v-input-label
         [title]="title | pluginTranslate: pluginId | async"
         [tooltip]="tooltip ? (tooltip | pluginTranslate: pluginId | async) : null"
@@ -8,4 +8,10 @@
     <input cdsText
            [type]="type"
            [formControlName]="controlName">
+    <div *ngIf="presets.length > 0" class="presets">
+        <span>Presets:</span>
+        <ng-template ngFor let-preset [ngForOf]="presets" let-isFirst="first">
+            <ng-template [ngIf]="!isFirst"> | </ng-template><a (click)="presetWithValue(preset)" class="preset">{{ preset }}</a>
+        </ng-template>
+    </div>
 </div>

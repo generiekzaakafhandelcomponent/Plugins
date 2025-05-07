@@ -1,5 +1,6 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.autoconfiguration
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valtimoplugins.rotterdam.oracleebs.plugin.OracleEbsPluginFactory
@@ -16,11 +17,13 @@ class OracleEbsAutoConfiguration {
     fun journaalPostPluginFactory(
         pluginService: PluginService,
         esbClient: EsbClient,
-        valueResolverService: ValueResolverService
+        valueResolverService: ValueResolverService,
+        objectMapper: ObjectMapper,
     ) = OracleEbsPluginFactory(
         pluginService,
         esbClient,
-        valueResolverService
+        valueResolverService,
+        objectMapper
     )
 
     @Bean
