@@ -19,13 +19,21 @@ class HaalCentraalBagService(
     ): List<AddressDto> {
         logger.info("Fetching address for postcode: ${addressRequest.postcode}, huisnummer: ${addressRequest.huisnummer}")
 
+        val cleanAddressRequest = AddressRequest(
+            postcode = addressRequest.postcode,
+            huisnummer = addressRequest.huisnummer,
+            huisnummertoevoeging = addressRequest.huisnummertoevoeging?.takeIf { it.isNotBlank() },
+            huisletter = addressRequest.huisletter?.takeIf { it.isNotBlank() },
+            exacteMatch = addressRequest.exacteMatch
+        )
+
         val response = haalCentraalBagClient.getAdresseerbaarObjectIdentificatie(
             baseUrl = baseUrl,
-            addressRequest = addressRequest,
+            addressRequest = cleanAddressRequest,
             authentication = haalCentraalAuthentication
         )
 
-       return response?.embedded?.adressen?.map { address -> address.toDto() } ?: emptyList()
+        return response?.embedded?.adressen?.map { address -> address.toDto() } ?: emptyList()
     }
 
     private fun Address.toDto(): AddressDto = AddressDto(

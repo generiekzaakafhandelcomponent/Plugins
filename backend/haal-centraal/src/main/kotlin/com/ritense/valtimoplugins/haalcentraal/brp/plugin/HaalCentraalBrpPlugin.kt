@@ -45,15 +45,14 @@ class HaalCentraalBrpPlugin(
         execution: DelegateExecution
     ) {
 
-//        peildatum komt al als string binnen, dus we hoeven geen conversie te doen? + het werkt niet
-//        val peildatumString = haalCentraalBrpService.getPeildatum(peildatum)
+        val peildatumReversed = haalCentraalBrpService.reverseDate(peildatum)
 
         logger.info { "Retrieving bewoningen for case ${execution.businessKey}" }
 
         try {
             haalCentraalBrpService.getBewoningen(
                 baseUrl = brpBaseUrl,
-                bewoningenRequest = BewoningenRequest(QUERY_TYPE, adresseerbaarObjectIdentificatie, peildatum),
+                bewoningenRequest = BewoningenRequest(QUERY_TYPE, adresseerbaarObjectIdentificatie, peildatumReversed),
                 authentication = authenticationPluginConfiguration
             )?.let {
                 execution.processInstance.setVariable(
