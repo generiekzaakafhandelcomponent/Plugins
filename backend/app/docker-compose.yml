@@ -222,6 +222,7 @@ services:
 
   bag-api-simulator:
     image: erikritense/bag-api-simulator-tmp:0.1
+    container_name: bag-api-simulator
     ports:
       - "5020:5020"
     environment:

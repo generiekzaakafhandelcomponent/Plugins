@@ -10,7 +10,7 @@
     "processLinkType": "form"
   },
   {
-    "activityId": "get-adres-task",
+    "activityId": "get-adresseerbaar-object-identificatie-task",
     "activityType": "bpmn:ServiceTask:start",
     "pluginConfigurationId": "f53419b3-a825-4bc1-ab92-a44757b5666c",
     "pluginActionDefinitionKey": "get-adresseerbaar-object-identificatie",

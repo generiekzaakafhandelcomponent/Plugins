@@ -2,27 +2,26 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
                   xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  id="Definitions_1"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1"
                   targetNamespace="http://bpmn.io/schema/bpmn">
-    <bpmn:process id="Process_HCBAGGA" name="Haal Centraal Get Adres" processType="None" isClosed="false"
+    <bpmn:process id="haal-centraal-BAGGAOID" name="Haal Centraal Get Adresseerbaar Object Identificatie" processType="None" isClosed="false"
                   isExecutable="true">
         <bpmn:startEvent id="StartEvent_1" name="Start">
             <bpmn:outgoing>Flow_1rzm9fp</bpmn:outgoing>
         </bpmn:startEvent>
-        <bpmn:sequenceFlow id="Flow_1rzm9fp" sourceRef="StartEvent_1" targetRef="get-adres-task"/>
-        <bpmn:sequenceFlow id="Flow_0uroub1" sourceRef="get-adres-task" targetRef="results-to-doc-task"/>
+        <bpmn:sequenceFlow id="Flow_1rzm9fp" sourceRef="StartEvent_1" targetRef="get-adresseerbaar-object-identificatie-task"/>
+        <bpmn:sequenceFlow id="Flow_0uroub1" sourceRef="get-adresseerbaar-object-identificatie-task" targetRef="results-to-doc-task"/>
         <bpmn:endEvent id="eind-event" name="Eind">
             <bpmn:incoming>Flow_0tu9vx9</bpmn:incoming>
         </bpmn:endEvent>
         <bpmn:sequenceFlow id="Flow_0tu9vx9" sourceRef="results-to-doc-task" targetRef="eind-event"/>
-        <bpmn:serviceTask id="get-adres-task" name="Get adres" implementation="##WebService"
+        <bpmn:serviceTask id="get-adresseerbaar-object-identificatie-task" name="Get Adresseerbaar Object Identificatie" implementation="##WebService"
                           camunda:expression="${true}">
             <bpmn:incoming>Flow_1rzm9fp</bpmn:incoming>
             <bpmn:outgoing>Flow_0uroub1</bpmn:outgoing>
         </bpmn:serviceTask>
         <bpmn:serviceTask id="results-to-doc-task" name="Results to doc:" implementation="##WebService"
-                          camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/results&quot;, execution.getVariable('results'))}">
+                          camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/results&quot;, results)}">
             <bpmn:incoming>Flow_0uroub1</bpmn:incoming>
             <bpmn:outgoing>Flow_0tu9vx9</bpmn:outgoing>
         </bpmn:serviceTask>
@@ -53,7 +52,7 @@
                     <dc:Bounds x="589" y="145" width="23" height="14"/>
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_0s26yg6_di" bpmnElement="get-adres-task">
+            <bpmndi:BPMNShape id="Activity_0s26yg6_di" bpmnElement="get-adresseerbaar-object-identificatie-task">
                 <dc:Bounds x="260" y="80" width="100" height="80"/>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="Activity_1u42az7_di" bpmnElement="results-to-doc-task">
