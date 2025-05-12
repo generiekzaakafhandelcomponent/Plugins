@@ -1,0 +1,74 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "HTML",
+      "attrs": [
+        {
+          "attr": "",
+          "value": ""
+        }
+      ],
+      "content": "  <h3>Beschikbare object-ID's (BRP API)</h3>\r\n  <ul style=\"padding-left: 1.2em;\">\r\n    <li>\r\n      0518010000583534 – met o.a. <strong>Gea Gerritsen</strong>\r\n    </li>\r\n    <li>\r\n      0518010000583567 – met o.a. <strong>Peterjan Pluym</strong>\r\n    </li>\r\n  </ul>",
+      "refreshOnChange": false,
+      "key": "html",
+      "type": "htmlelement",
+      "input": false,
+      "tableView": false
+    },
+    {
+      "key": "adresseerbaarObjectIdentificatie",
+      "type": "textfield",
+      "input": true,
+      "label": "Adresseerbaar object identificatie",
+      "validate": {
+        "required": true
+      },
+      "tableView": true,
+      "attributes": {
+        "data-testid": "Get Bewoningen-adresseerbaarObjectIdentificatie"
+      },
+      "applyMaskOn": "change",
+      "defaultValue": "0518010000583561"
+    },
+    {
+      "key": "peildatum",
+      "type": "day",
+      "input": true,
+      "label": "Peildatum",
+      "fields": {
+        "day": {
+          "hide": false,
+          "required": true
+        },
+        "year": {
+          "hide": false,
+          "required": true
+        },
+        "month": {
+          "hide": false,
+          "required": true
+        }
+      },
+      "tableView": false,
+      "attributes": {
+        "data-testid": "Get Bewoningen-peildatum"
+      },
+      "defaultValue": "01/01/2024",
+      "hideInputLabels": false,
+      "useLocaleSettings": false,
+      "inputsLabelPosition": "top"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

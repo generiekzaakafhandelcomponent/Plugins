@@ -2,7 +2,7 @@
   {
     "activityId": "StartEvent_1",
     "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "start",
+    "formDefinitionName": "haal-centraal-get-adres",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
@@ -16,9 +16,11 @@
     "pluginActionDefinitionKey": "get-adresseerbaar-object-identificatie",
     "processLinkType": "plugin",
     "actionProperties": {
-      "postcode": "2514GN",
-      "huisnummer": "68",
-      "exacteMatch": true,
+      "postcode": "doc:/postcode",
+      "huisnummer": "doc:/huisnummer",
+      "huisnummertoevoeging": "doc:/huisnummertoevoeging",
+      "huisletter": "doc:/huisletter",
+      "exacteMatch": "doc:/exacteOvereenkomst",
       "resultProcessVariableName": "results"
     }
   }

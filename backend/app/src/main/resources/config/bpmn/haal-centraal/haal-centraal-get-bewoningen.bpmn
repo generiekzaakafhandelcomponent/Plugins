@@ -2,10 +2,9 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
                   xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  id="Definitions_1"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1"
                   targetNamespace="http://bpmn.io/schema/bpmn">
-    <bpmn:process id="Process_HCBRPGB" name="Haal Centraal Get Bewoningen" processType="None" isClosed="false"
+    <bpmn:process id="haal-centraal-HCBRPGB" name="Haal Centraal Get Bewoningen" processType="None" isClosed="false"
                   isExecutable="true">
         <bpmn:startEvent id="StartEvent_1" name="Start">
             <bpmn:outgoing>Flow_1rzm9fp</bpmn:outgoing>
@@ -22,7 +21,7 @@
             <bpmn:outgoing>Flow_0uroub1</bpmn:outgoing>
         </bpmn:serviceTask>
         <bpmn:serviceTask id="results-to-doc-task" name="Results to doc:" implementation="##WebService"
-                          camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/results&#34;, execution.getVariable(&#39;results&#39;))}">
+                          camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/results&quot;, results)}">
             <bpmn:incoming>Flow_0uroub1</bpmn:incoming>
             <bpmn:outgoing>Flow_0tu9vx9</bpmn:outgoing>
         </bpmn:serviceTask>

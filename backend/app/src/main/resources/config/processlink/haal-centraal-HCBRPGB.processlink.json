@@ -2,7 +2,7 @@
   {
     "activityId": "StartEvent_1",
     "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "start",
+    "formDefinitionName": "haal-centraal-get-bewoningen",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
@@ -16,8 +16,8 @@
     "pluginActionDefinitionKey": "hc-brp-get-bewoningen",
     "processLinkType": "plugin",
     "actionProperties": {
-      "adresseerbaarObjectIdentificatie": "0518010000583561",
-      "peildatum": "2024-01-01",
+      "adresseerbaarObjectIdentificatie": "doc:/adresseerbaarObjectIdentificatie",
+      "peildatum": "doc:/peildatum",
       "resultProcessVariableName": "results"
     }
   }

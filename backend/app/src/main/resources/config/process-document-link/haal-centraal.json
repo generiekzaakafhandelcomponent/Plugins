@@ -1,12 +1,12 @@
 [
   {
-    "processDefinitionKey": "Process_HCBRPGB",
+    "processDefinitionKey": "haal-centraal-HCBRPGB",
     "canInitializeDocument": true,
     "startableByUser": true
   },
   {
-    "processDefinitionKey": "Process_HCBAGGA",
+    "processDefinitionKey": "haal-centraal-BAGGAOID",
     "canInitializeDocument": true,
-    "startableByUser": false
+    "startableByUser": true
   }
 ]
