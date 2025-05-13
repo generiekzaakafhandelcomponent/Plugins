@@ -28,6 +28,7 @@ class XentialApiHttpSecurityConfigurer : HttpSecurityConfigurer {
         try {
             http.authorizeHttpRequests { requests ->
                 requests.requestMatchers(antMatcher(GET, "/api/v1/xential/sjablonen")).authenticated()
+                requests.requestMatchers(antMatcher(GET, "/api/v1/xential/gebruikers-id")).authenticated()
                 requests.requestMatchers(antMatcher(POST,"/api/v1/xential/document")).permitAll()
             }
         } catch (e: Exception) {

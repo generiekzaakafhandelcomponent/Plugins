@@ -18,7 +18,11 @@ package com.ritense.valtimoplugins.xential.autoconfiguration
 
 import com.ritense.plugin.service.PluginService
 import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.valtimo.contract.annotation.ProcessBean
+import com.ritense.valtimo.contract.authentication.UserManagementService
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
+import com.ritense.valtimo.security.jwt.authentication.TokenAuthenticationService
+import com.ritense.valtimo.security.jwt.provider.SecretKeyResolver
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.plugin.XentialPluginFactory
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
@@ -26,6 +30,7 @@ import com.ritense.valtimoplugins.xential.security.config.XentialApiHttpSecurity
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
 import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
 import com.ritense.valtimoplugins.xential.service.XentialSjablonenService
+import com.ritense.valtimoplugins.xential.service.XentialUserIdHelper
 import com.ritense.valtimoplugins.xential.web.rest.DocumentResource
 import com.ritense.valtimoplugins.xential.web.rest.XentialSjablonenResource
 import com.ritense.valueresolver.ValueResolverService
@@ -48,11 +53,14 @@ class XentialAutoConfiguration {
     fun xentialPluginFactory(
         pluginService: PluginService,
         esbClient: OpentunnelEsbClient,
-        documentGenerationService: DocumentGenerationService
+        documentGenerationService: DocumentGenerationService,
+        tokenAuthenticationService: TokenAuthenticationService,
+        valueResolverService: ValueResolverService
     ) = XentialPluginFactory(
         pluginService,
         esbClient,
         documentGenerationService,
+        valueResolverService
     )
 
     @Bean
@@ -67,10 +75,12 @@ class XentialAutoConfiguration {
     @ConditionalOnMissingBean
     fun xentialSjablonenService(
         pluginService: PluginService,
-        esbClient: OpentunnelEsbClient
+        esbClient: OpentunnelEsbClient,
+        xentialUserIdHelper: XentialUserIdHelper
     ) = XentialSjablonenService(
         pluginService,
-        esbClient
+        esbClient,
+        xentialUserIdHelper
     )
 
     @Bean
@@ -88,15 +98,23 @@ class XentialAutoConfiguration {
     )
 
     @Bean
+    @ProcessBean
+    fun xentialUserIdHelper(
+        userManagementService: UserManagementService
+    ) = XentialUserIdHelper(
+        userManagementService
+    )
+
+    @Bean
     @ConditionalOnMissingBean(DocumentResource::class)
-    fun xentialResource(xentialSjablonenService: XentialSjablonenService) =
-        XentialSjablonenResource(xentialSjablonenService)
+    fun xentialResource(
+        xentialSjablonenService: XentialSjablonenService
+    ) = XentialSjablonenResource(xentialSjablonenService)
 
     @Bean
     @ConditionalOnMissingBean(DocumentResource::class)
     fun xentialDocumentResource(documentGenerationService: DocumentGenerationService) =
         DocumentResource(documentGenerationService)
-
 
     @Bean
     @Order(270)

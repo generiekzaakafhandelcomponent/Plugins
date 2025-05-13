@@ -18,37 +18,31 @@ https://github.com/user-attachments/assets/3b27631d-bbda-406e-b6b7-f6e5be21f9b9
 In order to use the plugins, the module needs to be added as a dependency. The
 following can be added to your project, depending on whether Maven or Gradle is used:
 
-##### Backend
-The samples below assume the [valtimo-dependency-versions](valtimo-dependency-versions.md) module is used.
-If not, please specify the artifact version as well.
+## Backend
 
-#### Maven dependency:
-```xml
-<dependencies>
-    <dependency>
-        <groupId>com.ritense.valtimoplugins</groupId>
-        <artifactId>freemarker</artifactId>
-        <version>6.0.0</version>
-    </dependency>
-</dependencies>
-```
+The following Gradle dependency can be added to your `build.gradle` file:
 
-#### Gradle dependency:
 ```kotlin
 dependencies {
-  implementation("com.ritense.valtimoplugins:freemarker:6.0.0")
+    implementation("com.ritense.valtimoplugins:freemarker:6.0.0")
 }
 ```
 
-### Frontend
+The most recent version can be found [here](https://mvnrepository.com/artifact/com.ritense.valtimoplugins/freemarker).
+
+## Frontend
+
+The following dependency can be added to your `package.json` file:
 
 ```json
 {
-    "dependencies": {
-        "@valtimo-plugins/freemarker": "<valtimo_frontend_version>"
-    }
+  "dependencies": {
+    "@valtimo-plugins/freemarker": "6.0.0"
+  }
 }
 ```
+
+The most recent version can be found [here](https://www.npmjs.com/package/@valtimo-plugins/freemarker?activeTab=versions).
 
 In order to use the plugins in the frontend, the following must be added to your `app.module.ts`:
 

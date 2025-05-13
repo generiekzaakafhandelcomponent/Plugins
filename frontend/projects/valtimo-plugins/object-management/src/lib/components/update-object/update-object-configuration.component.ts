@@ -51,7 +51,7 @@ export class UpdateObjectConfigurationComponent
     }
 
     private handleValid(formValue: UpdateObjectConfig): void {
-        const valid = !!(formValue.objectManagementConfigurationTitle && formValue.objectUUID && formValue.objectData);
+        const valid = !!(formValue.objectManagementConfigurationId && formValue.objectData && formValue.objectUrl);
 
         this.valid$.next(valid);
         this.valid.emit(valid);

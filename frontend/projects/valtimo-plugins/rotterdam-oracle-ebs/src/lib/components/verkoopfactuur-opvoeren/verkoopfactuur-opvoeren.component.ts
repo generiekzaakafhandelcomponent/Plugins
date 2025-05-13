@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {
     FunctionConfigurationComponent,
     FunctionConfigurationData,
@@ -26,19 +26,22 @@ import {FactuurKlasse, VerkoopfactuurOpvoerenConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NGXLogger} from "ngx-logger";
+import {Toggle} from "carbon-components-angular";
 
 @Component({
     selector: 'valtimo-rotterdam-oracle-ebs-verkoopfactuur-opvoeren',
     templateUrl: './verkoopfactuur-opvoeren.component.html',
     styleUrls: ['./verkoopfactuur-opvoeren.component.scss']
 })
-export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
+export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationComponent, OnInit, OnDestroy, AfterViewInit {
     @Input() save$!: Observable<void>;
     @Input() disabled$!: Observable<boolean>;
     @Input() pluginId!: string;
     @Input() prefillConfiguration$!: Observable<VerkoopfactuurOpvoerenConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
+
+    @ViewChild('regelsViaResolverToggle') regelsViaResolverToggle: Toggle;
 
     private readonly formValue$ = new BehaviorSubject<VerkoopfactuurOpvoerenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
@@ -61,14 +64,29 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         this.logger.debug('Verkoopfactuur opvoeren - onInit');
         this.initForm();
         this.prefillForm();
+    }
+
+    ngAfterViewInit(): void {
+        this.regelsViaResolverToggle.checked = this.pluginActionForm.get('regelsViaResolver').getRawValue() != null
         this.subscribeToFormValueChanges();
         this.subscribeToDisableAndToggleFormState();
         this.subscribeToSave();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.logger.debug('Verkoopfactuur opvoeren - onDestroy');
         this._subscriptions.unsubscribe();
+    }
+
+    onCheckedChanged(checked: boolean): void {
+        this.logger.debug('toggle changed to', checked)
+        this.pluginActionForm.get('regelsViaResolverToggle')?.setValue(checked);
+        if (checked == true) {
+            this.lines.clear();
+            this.pluginActionForm.get('regels')?.setValue([]);
+        } else {
+            this.pluginActionForm.get('regelsViaResolver')?.setValue(null);
+        }
     }
 
     get lines(): FormArray {
@@ -84,9 +102,9 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     }
 
     private initForm() {
-        this.logger.debug('initForm');
+        this.logger.debug('Initialising Form');
         this.pluginActionForm = this.fb.group({
-            pvResultContainer: this.fb.control('', Validators.required),
+            pvResultVariable: this.fb.control('', Validators.required),
             procesCode: this.fb.control('', Validators.required),
             referentieNummer: this.fb.control('', Validators.required),
             factuurKlasse: this.fb.control('', Validators.required),
@@ -94,50 +112,58 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             natuurlijkPersoonAchternaam: this.fb.control('', Validators.required),
             natuurlijkPersoonVoornamen: this.fb.control('', Validators.required),
             nietNatuurlijkPersoonStatutaireNaam: this.fb.control(null, Validators.required),
-            regels: this.fb.array([], Validators.required)
+            regelsViaResolverToggle: this.fb.control(''),
+            regels: this.fb.array([]),
+            regelsViaResolver: this.fb.control(null)
         });
     }
 
     private createLineFormGroup(): FormGroup {
-        this.logger.debug('createLineFormGroup');
+        this.logger.debug('Create Line FormGroup');
         return this.fb.group({
             hoeveelheid: this.fb.control('', Validators.required),
             tarief: this.fb.control('', Validators.required),
             btwPercentage: this.fb.control(null, Validators.required),
             grootboekSleutel: this.fb.control('', Validators.required),
-            omschrijving: this.fb.control(''),
+            omschrijving: this.fb.control('')
         });
     }
 
     private prefillForm(): void {
-        this.prefillConfiguration$.subscribe(configuration => {
-            if (configuration) {
-                this.logger.debug('Prefilling form - configuration', configuration);
-                // add lines
-                configuration.regels.forEach( () => this.addLine());
-                // prefill form values
-                this.pluginActionForm.patchValue({
-                    pvResultContainer: configuration.pvResultContainer,
-                    procesCode: configuration.procesCode,
-                    referentieNummer: configuration.referentieNummer,
-                    factuurKlasse: configuration.factuurKlasse,
-                    inkoopOrderReferentie: configuration.inkoopOrderReferentie,
-                    natuurlijkPersoonAchternaam: configuration.natuurlijkPersoon.achternaam,
-                    natuurlijkPersoonVoornamen: configuration.natuurlijkPersoon.voornamen,
-                    nietNatuurlijkPersoonStatutaireNaam: configuration.nietNatuurlijkPersoon.statutaireNaam,
-                    regels: configuration.regels.map( regel => ({
-                        hoeveelheid: regel.hoeveelheid,
-                        tarief: regel.tarief,
-                        btwPercentage: regel.btwPercentage,
-                        grootboekSleutel: regel.grootboekSleutel,
-                        omschrijving: regel.omschrijving
-                    }))
-                });
-            }
-        })
+        this._subscriptions.add(
+            this.prefillConfiguration$.subscribe(configuration => {
+                if (configuration) {
+                    this.logger.debug('Prefilling form - configuration', configuration);
+                    // add lines
+                    if (configuration.regels != undefined) {
+                        configuration.regels.forEach( () => this.addLine());
+                    }
+                    // prefill form values
+                    this.pluginActionForm.patchValue({
+                        pvResultVariable: configuration.pvResultVariable,
+                        procesCode: configuration.procesCode,
+                        referentieNummer: configuration.referentieNummer,
+                        factuurKlasse: configuration.factuurKlasse,
+                        inkoopOrderReferentie: configuration.inkoopOrderReferentie,
+                        natuurlijkPersoonAchternaam: configuration.natuurlijkPersoon.achternaam,
+                        natuurlijkPersoonVoornamen: configuration.natuurlijkPersoon.voornamen,
+                        nietNatuurlijkPersoonStatutaireNaam: configuration.nietNatuurlijkPersoon.statutaireNaam,
+                        regels: (configuration.regels != undefined) ? configuration.regels.map( regel => ({
+                            hoeveelheid: regel.hoeveelheid,
+                            tarief: regel.tarief,
+                            btwPercentage: regel.btwPercentage,
+                            grootboekSleutel: regel.grootboekSleutel,
+                            omschrijving: regel.omschrijving
+                        })) : null,
+                        regelsViaResolver: configuration.regelsViaResolver
+                    });
+                }
+            })
+        )
     }
 
     private subscribeToDisableAndToggleFormState(): void {
+        this.logger.debug('Subscribing to forms disabled state');
         this._subscriptions.add(
             this.disabled$.subscribe(isDisabled =>
                 this.updateInputState(isDisabled)
@@ -146,17 +172,17 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     }
 
     private subscribeToFormValueChanges(): void {
+        this.logger.debug('Subscribing to form value changes');
         this._subscriptions.add(
             this.pluginActionForm.valueChanges.subscribe(formValue => {
-
                 this.logger.debug('pluginActionForm.rawValue', this.pluginActionForm.getRawValue())
 
                 // map form values to model
                 this.formValueChange({
-                    pvResultContainer: formValue.pvResultContainer,
+                    pvResultVariable: formValue.pvResultVariable,
                     procesCode: formValue.procesCode,
                     referentieNummer: formValue.referentieNummer,
-                    factuurKlasse: this.toFactuurKlasse(formValue.factuurKlasse),
+                    factuurKlasse: formValue.factuurKlasse,
                     inkoopOrderReferentie: formValue.inkoopOrderReferentie,
                     natuurlijkPersoon: {
                         achternaam: formValue.natuurlijkPersoonAchternaam,
@@ -165,13 +191,14 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                     nietNatuurlijkPersoon: {
                         statutaireNaam: formValue.nietNatuurlijkPersoonStatutaireNaam
                     },
-                    regels: formValue.regels.map(regel => ({
+                    regels: (formValue.regels != undefined) ? formValue.regels.map(regel => ({
                         hoeveelheid: regel.hoeveelheid,
                         tarief: regel.tarief,
                         btwPercentage: regel.btwPercentage,
                         grootboekSleutel: regel.grootboekSleutel,
                         omschrijving: regel.omschrijving
-                    }))
+                    })) : null,
+                    regelsViaResolver: (formValue.regelsViaResolver != undefined) ? formValue.regelsViaResolver : null
                 });
             })
         );
@@ -190,7 +217,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         this.logger.debug('handleValid', formValue);
 
         const genericFieldsValid = !!(
-            formValue.pvResultContainer &&
+            formValue.pvResultVariable &&
             formValue.procesCode &&
             formValue.referentieNummer &&
             formValue.factuurKlasse &&
@@ -198,20 +225,28 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             formValue.natuurlijkPersoon.voornamen &&
             formValue.natuurlijkPersoon.achternaam &&
             formValue.nietNatuurlijkPersoon.statutaireNaam &&
-            formValue.regels.length > 0
+            (
+                (this.regelsViaResolverToggle.checked == true && formValue.regelsViaResolver)
+                ||
+                (this.regelsViaResolverToggle.checked == false && formValue.regels.length > 0)
+            )
         );
         // validate lines
         let linesValid = false
-        if (genericFieldsValid) {
-            for (let i = 0; i < formValue.regels.length; i++) {
-                linesValid = !!(
-                    formValue.regels[i].hoeveelheid &&
-                    formValue.regels[i].tarief &&
-                    formValue.regels[i].btwPercentage &&
-                    formValue.regels[i].grootboekSleutel
-                )
-                if (!linesValid)
-                    break;
+        if (this.regelsViaResolverToggle.checked) {
+            linesValid = formValue.regelsViaResolver != undefined
+        } else {
+            if (genericFieldsValid) {
+                for (let i = 0; i < formValue.regels.length; i++) {
+                    linesValid = !!(
+                        formValue.regels[i].hoeveelheid &&
+                        formValue.regels[i].tarief &&
+                        formValue.regels[i].btwPercentage &&
+                        formValue.regels[i].grootboekSleutel
+                    )
+                    if (!linesValid)
+                        break;
+                }
             }
         }
         this.logger.debug('handleValid', 'genericFieldsValid', genericFieldsValid, 'linesValid', linesValid);
@@ -226,7 +261,11 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                     .pipe(take(1))
                     .subscribe(([formValue, valid]) => {
                         if (valid) {
-                            this.configuration.emit(formValue!);
+                            this.configuration.emit({
+                                regels: this.regelsViaResolverToggle.checked ? null : formValue.regels,
+                                regelsViaResolver: this.regelsViaResolverToggle.checked ? formValue.regelsViaResolver : null,
+                                ...formValue
+                            }!);
                         }
                     });
                 }

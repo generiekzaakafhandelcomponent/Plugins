@@ -1,4 +1,6 @@
 export interface GenerateDocumentConfig {
-    xentialContentId: string;
+    xentialContent: string;
+    xentialData: string;
     xentialSjabloonId: string;
+    xentialGebruikersId: string;
 }

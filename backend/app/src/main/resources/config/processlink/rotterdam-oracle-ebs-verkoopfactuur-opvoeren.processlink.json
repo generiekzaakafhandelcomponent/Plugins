@@ -9,7 +9,7 @@
     "activityId": "factuur-informatie-aanleveren",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "rotterdam-oracle-ebs_verkoopfactuur-informatie-aanleveren"
+    "formDefinitionName": "rotterdam-oracle-ebs_verkoopfactuur-informatie-aanleveren-2"
   },
   {
     "activityId": "verkoopfactuur-opvoeren",
@@ -18,10 +18,10 @@
     "pluginConfigurationId": "4a8627e0-bd7b-401d-a86f-fe14ab3ec313",
     "pluginActionDefinitionKey": "verkoopfactuur-opvoeren",
     "actionProperties": {
-      "pvResultContainer": "verwerkingsstatus",
+      "pvResultVariable": "verwerkingsstatus",
       "procesCode": "pv:procescode",
       "referentieNummer": "pv:referentienummer",
-      "factuurKlasse": "Debetnota",
+      "factuurKlasse": "pv:factuurKlasse",
       "inkoopOrderReferentie": "pv:inkoopOrderReferentie",
       "natuurlijkPersoon": {
         "achternaam": "pv:natuurlijkPersoonAchternaam",
@@ -30,15 +30,7 @@
       "nietNatuurlijkPersoon": {
         "statutaireNaam": "pv:nietNatuurlijkPersoonStatutaireNaam"
       },
-      "regels": [
-        {
-          "hoeveelheid": "pv:regelHoeveelheid",
-          "tarief": "pv:regelTarief",
-          "btwPercentage": "pv:regelBtwPercentage",
-          "grootboekSleutel": "pv:regelGrootboekSleutel",
-          "omschrijving": "pv:regelOmschrijving"
-        }
-      ]
+      "regelsViaResolver": "pv:regels"
     }
   },
   {

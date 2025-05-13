@@ -26,7 +26,7 @@ export class PrepareContentWithTemplateConfigurationComponent implements Functio
     readonly firstGroupId$ = new BehaviorSubject<string>('')
     readonly secondGroupId$ = new BehaviorSubject<string>('')
 
-    readonly xentialFirstGroupSelectItems$: Observable<Array<{ id: string; text: string }>> =
+    readonly firstLevelGroupSelectItems$: Observable<Array<{ id: string; text: string }>> =
         combineLatest([
             this.xentialApiSjabloonService.getTemplates(),
         ]).pipe(
@@ -39,7 +39,7 @@ export class PrepareContentWithTemplateConfigurationComponent implements Functio
         );
 
 
-    readonly xentialSecondGroupSelectItems$ = this.firstGroupId$.pipe(
+    readonly secondLevelGroupSelectItems$ = this.firstGroupId$.pipe(
         startWith(null),
         filter((firstGroupId) => !!firstGroupId),
         switchMap((firstGroupId) => this.xentialApiSjabloonService.getTemplates(firstGroupId)),
@@ -51,7 +51,7 @@ export class PrepareContentWithTemplateConfigurationComponent implements Functio
         )
     )
 
-    readonly xentialThirdGroupSelectItems$ = this.secondGroupId$.pipe(
+    readonly thirdLevelGroupSelectItems$ = this.secondGroupId$.pipe(
         startWith(null),
         filter((secondGroupId) => !!secondGroupId),
         switchMap((secondGroupId) => this.xentialApiSjabloonService.getTemplates(secondGroupId)),
@@ -106,10 +106,8 @@ export class PrepareContentWithTemplateConfigurationComponent implements Functio
     private handleValid(formValue: PrepareContentWithTextTemplate): void {
         const valid = !!(
             formValue.xentialContentId &&
-            formValue.textTemplateId &&
             formValue.firstTemplateGroupId &&
             formValue.fileFormat &&
-            formValue.documentId &&
             formValue.eventMessageName
         );
 

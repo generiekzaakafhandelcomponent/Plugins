@@ -23,35 +23,37 @@ interface RotterdamEsbConfig extends PluginConfigurationData {
 }
 
 interface JournaalpostOpvoerenConfig {
-    pvResultContainer: string;
+    pvResultVariable: string;
     procesCode: string;
     referentieNummer: string;
     sleutel: string;
     boekdatumTijd: string;
     categorie: string;
-    saldoSoort: SaldoSoort;
+    saldoSoort: string;
     omschrijving?: string;
     boekjaar?: string;
     boekperiode?: string;
-    regels: Array<JournaalpostRegel>;
+    regels?: Array<JournaalpostRegel>;
+    regelsViaResolver?: string;
 }
 
 interface JournaalpostRegel {
     grootboekSleutel: string;
-    boekingType: BoekingType;
+    boekingType: string;
     bedrag: string;
     omschrijving?: string;
 }
 
 interface VerkoopfactuurOpvoerenConfig {
-    pvResultContainer: string;
+    pvResultVariable: string;
     procesCode: string;
     referentieNummer: string;
-    factuurKlasse: FactuurKlasse;
+    factuurKlasse: string;
     inkoopOrderReferentie: string;
     natuurlijkPersoon: NatuurlijkPersoon;
     nietNatuurlijkPersoon: NietNatuurlijkPersoon;
-    regels: Array<FactuurRegel>;
+    regels?: Array<FactuurRegel>;
+    regelsViaResolver?: string;
 }
 
 interface NatuurlijkPersoon {

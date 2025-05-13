@@ -4,10 +4,9 @@
         disabled: disabled$ | async,
         prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
         fileFormats: fileFormats$ | async,
-        xentialSjabloonGroupSelectItems: xentialFirstGroupSelectItems$ | async,
-        xentialSecondGroupSelectItems: xentialSecondGroupSelectItems$ | async,
-        xentialThirdGroupSelectItems: xentialThirdGroupSelectItems$ | async
-
+        firstLevelGroupSelectItems: firstLevelGroupSelectItems$ | async,
+        secondLevelGroupSelectItems: secondLevelGroupSelectItems$ | async,
+        thirdLevelGroupSelectItems: thirdLevelGroupSelectItems$ | async
     } as obs"
 >
 
@@ -25,45 +24,35 @@
             [disabled]="obs.disabled"
             [required]="true"
     />
-    <v-input
-            name="textTemplateId"
-            [title]="'textTemplateId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.textTemplateId"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
     <v-select
-            [items]="obs?.xentialSjabloonGroupSelectItems || []"
+            [items]="obs?.firstLevelGroupSelectItems || []"
             [margin]="true"
             name="firstTemplateGroupId"
             [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
             [disabled]="obs.disabled"
             [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
             [required]="true"
-            [loading]="!obs?.xentialSjabloonGroupSelectItems"
+            [loading]="!obs?.firstLevelGroupSelectItems"
     ></v-select>
-
     <v-select
-            [items]="obs?.xentialSecondGroupSelectItems || []"
+            [items]="obs?.secondLevelGroupSelectItems || []"
             [margin]="true"
             name="secondTemplateGroupId"
             [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled || (obs?.xentialSecondGroupSelectItems || [])?.length === 0"
+            [disabled]="obs.disabled || (obs?.secondLevelGroupSelectItems || [])?.length === 0"
             [required]="true"
-            [loading]="!obs?.xentialSecondGroupSelectItems"
+            [loading]="!obs?.secondLevelGroupSelectItems"
     ></v-select>
 
     <v-select
-            [items]="obs?.xentialThirdGroupSelectItems || []"
+            [items]="obs?.thirdLevelGroupSelectItems || []"
             [margin]="true"
             name="thirdTemplateGroupId"
             [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled || (obs?.xentialThirdGroupSelectItems || [])?.length === 0"
+            [disabled]="obs.disabled || (obs?.thirdLevelGroupSelectItems || [])?.length === 0"
             [required]="true"
-            [loading]="!obs?.xentialThirdGroupSelectItems"
+            [loading]="!obs?.thirdLevelGroupSelectItems"
     ></v-select>
-
     <v-select
             name="fileFormat"
             [title]="'fileFormat' | pluginTranslate: pluginId | async"
@@ -72,14 +61,6 @@
             [disabled]="obs.disabled"
             [required]="true"
             [items]="obs.fileFormats"
-    />
-    <v-input
-            name="documentId"
-            [title]="'documentId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.documentId"
-            [disabled]="obs.disabled"
-            [required]="true"
     />
     <v-input
             name="eventMessageName"

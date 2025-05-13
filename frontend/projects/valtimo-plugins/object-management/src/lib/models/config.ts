@@ -21,9 +21,9 @@ interface ObjectManagementConfig extends PluginConfigurationData {
 }
 
 interface CreateObjectConfig {
-    objectManagementConfigurationTitle: string;
+    objectManagementConfigurationId: string;
     objectData: Array<{ key: string; value: string }>;
-    objectUUID: string;
+    objectUrlProcessVariableName: string;
 }
 
 interface GetObjectsConfig {
@@ -32,14 +32,14 @@ interface GetObjectsConfig {
 }
 
 interface DeleteObjectConfig {
-    objectManagementConfigurationTitle: string;
-    objectUUID: string;
+    objectManagementConfigurationId: string;
+    objectUrl: string;
 }
 
 interface UpdateObjectConfig {
-    objectManagementConfigurationTitle: string;
-    objectUUID: string;
+    objectManagementConfigurationId: string;
     objectData: Array<{ key: string; value: string }>;
+    objectUrl: string;
 }
 
 export {

@@ -23,20 +23,20 @@
 >
 
     <v-input
-            name="objectManagementConfigurationTitle"
-            [title]="'objectManagementConfigurationTitle' | pluginTranslate: pluginId | async"
+            name="objectManagementConfigurationId"
+            [title]="'objectManagementConfigurationId' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.objectManagementConfigurationTitle"
+            [defaultValue]="obs.prefill?.objectManagementConfigurationId"
             [disabled]="obs.disabled"
             [required]="true"
-            [tooltip]="'objectManagementConfigurationTitleTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'objectManagementConfigurationIdTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
-    <v-input name="objectUUID"
-             [title]="'objectUUID' | pluginTranslate: pluginId | async"
+    <v-input name="objectUrl"
+             [title]="'objectUrl' | pluginTranslate: pluginId | async"
              [margin]="true"
-             [defaultValue]="obs.prefill?.objectUUID"
+             [defaultValue]="obs.prefill?.objectUrl"
              [disabled]="obs.disabled"
              [required]="true"
-             [tooltip]="'objectUUIDTooltip' | pluginTranslate: pluginId | async">
+             [tooltip]="'objectUrlTooltip' | pluginTranslate: pluginId | async">
     </v-input>
 </v-form>

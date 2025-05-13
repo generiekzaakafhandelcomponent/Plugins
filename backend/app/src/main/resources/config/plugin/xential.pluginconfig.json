@@ -1,0 +1,13 @@
+[
+    {
+        "id": "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
+        "title": "Xential",
+        "properties": {
+            "applicationName": "${XENTIAL_ACCOUNT_NAME}",
+            "applicationPassword": "${XENTIAL_ACCOUNT_PASSWORD}",
+            "baseUrl": "${XENTIAL_BASEURL}",
+            "mTlsSslContextAutoConfigurationId": "63b44b21-9bd2-42f2-a11e-a4f68837e076"
+        },
+        "pluginDefinitionKey": "xential"
+    }
+]

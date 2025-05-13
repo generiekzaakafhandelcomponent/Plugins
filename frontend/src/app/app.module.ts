@@ -32,8 +32,9 @@ import {
     registerFormioFileSelectorComponent,
     registerFormioUploadComponent,
     registerFormioValueResolverSelectorComponent,
-    ValuePathSelectorComponent,
-    WidgetModule
+    WidgetModule,
+    ValuePathSelectorComponent
+
 } from '@valtimo/components';
 import {
     DefaultTabs,
@@ -124,6 +125,7 @@ import {
     HaalCentraalBagPluginModule
 } from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/bag/haal-centraal-bag-plugin.module";
 
+import {LoggingModule} from '@valtimo/logging';
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -190,6 +192,7 @@ export function tabsFactory() {
         FormManagementModule,
         ProcessLinkModule,
         MigrationModule,
+        LoggingModule,
         DossierManagementModule,
         PluginManagementModule,
         AccessControlManagementModule,

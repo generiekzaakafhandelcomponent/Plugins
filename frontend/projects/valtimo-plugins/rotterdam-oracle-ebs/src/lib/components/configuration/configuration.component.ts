@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {
     PluginConfigurationComponent,
     PluginConfigurationData,
@@ -70,7 +70,7 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
         this.openSaveSubscription();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.logger.debug('Plugin configuration - onDestroy');
         this.saveSubscription?.unsubscribe();
     }
