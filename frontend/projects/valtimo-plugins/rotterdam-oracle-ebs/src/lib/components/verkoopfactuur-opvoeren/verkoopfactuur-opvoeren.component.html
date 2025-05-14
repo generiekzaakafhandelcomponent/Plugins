@@ -79,6 +79,18 @@
             required="true"
         ></app-input-field>
 
+        <div class="relatie-type-info">
+            <cds-inline-notification
+                [notificationObj]="{
+                    type: 'info',
+                    showClose: false,
+                    lowContrast: true,
+                    message: 'verkoopfactuur.relatieTypeInfo' | pluginTranslate: pluginId | async,
+                }"
+            >
+            </cds-inline-notification>
+        </div>
+
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
@@ -95,7 +107,7 @@
             controlName="natuurlijkPersoonAchternaam"
             title="verkoopfactuur.natuurlijkPersoonAchternaam"
             tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -104,7 +116,7 @@
             controlName="natuurlijkPersoonVoornamen"
             title="verkoopfactuur.natuurlijkPersoonVoornamen"
             tooltip="verkoopfactuur.natuurlijkPersoonVoornamen.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -113,7 +125,7 @@
             controlName="nietNatuurlijkPersoonStatutaireNaam"
             title="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam"
             tooltip="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <cds-toggle
