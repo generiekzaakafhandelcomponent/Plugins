@@ -15,7 +15,7 @@
  */
 
 plugins {
-    id("org.openapi.generator") version "7.11.0"
+    id("org.openapi.generator") version "7.12.0"
 }
 
 dockerCompose {
@@ -62,7 +62,7 @@ apply(from = "gradle/publishing.gradle")
 
 openApiGenerate {
     generatorName = "kotlin"
-    inputSpec = "$rootDir/backend/rotterdam-oracle-ebs/src/main/resources/opvoeren_api.yaml"
+    inputSpec = "$rootDir/backend/rotterdam-oracle-ebs/src/main/resources/opvoeren_api_journaalpost_verkoopfactuur.yaml"
     outputDir = "${getLayout().buildDirectory.get()}/generated"
     packageName = "com.rotterdam.esb.opvoeren"
     generateApiDocumentation = false
@@ -70,9 +70,9 @@ openApiGenerate {
     generateModelDocumentation = false
     generateModelTests = false
     configOptions = mapOf(
-        "useSpringBoot3" to "true",
         "library" to "jvm-spring-restclient",
-        "serializationLibrary" to "jackson"
+        "serializationLibrary" to "jackson",
+        "useSpringBoot3" to "true"
     )
 }
 
