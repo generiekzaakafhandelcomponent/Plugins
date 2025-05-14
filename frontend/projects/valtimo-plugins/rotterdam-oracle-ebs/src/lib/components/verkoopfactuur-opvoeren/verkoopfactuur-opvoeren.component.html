@@ -82,6 +82,16 @@
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
+            controlName="relatieType"
+            title="verkoopfactuur.relatieType"
+            tooltip="verkoopfactuur.relatieType.input.tooltip"
+            required="true"
+            [presets]="relatieTypeItems"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
             controlName="natuurlijkPersoonAchternaam"
             title="verkoopfactuur.natuurlijkPersoonAchternaam"
             tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"

@@ -23,6 +23,7 @@
       "referentieNummer": "pv:referentienummer",
       "factuurKlasse": "pv:factuurKlasse",
       "inkoopOrderReferentie": "pv:inkoopOrderReferentie",
+      "relatieType": "pv:relatieType",
       "natuurlijkPersoon": {
         "achternaam": "pv:natuurlijkPersoonAchternaam",
         "voornamen": "pv:natuurlijkPersoonVoornamen"

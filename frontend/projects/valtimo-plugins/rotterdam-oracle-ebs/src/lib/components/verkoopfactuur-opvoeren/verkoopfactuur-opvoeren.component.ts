@@ -22,11 +22,12 @@ import {
     PluginTranslationService
 } from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {FactuurKlasse, VerkoopfactuurOpvoerenConfig} from '../../models';
+import {FactuurKlasse, RelatieType, VerkoopfactuurOpvoerenConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NGXLogger} from "ngx-logger";
 import {Toggle} from "carbon-components-angular";
+import {EnumUtilsService} from "../../service/enum-utils.service";
 
 @Component({
     selector: 'valtimo-rotterdam-oracle-ebs-verkoopfactuur-opvoeren',
@@ -46,6 +47,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     private readonly formValue$ = new BehaviorSubject<VerkoopfactuurOpvoerenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    readonly relatieTypeItems: Array<string> = Object.values(RelatieType).map(item => (item.toString()));
     readonly factuurKlasseItems: Array<string> = Object.values(FactuurKlasse).map(item => (item.toString()));
 
     public pluginActionForm: FormGroup;
@@ -57,7 +59,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         private readonly translateService: TranslateService,
         private readonly pluginTranslationService: PluginTranslationService,
         private readonly logger: NGXLogger,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private enumSvc: EnumUtilsService
     ) { }
 
     ngOnInit(): void {
@@ -109,6 +112,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             referentieNummer: this.fb.control('', Validators.required),
             factuurKlasse: this.fb.control('', Validators.required),
             inkoopOrderReferentie: this.fb.control('', Validators.required),
+            relatieType: this.fb.control('', Validators.required),
             natuurlijkPersoonAchternaam: this.fb.control('', Validators.required),
             natuurlijkPersoonVoornamen: this.fb.control('', Validators.required),
             nietNatuurlijkPersoonStatutaireNaam: this.fb.control(null, Validators.required),
@@ -143,8 +147,9 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         pvResultVariable: configuration.pvResultVariable,
                         procesCode: configuration.procesCode,
                         referentieNummer: configuration.referentieNummer,
-                        factuurKlasse: configuration.factuurKlasse,
+                        factuurKlasse: this.fromFactuurKlasse(configuration.factuurKlasse),
                         inkoopOrderReferentie: configuration.inkoopOrderReferentie,
+                        relatieType: this.fromRelatieType(configuration.relatieType),
                         natuurlijkPersoonAchternaam: configuration.natuurlijkPersoon.achternaam,
                         natuurlijkPersoonVoornamen: configuration.natuurlijkPersoon.voornamen,
                         nietNatuurlijkPersoonStatutaireNaam: configuration.nietNatuurlijkPersoon.statutaireNaam,
@@ -182,8 +187,9 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                     pvResultVariable: formValue.pvResultVariable,
                     procesCode: formValue.procesCode,
                     referentieNummer: formValue.referentieNummer,
-                    factuurKlasse: formValue.factuurKlasse,
+                    factuurKlasse: this.toFactuurKlasse(formValue.factuurKlasse),
                     inkoopOrderReferentie: formValue.inkoopOrderReferentie,
+                    relatieType: this.toRelatieType(formValue.relatieType),
                     natuurlijkPersoon: {
                         achternaam: formValue.natuurlijkPersoonAchternaam,
                         voornamen: formValue.natuurlijkPersoonVoornamen
@@ -204,8 +210,46 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         );
     }
 
-    private toFactuurKlasse(value: string): FactuurKlasse | undefined {
-        return Object.values(FactuurKlasse).includes(value as FactuurKlasse) ? (value as FactuurKlasse) : undefined;
+    private fromFactuurKlasse(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumValue(FactuurKlasse, value);
+        }
+    }
+
+    private toFactuurKlasse(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumKey(FactuurKlasse, value);
+        }
+    }
+
+    private fromRelatieType(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumValue(RelatieType, value);
+        }
+    }
+
+    private toRelatieType(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumKey(RelatieType, value);
+        }
+    }
+
+    private isValueResolverPrefix(value: string): boolean {
+        return (
+            value.startsWith('case:')
+            ||
+            value.startsWith('doc:')
+            ||
+            value.startsWith('pv:')
+        )
     }
 
     private formValueChange(formValue: VerkoopfactuurOpvoerenConfig): void {
@@ -222,6 +266,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             formValue.referentieNummer &&
             formValue.factuurKlasse &&
             formValue.inkoopOrderReferentie &&
+            formValue.relatieType &&
             formValue.natuurlijkPersoon.voornamen &&
             formValue.natuurlijkPersoon.achternaam &&
             formValue.nietNatuurlijkPersoon.statutaireNaam &&

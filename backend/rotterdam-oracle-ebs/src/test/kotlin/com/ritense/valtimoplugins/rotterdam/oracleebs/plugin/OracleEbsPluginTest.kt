@@ -8,6 +8,7 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.RelatieType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
@@ -126,20 +127,20 @@ class OracleEbsPluginTest {
                 sleutel= "784",
                 boekdatumTijd= "2025-03-28T13:34:26+02:00",
                 categorie= "Vergunningen",
-                saldoSoort = SaldoSoort.Werkelijk.name,
+                saldoSoort = SaldoSoort.WERKELIJK.title,
                 omschrijving= "Aanvraag Omgevingsvergunning",
                 boekjaar= "2025",
                 boekperiode= "2",
                 regels = listOf(
                     JournaalpostRegel(
                         grootboekSleutel = "600",
-                        boekingType = BoekingType.Credit.name,
+                        boekingType = BoekingType.CREDIT.title,
                         bedrag = "150,00",
                         omschrijving = "Afboeken"
                     ),
                     JournaalpostRegel(
                         grootboekSleutel = "400",
-                        boekingType = BoekingType.Debet.name,
+                        boekingType = BoekingType.DEBET.title,
                         bedrag = "150",
                         omschrijving = "Inboeken"
                     )
@@ -170,15 +171,14 @@ class OracleEbsPluginTest {
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
                 referentieNummer= "2025-AGV-123456",
-                factuurKlasse = FactuurKlasse.Creditnota.name,
+                factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 inkoopOrderReferentie = "20250328-098",
+                relatieType = RelatieType.NATUURLIJK_PERSOON.title,
                 natuurlijkPersoon = NatuurlijkPersoon(
                     achternaam = "Janssen",
                     voornamen = "Jan"
                 ),
-                nietNatuurlijkPersoon = NietNatuurlijkPersoon(
-                    statutaireNaam = "J.Janssen - Groenten en Fruit"
-                ),
+                nietNatuurlijkPersoon = null,
                 regels = listOf(
                     FactuurRegel(
                         hoeveelheid = "25",
@@ -223,12 +223,10 @@ class OracleEbsPluginTest {
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
                 referentieNummer= "2025-AGV-123456",
-                factuurKlasse = FactuurKlasse.Creditnota.name,
+                factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 inkoopOrderReferentie = "20250328-098",
-                natuurlijkPersoon = NatuurlijkPersoon(
-                    achternaam = "Janssen",
-                    voornamen = "Jan"
-                ),
+                relatieType = RelatieType.NIET_NATUURLIJK_PERSOON.title,
+                natuurlijkPersoon = null,
                 nietNatuurlijkPersoon = NietNatuurlijkPersoon(
                     statutaireNaam = "J.Janssen - Groenten en Fruit"
                 ),
