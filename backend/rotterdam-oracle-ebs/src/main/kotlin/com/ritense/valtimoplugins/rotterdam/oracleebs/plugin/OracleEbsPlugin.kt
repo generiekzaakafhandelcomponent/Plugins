@@ -313,6 +313,7 @@ class OracleEbsPlugin(
                     execution.setVariable(pvResultVariable, mapOf(
                         "isGeslaagd" to response.isGeslaagd,
                         "melding" to response.melding,
+                        "factuurID" to response.factuurID,
                         "foutcode" to response.foutcode,
                         "foutmelding" to response.foutmelding
                     ))
