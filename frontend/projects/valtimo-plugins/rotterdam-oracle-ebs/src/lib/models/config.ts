@@ -50,7 +50,7 @@ interface VerkoopfactuurOpvoerenConfig {
     referentieNummer: string;
     factuurKlasse: string;
     inkoopOrderReferentie: string;
-    relatieType: string;
+    relatieType: RelatieType;
     natuurlijkPersoon?: NatuurlijkPersoon;
     nietNatuurlijkPersoon?: NietNatuurlijkPersoon;
     regels?: Array<FactuurRegel>;

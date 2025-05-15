@@ -79,6 +79,7 @@
             required="true"
         ></app-input-field>
 
+        <!--
         <div class="relatie-type-info">
             <cds-inline-notification
                 [notificationObj]="{
@@ -90,7 +91,20 @@
             >
             </cds-inline-notification>
         </div>
+        -->
 
+        <app-select-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="relatieType"
+            title="verkoopfactuur.relatieType"
+            tooltip="verkoopfactuur.relatieType.select.tooltip"
+            placeholder="verkoopfactuur.relatieType.select.placeholder"
+            required="true"
+            [items]="relatieTypeItems"
+        ></app-select-field>
+
+        <!--
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
@@ -100,33 +114,38 @@
             required="true"
             [presets]="relatieTypeItems"
         ></app-input-field>
+        -->
 
-        <app-input-field
-            [pluginId]="pluginId"
-            [formGroup]="pluginActionForm"
-            controlName="natuurlijkPersoonAchternaam"
-            title="verkoopfactuur.natuurlijkPersoonAchternaam"
-            tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"
-            [required]="true"
-        ></app-input-field>
+        <ng-template [ngIf]="relatieType.value == RelatieType.NATUURLIJK_PERSOON">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="natuurlijkPersoonAchternaam"
+                title="verkoopfactuur.natuurlijkPersoonAchternaam"
+                tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"
+                required="true"
+            ></app-input-field>
 
-        <app-input-field
-            [pluginId]="pluginId"
-            [formGroup]="pluginActionForm"
-            controlName="natuurlijkPersoonVoornamen"
-            title="verkoopfactuur.natuurlijkPersoonVoornamen"
-            tooltip="verkoopfactuur.natuurlijkPersoonVoornamen.tooltip"
-            [required]="true"
-        ></app-input-field>
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="natuurlijkPersoonVoornamen"
+                title="verkoopfactuur.natuurlijkPersoonVoornamen"
+                tooltip="verkoopfactuur.natuurlijkPersoonVoornamen.tooltip"
+                required="true"
+            ></app-input-field>
+        </ng-template>
 
-        <app-input-field
-            [pluginId]="pluginId"
-            [formGroup]="pluginActionForm"
-            controlName="nietNatuurlijkPersoonStatutaireNaam"
-            title="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam"
-            tooltip="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam.tooltip"
-            [required]="true"
-        ></app-input-field>
+        <ng-template [ngIf]="relatieType.value == RelatieType.NIET_NATUURLIJK_PERSOON">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="nietNatuurlijkPersoonStatutaireNaam"
+                title="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam"
+                tooltip="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam.tooltip"
+                required="true"
+            ></app-input-field>
+        </ng-template>
 
         <cds-toggle
             #regelsViaResolverToggle
