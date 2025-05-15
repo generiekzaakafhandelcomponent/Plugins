@@ -1,15 +1,18 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.rotterdam.esb.opvoeren.apis.JournaalpostenApi
 import com.rotterdam.esb.opvoeren.apis.VerkoopfacturenApi
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.client.RestClient
 
 class EsbClient {
 
     fun createRestClient(
+        objectMapper: ObjectMapper,
         baseUrl: String,
         authenticationEnabled: Boolean = false,
         mTlsSslContext: MTlsSslContext?
@@ -28,6 +31,14 @@ class EsbClient {
                 }
         }.let { httpClient ->
             RestClient.builder()
+                .messageConverters { converters ->
+                  // remove the default Jackson converter(s)
+                  converters.removeIf { it is MappingJackson2HttpMessageConverter }
+                  // add Jackson converter with specified object mapper
+                  converters.add(
+                      MappingJackson2HttpMessageConverter(objectMapper)
+                  )
+                }
                 .baseUrl(baseUrl)
                 .requestFactory(HttpComponentsClientHttpRequestFactory(httpClient))
                 .build().also {

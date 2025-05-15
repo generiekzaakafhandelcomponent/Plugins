@@ -1,5 +1,6 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.ritense.plugin.annotation.Plugin
@@ -134,7 +135,9 @@ class OracleEbsPlugin(
             )
         ).let { request ->
             logger.debug { "Trying to send OpvoerenJournaalpostVraag" }
-            logger.trace { "OpvoerenJournaalpostVraag: $request" }
+            logger.trace {
+                "OpvoerenJournaalpostVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
+            }
             try {
                 esbClient.journaalPostenApi(restClient()).opvoerenJournaalpost(request).let { response ->
                     logger.debug { "Journaalpost Opvoeren response: $response" }
@@ -176,11 +179,11 @@ class OracleEbsPlugin(
         val relatieTypeEnum = RelatieType.valueOf(relatieType.replace(" ", "_").uppercase())
         if (relatieTypeEnum == RelatieType.NATUURLIJK_PERSOON) {
             require(natuurlijkPersoon != null) {
-                "When relatieType is NATUURLIJK, natuurlijkPersoon is required"
+                "When relatieType is NATUURLIJK, natuurlijkPersoon should not be NULL"
             }
         } else {
             require(nietNatuurlijkPersoon != null) {
-                "When relatieType is NIET_NATUURLIJK, nietNatuurlijkPersoon is required"
+                "When relatieType is NIET_NATUURLIJK, nietNatuurlijkPersoon should not be NULL"
             }
         }
 
@@ -306,7 +309,9 @@ class OracleEbsPlugin(
             bijlage = null
         ).let { request ->
             logger.debug { "Trying to send OpvoerenVerkoopfactuurVraag" }
-            logger.trace { "OpvoerenVerkoopfactuurVraag: $request" }
+            logger.trace {
+                "OpvoerenVerkoopfactuurVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
+            }
             try {
                 esbClient.verkoopFacturenApi(restClient()).opvoerenVerkoopfactuur(request).let { response ->
                     logger.debug { "Verkoopfactuur Opvoeren response: $response" }
@@ -439,10 +444,14 @@ class OracleEbsPlugin(
 
     private fun restClient(): RestClient =
         esbClient.createRestClient(
+            objectMapper = objectMapperWithNonAbsentInclusion(objectMapper),
             baseUrl = baseUrl.toString(),
             authenticationEnabled = authenticationEnabled.toBoolean(),
             mTlsSslContext = mTlsSslContextConfiguration
         )
+
+    private fun objectMapperWithNonAbsentInclusion(objectMapper: ObjectMapper): ObjectMapper =
+        objectMapper.copy().setSerializationInclusion(JsonInclude.Include.NON_ABSENT)
 
     companion object {
         private val logger = KotlinLogging.logger {}
