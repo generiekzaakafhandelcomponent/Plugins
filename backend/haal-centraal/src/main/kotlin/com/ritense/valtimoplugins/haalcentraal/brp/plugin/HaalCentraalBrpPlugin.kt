@@ -45,14 +45,12 @@ class HaalCentraalBrpPlugin(
         execution: DelegateExecution
     ) {
 
-        val peildatumReversed = haalCentraalBrpService.reverseDate(peildatum)
-
         logger.info { "Retrieving bewoningen for case ${execution.businessKey}" }
 
         try {
             haalCentraalBrpService.getBewoningen(
                 baseUrl = brpBaseUrl,
-                bewoningenRequest = BewoningenRequest(QUERY_TYPE, adresseerbaarObjectIdentificatie, peildatumReversed),
+                bewoningenRequest = BewoningenRequest(QUERY_TYPE, adresseerbaarObjectIdentificatie, peildatum),
                 authentication = authenticationPluginConfiguration
             )?.let {
                 execution.processInstance.setVariable(

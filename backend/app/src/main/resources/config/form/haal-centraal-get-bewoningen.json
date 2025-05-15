@@ -33,31 +33,18 @@
     },
     {
       "key": "peildatum",
-      "type": "day",
+      "type": "textfield",
       "input": true,
-      "label": "Peildatum",
-      "fields": {
-        "day": {
-          "hide": false,
-          "required": true
-        },
-        "year": {
-          "hide": false,
-          "required": true
-        },
-        "month": {
-          "hide": false,
-          "required": true
-        }
+      "label": "Peildatum (yyyy-mm-dd)",
+      "validate": {
+        "required": true
       },
-      "tableView": false,
+      "tableView": true,
       "attributes": {
         "data-testid": "Get Bewoningen-peildatum"
       },
-      "defaultValue": "01/01/2024",
-      "hideInputLabels": false,
-      "useLocaleSettings": false,
-      "inputsLabelPosition": "top"
+      "applyMaskOn": "change",
+      "defaultValue": "2024-01-01"
     },
     {
       "key": "submit",

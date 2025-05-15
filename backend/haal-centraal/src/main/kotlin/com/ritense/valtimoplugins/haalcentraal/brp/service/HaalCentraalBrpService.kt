@@ -6,9 +6,6 @@ import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
 import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
 import mu.KotlinLogging
 import java.net.URI
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 
 class HaalCentraalBrpService(
     private val haalCentraalBrpClient: HcBrpClient
@@ -33,20 +30,6 @@ class HaalCentraalBrpService(
                 indicatieVeelBewoners = bewoning.indicatieVeelBewoners
             )
         }
-    }
-
-    fun getPeildatum(peildatumDatetimeString: String): String {
-        return OffsetDateTime
-            .parse(peildatumDatetimeString)
-            .format(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            )
-    }
-
-    fun reverseDate(datum: String): String {
-        val invoerFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val uitvoerFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        return LocalDate.parse(datum, invoerFormatter).format(uitvoerFormatter)
     }
 
     companion object {
