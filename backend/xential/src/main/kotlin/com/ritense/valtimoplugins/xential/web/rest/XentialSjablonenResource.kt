@@ -19,6 +19,7 @@ package com.ritense.valtimoplugins.xential.web.rest
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimo.contract.domain.ValtimoMediaType
 import com.ritense.valtimoplugins.xential.service.XentialSjablonenService
+import com.ritense.valtimoplugins.xential.service.XentialUserIdHelper
 import com.rotterdam.esb.xential.model.Sjabloonitems
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.web.bind.annotation.GetMapping
@@ -37,8 +38,7 @@ class XentialSjablonenResource(
         @RequestParam sjabloonGroupId: String?
     ): Sjabloonitems {
         val items = xentialSjablonenService.getTemplateList(sjabloonGroupId)
-        logger.info { "${sjabloonGroupId} found sjablonen: ${items.sjablonen.size } }"}
-        logger.info { "$sjabloonGroupId found sjabloongroepen: ${items.sjabloongroepen.size } }"}
+        logger.info { "${sjabloonGroupId} found sjablonen: ${items.sjablonen.size } sjabloongroepen: ${items.sjabloongroepen.size }"}
         return items
     }
 

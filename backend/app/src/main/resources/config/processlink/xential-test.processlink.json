@@ -19,10 +19,8 @@
     "processLinkType": "plugin",
     "actionProperties": {
       "fileFormat": "PDF",
-      "documentId": "docId",
       "eventMessageName": "XENTIAL_DOC_RECEIVED",
-      "xentialContentId": "xentialContentId",
-      "textTemplateId": "template:texttemplate",
+      "xentialContentId": "xentialContent",
       "firstTemplateGroupId": "415cf276-2af0-4192-923d-4391c4d7b2a8"
     }
   }

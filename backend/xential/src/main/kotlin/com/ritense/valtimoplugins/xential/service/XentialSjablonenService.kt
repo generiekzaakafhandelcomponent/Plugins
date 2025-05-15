@@ -26,7 +26,8 @@ import org.springframework.web.client.RestClient
 
 class XentialSjablonenService(
     private val pluginService: PluginService,
-    private val esbClient: OpentunnelEsbClient
+    private val esbClient: OpentunnelEsbClient,
+    private val xentialUserIdHelper: XentialUserIdHelper
 ) {
 
     fun getTemplateList(sjabloongroepId: String?): Sjabloonitems {
@@ -46,7 +47,7 @@ class XentialSjablonenService(
                 val api = esbClient.documentApi(restClient(mTlsSslContextPlugin))
                 logger.info { "getting sjabloongroep with ${sjabloongroepId.takeIf { !it.isNullOrBlank() }?: "geen id"}" }
                 return api.geefSjablonenlijst(
-                    gebruikersId = xentialPlugin.gebruikersId,
+                    gebruikersId = xentialUserIdHelper.getXentialUserId(),
                     sjabloongroepId = sjabloongroepId.takeIf { !it.isNullOrBlank()}
                 )
             }

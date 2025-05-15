@@ -32,7 +32,7 @@ import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
-import java.util.UUID
+import java.util.*
 
 @Plugin(
     key = "object-management",
@@ -77,8 +77,13 @@ open class ObjectManagementPlugin(
         @PluginActionProperty objectUrl: URI,
         @PluginActionProperty objectManagementConfigurationId: UUID,
         @PluginActionProperty objectData: List<DataBindingConfig>,
-    ) {
-
+        ) {
+        objectManagementCrudService.updateObject(
+            objectManagementConfigurationId,
+            objectUrl,
+            getObjectData(objectData, execution.businessKey)
+        )
+        logger.info { "Successfully updated object with url: $objectUrl" }
     }
 
     @PluginAction(
@@ -87,8 +92,15 @@ open class ObjectManagementPlugin(
         description = "Delete an existing Object",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-    open fun deleteObject() {
+    open fun deleteObject(
+        execution: DelegateExecution,
+        @PluginActionProperty objectUrl: String,
+        @PluginActionProperty objectManagementConfigurationId: UUID
+    ) {
 
+        objectManagementCrudService.deleteObject(objectUrl, objectManagementConfigurationId)
+
+        logger.info { "Successfully deleted object with url: $objectUrl" }
     }
 
     @PluginAction(

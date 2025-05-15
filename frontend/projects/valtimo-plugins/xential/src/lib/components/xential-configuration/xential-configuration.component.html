@@ -59,14 +59,6 @@
             [required]="true"
     >
     </v-input>
-    <v-input
-            name="gebruikersId"
-            [title]="'gebruikersId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.gebruikersId"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
     <hr/>
     <ng-container
             *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"

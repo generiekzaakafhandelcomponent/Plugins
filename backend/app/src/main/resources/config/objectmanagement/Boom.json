@@ -1,0 +1,11 @@
+{
+  "id": "b668aefa-1191-476b-9e08-0e7f7a907a3e",
+  "title": "Boom",
+  "objecttypenApiPluginConfigurationId": "bc109d5e-0388-4637-bcfa-b454f402bef8",
+  "objecttypeId": "feeaa795-d212-4fa2-bb38-2c34996e5702",
+  "objecttypeVersion": 2,
+  "objectenApiPluginConfigurationId": "a1a5e464-92db-41fc-9ab9-da663dd18471",
+  "showInDataMenu": true,
+  "formDefinitionView": "boom-edit",
+  "formDefinitionEdit": "boom-edit"
+}

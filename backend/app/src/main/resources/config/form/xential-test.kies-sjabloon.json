@@ -3,7 +3,7 @@
         {
             "label": "pv sjabloon groep",
             "tableView": false,
-            "key": "pv.xentialContentId",
+            "key": "pv.xentialContent",
             "type": "hidden",
             "input": true
         },
@@ -23,7 +23,7 @@
                 "required": true
             },
             "data": {
-                "url": "../api/v1/xential/sjablonen?sjabloonGroupId={{ data.pv.xentialContentId.xentialGroupId }}",
+                "url": "../api/v1/xential/sjablonen?sjabloonGroupId={{ data.pv.xentialContent.xentialGroupId }}",
                 "method": "GET",
                 "headers": [
                     {
@@ -45,6 +45,77 @@
             "valueProperty": "id",
             "template": "<span>{{ item.naam }}</span>",
             "tableView": true
+        },
+        {
+            "label": "document",
+            "key": "pv.document",
+            "validate": {
+                "required": true
+            },
+            "data": {
+                "url": "../api/management/v1/document-definition?page=0&size=100",
+                "method": "GET",
+                "headers": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{localStorage.getItem('formioToken')}}"
+                    }
+                ]
+            },
+            "type": "select",
+            "selectValues": "content",
+            "lazyLoad": false,
+            "input": true,
+            "widget": "choicesjs",
+            "dataSrc": "url",
+            "valueProperty": "id.name",
+            "template": "<span>{{ item.id.name }}</span>",
+            "tableView": true
+        },
+        {
+            "label": "template",
+            "key": "pv.tempcontent",
+            "validate": {
+                "required": true
+            },
+            "data": {
+                "url": "../api/management/v1/template?caseDefinitionName={{data.pv.document}}&templateType=text&page=0&size=10000",
+                "method": "GET",
+                "headers": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{localStorage.getItem('formioToken')}}"
+                    }
+                ]
+            },
+            "type": "select",
+            "selectValues": "content",
+            "lazyLoad": false,
+            "input": true,
+            "widget": "choicesjs",
+            "dataSrc": "url",
+            "valueProperty": "key",
+            "template": "<span>{{ item.key }}</span>",
+            "tableView": true,
+            "refreshOn": "pv.document",
+            "clearOnRefresh": true,
+            "customConditional": "show = data.pv.document ? true : false;"
+        },
+        {
+            "key": "pv.xentialData",
+            "type": "hidden",
+            "input": true,
+            "label": "set template",
+            "defaultValue": false,
+            "calculateValue": "value = 'template:' + data.pv.tempcontent"
         },
         {
             "type": "button",

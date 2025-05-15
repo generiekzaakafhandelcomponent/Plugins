@@ -1,0 +1,16 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

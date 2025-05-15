@@ -13,10 +13,18 @@
     </div>
 
     <v-input
-            name="xentialContentId"
-            [title]="'xentialContentId' | pluginTranslate: pluginId | async"
+            name="xentialContent"
+            [title]="'xentialContent' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.xentialContentId"
+            [defaultValue]="obs.prefill?.xentialContent"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
+            name="xentialData"
+            [title]="'xentialData' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.xentialData"
             [disabled]="obs.disabled"
             [required]="true"
     />
@@ -25,6 +33,14 @@
             [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
             [margin]="true"
             [defaultValue]="obs.prefill?.xentialSjabloonId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
+            name="xentialGebruikersId"
+            [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.xentialGebruikersId"
             [disabled]="obs.disabled"
             [required]="true"
     />

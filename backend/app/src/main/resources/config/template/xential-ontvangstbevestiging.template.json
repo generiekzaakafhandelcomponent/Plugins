@@ -1,0 +1,7 @@
+{
+  "templateKey": "xential-template",
+  "caseDefinitionName": "xential-test",
+  "templateType": "text",
+  "metadata": {},
+  "contentRef": "/config/template/xential-ontvangstbevestiging.ftlh"
+}

@@ -54,13 +54,14 @@ class ObjectManagementCrudService(
     }
 
     fun updateObject(
-        objectUrl: URI,
         objectManagementId: UUID,
-        objectData: JsonNode,
+        objectUrl: URI,
+        objectData: JsonNode
     ): URI {
         val objectManagement = getObjectManagement(objectManagementId)
         val objectenApiPlugin = getObjectenApiPlugin(objectManagement.objectenApiPluginConfigurationId)
         val objecttypenApiPlugin = getObjecttypenApiPlugin(objectManagement.objecttypenApiPluginConfigurationId)
+
         val objectRequest = ObjectRequest(
             objecttypenApiPlugin.getObjectTypeUrlById(objectManagement.objecttypeId),
             ObjectRecord(
@@ -69,11 +70,18 @@ class ObjectManagementCrudService(
                 startAt = LocalDate.now()
             )
         )
-        return objectenApiPlugin.createObject(objectRequest).url
+
+        return objectenApiPlugin.objectPatch(objectUrl, objectRequest).url
     }
 
-    fun deleteObject(objectUrl: URI) {
-        return
+    fun deleteObject(
+        objectUrl: String,
+        objectManagementConfigurationId: UUID
+    ) {
+        val objectManagement = getObjectManagement(objectManagementConfigurationId)
+        val objectenApiPlugin = getObjectenApiPlugin(objectManagement.objectenApiPluginConfigurationId)
+        val uri = URI.create(objectUrl)
+        objectenApiPlugin.deleteObject(uri)
     }
 
     fun getObjectsByObjectManagementTitle(

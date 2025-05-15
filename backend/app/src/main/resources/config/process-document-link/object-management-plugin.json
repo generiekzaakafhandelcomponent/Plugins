@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "Process_CUD",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

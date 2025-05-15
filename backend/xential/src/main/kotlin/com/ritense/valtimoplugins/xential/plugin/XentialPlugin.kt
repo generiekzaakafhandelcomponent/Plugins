@@ -30,6 +30,7 @@ import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.valtimoplugins.xential.plugin.XentialPlugin.Companion.PLUGIN_KEY
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
 import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
+import com.ritense.valueresolver.ValueResolverService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.springframework.web.client.RestClient
@@ -44,7 +45,8 @@ import java.util.UUID
 @Suppress("UNUSED")
 class XentialPlugin(
     private val esbClient: OpentunnelEsbClient,
-    private val documentGenerationService: DocumentGenerationService
+    private val documentGenerationService: DocumentGenerationService,
+    private val valueResolverService: ValueResolverService
 ) {
     @PluginProperty(key = "applicationName", secret = false, required = true)
     lateinit var applicationName: String
@@ -52,14 +54,48 @@ class XentialPlugin(
     @PluginProperty(key = "applicationPassword", secret = true, required = true)
     lateinit var applicationPassword: String
 
-    @PluginProperty(key = "gebruikersId", secret = false, required = true)
-    lateinit var gebruikersId: String
-
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
 
     @PluginProperty(key = "mTlsSslContextAutoConfigurationId", secret = false, required = true)
     private lateinit var mTlsSslContextAutoConfigurationId: MTlsSslContext
+
+    private fun isResolvableValue(value: String): Boolean =
+        value.isNotBlank() && (
+                value.startsWith("case:") ||
+                value.startsWith("doc:") ||
+                value.startsWith("template:") ||
+                value.startsWith("pv:")
+        )
+
+    private fun resolveValuesFor(
+        execution: DelegateExecution,
+        params: Map<String, Any?>
+    ): Map<String, Any?> {
+        val resolvedValues = params.filter {
+            if (it.value is String) {
+                isResolvableValue(it.value as String)
+            } else false
+        }
+            .let { filteredParams ->
+                logger.debug { "Trying to resolve values for: $filteredParams" }
+                valueResolverService.resolveValues(
+                    execution.processInstanceId,
+                    execution,
+                    filteredParams.map { it.value as String }
+                ).let { resolvedValues ->
+                    logger.debug { "Resolved values: $resolvedValues" }
+                    filteredParams.toMutableMap().apply {
+                        this.entries.forEach { (key, value) ->
+                            this.put(key, resolvedValues[value])
+                        }
+                    }
+                }
+            }
+        return params.toMutableMap().apply {
+            this.putAll(resolvedValues)
+        }.toMap()
+    }
 
     @PluginAction(
         key = "generate-document",
@@ -68,19 +104,30 @@ class XentialPlugin(
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
     fun generateDocument(
-        @PluginActionProperty xentialContentId: Map<String, Any>,
+        @PluginActionProperty xentialContent: Map<String, Any>,
+        @PluginActionProperty xentialData: String,
         @PluginActionProperty xentialSjabloonId: String,
+        @PluginActionProperty xentialGebruikersId: String,
         execution: DelegateExecution
     ) {
 
-        logger.info { "generating document with XentialContent: $xentialContentId" }
+        logger.info { "generating document with XentialContent: $xentialContent" }
 
+        val props = objectMapper.convertValue(xentialContent) as XentialDocumentProperties
+
+        props.content = xentialData
+
+        val resolvedValues = resolveValuesFor(execution, mapOf(
+            "content" to props.content,
+        ))
+
+        props.content = resolvedValues["content"] as String
         documentGenerationService.generateDocument(
             esbClient.documentApi(restClient(mTlsSslContextAutoConfigurationId)),
             UUID.fromString(execution.processInstanceId),
-            gebruikersId,
+            xentialGebruikersId,
             xentialSjabloonId,
-            objectMapper.convertValue(xentialContentId) as XentialDocumentProperties,
+            props,
             execution
         )
     }
@@ -95,7 +142,7 @@ class XentialPlugin(
         @PluginActionProperty fileFormat: FileFormat,
         @PluginActionProperty documentId: String,
         @PluginActionProperty eventMessageName: String,
-        @PluginActionProperty xentialContentId: String,
+        @PluginActionProperty xentialContent: String,
         @PluginActionProperty verzendAdresData: Array<TemplateDataEntry>,
         @PluginActionProperty colofonData: Array<TemplateDataEntry>,
         @PluginActionProperty documentDetailsData: Array<TemplateDataEntry>,
@@ -113,14 +160,14 @@ class XentialPlugin(
                 execution
             ).let {
                 val xentialDocumentProperties = XentialDocumentProperties(
-                    thirdTemplateGroupId?: secondTemplateGroupId ?: firstTemplateGroupId,
+                    thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
                     fileFormat,
                     documentId,
                     eventMessageName,
-                    it
+                    it as String
                 )
                 execution.processInstance.setVariable(
-                    xentialContentId, objectMapper.convertValue(xentialDocumentProperties)
+                    xentialContent, objectMapper.convertValue(xentialDocumentProperties)
                 )
             }
         } catch (e: Exception) {
@@ -137,10 +184,8 @@ class XentialPlugin(
     )
     fun prepareContentWithTemplate(
         @PluginActionProperty fileFormat: FileFormat,
-        @PluginActionProperty documentId: String,
         @PluginActionProperty eventMessageName: String,
         @PluginActionProperty xentialContentId: String,
-        @PluginActionProperty textTemplateId: String,
         @PluginActionProperty firstTemplateGroupId: UUID,
         @PluginActionProperty secondTemplateGroupId: UUID?,
         @PluginActionProperty thirdTemplateGroupId: UUID?,
@@ -148,11 +193,11 @@ class XentialPlugin(
     ) {
         try {
             val xentialDocumentProperties = XentialDocumentProperties(
-                thirdTemplateGroupId?: secondTemplateGroupId ?: firstTemplateGroupId,
+                thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
                 fileFormat,
-                documentId,
+                "documentId",
                 eventMessageName,
-                textTemplateId
+                null
             )
 
             execution.processInstance.setVariable(

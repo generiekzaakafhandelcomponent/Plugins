@@ -55,7 +55,7 @@ class DocumentGenerationService(
     fun generateDocument(
         api: DefaultApi,
         processId: UUID,
-        gebruikersId: String,
+        xentialgGebruikersId: String,
         sjabloonId: String,
         xentialDocumentProperties: XentialDocumentProperties,
         execution: DelegateExecution,
@@ -63,17 +63,18 @@ class DocumentGenerationService(
         logger.info { "generating xential document" }
 
         val result = api.creeerDocument(
-            gebruikersId = gebruikersId,
+
+            gebruikersId = xentialgGebruikersId,
             accepteerOnbekend = false,
             sjabloondata = Sjabloondata(
                 sjabloonId = sjabloonId,
                 bestandsFormaat = Sjabloondata.BestandsFormaat.valueOf(xentialDocumentProperties.fileFormat.name),
                 documentkenmerk = xentialDocumentProperties.documentId,
-                sjabloonVulData = if ( xentialDocumentProperties.content is String ) {
-                    xentialDocumentProperties.content
+                sjabloonVulData = (if ( xentialDocumentProperties.content is String ) {
+                    xentialDocumentProperties.content.toString()
                 } else {
                     generateXml(xentialDocumentProperties.content as MutableMap<String, Any>)
-                }
+                })
             )
         )
         logger.info { "found something: $result" }
