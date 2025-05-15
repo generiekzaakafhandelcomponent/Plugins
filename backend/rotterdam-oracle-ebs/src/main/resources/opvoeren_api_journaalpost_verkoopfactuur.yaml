@@ -611,11 +611,11 @@ components:
     VerwerkingsstatusVerkoopfactuur:
       allOf:
         - $ref: '#/components/schemas/Verwerkingsstatus'
-      type: object
-      properties:
-        factuurID:
-          type: string
-          description: 'FactuurID.'
+        - type: object
+          properties:
+            factuurID:
+              type: string
+              description: 'FactuurID.'
     Fout:
       required:
         - code

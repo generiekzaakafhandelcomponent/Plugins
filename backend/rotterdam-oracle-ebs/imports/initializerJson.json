@@ -36,6 +36,7 @@
       "body": {
         "isGeslaagd": true,
         "melding": "Journaalpost is ontvangen en geldig; de Journaalpost moet nog verwerkt worden!",
+        "factuurID": "20250515-4343",
         "foutcode": "ERROR",
         "foutmelding": "Ketenverwerking niet geslaagd:Er is iets misgegaan bij CFA"
       }
