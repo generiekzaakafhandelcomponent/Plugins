@@ -1,6 +1,6 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.BoekingType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
@@ -30,7 +30,7 @@ import java.time.LocalDateTime
 
 class OracleEbsPluginTest {
 
-    private val objectMapper = jacksonObjectMapper()
+    private val objectMapper = MapperSingleton.get()
 
     private lateinit var mockWebServer: MockWebServer
 
