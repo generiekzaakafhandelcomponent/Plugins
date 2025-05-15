@@ -84,6 +84,7 @@ class OracleEbsPlugin(
                 "procesCode: $procesCode, " +
                 "referentieNummer: $referentieNummer, " +
                 "sleutel: $sleutel, " +
+                "boekdatumTijd: $boekdatumTijd, " +
                 "categorie: $categorie" +
             ")"
         }
@@ -176,6 +177,14 @@ class OracleEbsPlugin(
         @PluginActionProperty regels: List<FactuurRegel>? = null,
         @PluginActionProperty regelsViaResolver: String? = null
     ) {
+        logger.info {
+            "Verkoopfactuur Opvoeren(" +
+                "procesCode: $procesCode, " +
+                "referentieNummer: $referentieNummer, " +
+                "inkoopOrderReferentie: $inkoopOrderReferentie, " +
+                "relatieType: $relatieType" +
+            ")"
+        }
         val relatieTypeEnum = RelatieType.valueOf(relatieType.replace(" ", "_").uppercase())
         if (relatieTypeEnum == RelatieType.NATUURLIJK_PERSOON) {
             require(natuurlijkPersoon != null) {
@@ -187,12 +196,6 @@ class OracleEbsPlugin(
             }
         }
 
-        logger.info {
-            "Verkoopfactuur Opvoeren(" +
-                "procesCode: $procesCode, " +
-                "referentieNummer: $referentieNummer" +
-            ")"
-        }
 
         if (regels.isNullOrEmpty() && regelsViaResolver.isNullOrBlank()) {
             throw IllegalArgumentException("Regels are not specified!")
