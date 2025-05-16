@@ -248,7 +248,6 @@ class OracleEbsPlugin(
                             )).also {
                                 logger.debug { "Resolved niet natuurlijk persoon values: $it" }
                             }
-
                             com.rotterdam.esb.opvoeren.models.NietNatuurlijkPersoon(
                                 statutaireNaam = stringFrom(resolvedNietNatuurlijkPersoonValues[STATUTAIRE_NAAM_KEY]!!),
                                 kvknummer = null,
