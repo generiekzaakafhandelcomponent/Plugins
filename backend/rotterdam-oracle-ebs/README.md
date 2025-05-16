@@ -59,6 +59,16 @@ Only provide one of the properties for the journaalpost lines via `regels` or `r
   * omschrijving (string, optional)
 * regelsViaResolver (string)
 
+The response of the plugin action is stored as an object in a process instance variable named according specified via 
+the property `pvResultVariable` with the properties:
+
+* isGeslaagd (string)
+* melding" (string)
+* foutcode (string)
+* foutmelding (string)
+
+These values can be accessed by specifying `pv:[value of pvResultVariable].[property name]`
+
 ### Plugin action: Verkoopfactuur Opvoeren
 
 The `Verkoopfactuur Opvoeren` plugin action expects the following properties which can be provided hard coded or via value resolvers (case:, doc: and pv:)
@@ -78,8 +88,24 @@ Only provide one of the properties for the relationship type details via `natuur
   * statutaireNaam (string)
 
 Only provide one of the properties for the journaalpost lines via `regels` or `regelsViaResolver`.
-* regels: List<FactuurRegel>? 
+* regels
+  * hoeveelheid (string)
+  * tarief (string)
+  * btwPercentage (string)
+  * grootboekSleutel (string)
+  * omschrijving (string)
 * regelsViaResolver (string, optional) 
+
+The response of the plugin action is stored as an object in a process instance variable named according specified via 
+the property `pvResultVariable` with the properties:
+
+* isGeslaagd (string)
+* melding" (string)
+* factuurID (string)
+* foutcode (string)
+* foutmelding (string)
+
+These values can be accessed by specifying `pv:[value of pvResultVariable].[property name]`
 
 ## Development
 
