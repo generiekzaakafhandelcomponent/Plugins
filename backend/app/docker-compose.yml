@@ -3,7 +3,7 @@ name: valtimo-plugins-local
 services:
 
   example-core-db:
-    container_name: example-core-db
+    container_name: valtimo-plugins-local-example-core-db
     image: postgres:15
     ports:
       - "54340:5432"
@@ -13,7 +13,7 @@ services:
       POSTGRES_DB: example-core-db
 
   example-core-keycloak:
-    container_name: example-core-keycloak
+    container_name: valtimo-plugins-local-example-core-keycloak
     depends_on:
       - example-core-keycloak-db
     image: quay.io/keycloak/keycloak:17.0.1-legacy
@@ -36,7 +36,7 @@ services:
 
   example-core-keycloak-db:
     image: postgres:15
-    container_name: example-core-keycloak-db
+    container_name: valtimo-plugins-local-example-core-keycloak-db
     ports:
       - "54329:5432"
     environment:
@@ -46,7 +46,7 @@ services:
   #zgw
   openzaak:
     image: openzaak/open-zaak:1.12.4
-    container_name: openzaak
+    container_name: valtimo-plugins-local-openzaak
     platform: linux/amd64
     environment:
       - DB_HOST=openzaak-database
@@ -75,7 +75,7 @@ services:
 
   openzaak-database:
     image: mdillon/postgis:11
-    container_name: openzaak-database
+    container_name: valtimo-plugins-local-openzaak-database
     platform: linux/amd64
     ports:
       - "8091:5432"
@@ -88,11 +88,11 @@ services:
 
   redis:
     image: redis:6.2.6
-    container_name: redis
+    container_name: valtimo-plugins-local-redis
 
   objecten-api:
     image: maykinmedia/objects-api:2.1.1
-    container_name: objecten-api
+    container_name: valtimo-plugins-local-objecten-api
     platform: linux/amd64
     ports:
       - "8010:8000"
@@ -109,7 +109,7 @@ services:
 
   objecten-api-database:
     image: postgis/postgis:13-3.1
-    container_name: objecten-api-database
+    container_name: valtimo-plugins-local-objecten-api-database
     platform: linux/amd64
     environment:
       - POSTGRES_USER=objects
@@ -118,7 +118,7 @@ services:
 
   objecten-api-import:
     image: maykinmedia/objects-api:2.1.1
-    container_name: objects-api-import
+    container_name: valtimo-plugins-local-objects-api-import
     platform: linux/amd64
     environment: *objects-env
     # in the current version of django it is not possible to create a new user with password without user interaction by using the createsuperuser command
@@ -131,7 +131,7 @@ services:
 
   objecttypen-api:
     image: maykinmedia/objecttypes-api:2.1.0
-    container_name: objecttypen-api
+    container_name: valtimo-plugins-local-objecttypen-api
     platform: linux/amd64
     ports:
       - "8011:8000"
@@ -148,7 +148,7 @@ services:
 
   objecttypen-api-database:
     image: postgres:14.1
-    container_name: objecttypen-api-database
+    container_name: valtimo-plugins-local-objecttypen-api-database
     environment:
       - POSTGRES_USER=objecttypes
       - POSTGRES_PASSWORD=objecttypes
@@ -156,7 +156,7 @@ services:
 
   objecttypen-api-import:
     image: maykinmedia/objecttypes-api:2.1.0
-    container_name: objecttypen-api-import
+    container_name: valtimo-plugins-local-objecttypen-api-import
     platform: linux/amd64
     environment: *objecttypes-env
     command: sh init/init.sh
@@ -168,14 +168,14 @@ services:
 
   open-notificaties-rabbitmq:
     image: rabbitmq:3.9-management
-    container_name: open-notificaties-rabbitmq
+    container_name: valtimo-plugins-local-open-notificaties-rabbitmq
     expose:
       - 5672
       - 15672
 
   open-notificaties:
     image: openzaak/open-notificaties:1.4.3
-    container_name: open-notificaties
+    container_name: valtimo-plugins-local-open-notificaties
     platform: linux/amd64
     ports:
       - "8002:8000"
@@ -200,14 +200,14 @@ services:
 
   open-notificaties-celery:
     image: openzaak/open-notificaties:1.4.3
-    container_name: open-notificaties-celery
+    container_name: valtimo-plugins-local-open-notificaties-celery
     platform: linux/amd64
     environment: *notificaties-env
     command: /celery_worker.sh
 
   open-notificaties-database:
     image: postgres:13.5  # open-notificaties doesn't work with postgres 14.
-    container_name: open-notificaties-database
+    container_name: valtimo-plugins-local-open-notificaties-database
     ports:
       - "54319:5432"
     environment:
@@ -219,7 +219,7 @@ services:
 
   redis-open-notificaties:
     image: redis:6.2.6
-    container_name: redis-open-notificaties
+    container_name: valtimo-plugins-local-redis-open-notificaties
 
 volumes:
   openzaak-private-media:
