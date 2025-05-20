@@ -52,7 +52,7 @@ export class CreateObjectConfigurationComponent
   }
 
   private handleValid(formValue: CreateObjectConfig): void {
-    const valid = !!(formValue.objectManagementConfigurationTitle && formValue.objectData && formValue.objectUUID);
+    const valid = !!(formValue.objectManagementConfigurationId && formValue.objectData, formValue.objectUrlProcessVariableName);
 
     this.valid$.next(valid);
     this.valid.emit(valid);
