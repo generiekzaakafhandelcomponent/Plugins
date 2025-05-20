@@ -9,7 +9,7 @@
           "value": ""
         }
       ],
-      "content": "  <h3>Beschikbare testadressen (BAG Simulator)</h3>\r\n  <ul>\r\n    <li>\r\n      <strong>Postcode:</strong> 2511EB<br>\r\n      <strong>Huisnummer:</strong> 9<br>\r\n      <strong>Huisletter:</strong> B<br>\r\n      <strong>Toevoeging:</strong> 1\r\n    </li>\r\n    <hr>\r\n    <li>\r\n      <strong>Postcode:</strong> 1053KW<br>\r\n      <strong>Huisnummer:</strong> 72<br>\r\n      <strong>Huisletter:</strong> D<br>\r\n      <strong>Toevoeging:</strong> <em>geen</em>\r\n    </li>\r\n    <hr>\r\n  </ul>\r\n",
+      "content": "  <h3>Beschikbare testadressen (BAG Simulator)</h3>\r\n  <ul>\r\n    <li>\r\n      <strong>Postcode:</strong> 2511EB<br>\r\n      <strong>Huisnummer:</strong> 9<br>\r\n      <strong>Huisletter:</strong> B<br>\r\n      <strong>Toevoeging:</strong> 1\r\n    </li>\r\n    <hr>\r\n    <li>\r\n      <strong>Postcode:</strong> 1053KW<br>\r\n      <strong>Huisnummer:</strong> 72<br>\r\n      <strong>Huisletter:</strong> D<br>\r\n      <strong>Toevoeging:</strong> <em>geen</em>\r\n    </li>\r\n    <hr>\r\n    <li>\r\n      <strong>Postcode:</strong> 2514GN<br>\r\n      <strong>Huisnummer:</strong> 68<br>\r\n      <strong>Huisletter:</strong> <em>geen</em><br>\r\n      <strong>Toevoeging:</strong> <em>geen</em>\r\n    </li>\r\n    <hr>\r\n  </ul>\r\n",
       "refreshOnChange": false,
       "key": "html",
       "type": "htmlelement",

@@ -9,7 +9,7 @@
           "value": ""
         }
       ],
-      "content": "  <h3>Beschikbare object-ID's (BRP API)</h3>\r\n  <ul style=\"padding-left: 1.2em;\">\r\n    <li>\r\n      0518010000583534 – met o.a. <strong>Gea Gerritsen</strong>\r\n    </li>\r\n    <li>\r\n      0518010000583567 – met o.a. <strong>Peterjan Pluym</strong>\r\n    </li>\r\n  </ul>",
+      "content": "  <h3>Beschikbare object-ID's (BRP API)</h3>\r\n  <ul style=\"padding-left: 1.2em;\">\r\n    <li>\r\n      0518010000583534 – met o.a. <strong>Gea Gerritsen</strong>\r\n    </li>\r\n    <li>\r\n      0518010000583567 – met o.a. <strong>Peterjan Pluym</strong>\r\n    </li>    \r\n    <li>\r\n      0518010001646641 – met o.a. <strong>Petri Vornowski</strong>\r\n    </li>\r\n  </ul>",
       "refreshOnChange": false,
       "key": "html",
       "type": "htmlelement",
@@ -17,19 +17,19 @@
       "tableView": false
     },
     {
-      "key": "adresseerbaarObjectIdentificatie",
-      "type": "textfield",
-      "input": true,
       "label": "Adresseerbaar object identificatie",
+      "applyMaskOn": "change",
+      "tableView": true,
+      "defaultValue": "0518010001646641",
       "validate": {
         "required": true
       },
-      "tableView": true,
+      "key": "adresseerbaarObjectIdentificatie",
       "attributes": {
         "data-testid": "Get Bewoningen-adresseerbaarObjectIdentificatie"
       },
-      "applyMaskOn": "change",
-      "defaultValue": "0518010000583561"
+      "type": "textfield",
+      "input": true
     },
     {
       "key": "peildatum",
