@@ -17,8 +17,8 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface HuggingFaceConfig extends PluginConfigurationData {
-  url: string;
-  token: string;
+    url: string;
+    token: string;
 }
 
 interface GiveSummaryConfig {
@@ -28,6 +28,10 @@ interface GiveSummaryConfig {
 interface ChatConfig {
     caseKey: string;
     question: string;
+    chatAnswerPV: string;
+    interpolatedQuestionPV: string;
+    previousAnswer: string;
+    previousQuestion: string;
 }
 
 export {HuggingFaceConfig, GiveSummaryConfig, ChatConfig};

@@ -20,7 +20,6 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.document.domain.Document
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
-import com.ritense.document.domain.impl.request.ModifyDocumentRequest
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -35,7 +34,7 @@ import freemarker.template.Template
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.io.StringWriter
 import java.net.URI
-import java.util.UUID
+import java.util.*
 
 @Plugin(
     key = "smart-task-plugin",
@@ -80,29 +79,66 @@ open class HuggingFacePlugin(
     )
     open fun chat(
         execution: DelegateExecution,
-        @PluginActionProperty question: String
+        @PluginActionProperty question: String,
+        @PluginActionProperty chatAnswerPV: String,
+        @PluginActionProperty interpolatedQuestionPV: String,
+        @PluginActionProperty previousAnswer: String?,
+        @PluginActionProperty previousQuestion: String?,
     ) {
         huggingFaceTextGenerationModel.baseUri = url
         huggingFaceTextGenerationModel.token = token
 
+
+        val chatHistory = execution.getVariable("chatHistory") as? String ?: ""
+
+
+        // Combine previous question and answer with the current question
+        val fullPrompt = buildString {
+            append("Contex:\n$chatHistory\n")
+            append("CurrentQuestion: $question")
+        }
+
         // Get the Case
         val id = JsonSchemaDocumentId.existingId(UUID.fromString(execution.businessKey))
         val jsonSchemaDocument = documentService.getDocumentBy(id)
-        val interpolatedQuestion = generate(question, jsonSchemaDocument)
-        val chatResult = huggingFaceTextGenerationModel.mistralChat(
-            question = interpolatedQuestion,
-        )
-        execution.setVariable("question", interpolatedQuestion)
-        execution.setVariable("answer", chatResult)
+        val interpolatedQuestion = generate(fullPrompt, jsonSchemaDocument)
 
-        val documentUpdate = jacksonObjectMapper().createObjectNode().apply {
-            put("chatResult", chatResult)
+//        val chatResult = huggingFaceTextGenerationModel.mistralChat(
+//            question = interpolatedQuestion,
+//        )
+
+        val chatResult = "ai antwoord"
+
+        if (chatResult.isEmpty()) {
+            throw RuntimeException("Empty chat result")
         }
-        val result = documentService.modifyDocument(ModifyDocumentRequest.create(jsonSchemaDocument, documentUpdate))
-        result.resultingDocument().orElseThrow {
-            val errors = result.errors().joinToString(", ") { it.asString() }
-            RuntimeException("failed to update document $errors")
+
+        val updatedChatHistory = buildString {
+            append(chatHistory)
+            if (chatHistory.isNotBlank()) append("\n")
+            append("Vraag: $question\nAntwoord: $chatResult")
         }
+
+        println("Updated chat history: $updatedChatHistory")
+
+        // Set the result in the process variable
+        execution.setVariable(interpolatedQuestionPV, interpolatedQuestion)
+        execution.setVariable(chatAnswerPV, chatResult)
+        execution.setVariable("chatHistory", updatedChatHistory)
+
+
+        // Log the stored results
+        println("Stored chat result: '$chatResult' in the process variable $chatAnswerPV")
+        println("Stored interpolated question: '$interpolatedQuestion' in the process variable $interpolatedQuestionPV")
+
+//        val documentUpdate = jacksonObjectMapper().createObjectNode().apply {
+//            put("chatResult", chatResult)
+//        }
+//        val result = documentService.modifyDocument(ModifyDocumentRequest.create(jsonSchemaDocument, documentUpdate))
+//        result.resultingDocument().orElseThrow {
+//            val errors = result.errors().joinToString(", ") { it.asString() }
+//            RuntimeException("failed to update document $errors")
+//        }
     }
 
     fun generate(

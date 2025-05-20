@@ -51,7 +51,7 @@ export class ChatConfigurationComponent implements FunctionConfigurationComponen
     }
 
     private handleValid(formValue: ChatConfig): void {
-        const valid = !!(formValue.question);
+        const valid = !!(formValue.question, formValue.chatAnswerPV, formValue.interpolatedQuestionPV);
 
         this.valid$.next(valid);
         this.valid.emit(valid);
