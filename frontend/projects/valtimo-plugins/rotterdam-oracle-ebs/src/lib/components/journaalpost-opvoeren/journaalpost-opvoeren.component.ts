@@ -22,11 +22,12 @@ import {
     PluginTranslationService
 } from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {BoekingType, JournaalpostOpvoerenConfig, SaldoSoort} from '../../models';
+import {BoekingType, FactuurKlasse, JournaalpostOpvoerenConfig, SaldoSoort} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NGXLogger} from "ngx-logger";
 import {Toggle} from "carbon-components-angular";
+import {EnumUtilsService} from "../../service/enum-utils.service";
 
 @Component({
     selector: 'valtimo-rotterdam-oracle-ebs-journaalpost-opvoeren',
@@ -58,7 +59,8 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
         private readonly translateService: TranslateService,
         private readonly pluginTranslationService: PluginTranslationService,
         private readonly logger: NGXLogger,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private enumSvc: EnumUtilsService
     ) { }
 
     ngOnInit(): void {
@@ -148,13 +150,13 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                         sleutel: configuration.sleutel,
                         boekdatumTijd: configuration.boekdatumTijd,
                         categorie: configuration.categorie,
-                        saldoSoort: configuration.saldoSoort,
+                        saldoSoort: this.fromSaldoSoort(configuration.saldoSoort),
                         omschrijving: configuration.omschrijving,
                         boekjaar: configuration.boekjaar,
                         boekperiode: configuration.boekperiode,
                         regels: (configuration.regels != undefined) ? configuration?.regels?.map( regel => ({
                             grootboekSleutel: regel.grootboekSleutel,
-                            boekingType: regel.boekingType,
+                            boekingType: this.fromBoekingType(regel.boekingType),
                             omschrijving: regel.omschrijving,
                             bedrag: regel.bedrag
                         })) : null,
@@ -184,13 +186,13 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                     sleutel: formValue.sleutel,
                     boekdatumTijd: formValue.boekdatumTijd,
                     categorie: formValue.categorie,
-                    saldoSoort: formValue.saldoSoort,
+                    saldoSoort: this.toSaldoSoort(formValue.saldoSoort),
                     omschrijving: formValue.omschrijving,
                     boekjaar: formValue.boekjaar,
                     boekperiode: formValue.boekperiode,
                     regels: (formValue.regels != undefined) ? formValue.regels.map(regel => ({
                         grootboekSleutel: regel.grootboekSleutel,
-                        boekingType: regel.boekingType,
+                        boekingType: this.toBoekingType(regel.boekingType),
                         omschrijving: regel.omschrijving,
                         bedrag: regel.bedrag
                     })) : null,
@@ -200,12 +202,46 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
         );
     }
 
-    private toSaldoSoort(value: string): SaldoSoort | undefined {
-        return Object.values(SaldoSoort).includes(value as SaldoSoort) ? (value as SaldoSoort) : undefined;
+    private fromSaldoSoort(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumValue(SaldoSoort, value);
+        }
     }
 
-    private toBoekingType(value: string): BoekingType | undefined {
-        return Object.values(BoekingType).includes(value as BoekingType) ? (value as BoekingType) : undefined;
+    private toSaldoSoort(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumKey(SaldoSoort, value);
+        }
+    }
+
+    private fromBoekingType(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumValue(BoekingType, value);
+        }
+    }
+
+    private toBoekingType(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumKey(BoekingType, value);
+        }
+    }
+
+    private isValueResolverPrefix(value: string): boolean {
+        return (
+            value.startsWith('case:')
+            ||
+            value.startsWith('doc:')
+            ||
+            value.startsWith('pv:')
+        )
     }
 
     private formValueChange(formValue: JournaalpostOpvoerenConfig): void {

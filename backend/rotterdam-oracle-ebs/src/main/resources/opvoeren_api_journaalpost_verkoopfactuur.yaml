@@ -1,0 +1,658 @@
+openapi: 3.0.2
+
+info:
+  title: Ontvangsten & Factuur Opvoeren API
+  description: 'De Ontvangsten & Factuur Opvoeren API van de Gemeente Rotterdam'
+  contact:
+    url: https://www.rotterdam.nl
+    email: noreply@rotterdam.nl
+  version: 1.0.0
+
+tags:
+  - name: ontvangsten
+    description: Ontvangsten functies
+
+paths:
+  /journaalpost/opvoeren:
+    post:
+      tags:
+        - journaalposten
+      operationId: opvoerenJournaalpost
+      summary: Opvoeren van een journaalpost
+      description: "Voert een journaalpost op"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpvoerenJournaalpostVraag'
+      responses:
+        '200':
+          description: OK, Journaalpost ontvangen en verwerkbaar geacht.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verwerkingsstatus'
+        '400':
+          description: 'Bad request, input parameter ontbreekt'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '401':
+          description: 'Unauthorized, Gebruiker is niet geautoriseerd of is onbekend in de CFA'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: 'Internal Server Error, Configuratie fouten; INTERNE_FOUT'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '503':
+          description: 'Service Unavailable, CFA is niet bereikbaar'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+  /verkoopfactuur/opvoeren:
+    post:
+      tags:
+        - verkoopfacturen
+      operationId: opvoerenVerkoopfactuur
+      summary: Opvoeren van een verkoopfactuur
+      description: "Voert een verkoopfactuur op"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpvoerenVerkoopfactuurVraag'
+      responses:
+        '200':
+          description: OK, Verkoopfactuur ontvangen en verwerkbaar geacht.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerwerkingsstatusVerkoopfactuur'
+        '400':
+          description: 'Bad request, input parameter ontbreekt'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '401':
+          description: 'Unauthorized, Gebruiker is niet geautoriseerd of is onbekend in de CFA'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: 'Internal Server Error, Configuratie fouten; INTERNE_FOUT'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '503':
+          description: 'Service Unavailable, CFA is niet bereikbaar'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+components:
+  schemas:
+    OpvoerenJournaalpostVraag:
+      required:
+        - procescode
+        - referentieNummer
+        - journaalpost
+      type: object
+      properties:
+        procescode:
+          description: 'Procescode.'
+          type: string
+          example: 'COMBIPAC'
+        referentieNummer:
+          description: 'Referentienummer.'
+          type: string
+          example: '9d1369cf-4ed1-4235-9a6d-01c8f6f2efeb'
+        journaalpost:
+          $ref: '#/components/schemas/Journaalpost'
+    Journaalpost:
+      required:
+        - journaalpostsleutel
+        - journaalpostboekdatumTijd
+        - journaalpostcategorie
+        - journaalpostsaldosoort
+        - valutacode
+        - journaalpostregels
+      type: object
+      properties:
+        journaalpostsleutel:
+          description: 'Journaalpost sleutel.'
+          type: string
+          example: '123456'
+        journaalpostomschrijving:
+          description: 'Journaalpost omschrijving.'
+          type: string
+          example: 'Huur opbrengsten'
+        journaalpostboekdatumTijd:
+          description: 'Journaalpost boekdatum en boektijd'
+          type: string
+          example: '2015-12-31T01:23:56'
+          format: date-time
+        grootboek:
+          description: 'Grootboek.'
+          type: string
+          enum:
+            - 100
+            - R10
+        boekjaar:
+          description: 'Boekjaar.'
+          type: integer
+          example: '2015'
+          minimum: 1
+        boekperiode:
+          description: 'Boekperiode.'
+          type: integer
+          example: '12'
+          minimum: 1
+        journaalpostcategorie:
+          description: 'Journaalpost categorie.'
+          type: string
+          example: 'Memoriaal'
+        journaalpostsaldosoort:
+          description: 'Journaalpost saldo soort.'
+          type: string
+          enum:
+            - Budget
+            - Reservering
+            - Werkelijk
+        valutacode:
+          description: 'Valuta code.'
+          type: string
+          enum:
+            - EUR
+        journaalpostregels:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Journaalpostregel'
+    Journaalpostregel:
+      required:
+        - grootboekrekening
+        - journaalpostregelboekingtype
+        - journaalpostregelbedrag
+      type: object
+      properties:
+        grootboekrekening:
+          $ref: '#/components/schemas/Grootboekrekening'
+        journaalpostregelomschrijving:
+          description: 'Journaalpostregel omschrijving.'
+          type: string
+          minLength: 1
+          example: '1-Huur bedrijfsruimte (01-APR-2015 to 30-JUN-2015)'
+        journaalpostregelboekingtype:
+          description: 'Journaalpostregel boekingtype.'
+          type: string
+          enum:
+            - Debet
+            - Credit
+        journaalpostregelbedrag:
+          description: 'Journaalpostregel bedrag.'
+          type: number
+          format: double
+          minimum: 0
+          example: '5266.83'
+        bronspecifiekewaarden:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Bronspecifiekewaardesegment'
+    Grootboekrekening:
+      description: 'Direct de grootboek sleutel uit Oracle of een bron specifieke sleutel die vertaald moet worden.'
+      required:
+        - grootboeksleutel
+      type: object
+      oneOf:
+        - properties:
+            grootboeksleutel:
+              type: string
+              pattern: '(100.\w{6}.\w{6}.\w{8}.\w{6}.000.000000)|(R10.\w{6}.\w{8}.\w{8}.\w{8}.000.000000.000000)'
+              description: 'Oracle grootboek sleutel.'
+              example: 'R10.008060.00000000.00000000.V0032200.000.000000.000000'
+        - properties:
+            bronsleutel:
+              type: string
+              minLength: 1
+              maxLength: 300
+              description: 'Grootboek sleutel van de bron die vertaald moet worden naar een Oracle grootboeksleutel.'
+    Bronspecifiekewaardesegment:
+      description: "Beschrijving van de 'flex-velden' waarmee bron-specifieke waarden kunnen worden doorgegeven."
+      required:
+        - bronspecifiekewaardesegmentnaam
+        - bronspecifiekewaardesegmentwaarde
+        - volgorde
+      type: object
+      properties:
+        bronspecifiekewaardesegmentnaam:
+          description: 'Bron specifieke waarde segmentnaam.'
+          type: string
+          example: 'Klant'
+        bronspecifiekewaardesegmentwaarde:
+          description: 'Bron specifieke waarde segmentwaarde.'
+          type: string
+          example: '25758'
+        volgorde:
+          description: 'Volgorde.'
+          type: integer
+          minimum: 1
+          example: '1'
+
+    OpvoerenVerkoopfactuurVraag:
+      required:
+        - procescode
+        - referentieNummer
+        - factuur
+      type: object
+      properties:
+        procescode:
+          description: 'Procescode.'
+          type: string
+          example: 'COMBIPAC'
+        referentieNummer:
+          description: 'Referentienummer.'
+          type: string
+          example: 'bc374e25-98de-436a-a5f6-f0fdbdab611e'
+        factuur:
+          $ref: '#/components/schemas/Verkoopfactuur'
+        bijlage:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/VerkoopfactuurBijlage'
+            - $ref: '#/components/schemas/VerkoopfactuurBijlagen'
+    Verkoopfactuur:
+      required:
+        - factuurtype
+        - factuurklasse
+        - factuurdatum
+        - inkooporderreferentie
+        - koper
+        - factuurregels
+      type: object
+      description: "Factuurgegevens zodat OracleEBS een factuur kan aanmaken en versturen."
+      properties:
+        factuurtype:
+          type: string
+          enum:
+            - Aanslagbiljet
+            - Verkoopfactuur
+        factuurklasse:
+          type: string
+          enum:
+            - Creditnota
+            - Debetnota
+            - Correctienota
+        transactiesoort:
+          type: string
+        factuurnummer:
+          type: string
+          maxLength: 20
+        factuurdatum:
+          type: string
+          format: date
+        factuurvervaldatum:
+          type: string
+          format: date
+        factureerregel:
+          type: string
+          maxLength: 150
+        factuurkenmerk:
+          type: string
+          maxLength: 150
+        factuurtoelichting:
+          type: string
+          maxLength: 240
+        gerelateerdFactuurnummer:
+          type: string
+        inkooporderreferentie:
+          type: string
+          maxLength: 50
+        koper:
+          $ref: '#/components/schemas/RelatieRotterdam'
+        factuuradres:
+          $ref: '#/components/schemas/Adres'
+        valutacode:
+          type: string
+          description: "Alleen EUR wordt ondersteund."
+        grootboekdatum:
+          type: string
+          format: date
+        grootboekjaar:
+          type: integer
+          minimum: 1000
+          maximum: 9999
+        factuurregels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Factuurregel'
+        bronspecifiekewaarden:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Bronspecifiekewaardesegment'
+    RelatieRotterdam:
+      type: object
+      oneOf:
+        - properties:
+            relatienummerRotterdam:
+              type: string
+              maxLength: 30
+            natuurlijkPersoon:
+              $ref: '#/components/schemas/NatuurlijkPersoon'
+        - properties:
+            relatienummerRotterdam:
+              type: string
+              maxLength: 30
+            nietNatuurlijkPersoon:
+              $ref: '#/components/schemas/NietNatuurlijkPersoon'
+    NatuurlijkPersoon:
+      required:
+        - achternaam
+        - voornamen
+      type: object
+      properties:
+        bsn:
+          type: string
+          minLength: 9
+          maxLength: 9
+          pattern: ([0-9]{9}|B[0-9]{8})
+        relatienaam:
+          type: string
+        achternaam:
+          type: string
+          maxLength: 150
+        tussenvoegsel:
+          type: string
+          maxLength: 30
+        voornamen:
+          type: string
+          maxLength: 150
+        titel:
+          type: string
+          maxLength: 60
+        telefoonnummer:
+          type: string
+        mobielnummer:
+          type: string
+        email:
+          type: string
+        vestigingsadres:
+          $ref: '#/components/schemas/Adres'
+    NietNatuurlijkPersoon:
+      required:
+        - statutaireNaam
+      type: object
+      properties:
+        kvknummer:
+          type: string
+          pattern: ([0-9]{8}|B[0-9]{7})
+          description: "Kvknummer is verplicht indien kvkvestigingsnummer niet aanwezig is."
+        kvkvestigingsnummer:
+          type: string
+          minLength: 12
+          maxLength: 12
+          pattern: ([0-9]{12}|B[0-9]{11})
+          description: "Kvkvestigingsnummer is verplicht indien Kvknummer niet aanwezig is."
+        rsin:
+          type: string
+        ion:
+          type: string
+        statutaireNaam:
+          type: string
+          maxLength: 150
+        rechtsvorm:
+          type: string
+        datumAanvang:
+          type: string
+          format: date
+        datumEinde:
+          type: string
+          format: date
+        telefoonnummer:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+        tijdstipRegistratie:
+          type: string
+          format: date
+        btwnummer:
+          type: string
+        vestigingsadres:
+          $ref: '#/components/schemas/Adres'
+    Adres:
+      type: object
+      oneOf:
+        - properties:
+            postbusadres:
+              $ref: '#/components/schemas/PostbusAdres'
+        - properties:
+            locatieadres:
+              $ref: '#/components/schemas/LocatieAdres'
+    AdresAbstract:
+      required:
+        - landcode
+        - plaatsnaam
+        - postcode
+      type: object
+      properties:
+        vestigingsnummerRotterdam:
+          type: string
+          maxLength: 30
+        landcode:
+          type: string
+          maxLength: 60
+        plaatsnaam:
+          type: string
+          maxLength: 60
+        postcode:
+          type: string
+          maxLength: 60
+        naamContactpersoon:
+          type: string
+          maxLength: 360
+    PostbusAdres:
+      allOf:
+        - $ref: '#/components/schemas/AdresAbstract'
+        - type: object
+          required:
+            - postbus
+          properties:
+            postbus:
+              type: number
+    LocatieAdres:
+      allOf:
+        - $ref: '#/components/schemas/AdresAbstract'
+        - type: object
+          required:
+            - straatnaam
+            - huisnummer
+          properties:
+            straatnaam:
+              type: string
+              maxLength: 240
+            huisnummer:
+              type: number
+            huisnummertoevoeging:
+              type: string
+              maxLength: 240
+    Factuurregel:
+      required:
+        - factuurregelFacturatieHoeveelheid
+        - factuurregelFacturatieTarief
+        - btwPercentage
+        - grootboekrekening
+      type: object
+      properties:
+        factuurregelomschrijving:
+          type: string
+          maxLength: 240
+        factuurregelFacturatieEenheid:
+          type: string
+        factuurregelFacturatieHoeveelheid:
+          type: number
+        factuurregelFacturatieTarief:
+          type: number
+          description: 'Prijs per stuk, ex btw'
+        btwPercentage:
+          type: string
+          example: '21.00, 9.00, 0.00, HOOG'
+        boekingsregel:
+          type: string
+          maxLength: 150
+        boekingsregelStartdatum:
+          type: string
+          format: date
+        grootboekrekening:
+          $ref: '#/components/schemas/Grootboekrekening'
+        ontvangstenGrootboekrekening:
+          $ref: '#/components/schemas/Grootboekrekening'
+        factuurregelToeslagKortingen:
+          type: array
+          items:
+            $ref: '#/components/schemas/FactuurregelToeslagKorting'
+        bronspecifiekewaarden:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Bronspecifiekewaardesegment'
+        artikel:
+          $ref: '#/components/schemas/Artikel'
+        regelnummer:
+          description: 'Geeft de volgorde van de factuurregels aan.'
+          type: integer
+          minimum: 1
+    FactuurregelToeslagKorting:
+      required:
+        - toeslagKortingbedrag
+        - toeslagKortingIndicatie
+      type: object
+      description: 'Wordt alleen gebruikt bij inkoopfacturen. Kan een toeslag of korting zijn.'
+      properties:
+        toeslagKortingbedrag:
+          type: number
+        toeslagKortingIndicatie:
+          type: string
+          enum:
+            - Korting
+            - Toeslag
+        toeslagKortingBtw:
+          type: number
+    Artikel:
+      description: 'Wordt alleen gebruikt bij inkoopfacturen.'
+      type: object
+      properties:
+        artikelnummer:
+          type: string
+        artikelomschrijving:
+          type: string
+        artikeltype:
+          type: string
+    VerkoopfactuurBijlage:
+      required:
+        - binairObject
+        - mimeType
+        - filename
+        - volgorde
+      type: object
+      properties:
+        binairObject:
+          type: string
+        mimeType:
+          type: string
+        filename:
+          type: string
+        format:
+          type: string
+        volgorde:
+          type: integer
+        categorie:
+          type: string
+    VerkoopfactuurBijlagen:
+      type: array
+      minItems: 1
+      items:
+        $ref: '#/components/schemas/VerkoopfactuurBijlage'
+    Verwerkingsstatus:
+      required:
+        - isGeslaagd
+      type: object
+      properties:
+        isGeslaagd:
+          type: boolean
+          description: 'Geeft aan of de verwerking succesvol is afgerond.'
+          example: 'true'
+        foutcode:
+          type: string
+          description: 'Foutcode.'
+          example: 'ERROR'
+        foutmelding:
+          type: string
+          description: 'Foutmelding.'
+          example: 'Ketenverwerking niet geslaagd:Er is iets misgegaan bij CFA'
+        melding:
+          type: string
+          description: 'Melding.'
+          example: 'Journaalpost is ontvangen en geldig; de Journaalpost moet nog verwerkt worden!'
+    VerwerkingsstatusVerkoopfactuur:
+      allOf:
+        - $ref: '#/components/schemas/Verwerkingsstatus'
+        - type: object
+          properties:
+            factuurID:
+              type: string
+              description: 'FactuurID.'
+    Fout:
+      required:
+        - code
+        - detail
+      type: object
+      properties:
+        type:
+          title: Type
+          description: URI referentie naar het type fout, bedoeld voor developers (wordt nog niet gevuld)
+          example: ''
+          type: string
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          example: '400'
+          minLength: 1
+        title:
+          title: Title
+          description: Generieke titel voor het type fout  (wordt nog niet gevuld)
+          type: string
+          minLength: 1
+        status:
+          title: Status
+          description: De HTTP status code
+          type: integer
+          example: 500
+        detail:
+          title: Detail
+          description: Extra informatie bij de fout, indien beschikbaar
+          type: string
+          example: 'Interne fout opgetreden.'
+          minLength: 1
+        instance:
+          title: Instance
+          description: URI met referentie naar dit specifiek voorkomen van de fout.
+            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld. (wordt nog niet gevuld)
+          type: string
+          example: ''
+          minLength: 1

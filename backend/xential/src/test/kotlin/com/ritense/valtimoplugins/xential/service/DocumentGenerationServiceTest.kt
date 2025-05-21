@@ -65,13 +65,14 @@ class DocumentGenerationServiceTest {
         val colofon: MutableMap<String, Any> = HashMap()
         val documentDetails: MutableMap<String, Any> = HashMap()
         val map: MutableMap<String, Any> = HashMap()
+        val xentialGebruikersId = "test"
+        val sjabloonId = UUID.randomUUID().toString()
         map["verzendAdres"] = verzendAdres
         map["colofon"] = colofon
         map["documentDetails"] = documentDetails
 
         val xentialDocumentProperties = XentialDocumentProperties(
-            templateId = UUID.randomUUID(),
-            gebruikersId = "123",
+            xentialGroupId = UUID.randomUUID(),
             fileFormat = com.ritense.valtimoplugins.xential.domain.FileFormat.PDF,
             documentId = "mijn-kenmerk",
             messageName = "messageName",
@@ -88,6 +89,8 @@ class DocumentGenerationServiceTest {
         documentGenerationService.generateDocument(
             defaultApi,
             UUID.randomUUID(),
+            xentialGebruikersId,
+            sjabloonId,
             xentialDocumentProperties,
             execution,
         )

@@ -50,8 +50,9 @@ interface VerkoopfactuurOpvoerenConfig {
     referentieNummer: string;
     factuurKlasse: string;
     inkoopOrderReferentie: string;
-    natuurlijkPersoon: NatuurlijkPersoon;
-    nietNatuurlijkPersoon: NietNatuurlijkPersoon;
+    relatieType: RelatieType;
+    natuurlijkPersoon?: NatuurlijkPersoon;
+    nietNatuurlijkPersoon?: NietNatuurlijkPersoon;
     regels?: Array<FactuurRegel>;
     regelsViaResolver?: string;
 }
@@ -73,21 +74,26 @@ interface FactuurRegel {
     omschrijving: string;
 }
 
+enum RelatieType {
+    NATUURLIJK_PERSOON = "Natuurlijk persoon",
+    NIET_NATUURLIJK_PERSOON = "Niet natuurlijk persoon"
+}
+
 enum FactuurKlasse {
-    Creditnota = "Creditnota",
-    Debetnota = "Debetnota",
-    Correctienota = "Correctienota"
+    CREDITNOTA = "Creditnota",
+    DEBETNOTA = "Debetnota",
+    CORRECTIENOTA = "Correctienota"
 }
 
 enum BoekingType {
-    Credit = "Credit",
-    Debet = "Debet"
+    CREDIT = "Credit",
+    DEBET = "Debet"
 }
 
 enum SaldoSoort {
-    Budget = "Budget",
-    Reservering = "Reservering",
-    Werkelijk = "Werkelijk"
+    BUDGET = "Budget",
+    RESERVERING = "Reservering",
+    WERKELIJK = "Werkelijk"
 }
 
 export {
@@ -98,6 +104,7 @@ export {
     NatuurlijkPersoon,
     NietNatuurlijkPersoon,
     FactuurRegel,
+    RelatieType,
     FactuurKlasse,
     BoekingType,
     SaldoSoort

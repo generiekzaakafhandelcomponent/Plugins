@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -550,7 +550,13 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                         }
                     }
 
-                    "/zaakinformatieobjecten" -> getLinkDocumentResponse()
+                    "/zaakinformatieobjecten" -> {
+                        when (request.method) {
+                            "POST" -> getLinkDocumentResponse()
+                            "GET" -> getZaakDocumentenResponse()
+                            else -> MockResponse().setResponseCode(405)
+                        }
+                    }
 
                     else -> MockResponse().setResponseCode(404)
                 }
@@ -583,6 +589,24 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
         return mockJsonResponse(body)
     }
 
+    private fun getZaakDocumentenResponse(): MockResponse {
+
+        val body =
+            """
+                [
+                    {
+                    "url": "http://localhost/${UUID.randomUUID()}",
+                    "uuid": "${UUID.randomUUID()}",
+                    "informatieobject": "http://localhost/${UUID.randomUUID()}",
+                    "zaak": "${server.url("/")}zaak",
+                    "aardRelatieWeergave": "something",
+                    "registratiedatum": "2024-11-20T14:13:22Z"
+                    }
+                ]
+            """.trimIndent()
+        return mockJsonResponse(body)
+    }
+
     private fun getLinkDocumentResponse(): MockResponse {
         val body =
             """
@@ -591,6 +615,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                 "uuid": "${UUID.randomUUID()}",
                 "informatieobject": "http://localhost/${UUID.randomUUID()}",
                 "zaak": "${server.url("/")}zaak",
+                "aardRelatieWeergave": "something",
                 "registratiedatum": "2024-11-20T14:13:22Z"
                 }
             """.trimIndent()
@@ -664,7 +689,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                             "type": "bsn",
                             "value": "999990755"
                         },
-                        "verloopdatum": "2024-12-24",
+                        "verloopdatum": "2024-12-23T23:00",
                         "eigenaar": "GZAC",
                         "verwerker_taak_id": "$verwerkerTaakId"
                     },
@@ -709,7 +734,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
                             "type": "bsn",
                             "value": "999990755"
                         },
-                        "verloopdatum": "2024-12-24",
+                        "verloopdatum": "2024-12-23T23:00",
                         "eigenaar": "GZAC",
                         "verwerker_taak_id": "$verwerkerTaakId"
                     },

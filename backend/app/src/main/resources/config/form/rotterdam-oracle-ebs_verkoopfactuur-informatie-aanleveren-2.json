@@ -66,6 +66,13 @@
       "defaultValue": "INK2025OPB2"
     },
     {
+      "label": "Relatie type",
+      "key": "pv:relatieType",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "Natuurlijk persoon"
+    },
+    {
       "label": "Factuur regels via resolver",
       "key": "pv:regels",
       "type": "textarea",
