@@ -57,6 +57,7 @@ import org.camunda.bpm.engine.delegate.DelegateTask
 import java.net.URI
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -127,17 +128,17 @@ class CreateExterneKlanttaakActionV1x1x0(
             koppeling = pluginActionConfig.koppelingRegistratie?.let {
                 TaakKoppeling(
                     registratie = it,
-                    uuid = requireNotNull(pluginActionConfig.koppelingUuid) {
+                    value = requireNotNull(pluginActionConfig.koppelingUuid) {
                         "Property [portaalformulierValue] is required when [koppelingRegistratie] is ${pluginActionConfig.koppelingRegistratie}"
                     },
                 )
             },
             verloopdatum = stringAsInstantOrNull(pluginActionConfig.verloopdatum)
                 ?.let {
-                    LocalDate.ofInstant(it, ZoneOffset.UTC)
+                    LocalDateTime.ofInstant(it, ZoneOffset.UTC)
                 }
                 ?: delegateTask.dueDate?.let {
-                    LocalDate.ofInstant(it.toInstant(), ZoneOffset.UTC)
+                    LocalDateTime.ofInstant(it.toInstant(), ZoneOffset.UTC)
                 },
             verwerkerTaakId = delegateTask.id
         )
