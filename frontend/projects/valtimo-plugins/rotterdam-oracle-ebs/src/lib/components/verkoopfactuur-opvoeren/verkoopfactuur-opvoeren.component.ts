@@ -128,6 +128,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             procesCode: this.fb.control('', Validators.required),
             referentieNummer: this.fb.control('', Validators.required),
             factuurKlasse: this.fb.control('', Validators.required),
+            factuurDatum: this.fb.control('', Validators.required),
+            factuurVervaldatum: this.fb.control(''),
             inkoopOrderReferentie: this.fb.control('', Validators.required),
             relatieType: this.fb.control('', Validators.required),
             natuurlijkPersoonAchternaam: this.fb.control(''),
@@ -180,6 +182,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         procesCode: configuration.procesCode,
                         referentieNummer: configuration.referentieNummer,
                         factuurKlasse: this.fromFactuurKlasse(configuration.factuurKlasse),
+                        factuurDatum: configuration.factuurDatum,
+                        factuurVervaldatum: configuration.factuurVervaldatum,
                         inkoopOrderReferentie: configuration.inkoopOrderReferentie,
                         relatieType: configuration.relatieType,
                         natuurlijkPersoonAchternaam:
@@ -222,6 +226,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                     procesCode: formValue.procesCode,
                     referentieNummer: formValue.referentieNummer,
                     factuurKlasse: this.toFactuurKlasse(formValue.factuurKlasse),
+                    factuurDatum: formValue.factuurDatum,
+                    factuurVervaldatum: (formValue.regels != undefined) ? formValue.factuurVervaldatum : null,
                     inkoopOrderReferentie: formValue.inkoopOrderReferentie,
                     relatieType: this.toRelatieType(formValue.relatieType),
                     regels: (formValue.regels != undefined) ? formValue.regels.map(regel => ({
@@ -300,6 +306,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             formValue.procesCode &&
             formValue.referentieNummer &&
             formValue.factuurKlasse &&
+            formValue.factuurDatum &&
             formValue.inkoopOrderReferentie &&
             formValue.relatieType &&
             (

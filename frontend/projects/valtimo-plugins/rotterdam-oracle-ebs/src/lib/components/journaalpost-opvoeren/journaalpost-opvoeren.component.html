@@ -7,7 +7,7 @@
   ~
   ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
   ~
-  ~ Unless required by applicable law or agreed to in writing, software
+  ~ Unless [required] by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" basis,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
@@ -26,7 +26,7 @@
             controlName="pvResultVariable"
             title="journaalpost.pvResultVariable"
             tooltip="journaalpost.pvResultVariable.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -35,7 +35,7 @@
             controlName="procesCode"
             title="journaalpost.procesCode"
             tooltip="journaalpost.procesCode.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -44,7 +44,7 @@
             controlName="referentieNummer"
             title="journaalpost.referentieNummer"
             tooltip="journaalpost.referentieNummer.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -53,7 +53,7 @@
             controlName="sleutel"
             title="journaalpost.sleutel"
             tooltip="journaalpost.sleutel.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -62,7 +62,7 @@
             controlName="boekdatumTijd"
             title="journaalpost.boekdatumTijd"
             tooltip="journaalpost.boekdatumTijd.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -71,29 +71,16 @@
             controlName="categorie"
             title="journaalpost.categorie"
             tooltip="journaalpost.categorie.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
-
-        <!--
-        <app-select-field
-            [pluginId]="pluginId"
-            [formGroup]="pluginActionForm"
-            controlName="saldoSoort"
-            title="journaalpost.saldoSoort"
-            tooltip="journaalpost.saldoSoort.select.tooltip"
-            placeholder="journaalpost.saldoSoort.select.placeholder"
-            required="true"
-            [items]="saldoSoortItems"
-        ></app-select-field>
-        -->
 
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
             controlName="saldoSoort"
             title="journaalpost.saldoSoort"
-            tooltip="journaalpost.saldoSoort.input.tooltip"
-            required="true"
+            tooltip="journaalpost.saldoSoort.tooltip"
+            [required]="true"
             [presets]="saldoSoortItems"
         ></app-input-field>
 
@@ -103,7 +90,7 @@
             controlName="omschrijving"
             title="journaalpost.omschrijving"
             tooltip="journaalpost.omschrijving.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -112,7 +99,7 @@
             controlName="boekjaar"
             title="journaalpost.boekjaar"
             tooltip="journaalpost.boekjaar.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -121,7 +108,7 @@
             controlName="boekperiode"
             title="journaalpost.boekperiode"
             tooltip="journaalpost.boekperiode.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <cds-toggle
@@ -137,7 +124,7 @@
         <ng-template [ngIf]="!regelsViaResolverToggle.checked">
             <div>
                 <v-input-label
-                    required="true"
+                    [required]="true"
                     [title]="'journaalpost.regels' | pluginTranslate: pluginId | async"
                     [tooltip]="'journaalpost.regels.tooltip' | pluginTranslate: pluginId | async"
                 >
@@ -151,21 +138,8 @@
                             controlName="grootboekSleutel"
                             wrapperClass="line-field-wrapper"
                             title="journaalpost.regel.grootboekSleutel"
-                            required="true"
+                            [required]="true"
                         ></app-input-field>
-
-                        <!--
-                        <app-select-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="boekingType"
-                            wrapperClass="line-field-wrapper"
-                            title="journaalpost.regel.boekingType"
-                            placeholder="journaalpost.regel.boekingType.select.placeholder"
-                            required="true"
-                            [items]="boekingTypeItems"
-                        ></app-select-field>
-                        -->
 
                         <app-input-field
                             [pluginId]="pluginId"
@@ -173,8 +147,8 @@
                             controlName="boekingType"
                             wrapperClass="line-field-wrapper"
                             title="journaalpost.regel.boekingType"
-                            tooltip="journaalpost.regel.boekingType.input.tooltip"
-                            required="true"
+                            tooltip="journaalpost.regel.boekingType.tooltip"
+                            [required]="true"
                             [presets]="boekingTypeItems"
                         ></app-input-field>
 
@@ -184,7 +158,7 @@
                             controlName="omschrijving"
                             wrapperClass="line-field-wrapper"
                             title="journaalpost.regel.omschrijving"
-                            required="false"
+                            [required]="false"
                         ></app-input-field>
 
                         <app-input-field
@@ -193,7 +167,7 @@
                             controlName="bedrag"
                             wrapperClass="line-field-wrapper"
                             title="journaalpost.regel.bedrag"
-                            required="true"
+                            [required]="true"
                         ></app-input-field>
 
                         <div class="remove-line-wrapper">
@@ -227,7 +201,7 @@
                 controlName="regelsViaResolver"
                 title="journaalpost.regelsViaResolver"
                 tooltip="journaalpost.regelsViaResolver.tooltip"
-                required="true"
+                [required]="true"
             ></app-input-field>
             <div>
                 {{'journaalpost.regelsViaResolver.example' | pluginTranslate: pluginId | async}}
