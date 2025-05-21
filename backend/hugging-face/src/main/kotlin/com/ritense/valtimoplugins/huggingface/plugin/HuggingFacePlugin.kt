@@ -88,57 +88,39 @@ open class HuggingFacePlugin(
         huggingFaceTextGenerationModel.baseUri = url
         huggingFaceTextGenerationModel.token = token
 
-
+        // Get the chat history from the process variable to build the full prompt
         val chatHistory = execution.getVariable("chatHistory") as? String ?: ""
-
-
-        // Combine previous question and answer with the current question
-        val fullPrompt = buildString {
-            append("Contex:\n$chatHistory\n")
-            append("CurrentQuestion: $question")
-        }
+        val fullPrompt = "Contex:\n$chatHistory\nCurrentQuestion: $question"
 
         // Get the Case
-        val id = JsonSchemaDocumentId.existingId(UUID.fromString(execution.businessKey))
-        val jsonSchemaDocument = documentService.getDocumentBy(id)
+        val documentId = JsonSchemaDocumentId.existingId(UUID.fromString(execution.businessKey))
+        val jsonSchemaDocument = documentService.getDocumentBy(documentId)
+
+        // Create interpolated question
         val interpolatedQuestion = generate(fullPrompt, jsonSchemaDocument)
 
-//        val chatResult = huggingFaceTextGenerationModel.mistralChat(
-//            question = interpolatedQuestion,
-//        )
-
-        val chatResult = "ai antwoord"
-
+        // Ask the AI model and check if the result is empty
+        val chatResult = huggingFaceTextGenerationModel.mistralChat(interpolatedQuestion)
         if (chatResult.isEmpty()) {
             throw RuntimeException("Empty chat result")
         }
 
+        // Update the chat history with the new question and answer
         val updatedChatHistory = buildString {
             append(chatHistory)
             if (chatHistory.isNotBlank()) append("\n")
-            append("Vraag: $question\nAntwoord: $chatResult")
+            append("Q: $question\nA: $chatResult")
         }
-
-        println("Updated chat history: $updatedChatHistory")
 
         // Set the result in the process variable
         execution.setVariable(interpolatedQuestionPV, interpolatedQuestion)
         execution.setVariable(chatAnswerPV, chatResult)
         execution.setVariable("chatHistory", updatedChatHistory)
 
-
-        // Log the stored results
-        println("Stored chat result: '$chatResult' in the process variable $chatAnswerPV")
-        println("Stored interpolated question: '$interpolatedQuestion' in the process variable $interpolatedQuestionPV")
-
-//        val documentUpdate = jacksonObjectMapper().createObjectNode().apply {
-//            put("chatResult", chatResult)
-//        }
-//        val result = documentService.modifyDocument(ModifyDocumentRequest.create(jsonSchemaDocument, documentUpdate))
-//        result.resultingDocument().orElseThrow {
-//            val errors = result.errors().joinToString(", ") { it.asString() }
-//            RuntimeException("failed to update document $errors")
-//        }
+        // Logging
+        println("Updated chat history:\n$updatedChatHistory")
+        println("Stored chat result: '$chatResult' in variable $chatAnswerPV")
+        println("Stored interpolated question: '$interpolatedQuestion' in variable $interpolatedQuestionPV")
     }
 
     fun generate(
