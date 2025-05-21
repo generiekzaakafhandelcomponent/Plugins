@@ -52,7 +52,7 @@ export class GiveSummaryConfigurationComponent
     }
 
     private handleValid(formValue: GiveSummaryConfig): void {
-        const valid = !!(formValue.longText);
+        const valid = !!(formValue.longText, formValue.resultPV);
 
         this.valid$.next(valid);
         this.valid.emit(valid);

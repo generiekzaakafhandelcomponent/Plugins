@@ -61,14 +61,17 @@ open class HuggingFacePlugin(
     )
     open fun giveSummary(
         execution: DelegateExecution,
-        @PluginActionProperty longText: String
+        @PluginActionProperty longText: String,
+        @PluginActionProperty resultPV: String
     ) {
         huggingFaceSummaryModel.baseUri = url
         huggingFaceSummaryModel.token = token
         val result = huggingFaceSummaryModel.giveSummary(
             longText = longText,
         )
-        execution.setVariable("answer", result)
+
+        execution.setVariable(resultPV, result)
+        println("Stored summary result: '$result' in variable $resultPV")
     }
 
     @PluginAction(

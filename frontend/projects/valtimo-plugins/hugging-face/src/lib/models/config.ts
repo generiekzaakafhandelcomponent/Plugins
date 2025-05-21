@@ -23,6 +23,7 @@ interface HuggingFaceConfig extends PluginConfigurationData {
 
 interface GiveSummaryConfig {
     longText: string;
+    resultPV: string;
 }
 
 interface ChatConfig {
