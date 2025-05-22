@@ -1,0 +1,27 @@
+{
+  "$id": "hugging-face.schema",
+  "type": "object",
+  "title": "Smart Task Plugin",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "question": {
+      "type": "string"
+    },
+    "summarise": {
+      "type": "string"
+    },
+    "chatResult": {
+      "type": "string"
+    },
+    "maxQandASaved": {
+      "type": "string"
+    },
+    "summaryResult": {
+      "type": "string"
+    },
+    "interpolatedQuestion": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
