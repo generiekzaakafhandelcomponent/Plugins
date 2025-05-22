@@ -20,6 +20,7 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.document.domain.Document
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
+import com.ritense.document.domain.impl.request.ModifyDocumentRequest
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -82,11 +83,45 @@ open class HuggingFacePlugin(
     )
     open fun chat(
         execution: DelegateExecution,
+        @PluginActionProperty question: String
+    ) {
+        huggingFaceTextGenerationModel.baseUri = url
+        huggingFaceTextGenerationModel.token = token
+
+        // Get the Case
+        val id = JsonSchemaDocumentId.existingId(UUID.fromString(execution.businessKey))
+        val jsonSchemaDocument = documentService.getDocumentBy(id)
+        val interpolatedQuestion = generate(question, jsonSchemaDocument)
+        val chatResult = huggingFaceTextGenerationModel.mistralChat(
+            question = interpolatedQuestion,
+        )
+        execution.setVariable("question", interpolatedQuestion)
+        execution.setVariable("answer", chatResult)
+
+        val documentUpdate = jacksonObjectMapper().createObjectNode().apply {
+            put("chatResult", chatResult)
+        }
+        val result = documentService.modifyDocument(ModifyDocumentRequest.create(jsonSchemaDocument, documentUpdate))
+        result.resultingDocument().orElseThrow {
+            val errors = result.errors().joinToString(", ") { it.asString() }
+            RuntimeException("failed to update document $errors")
+        }
+    }
+
+    @PluginAction(
+        key = "chat-memorize",
+        title = "AI chat with Memory",
+        description = "Chat with an AI Agent with the ability to reverence older answers and questions",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun chatMemorize(
+        execution: DelegateExecution,
         @PluginActionProperty question: String,
         @PluginActionProperty chatAnswerPV: String,
         @PluginActionProperty interpolatedQuestionPV: String,
         @PluginActionProperty previousAnswer: String?,
         @PluginActionProperty previousQuestion: String?,
+        @PluginActionProperty maxQandASaved: String?
     ) {
         huggingFaceTextGenerationModel.baseUri = url
         huggingFaceTextGenerationModel.token = token
@@ -115,10 +150,20 @@ open class HuggingFacePlugin(
             append("Q: $question\nA: $chatResult")
         }
 
+        // Delete previous Q and A if more than max Q and A saved
+        val qaPairs = updatedChatHistory.split(Regex("(?=^Q: )", RegexOption.MULTILINE)).filter { it.isNotBlank() }
+        val maxSaved = maxQandASaved?.toIntOrNull() ?: 0
+
+        val trimmedHistory = if (qaPairs.size > maxSaved) {
+            qaPairs.drop(qaPairs.size - maxSaved).joinToString(separator = "")
+        } else {
+            qaPairs.joinToString(separator = "")
+        }
+
         // Set the result in the process variable
         execution.setVariable(interpolatedQuestionPV, interpolatedQuestion)
         execution.setVariable(chatAnswerPV, chatResult)
-        execution.setVariable("chatHistory", updatedChatHistory)
+        execution.setVariable("chatHistory", trimmedHistory)
 
         // Logging
         println("Updated chat history:\n$updatedChatHistory")

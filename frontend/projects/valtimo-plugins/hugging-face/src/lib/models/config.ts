@@ -29,10 +29,16 @@ interface GiveSummaryConfig {
 interface ChatConfig {
     caseKey: string;
     question: string;
+}
+
+interface ChatMemorizeConfig {
+    caseKey: string;
+    question: string;
     chatAnswerPV: string;
     interpolatedQuestionPV: string;
     previousAnswer: string;
     previousQuestion: string;
+    maxQandASaved: string;
 }
 
-export {HuggingFaceConfig, GiveSummaryConfig, ChatConfig};
+export {HuggingFaceConfig, GiveSummaryConfig, ChatConfig, ChatMemorizeConfig};
