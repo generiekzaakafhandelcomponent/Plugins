@@ -89,89 +89,100 @@
       "defaultValue": "Natuurlijk persoon"
     },
     {
-      "legend": "Factuur regel",
-      "key": "fieldSet",
-      "type": "fieldset",
-      "label": "Field Set",
-      "input": false,
-      "tableView": false,
+      "label": "Regels",
+      "key": "regels",
+      "type": "datagrid",
+      "input": true,
+      "persistent": "client-only",
+      "reorder": false,
+      "addAnotherPosition": "bottom",
+      "layoutFixed": false,
+      "enableRowGroups": false,
+      "initEmpty": false,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": [
+        {
+          "btwPercentage": "21",
+          "grootboekSleutel": "740",
+          "omschrijving": "Regel 1",
+          "hoeveelheid": "3",
+          "tarief": "34.5"
+        },
+        {
+          "btwPercentage": "9",
+          "grootboekSleutel": "450",
+          "omschrijving": "Regel 2",
+          "hoeveelheid": "6",
+          "tarief": "14.5"
+        }
+      ],
       "components": [
         {
           "label": "Hoeveelheid",
-          "key": "pv:regelHoeveelheid",
-          "type": "number",
+          "key": "hoeveelheid",
+          "type": "textfield",
           "input": true,
+          "persistent": "client-only",
           "validate": {
             "required": true
-          },
-          "applyMaskOn": "change",
-          "mask": false,
-          "delimiter": false,
-          "requireDecimal": false,
-          "inputFormat": "plain",
-          "truncateMultipleSpaces": false,
-          "defaultValue": "4"
+          }
         },
         {
           "label": "Tarief",
-          "key": "pv:regelTarief",
-          "type": "currency",
+          "key": "tarief",
+          "type": "textfield",
           "input": true,
+          "persistent": "client-only",
           "validate": {
             "required": true
-          },
-          "applyMaskOn": "change",
-          "mask": false,
-          "currency": "EUR",
-          "inputFormat": "plain",
-          "truncateMultipleSpaces": false,
-          "delimiter": true,
-          "defaultValue": "125"
+          }
         },
         {
-          "label": "BTW percentage",
-          "key": "pv:regelBtwPercentage",
-          "type": "select",
+          "label": "BTW Percentage",
+          "key": "btwPercentage",
+          "type": "textfield",
           "input": true,
           "validate": {
             "required": true
-          },
-          "widget": "choicesjs",
-          "data": {
-            "values": [
-              {
-                "label": "0%",
-                "value": "0%"
-              },
-              {
-                "label": "9%",
-                "value": "9%"
-              },
-              {
-                "label": "21%",
-                "value": "21%"
-              }
-            ]
-          },
-          "defaultValue": "21%"
+          }
         },
         {
           "label": "Grootboeksleutel",
-          "key": "pv:regelGrootboekSleutel",
+          "key": "grootboekSleutel",
           "type": "textfield",
           "input": true,
+          "persistent": "client-only",
           "validate": {
             "required": true
-          },
-          "defaultValue": "700"
+          }
         },
         {
           "label": "Omschrijving",
-          "key": "pv:regelOmschrijving",
+          "key": "omschrijving",
           "type": "textfield",
-          "input": true
+          "persistent": "client-only",
+          "input": true,
+          "validate": {
+            "required": true
+          }
         }
       ]
+    },
+    {
+      "label": "Copy regels to pv",
+      "key": "pv:regels",
+      "type": "hidden",
+      "input": true,
+      "calculateValue": "value = data.regels;"
+    },
+    {
+      "label": "Copy regels to doc",
+      "key": "doc:verkoopfactuurRegels",
+      "type": "hidden",
+      "input": true,
+      "calculateValue": "value = data.regels;"
     },
     {
       "key": "submit",

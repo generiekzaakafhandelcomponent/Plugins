@@ -49,6 +49,8 @@ interface VerkoopfactuurOpvoerenConfig {
     procesCode: string;
     referentieNummer: string;
     factuurKlasse: string;
+    factuurDatum: string;
+    factuurVervaldatum?: string;
     inkoopOrderReferentie: string;
     relatieType: RelatieType;
     natuurlijkPersoon?: NatuurlijkPersoon;
