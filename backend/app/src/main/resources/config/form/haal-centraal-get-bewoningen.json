@@ -2,34 +2,30 @@
   "display": "form",
   "components": [
     {
-      "label": "HTML",
-      "attrs": [
-        {
-          "attr": "",
-          "value": ""
-        }
-      ],
-      "content": "  <h3>Beschikbare object-ID's (BRP API)</h3>\r\n  <ul style=\"padding-left: 1.2em;\">\r\n    <li>\r\n      0518010000583534 – met o.a. <strong>Gea Gerritsen</strong>\r\n    </li>\r\n    <li>\r\n      0518010000583567 – met o.a. <strong>Peterjan Pluym</strong>\r\n    </li>    \r\n    <li>\r\n      0518010001646641 – met o.a. <strong>Petri Vornowski</strong>\r\n    </li>\r\n  </ul>",
-      "refreshOnChange": false,
-      "key": "html",
-      "type": "htmlelement",
-      "input": false,
-      "tableView": false
+      "label": "Beschikbare test object-ID's (BRP API)",
+      "widget": "",
+      "applyMaskOn": "change",
+      "autoExpand": true,
+      "disabled": true,
+      "tableView": true,
+      "type": "textarea",
+      "input": true,
+      "defaultValue": "0518010000583534 – met o.a. Gea Gerritsen\n0518010000583567 – met o.a. Peterjan Pluym\n0518010001646641 – met o.a. Petri Vornowski"
     },
     {
+      "key": "adresseerbaarObjectIdentificatie",
+      "type": "textfield",
+      "input": true,
       "label": "Adresseerbaar object identificatie",
-      "applyMaskOn": "change",
-      "tableView": true,
-      "defaultValue": "0518010001646641",
       "validate": {
         "required": true
       },
-      "key": "adresseerbaarObjectIdentificatie",
+      "tableView": true,
       "attributes": {
         "data-testid": "Get Bewoningen-adresseerbaarObjectIdentificatie"
       },
-      "type": "textfield",
-      "input": true
+      "applyMaskOn": "change",
+      "defaultValue": "0518010001646641"
     },
     {
       "key": "peildatum",
