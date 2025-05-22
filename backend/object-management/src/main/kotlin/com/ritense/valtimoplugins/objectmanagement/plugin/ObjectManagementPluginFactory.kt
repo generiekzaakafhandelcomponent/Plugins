@@ -16,6 +16,7 @@
 
 package com.ritense.valtimoplugins.objectmanagement.plugin
 
+import com.ritense.objectmanagement.service.ObjectManagementFacade
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan

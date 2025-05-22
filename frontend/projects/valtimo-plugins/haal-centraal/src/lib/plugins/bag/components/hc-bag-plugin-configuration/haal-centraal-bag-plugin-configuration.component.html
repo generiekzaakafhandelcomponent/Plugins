@@ -1,0 +1,40 @@
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+        disabled: disabled$ | async,
+        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+    } as obs"
+>
+    <v-input
+            name="configurationTitle"
+            [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.configurationTitle"
+            [disabled]="obs.disabled"
+            [required]="true"
+    >
+    </v-input>
+    <v-input
+            name="bagBaseUrl"
+            [title]="'bagBaseUrl' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.bagBaseUrl"
+            [disabled]="obs.disabled"
+            [required]="false"
+    >
+    </v-input>
+    <ng-container
+            *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
+    >
+        <v-select
+                [items]="authObs.authenticationPluginSelectItems"
+                [margin]="true"
+                name="authenticationPluginConfiguration"
+                [title]="'authenticationPluginConfiguration' | pluginTranslate: pluginId | async"
+                [disabled]="obs.disabled"
+                [defaultSelectionId]="obs.prefill?.authenticationPluginConfiguration"
+                [required]="true"
+                [loading]="!authObs.authenticationPluginSelectItems"
+        ></v-select>
+    </ng-container>
+</v-form>

@@ -1,0 +1,57 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Beschikbare test object-ID's (BRP API)",
+      "widget": "",
+      "applyMaskOn": "change",
+      "autoExpand": true,
+      "disabled": true,
+      "tableView": true,
+      "type": "textarea",
+      "input": true,
+      "defaultValue": "0518010000583534 – met o.a. Gea Gerritsen\n0518010000583567 – met o.a. Peterjan Pluym\n0518010001646641 – met o.a. Petri Vornowski"
+    },
+    {
+      "key": "adresseerbaarObjectIdentificatie",
+      "type": "textfield",
+      "input": true,
+      "label": "Adresseerbaar object identificatie",
+      "validate": {
+        "required": true
+      },
+      "tableView": true,
+      "attributes": {
+        "data-testid": "Get Bewoningen-adresseerbaarObjectIdentificatie"
+      },
+      "applyMaskOn": "change",
+      "defaultValue": "0518010001646641"
+    },
+    {
+      "key": "peildatum",
+      "type": "textfield",
+      "input": true,
+      "label": "Peildatum (yyyy-mm-dd)",
+      "validate": {
+        "required": true
+      },
+      "tableView": true,
+      "attributes": {
+        "data-testid": "Get Bewoningen-peildatum"
+      },
+      "applyMaskOn": "change",
+      "defaultValue": "2024-01-01"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false,
+      "disableOnInvalid": true
+    }
+  ]
+}
