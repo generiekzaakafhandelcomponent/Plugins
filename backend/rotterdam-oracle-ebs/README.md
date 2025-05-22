@@ -63,7 +63,7 @@ The response of the plugin action is stored as an object in a process instance v
 the property `pvResultVariable` with the properties:
 
 * isGeslaagd (string)
-* melding" (string)
+* melding (string)
 * foutcode (string)
 * foutmelding (string)
 
@@ -100,7 +100,7 @@ The response of the plugin action is stored as an object in a process instance v
 the property `pvResultVariable` with the properties:
 
 * isGeslaagd (string)
-* melding" (string)
+* melding (string)
 * factuurID (string)
 * foutcode (string)
 * foutmelding (string)
