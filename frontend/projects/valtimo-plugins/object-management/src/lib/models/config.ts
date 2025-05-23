@@ -43,7 +43,7 @@ interface UpdateObjectConfig {
 }
 
 interface GetObjectDataConfig {
-    objectManagementConfigurationTitle: string;
+    objectManagementConfigurationId: string;
     objectUrl: string;
     objectDataProcessVariableName: string;
 }

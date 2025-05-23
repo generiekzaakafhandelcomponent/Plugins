@@ -52,7 +52,7 @@ export class GetObjectDataConfigurationComponent
   }
 
   private handleValid(formValue: GetObjectDataConfig): void {
-    const valid = !!(formValue.objectManagementConfigurationTitle && formValue.objectUrl && formValue.objectDataProcessVariableName);
+    const valid = !!(formValue.objectManagementConfigurationId && formValue.objectUrl && formValue.objectDataProcessVariableName);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

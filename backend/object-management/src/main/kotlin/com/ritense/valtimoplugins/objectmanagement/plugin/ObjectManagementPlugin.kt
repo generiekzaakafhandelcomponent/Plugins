@@ -159,13 +159,13 @@ open class ObjectManagementPlugin(
     )
     open fun getObjectDataByObjectUrl(
         execution: DelegateExecution,
-        @PluginActionProperty objectManagementConfigurationTitle: String,
+        @PluginActionProperty objectManagementConfigurationId: UUID,
         @PluginActionProperty objectUrl: String,
         @PluginActionProperty objectDataProcessVariableName: String
     ) {
         logger.debug { "Retrieving object with object url: $objectUrl" }
         val objectData = objectManagementCrudService
-            .getObjectByObjectUrl(objectManagementConfigurationTitle, objectUrl)
+            .getObjectByObjectUrl(objectManagementConfigurationId, objectUrl)
             .record
             .data
 

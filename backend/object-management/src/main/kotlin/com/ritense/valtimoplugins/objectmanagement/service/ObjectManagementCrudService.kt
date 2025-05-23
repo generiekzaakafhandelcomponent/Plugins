@@ -102,12 +102,12 @@ class ObjectManagementCrudService(
     }
 
     fun getObjectByObjectUrl(
-        objectManagementTitle: String,
+        objectManagementConfigurationId: UUID,
         objectUrl: String,
     ): ObjectWrapper {
         return try {
             objectManagementFacade.getObjectByUri(
-                objectName = objectManagementTitle,
+                objectName = getObjectManagementTitle(objectManagementConfigurationId),
                 objectUrl = URI(objectUrl)
             )
         } catch (e: Exception) {
@@ -115,14 +115,16 @@ class ObjectManagementCrudService(
         }
     }
 
+    private fun getObjectManagementTitle(objectManagementConfigurationId: UUID): String {
+        return getObjectManagement(objectManagementConfigurationId).title
+    }
+
     private fun getObjectenApiPlugin(objectenApiPluginConfigurationId: UUID): ObjectenApiPlugin {
         return pluginService.createInstance<ObjectenApiPlugin>(objectenApiPluginConfigurationId)
-
     }
 
     private fun getObjecttypenApiPlugin(objecttypenApiPluginConfigurationId: UUID): ObjecttypenApiPlugin {
         return pluginService.createInstance<ObjecttypenApiPlugin>(objecttypenApiPluginConfigurationId)
-
     }
 
     private fun getObjectManagement(objectManagementId: UUID): ObjectManagement {

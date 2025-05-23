@@ -57,7 +57,8 @@ const objectManagementPluginSpecification: PluginSpecification = {
             listOfObjectProcessVariableName: 'Procesvariabelenaam voor de objectlijst',
             listOfObjectProcessVariableNameTooltip: 'Definieert de procesvariabelenaam die wordt gebruikt voor het opslaan van de objectlijst',
             objectDataProcessVariableName: 'Procesvariabelenaam voor de object data',
-            objectDataProcessVariableNameTooltip: 'Definieert de procesvariabelenaam die wordt gebruikt voor het opslaan van de object data'
+            objectDataProcessVariableNameTooltip: 'Definieert de procesvariabelenaam die wordt gebruikt voor het opslaan van de object data',
+            objectManagementConfigurationIdTooltip: 'Definieert de ID (UUID) van de object management configuratie'
         },
         en: {
             title: 'Object Management',
@@ -79,7 +80,8 @@ const objectManagementPluginSpecification: PluginSpecification = {
             listOfObjectProcessVariableName: 'Process variable name for the Object List',
             listOfObjectProcessVariableNameTooltip: 'Defines the process variable name used for storing the object list',
             objectDataProcessVariableName: 'Process variable for the object data',
-            objectDataProcessVariableNameTooltip: 'Defines the process variable name used for storing the object data'
+            objectDataProcessVariableNameTooltip: 'Defines the process variable name used for storing the object data',
+            objectManagementConfigurationIdTooltip: 'Defines the ID (UUID) of the object management configuration'
         },
         de: {
             title: 'Object Management',
@@ -101,7 +103,8 @@ const objectManagementPluginSpecification: PluginSpecification = {
             listOfObjectProcessVariableName: 'Prozessvariablenname für die objektliste',
             listOfObjectProcessVariableNameTooltip: 'Definiert den prozessvariablennamen, der zum speichern der objektliste verwendet wird',
             objectDataProcessVariableName: 'Prozessvariablenname für die Objektdaten',
-            objectDataProcessVariableNameTooltip: 'Definiert den prozessvariablennamen, die zum Speichern der Objektdaten verwendet wird'
+            objectDataProcessVariableNameTooltip: 'Definiert den prozessvariablennamen, die zum Speichern der Objektdaten verwendet wird',
+            objectManagementConfigurationIdTooltip: 'Definiert die ID (UUID) der objektverwaltungskonfiguration'
         }
     }
 }
