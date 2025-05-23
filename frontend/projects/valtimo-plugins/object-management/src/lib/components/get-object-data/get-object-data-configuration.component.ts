@@ -21,7 +21,7 @@ import {GetObjectDataConfig} from '../../models';
 import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 
 @Component({
-  selector: 'valtimo-get-object-configuration',
+  selector: 'valtimo-get-object-data-configuration',
   templateUrl: './get-object-data-configuration.component.html',
 })
 export class GetObjectDataConfigurationComponent
