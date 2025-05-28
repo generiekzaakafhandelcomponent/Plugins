@@ -24,20 +24,23 @@ import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
 import {GiveSummaryConfigurationComponent} from './components/give-summary/give-summary-configuration.component';
 import {ChatConfigurationComponent} from "./components/chat/chat-configuration.component";
 import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/chat-memorize-configuration.component";
+import {FileToTextConfigurationComponent} from "./components/file-to-text/file-to-text-configuration.component";
 
 @NgModule({
     declarations: [
         HuggingFaceConfigurationComponent,
         GiveSummaryConfigurationComponent,
         ChatConfigurationComponent,
-        ChatMemorizeConfigurationComponent
+        ChatMemorizeConfigurationComponent,
+        FileToTextConfigurationComponent
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
     exports: [
         HuggingFaceConfigurationComponent,
         GiveSummaryConfigurationComponent,
         ChatConfigurationComponent,
-        ChatMemorizeConfigurationComponent
+        ChatMemorizeConfigurationComponent,
+        FileToTextConfigurationComponent
     ],
 })
 export class HuggingFacePluginModule {

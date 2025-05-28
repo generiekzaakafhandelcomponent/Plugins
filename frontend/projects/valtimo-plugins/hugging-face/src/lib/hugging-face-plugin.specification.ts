@@ -22,6 +22,7 @@ import {HUGGING_FACE_PLUGIN_LOGO_BASE64} from './assets';
 import {GiveSummaryConfigurationComponent} from './components/give-summary/give-summary-configuration.component';
 import {ChatConfigurationComponent} from "./components/chat/chat-configuration.component";
 import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/chat-memorize-configuration.component";
+import {FileToTextConfigurationComponent} from "./components/file-to-text/file-to-text-configuration.component";
 
 const huggingFacePluginSpecification: PluginSpecification = {
         pluginId: 'smart-task-plugin',
@@ -30,13 +31,15 @@ const huggingFacePluginSpecification: PluginSpecification = {
         functionConfigurationComponents: {
             'give-summary': GiveSummaryConfigurationComponent,
             'chat': ChatConfigurationComponent,
-            'chat-memorize': ChatMemorizeConfigurationComponent
+            'chat-memorize': ChatMemorizeConfigurationComponent,
+            'file-to-text': FileToTextConfigurationComponent
         },
         pluginTranslations: {
             nl: {
                 title: 'Smart Task Plugin',
                 'give-summary': 'Vat een lange tekst samen met het BART-model',
                 chat: 'Stel een vraag aan een chatmodel',
+                'chat-memorize': 'Stel een vraag aan een chatmodel die vorige vragen en antwoorden onthoudt',
                 url: 'API-URL',
                 urlTooltip: 'URL van de Hugging Face REST-API',
                 description:
@@ -65,6 +68,7 @@ const huggingFacePluginSpecification: PluginSpecification = {
                 title: 'Smart Task Plugin',
                 'give-summary': 'Summarize long text with the BART model',
                 chat: 'Ask a question to a chat model',
+                'chat-memorize': 'Ask a question to a chat model that remembers previous questions and answers',
                 url: 'API URL',
                 urlTooltip: 'URL of the Hugging Face REST API',
                 description:

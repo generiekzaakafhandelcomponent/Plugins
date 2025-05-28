@@ -41,4 +41,11 @@ interface ChatMemorizeConfig {
     maxQandASaved: string;
 }
 
-export {HuggingFaceConfig, GiveSummaryConfig, ChatConfig, ChatMemorizeConfig};
+interface FileToTextConfig {
+    filePV: string;
+    pages: string;
+    includeImageBase64: boolean;
+    resultPV: string;
+}
+
+export {HuggingFaceConfig, GiveSummaryConfig, ChatConfig, ChatMemorizeConfig, FileToTextConfig};
