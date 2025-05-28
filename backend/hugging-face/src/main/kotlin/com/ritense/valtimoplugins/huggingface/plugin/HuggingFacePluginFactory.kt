@@ -19,9 +19,11 @@ package com.ritense.valtimoplugins.huggingface.plugin
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceSummaryModel
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceTextGenerationModel
+import com.ritense.valtimoplugins.huggingface.client.MistralOCRModel
 import org.springframework.stereotype.Component
 
 @Component
@@ -30,12 +32,14 @@ class HuggingFacePluginFactory(
     pluginService: PluginService,
     val huggingFaceSummaryModel: HuggingFaceSummaryModel,
     val huggingFaceTextGenerationModel: HuggingFaceTextGenerationModel,
-    val documentService: JsonSchemaDocumentService
+    val mistralOCRModel: MistralOCRModel,
+    val documentService: JsonSchemaDocumentService,
 ) : PluginFactory<HuggingFacePlugin>(pluginService) {
 
     override fun create() = HuggingFacePlugin(
         huggingFaceSummaryModel,
         huggingFaceTextGenerationModel,
-        documentService
+        mistralOCRModel,
+        documentService,
     )
 }

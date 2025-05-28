@@ -20,6 +20,7 @@ import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceSummaryModel
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceTextGenerationModel
+import com.ritense.valtimoplugins.huggingface.client.MistralOCRModel
 import com.ritense.valtimoplugins.huggingface.plugin.HuggingFacePluginFactory
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -45,6 +46,14 @@ class HuggingFaceAutoConfiguration {
         restClientBuilder, null, null
     )
 
+    @Bean
+    @ConditionalOnMissingBean(MistralOCRModel::class)
+    fun MistralOCRModel(
+        restClientBuilder: RestClient.Builder
+    ) = MistralOCRModel(
+        restClientBuilder, null, null
+    )
+
 
     @Bean
     @ConditionalOnMissingBean(HuggingFacePluginFactory::class)
@@ -52,12 +61,14 @@ class HuggingFaceAutoConfiguration {
         pluginService: PluginService,
         huggingFaceSummaryModel: HuggingFaceSummaryModel,
         huggingFaceTextGenerationModel: HuggingFaceTextGenerationModel,
-        documentService: JsonSchemaDocumentService
+        mistralOCRModel: MistralOCRModel,
+        documentService: JsonSchemaDocumentService,
     ) = HuggingFacePluginFactory(
         pluginService,
         huggingFaceSummaryModel,
         huggingFaceTextGenerationModel,
-        documentService
+        mistralOCRModel,
+        documentService,
     )
 
 }
