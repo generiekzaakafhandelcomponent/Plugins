@@ -1,5 +1,10 @@
 [
   {
+    "processDefinitionKey": "HFP-file-to-text",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
     "processDefinitionKey": "HFP-pingpong",
     "canInitializeDocument": true,
     "startableByUser": false

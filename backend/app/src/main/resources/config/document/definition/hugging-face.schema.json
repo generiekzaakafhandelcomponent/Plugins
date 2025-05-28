@@ -21,6 +21,9 @@
     },
     "interpolatedQuestion": {
       "type": "string"
+    },
+    "fileToTextResult": {
+      "type": "string"
     }
   },
   "additionalProperties": false

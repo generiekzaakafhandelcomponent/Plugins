@@ -73,5 +73,30 @@
       "maxQandASaved": "doc:/maxQandASaved"
     },
     "processLinkType": "plugin"
+  },
+  {
+    "activityId": "Activity_06044my",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "84946d7a-4f19-449a-a8c6-31c08063b410",
+    "pluginActionDefinitionKey": "chat-memorize",
+    "actionProperties": {
+      "question": "doc:/question",
+      "chatAnswerPV": "chatAnswer4",
+      "interpolatedQuestionPV": "interpolatedQuestion4",
+      "": "pv:/interpolatedQuestion3",
+      "previousAnswer": "pv:/chatAnswer3",
+      "maxQandASaved": "doc:/maxQandASaved"
+    },
+    "processLinkType": "plugin"
+  },
+  {
+    "activityId": "Activity_0wbq28c",
+    "activityType": "bpmn:UserTask:create",
+    "formDefinitionName": "HFP-Chat",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
   }
 ]
