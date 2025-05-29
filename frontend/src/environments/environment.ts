@@ -135,7 +135,8 @@ export const environment: ValtimoConfig = {
     customDefinitionTables: {},
     featureToggles: {
         disableCaseCount: true,
-        enableObjectManagement: true
+        enableObjectManagement: true,
+        enableTaskPanel: true
     }
 };
 
