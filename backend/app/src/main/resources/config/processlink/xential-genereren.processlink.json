@@ -9,12 +9,14 @@
     "activityId": "XentialErrorNaSelecteerSjabloon",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.error-na-kies-sjabloon"
+    "formDefinitionName": "xential.error-na-kies-sjabloon",
+    "formDisplayType": "panel"
   },
   {
     "activityId": "XentialToegangControleren",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
+    "formDisplayType": "panel",
     "formDefinitionName": "xential.resultaat-toegang-controleren"
   },
   {

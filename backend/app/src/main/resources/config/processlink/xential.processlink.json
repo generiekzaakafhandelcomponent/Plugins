@@ -3,11 +3,13 @@
     "activityId": "XentialStarten",
     "activityType": "bpmn:StartEvent:start",
     "processLinkType": "form",
+    "formDisplayType": "panel",
     "formDefinitionName": "xential.starten"
   },
   {
     "activityId": "XentialFlowStarten",
     "activityType": "bpmn:UserTask:create",
+    "formDisplayType": "panel",
     "processLinkType": "form",
     "formDefinitionName": "xential.start-xential-flow"
   },
