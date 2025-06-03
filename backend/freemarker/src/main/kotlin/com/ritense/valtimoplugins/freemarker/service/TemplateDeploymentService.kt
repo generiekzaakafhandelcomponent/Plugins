@@ -26,7 +26,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import java.io.IOException
 import java.io.InputStream
 import org.springframework.boot.context.event.ApplicationReadyEvent
-import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.context.event.EventListener
 import org.springframework.core.annotation.Order
@@ -43,7 +42,6 @@ class TemplateDeploymentService(
     private val resourceLoader: ResourceLoader,
     private val templateService: TemplateService,
     private val objectMapper: ObjectMapper,
-    private val cacheManager: CacheManager,
 ) {
 
     @Order(-1)
