@@ -24,7 +24,7 @@ The following Gradle dependency can be added to your `build.gradle` file:
 
 ```kotlin
 dependencies {
-    implementation("com.ritense.valtimoplugins:freemarker:6.0.0")
+    implementation("com.ritense.valtimoplugins:freemarker:6.0.1")
 }
 ```
 
