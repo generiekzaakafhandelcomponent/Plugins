@@ -19,6 +19,7 @@ import {Toggle} from 'carbon-components-angular';
 import {CompleteExterneKlanttaakV1x1x0Config} from "../../models";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-complete-externe-klanttaak-v1x1x0-form',
     templateUrl: './complete-externe-klanttaak-v1x1x0-form.component.html',
     styleUrl: './complete-externe-klanttaak-v1x1x0-form.component.scss',

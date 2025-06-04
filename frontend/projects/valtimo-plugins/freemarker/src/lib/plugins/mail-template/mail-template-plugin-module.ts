@@ -38,7 +38,7 @@ import {
     LoadingModule,
     ModalModule,
     NotificationModule, TabsModule,
-} from 'carbon-components-angular';import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/config';
+} from 'carbon-components-angular';import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {MailTemplateListComponent} from './components/mail-template-list/mail-template-list.component';
 import {MailTemplateAddEditModalComponent} from './components/mail-template-add-edit-modal/mail-template-add-edit-modal.component';
 import {MailTemplateEditorComponent} from './components/mail-template-editor/mail-template-editor.component';

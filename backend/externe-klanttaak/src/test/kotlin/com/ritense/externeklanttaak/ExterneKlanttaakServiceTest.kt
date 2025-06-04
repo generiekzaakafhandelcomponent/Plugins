@@ -44,8 +44,6 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
-import org.camunda.community.mockito.delegate.DelegateExecutionFake
-import org.camunda.community.mockito.delegate.DelegateTaskFake
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach

@@ -27,19 +27,22 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+val okhttpVersion: String by project
+
 dependencies {
+    implementation(project(":backend:mTLS-SSLContext"))
+
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:value-resolver")
 
-    implementation("com.ritense.valtimoplugins:mTLS-SSLContext:1.0.1")
-
     // Spring core web functionality
     implementation("org.springframework:spring-web")
 
     // Logging
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
     // Jackson FasterXML
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -52,11 +55,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-//    testImplementation("org.camunda.bpm:camunda-bpm-junit5:7.21.0")
     testImplementation("org.mockito:mockito-core")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
-    testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
-    testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
 }
 
 apply(from = "gradle/publishing.gradle")

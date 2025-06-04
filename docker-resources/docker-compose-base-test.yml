@@ -8,4 +8,4 @@ services:
             POSTGRES_USER: test-user
             POSTGRES_PASSWORD: password
 # Ports taken
-#   url: jdbc:postgresql://localhost:54341/slack-test
+#   url: jdbc:postgresql://lo`calhost:54341/slack-test

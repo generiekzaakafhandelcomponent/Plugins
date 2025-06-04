@@ -23,6 +23,9 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+val okhttpVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
@@ -33,25 +36,25 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.14.2")
-    implementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.core:jackson-annotations")
+    implementation("com.fasterxml.jackson.core:jackson-core")
 
     // Testing
-    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    testImplementation("com.fasterxml.jackson.core:jackson-annotations:2.14.2")
-    testImplementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-migrationsupport:5.9.1")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind")
+    testImplementation("com.fasterxml.jackson.core:jackson-annotations")
+    testImplementation("com.fasterxml.jackson.core:jackson-core")
+    testImplementation("org.junit.jupiter:junit-jupiter-migrationsupport")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("com.jayway.jsonpath:json-path:2.7.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("com.jayway.jsonpath:json-path")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
 
 
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
-    testImplementation("com.squareup.okhttp3:okhttp:4.10.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
+    testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

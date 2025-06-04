@@ -18,7 +18,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 import {NgxLoggerLevel} from 'ngx-logger';
-import {ROLE_ADMIN, ROLE_USER, ValtimoConfig, UploadProvider, IncludeFunction, DefinitionColumn} from '@valtimo/config';
+import {ROLE_ADMIN, ROLE_USER, ValtimoConfig, UploadProvider, IncludeFunction, DefinitionColumn} from '@valtimo/shared';
 import {authenticationKeycloak} from './auth/keycloak-config.dev';
 import {DARK_MODE_LOGO_BASE_64, LOGO_BASE_64} from './logo';
 
@@ -67,7 +67,7 @@ export const environment: ValtimoConfig = {
                 iconClass: 'icon mdi mdi-view-dashboard',
                 sequence: 0
             },
-            {roles: [ROLE_USER], title: 'Dossiers', iconClass: 'icon mdi mdi-layers', sequence: 1, children: []},
+            {roles: [ROLE_USER], title: 'Cases', iconClass: 'icon mdi mdi-layers', sequence: 1, children: []},
             {
                 roles: [ROLE_USER],
                 title: 'Objects',
@@ -90,7 +90,7 @@ export const environment: ValtimoConfig = {
                     {link: ['/form-management'], title: 'Forms', sequence: 3},
                     {link: ['/form-flow-management'], title: 'Form flows', sequence: 4},
                     {link: ['/decision-tables'], title: 'Decision tables', sequence: 5},
-                    {link: ['/dossier-management'], title: 'Dossiers', sequence: 6},
+                    {link: ['/case-management'], title: 'Cases', sequence: 6},
                     {link: ['/task-management'], title: 'Tasks', sequence: 7},
                     {
                         link: ['/object-management'],
@@ -99,7 +99,6 @@ export const environment: ValtimoConfig = {
                         includeFunction: IncludeFunction.ObjectManagementEnabled,
                     },
                     {link: ['/plugins'], title: 'Plugins', sequence: 9},
-                    {link: ['/process-links'], title: 'Process links', sequence: 10},
                     {link: ['/dashboard-management'], title: 'Dashboard', sequence: 11},
                     {link: ['/access-control'], title: 'Access Control', sequence: 12},
                     {link: ['/logging'], title: 'Logs', sequence: 13},
@@ -124,7 +123,7 @@ export const environment: ValtimoConfig = {
         level: NgxLoggerLevel.TRACE
     },
     definitions: {
-        dossiers: []
+        cases: []
     },
     openZaak: {
         catalogus: '00000000-0000-0000-0000-000000000000',
@@ -132,7 +131,6 @@ export const environment: ValtimoConfig = {
     uploadProvider: UploadProvider.DOCUMENTEN_API,
     caseFileSizeUploadLimitMB: 100,
     defaultDefinitionTable: defaultDefinitionColumns,
-    customDefinitionTables: {},
     featureToggles: {
         disableCaseCount: true,
         enableObjectManagement: true

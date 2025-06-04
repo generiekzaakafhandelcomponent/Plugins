@@ -24,6 +24,11 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+val openApiGeneratorPluginVersion: String by project
+val okhttpVersion: String by project
+val squareupMoshiVersion: String by project
+
 dependencies {
     implementation("org.springframework.security:spring-security-config")
     implementation("org.springframework.security:spring-security-web")
@@ -35,22 +40,22 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
-    implementation("jakarta.inject:jakarta.inject-api:2.0.1")
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("jakarta.inject:jakarta.inject-api")
+    implementation("jakarta.persistence:jakarta.persistence-api")
 
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.moshi:moshi:1.15.1")
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
+    implementation("com.squareup.moshi:moshi:${squareupMoshiVersion}")
+    implementation("com.squareup.moshi:moshi-kotlin:${squareupMoshiVersion}")
 
     implementation("org.apache.httpcomponents.core5:httpcore5")
     implementation("org.apache.httpcomponents.client5:httpclient5")
 
-    implementation("org.openapitools:openapi-generator-gradle-plugin:7.10.0")
+    implementation("org.openapitools:openapi-generator-gradle-plugin:$openApiGeneratorPluginVersion")
 
     // Testing
-    testImplementation("com.ritense.valtimo:document")
+    testImplementation("com.ritense.valtimo:case")
     testImplementation("com.ritense.valtimo:local-resource")
     testImplementation("com.ritense.valtimo:process-document")
     testImplementation("com.ritense.valtimo:test-utils-common")
@@ -60,12 +65,12 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
 
     testImplementation("org.postgresql:postgresql")
 
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-    testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
+    testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

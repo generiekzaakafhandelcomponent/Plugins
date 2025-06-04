@@ -30,49 +30,52 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+val okhttpVersion: String by project
+val apacheCxfVersion: String by project
+val sumXmlWsVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:value-resolver")
-    implementation("com.ritense.valtimo:document")
+    implementation("com.ritense.valtimo:case")
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.core:jackson-core")
 
     // Apache deps
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.4")
-    implementation("org.apache.httpcomponents:httpcore:4.4.15")
-
-    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("org.apache.httpcomponents.client5:httpclient5")
+    implementation("org.apache.httpcomponents:httpcore")
 
     // SOAP Libraries
-    implementation("jakarta.xml.ws:jakarta.xml.ws-api:3.0.1")
-    cxfCodegen("jakarta.xml.ws:jakarta.xml.ws-api:3.0.1")
-    cxfCodegen("jakarta.annotation:jakarta.annotation-api:2.1.1")
-    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:4.0.5")
-    implementation("org.apache.cxf:cxf-rt-transports-http:4.0.5")
-    implementation("com.sun.xml.ws:jaxws-ri:4.0.3")
-    implementation("org.apache.cxf:cxf-spring-boot-starter-jaxws:4.0.5")
+    implementation("jakarta.xml.ws:jakarta.xml.ws-api")
+    cxfCodegen("jakarta.xml.ws:jakarta.xml.ws-api")
+    cxfCodegen("jakarta.annotation:jakarta.annotation-api")
+    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$apacheCxfVersion")
+    implementation("org.apache.cxf:cxf-rt-transports-http:$apacheCxfVersion")
+    implementation("com.sun.xml.ws:jaxws-ri:$sumXmlWsVersion")
+    implementation("org.apache.cxf:cxf-spring-boot-starter-jaxws:$apacheCxfVersion")
 
     // Testing
-    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    testImplementation("com.fasterxml.jackson.core:jackson-annotations:2.14.2")
-    testImplementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-migrationsupport:5.9.1")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind")
+    testImplementation("com.fasterxml.jackson.core:jackson-annotations")
+    testImplementation("com.fasterxml.jackson.core:jackson-core")
+    testImplementation("org.junit.jupiter:junit-jupiter-migrationsupport")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("com.jayway.jsonpath:json-path:2.7.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("com.jayway.jsonpath:json-path")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
 
 
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
-    testImplementation("com.squareup.okhttp3:okhttp:4.10.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
+    testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

@@ -16,15 +16,15 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap, take, tap,} from 'rxjs';
 import {GenerateMailContentConfig} from '../../models';
-import {FunctionConfigurationData} from '@valtimo/plugin/lib/models/plugin';
 import {ModalService, SelectItem} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {DocumentService} from '@valtimo/document';
 
 @Component({
+    standalone: false,
     selector: 'valtimo-generate-mail-content-configuration',
     templateUrl: './generate-mail-content.component.html',
 })

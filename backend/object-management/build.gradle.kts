@@ -23,9 +23,11 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
+    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:temporary-resource-storage")
@@ -35,7 +37,7 @@ dependencies {
     implementation("com.ritense.valtimo:objecten-api")
     implementation("com.ritense.valtimo:objecttypen-api")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
@@ -47,7 +49,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

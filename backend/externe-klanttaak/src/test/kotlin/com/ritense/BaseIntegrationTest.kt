@@ -27,27 +27,27 @@ import com.ritense.zakenapi.ZaakUrlProvider
 import org.junit.jupiter.api.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @SpringBootTest
 @Tag("integration")
 abstract class BaseIntegrationTest {
-    @MockBean
+    @MockitoBean
     lateinit var resourceService: ResourceService
 
-    @MockBean
+    @MockitoBean
     lateinit var userManagementService: UserManagementService
 
-    @MockBean
+    @MockitoBean
     lateinit var mailSender: MailSender
 
-    @MockBean
+    @MockitoBean
     lateinit var resourceProvider: ResourceProvider
 
-    @MockBean
+    @MockitoBean
     lateinit var zaakUrlProvider: ZaakUrlProvider
 
-    @MockBean
+    @MockitoBean
     lateinit var zaaktypeUrlProvider: ZaaktypeUrlProvider
 
     @Autowired

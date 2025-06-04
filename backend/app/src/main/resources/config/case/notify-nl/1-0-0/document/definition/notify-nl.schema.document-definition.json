@@ -1,0 +1,9 @@
+{
+    "$id": "notify-nl.schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Notify NL",
+    "type": "object",
+    "properties": {
+        "additionalProperties": true
+    }
+}

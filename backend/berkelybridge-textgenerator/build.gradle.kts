@@ -23,6 +23,9 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+val okhttpVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
@@ -32,16 +35,14 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.core:jackson-core")
 
     // Apache deps
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.4")
-    implementation("org.apache.httpcomponents:httpcore:4.4.15")
-
-    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("org.apache.httpcomponents.client5:httpclient5")
+    implementation("org.apache.httpcomponents:httpcore")
 
     // Testing
     testImplementation("com.fasterxml.jackson.core:jackson-databind")
@@ -52,11 +53,11 @@ dependencies {
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("com.jayway.jsonpath:json-path")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
 
 
-    testImplementation("com.squareup.okhttp3:mockwebserver")
-    testImplementation("com.squareup.okhttp3:okhttp")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
+    testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

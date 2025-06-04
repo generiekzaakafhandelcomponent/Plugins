@@ -15,12 +15,13 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {SendMailConfig} from '../../models';
 
 
 @Component({
+  standalone: false,
   selector: 'valtimo-send-mail-configuration',
   templateUrl: './send-mail-configuration.component.html',
 })

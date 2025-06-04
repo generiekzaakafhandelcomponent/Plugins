@@ -15,11 +15,12 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {CreatePublicTaskConfig} from '../../models';
 
 @Component({
+  standalone: false,
   selector: 'valtimo-create-public-task-configuration',
   templateUrl: './create-public-task-configuration.component.html',
 })

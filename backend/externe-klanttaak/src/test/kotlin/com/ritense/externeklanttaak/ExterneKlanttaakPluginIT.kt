@@ -73,7 +73,6 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpMethod
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestClient.Builder
@@ -84,6 +83,7 @@ import reactor.core.publisher.Mono
 import java.net.URI
 import java.util.Optional
 import java.util.UUID
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
 import kotlin.test.assertEquals
 
 @Transactional
@@ -116,22 +116,22 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
     @Autowired
     lateinit var externeKlanttaakEventListener: ExterneKlanttaakEventListener
 
-    @SpyBean
+    @MockitoSpyBean
     lateinit var externeKlanttaakService: ExterneKlanttaakService
 
-    @SpyBean
+    @MockitoSpyBean
     lateinit var documentService: DocumentService
 
-    @SpyBean
+    @MockitoSpyBean
     lateinit var runtimeService: RuntimeService
 
-    @SpyBean
+    @MockitoSpyBean
     lateinit var pluginService: PluginService
 
-    @SpyBean
+    @MockitoSpyBean
     lateinit var pluginConfigurationRepository: PluginConfigurationRepository
 
-    @SpyBean
+    @MockitoSpyBean
     lateinit var zaakInstanceLinkService: ZaakInstanceLinkService
 
     private lateinit var server: MockWebServer

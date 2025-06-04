@@ -23,6 +23,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {BerkelyBridgeTextGeneratorConfig} from "../../models";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-berkelybridge-textgenerator-configuration',
   templateUrl: './berkelybridge-textgenerator-configuration.component.html',
   styleUrls: ['./berkelybridge-textgenerator-configuration.component.scss'],

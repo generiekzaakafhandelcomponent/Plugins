@@ -15,12 +15,12 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {UpdateObjectConfig} from '../../models';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-update-object-configuration',
     templateUrl: './update-object-configuration.component.html',
 })

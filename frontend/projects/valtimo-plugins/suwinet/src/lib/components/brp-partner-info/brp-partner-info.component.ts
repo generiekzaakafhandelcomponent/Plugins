@@ -15,11 +15,12 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {BrpPartnerInfoConfig} from '../../models';
 
 @Component({
+    standalone: false,
     selector: 'brp-partner-info',
     templateUrl: './brp-partner-info.component.html',
     styleUrls: ['./brp-partner-info.component.scss'],

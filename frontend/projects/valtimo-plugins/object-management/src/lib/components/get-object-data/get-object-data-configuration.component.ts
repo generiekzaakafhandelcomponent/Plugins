@@ -15,12 +15,12 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {GetObjectDataConfig} from '../../models';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-get-object-data-configuration',
   templateUrl: './get-object-data-configuration.component.html',
 })

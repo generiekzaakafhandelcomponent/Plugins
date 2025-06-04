@@ -28,9 +28,9 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@a
 import {NGXLogger} from "ngx-logger";
 import {Toggle} from "carbon-components-angular";
 import {EnumUtilsService} from "../../service/enum-utils.service";
-import {FormField} from "@valtimo/components/lib/components/camunda/form/generated/formfield/formfield.model";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-rotterdam-oracle-ebs-verkoopfactuur-opvoeren',
     templateUrl: './verkoopfactuur-opvoeren.component.html',
     styleUrls: ['./verkoopfactuur-opvoeren.component.scss']

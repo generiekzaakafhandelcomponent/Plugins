@@ -23,9 +23,11 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+
 dependencies {
+    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
     implementation("com.ritense.valtimo:exporter")
     implementation("com.ritense.valtimo:importer")
     implementation("com.ritense.valtimo:plugin-valtimo")
@@ -37,9 +39,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    implementation("org.freemarker:freemarker:2.3.33")
+    implementation("org.freemarker:freemarker")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
     // Testing
     testImplementation("com.ritense.valtimo:local-resource")
@@ -49,7 +51,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
 
     testImplementation("org.postgresql:postgresql")
 

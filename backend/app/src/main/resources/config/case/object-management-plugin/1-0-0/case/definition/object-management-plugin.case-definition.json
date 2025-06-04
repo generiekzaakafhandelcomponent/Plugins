@@ -1,0 +1,8 @@
+{
+    "key": "object-management-plugin",
+    "name": "Object Management Plugin",
+    "versionTag": "1.0.0",
+    "final": false,
+    "canHaveAssignee": false,
+    "autoAssignTasks": false
+}

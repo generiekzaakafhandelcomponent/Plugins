@@ -1,0 +1,20 @@
+[
+  {
+    "key": "summary",
+    "name": "Overzicht",
+    "type": "standard",
+    "contentKey": "summary"
+  },
+  {
+    "key": "progress",
+    "name": "Voortgang",
+    "type": "standard",
+    "contentKey": "progress"
+  },
+  {
+    "key": "documents",
+    "name": "docs",
+    "type": "standard",
+    "contentKey": "documents"
+  }
+]

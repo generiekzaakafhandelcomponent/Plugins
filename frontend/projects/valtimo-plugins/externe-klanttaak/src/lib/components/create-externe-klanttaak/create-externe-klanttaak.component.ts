@@ -27,6 +27,7 @@ import {
 import {ExterneKlanttaakVersionService} from "../../services";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-create-externe-klanttaak',
     templateUrl: './create-externe-klanttaak.component.html',
     styleUrls: ['./create-externe-klanttaak.component.scss'],

@@ -4,17 +4,13 @@ import {Router, RouterModule, Routes} from '@angular/router';
 const routes: Routes = [];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, {
+      errorHandler: error => {
+        window.location.href = '/';
+      },
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-
-  constructor(
-    private router: Router,
-  ) {
-    // errorHandler on error route to home
-    this.router.errorHandler = () => {
-      this.router.navigate(['']);
-    };
-  }
-}
+export class AppRoutingModule {}

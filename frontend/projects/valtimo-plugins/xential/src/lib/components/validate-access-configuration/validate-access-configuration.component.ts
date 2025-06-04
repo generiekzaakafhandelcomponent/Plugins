@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest,Observable,Subscription,take} from 'rxjs';
 import {ValidateAccessConfig} from "../../models";
 
 @Component({
+    standalone: false,
     selector: 'xential-validate-access-configuration',
     templateUrl: './validate-access-configuration.component.html'
 })

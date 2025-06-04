@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {SmtpMailConfig} from '../../models';
 
 @Component({
+  standalone: false,
   selector: 'smtpmail-plugin-configuration',
   templateUrl: './smtpmail-plugin-configuration.component.html'
 })

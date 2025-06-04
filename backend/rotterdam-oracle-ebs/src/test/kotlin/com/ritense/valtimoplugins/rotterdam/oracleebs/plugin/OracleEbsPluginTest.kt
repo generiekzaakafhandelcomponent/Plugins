@@ -16,7 +16,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.delegate.DelegateExecution
-import org.camunda.community.mockito.delegate.DelegateExecutionFake
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

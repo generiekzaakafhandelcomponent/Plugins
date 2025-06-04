@@ -23,11 +23,14 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+val okhttpVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:catalogi-api")
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
+    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:documenten-api")
     implementation("com.ritense.valtimo:outbox")
     implementation("com.ritense.valtimo:object-management")
@@ -44,7 +47,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
     // Testing
     testImplementation("com.ritense.valtimo:local-resource")
@@ -54,11 +57,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation("org.springframework.data:spring-data-jpa")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-    testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("org.mockito:mockito-core")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
 
     testImplementation("org.postgresql:postgresql")
 

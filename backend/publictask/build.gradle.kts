@@ -23,6 +23,9 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+val okhttpVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
@@ -30,7 +33,7 @@ dependencies {
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:form")
     implementation("com.ritense.valtimo:contract")
-    implementation("com.ritense.valtimo:document")
+    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:audit")
     implementation("com.ritense.valtimo:authorization")
@@ -42,7 +45,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.core:jackson-core")
@@ -51,7 +54,7 @@ dependencies {
     implementation("org.freemarker:freemarker")
 
     // Testing
-    testImplementation("com.ritense.valtimo:document")
+    testImplementation("com.ritense.valtimo:case")
     testImplementation("com.ritense.valtimo:local-resource")
     testImplementation("com.ritense.valtimo:process-document")
     testImplementation("com.ritense.valtimo:test-utils-common")
@@ -67,12 +70,12 @@ dependencies {
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("com.jayway.jsonpath:json-path")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin")
 
     testImplementation("org.postgresql:postgresql")
 
-    testImplementation("com.squareup.okhttp3:mockwebserver")
-    testImplementation("com.squareup.okhttp3:okhttp")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
+    testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

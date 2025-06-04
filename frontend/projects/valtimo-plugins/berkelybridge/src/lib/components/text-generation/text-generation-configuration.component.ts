@@ -18,11 +18,12 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {TextGeneratieConfig} from "../../models";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-text-generation-configuration',
   templateUrl: './text-generation-configuration.component.html',
   styleUrls: ['./text-generation-configuration.component.scss'],

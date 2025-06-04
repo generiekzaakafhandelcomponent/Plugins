@@ -26,6 +26,7 @@ import {XentialConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-xential-configuration',
     templateUrl: './xential-configuration.component.html',
 })
