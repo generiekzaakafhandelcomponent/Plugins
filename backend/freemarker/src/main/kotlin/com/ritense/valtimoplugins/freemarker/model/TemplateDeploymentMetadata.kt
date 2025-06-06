@@ -16,11 +16,21 @@
 
 package com.ritense.valtimoplugins.freemarker.model
 
+import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
+
 data class TemplateDeploymentMetadata(
     val templateKey: String,
-    val caseDefinitionName: String? = null,
     val templateType: String,
     val metadata: Map<String, Any?>? = null,
     val content: String? = null,
     val contentRef: String? = null,
-)
+) {
+    companion object {
+        fun of(template: ValtimoTemplate) = TemplateDeploymentMetadata(
+            templateKey = template.key,
+            templateType = template.type,
+            metadata = template.metadata,
+            content = template.content,
+        )
+    }
+}

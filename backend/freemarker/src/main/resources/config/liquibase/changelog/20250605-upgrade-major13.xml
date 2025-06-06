@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright 2015-2024 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="gen_random_uuid" value="UUID()" dbms="mysql"/>
+    <property name="gen_random_uuid" value="gen_random_uuid()" dbms="postgresql"/>
+
+    <changeSet id="1" author="Ritense">
+        <renameColumn tableName="valtimo_template"
+                      oldColumnName="case_definition_name"
+                      newColumnName="case_definition_key"
+                      columnDataType="VARCHAR(256)"/>
+        <addColumn tableName="valtimo_template">
+            <column name="case_definition_version_tag" type="VARCHAR(200)" defaultValue="0.0.0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <sql>
+            INSERT INTO valtimo_template (id, template_key, case_definition_key, case_definition_version_tag,
+                                          template_type, metadata, content)
+            SELECT ${gen_random_uuid},
+                   t.template_key,
+                   t.case_definition_key,
+                   c.case_definition_version_tag,
+                   t.template_type,
+                   t.metadata,
+                   t.content
+            FROM case_definition c
+                     INNER JOIN valtimo_template t ON t.case_definition_key = c.case_definition_key AND
+                                                      t.case_definition_version_tag = '0.0.0'
+        </sql>
+        <delete tableName="valtimo_template">
+            <where>case_definition_version_tag = '0.0.0'</where>
+        </delete>
+    </changeSet>
+
+</databaseChangeLog>

@@ -23,6 +23,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {AlfrescoAuthConfig} from "../../models";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-alfresco-auth-configuration',
   templateUrl: './alfresco-auth-configuration.component.html',
   styleUrls: ['./alfresco-auth-configuration.component.scss'],

@@ -33,7 +33,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/@valtimo/config/assets/core",
+                "input": "node_modules/@valtimo/shared/assets/core",
                 "output": "./valtimo-translation/core/"
               },
               {
@@ -47,7 +47,6 @@
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "node_modules/@mdi/font/css/materialdesignicons.css",
               "node_modules/@foxythemes/bootstrap-datetime-picker-bs4/css/bootstrap-datetimepicker.css",
-              "node_modules/ngx-toastr/toastr.css",
               "node_modules/swagger-ui/dist/swagger-ui.css",
               "node_modules/dmn-js/dist/assets/diagram-js.css",
               "node_modules/dmn-js/dist/assets/dmn-js-decision-table.css",
@@ -62,7 +61,7 @@
               "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn.css",
               "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css",
               "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css",
-              "node_modules/bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css",
+              "node_modules/@bpmn-io/properties-panel/dist/assets/properties-panel.css",
               "node_modules/@valtimo/components/assets/css/ng-multiselect-dropdown.theme.scss",
               "node_modules/@valtimo/layout/assets/css/app.css",
               "src/styles.scss",

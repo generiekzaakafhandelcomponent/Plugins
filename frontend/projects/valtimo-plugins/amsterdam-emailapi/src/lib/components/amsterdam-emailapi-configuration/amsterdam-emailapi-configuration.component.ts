@@ -23,6 +23,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {AmsterdamEmailApiConfig} from "../../models";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-amsterdam-emailapi-configuration',
   templateUrl: './amsterdam-emailapi-configuration.component.html',
   styleUrls: ['./amsterdam-emailapi-configuration.component.scss'],

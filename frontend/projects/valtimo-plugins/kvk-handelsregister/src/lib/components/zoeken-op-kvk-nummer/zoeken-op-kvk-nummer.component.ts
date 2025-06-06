@@ -23,6 +23,7 @@ import {FormModule, InputModule} from '@valtimo/components';
 import {ZoekenConfig} from '../../models';
 
 @Component({
+    standalone: false,
     selector: 'zoeken-op-kvk-nummer',
     templateUrl: './zoeken-op-kvk-nummer.component.html',
     styleUrls: ['./zoeken-op-kvk-nummer.component.scss']

@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Summary",
+    "key": "widgets",
+    "type": "widgets",
+    "contentKey": "widgets",
+    "showTasks": true
+  },
+  {
+    "name": "Progress",
+    "key": "progress",
+    "type": "standard",
+    "contentKey": "progress"
+  }
+]

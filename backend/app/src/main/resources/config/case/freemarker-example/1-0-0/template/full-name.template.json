@@ -1,0 +1,6 @@
+{
+  "templateKey": "full-name",
+  "templateType": "text",
+  "metadata": {},
+  "contentRef": "/config/case/freemarker-example/1-0-0/template/full-name.ftlh"
+}

@@ -22,6 +22,7 @@ import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
+    standalone: false,
     selector: 'valtimo-object-management-configuration',
     templateUrl: './object-management-configuration.component.html',
 })

@@ -1,7 +1,7 @@
 services:
     db:
         ports:
-            - "54341:5432"
+            - "54346:5432"
         environment:
             - POSTGRES_DB=externe-klanttaak
             - POSTGRES_USER=test-user
