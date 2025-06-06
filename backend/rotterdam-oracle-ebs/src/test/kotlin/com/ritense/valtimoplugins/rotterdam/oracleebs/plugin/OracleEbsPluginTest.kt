@@ -12,6 +12,7 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.RelatieType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
+import java.time.LocalDateTime
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
@@ -25,7 +26,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import java.time.LocalDateTime
 
 class OracleEbsPluginTest {
 
@@ -67,9 +67,9 @@ class OracleEbsPluginTest {
     @Test
     fun `should resolve values`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
-            .withVariable("invoiceAmount", 124.78)
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
+        whenever(execution.variables).thenReturn(mapOf("invoiceAmount" to 124.78))
         val invoiceAmount = 124.78
         val lastModified = LocalDateTime.parse("2025-03-19T16:15:30")
         val firstName = "John"
@@ -85,11 +85,13 @@ class OracleEbsPluginTest {
         )
 
         whenever(valueResolverService.resolveValues(any<String>(), any<DelegateExecution>(), any()))
-            .thenReturn(mapOf(
-                "pv:invoiceAmount" to invoiceAmount,
-                "doc:/user/firstName" to firstName,
-                "case:lastModified" to lastModified
-            ))
+            .thenReturn(
+                mapOf(
+                    "pv:invoiceAmount" to invoiceAmount,
+                    "doc:/user/firstName" to firstName,
+                    "case:lastModified" to lastModified
+                )
+            )
 
         // when
         plugin.resolveValuesFor(
@@ -111,8 +113,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -122,14 +124,14 @@ class OracleEbsPluginTest {
                 execution = execution,
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
-                referentieNummer= "2025-AGV-123456",
-                sleutel= "784",
-                boekdatumTijd= "2025-03-28T13:34:26+02:00",
-                categorie= "Vergunningen",
+                referentieNummer = "2025-AGV-123456",
+                sleutel = "784",
+                boekdatumTijd = "2025-03-28T13:34:26+02:00",
+                categorie = "Vergunningen",
                 saldoSoort = SaldoSoort.WERKELIJK.title,
-                omschrijving= "Aanvraag Omgevingsvergunning",
-                boekjaar= "2025",
-                boekperiode= "2",
+                omschrijving = "Aanvraag Omgevingsvergunning",
+                boekjaar = "2025",
+                boekperiode = "2",
                 regels = journaalpostRegels()
             )
         }
@@ -145,8 +147,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost (regels via resolver as serialised JSON)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -156,14 +158,14 @@ class OracleEbsPluginTest {
                 execution = execution,
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
-                referentieNummer= "2025-AGV-123456",
-                sleutel= "784",
-                boekdatumTijd= "2025-03-28T13:34:26+02:00",
-                categorie= "Vergunningen",
+                referentieNummer = "2025-AGV-123456",
+                sleutel = "784",
+                boekdatumTijd = "2025-03-28T13:34:26+02:00",
+                categorie = "Vergunningen",
                 saldoSoort = SaldoSoort.WERKELIJK.title,
-                omschrijving= "Aanvraag Omgevingsvergunning",
-                boekjaar= "2025",
-                boekperiode= "2",
+                omschrijving = "Aanvraag Omgevingsvergunning",
+                boekjaar = "2025",
+                boekperiode = "2",
                 regelsViaResolver = objectMapper.writeValueAsString(journaalpostRegels())
             )
         }
@@ -179,8 +181,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost (regels via resolver as ArrayList (from doc or pv))`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -190,14 +192,14 @@ class OracleEbsPluginTest {
                 execution = execution,
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
-                referentieNummer= "2025-AGV-123456",
-                sleutel= "784",
-                boekdatumTijd= "2025-03-28T13:34:26+02:00",
-                categorie= "Vergunningen",
+                referentieNummer = "2025-AGV-123456",
+                sleutel = "784",
+                boekdatumTijd = "2025-03-28T13:34:26+02:00",
+                categorie = "Vergunningen",
                 saldoSoort = SaldoSoort.WERKELIJK.title,
-                omschrijving= "Aanvraag Omgevingsvergunning",
-                boekjaar= "2025",
-                boekperiode= "2",
+                omschrijving = "Aanvraag Omgevingsvergunning",
+                boekjaar = "2025",
+                boekperiode = "2",
                 regelsViaResolver = journaalpostRegels().map { journaalpostRegel ->
                     linkedMapOf(
                         GROOTBOEK_SLEUTEL to journaalpostRegel.grootboekSleutel,
@@ -220,8 +222,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost (regels via resolver as ArrayNode)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -231,14 +233,14 @@ class OracleEbsPluginTest {
                 execution = execution,
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
-                referentieNummer= "2025-AGV-123456",
-                sleutel= "784",
-                boekdatumTijd= "2025-03-28T13:34:26+02:00",
-                categorie= "Vergunningen",
+                referentieNummer = "2025-AGV-123456",
+                sleutel = "784",
+                boekdatumTijd = "2025-03-28T13:34:26+02:00",
+                categorie = "Vergunningen",
                 saldoSoort = SaldoSoort.WERKELIJK.title,
-                omschrijving= "Aanvraag Omgevingsvergunning",
-                boekjaar= "2025",
-                boekperiode= "2",
+                omschrijving = "Aanvraag Omgevingsvergunning",
+                boekjaar = "2025",
+                boekperiode = "2",
                 regelsViaResolver = journaalpostRegels().map { journaalpostRegel ->
                     objectMapper.createObjectNode().apply {
                         this.put(GROOTBOEK_SLEUTEL, journaalpostRegel.grootboekSleutel)
@@ -265,8 +267,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should push verkoopfactuur`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -276,7 +278,7 @@ class OracleEbsPluginTest {
                 execution = execution,
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
-                referentieNummer= "2025-AGV-123456",
+                referentieNummer = "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 factuurDatum = "2025-05-21",
                 inkoopOrderReferentie = "20250328-098",
@@ -301,8 +303,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should push verkoopfactuur (regels via resolver as serialised JSON)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -312,7 +314,7 @@ class OracleEbsPluginTest {
                 execution = execution,
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
-                referentieNummer= "2025-AGV-123456",
+                referentieNummer = "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 factuurDatum = "2025-05-21",
                 inkoopOrderReferentie = "20250328-098",
@@ -336,8 +338,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should push verkoopfactuur (regels via resolver as ArrayList (from doc or pv)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -347,7 +349,7 @@ class OracleEbsPluginTest {
                 execution = execution,
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
-                referentieNummer= "2025-AGV-123456",
+                referentieNummer = "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 factuurDatum = "2025-05-21",
                 inkoopOrderReferentie = "20250328-098",
@@ -379,8 +381,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should push verkoopfactuur (regels via resolver as ArrayNode)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val execution = mock<DelegateExecution>()
+        whenever(execution.processInstanceId).thenReturn("92edbc6c-c736-470d-8deb-382a69f25f43")
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -390,7 +392,7 @@ class OracleEbsPluginTest {
                 execution = execution,
                 pvResultVariable = "verwerkingsstatus",
                 procesCode = "98332",
-                referentieNummer= "2025-AGV-123456",
+                referentieNummer = "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 factuurDatum = "2025-05-21",
                 inkoopOrderReferentie = "20250328-098",
@@ -448,12 +450,14 @@ class OracleEbsPluginTest {
         )
     )
 
-    private fun verwerkingsstatusGeslaagdAsJson(): String = objectMapper.writeValueAsString(mapOf(
-        "isGeslaagd" to true,
-        "foutcode" to null,
-        "foutmelding" to null,
-        "melding" to null
-    ))
+    private fun verwerkingsstatusGeslaagdAsJson(): String = objectMapper.writeValueAsString(
+        mapOf(
+            "isGeslaagd" to true,
+            "foutcode" to null,
+            "foutmelding" to null,
+            "melding" to null
+        )
+    )
 
     private fun mockOkResponse(body: String) {
         MockResponse()

@@ -331,7 +331,12 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
     ): Pair<ProcessInstanceId, CamundaTask> {
         return runWithoutAuthorization {
             val newDocumentRequest =
-                NewDocumentRequest(DOCUMENT_DEFINITION_KEY, objectMapper.readTree(documentContent))
+                NewDocumentRequest(
+                    DOCUMENT_DEFINITION_KEY,
+                    DOCUMENT_DEFINITION_KEY,
+                    "1.0.0",
+                    objectMapper.readTree(documentContent)
+                )
             val request = NewDocumentAndStartProcessRequest(processDefinitionKey, newDocumentRequest)
                 .withProcessVars(
                     mapOf(

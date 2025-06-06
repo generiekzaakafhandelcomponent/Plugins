@@ -27,5 +27,6 @@
     <property name="jsonType" value="JSON" dbms="postgresql"/>
 
     <include file="changelog/20241009-create-template-table.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/20250605-upgrade-major13.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

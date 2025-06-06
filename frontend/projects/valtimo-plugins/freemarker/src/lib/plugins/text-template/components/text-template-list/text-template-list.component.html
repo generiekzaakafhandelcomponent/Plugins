@@ -19,10 +19,10 @@
         [items]="templates$ | async"
         [fields]="fields"
         [loading]="loading$ | async"
-        [showSelectionColumn]="true"
+        [showSelectionColumn]="!(readOnly$ | async)"
         (rowClicked)="onRowClick($event)"
 >
-    <ng-container header> {{ 'Title' }} </ng-container>
+    <ng-container header> {{ 'Title' }}</ng-container>
 
     <div carbonToolbarContent>
         <ng-container [ngTemplateOutlet]="addTemplateButton"></ng-container>
@@ -58,7 +58,9 @@
 </ng-container>
 
 <ng-template #addTemplateButton>
-    <button cdsButton="primary" (click)="openAddModal()">
+    <button cdsButton="primary"
+            [disabled]="readOnly$ | async"
+            (click)="openAddModal()">
         {{ 'Add' }}
 
         <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>

@@ -28,6 +28,7 @@ val kotlinLoggingVersion: String by project
 val openApiGeneratorPluginVersion: String by project
 val okhttpVersion: String by project
 val squareupMoshiVersion: String by project
+val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation("org.springframework.security:spring-security-config")
@@ -65,7 +66,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 

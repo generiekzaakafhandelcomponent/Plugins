@@ -1,8 +1,0 @@
-[
-  {
-    "processDefinitionKey": "ServiceTaskProcess",
-    "canInitializeDocument": true,
-    "startableByUser": true,
-    "processIsVisibleInMenu": true
-  }
-]

@@ -15,16 +15,30 @@
  */
 
 import {ChangeDetectionStrategy, Component, OnInit, ViewChild,} from '@angular/core';
-import {BehaviorSubject, filter, map, Observable, switchMap, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, Observable, startWith, switchMap, take, tap} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CarbonListComponent, ColumnConfig, ViewType} from '@valtimo/components';
+import {CarbonListComponent, CarbonListModule, ColumnConfig, ViewType} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateListItem} from '../../../../models';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {MailTemplateDeleteModalComponent} from '../mail-template-delete-modal/mail-template-delete-modal.component';
+import {MailTemplateAddEditModalComponent} from '../mail-template-add-edit-modal/mail-template-add-edit-modal.component';
+import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
+import {ButtonModule} from 'carbon-components-angular';
 
 @Component({
-    standalone: false,
+    standalone: true,
     templateUrl: './mail-template-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        CarbonListModule,
+        ButtonModule,
+        TranslateModule,
+        MailTemplateDeleteModalComponent,
+        MailTemplateAddEditModalComponent
+    ]
 })
 export class MailTemplateListComponent implements OnInit {
     @ViewChild(CarbonListComponent) carbonList: CarbonListComponent;
@@ -35,16 +49,21 @@ export class MailTemplateListComponent implements OnInit {
             key: 'key',
             label: 'Key',
         },
-        {
-            viewType: ViewType.BOOLEAN,
-            key: 'readOnly',
-            label: 'Read only',
-        },
     ];
 
-    private readonly _caseDefinitionName$: Observable<string> = this.route.params.pipe(
-        map(params => params?.name),
-        filter(caseDefinitionName => !!caseDefinitionName),
+    private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
+        filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
+    );
+
+    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
+        switchMap(caseDefinitionId => combineLatest([
+                this.environmentService.canUpdateGlobalConfiguration(),
+                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
+            ]).pipe(
+                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
+                startWith(true)
+            )
+        )
     );
 
     public readonly templates$ = new BehaviorSubject<TemplateListItem[] | null>(null);
@@ -56,7 +75,8 @@ export class MailTemplateListComponent implements OnInit {
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
         private readonly router: Router,
-        private readonly route: ActivatedRoute
+        private readonly route: ActivatedRoute,
+        private readonly environmentService: EnvironmentService,
     ) {
     }
 
@@ -74,12 +94,16 @@ export class MailTemplateListComponent implements OnInit {
             return;
         }
 
-        this._caseDefinitionName$.pipe(
+        this._caseDefinitionId$.pipe(
             take(1),
-            switchMap(caseDefinitionName => this.templateService.addTemplate({caseDefinitionName, type: 'mail', ...data}))
+            switchMap(caseDefinitionId => this.templateService.addTemplate({
+                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
+                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                type: 'mail', ...data
+            }))
         ).subscribe(template => {
             this.showAddModal$.next(false);
-            this.gotoMailTemplateEditor(template.caseDefinitionName, template.key);
+            this.gotoMailTemplateEditor(template.caseDefinitionKey, template.caseDefinitionVersionTag, template.key);
         });
     }
 
@@ -90,28 +114,33 @@ export class MailTemplateListComponent implements OnInit {
 
     public onDelete(templates: Array<string>): void {
         this.loading$.next(true);
-        this._caseDefinitionName$.pipe(
+        this._caseDefinitionId$.pipe(
             take(1),
-            switchMap(caseDefinitionName => this.templateService.deleteTemplates({caseDefinitionName, type: 'mail', templates})),
+            switchMap(caseDefinitionId => this.templateService.deleteTemplates({
+                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
+                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                type: 'mail',
+                templates
+            })),
         ).subscribe(_ => {
             this.reloadTemplateList();
         });
     }
 
     public onRowClick(template: TemplateListItem): void {
-        this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-            this.gotoMailTemplateEditor(caseDefinitionName, template.key)
+        this._caseDefinitionId$.pipe(take(1)).subscribe(caseDefinitionId =>
+            this.gotoMailTemplateEditor(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag, template.key)
         );
     }
 
-    private gotoMailTemplateEditor(caseDefinitionName: string, key: string): void {
-        this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}/mail-template/${key}`])
+    private gotoMailTemplateEditor(caseDefinitionKey: string, caseDefinitionVersionTag: string, key: string): void {
+        this.router.navigate([`/case-management/case/${caseDefinitionKey}/version/${caseDefinitionVersionTag}/mail-template/${key}`]);
     }
 
     private reloadTemplateList(): void {
         this.loading$.next(true);
-        this._caseDefinitionName$.pipe(
-            switchMap(caseDefinitionName => this.templateService.getAllMailTemplates(caseDefinitionName)),
+        this._caseDefinitionId$.pipe(
+            switchMap((caseDefinitionId) => this.templateService.getAllMailTemplates(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)),
             map(templatePage => templatePage.content),
             take(1)
         ).subscribe(templateListItems => {

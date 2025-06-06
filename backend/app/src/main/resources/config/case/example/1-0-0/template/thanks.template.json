@@ -1,6 +1,5 @@
 {
   "templateKey": "thanks-template",
-  "caseDefinitionName": "example",
   "templateType": "mail",
   "metadata": {
     "testKey": "testValue"

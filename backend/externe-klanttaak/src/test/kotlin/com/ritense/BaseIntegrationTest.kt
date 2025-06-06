@@ -49,7 +49,4 @@ abstract class BaseIntegrationTest {
 
     @MockitoBean
     lateinit var zaaktypeUrlProvider: ZaaktypeUrlProvider
-
-    @Autowired
-    lateinit var noopAuthorizationSpecificationFactory: NoopAuthorizationSpecificationFactory<CamundaTask>
 }

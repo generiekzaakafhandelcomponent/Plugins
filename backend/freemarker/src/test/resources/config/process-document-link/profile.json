@@ -1,8 +1,0 @@
-[
-  {
-    "processDefinitionKey": "TestProcess",
-    "canInitializeDocument": true,
-    "startableByUser": true,
-    "processIsVisibleInMenu": true
-  }
-]

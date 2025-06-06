@@ -60,30 +60,35 @@ class TextTemplateValueResolver(
         throw UnsupportedOperationException("Can not to save values in template. ${values.keys}")
     }
 
-    override fun createValidator(documentDefinitionName: String): Function<String, Unit> {
-        return Function { requestedValue ->
-            val templates = templateService.findTemplates(
-                templateKey = requestedValue,
-                caseDefinitionName = documentDefinitionName,
-                templateType = TEMPLATE_TYPE_TEXT,
-            )
-            require(templates.isNotEmpty()) {
-                throw ValueResolverValidationException("Failed to find textTemplate with name '$requestedValue'")
-            }
-        }
-    }
+    // TODO:
+//    override fun createValidator(caseDefinitionId: CaseDefinitionId): Function<String, Unit> {
+//        return Function { requestedValue ->
+//            val templates = templateService.findTemplates(
+//                templateKey = requestedValue,
+//                caseDefinitionId = caseDefinitionId,
+//                templateType = TEMPLATE_TYPE_TEXT,
+//            )
+//            require(templates.isNotEmpty()) {
+//                throw ValueResolverValidationException("Failed to find textTemplate with name '$requestedValue'")
+//            }
+//        }
+//    }
 
     override fun preProcessValuesForNewCase(values: Map<String, Any?>): Map<String, Any> {
         throw UnsupportedOperationException("Can not to save values in template. ${values.keys}")
     }
 
     override fun getResolvableKeyOptions(documentDefinitionName: String, caseDefinitionId: CaseDefinitionId): List<ValueResolverOption> {
-        return getResolvableKeyOptions(documentDefinitionName)
+        val templateKeys = templateService.findTemplates(
+            caseDefinitionId = caseDefinitionId,
+            templateType = TEMPLATE_TYPE_TEXT,
+        ).map { it.key }
+        return createFieldList(templateKeys)
     }
 
     override fun getResolvableKeyOptions(documentDefinitionName: String): List<ValueResolverOption> {
         val templateKeys = templateService.findTemplates(
-            caseDefinitionName = documentDefinitionName,
+            caseDefinitionId = null,
             templateType = TEMPLATE_TYPE_TEXT,
         ).map { it.key }
         return createFieldList(templateKeys)
@@ -96,7 +101,6 @@ class TextTemplateValueResolver(
         return Function { requestedValue ->
             templateService.generate(
                 templateKey = requestedValue,
-                caseDefinitionName = document.definitionId().name(),
                 templateType = TEMPLATE_TYPE_TEXT,
                 document = document,
                 processVariables = processVariables,

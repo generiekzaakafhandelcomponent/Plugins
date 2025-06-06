@@ -15,15 +15,26 @@
  */
 
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TemplateMetadataModal} from '../../../../models';
 import {CARBON_CONSTANTS, KeyGeneratorService} from '@valtimo/components';
+import {ButtonModule, InputModule, ModalModule} from 'carbon-components-angular';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
 
 @Component({
-    standalone: false,
+    standalone: true,
     selector: 'valtimo-mail-template-add-edit-modal',
     templateUrl: './mail-template-add-edit-modal.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        ButtonModule,
+        TranslateModule,
+        ModalModule,
+        ReactiveFormsModule,
+        InputModule
+    ]
 })
 export class MailTemplateAddEditModalComponent implements OnInit {
     @Input() open = false;
@@ -45,7 +56,7 @@ export class MailTemplateAddEditModalComponent implements OnInit {
     public get key() {
         const key = this.form?.get('key');
         if (!key?.value) {
-            return key
+            return key;
         }
         key.setValue(this.keyGeneratorService.getUniqueKey(key.value, []));
         return key;

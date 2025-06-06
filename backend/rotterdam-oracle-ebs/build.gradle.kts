@@ -18,17 +18,9 @@ plugins {
     id("org.openapi.generator") version "7.12.0"
 }
 
-dockerCompose {
-    setProjectName("rotterdam-oracle-ebs")
-    isRequiredBy(project.tasks.integrationTesting)
-
-    tasks.integrationTesting {
-        useComposeFiles.addAll("$rootDir/docker-resources/docker-compose-base-test.yml", "docker-compose-override.yml")
-    }
-}
-
 val kotlinLoggingVersion: String by project
 val okhttpVersion: String by project
+val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation(project(":backend:mTLS-SSLContext"))
@@ -56,7 +48,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.mockito:mockito-core")
-    testImplementation("org.mockito.kotlin:mockito-kotlin")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
     testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
 }
 

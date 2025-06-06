@@ -21,20 +21,23 @@ interface TemplateListItem {
 
 interface CreateTemplateRequest {
     key: string,
-    caseDefinitionName?: string,
+    caseDefinitionKey?: string,
+    caseDefinitionVersionTag?: string;
     type: string,
     metadata?: any,
 }
 
 interface DeleteTemplatesRequest {
-    caseDefinitionName?: string;
+    caseDefinitionKey?: string;
+    caseDefinitionVersionTag?: string;
     type: TemplateType;
     templates: Array<string>;
 }
 
 interface UpdateTemplateRequest {
     key: string;
-    caseDefinitionName?: string;
+    caseDefinitionKey?: string;
+    caseDefinitionVersionTag?: string;
     type: TemplateType;
     metadata?: any;
     content: string;
@@ -42,7 +45,8 @@ interface UpdateTemplateRequest {
 
 interface Template {
     key: string;
-    caseDefinitionName?: string;
+    caseDefinitionKey?: string;
+    caseDefinitionVersionTag?: string;
     type: TemplateType;
     metadata: any;
     content: string;
@@ -50,11 +54,11 @@ interface Template {
 
 interface TemplateResponse {
     key: string;
-    caseDefinitionName?: string;
+    caseDefinitionKey?: string;
+    caseDefinitionVersionTag?: string;
     type: TemplateType;
     metadata: any;
     content: string;
-    readOnly: boolean;
 }
 
 type TemplateMetadataModal = 'add' | 'edit';

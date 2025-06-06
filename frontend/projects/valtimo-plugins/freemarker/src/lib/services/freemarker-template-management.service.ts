@@ -15,10 +15,10 @@
  */
 
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {map, Observable} from 'rxjs';
 import {DeleteTemplatesRequest, Template, TemplateListItem, TemplateResponse, TemplateType, UpdateTemplateRequest,} from '../models';
-import {ConfigService, Page} from '@valtimo/shared';
+import {ConfigService, InterceptorSkip, Page} from '@valtimo/shared';
 
 @Injectable({
     providedIn: 'root',
@@ -34,23 +34,25 @@ export class FreemarkerTemplateManagementService {
         this.valtimoEndpointUri = `${this.configService.config.valtimoApi.endpointUri}management/`;
     }
 
-    public getAllMailTemplates(caseDefinitionName?: string): Observable<Page<TemplateListItem>> {
-        return this.getTemplates(caseDefinitionName, 'mail', undefined, 0, 10000);
+    public getAllMailTemplates(caseDefinitionKey?: string, caseDefinitionVersionTag?: string): Observable<Page<TemplateListItem>> {
+        return this.getTemplates(caseDefinitionKey, caseDefinitionVersionTag, 'mail', undefined, 0, 10000);
     }
 
-    public getAllTextTemplates(caseDefinitionName?: string): Observable<Page<TemplateListItem>> {
-        return this.getTemplates(caseDefinitionName, 'text', undefined, 0, 10000);
+    public getAllTextTemplates(caseDefinitionKey?: string, caseDefinitionVersionTag?: string): Observable<Page<TemplateListItem>> {
+        return this.getTemplates(caseDefinitionKey, caseDefinitionVersionTag, 'text', undefined, 0, 10000);
     }
 
     public getTemplates(
-        caseDefinitionName?: string,
+        caseDefinitionKey?: string,
+        caseDefinitionVersionTag?: string,
         templateType?: TemplateType,
         templateKey?: string,
         page?: number,
         pageSize?: number,
     ): Observable<Page<TemplateListItem>> {
         const params = {
-            caseDefinitionName,
+            caseDefinitionKey,
+            caseDefinitionVersionTag,
             templateType,
             templateKey,
             page,
@@ -67,17 +69,17 @@ export class FreemarkerTemplateManagementService {
         );
     }
 
-    public getMailTemplate(caseDefinitionName: string, key: string): Observable<TemplateResponse> {
-        return this.getTemplate(caseDefinitionName, 'mail', key);
+    public getMailTemplate(caseDefinitionKey: string, caseDefinitionVersionTag: string, key: string): Observable<TemplateResponse> {
+        return this.getTemplate(caseDefinitionKey, caseDefinitionVersionTag, 'mail', key);
     }
 
-    public getTextTemplate(caseDefinitionName: string, key: string): Observable<TemplateResponse> {
-        return this.getTemplate(caseDefinitionName, 'text', key);
+    public getTextTemplate(caseDefinitionKey: string, caseDefinitionVersionTag: string, key: string): Observable<TemplateResponse> {
+        return this.getTemplate(caseDefinitionKey, caseDefinitionVersionTag, 'text', key);
     }
 
-    public getTemplate(caseDefinitionName: string, templateType: TemplateType, key: string): Observable<TemplateResponse> {
+    public getTemplate(caseDefinitionKey: string, caseDefinitionVersionTag: string, templateType: TemplateType, key: string): Observable<TemplateResponse> {
         return this.http.get<TemplateResponse>(
-            `${this.valtimoEndpointUri}v1/case-definition/${caseDefinitionName}/template-type/${templateType}/template/${key}`
+            `${this.valtimoEndpointUri}v1/case-definition/${caseDefinitionKey}/version/${caseDefinitionVersionTag}/template-type/${templateType}/template/${key}`
         );
     }
 
@@ -91,5 +93,19 @@ export class FreemarkerTemplateManagementService {
 
     public updateTemplate(template: UpdateTemplateRequest): Observable<TemplateResponse> {
         return this.http.put<TemplateResponse>(`${this.valtimoEndpointUri}v1/template`, template);
+    }
+
+    public isFinal(
+        caseDefinitionKey: string,
+        caseDefinitionVersionTag: string
+    ): Observable<boolean> {
+        return this.http
+            .get<any>(
+                `${this.valtimoEndpointUri}v1/case-definition/${caseDefinitionKey}/version/${caseDefinitionVersionTag}`,
+                {
+                    headers: new HttpHeaders().set(InterceptorSkip, '403'),
+                }
+            )
+            .pipe(map(caseDefinition => caseDefinition.final));
     }
 }

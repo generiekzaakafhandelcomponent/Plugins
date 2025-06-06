@@ -16,16 +16,16 @@
 
 package com.ritense.valtimoplugins.freemarker.web.rest
 
-import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
-import com.ritense.valtimoplugins.freemarker.service.TemplateDeploymentService
+import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimo.contract.case_.CaseDefinitionId
+import com.ritense.valtimo.contract.domain.ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE
+import com.ritense.valtimoplugins.freemarker.service.TemplateImporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.CreateTemplateRequest
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.DeleteTemplateRequest
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.TemplateListItemResponse
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.TemplateResponse
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.UpdateTemplateRequest
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimo.contract.domain.ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -44,33 +44,39 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/management", produces = [APPLICATION_JSON_UTF8_VALUE])
 class TemplateManagementResource(
     private val templateService: TemplateService,
-    private val templateDeploymentService: TemplateDeploymentService,
+    private val templateImporter: TemplateImporter,
 ) {
 
     @GetMapping("/v1/template")
     fun getTemplates(
         @RequestParam(value = "templateKey", required = false) templateKey: String?,
-        @RequestParam(value = "caseDefinitionName", required = false) caseDefinitionName: String?,
+        @RequestParam(value = "caseDefinitionKey", required = false) caseDefinitionKey: String?,
+        @RequestParam(value = "caseDefinitionVersionTag", required = false) caseDefinitionVersionTag: String?,
         @RequestParam(value = "templateType", required = false) templateType: String?,
         pageable: Pageable,
     ): ResponseEntity<Page<TemplateListItemResponse>> {
+        val caseDefinitionId = caseDefinitionKey?.let {
+            CaseDefinitionId(caseDefinitionKey, caseDefinitionVersionTag!!)
+        }
         val templates = templateService.findTemplates(
             templateKey,
-            caseDefinitionName,
+            caseDefinitionId,
             templateType,
             pageable
         )
-        return ResponseEntity.ok(templates.map { TemplateListItemResponse.of(it, isReadOnly(it)) })
+        return ResponseEntity.ok(templates.map { TemplateListItemResponse.of(it) })
     }
 
-    @GetMapping("/v1/case-definition/{caseDefinitionName}/template-type/{templateType}/template/{key}")
+    @GetMapping("/v1/case-definition/{caseDefinitionKey}/version/{caseDefinitionVersionTag}/template-type/{templateType}/template/{key}")
     fun getTemplate(
-        @PathVariable caseDefinitionName: String,
+        @PathVariable caseDefinitionKey: String,
+        @PathVariable caseDefinitionVersionTag: String,
         @PathVariable templateType: String,
         @PathVariable key: String,
     ): ResponseEntity<TemplateResponse> {
-        val template = templateService.getTemplate(key, caseDefinitionName, templateType)
-        return ResponseEntity.ok(TemplateResponse.of(template, isReadOnly(template)))
+        val caseDefinitionId = CaseDefinitionId(caseDefinitionKey, caseDefinitionVersionTag)
+        val template = templateService.getTemplate(key, caseDefinitionId, templateType)
+        return ResponseEntity.ok(TemplateResponse.of(template))
     }
 
     @PostMapping("/v1/template")
@@ -79,11 +85,11 @@ class TemplateManagementResource(
     ): ResponseEntity<TemplateResponse> {
         val template = templateService.createTemplate(
             templateKey = request.key,
-            caseDefinitionName = request.caseDefinitionName,
+            caseDefinitionId = request.caseDefinitionId(),
             templateType = request.type,
             metadata = request.metadata,
         )
-        return ResponseEntity.ok(TemplateResponse.of(template, isReadOnly(template)))
+        return ResponseEntity.ok(TemplateResponse.of(template))
     }
 
     @PutMapping("/v1/template")
@@ -92,21 +98,19 @@ class TemplateManagementResource(
     ): ResponseEntity<TemplateResponse> {
         val template = templateService.saveTemplate(
             request.key,
-            request.caseDefinitionName,
+            request.caseDefinitionId(),
             request.type,
             request.metadata,
             request.content
         )
-        return ResponseEntity.ok(TemplateResponse.of(template, isReadOnly(template)))
+        return ResponseEntity.ok(TemplateResponse.of(template))
     }
 
     @DeleteMapping("/v1/template")
     fun deleteTemplates(
         @RequestBody request: DeleteTemplateRequest,
     ): ResponseEntity<Unit> {
-        templateService.deleteTemplates(request.caseDefinitionName, request.type, request.templates)
+        templateService.deleteTemplates(request.caseDefinitionId(), request.type, request.templates)
         return ResponseEntity.ok().build()
     }
-
-    private fun isReadOnly(template: ValtimoTemplate) = templateDeploymentService.deploymentFileExists(template)
 }

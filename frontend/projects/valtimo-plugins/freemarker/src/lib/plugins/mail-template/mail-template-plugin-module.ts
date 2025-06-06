@@ -24,8 +24,9 @@ import {
     EditorModule,
     FormModule,
     InputModule as ValtimoInputModule,
-    ParagraphModule, RenderInPageHeaderDirectiveModule,
-    SelectModule,
+    ParagraphModule,
+    RenderInPageHeaderDirectiveModule,
+    SelectModule, ValtimoCdsOverflowButtonDirectiveModule,
 } from '@valtimo/components';
 import {GenerateMailContentComponent} from './components/generate-mail-content/generate-mail-content.component';
 import {GenerateMailFileComponent} from './components/generate-mail-file/generate-mail-file.component';
@@ -38,24 +39,20 @@ import {
     LoadingModule,
     ModalModule,
     NotificationModule, TabsModule,
-} from 'carbon-components-angular';import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
+}
+from 'carbon-components-angular';
+import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {MailTemplateListComponent} from './components/mail-template-list/mail-template-list.component';
-import {MailTemplateAddEditModalComponent} from './components/mail-template-add-edit-modal/mail-template-add-edit-modal.component';
-import {MailTemplateEditorComponent} from './components/mail-template-editor/mail-template-editor.component';
-import {MailTemplateDeleteModalComponent} from './components/mail-template-delete-modal/mail-template-delete-modal.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TemplateManagementRoutingModule} from './mail-template-management-routing.module';
+import {MailTemplateDeleteModalComponent} from './components/mail-template-delete-modal/mail-template-delete-modal.component';
 
 @NgModule({
     declarations: [
         MailTemplateConfigurationComponent,
         GenerateMailFileComponent,
         GenerateMailContentComponent,
-        MailTemplateAddEditModalComponent,
-        MailTemplateEditorComponent,
-        MailTemplateDeleteModalComponent,
-        MailTemplateListComponent,
     ],
     imports: [
         CommonModule,
@@ -80,21 +77,19 @@ import {TemplateManagementRoutingModule} from './mail-template-management-routin
         NotificationModule,
         RenderInPageHeaderDirectiveModule,
         TabsModule,
+        ValtimoCdsOverflowButtonDirectiveModule,
+        MailTemplateDeleteModalComponent,
     ],
     exports: [
         MailTemplateConfigurationComponent,
         GenerateMailFileComponent,
         GenerateMailContentComponent,
-        MailTemplateAddEditModalComponent,
-        MailTemplateEditorComponent,
-        MailTemplateDeleteModalComponent,
-        MailTemplateListComponent,
     ],
     providers: [
         {
             provide: CASE_MANAGEMENT_TAB_TOKEN,
             useValue: {
-                translationKey: 'Mail templates',
+                translationKey: 'mail-template',
                 component: MailTemplateListComponent,
             },
             multi: true,

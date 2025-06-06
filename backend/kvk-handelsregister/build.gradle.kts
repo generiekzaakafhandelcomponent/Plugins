@@ -24,6 +24,7 @@ dockerCompose {
 
 val kotlinLoggingVersion: String by project
 val okhttpVersion: String by project
+val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation("com.ritense.valtimo:contract")
@@ -52,7 +53,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("com.jayway.jsonpath:json-path")
-    testImplementation("org.mockito.kotlin:mockito-kotlin")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
     testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")

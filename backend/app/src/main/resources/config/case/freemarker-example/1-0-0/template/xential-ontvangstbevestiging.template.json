@@ -1,6 +1,5 @@
 {
   "templateKey": "xential-template",
-  "caseDefinitionName": "xential",
   "templateType": "text",
   "metadata": {},
   "contentRef": "/config/case/freemarker-example/1-0-0/template/xential-ontvangstbevestiging.ftlh"

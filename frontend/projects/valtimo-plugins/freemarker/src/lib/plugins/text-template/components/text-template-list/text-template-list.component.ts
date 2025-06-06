@@ -15,16 +15,30 @@
  */
 
 import {ChangeDetectionStrategy, Component, OnInit, ViewChild,} from '@angular/core';
-import {BehaviorSubject, filter, map, Observable, switchMap, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, Observable, startWith, switchMap, take} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CarbonListComponent, ColumnConfig, ViewType} from '@valtimo/components';
+import {CarbonListComponent, CarbonListModule, ColumnConfig, ViewType} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateListItem} from '../../../../models';
+import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
+import {CommonModule} from '@angular/common';
+import {ButtonModule} from 'carbon-components-angular';
+import {TranslateModule} from '@ngx-translate/core';
+import {TextTemplateDeleteModalComponent} from '../text-template-delete-modal/text-template-delete-modal.component';
+import {TextTemplateAddEditModalComponent} from '../text-template-add-edit-modal/text-template-add-edit-modal.component';
 
 @Component({
-    standalone: false,
+    standalone: true,
     templateUrl: './text-template-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        CarbonListModule,
+        ButtonModule,
+        TranslateModule,
+        TextTemplateDeleteModalComponent,
+        TextTemplateAddEditModalComponent
+    ]
 })
 export class TextTemplateListComponent implements OnInit {
     @ViewChild(CarbonListComponent) carbonList: CarbonListComponent;
@@ -42,9 +56,19 @@ export class TextTemplateListComponent implements OnInit {
         },
     ];
 
-    private readonly _caseDefinitionName$: Observable<string> = this.route.params.pipe(
-        map(params => params?.name),
-        filter(caseDefinitionName => !!caseDefinitionName),
+    private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
+        filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
+    );
+
+    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
+        switchMap(caseDefinitionId => combineLatest([
+                this.environmentService.canUpdateGlobalConfiguration(),
+                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
+            ]).pipe(
+                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
+                startWith(true)
+            )
+        )
     );
 
     public readonly templates$ = new BehaviorSubject<TemplateListItem[] | null>(null);
@@ -56,7 +80,8 @@ export class TextTemplateListComponent implements OnInit {
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
         private readonly router: Router,
-        private readonly route: ActivatedRoute
+        private readonly route: ActivatedRoute,
+        private readonly environmentService: EnvironmentService,
     ) {
     }
 
@@ -74,12 +99,16 @@ export class TextTemplateListComponent implements OnInit {
             return;
         }
 
-        this._caseDefinitionName$.pipe(
+        this._caseDefinitionId$.pipe(
             take(1),
-            switchMap(caseDefinitionName => this.templateService.addTemplate({caseDefinitionName, type: 'text', ...data}))
+            switchMap(caseDefinitionId => this.templateService.addTemplate({
+                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
+                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                type: 'text', ...data
+            }))
         ).subscribe(template => {
             this.showAddModal$.next(false);
-            this.gotoTextTemplateEditor(template.caseDefinitionName, template.key);
+            this.gotoTextTemplateEditor(template.caseDefinitionKey, template.caseDefinitionVersionTag, template.key);
         });
     }
 
@@ -90,28 +119,33 @@ export class TextTemplateListComponent implements OnInit {
 
     public onDelete(templates: Array<string>): void {
         this.loading$.next(true);
-        this._caseDefinitionName$.pipe(
+        this._caseDefinitionId$.pipe(
             take(1),
-            switchMap(caseDefinitionName => this.templateService.deleteTemplates({caseDefinitionName, type: 'text', templates})),
+            switchMap(caseDefinitionId => this.templateService.deleteTemplates({
+                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
+                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                type: 'text',
+                templates
+            })),
         ).subscribe(_ => {
             this.reloadTemplateList();
         });
     }
 
     public onRowClick(template: TemplateListItem): void {
-        this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-            this.gotoTextTemplateEditor(caseDefinitionName, template.key)
+        this._caseDefinitionId$.pipe(take(1)).subscribe(caseDefinitionId =>
+            this.gotoTextTemplateEditor(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag, template.key)
         );
     }
 
-    private gotoTextTemplateEditor(caseDefinitionName: string, key: string): void {
-        this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}/text-template/${key}`])
+    private gotoTextTemplateEditor(caseDefinitionKey: string, caseDefinitionVersionTag: string, key: string): void {
+        this.router.navigate([`/case-management/case/${caseDefinitionKey}/version/${caseDefinitionVersionTag}/text-template/${key}`]);
     }
 
     private reloadTemplateList(): void {
         this.loading$.next(true);
-        this._caseDefinitionName$.pipe(
-            switchMap(caseDefinitionName => this.templateService.getAllTextTemplates(caseDefinitionName)),
+        this._caseDefinitionId$.pipe(
+            switchMap(caseDefinitionId => this.templateService.getAllTextTemplates(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)),
             map(templatePage => templatePage.content),
             take(1)
         ).subscribe(templateListItems => {

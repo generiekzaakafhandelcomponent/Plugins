@@ -44,6 +44,14 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.service.CamundaTaskService
 import com.ritense.valueresolver.ValueResolverService
+import java.net.URI
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
+import java.util.Date
+import java.util.UUID
+import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.camunda.bpm.engine.delegate.DelegateTask
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -54,12 +62,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.times
 import org.mockito.kotlin.whenever
-import java.net.URI
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
-import java.util.Date
-import java.util.UUID
 import kotlin.test.Test
 
 
@@ -113,15 +115,13 @@ internal class ExterneKlanttaakServiceTest {
             identificationValue = "999990755",
             verloopdatum = "01-01-2025"
         )
-        val executionFake = DelegateExecutionFake()
-            .withProcessInstanceId("processInstanceId")
-        val taskFake = DelegateTaskFake()
-            .withName("Fake Task")
-            .withId("fake-task-id")
-            .withExecution(executionFake)
-            .apply {
-                dueDate = Date.from(Instant.from(LocalDate.parse("2024-12-24").atStartOfDay(ZoneOffset.UTC)))
-            }
+        val executionFake = mock<DelegateExecution>()
+        whenever(executionFake.processInstanceId).thenReturn("processInstanceId")
+        val taskFake = mock<DelegateTask>()
+        whenever(taskFake.name).thenReturn("Fake Task")
+        whenever(taskFake.id).thenReturn("fake-task-id")
+        whenever(taskFake.execution).thenReturn(executionFake)
+        whenever(taskFake.dueDate).thenReturn(Date.from(Instant.from(LocalDate.parse("2024-12-24").atStartOfDay(ZoneOffset.UTC))))
 
         whenever(objectManagementService.getById(objectManagement.id))
             .thenReturn(objectManagement)
@@ -179,15 +179,19 @@ internal class ExterneKlanttaakServiceTest {
             verloopdatum = "01-01-2025",
             resultingKlanttaakObjectUrlVariable = "klanttaakUrl",
         )
-        val executionFake = DelegateExecutionFake()
-            .withProcessInstanceId("processInstanceId")
-        val taskFake = DelegateTaskFake()
-            .withName("Fake Task")
-            .withId("fake-task-id")
-            .withExecution(executionFake)
-            .apply {
-                dueDate = Date.from(Instant.from(LocalDate.parse("2024-12-24").atStartOfDay(ZoneOffset.UTC)))
-            }
+        val variables = mutableMapOf<String, Any>()
+        val executionFake = mock<DelegateExecution>()
+        whenever(executionFake.processInstanceId).thenReturn("processInstanceId")
+        whenever(executionFake.variables).thenReturn(variables)
+        whenever(executionFake.setVariable(any(), any()))
+            .thenAnswer { variables[it.arguments[0] as String] = it.arguments[1] }
+        whenever(executionFake.getVariable(any()))
+            .thenAnswer { variables[it.arguments[0] as String] }
+        val taskFake = mock<DelegateTask>()
+        whenever(taskFake.name).thenReturn("Fake Task")
+        whenever(taskFake.id).thenReturn("fake-task-id")
+        whenever(taskFake.execution).thenReturn(executionFake)
+        whenever(taskFake.dueDate).thenReturn(Date.from(Instant.from(LocalDate.parse("2024-12-24").atStartOfDay(ZoneOffset.UTC))))
         val klanttaakWrapped: ObjectWrapper = objectMapper.treeToValue(openTaakObject)
 
         whenever(objectManagementService.getById(objectManagement.id))
@@ -243,14 +247,14 @@ internal class ExterneKlanttaakServiceTest {
             koppelDocumenten = true,
             bewaarIngediendeGegevens = true,
         )
-        val executionFake = DelegateExecutionFake()
-            .withProcessInstanceId("processInstanceId")
-            .withVariables(
-                mapOf(
-                    "verwerkerTaakId" to "taak-id",
-                    "externeKlanttaakObjectUrl" to objectUrl
-                )
+        val executionFake = mock<DelegateExecution>()
+        whenever(executionFake.processInstanceId).thenReturn("processInstanceId")
+        whenever(executionFake.variables).thenReturn(
+            mapOf(
+                "verwerkerTaakId" to "taak-id",
+                "externeKlanttaakObjectUrl" to objectUrl
             )
+        )
         val afgerondeKlanttaakWrapped: ObjectWrapper = objectMapper.treeToValue(afgerondeTaakObject)
         val verwerkteKlanttaakWrapped: ObjectWrapper = objectMapper.treeToValue(afgerondeTaakObject)
 

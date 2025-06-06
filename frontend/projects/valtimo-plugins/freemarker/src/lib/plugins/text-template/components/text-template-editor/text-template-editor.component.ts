@@ -15,20 +15,41 @@
  */
 
 import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, combineLatest, filter, map, Observable, switchMap, take, tap} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, Observable, startWith, switchMap, take, tap} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BreadcrumbService, EditorModel, PageTitleService} from '@valtimo/components';
-import {NotificationService} from 'carbon-components-angular';
-import {TranslateService} from '@ngx-translate/core';
+import {
+    BreadcrumbService,
+    CarbonListModule,
+    EditorModel, EditorModule,
+    PageTitleService, RenderInPageHeaderDirectiveModule,
+    ValtimoCdsOverflowButtonDirectiveModule
+} from '@valtimo/components';
+import {ButtonModule, DialogModule, NotificationService, TabsModule} from 'carbon-components-angular';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
+import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
+import {CommonModule} from '@angular/common';
+import {TextTemplateDeleteModalComponent} from '../text-template-delete-modal/text-template-delete-modal.component';
 
 @Component({
-    standalone: false,
+    standalone: true,
     templateUrl: './text-template-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./text-template-editor.component.scss'],
     providers: [NotificationService],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        TabsModule,
+        DialogModule,
+        ValtimoCdsOverflowButtonDirectiveModule,
+        TextTemplateDeleteModalComponent,
+        CarbonListModule,
+        ButtonModule,
+        EditorModule,
+        RenderInPageHeaderDirectiveModule,
+    ]
 })
 export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     public readonly model$ = new BehaviorSubject<EditorModel | null>(null);
@@ -39,17 +60,28 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
 
-    private readonly _caseDefinitionName$: Observable<string> =
-        this.route.params.pipe(
-            map(params => params?.name),
-            filter(caseDefinitionName => !!caseDefinitionName)
-        );
+    public readonly canUpdateGlobalConfiguration$ =
+        this.environmentService.canUpdateGlobalConfiguration();
 
-    public readonly templateKey$: Observable<string> =
-        this.route.params.pipe(
-            map(params => params?.key),
-            filter(templateKey => !!templateKey)
-        );
+    private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
+        filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
+    );
+
+    public readonly templateKey$: Observable<string> = combineLatest([this.route.params, this.route.parent.params]).pipe(
+        map(([params, parentParams]) => params?.templateKey || parentParams?.templateKey),
+        filter(templateKey => !!templateKey)
+    );
+
+    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
+        switchMap(caseDefinitionId => combineLatest([
+                this.environmentService.canUpdateGlobalConfiguration(),
+                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
+            ]).pipe(
+                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
+                startWith(true)
+            )
+        )
+    );
 
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
@@ -59,6 +91,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         private readonly notificationService: NotificationService,
         private readonly translateService: TranslateService,
         private readonly breadcrumbService: BreadcrumbService,
+        private readonly environmentService: EnvironmentService,
     ) {
     }
 
@@ -73,6 +106,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public ngOnDestroy(): void {
         this.pageTitleService.enableReset();
         this.breadcrumbService.clearThirdBreadcrumb();
+        this.breadcrumbService.clearFourthBreadcrumb();
     }
 
     public onValid(valid: boolean): void {
@@ -88,12 +122,13 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         this.disableSave();
         this.disableMore();
 
-        combineLatest([this.updatedModelValue$, this._caseDefinitionName$, this.templateKey$]).pipe(
-            switchMap(([updatedModelValue, caseDefinitionName, templateKey]) =>
+        combineLatest([this.updatedModelValue$, this._caseDefinitionId$, this.templateKey$]).pipe(
+            switchMap(([updatedModelValue, caseDefinitionId, templateKey]) =>
                 this.templateService.updateTemplate(
                     {
                         key: templateKey,
-                        caseDefinitionName,
+                        caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
+                        caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
                         type: 'text',
                         content: updatedModelValue,
                     }
@@ -122,9 +157,14 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         this.disableSave();
         this.disableMore();
 
-        this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-            this.templateService.deleteTemplates({caseDefinitionName, type: 'text', templates}).pipe(take(1)).subscribe(_ =>
-                this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
+        this._caseDefinitionId$.pipe(take(1)).subscribe(caseDefinitionId =>
+            this.templateService.deleteTemplates({
+                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
+                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                type: 'text',
+                templates
+            }).pipe(take(1)).subscribe(_ =>
+                this.router.navigate([`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/text-template`])
             )
         );
     }
@@ -134,11 +174,11 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     }
 
     private loadTemplate(): void {
-        combineLatest([this._caseDefinitionName$, this.templateKey$]).pipe(
+        combineLatest([this._caseDefinitionId$, this.templateKey$]).pipe(
             tap(([_, key]) => {
-                this.pageTitleService.setCustomPageTitle(`Text Template: ${key}`, true);
+                this.pageTitleService.setCustomPageTitle(`Text template: ${key}`, true);
             }),
-            switchMap(([caseDefinitionName, key]) => this.templateService.getTextTemplate(caseDefinitionName, key)),
+            switchMap(([caseDefinitionId, key]) => this.templateService.getTextTemplate(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag, key)),
             take(1),
         ).subscribe(result => {
             this.enableMore();
@@ -182,11 +222,16 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     }
 
     private initBreadcrumb(): void {
-        this._caseDefinitionName$.subscribe(caseDefinitionName => {
+        this._caseDefinitionId$.subscribe(caseDefinitionId => {
             this.breadcrumbService.setThirdBreadcrumb({
-                route: [`/dossier-management/dossier/${caseDefinitionName}`],
-                content: caseDefinitionName,
-                href: `/dossier-management/dossier/${caseDefinitionName}`,
+                route: [`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}`],
+                content: `${caseDefinitionId.caseDefinitionKey}:${caseDefinitionId.caseDefinitionVersionTag}`,
+                href: `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}`,
+            });
+            this.breadcrumbService.setFourthBreadcrumb({
+                route: [`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/text-template`],
+                content: 'Text template',
+                href: `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/text-template`,
             });
         });
     }

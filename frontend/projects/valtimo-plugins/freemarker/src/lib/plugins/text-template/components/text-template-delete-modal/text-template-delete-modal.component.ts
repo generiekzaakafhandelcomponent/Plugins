@@ -16,12 +16,16 @@
 
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable} from 'rxjs';
+import {ConfirmationModalModule} from '@valtimo/components';
 
 @Component({
-  standalone: false,
-  selector: 'valtimo-text-template-delete-modal',
-  templateUrl: './text-template-delete-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    selector: 'valtimo-text-template-delete-modal',
+    templateUrl: './text-template-delete-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        ConfirmationModalModule
+    ]
 })
 export class TextTemplateDeleteModalComponent {
   @Input() deleteRowKeys: Array<string>;

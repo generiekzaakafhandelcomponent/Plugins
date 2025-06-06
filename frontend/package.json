@@ -5,7 +5,7 @@
     "node": ">=20.0.0 <23.0.0"
   },
   "scripts": {
-    "clean": "rimraf dist .angular node_modules package-lock.json",
+    "clean": "npx rimraf@6 dist .angular node_modules package-lock.json",
     "ng": "ng",
     "start": "ng serve --proxy-config conf/proxy.conf.json",
     "build": "ng build --output-path=deployment/dist",

@@ -39,17 +39,19 @@ import com.ritense.zakenapi.ZakenApiPlugin
 import com.ritense.zakenapi.domain.rol.BetrokkeneType.NATUURLIJK_PERSOON
 import com.ritense.zakenapi.domain.rol.Rol
 import com.ritense.zakenapi.domain.rol.RolNatuurlijkPersoon
-import org.apache.commons.codec.binary.Base32
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 import java.net.URI
 import java.time.LocalDateTime
 import java.util.Date
 import java.util.UUID
+import org.apache.commons.codec.binary.Base32
+import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.camunda.bpm.engine.delegate.DelegateTask
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -85,14 +87,12 @@ class ExterneKlanttaakV1x1x0Test {
     fun `should create URL Klanttaak instance from valid config`() {
         // given
         val processBusinessKey = UUID.randomUUID().toString()
-        val delegateExecutionFake =
-            DelegateExecutionFake()
-                .withProcessBusinessKey(processBusinessKey)
-        val delegateTask =
-            DelegateTaskFake()
-                .withId(UUID.randomUUID().toString())
-                .withName("Do something!")
-                .withExecution(delegateExecutionFake)
+        val delegateExecutionFake = mock<DelegateExecution>()
+        whenever(delegateExecutionFake.processBusinessKey).thenReturn(processBusinessKey)
+        val delegateTask = mock<DelegateTask>()
+        whenever(delegateTask.id).thenReturn(processBusinessKey)
+        whenever(delegateTask.name).thenReturn(processBusinessKey)
+        whenever(delegateTask.execution).thenReturn(delegateExecutionFake)
         val zaakUrl = URI.create("https://example.com/zaak-url")
         val zaakRollen = listOf(
             Rol(
@@ -144,15 +144,13 @@ class ExterneKlanttaakV1x1x0Test {
         // given
         val processBusinessKey = UUID.randomUUID().toString()
         val processInstanceId = UUID.randomUUID().toString()
-        val delegateExecutionFake =
-            DelegateExecutionFake()
-                .withBusinessKey(processBusinessKey)
-                .withProcessInstanceId(processInstanceId)
-        val delegateTask =
-            DelegateTaskFake()
-                .withId(UUID.randomUUID().toString())
-                .withName("Do something!")
-                .withExecution(delegateExecutionFake)
+        val delegateExecutionFake = mock<DelegateExecution>()
+        whenever(delegateExecutionFake.businessKey).thenReturn(processBusinessKey)
+        whenever(delegateExecutionFake.processInstanceId).thenReturn(processInstanceId)
+        val delegateTask = mock<DelegateTask>()
+        whenever(delegateTask.id).thenReturn(UUID.randomUUID().toString())
+        whenever(delegateTask.name).thenReturn("Do something!")
+        whenever(delegateTask.execution).thenReturn(delegateExecutionFake)
 
         val createActionConfig =
             CreateExterneKlanttaakActionConfigV1x1x0(
@@ -203,16 +201,13 @@ class ExterneKlanttaakV1x1x0Test {
         val processBusinessKey = UUID.randomUUID().toString()
         val kenmerk = Base32().encode(processBusinessKey.toByteArray()).toString(Charsets.UTF_8)
         val delegateExecutionFake =
-            DelegateExecutionFake()
-                .withProcessBusinessKey(processBusinessKey)
-        val delegateTask =
-            DelegateTaskFake()
-                .withId(UUID.randomUUID().toString())
-                .withName("Do something!")
-                .withExecution(delegateExecutionFake)
-                .apply {
-                    dueDate = Date()
-                }
+            mock<DelegateExecution>()
+        whenever(delegateExecutionFake.processBusinessKey).thenReturn(processBusinessKey)
+        val delegateTask = mock<DelegateTask>()
+        whenever(delegateTask.id).thenReturn(UUID.randomUUID().toString())
+        whenever(delegateTask.name).thenReturn("Do something!")
+        whenever(delegateTask.execution).thenReturn(delegateExecutionFake)
+        whenever(delegateTask.dueDate).thenReturn(Date())
 
         val createActionConfig =
             CreateExterneKlanttaakActionConfigV1x1x0(

@@ -24,6 +24,7 @@ dockerCompose {
 }
 
 val kotlinLoggingVersion: String by project
+val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation("com.ritense.valtimo:case")
@@ -51,7 +52,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 

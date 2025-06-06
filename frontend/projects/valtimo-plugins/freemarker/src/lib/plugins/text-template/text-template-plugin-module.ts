@@ -24,7 +24,8 @@ import {
     EditorModule,
     FormModule,
     InputModule as ValtimoInputModule,
-    ParagraphModule, RenderInPageHeaderDirectiveModule,
+    ParagraphModule,
+    RenderInPageHeaderDirectiveModule,
     SelectModule,
 } from '@valtimo/components';
 import {
@@ -35,13 +36,11 @@ import {
     InputModule,
     LoadingModule,
     ModalModule,
-    NotificationModule, TabsModule,
+    NotificationModule,
+    TabsModule,
 } from 'carbon-components-angular';
 import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {TextTemplateListComponent} from './components/text-template-list/text-template-list.component';
-import {TextTemplateAddEditModalComponent} from './components/text-template-add-edit-modal/text-template-add-edit-modal.component';
-import {TextTemplateEditorComponent} from './components/text-template-editor/text-template-editor.component';
-import {TextTemplateDeleteModalComponent} from './components/text-template-delete-modal/text-template-delete-modal.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TemplateManagementRoutingModule} from './text-template-management-routing.module';
@@ -51,10 +50,6 @@ import {GenerateTextFileComponent} from './components/generate-text-file/generat
     declarations: [
         GenerateTextFileComponent,
         TextTemplateConfigurationComponent,
-        TextTemplateAddEditModalComponent,
-        TextTemplateEditorComponent,
-        TextTemplateDeleteModalComponent,
-        TextTemplateListComponent,
     ],
     imports: [
         CommonModule,
@@ -82,17 +77,12 @@ import {GenerateTextFileComponent} from './components/generate-text-file/generat
     ],
     exports: [
         GenerateTextFileComponent,
-        TextTemplateConfigurationComponent,
-        TextTemplateAddEditModalComponent,
-        TextTemplateEditorComponent,
-        TextTemplateDeleteModalComponent,
-        TextTemplateListComponent,
     ],
     providers: [
         {
             provide: CASE_MANAGEMENT_TAB_TOKEN,
             useValue: {
-                translationKey: 'Text templates',
+                translationKey: 'text-template',
                 component: TextTemplateListComponent,
             },
             multi: true,

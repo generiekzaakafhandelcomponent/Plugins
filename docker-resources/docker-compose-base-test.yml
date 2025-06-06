@@ -8,4 +8,17 @@ services:
             POSTGRES_USER: test-user
             POSTGRES_PASSWORD: password
 # Ports taken
-#   url: jdbc:postgresql://lo`calhost:54341/slack-test
+#   url: jdbc:postgresql://localhost:54341/slack-test
+#   url: jdbc:postgresql://localhost:54342/freemarker
+#   url: jdbc:postgresql://localhost:54343/alfresco-authentication-test
+#   url: jdbc:postgresql://localhost:54344/amsterdam-email-api-test
+#   url: jdbc:postgresql://localhost:54345/berkelybridge-textgenerator-test
+#   url: jdbc:postgresql://localhost:54346/externe-klanttaak-test
+#   url: jdbc:postgresql://localhost:54347/kvk-handelsregister-test
+#   url: jdbc:postgresql://localhost:54348/mtls-sslcontext-test
+#   url: jdbc:postgresql://localhost:54349/public-task-test
+#   url: jdbc:postgresql://localhost:54350/smtpmail-test
+#   url: jdbc:postgresql://localhost:54351/spotler-test
+#   url: jdbc:postgresql://localhost:54352/suwinet-test
+#   url: jdbc:postgresql://localhost:54353/xential-test
+#   url: jdbc:postgresql://localhost:54354/hugging-face-test

@@ -15,8 +15,7 @@
  */
 
 plugins {
-    id("org.openapi.generator") version "7.10.0"
-    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
+    id("org.openapi.generator") version "7.13.0"
 }
 
 //ktlint {
@@ -38,6 +37,7 @@ val kotlinLoggingVersion: String by project
 val openApiGeneratorPluginVersion: String by project
 val okhttpVersion: String by project
 val squareupMoshiVersion: String by project
+val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation(project(":backend:mTLS-SSLContext"))
@@ -78,7 +78,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 

@@ -38,26 +38,20 @@ class TemplateExporter(
     override fun supports() = DocumentDefinitionExportRequest::class.java
 
     override fun export(request: DocumentDefinitionExportRequest): ExportResult {
-        val caseDefinitionName = request.name
-        val templates = templateService.findTemplates(caseDefinitionName = caseDefinitionName)
+        val templates = templateService.findTemplates(caseDefinitionId = request.caseDefinitionId)
+
         if (templates.isEmpty()) {
             return ExportResult()
         }
 
-        val templateDeploymentMetadataList = templates.map { template ->
-            TemplateDeploymentMetadata(
-                templateKey = template.key,
-                caseDefinitionName = template.caseDefinitionName,
-                templateType = template.type,
-                metadata = template.metadata,
-                content = template.content,
-            )
+        val formattedCaseDefinitionVersion = request.caseDefinitionId.versionTag.let {
+            "${it.major}-${it.minor}-${it.patch}"
         }
 
-        val exportFiles = templateDeploymentMetadataList.map { templateMetadata ->
+        val exportFiles = templates.map { template ->
             ExportFile(
-                PATH.format(templateMetadata.templateKey, templateMetadata.templateType),
-                objectMapper.writer(ExportPrettyPrinter()).writeValueAsBytes(templateMetadata)
+                PATH.format(request.caseDefinitionId.key, formattedCaseDefinitionVersion, template.key, template.type),
+                objectMapper.writer(ExportPrettyPrinter()).writeValueAsBytes(TemplateDeploymentMetadata.of(template))
             )
         }
 
@@ -65,6 +59,6 @@ class TemplateExporter(
     }
 
     companion object {
-        private const val PATH = "config/template/%s-%s.template.json"
+        private const val PATH = "config/case/%s/%s/template/%s-%s.template.json"
     }
 }

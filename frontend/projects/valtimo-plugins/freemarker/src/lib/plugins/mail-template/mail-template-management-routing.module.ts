@@ -21,16 +21,16 @@ import {AuthGuardService} from '@valtimo/security';
 import {MailTemplateEditorComponent} from './components/mail-template-editor/mail-template-editor.component';
 
 const routes: Routes = [
-  {
-    path: 'dossier-management/dossier/:name/mail-template/:key',
-    component: MailTemplateEditorComponent,
-    canActivate: [AuthGuardService],
-    data: {
-      title: 'Mail Template Editor',
-      templates: [ROLE_ADMIN],
-      customPageTitle: true,
+    {
+        path: 'case-management/case/:caseDefinitionKey/version/:caseDefinitionVersionTag/mail-template/:templateKey',
+        component: MailTemplateEditorComponent,
+        canActivate: [AuthGuardService],
+        data: {
+            title: 'Mail Template Editor',
+            templates: [ROLE_ADMIN],
+            customPageTitle: true,
+        },
     },
-  },
 ];
 
 @NgModule({

@@ -30,6 +30,7 @@ pluginManagement {
     val kotlinVersion: String by settings
     val dockerComposePluginVersion: String by settings
     val lalakiCentralVersion: String by settings
+    val ktlintVersion: String by settings
 
     plugins {
         // Idea
@@ -49,5 +50,8 @@ pluginManagement {
         // Other
         id("com.avast.gradle.docker-compose") version dockerComposePluginVersion
         id("cn.lalaki.central") version lalakiCentralVersion
+
+        // Checkstyle
+        id("org.jlleitschuh.gradle.ktlint") version ktlintVersion
     }
 }

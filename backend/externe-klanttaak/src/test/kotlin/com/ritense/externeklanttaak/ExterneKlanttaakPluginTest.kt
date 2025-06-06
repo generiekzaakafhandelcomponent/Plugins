@@ -36,6 +36,7 @@ import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
 import com.ritense.zakenapi.link.ZaakInstanceLinkService
+import java.util.UUID
 import org.camunda.bpm.engine.delegate.DelegateTask
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
@@ -44,7 +45,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.whenever
-import java.util.UUID
 import kotlin.test.Test
 
 
@@ -95,13 +95,13 @@ internal class ExterneKlanttaakPluginTest {
 
         assertThrows<IllegalArgumentException> {
             externeKlanttaakPlugin.createExterneKlanttaak(
-                DelegateTaskFake(),
+                mock<DelegateTask>(),
                 oldUnsupportedConfig
             )
         }
         assertThrows<IllegalArgumentException> {
             externeKlanttaakPlugin.createExterneKlanttaak(
-                DelegateTaskFake(),
+                mock<DelegateTask>(),
                 futureUnsupportedConfig
             )
         }

@@ -21,16 +21,16 @@ import {AuthGuardService} from '@valtimo/security';
 import {TextTemplateEditorComponent} from './components/text-template-editor/text-template-editor.component';
 
 const routes: Routes = [
-  {
-    path: 'dossier-management/dossier/:name/text-template/:key',
-    component: TextTemplateEditorComponent,
-    canActivate: [AuthGuardService],
-    data: {
-      title: 'Text Template Editor',
-      templates: [ROLE_ADMIN],
-      customPageTitle: true,
+    {
+        path: 'case-management/case/:caseDefinitionKey/version/:caseDefinitionVersionTag/text-template/:templateKey',
+        component: TextTemplateEditorComponent,
+        canActivate: [AuthGuardService],
+        data: {
+            title: 'Text Template Editor',
+            templates: [ROLE_ADMIN],
+            customPageTitle: true,
+        },
     },
-  },
 ];
 
 @NgModule({

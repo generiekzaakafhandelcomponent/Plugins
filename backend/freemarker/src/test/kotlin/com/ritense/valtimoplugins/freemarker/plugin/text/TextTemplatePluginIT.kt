@@ -83,6 +83,8 @@ class TextTemplatePluginIT : BaseIntegrationTest() {
             PROCESS_DEFINITION_KEY,
             NewDocumentRequest(
                 DOCUMENT_DEFINITION_NAME,
+                DOCUMENT_DEFINITION_NAME,
+                "1.0.0",
                 MapperSingleton.get().readTree(documentContent)
             )
         )

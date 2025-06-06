@@ -16,6 +16,7 @@
 
 package com.ritense.valtimoplugins.freemarker.repository
 
+import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
 import org.springframework.data.jpa.domain.Specification
 
@@ -24,7 +25,7 @@ class ValtimoTemplateSpecificationHelper {
     companion object {
 
         const val KEY: String = "key"
-        const val CASE_DEFINITION_NAME: String = "caseDefinitionName"
+        const val CASE_DEFINITION_ID: String = "caseDefinitionId"
         const val TYPE: String = "type"
 
         @JvmStatic
@@ -38,11 +39,11 @@ class ValtimoTemplateSpecificationHelper {
         }
 
         @JvmStatic
-        fun byCaseDefinitionName(caseDefinitionName: String?) = Specification<ValtimoTemplate> { root, _, cb ->
-            if (caseDefinitionName == null) {
-                root.get<Any>(CASE_DEFINITION_NAME).isNull
+        fun byCaseDefinitionId(caseDefinitionId: CaseDefinitionId?) = Specification<ValtimoTemplate> { root, _, cb ->
+            if (caseDefinitionId == null) {
+                root.get<Any>(CASE_DEFINITION_ID).isNull
             } else {
-                cb.equal(root.get<Any>(CASE_DEFINITION_NAME), caseDefinitionName)
+                cb.equal(root.get<Any>(CASE_DEFINITION_ID), caseDefinitionId)
             }
         }
 
@@ -52,8 +53,8 @@ class ValtimoTemplateSpecificationHelper {
         }
 
         @JvmStatic
-        fun byKeyAndCaseDefinitionNameAndType(key: String, caseDefinitionName: String?, type: String) =
-            byKey(key).and(byCaseDefinitionName(caseDefinitionName)).and(byType(type))
+        fun byKeyAndCaseDefinitionIdAndType(key: String, caseDefinitionId: CaseDefinitionId?, type: String) =
+            byKey(key).and(byCaseDefinitionId(caseDefinitionId)).and(byType(type))
 
     }
 }

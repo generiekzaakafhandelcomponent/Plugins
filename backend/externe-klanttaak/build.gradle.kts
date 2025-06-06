@@ -25,6 +25,7 @@ dockerCompose {
 
 val kotlinLoggingVersion: String by project
 val okhttpVersion: String by project
+val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation("com.ritense.valtimo:catalogi-api")
@@ -60,7 +61,7 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("org.mockito:mockito-core")
-    testImplementation("org.mockito.kotlin:mockito-kotlin")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 

@@ -16,16 +16,25 @@
 
 package com.ritense.valtimoplugins.freemarker.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.ritense.importer.ImportContext.Companion.runImporter
 import com.ritense.importer.ImportRequest
 import com.ritense.importer.Importer
 import com.ritense.importer.ValtimoImportTypes.Companion.DOCUMENT_DEFINITION
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimo.contract.case_.CaseDefinitionId
+import com.ritense.valtimoplugins.freemarker.model.TemplateDeploymentMetadata
+import io.github.oshai.kotlinlogging.KLogger
+import io.github.oshai.kotlinlogging.KotlinLogging
+import java.io.InputStream
 import org.springframework.stereotype.Component
 
 @Component
 @SkipComponentScan
 class TemplateImporter(
-    private val templateDeploymentService: TemplateDeploymentService,
+    private val templateService: TemplateService,
+    private val objectMapper: ObjectMapper,
 ) : Importer {
     override fun type(): String = "template"
 
@@ -33,11 +42,34 @@ class TemplateImporter(
 
     override fun supports(fileName: String): Boolean = fileName.matches(FILENAME_REGEX)
 
-    override fun import(request: ImportRequest) {
-        templateDeploymentService.deploy(request.fileName, request.content.inputStream())
+    override fun import(request: ImportRequest): Unit = runImporter {
+        deploy(request.fileName, request.content.inputStream(), request.caseDefinitionId!!)
     }
 
-    private companion object {
-        val FILENAME_REGEX = """config/template/([^/]+)\.template\.json""".toRegex()
+    private fun deploy(fileName: String, fileContent: InputStream, caseDefinitionId: CaseDefinitionId) {
+        try {
+            logger.info { "Deploying template from file '${fileName}'" }
+            val template = objectMapper.readValue<TemplateDeploymentMetadata>(fileContent)
+            require(template.content != null || template.contentRef != null) {
+                "Missing template content in file '${fileName}'"
+            }
+            val content = template.content
+                ?: this::class.java.getResource(template.contentRef!!)!!.readText()
+
+            templateService.saveTemplate(
+                templateKey = template.templateKey,
+                caseDefinitionId = caseDefinitionId,
+                templateType = template.templateType,
+                metadata = template.metadata ?: emptyMap(),
+                content = content
+            )
+        } catch (e: Exception) {
+            throw IllegalStateException("Error while deploying template $fileName", e)
+        }
+    }
+
+    companion object {
+        private val logger: KLogger = KotlinLogging.logger {}
+        private val FILENAME_REGEX = """/template/([^/]+)\.template\.json""".toRegex()
     }
 }

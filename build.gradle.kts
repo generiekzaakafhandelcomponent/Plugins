@@ -1,11 +1,12 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import io.spring.gradle.dependencymanagement.org.codehaus.plexus.interpolation.os.Os.FAMILY_MAC
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val lalakiCentralVersion: String by project
 val valtimoVersion: String by project
+val ktlintVersion: String by project
 
 plugins {
     // Idea
@@ -22,6 +23,9 @@ plugins {
     kotlin("plugin.jpa")
     kotlin("plugin.allopen")
 
+    // Checkstyle
+    id("org.jlleitschuh.gradle.ktlint")
+
     // Other
     id("com.avast.gradle.docker-compose")
     id("cn.lalaki.central")
@@ -31,9 +35,8 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { url = uri("https://s01.oss.sonatype.org/content/repositories/releases/") }
         maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
-        maven { url = uri("https://repo.ritense.com/repository/maven-public/") }
-        maven { url = uri("https://repo.ritense.com/repository/maven-snapshot/") }
     }
 }
 
@@ -89,7 +92,7 @@ subprojects {
 
         tasks.test {
             useJUnitPlatform {
-                excludeTags ("integration")
+                excludeTags("integration")
             }
         }
 
@@ -109,9 +112,13 @@ subprojects {
             }
         }
     }
-    if(project.path.startsWith(":backend") && project.name != "app" && project.name != "gradle" && project.name != "backend") {
+    if (project.path.startsWith(":backend") && project.name != "app" && project.name != "gradle" && project.name != "backend") {
         apply(from = "$rootDir/gradle/publishing.gradle")
     }
+}
+
+ktlint {
+    version.set("1.4.1")
 }
 
 tasks.bootJar {

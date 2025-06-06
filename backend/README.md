@@ -4,6 +4,10 @@ This project also contains a working example application which is meant to showc
 
 ## Running the example application
 
+### Prerequisites
+- Java 21
+- [Docker (Desktop)](https://www.docker.com/products/docker-desktop/)
+
 ### Start docker
 
 Make sure docker is running. Then use the following commands:

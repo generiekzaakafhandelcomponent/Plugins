@@ -20,11 +20,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.Document
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimo.contract.case_.CaseDefinitionChecker
+import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
-import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byCaseDefinitionName
+import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byCaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKey
-import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKeyAndCaseDefinitionNameAndType
+import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKeyAndCaseDefinitionIdAndType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.query
 import com.ritense.valueresolver.ValueResolverService
@@ -50,29 +52,27 @@ class TemplateService(
     private val objectMapper: ObjectMapper,
     private val valueResolverService: ValueResolverService,
     private val freemarkerConfiguration: Configuration,
+    private val caseDefinitionChecker: CaseDefinitionChecker,
 ) {
 
     fun generate(
         templateKey: String,
-        caseDefinitionName: String,
         templateType: String,
         document: Document,
     ): String = generate(
         templateKey = templateKey,
-        caseDefinitionName = caseDefinitionName,
         templateType = templateType,
         document = document
     )
 
     fun generate(
         templateKey: String,
-        caseDefinitionName: String,
         templateType: String,
         document: Document,
         processVariables: Map<String, Any?> = emptyMap(),
         strict: Boolean = true,
     ): String {
-        val template = getTemplate(templateKey, document.definitionId().name(), templateType)
+        val template = getTemplate(templateKey, document.definitionId().caseDefinitionId(), templateType)
         return generate(template, document, processVariables, strict)
     }
 
@@ -118,55 +118,60 @@ class TemplateService(
 
     fun findTemplates(
         templateKey: String? = null,
-        caseDefinitionName: String? = null,
+        caseDefinitionId: CaseDefinitionId? = null,
         templateType: String? = null,
         pageable: Pageable,
     ): Page<ValtimoTemplate> {
-        val query = buildSpecification(templateKey, caseDefinitionName, templateType)
+        val query = buildSpecification(templateKey, caseDefinitionId, templateType)
         return templateRepository.findAll(query, pageable)
     }
 
     fun findTemplates(
         templateKey: String? = null,
-        caseDefinitionName: String? = null,
+        caseDefinitionId: CaseDefinitionId? = null,
         templateType: String? = null,
     ): List<ValtimoTemplate> {
-        val query = buildSpecification(templateKey, caseDefinitionName, templateType)
+        val query = buildSpecification(templateKey, caseDefinitionId, templateType)
         return templateRepository.findAll(query)
     }
 
     fun findTemplate(
         templateKey: String,
-        caseDefinitionName: String?,
+        caseDefinitionId: CaseDefinitionId?,
         templateType: String,
     ): ValtimoTemplate? {
         return templateRepository.findOne(
-            byKeyAndCaseDefinitionNameAndType(templateKey, caseDefinitionName, templateType)
+            byKeyAndCaseDefinitionIdAndType(templateKey, caseDefinitionId, templateType)
         ).orElse(null)
     }
 
     fun getTemplate(
         templateKey: String,
-        caseDefinitionName: String?,
+        caseDefinitionId: CaseDefinitionId?,
         templateType: String,
     ): ValtimoTemplate {
-        return findTemplate(templateKey, caseDefinitionName, templateType)
-            ?: throw IllegalStateException("No Template found for '$templateType/$caseDefinitionName/$templateKey'")
+        return findTemplate(templateKey, caseDefinitionId, templateType)
+            ?: throw IllegalStateException("No Template found for '$templateType/$caseDefinitionId/$templateKey'")
     }
 
     fun saveTemplate(
         templateKey: String,
-        caseDefinitionName: String?,
+        caseDefinitionId: CaseDefinitionId?,
         templateType: String,
         metadata: Map<String, Any?>,
         content: String,
     ): ValtimoTemplate {
-        val existingTemplate = findTemplate(templateKey, caseDefinitionName, templateType)
+        if (caseDefinitionId == null) {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
+        } else {
+            caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        }
+        val existingTemplate = findTemplate(templateKey, caseDefinitionId, templateType)
         return templateRepository.save(
             ValtimoTemplate(
                 id = existingTemplate?.id ?: UUID.randomUUID(),
                 key = templateKey,
-                caseDefinitionName = caseDefinitionName,
+                caseDefinitionId = caseDefinitionId,
                 type = templateType,
                 metadata = metadata,
                 content = content,
@@ -176,19 +181,24 @@ class TemplateService(
 
     fun createTemplate(
         templateKey: String,
-        caseDefinitionName: String?,
+        caseDefinitionId: CaseDefinitionId?,
         templateType: String,
         metadata: Map<String, Any?>,
     ): ValtimoTemplate {
+        if (caseDefinitionId == null) {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
+        } else {
+            caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        }
         require(
             !templateRepository.exists(
-                byKeyAndCaseDefinitionNameAndType(templateKey, caseDefinitionName, templateType)
+                byKeyAndCaseDefinitionIdAndType(templateKey, caseDefinitionId, templateType)
             )
         ) { "Template '$templateKey' already exists" }
         return templateRepository.save(
             ValtimoTemplate(
                 key = templateKey,
-                caseDefinitionName = caseDefinitionName,
+                caseDefinitionId = caseDefinitionId,
                 type = templateType,
                 metadata = metadata,
             )
@@ -196,34 +206,53 @@ class TemplateService(
     }
 
     fun deleteTemplates(
-        caseDefinitionName: String?,
+        caseDefinitionId: CaseDefinitionId?,
         templateType: String,
         templateKeys: List<String>
     ) {
+        if (caseDefinitionId == null) {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
+        } else {
+            caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        }
         templateKeys.forEach { key ->
-            deleteTemplate(key, caseDefinitionName, templateType)
+            deleteTemplate(key, caseDefinitionId, templateType)
         }
     }
 
     fun deleteTemplate(
         templateKey: String,
-        caseDefinitionName: String?,
+        caseDefinitionId: CaseDefinitionId?,
         templateType: String,
     ) {
-        templateRepository.delete(byKeyAndCaseDefinitionNameAndType(templateKey, caseDefinitionName, templateType))
+        if (caseDefinitionId == null) {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
+        } else {
+            caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        }
+        templateRepository.delete(byKeyAndCaseDefinitionIdAndType(templateKey, caseDefinitionId, templateType))
+    }
+
+    fun deleteTemplatesByCaseDefinitionId(caseDefinitionId: CaseDefinitionId?) {
+        if (caseDefinitionId == null) {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
+        } else {
+            caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        }
+        templateRepository.delete(byCaseDefinitionId(caseDefinitionId))
     }
 
     private fun buildSpecification(
         templateKey: String? = null,
-        caseDefinitionName: String? = null,
+        caseDefinitionId: CaseDefinitionId? = null,
         templateType: String? = null,
     ): Specification<ValtimoTemplate> {
         var query = query()
         if (!templateKey.isNullOrEmpty()) {
             query = query.and(byKey(templateKey))
         }
-        if (caseDefinitionName?.isNotEmpty() == true) {
-            query = query.and(byCaseDefinitionName(caseDefinitionName))
+        if (caseDefinitionId != null) {
+            query = query.and(byCaseDefinitionId(caseDefinitionId))
         }
         if (!templateType.isNullOrEmpty()) {
             query = query.and(byType(templateType))
