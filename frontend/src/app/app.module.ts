@@ -26,7 +26,6 @@ import {environment} from '../environments/environment';
 import {SecurityModule} from '@valtimo/security';
 import {
   BpmnJsDiagramModule,
-  CardModule,
   enableCustomFormioComponents,
   MenuModule,
   registerFormioFileSelectorComponent,
@@ -38,12 +37,12 @@ import {
 } from '@valtimo/components';
 import {
   DefaultTabs,
-  DossierDetailTabAuditComponent,
-  DossierDetailTabDocumentsComponent,
-  DossierDetailTabProgressComponent,
-  DossierDetailTabSummaryComponent,
-  DossierModule,
-} from '@valtimo/dossier';
+  CaseDetailTabAuditComponent,
+  CaseDetailTabDocumentsComponent,
+  CaseDetailTabProgressComponent,
+  CaseDetailTabSummaryComponent,
+  CaseModule,
+} from '@valtimo/Case';
 import {ProcessModule} from '@valtimo/process';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DocumentModule} from '@valtimo/document';
@@ -59,9 +58,9 @@ import {MilestoneModule} from '@valtimo/milestone';
 import {LoggerModule} from 'ngx-logger';
 import {FormManagementModule} from '@valtimo/form-management';
 import {MigrationModule} from '@valtimo/migration';
-import {DossierManagementModule} from '@valtimo/dossier-management';
+import {CaseManagementModule} from '@valtimo/Case-management';
 import {BootstrapModule} from '@valtimo/bootstrap';
-import {ConfigModule, ConfigService, CustomMultiTranslateHttpLoaderFactory, LocalizationService} from '@valtimo/config';
+import {ConfigModule, ConfigService, CustomMultiTranslateHttpLoaderFactory, LocalizationService} from '@valtimo/shared';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
@@ -104,13 +103,14 @@ import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from "@valtimo/dashboard";
 import {DashboardManagementModule} from "@valtimo/dashboard-management";
 import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
+import { SseModule } from '@valtimo/sse';
 
 export function tabsFactory() {
   return new Map<string, object>([
-    [DefaultTabs.summary, DossierDetailTabSummaryComponent],
-    [DefaultTabs.progress, DossierDetailTabProgressComponent],
-    [DefaultTabs.audit, DossierDetailTabAuditComponent],
-    [DefaultTabs.documents, DossierDetailTabDocumentsComponent],
+    [DefaultTabs.summary, CaseDetailTabSummaryComponent],
+    [DefaultTabs.progress, CaseDetailTabProgressComponent],
+    [DefaultTabs.audit, CaseDetailTabAuditComponent],
+    [DefaultTabs.documents, CaseDetailTabDocumentsComponent],
   ]);
 }
 
@@ -140,7 +140,6 @@ export function tabsFactory() {
         BrowserModule,
         AppRoutingModule,
         LayoutModule,
-        CardModule,
         WidgetModule,
         BootstrapModule,
         ConfigModule.forRoot(environment),
@@ -149,7 +148,7 @@ export function tabsFactory() {
         SecurityModule,
         MenuModule,
         TaskModule,
-        DossierModule.forRoot(tabsFactory),
+        CaseModule.forRoot(tabsFactory),
         ProcessModule,
         BpmnJsDiagramModule,
         FormsModule,
@@ -168,7 +167,7 @@ export function tabsFactory() {
         ProcessLinkModule,
         MigrationModule,
         LoggingModule,
-        DossierManagementModule,
+        CaseManagementModule,
         PluginManagementModule,
         AccessControlManagementModule,
         ObjectenApiPluginModule,
@@ -176,7 +175,6 @@ export function tabsFactory() {
         ObjectTokenAuthenticationPluginModule,
         ObjectModule,
         ObjectManagementModule,
-        HttpClientModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -191,6 +189,7 @@ export function tabsFactory() {
         DashboardModule,
         DashboardManagementModule,
         KvkPluginModule,
+        SseModule,
     ],
     providers: [{
         provide: PLUGINS_TOKEN,

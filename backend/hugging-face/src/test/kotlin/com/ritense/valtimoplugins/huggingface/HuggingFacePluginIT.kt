@@ -125,7 +125,7 @@ class HuggingFacePluginIT : BaseIntegrationTest() {
         return pluginService.createPluginConfiguration(
             "hugging-face plugin configuration",
             MapperSingleton.get().readTree(configurationProperties) as ObjectNode,
-            "hugging-face"
+            "smart-task-plugin"
         )
     }
 
@@ -157,6 +157,8 @@ class HuggingFacePluginIT : BaseIntegrationTest() {
             PROCESS_DEFINITION_KEY,
             NewDocumentRequest(
                 DOCUMENT_DEFINITION_KEY,
+                CASE_DEFINITION_KEY,
+                CASE_DEFINITION_VERSION_TAG,
                 MapperSingleton.get().readTree(documentContent)
             )
         )
@@ -175,6 +177,8 @@ class HuggingFacePluginIT : BaseIntegrationTest() {
     }
 
     companion object {
+        private const val CASE_DEFINITION_KEY = "profile"
+        private const val CASE_DEFINITION_VERSION_TAG = "1.0.0"
         private const val PROCESS_DEFINITION_KEY = "ServiceTaskProcess"
         private const val DOCUMENT_DEFINITION_KEY = "profile"
     }

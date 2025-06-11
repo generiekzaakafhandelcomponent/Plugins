@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {GenerateDocumentConfig} from "../../models";
 import {SelectItem, ValuePathSelectorPrefix} from "@valtimo/components";
 
 @Component({
+    standalone: false,
     selector: 'xential-generate-document-configuration',
     templateUrl: './generate-document-configuration.component.html'
 })

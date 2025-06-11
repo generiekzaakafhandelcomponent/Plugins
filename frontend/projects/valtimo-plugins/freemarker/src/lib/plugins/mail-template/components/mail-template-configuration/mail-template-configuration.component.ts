@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} fro
 import {MailTemplateConfig} from '../../models';
 
 @Component({
+  standalone: false,
   selector: 'valtimo-mail-template-configuration',
   templateUrl: './mail-template-configuration.component.html',
 })

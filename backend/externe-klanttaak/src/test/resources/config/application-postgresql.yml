@@ -1,7 +1,7 @@
 spring:
     datasource:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:54341/externe-klanttaak
+        url: jdbc:postgresql://localhost:54346/externe-klanttaak
         username: test-user
         password: password
         hikari:

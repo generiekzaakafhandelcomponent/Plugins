@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-dockerCompose {
-    setProjectName("NotifyNl")
-    isRequiredBy(project.tasks.integrationTesting)
-
-    tasks.integrationTesting {
-        useComposeFiles.addAll("$rootDir/docker-resources/docker-compose-base-test.yml", "docker-compose-override.yml")
-    }
-}
+val kotlinLoggingVersion: String by project
+val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
+    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
     // Testing
     testImplementation("com.ritense.valtimo:local-resource")
@@ -41,7 +35,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

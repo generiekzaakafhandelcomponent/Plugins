@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take, tap} from 'rxjs';
 import {Recipient, SendMailActionConfig} from '../../models';
 import {
@@ -16,6 +16,7 @@ import {
 } from '@valtimo/components';
 
 @Component({
+    standalone: false,
     selector: 'spotler-send-mail-action-configuration',
     templateUrl: './send-mail-action-configuration.component.html',
     styleUrls: ['./send-mail-action-configuration.component.scss'],

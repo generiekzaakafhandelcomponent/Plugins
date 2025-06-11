@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {PublicTaskConfig} from '../../models';
 
 @Component({
+  standalone: false,
   selector: 'publictask-plugin-configuration',
   templateUrl: './publictask-plugin-configuration.component.html',
 })

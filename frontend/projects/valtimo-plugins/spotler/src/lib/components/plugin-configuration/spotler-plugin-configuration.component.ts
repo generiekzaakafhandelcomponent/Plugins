@@ -23,6 +23,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {SpotlerPluginConfig} from "../../models";
 
 @Component({
+  standalone: false,
   selector: 'spotler-plugin-configuration',
   templateUrl: './spotler-plugin-configuration.component.html',
   styleUrls: ['./spotler-plugin-configuration.component.scss'],

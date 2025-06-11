@@ -204,6 +204,8 @@ class SlackPluginIT : BaseIntegrationTest() {
             PROCESS_DEFINITION_KEY,
             NewDocumentRequest(
                 DOCUMENT_DEFINITION_KEY,
+                DOCUMENT_DEFINITION_KEY,
+                "1.0.0",
                 MapperSingleton.get().readTree(documentContent)
             )
         )

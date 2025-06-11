@@ -28,6 +28,7 @@ import {Toggle} from "carbon-components-angular";
 import {NGXLogger} from "ngx-logger";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-rotterdam-oracle-ebs-configuration',
     templateUrl: './configuration.component.html',
     styleUrl: 'configuration.component.scss'

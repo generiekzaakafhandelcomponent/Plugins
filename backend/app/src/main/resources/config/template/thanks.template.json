@@ -1,9 +1,0 @@
-{
-  "templateKey": "thanks-template",
-  "caseDefinitionName": "example",
-  "templateType": "mail",
-  "metadata": {
-    "testKey": "testValue"
-  },
-  "contentRef": "/config/template/thanks.ftlh"
-}

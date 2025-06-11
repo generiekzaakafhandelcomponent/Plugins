@@ -1,0 +1,8 @@
+{
+    "key": "rotterdam-oracle-ebs-plugin",
+    "name": "Rotterdam oracle ebs plugin",
+    "versionTag": "1.0.0",
+    "final": false,
+    "canHaveAssignee": false,
+    "autoAssignTasks": false
+}

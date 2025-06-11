@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {
     BehaviorSubject,
     combineLatest, filter,
@@ -14,6 +14,7 @@ import {XentialApiSjabloonService} from "../../modules/xential-api/services/xent
 import {KeycloakUserService} from "@valtimo/keycloak";
 
 @Component({
+    standalone: false,
     selector: 'xential-prepare-content-configuration',
     templateUrl: './prepare-content-configuration.component.html'
 })

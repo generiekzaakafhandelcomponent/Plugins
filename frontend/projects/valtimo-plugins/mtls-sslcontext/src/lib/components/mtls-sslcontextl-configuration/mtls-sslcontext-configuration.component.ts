@@ -26,6 +26,7 @@ import {MtlsSslcontextConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-mtls-sslcontext-configuration',
     templateUrl: './mtls-sslcontext-configuration.component.html',
 })
