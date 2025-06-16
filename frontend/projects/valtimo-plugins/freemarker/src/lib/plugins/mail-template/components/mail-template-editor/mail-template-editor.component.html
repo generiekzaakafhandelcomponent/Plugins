@@ -25,7 +25,7 @@
         Mail templates use <a target="_blank" href="https://www.w3schools.com/html/html_intro.asp">HTML</a> for the mail
         layout. <a target="_blank" href="https://freemarker.apache.org/docs/dgui_quickstart_basics.html">FreeMarker</a>
         can be used to create placeholders inside the HTML. The data-model for FreeMarker is based upon <a
-            target="_blank" href="https://docs.valtimo.nl/reference/modules/value-resolver">Valtimo value-resolvers</a>
+            target="_blank" href="https://docs.valtimo.nl/features/value-resolvers">Valtimo value-resolvers</a>
         with a slightly different notation. For example: $&#123;doc.firstName&#125;. Retrieves
         the `firstName` from the case.
     </div>
@@ -83,7 +83,7 @@
 
 <ng-container *ngIf="{templateKey: templateKey$ | async} as obs">
     <valtimo-mail-template-delete-modal
-            [deleteRowKeys]="[obs.templateKey]"
+            [deleteRowKeys]="[{key: obs.templateKey, type: 'mail'}]"
             [showDeleteModal$]="showDeleteModal$"
             (deleteEvent)="onDelete($event)"
     >

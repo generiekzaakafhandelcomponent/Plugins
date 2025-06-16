@@ -16,7 +16,7 @@
 
 interface TemplateListItem {
     key: string;
-    readOnly: boolean;
+    type: string;
 }
 
 interface CreateTemplateRequest {
@@ -30,8 +30,7 @@ interface CreateTemplateRequest {
 interface DeleteTemplatesRequest {
     caseDefinitionKey?: string;
     caseDefinitionVersionTag?: string;
-    type: TemplateType;
-    templates: Array<string>;
+    templates: Array<any>;
 }
 
 interface UpdateTemplateRequest {
@@ -48,7 +47,7 @@ interface Template {
     caseDefinitionKey?: string;
     caseDefinitionVersionTag?: string;
     type: TemplateType;
-    metadata: any;
+    metadata?: any;
     content: string;
 }
 
@@ -61,8 +60,13 @@ interface TemplateResponse {
     content: string;
 }
 
+interface TemplatePreviewRequest {
+    fileName: string;
+    content: string;
+}
+
 type TemplateMetadataModal = 'add' | 'edit';
-type TemplateType = 'mail' | 'text';
+type TemplateType = 'mail' | 'text' | 'pdf' | 'csv';
 
 export {
     TemplateListItem,
@@ -73,4 +77,5 @@ export {
     TemplateResponse,
     TemplateMetadataModal,
     TemplateType,
+    TemplatePreviewRequest
 };

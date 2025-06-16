@@ -160,7 +160,6 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             this.templateService.deleteTemplates({
                 caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
                 caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
-                type: 'mail',
                 templates
             }).pipe(take(1)).subscribe(_ =>
                 this.router.navigate([`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/mail-template`])

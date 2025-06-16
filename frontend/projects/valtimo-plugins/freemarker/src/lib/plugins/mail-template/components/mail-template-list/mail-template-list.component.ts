@@ -69,7 +69,7 @@ export class MailTemplateListComponent implements OnInit {
     public readonly templates$ = new BehaviorSubject<TemplateListItem[] | null>(null);
     public readonly showAddModal$ = new BehaviorSubject<boolean>(false);
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
-    public readonly selectedRowKeys$ = new BehaviorSubject<Array<string>>([]);
+    public readonly selectedRowKeys$ = new BehaviorSubject<Array<any>>([]);
     public readonly loading$ = new BehaviorSubject<boolean>(true);
 
     constructor(
@@ -112,14 +112,13 @@ export class MailTemplateListComponent implements OnInit {
         this.showDeleteModal$.next(true);
     }
 
-    public onDelete(templates: Array<string>): void {
+    public onDelete(templates: Array<any>): void {
         this.loading$.next(true);
         this._caseDefinitionId$.pipe(
             take(1),
             switchMap(caseDefinitionId => this.templateService.deleteTemplates({
                 caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
                 caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
-                type: 'mail',
                 templates
             })),
         ).subscribe(_ => {
@@ -150,6 +149,6 @@ export class MailTemplateListComponent implements OnInit {
     }
 
     private setSelectedTemplateKeys(): void {
-        this.selectedRowKeys$.next(this.carbonList.selectedItems.map((template: TemplateListItem) => template.key));
+        this.selectedRowKeys$.next(this.carbonList.selectedItems.map((template: TemplateListItem) => ({key: template.key, type: template.type})));
     }
 }

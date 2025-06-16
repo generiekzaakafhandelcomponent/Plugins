@@ -15,6 +15,21 @@
  */
 
 /*
+ * Public API Surface of document-generator
+ */
+
+export * from './lib/plugins/document-generator/models';
+export * from './lib/plugins/document-generator/document-generator-plugin-module';
+export * from './lib/plugins/document-generator/document-generator-plugin.specification';
+export * from './lib/plugins/document-generator/components/generate-csv/generate-csv.component';
+export * from './lib/plugins/document-generator/components/generate-pdf/generate-pdf.component';
+export * from './lib/plugins/document-generator/components/document-template-add-edit-modal/document-template-add-edit-modal.component';
+export * from './lib/plugins/document-generator/components/document-generator-configuration/document-generator-configuration.component';
+export * from './lib/plugins/document-generator/components/document-template-delete-modal/document-template-delete-modal.component';
+export * from './lib/plugins/document-generator/components/document-template-editor/document-template-editor.component';
+export * from './lib/plugins/document-generator/components/document-template-list/document-template-list.component';
+
+/*
  * Public API Surface of mail-template
  */
 

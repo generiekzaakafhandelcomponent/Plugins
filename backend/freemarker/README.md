@@ -1,17 +1,21 @@
 # Freemarker library
 
-Contains two plugins which both use Freemarker.
+Contains three plugins which all use Freemarker.
 
-## Mail Template Plugin
+## Plugin 1: Mail Template Plugin
 
 For creating HTML mail templates with Freemarker.
 
-## Text Template Plugin
+## Plugin 2: Text Template Plugin
 
 For creating text templates with Freemarker. These text templates can be used in a value-resolver. For example:
 `template:my-template`.
 
 https://github.com/user-attachments/assets/3b27631d-bbda-406e-b6b7-f6e5be21f9b9
+
+## Plugin 3: Document generator Plugin
+
+For creating PDF and CSV documents.
 
 # Dependencies
 
@@ -48,12 +52,14 @@ In order to use the plugins in the frontend, the following must be added to your
 
 ```typescript
 import {
-    MailTemplatePluginModule, mailTemplatePluginSpecification, // remove this line if you don't need the mail-template plugin
-    TextTemplatePluginModule, textTemplatePluginSpecification // remove this line if you don't need the text-template plugin
+    DocumentGeneratorPluginModule, documentGeneratorPluginSpecification, // Only needed for the document-generator plugin
+    MailTemplatePluginModule, mailTemplatePluginSpecification, // Only needed for the mail-template plugin
+    TextTemplatePluginModule, textTemplatePluginSpecification //  Only needed for the text-template plugin
 } from '@valtimo-plugins/freemarker';
 
 @NgModule({
     imports: [
+        DocumentGeneratorPluginModule,
         MailTemplatePluginModule,
         TextTemplatePluginModule,
     ],
@@ -61,6 +67,7 @@ import {
         {
             provide: PLUGIN_TOKEN,
             useValue: [
+                documentGeneratorPluginSpecification,
                 mailTemplatePluginSpecification,
                 textTemplatePluginSpecification,
             ]
