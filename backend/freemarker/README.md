@@ -17,6 +17,12 @@ https://github.com/user-attachments/assets/3b27631d-bbda-406e-b6b7-f6e5be21f9b9
 
 For creating PDF and CSV documents.
 
+
+
+https://github.com/user-attachments/assets/1c1b1d0c-5470-4bdc-bad6-918f17cbebf3
+
+
+
 # Dependencies
 
 In order to use the plugins, the module needs to be added as a dependency. The
