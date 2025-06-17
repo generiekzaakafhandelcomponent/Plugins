@@ -39,6 +39,7 @@ interface JournaalpostOpvoerenConfig {
 
 interface JournaalpostRegel {
     grootboekSleutel: string;
+    bronSleutel: string;
     boekingType: string;
     bedrag: string;
     omschrijving?: string;
@@ -73,6 +74,7 @@ interface FactuurRegel {
     tarief: string;
     btwPercentage: string;
     grootboekSleutel: string;
+    bronSleutel: string;
     omschrijving: string;
 }
 

@@ -158,7 +158,15 @@
           "type": "textfield",
           "input": true,
           "tableView": false,
-          "defaultValue": "400"
+          "defaultValue": "100.ABC123.DEF456.GH78IJKL.MNOPQR.000.000000"
+        },
+        {
+          "label": "Regel - Bronsleutel",
+          "key": "pv:regelBronsleutel",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "12345"
         },
         {
           "label": "Regel - Boeking type",

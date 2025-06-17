@@ -162,7 +162,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             hoeveelheid: this.fb.control('', Validators.required),
             tarief: this.fb.control('', Validators.required),
             btwPercentage: this.fb.control(null, Validators.required),
-            grootboekSleutel: this.fb.control('', Validators.required),
+            grootboekSleutel: this.fb.control(''),
+            bronSleutel: this.fb.control(''),
             omschrijving: this.fb.control('')
         });
     }
@@ -197,6 +198,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                             tarief: regel.tarief,
                             btwPercentage: regel.btwPercentage,
                             grootboekSleutel: regel.grootboekSleutel,
+                            bronSleutel: regel.bronSleutel,
                             omschrijving: regel.omschrijving
                         })) : null,
                         regelsViaResolver: configuration.regelsViaResolver
@@ -235,6 +237,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         tarief: regel.tarief,
                         btwPercentage: regel.btwPercentage,
                         grootboekSleutel: regel.grootboekSleutel,
+                        bronSleutel: regel.bronSleutel,
                         omschrijving: regel.omschrijving
                     })) : null,
                     regelsViaResolver: (formValue.regelsViaResolver != undefined) ? formValue.regelsViaResolver : null
@@ -339,7 +342,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         formValue.regels[i].hoeveelheid &&
                         formValue.regels[i].tarief &&
                         formValue.regels[i].btwPercentage &&
-                        formValue.regels[i].grootboekSleutel
+                        ( formValue.regels[i].grootboekSleutel || formValue.regels[i].bronSleutel )
                     )
                     if (!linesValid)
                         break;
