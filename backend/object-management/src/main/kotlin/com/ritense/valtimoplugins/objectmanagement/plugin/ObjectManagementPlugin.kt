@@ -105,7 +105,7 @@ open class ObjectManagementPlugin(
 
     @PluginAction(
         key = "get-objects-unpaged",
-        title = "Get Objects Unpaged ",
+        title = "Get Objects Unpaged",
         description = "Retrieve all Objects of a given object-management id",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
