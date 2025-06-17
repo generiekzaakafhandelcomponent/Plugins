@@ -46,20 +46,6 @@ class DocumentGeneratorAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(DocsValueResolver::class)
-    fun documentTemplateValueResolver(
-        templateService: TemplateService,
-        processDocumentService: ProcessDocumentService,
-        documentService: DocumentService,
-    ): DocsValueResolver {
-        return DocsValueResolver(
-            templateService,
-            processDocumentService,
-            documentService,
-        )
-    }
-
-    @Bean
     @ConditionalOnMissingBean(DocumentGeneratorResource::class)
     fun documentGeneratorResource(
         templateService: TemplateService,
