@@ -1,6 +1,6 @@
 [
   {
-    "processDefinitionKey": "Process_CUD",
+    "processDefinitionKey": "object-management-crud-process",
     "canInitializeDocument": true,
     "startableByUser": false
   }

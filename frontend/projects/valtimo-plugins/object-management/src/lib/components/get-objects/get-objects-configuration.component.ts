@@ -52,7 +52,7 @@ export class GetObjectsConfigurationComponent
   }
 
   private handleValid(formValue: GetObjectsConfig): void {
-    const valid = !!(formValue.objectManagementConfigurationTitle && formValue.listOfObjectProcessVariableName);
+    const valid = !!(formValue.objectManagementConfigurationId && formValue.listOfObjectProcessVariableName);
 
     this.valid$.next(valid);
     this.valid.emit(valid);
