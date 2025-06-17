@@ -43,8 +43,18 @@ tasks.jar {
 apply(from = "../../gradle/environment.gradle.kts")
 val configureEnvironment = extra["configureEnvironment"] as (task: ProcessForkOptions) -> Unit
 
+apply(from = "../../gradle/dockerComposeGzac.gradle.kts")
+dockerCompose {
+    setProjectName("gzac-docker-compose")
+    useComposeFiles.set(listOf("${buildDir}/docker/extract/gzac-docker-compose-main/docker-compose.yaml"))
+    composeAdditionalArgs.set(listOf("--profile", "zgw"))
+    stopContainers.set(false)
+    removeContainers.set(false)
+    removeVolumes.set(false)
+}
+
 tasks.bootRun {
-    dependsOn("composeUp")
+    dependsOn("composeUpGzac")
     systemProperty("spring.profiles.include", "dev")
     val t = this
     doFirst {

@@ -32,7 +32,7 @@ export class TextTemplateDeleteModalComponent {
   @Input() showDeleteModal$: Observable<boolean>;
   @Output() deleteEvent = new EventEmitter<Array<string>>();
 
-  public onDelete(templates: Array<string>): void {
+  public onDelete(templates: Array<any>): void {
     this.deleteEvent.emit(templates);
   }
 }

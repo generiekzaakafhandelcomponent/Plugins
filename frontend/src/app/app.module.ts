@@ -64,13 +64,22 @@ import {ConfigModule, ConfigService, CustomMultiTranslateHttpLoaderFactory, Loca
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
+import {ZgwModule} from '@valtimo/zgw';
 import {
+  CatalogiApiPluginModule,
+  catalogiApiPluginSpecification,
+  DocumentenApiPluginModule,
+  documentenApiPluginSpecification,
   ObjectenApiPluginModule,
   objectenApiPluginSpecification,
   ObjectTokenAuthenticationPluginModule,
   objectTokenAuthenticationPluginSpecification,
   ObjecttypenApiPluginModule,
   objecttypenApiPluginSpecification,
+  OpenZaakPluginModule,
+  openZaakPluginSpecification,
+  ZakenApiPluginModule,
+  zakenApiPluginSpecification,
   PLUGINS_TOKEN
 } from '@valtimo/plugin';
 import {TaskManagementModule} from '@valtimo/task-management';
@@ -83,6 +92,8 @@ import {AmsterdamEmailapiPluginModule, amsterdamEmailapiPluginSpecification} fro
 import {BerkelybridgeTextgeneratorPluginModule, berkelybridgeTextgeneratorPluginSpecification} from '@valtimo-plugins/berkelybridge';
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {
+    DocumentGeneratorPluginModule,
+    documentGeneratorPluginSpecification,
     MailTemplatePluginModule,
     mailTemplatePluginSpecification,
     TextTemplatePluginModule,
@@ -123,6 +134,8 @@ export function tabsFactory() {
         AlfrescoAuthPluginModule,
         AmsterdamEmailapiPluginModule,
         BerkelybridgeTextgeneratorPluginModule,
+        ZgwModule,
+        DocumentGeneratorPluginModule,
         MailTemplatePluginModule,
         TextTemplatePluginModule,
         PublictaskPluginModule,
@@ -170,8 +183,12 @@ export function tabsFactory() {
         CaseManagementModule,
         PluginManagementModule,
         AccessControlManagementModule,
+        CatalogiApiPluginModule,
+        DocumentenApiPluginModule,
         ObjectenApiPluginModule,
         ObjecttypenApiPluginModule,
+        OpenZaakPluginModule,
+        ZakenApiPluginModule,
         ObjectTokenAuthenticationPluginModule,
         ObjectModule,
         ObjectManagementModule,
@@ -198,6 +215,7 @@ export function tabsFactory() {
             amsterdamEmailapiPluginSpecification,
             berkelybridgeTextgeneratorPluginSpecification,
             externeKlanttaakPluginSpecification,
+            documentGeneratorPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
             objectManagementPluginSpecification,
@@ -214,7 +232,11 @@ export function tabsFactory() {
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
-            kvkPluginSpecification
+            kvkPluginSpecification,
+            catalogiApiPluginSpecification,
+            documentenApiPluginSpecification,
+            openZaakPluginSpecification,
+            zakenApiPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]

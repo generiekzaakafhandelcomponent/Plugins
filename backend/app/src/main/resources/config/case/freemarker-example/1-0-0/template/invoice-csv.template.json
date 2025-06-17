@@ -1,0 +1,6 @@
+{
+  "templateKey": "invoice",
+  "templateType": "csv",
+  "metadata": {},
+  "contentRef": "/config/case/freemarker-example/1-0-0/template/invoice-csv.ftlh"
+}

@@ -109,11 +109,9 @@ class TemplateAutoConfiguration {
     @ConditionalOnMissingBean(TemplateManagementResource::class)
     fun templateManagementResource(
         templateService: TemplateService,
-        templateImporter: TemplateImporter,
     ): TemplateManagementResource {
         return TemplateManagementResource(
             templateService,
-            templateImporter
         )
     }
 
