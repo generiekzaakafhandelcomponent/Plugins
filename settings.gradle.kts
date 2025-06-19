@@ -5,6 +5,7 @@ include(
     "backend:alfresco-authentication",
     "backend:amsterdam-email-api",
     "backend:berkelybridge-textgenerator",
+    "backend:doc-scanner",
     "backend:externe-klanttaak",
     "backend:freemarker",
     "backend:mTLS-SSLContext",
