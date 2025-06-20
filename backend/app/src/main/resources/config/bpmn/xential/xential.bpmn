@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_13f33lz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_13f33lz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
   <bpmn:message id="Message_1cbdmsu" name="XENTIAL_TEST_DOC_RECEIVED" />
   <bpmn:collaboration id="Collaboration_15s7f2e">
     <bpmn:participant id="Participant_06az24z" name="Xential test flow" processRef="xential" />
@@ -8,40 +8,20 @@
     <bpmn:startEvent id="XentialStarten" name="Start event">
       <bpmn:outgoing>Flow_02rzsdc</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="XentialFlowStarten" name="Start xential flow">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:outputParameter name="xentialGebruikersId">${xentialUserIdHelper.getGebruikersId()}</camunda:outputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
+    <bpmn:sequenceFlow id="Flow_02rzsdc" sourceRef="XentialStarten" targetRef="XentialFlowEindigen" />
+    <bpmn:sequenceFlow id="Flow_0lmrwga" sourceRef="XentialFlowEindigen" targetRef="Event_1hl2nsy" />
+    <bpmn:userTask id="XentialFlowEindigen" name="End xential flow">
       <bpmn:incoming>Flow_02rzsdc</bpmn:incoming>
-      <bpmn:outgoing>Flow_194dpi4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0lmrwga</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_02rzsdc" sourceRef="XentialStarten" targetRef="XentialFlowStarten" />
-    <bpmn:sequenceFlow id="Flow_194dpi4" sourceRef="XentialFlowStarten" targetRef="XentialSjabloonMapSelecteren" />
-    <bpmn:sequenceFlow id="Flow_13b5zop" sourceRef="XentialSjabloonMapSelecteren" targetRef="Activity_1g4qq7z" />
-    <bpmn:sequenceFlow id="Flow_0i2yhfc" sourceRef="Activity_1g4qq7z" targetRef="Event_1hl2nsy" />
-    <bpmn:serviceTask id="XentialSjabloonMapSelecteren" name="sjabloon map selecteren" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:expression="${true}">
-      <bpmn:incoming>Flow_194dpi4</bpmn:incoming>
-      <bpmn:outgoing>Flow_13b5zop</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1hl2nsy">
-      <bpmn:incoming>Flow_0i2yhfc</bpmn:incoming>
+      <bpmn:incoming>Flow_0lmrwga</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:callActivity id="Activity_1g4qq7z" name="doc genereren" camunda:asyncBefore="true" camunda:asyncAfter="true" calledElement="xential-genereren">
-      <bpmn:extensionElements>
-        <camunda:in businessKey="#{execution.processBusinessKey}" />
-        <camunda:in source="xentialDocumentProperties" target="xentialDocumentProperties" />
-        <camunda:in source="xentialGebruikersId" target="xentialGebruikersId" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_13b5zop</bpmn:incoming>
-      <bpmn:outgoing>Flow_0i2yhfc</bpmn:outgoing>
-    </bpmn:callActivity>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_15s7f2e">
       <bpmndi:BPMNShape id="Participant_06az24z_di" bpmnElement="Participant_06az24z" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="760" height="210" />
+        <dc:Bounds x="160" y="80" width="480" height="210" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="XentialStarten">
@@ -50,36 +30,20 @@
           <dc:Bounds x="240" y="221" width="54" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0227aij_di" bpmnElement="XentialFlowStarten">
-        <dc:Bounds x="350" y="156" width="100" height="80" />
+      <bpmndi:BPMNShape id="BPMNShape_1i4q8j9" bpmnElement="XentialFlowEindigen">
+        <dc:Bounds x="360" y="156" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_15si283" bpmnElement="XentialSjabloonMapSelecteren">
-        <dc:Bounds x="510" y="156" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1hl2nsy_di" bpmnElement="Event_1hl2nsy">
-        <dc:Bounds x="822" y="178" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0e9k9bl" bpmnElement="Activity_1g4qq7z">
-        <dc:Bounds x="660" y="156" width="100" height="80" />
-        <bpmndi:BPMNLabel />
+      <bpmndi:BPMNShape id="Event_0e6lsg4_di" bpmnElement="Event_1hl2nsy">
+        <dc:Bounds x="542" y="178" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_02rzsdc_di" bpmnElement="Flow_02rzsdc">
         <di:waypoint x="284" y="196" />
-        <di:waypoint x="350" y="196" />
+        <di:waypoint x="360" y="196" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_194dpi4_di" bpmnElement="Flow_194dpi4">
-        <di:waypoint x="450" y="196" />
-        <di:waypoint x="510" y="196" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_13b5zop_di" bpmnElement="Flow_13b5zop">
-        <di:waypoint x="610" y="196" />
-        <di:waypoint x="660" y="196" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0i2yhfc_di" bpmnElement="Flow_0i2yhfc">
-        <di:waypoint x="760" y="196" />
-        <di:waypoint x="822" y="196" />
+      <bpmndi:BPMNEdge id="Flow_0lmrwga_di" bpmnElement="Flow_0lmrwga">
+        <di:waypoint x="460" y="196" />
+        <di:waypoint x="542" y="196" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -1,22 +1,17 @@
 package com.ritense.valtimoplugins.xential.service
 
 import com.ritense.valtimo.contract.authentication.UserManagementService
-import io.github.oshai.kotlinlogging.KotlinLogging
 
+@Suppress("UNUSED")
 class XentialUserIdHelper(
     private val userManagementService: UserManagementService,
 ) {
-    fun getGebruikersId(): String {
+    fun getCurrentUserEmail(): String {
         val user = userManagementService.currentUser
-        return user.username
+        return user.email
     }
 
-    fun testGebruikersId(gebruikersId: String): String {
-        logger.info { "gebruikersId: $gebruikersId" }
-        return "bla"
-    }
-
-    companion object {
-        val logger = KotlinLogging.logger {}
+    fun getAssigneeUsername(assigneeId: String): String {
+        return userManagementService.findById(assigneeId).username
     }
 }
