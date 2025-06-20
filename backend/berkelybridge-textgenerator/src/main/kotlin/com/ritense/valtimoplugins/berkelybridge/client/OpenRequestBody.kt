@@ -20,7 +20,7 @@
 package com.ritense.valtimoplugins.berkelybridge.client
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.ritense.valtimoplugins.berkelybridge.plugin.TemplateProperty
+import kotlin.collections.HashMap
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 class OpenRequestBody(
@@ -28,5 +28,5 @@ class OpenRequestBody(
     val format: String = "html",
     val output: String = "url",
     val naam: String,
-    val parameters: List<TemplateProperty>? = ArrayList(),
+    val parameters: MutableMap<String, Any?> = HashMap(),
 ) {}

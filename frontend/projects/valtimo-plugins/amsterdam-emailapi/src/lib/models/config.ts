@@ -21,12 +21,13 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface AmsterdamEmailApiConfig extends PluginConfigurationData {
   emailApiBaseUrl: string;
-  clientId: string;
-  clientSecret: string;
-  tokenEndpoint: string;
+  subscriptionKey: string;
+  authenticationPluginConfiguration: string;
 }
 
 interface SendEmailConfig {
+  zaakId: string;
+  relatieCodes: string;
   toEmail: string;
   toName: string;
   fromAddress: string;
@@ -36,6 +37,7 @@ interface SendEmailConfig {
   bccName: string;
   emailSubject: string;
   contentHtml: string;
+  attachments: string;
 }
 
 export {AmsterdamEmailApiConfig, SendEmailConfig};

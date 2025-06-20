@@ -23,8 +23,8 @@ pluginManager.withPlugin("maven-publish") {
                 version = pluginProperties.pluginVersion
 
                 pom {
-                    name = "Amsterdam Email plugin module"
-                    description = "The Amsterdam email plugin module"
+                    name = "Document Xtra plugin module"
+                    description = "The Document Xtra plugin module allows you to do extra actions on information objects in the Docuementen API"
                     developers {
                         developer {
                             id = "haiko-ritense"

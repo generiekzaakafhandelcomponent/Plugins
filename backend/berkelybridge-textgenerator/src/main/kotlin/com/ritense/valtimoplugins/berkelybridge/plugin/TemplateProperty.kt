@@ -19,4 +19,4 @@
 
 package com.ritense.valtimoplugins.berkelybridge.plugin
 
-class TemplateProperty(val key: String, val value: String) {}
+class TemplateProperty(val key: String, val value: Any?) {}

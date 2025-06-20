@@ -58,7 +58,8 @@ export class BerkelybridgeTextgeneratorConfigurationComponent
 
   private handleValid(formValue: BerkelyBridgeTextGeneratorConfig): void {
     const valid = !!(formValue.configurationTitle
-        && formValue.berkelybridgeBaseUrl);
+        && formValue.berkelybridgeBaseUrl
+        && formValue.subscriptionKey);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

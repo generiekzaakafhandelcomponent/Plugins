@@ -1,76 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
-                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
-                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_03eezdi"
-                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.19.0"
-                  modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
-    <bpmn:process id="Process_0ippo91" name="ZendEmail" isExecutable="true" camunda:historyTimeToLive="180">
-        <bpmn:startEvent id="startZend" name="startZend">
-            <bpmn:outgoing>Flow_1f82wsc</bpmn:outgoing>
-        </bpmn:startEvent>
-        <bpmn:sequenceFlow id="Flow_1f82wsc" sourceRef="startZend" targetRef="fillEmail"/>
-        <bpmn:userTask id="fillEmail" name="Vul in email">
-            <bpmn:extensionElements>
-                <camunda:formData>
-                    <camunda:formField id="toEmail" label="Naar:" type="string"/>
-                    <camunda:formField id="fromAddress" label="Van:" type="string">
-                        <camunda:properties>
-                            <camunda:property/>
-                        </camunda:properties>
-                    </camunda:formField>
-                    <camunda:formField id="contentHtml" label="Body:" type="string"
-                                       defaultValue="&#60;h2&#62;Love to get email&#60;/h2&#62;"/>
-                    <camunda:formField id="emailSubject" label="Onderwwerp" type="string" defaultValue="test email"/>
-                    <camunda:formField id="toName" label="Naam:" type="string" defaultValue="Jan Smit"/>
-                    <camunda:formField id="ccEmail" label="cc:" type="string" defaultValue="test@test.nl"/>
-                    <camunda:formField id="ccName" label="CC naam" type="string" defaultValue="Henk Smit"/>
-                </camunda:formData>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_1f82wsc</bpmn:incoming>
-            <bpmn:outgoing>Flow_1yzk3y5</bpmn:outgoing>
-        </bpmn:userTask>
-        <bpmn:sequenceFlow id="Flow_1yzk3y5" sourceRef="fillEmail" targetRef="zendEmail"/>
-        <bpmn:endEvent id="Event_1giyumq">
-            <bpmn:incoming>Flow_1w841m4</bpmn:incoming>
-        </bpmn:endEvent>
-        <bpmn:sequenceFlow id="Flow_1w841m4" sourceRef="zendEmail" targetRef="Event_1giyumq"/>
-        <bpmn:serviceTask id="zendEmail" name="zend email" camunda:asyncBefore="true" camunda:expression="${null}">
-            <bpmn:incoming>Flow_1yzk3y5</bpmn:incoming>
-            <bpmn:outgoing>Flow_1w841m4</bpmn:outgoing>
-        </bpmn:serviceTask>
-    </bpmn:process>
-    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0ippo91">
-            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="startZend">
-                <dc:Bounds x="179" y="102" width="36" height="36"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="175" y="145" width="47" height="14"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_0xjnvaw_di" bpmnElement="fillEmail">
-                <dc:Bounds x="310" y="80" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Event_1giyumq_di" bpmnElement="Event_1giyumq">
-                <dc:Bounds x="712" y="102" width="36" height="36"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_1kgcz3n_di" bpmnElement="zendEmail">
-                <dc:Bounds x="510" y="80" width="100" height="80"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge id="Flow_1f82wsc_di" bpmnElement="Flow_1f82wsc">
-                <di:waypoint x="215" y="120"/>
-                <di:waypoint x="310" y="120"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_1yzk3y5_di" bpmnElement="Flow_1yzk3y5">
-                <di:waypoint x="410" y="120"/>
-                <di:waypoint x="510" y="120"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_1w841m4_di" bpmnElement="Flow_1w841m4">
-                <di:waypoint x="610" y="120"/>
-                <di:waypoint x="712" y="120"/>
-            </bpmndi:BPMNEdge>
-        </bpmndi:BPMNPlane>
-    </bpmndi:BPMNDiagram>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_03eezdi" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:process id="Process_0ippo91" name="ZendEmail" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="startZend" name="startZend">
+      <bpmn:outgoing>Flow_1f82wsc</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1f82wsc" sourceRef="startZend" targetRef="fillEmail" />
+    <bpmn:userTask id="fillEmail" name="Vul in email">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="toEmail" label="Naar:" type="string" />
+          <camunda:formField id="fromAddress" label="Van:" type="string">
+            <camunda:properties>
+              <camunda:property />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="contentHtml" label="Body:" type="string" defaultValue="&#60;h2&#62;Love to get email&#60;/h2&#62;" />
+          <camunda:formField id="emailSubject" label="Onderwwerp" type="string" defaultValue="test email" />
+          <camunda:formField id="toName" label="Naam:" type="string" defaultValue="Jan Smit" />
+          <camunda:formField id="ccEmail" label="cc:" type="string" defaultValue="test@test.nl" />
+          <camunda:formField id="ccName" label="CC naam" type="string" defaultValue="Henk Smit" />
+          <camunda:formField id="attachmentsPvName" label="Process variabele attachements" type="string" defaultValue="attachementsPV" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1f82wsc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yzk3y5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1yzk3y5" sourceRef="fillEmail" targetRef="zendEmail" />
+    <bpmn:endEvent id="Event_1giyumq">
+      <bpmn:incoming>Flow_1w841m4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1w841m4" sourceRef="zendEmail" targetRef="Event_1giyumq" />
+    <bpmn:serviceTask id="zendEmail" name="zend email" camunda:asyncBefore="true" camunda:expression="${null}">
+      <bpmn:incoming>Flow_1yzk3y5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w841m4</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0ippo91">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="startZend">
+        <dc:Bounds x="179" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="175" y="145" width="47" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xjnvaw_di" bpmnElement="fillEmail">
+        <dc:Bounds x="310" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1giyumq_di" bpmnElement="Event_1giyumq">
+        <dc:Bounds x="712" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1kgcz3n_di" bpmnElement="zendEmail">
+        <dc:Bounds x="510" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1f82wsc_di" bpmnElement="Flow_1f82wsc">
+        <di:waypoint x="215" y="120" />
+        <di:waypoint x="310" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yzk3y5_di" bpmnElement="Flow_1yzk3y5">
+        <di:waypoint x="410" y="120" />
+        <di:waypoint x="510" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1w841m4_di" bpmnElement="Flow_1w841m4">
+        <di:waypoint x="610" y="120" />
+        <di:waypoint x="712" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </bpmn:definitions>

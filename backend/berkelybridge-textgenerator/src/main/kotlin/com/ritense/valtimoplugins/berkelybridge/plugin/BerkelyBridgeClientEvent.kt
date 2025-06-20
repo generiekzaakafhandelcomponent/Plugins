@@ -21,9 +21,9 @@ package com.ritense.valtimoplugins.berkelybridge.plugin
 
 import com.ritense.valtimo.contract.audit.AuditEvent
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
-class BerkelyBridgeClientEvent(val eventMessage: String) : AuditEvent {
+class BerkelyBridgeClientEvent(val eventMessage: String): AuditEvent {
 
     var processUser: String = "system"
 

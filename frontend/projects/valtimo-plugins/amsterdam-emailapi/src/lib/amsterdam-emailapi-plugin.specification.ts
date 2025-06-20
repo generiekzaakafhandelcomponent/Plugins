@@ -37,15 +37,16 @@ const amsterdamEmailapiPluginSpecification: PluginSpecification = {
       configurationTitle: 'Configuratienaam',
       configurationTitleTooltip:
           'Onder deze naam zal de plugin te herkennen zijn in de rest van de applicatie',
-      clientId: 'Client ID',
-      clientIdTooltip:
-          'Vul hier het clientId in dat geconfigureerd staat in de autorisatie server waar de Email API naar kijkt. Gewoonlijk is dat Keycloak . Dit clientId moet de juiste autorisatie hebben voor de benodigde functionaliteit',
-      clientSecret: 'Secret',
-      clientSecretTooltip: 'Vul de secret in die hoort bij de clientId hierboven',
+      subscriptionKey: 'Subscription key',
+      subscriptionKeyTooltip:
+          'Vul hier de Subcription Key in.',
       emailApiBaseUrl: 'Email API base URL',
       emailApiBaseUrlTooltip: 'Vul hier de base url in van de Email API inclusief pad eindigend op ../mail',
-      tokenEndpoint: 'Token endpoint',
-      tokenEndpointTooltip: 'Vul hier het openid token endpoint om het token op te vragen',
+      authenticationPluginConfiguration: 'Configuratie authenticatie-plug-in',
+      authenticationPluginConfigurationTooltip:
+          'Selecteer de plugin die de authenticatie kan afhandelen. Wanneer de selectiebox leeg blijft zal de authenticatie plugin (bv. OpenZaak) eerst aangemaakt moeten worden',
+      zaakId: "De ID van de zaak",
+      relatieCodes: "De code van de relatie(s)",
       toEmail: "Email verzend adres",
       toName: "Naam van ontvanger",
       fromAddress: "Afzender",
@@ -55,6 +56,8 @@ const amsterdamEmailapiPluginSpecification: PluginSpecification = {
       ccName: "cc naam",
       bccEmail: "bcc email",
       bccName: "bcc naam",
+      'zend-email': 'Zend E-mail',
+      attachments: "Attachments"
     },
     en: {
       title: 'Amsterdam Email API',
@@ -63,16 +66,20 @@ const amsterdamEmailapiPluginSpecification: PluginSpecification = {
       configurationTitle: 'Configuration name',
       configurationTitleTooltip:
           'Under this name, the plugin will be recognizable in the rest of the application',
-      clientId: 'Client ID',
-      clientIdTooltip:
-          'Enter the clientId here which is configured under OpenZaak management for Alfresco (see API authorizations > Applications). This clientId must have the correct authorizations for the required functionality',
-      clientSecret: 'Secret',
-      clientSecretTooltip: 'Enter the secret associated with the clientId above',
+      subscriptionKey: 'Subscription key',
+      subscriptionKeyTooltip:
+          'Fill in the Subcription Key for the Email API.',
       emailApiBaseUrl: 'Email API base URL',
       emailApiBaseUrlTooltip: 'Enter the base URL of the Email API here, including the path ending in ../mail',
-      tokenEndpoint: 'Token endpoint',
-      tokenEndpointTooltip: 'Enter the openid token endpoint here to request the token',
+      authenticationPluginConfiguration: 'Authentication plugin configuration',
+      authenticationPluginConfigurationTooltip:
+          'Select the plugin that can handle the authentication. If the selection box remains empty, the authentication plugin (e.g. OpenZaak) will have to be created first',
+      zaakId: 'The ID of the case',
+      relatieCode: "The code of the relation(s)",
       toEmail: "Email To address",
+      'zend-email': 'Send E-mail',
+      attachments: "Attachments"
+
     },
     de: {
       title: 'Amsterdam Email API',
@@ -81,15 +88,17 @@ const amsterdamEmailapiPluginSpecification: PluginSpecification = {
       configurationTitle: 'Konfigurationsname',
       configurationTitleTooltip:
           'Unter diesem Namen wird das Plugin im Rest der Anwendung erkennbar sein',
-      clientId: 'Client ID',
-      clientIdTooltip:
-          'Geben Sie hier die clientId ein, die unter OpenZaak-Verwaltung konfiguriert fur Alfreco ist (siehe API-Berechtigungen > Anwendungen). Diese clientId muss die richtigen Berechtigungen für die erforderliche Funktionalität haben',
-      clientSecret: 'Secret',
-      clientSecretTooltip: 'Geben Sie das mit der obigen clientId verknüpfte Geheimnis ein',
+      subscriptionKey: 'Subscription key',
+      subscriptionKeyTooltip:
+          'Geben Sie hier die Subcription Key ein.',
       emailApiBaseUrl: 'Email API base URL',
       emailApiBaseUrlTooltip: 'Geben Sie hier die Basis-URL der E-Mail-API ein, einschließlich des Pfads, der auf ../mail endet',
-      tokenEndpoint: 'Token endpoint',
-      tokenEndpointTooltip: 'Geben Sie hier den OpenID-Token-Endpunkt ein, um das Token anzufordern',
+      'zend-email': 'Schick E-mail',
+      authenticationPluginConfiguration: 'Authentifizierungs-Plugin-Konfiguration',
+      authenticationPluginConfigurationTooltip:
+          'Wählen Sie das Plugin aus, das die Authentifizierung verarbeiten kann. Bleibt das Auswahlfeld leer, muss zunächst das Authentifizierungs-Plugin (z. B. OpenZaak) erstellt werden',
+      attachments: "Attachments",
+      relatieCode: "Der code der Beziehung(s)",
     },
   },
 };
