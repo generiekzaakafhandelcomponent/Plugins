@@ -3,25 +3,13 @@
     "activityId": "XentialStarten",
     "activityType": "bpmn:StartEvent:start",
     "processLinkType": "form",
-    "formDefinitionName": "xential.starten"
+    "formDefinitionName": "xential.start"
   },
   {
-    "activityId": "XentialFlowStarten",
+    "activityId": "XentialFlowEindigen",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.start-xential-flow"
-  },
-  {
-    "activityId": "XentialSjabloonMapSelecteren",
-    "activityType": "bpmn:ServiceTask:start",
-    "pluginConfigurationId": "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
-    "pluginActionDefinitionKey": "prepare-content",
-    "processLinkType": "plugin",
-    "actionProperties": {
-      "xentialDocumentPropertiesId": "xentialDocumentProperties",
-      "firstTemplateGroupId": "415cf276-2af0-4192-923d-4391c4d7b2a8",
-      "fileFormat": "PDF",
-      "eventMessageName": "XENTIAL_DOC_RECEIVED"
-    }
+    "formDefinitionName": "xential.end"
   }
+
 ]
