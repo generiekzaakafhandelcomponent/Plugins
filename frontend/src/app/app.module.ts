@@ -104,7 +104,7 @@ import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from "@valtimo/dashboard";
 import {DashboardManagementModule} from "@valtimo/dashboard-management";
 import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
-
+import {HtmlToPdfPluginModule, HtmlToPdfPluginSpecification} from "@valtimo-plugins/html-to-pdf";
 export function tabsFactory() {
   return new Map<string, object>([
     [DefaultTabs.summary, DossierDetailTabSummaryComponent],
@@ -191,6 +191,7 @@ export function tabsFactory() {
         DashboardModule,
         DashboardManagementModule,
         KvkPluginModule,
+        HtmlToPdfPluginModule
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -215,7 +216,8 @@ export function tabsFactory() {
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
-            kvkPluginSpecification
+            kvkPluginSpecification,
+            HtmlToPdfPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]

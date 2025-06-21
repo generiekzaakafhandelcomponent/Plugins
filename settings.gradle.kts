@@ -7,6 +7,7 @@ include(
     "backend:berkelybridge-textgenerator",
     "backend:externe-klanttaak",
     "backend:freemarker",
+    "backend:html-to-pdf",
     "backend:mTLS-SSLContext",
     "backend:notify-nl",
     "backend:object-management",

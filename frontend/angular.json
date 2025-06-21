@@ -474,6 +474,47 @@
         }
       }
     },
+    "@valtimo-plugins/html-to-pdf": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/html-to-pdf",
+      "sourceRoot": "projects/valtimo-plugins/html-to-pdf/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/html-to-pdf/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/html-to-pdf/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/html-to-pdf/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/html-to-pdf/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/html-to-pdf/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/html-to-pdf/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/html-to-pdf/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/html-to-pdf/src/**/*.ts",
+              "projects/valtimo-plugins/html-to-pdf/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/mtls-sslcontext": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/mtls-sslcontext",
