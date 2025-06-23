@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "html-to-pdf",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "activityId": "html-to-pdf-start",
+    "activityType": "bpmn:StartEvent:start",
+    "processLinkType": "form",
+    "formDefinitionName": "html-to-pdf.start"
+  },
+  {
+    "activityId": "html-to-pdf-kies-template",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "html-to-pdf.kies-template"
+  },
+  {
+    "activityId": "html-to-pdf-genereer-pdf",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "1dd6a981-cfe8-44fa-aefc-8337398cc549",
+    "pluginActionDefinitionKey": "generate-pdf",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "template": "pv:template"
+    }
+  }
+]
