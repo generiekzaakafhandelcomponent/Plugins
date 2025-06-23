@@ -28,7 +28,8 @@ dependencies {
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:value-resolver")
-
+    implementation("com.ritense.valtimo:temporary-resource-storage")
+    implementation("com.ritense.valtimo:documenten-api")
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
@@ -62,4 +63,4 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
-apply(from = "gradle/publishing.gradle")
+//apply(from = "gradle/publishing.gradle")

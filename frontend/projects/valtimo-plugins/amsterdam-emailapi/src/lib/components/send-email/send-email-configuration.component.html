@@ -24,6 +24,25 @@
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
   } as obs"
 >
+
+  <v-input
+          name="zaakId"
+          [title]="'zaakId' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.zaakId"
+          [disabled]="obs.disabled"
+          [required]="true"
+  >
+  </v-input>
+  <v-input
+          name="relatieCodes"
+          [title]="'relatieCodes' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.relatieCodes"
+          [disabled]="obs.disabled"
+          [required]="false"
+  >
+  </v-input>
   <v-input
           name="toEmail"
           [title]="'toEmail' | pluginTranslate: pluginId | async"
@@ -58,6 +77,15 @@
           [defaultValue]="obs.prefill?.fromAddress"
           [disabled]="obs.disabled"
           [required]="true"
+  >
+  </v-input>
+  <v-input
+          name="attachments"
+          [title]="'attachments' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.attachments"
+          [disabled]="obs.disabled"
+          [required]="false"
   >
   </v-input>
   <v-input

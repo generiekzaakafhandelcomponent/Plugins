@@ -23,7 +23,7 @@ import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from "@angular/forms";
-import {FormModule, InputModule} from "@valtimo/components";
+import {FormModule, InputModule, SelectModule} from "@valtimo/components";
 import {SendEmailConfigurationComponent} from "./components/send-email/send-email-configuration.component";
 
 @NgModule({
@@ -31,7 +31,7 @@ import {SendEmailConfigurationComponent} from "./components/send-email/send-emai
     AmsterdamEmailapiConfigurationComponent,
     SendEmailConfigurationComponent
   ],
-  imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, SelectModule],
   exports: [
     AmsterdamEmailapiConfigurationComponent,
     SendEmailConfigurationComponent

@@ -48,4 +48,17 @@
           placeholder="Vul Berkely Bridge url in"
   >
   </v-input>
+  <v-input
+          name="subscriptionKey"
+          type="password"
+          [title]="'subscriptionKey' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [disabled]="obs.disabled"
+          [defaultValue]="obs.prefill?.subscriptionKey"
+          [widthPx]="350"
+          [required]="true"
+          [tooltip]="'subscriptionKeyTooltip' | pluginTranslate: pluginId | async"
+          placeholder="Vul de subscription key in"
+  >
+  </v-input>
 </v-form>

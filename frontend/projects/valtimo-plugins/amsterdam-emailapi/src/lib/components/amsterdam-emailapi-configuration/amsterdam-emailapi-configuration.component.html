@@ -49,39 +49,30 @@
   >
   </v-input>
   <v-input
-          name="clientId"
-          [title]="'clientId' | pluginTranslate: pluginId | async"
+          name="subscriptionKey"
+          [title]="'subscriptionKey' | pluginTranslate: pluginId | async"
           [margin]="true"
           [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.clientId"
+          [defaultValue]="obs.prefill?.subscriptionKey"
           [widthPx]="350"
           [required]="true"
-          [tooltip]="'clientIdTooltip' | pluginTranslate: pluginId | async"
-          placeholder="client-id"
+          [tooltip]="'subscriptionKeyTooltip' | pluginTranslate: pluginId | async"
+          placeholder="subscription key"
   >
   </v-input>
-  <v-input
-          name="clientSecret"
-          type="password"
-          [title]="'clientSecret' | pluginTranslate: pluginId | async"
-          [margin]="true"
-          [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.clientSecret"
-          [required]="true"
-          [fullWidth]="true"
-          [tooltip]="'clientSecretTooltip' | pluginTranslate: pluginId | async"
+  <ng-container
+          *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
   >
-  </v-input>
-  <v-input
-          name="tokenEndpoint"
-          [title]="'tokenEndpoint' | pluginTranslate: pluginId | async"
-          [margin]="true"
-          [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.tokenEndpoint"
-          [widthPx]="350"
-          [required]="true"
-          [tooltip]="'tokenEndpointTooltip' | pluginTranslate: pluginId | async"
-          placeholder="token-endpoint"
-  >
-  </v-input>
+    <v-select
+            [loading]="!authObs.authenticationPluginSelectItems"
+            [items]="authObs.authenticationPluginSelectItems"
+            [margin]="true"
+            name="authenticationPluginConfiguration"
+            [title]="'authenticationPluginConfiguration' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultSelectionId]="obs.prefill?.authenticationPluginConfiguration"
+            [required]="true"
+            [tooltip]="'authenticationPluginConfigurationTooltip' | pluginTranslate: pluginId | async"
+    ></v-select>
+  </ng-container>
 </v-form>
