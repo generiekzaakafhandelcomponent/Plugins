@@ -32,9 +32,3 @@ To set up the DocScanner plugin, follow these steps:
 
 * **Default Behaviour:**
   In the demo process, the plugin is configured to scan **only the first page** of any uploaded document.
-
-* **Scan All Pages:**
-  If you wish to scan **all pages** of a multi-page document, you can adjust this behaviour:
-
-    * Go to the **Processlink settings** within the frontend.
-    * Remove the page input completely to enable full-document scanning.
