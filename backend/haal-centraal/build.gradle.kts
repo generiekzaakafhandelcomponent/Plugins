@@ -31,7 +31,7 @@ dockerCompose {
         implementation("com.ritense.valtimo:openzaak:$valtimoVersion")
         implementation("com.ritense.valtimo:smartdocuments:$valtimoVersion")
         implementation("com.ritense.valtimo:wordpress-mail:$valtimoVersion")
-        implementation("com.ritense.valtimoplugins:freemarker:6.0.0")
+        implementation("com.ritense.valtimoplugins:freemarker:6.0.1")
         implementation("com.ritense.valtimoplugins:object-management:0.2.0")
 
         implementation("io.github.microutils:kotlin-logging")

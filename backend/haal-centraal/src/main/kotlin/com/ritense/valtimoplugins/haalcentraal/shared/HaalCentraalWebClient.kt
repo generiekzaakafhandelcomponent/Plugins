@@ -20,44 +20,39 @@ package com.ritense.valtimoplugins.haalcentraal.shared
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
 import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.web.client.RestClient
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 import java.net.URI
 
 class HaalCentraalWebClient(
+    private val restClientBuilder: RestClient.Builder,
 ) {
     inline fun <reified T : Any, R : Any?> get(
         uri: URI,
         request: R?,
         authentication: HaalCentraalAuthentication
     ): T? {
-        val httpClient = authentication.getAuthenticatedHttpClient()
-        return buildWebClient(httpClient, authentication)
-            .post()
+        val restClient = buildRestClient(authentication)
+        return restClient.post()
             .uri(uri)
             .apply {
                 request?.let { body(BodyInserters.fromValue(it)) }
             }
             .retrieve()
-            .bodyToMono(T::class.java)
-            .block()
+            .body(T::class.java)
     }
 
     inline fun <reified T : Any> get(
         uri: URI,
         authentication: HaalCentraalAuthentication
     ): T? {
-        val httpClient = authentication.getAuthenticatedHttpClient()
-        return buildWebClient(httpClient, authentication)
-            .get()
+        val restClient = buildRestClient(authentication)
+        return restClient.get()
             .uri(uri)
             .retrieve()
-            .onStatus({ status -> status.value() == 404 }) {
-                throw HaalCentraalNotFoundException("Niets gevonden")
-            }
-            .bodyToMono(T::class.java)
-            .block()
+            .body(T::class.java)
     }
 
     fun buildWebClient(
@@ -68,6 +63,17 @@ class HaalCentraalWebClient(
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .codecs { configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024) }
             .filter(authentication)
+            .build()
+    }
+
+    fun buildRestClient(
+        authentication: HaalCentraalAuthentication
+    ): RestClient {
+        return restClientBuilder
+            .clone()
+            .apply {
+                authentication.applyAuth(it)
+            }
             .build()
     }
 }
