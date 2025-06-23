@@ -5,7 +5,7 @@
     "pluginDefinitionKey": "doc-scanner",
     "properties": {
       "url": "https://api.mistral.ai/",
-      "token": "MlzNfKrk2QovOQUGqWH82xPnyV5GqovU"
+      "token": "YOUR_MISTRAL_API_KEY_HERE"
     }
   }
 ]
