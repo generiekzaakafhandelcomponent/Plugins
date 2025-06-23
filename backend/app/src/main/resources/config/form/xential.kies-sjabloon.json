@@ -3,7 +3,14 @@
         {
             "label": "pv sjabloon groep",
             "tableView": false,
-            "key": "pv.xentialContent",
+            "key": "pv.xentialDocumentProperties",
+            "type": "hidden",
+            "input": true
+        },
+        {
+            "label": "pv xential gebruikersid",
+            "tableView": false,
+            "key": "pv.xentialGebruikersId",
             "type": "hidden",
             "input": true
         },
@@ -23,7 +30,7 @@
                 "required": true
             },
             "data": {
-                "url": "../api/v1/xential/sjablonen?sjabloonGroupId={{ data.pv.xentialContent.xentialGroupId }}",
+                "url": "../api/v1/xential/sjablonen?gebruikersId={{ data.pv.xentialGebruikersId }}&sjabloonGroupId={{ data.pv.xentialDocumentProperties.xentialGroupId }}",
                 "method": "GET",
                 "headers": [
                     {

@@ -5,6 +5,7 @@ data class FactuurRegel(
     val tarief: String,
     val btwPercentage: String,
     val grootboekSleutel: String,
+    val bronSleutel: String,
     val omschrijving: String
 ) {
 
@@ -15,6 +16,7 @@ data class FactuurRegel(
                 tarief = map["tarief"] as String,
                 btwPercentage = map["btwPercentage"] as String,
                 grootboekSleutel = map["grootboekSleutel"] as String,
+                bronSleutel = map["bronSleutel"] as String,
                 omschrijving = map["omschrijving"] as String
             )
     }

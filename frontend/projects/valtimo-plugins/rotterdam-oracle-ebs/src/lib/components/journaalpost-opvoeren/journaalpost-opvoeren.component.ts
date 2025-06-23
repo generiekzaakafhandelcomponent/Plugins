@@ -127,6 +127,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
         this.logger.debug('Create Line FormGroup');
         return this.fb.group({
             grootboekSleutel: this.fb.control('', Validators.required),
+            bronSleutel: this.fb.control(''),
             boekingType: this.fb.control(null, Validators.required),
             omschrijving: this.fb.control(''),
             bedrag: this.fb.control('', Validators.required),
@@ -156,6 +157,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                         boekperiode: configuration.boekperiode,
                         regels: (configuration.regels != undefined) ? configuration?.regels?.map( regel => ({
                             grootboekSleutel: regel.grootboekSleutel,
+                            bronSleutel: regel.bronSleutel,
                             boekingType: this.fromBoekingType(regel.boekingType),
                             omschrijving: regel.omschrijving,
                             bedrag: regel.bedrag
@@ -192,6 +194,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                     boekperiode: formValue.boekperiode,
                     regels: (formValue.regels != undefined) ? formValue.regels.map(regel => ({
                         grootboekSleutel: regel.grootboekSleutel,
+                        bronSleutel: regel.bronSleutel,
                         boekingType: this.toBoekingType(regel.boekingType),
                         omschrijving: regel.omschrijving,
                         bedrag: regel.bedrag
@@ -274,7 +277,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
             if (genericFieldsValid) {
                 for (let i = 0; i < formValue.regels.length; i++) {
                     linesValid = !!(
-                        formValue.regels[i].grootboekSleutel &&
+                        (formValue.regels[i].grootboekSleutel || formValue.regels[i].bronSleutel) &&
                         formValue.regels[i].boekingType &&
                         formValue.regels[i].bedrag
                     )

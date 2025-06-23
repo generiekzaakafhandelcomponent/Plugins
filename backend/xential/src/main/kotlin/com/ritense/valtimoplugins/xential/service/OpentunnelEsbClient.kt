@@ -8,12 +8,11 @@ import org.springframework.web.client.RestClient
 import javax.net.ssl.SSLContext
 
 class OpentunnelEsbClient {
-
     fun createRestClient(
         baseUrl: String,
         applicationName: String,
         applicationPassword: String,
-        sslContext: SSLContext?
+        sslContext: SSLContext?,
     ): RestClient {
         logger.debug { "Creating ESB client" }
         val credentials = Credentials.basic(applicationName, applicationPassword)
@@ -21,7 +20,7 @@ class OpentunnelEsbClient {
         return when {
             sslContext != null -> {
                 HttpClientHelper.createSecureHttpClient(
-                    sslContext
+                    sslContext,
                 ).also {
                     logger.debug { "Using secure HttpClient with Client Certificate authentication" }
                 }
@@ -30,7 +29,6 @@ class OpentunnelEsbClient {
                 HttpClientHelper.createDefaultHttpClient().also {
                     logger.debug { "Using default HttpClient" }
                 }
-
         }.let { httpClient ->
             RestClient.builder()
                 .defaultHeader("Authorization", credentials)

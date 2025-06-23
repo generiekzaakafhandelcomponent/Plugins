@@ -161,9 +161,19 @@
           "type": "textfield",
           "input": true,
           "validate": {
-            "required": true
+            "required": false
           },
-          "defaultValue": "700"
+          "defaultValue": "702"
+        },
+        {
+          "label": "Bronsleutel",
+          "key": "pv:regelBronSleutel",
+          "type": "textfield",
+          "input": true,
+          "validate": {
+            "required": false
+          },
+          "defaultValue": "701"
         },
         {
           "label": "Omschrijving",

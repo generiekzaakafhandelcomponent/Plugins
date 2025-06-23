@@ -1,8 +1,6 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 
-import camundajar.impl.scala.annotation.switch
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.module.kotlin.convertValue
@@ -113,7 +111,7 @@ class OracleEbsPlugin(
                 else -> throw IllegalArgumentException("Unsupported type ${regelsViaResolver!!::class.simpleName}")
             }
         }.also {
-            logger.debug { "Regels: $it" }
+            logger.info { "Regels: $it" }
         }
 
         OpvoerenJournaalpostVraag(
@@ -128,17 +126,16 @@ class OracleEbsPlugin(
                 journaalpostregels = journaalpostRegels.map { regel ->
                     val resolvedLineValues = resolveValuesFor(execution, mapOf(
                         GROOTBOEK_SLEUTEL_KEY to regel.grootboekSleutel,
+                        BRON_SLEUTEL_KEY to regel.bronSleutel,
                         BOEKING_TYPE_KEY to regel.boekingType,
                         BEDRAG_KEY to regel.bedrag,
                         OMSCHRIJVING_KEY to regel.omschrijving
                     )).also {
                         logger.debug { "Resolved line values: $it" }
                     }
+
                     Journaalpostregel(
-                        grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
-                            bronsleutel = null
-                        ),
+                        grootboekrekening = grootboekRekening(resolvedLineValues),
                         journaalpostregelboekingtype = boekingTypeFrom(resolvedLineValues[BOEKING_TYPE_KEY]!!),
                         journaalpostregelbedrag = doubleFrom(resolvedLineValues[BEDRAG_KEY]!!),
                         journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]!!),
@@ -151,8 +148,8 @@ class OracleEbsPlugin(
                 boekperiode = integerOrNullFrom(boekperiode)
             )
         ).let { request ->
-            logger.debug { "Trying to send OpvoerenJournaalpostVraag" }
-            logger.trace {
+            logger.info { "Trying to send OpvoerenJournaalpostVraag" }
+            logger.info {
                 "OpvoerenJournaalpostVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
             try {
@@ -233,7 +230,7 @@ class OracleEbsPlugin(
                 else -> throw IllegalArgumentException("Unsupported type ${regelsViaResolver!!::class.simpleName}")
             }
         }.also {
-            logger.debug { "Regels: $it" }
+            logger.info { "Regels: $it" }
         }
 
         OpvoerenVerkoopfactuurVraag(
@@ -301,6 +298,7 @@ class OracleEbsPlugin(
                         TARIEF_KEY to factuurRegel.tarief,
                         BTW_PERCENTAGE_KEY to factuurRegel.btwPercentage,
                         GROOTBOEK_SLEUTEL_KEY to factuurRegel.grootboekSleutel,
+                        BRON_SLEUTEL_KEY to factuurRegel.bronSleutel,
                         OMSCHRIJVING_KEY to factuurRegel.omschrijving
                     )).also {
                         logger.debug { "Resolved line values: $it" }
@@ -309,10 +307,7 @@ class OracleEbsPlugin(
                         factuurregelFacturatieHoeveelheid = valueAsBigDecimal(resolvedLineValues[HOEVEELHEID_KEY]!!),
                         factuurregelFacturatieTarief = valueAsBigDecimal(resolvedLineValues[TARIEF_KEY]!!),
                         btwPercentage = stringFrom(resolvedLineValues[BTW_PERCENTAGE_KEY]!!),
-                        grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
-                            bronsleutel = null,
-                        ),
+                        grootboekrekening = grootboekRekening(resolvedLineValues),
                         factuurregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]),
                         factuurregelFacturatieEenheid = null,
                         boekingsregel = null,
@@ -338,8 +333,8 @@ class OracleEbsPlugin(
             ),
             bijlage = null
         ).let { request ->
-            logger.debug { "Trying to send OpvoerenVerkoopfactuurVraag" }
-            logger.trace {
+            logger.info { "Trying to send OpvoerenVerkoopfactuurVraag" }
+            logger.info {
                 "OpvoerenVerkoopfactuurVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
             try {
@@ -360,6 +355,16 @@ class OracleEbsPlugin(
             }
         }
     }
+
+    private fun grootboekRekening( resolvedLineValues: Map<String, Any?>) =
+        Grootboekrekening(
+            grootboeksleutel = resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]?.let{ grootboekSleutel ->
+                stringFrom(grootboekSleutel).takeIf { it.isNotBlank() }
+            },
+            bronsleutel = resolvedLineValues[BRON_SLEUTEL_KEY]?.let{ bronSleutel ->
+                stringFrom(bronSleutel).takeIf { it.isNotBlank() }
+            }
+        )
 
     fun resolveValuesFor(
         execution: DelegateExecution,
@@ -498,6 +503,7 @@ class OracleEbsPlugin(
 
         private const val OMSCHRIJVING_KEY = "omschrijving"
         private const val GROOTBOEK_SLEUTEL_KEY = "grootboeksleutel"
+        private const val BRON_SLEUTEL_KEY = "bronSleutel"
         private const val BOEKING_TYPE_KEY = "boekingType"
         private const val BEDRAG_KEY = "bedrag"
         private const val ACHTERNAAM_KEY = "achternaam"

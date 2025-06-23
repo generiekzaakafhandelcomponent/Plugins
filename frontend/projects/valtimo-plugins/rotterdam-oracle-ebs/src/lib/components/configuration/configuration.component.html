@@ -42,7 +42,7 @@
         margin="true"
         [title]="'configuration.baseUrl' | pluginTranslate: pluginId | async"
         [tooltip]="'configuration.baseUrl.tooltip' | pluginTranslate: pluginId | async"
-        [defaultValue]="obs.prefill.baseUrl"
+        [defaultValue]="obs.prefill?.baseUrl"
         [disabled]="obs.disabled"
     >
     </v-input>
@@ -51,7 +51,7 @@
         margin="true"
         [title]="'configuration.mTlsSslContextConfiguration' | pluginTranslate: pluginId | async"
         [tooltip]="'configuration.mTlsSslContextConfiguration.tooltip' | pluginTranslate: pluginId | async"
-        [defaultSelectionId]="obs.prefill.mTlsSslContextConfiguration"
+        [defaultSelectionId]="obs.prefill?.mTlsSslContextConfiguration"
         [required]="true"
         [disabled]="obs.disabled"
         [items]="obs.mTlsSllContextConfigurationItems"
@@ -68,7 +68,7 @@
         #authenticationEnabled
         [onText]="'toggle.yes' | pluginTranslate: pluginId | async"
         [offText]="'toggle.no' | pluginTranslate: pluginId | async"
-        [checked]="obs.prefill.authenticationEnabled == true"
+        [checked]="obs.prefill?.authenticationEnabled == true"
         [disabled]="obs.disabled"
     >
     </cds-toggle>

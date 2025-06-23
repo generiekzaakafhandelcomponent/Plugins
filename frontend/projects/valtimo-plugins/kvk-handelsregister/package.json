@@ -1,19 +1,12 @@
 {
   "name": "@valtimo-plugins/kvk-handelsregister",
   "license": "EUPL-1.2",
-  "version": "1.0.1",
-  "scripts": {
-    "build": "ng-packagr -p ng-package.json"
-  },
+  "version": "1.0.3",
   "peerDependencies": {
-    "@angular/common": "^17.3.12",
-    "@angular/core": "^17.3.12"
+    "@angular/common": "^17.2.2",
+    "@angular/core": "^17.2.2"
   },
   "dependencies": {
     "tslib": "2.6.3"
-  },
-  "devDependencies": {
-    "ng-packagr": "^17.3.12"
   }
 }
-

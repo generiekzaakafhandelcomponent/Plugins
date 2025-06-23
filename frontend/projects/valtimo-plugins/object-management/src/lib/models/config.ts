@@ -42,10 +42,17 @@ interface UpdateObjectConfig {
     objectUrl: string;
 }
 
+interface GetObjectDataConfig {
+    objectManagementConfigurationId: string;
+    objectUrl: string;
+    objectDataProcessVariableName: string;
+}
+
 export {
     ObjectManagementConfig,
     CreateObjectConfig,
     GetObjectsConfig,
     DeleteObjectConfig,
     UpdateObjectConfig,
+    GetObjectDataConfig
 };

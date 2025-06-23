@@ -37,6 +37,7 @@
       "regels": [
         {
           "grootboekSleutel": "pv:regelGrootboeksleutel",
+          "bronSleutel": "pv:regelBronsleutel",
           "boekingType": "pv:regelBoekingType",
           "bedrag": "pv:regelBedrag",
           "omschrijving": "pv:regelOmschrijving"

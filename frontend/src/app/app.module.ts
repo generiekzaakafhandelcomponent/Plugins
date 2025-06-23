@@ -126,6 +126,9 @@ import {
 } from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/bag/haal-centraal-bag-plugin.module";
 
 import {LoggingModule} from '@valtimo/logging';
+import {DashboardModule} from "@valtimo/dashboard";
+import {DashboardManagementModule} from "@valtimo/dashboard-management";
+import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -212,7 +215,10 @@ export function tabsFactory() {
         TranslationManagementModule,
         TaskManagementModule,
         ExterneKlanttaakPluginModule,
-        RotterdamOracleEbsPluginModule
+        RotterdamOracleEbsPluginModule,
+        DashboardModule,
+        DashboardManagementModule,
+        KvkPluginModule,
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -239,7 +245,8 @@ export function tabsFactory() {
             suwinetPluginSpecification,
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
-            XentialPluginSpecification
+            XentialPluginSpecification,
+            kvkPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]

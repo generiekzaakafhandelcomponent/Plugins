@@ -133,12 +133,20 @@
                     <div class="line-wrapper"
                          *ngFor="let line of lines.controls; let i = index">
                         <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="bronSleutel"
+                                wrapperClass="line-field-wrapper"
+                                title="journaalpost.regel.bronSleutel"
+                                [required]="false"
+                        ></app-input-field>
+                        <app-input-field
                             [pluginId]="pluginId"
                             [formGroup]="line"
                             controlName="grootboekSleutel"
                             wrapperClass="line-field-wrapper"
                             title="journaalpost.regel.grootboekSleutel"
-                            [required]="true"
+                            [required]="false"
                         ></app-input-field>
 
                         <app-input-field
@@ -208,6 +216,7 @@
 <pre><code>[
     &#123;
         "grootboekSleutel": "",
+        "bronSleutel": "",
         "boekingType": "", // [One of: Credit | Debet]
         "bedrag": "",
         "omschrijving": "" // Optional

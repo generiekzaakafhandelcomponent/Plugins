@@ -151,6 +151,28 @@ open class ObjectManagementPlugin(
         return objectMapper.convertValue(objectData)
     }
 
+    @PluginAction(
+        key = "get-object-data-by-url",
+        title = "Get object data by object url",
+        description = "Retrieve object data by object url",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun getObjectDataByObjectUrl(
+        execution: DelegateExecution,
+        @PluginActionProperty objectManagementConfigurationId: UUID,
+        @PluginActionProperty objectUrl: String,
+        @PluginActionProperty objectDataProcessVariableName: String
+    ) {
+        logger.debug { "Retrieving object with object url: $objectUrl" }
+        val objectData = objectManagementCrudService
+            .getObjectByObjectUrl(objectManagementConfigurationId, objectUrl)
+            .record
+            .data
+
+        execution.setVariable(objectDataProcessVariableName, objectData)
+        logger.info { "Successfully retrieved object with url: $objectUrl" }
+    }
+
     companion object {
         private val logger: KLogger = KotlinLogging.logger { }
     }
