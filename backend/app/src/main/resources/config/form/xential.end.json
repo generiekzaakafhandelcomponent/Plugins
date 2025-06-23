@@ -2,7 +2,7 @@
     "components": [
         {
             "type": "button",
-            "label": "start xential flow",
+            "label": "end xential flow",
             "showValidations": false,
             "disableOnInvalid": true,
             "tableView": false,

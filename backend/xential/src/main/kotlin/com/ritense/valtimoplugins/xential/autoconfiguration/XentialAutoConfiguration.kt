@@ -22,7 +22,6 @@ import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimo.contract.authentication.UserManagementService
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
-import com.ritense.valtimo.security.jwt.authentication.TokenAuthenticationService
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.plugin.XentialPluginFactory
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
@@ -52,7 +51,6 @@ class XentialAutoConfiguration {
         pluginService: PluginService,
         esbClient: OpentunnelEsbClient,
         documentGenerationService: DocumentGenerationService,
-        tokenAuthenticationService: TokenAuthenticationService,
         valueResolverService: ValueResolverService,
         xentialSjablonenService: XentialSjablonenService,
     ) = XentialPluginFactory(
