@@ -29,7 +29,7 @@ import com.ritense.valtimoplugins.docscanner.plugin.DocScannerPluginFactory
 class DocScannerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(MistralOCRModel::class)
-    fun MistralOCRModel(
+    fun mistralOCRModel(
         restClientBuilder: RestClient.Builder
     ) = MistralOCRModel(
         restClientBuilder, null, null
