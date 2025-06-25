@@ -20,12 +20,17 @@ package com.ritense.valtimoplugins.haalcentraal.shared.autoconfigure
 import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.client.RestClient
 
 @Configuration
 class HaalCentraalAutoConfiguration {
 
     @Bean
-    fun haalCentraalWebClient(): HaalCentraalWebClient {
-        return HaalCentraalWebClient()
+    fun haalCentraalWebClient(
+        restClientBuilder: RestClient.Builder,
+    ): HaalCentraalWebClient {
+        return HaalCentraalWebClient(
+            restClientBuilder,
+        )
     }
 }

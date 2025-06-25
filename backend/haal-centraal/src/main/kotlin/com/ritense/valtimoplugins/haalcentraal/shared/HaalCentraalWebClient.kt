@@ -19,55 +19,60 @@ package com.ritense.valtimoplugins.haalcentraal.shared
 
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
 import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
-import org.springframework.http.client.reactive.ReactorClientHttpConnector
-import org.springframework.web.reactive.function.BodyInserters
-import org.springframework.web.reactive.function.client.WebClient
-import reactor.netty.http.client.HttpClient
+import org.springframework.web.client.RestClient
 import java.net.URI
 
 class HaalCentraalWebClient(
+    private val restClientBuilder: RestClient.Builder,
 ) {
     inline fun <reified T : Any, R : Any?> get(
         uri: URI,
         request: R?,
         authentication: HaalCentraalAuthentication
     ): T? {
-        val httpClient = authentication.getAuthenticatedHttpClient()
-        return buildWebClient(httpClient, authentication)
-            .post()
-            .uri(uri)
-            .apply {
-                request?.let { body(BodyInserters.fromValue(it)) }
+        val restClient = buildRestClient(authentication)
+        return try {
+            restClient
+                .post()
+                .uri(uri)
+                .body(request)
+                .retrieve()
+                .body(T::class.java)
+        } catch (ex: Exception) {
+            if (ex.message?.contains("404") == true) {
+                throw HaalCentraalNotFoundException("Niets gevonden")
             }
-            .retrieve()
-            .bodyToMono(T::class.java)
-            .block()
+            throw ex
+        }
     }
 
     inline fun <reified T : Any> get(
         uri: URI,
         authentication: HaalCentraalAuthentication
     ): T? {
-        val httpClient = authentication.getAuthenticatedHttpClient()
-        return buildWebClient(httpClient, authentication)
-            .get()
-            .uri(uri)
-            .retrieve()
-            .onStatus({ status -> status.value() == 404 }) {
+        val restClient = buildRestClient(authentication)
+        return try {
+            restClient
+                .get()
+                .uri(uri)
+                .retrieve()
+                .body(T::class.java)
+        } catch (ex: Exception) {
+            if (ex.message?.contains("404") == true) {
                 throw HaalCentraalNotFoundException("Niets gevonden")
             }
-            .bodyToMono(T::class.java)
-            .block()
+            throw ex
+        }
     }
 
-    fun buildWebClient(
-        httpClient: HttpClient,
+    fun buildRestClient(
         authentication: HaalCentraalAuthentication
-    ): WebClient {
-        return WebClient.builder()
-            .clientConnector(ReactorClientHttpConnector(httpClient))
-            .codecs { configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024) }
-            .filter(authentication)
+    ): RestClient {
+        return restClientBuilder
+            .clone()
+            .apply {
+                authentication.applyAuth(it)
+            }
             .build()
     }
 }

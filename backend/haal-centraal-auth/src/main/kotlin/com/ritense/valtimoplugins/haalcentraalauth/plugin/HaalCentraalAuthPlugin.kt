@@ -44,6 +44,7 @@ class HaalCentraalAuthPlugin : HaalCentraalAuthentication {
     override fun applyAuth(builder: RestClient.Builder): RestClient.Builder {
         return builder.defaultHeaders { headers ->
             headers.setBearerAuth(authenticationSecret)
+            headers.set("X-Api-Key", authenticationSecret)
         }
     }
 
