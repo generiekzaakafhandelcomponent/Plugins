@@ -24,14 +24,7 @@ dockerCompose {
     dependencies {
         implementation(platform("com.ritense.valtimo:valtimo-dependency-versions:$valtimoVersion"))
         implementation("com.ritense.valtimo:valtimo-gzac-dependencies")
-        implementation("com.ritense.valtimo:wordpress-mail:$valtimoVersion")
-        implementation("com.ritense.valtimo:besluit:$valtimoVersion")
-        implementation("com.ritense.valtimo:objects-api:$valtimoVersion")
-        implementation("com.ritense.valtimo:openzaak-resource:$valtimoVersion")
-        implementation("com.ritense.valtimo:openzaak:$valtimoVersion")
-        implementation("com.ritense.valtimo:smartdocuments:$valtimoVersion")
-        implementation("com.ritense.valtimo:wordpress-mail:$valtimoVersion")
-        implementation("com.ritense.valtimoplugins:freemarker:6.0.0")
+
         implementation("com.ritense.valtimoplugins:object-management:0.2.0")
 
         implementation("io.github.microutils:kotlin-logging")
