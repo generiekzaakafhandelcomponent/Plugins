@@ -25,4 +25,3 @@ export * from './lib/components/hugging-face-configuration/hugging-face-configur
 export * from './lib/components/give-summary/give-summary-configuration.component';
 export * from './lib/components/chat/chat-configuration.component';
 export * from './lib/components/chat-memorize/chat-memorize-configuration.component';
-export * from './lib/components/file-to-text/file-to-text-configuration.component';

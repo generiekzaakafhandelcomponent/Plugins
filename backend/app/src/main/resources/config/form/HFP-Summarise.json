@@ -12,7 +12,7 @@
       "attributes": {
         "data-testid": "summarise-textArea"
       },
-      "autoExpand": false,
+      "autoExpand": true,
       "properties": {
         "targetKey": "doc:summarise"
       },

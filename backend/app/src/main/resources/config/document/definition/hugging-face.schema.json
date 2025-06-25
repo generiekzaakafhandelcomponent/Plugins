@@ -11,19 +11,16 @@
       "type": "string"
     },
     "chatResult": {
-      "type": "string"
+      "type": "object"
     },
     "maxQandASaved": {
       "type": "string"
     },
     "summaryResult": {
-      "type": "string"
+      "type": "object"
     },
     "interpolatedQuestion": {
-      "type": "string"
-    },
-    "fileToTextResult": {
-      "type": "string"
+      "type": "object"
     }
   },
   "additionalProperties": false

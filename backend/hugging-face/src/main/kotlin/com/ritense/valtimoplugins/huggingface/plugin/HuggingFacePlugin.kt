@@ -20,7 +20,6 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.document.domain.Document
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
-import com.ritense.document.domain.impl.request.ModifyDocumentRequest
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -29,7 +28,7 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceSummaryModel
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceTextGenerationModel
-import com.ritense.valtimoplugins.huggingface.client.MistralOCRModel
+import com.ritense.valtimoplugins.huggingface.client.mistral.StringWrapper
 import freemarker.template.Configuration
 import freemarker.template.Configuration.VERSION_2_3_32
 import freemarker.template.Template
@@ -46,7 +45,6 @@ import java.util.*
 open class HuggingFacePlugin(
     private val huggingFaceSummaryModel: HuggingFaceSummaryModel,
     private val huggingFaceTextGenerationModel: HuggingFaceTextGenerationModel,
-    private val mistralOCRModel: MistralOCRModel,
     private val documentService: JsonSchemaDocumentService,
 ) {
 
@@ -73,7 +71,7 @@ open class HuggingFacePlugin(
             longText = longText,
         )
 
-        execution.setVariable(resultPV, result)
+        execution.setVariable(resultPV, StringWrapper(result))
         println("Stored summary result: '$result' in variable $resultPV")
     }
 
@@ -85,6 +83,8 @@ open class HuggingFacePlugin(
     )
     open fun chat(
         execution: DelegateExecution,
+        @PluginActionProperty interpolatedQuestionPV: String,
+        @PluginActionProperty chatAnswerPV: String,
         @PluginActionProperty question: String
     ) {
         huggingFaceTextGenerationModel.baseUri = url
@@ -97,17 +97,8 @@ open class HuggingFacePlugin(
         val chatResult = huggingFaceTextGenerationModel.mistralChat(
             question = interpolatedQuestion,
         )
-        execution.setVariable("question", interpolatedQuestion)
-        execution.setVariable("answer", chatResult)
-
-        val documentUpdate = jacksonObjectMapper().createObjectNode().apply {
-            put("chatResult", chatResult)
-        }
-        val result = documentService.modifyDocument(ModifyDocumentRequest.create(jsonSchemaDocument, documentUpdate))
-        result.resultingDocument().orElseThrow {
-            val errors = result.errors().joinToString(", ") { it.asString() }
-            RuntimeException("failed to update document $errors")
-        }
+        execution.setVariable(interpolatedQuestionPV, StringWrapper(interpolatedQuestion))
+        execution.setVariable(chatAnswerPV, StringWrapper(chatResult))
     }
 
     @PluginAction(
@@ -129,7 +120,8 @@ open class HuggingFacePlugin(
         huggingFaceTextGenerationModel.token = token
 
         // Get the chat history from the process variable to build the full prompt
-        val chatHistory = execution.getVariable("chatHistory") as? String ?: ""
+        val chatHistoryWrapper = execution.getVariable("chatHistory") as? StringWrapper
+        val chatHistory = chatHistoryWrapper?.value ?: ""
         val fullPrompt = "Contex:\n$chatHistory\nCurrentQuestion: $question"
 
         // Get the Case
@@ -163,55 +155,14 @@ open class HuggingFacePlugin(
         }
 
         // Set the result in the process variable
-        execution.setVariable(interpolatedQuestionPV, interpolatedQuestion)
-        execution.setVariable(chatAnswerPV, chatResult)
-        execution.setVariable("chatHistory", trimmedHistory)
+        execution.setVariable(interpolatedQuestionPV, StringWrapper(interpolatedQuestion))
+        execution.setVariable(chatAnswerPV, StringWrapper(chatResult))
+        execution.setVariable("chatHistory", StringWrapper(trimmedHistory))
 
         // Logging
         println("Updated chat history:\n$updatedChatHistory")
         println("Stored chat result: '$chatResult' in variable $chatAnswerPV")
         println("Stored interpolated question: '$interpolatedQuestion' in variable $interpolatedQuestionPV")
-    }
-
-    @PluginAction(
-        key = "file-to-text",
-        title = "File to Text",
-        description = "Converts a image or pdf document to text using Mistral OCR",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
-    )
-    open fun fileToText(
-        execution: DelegateExecution,
-        @PluginActionProperty filePV: String,
-        @PluginActionProperty pages: List<Int>?,
-        @PluginActionProperty includeImageBase64: Boolean,
-        @PluginActionProperty resultPV: String
-    ) {
-        mistralOCRModel.baseUri = url
-        mistralOCRModel.token = token
-
-        val file = execution.getVariable(filePV) as? List<*>
-            ?: throw IllegalStateException("No file provided in the process variable $filePV to convert to text.")
-
-        val firstItem = file.firstOrNull().toString()
-
-        val base64Url = Regex("url=(.+?)(?=,\\s*size=)")
-            .find(firstItem)?.groupValues?.get(1)
-            ?: throw IllegalStateException("Base64 URL not found in: $firstItem")
-
-        val filename = Regex("name=(.+?)-[a-f0-9\\-]{36}\\.pdf")
-            .find(firstItem)?.groupValues?.get(1)?.plus(".pdf")
-
-        println("pages: $pages")
-
-        val mistralOCR = mistralOCRModel.mistralFiletoText(
-            fileBase64 = base64Url,
-            documentName = filename,
-            pages = pages,
-            includeImageBase64 = includeImageBase64
-        )
-
-        println("Mistral OCR result: $mistralOCR")
-        execution.setVariable(resultPV, mistralOCR)
     }
 
     fun generate(

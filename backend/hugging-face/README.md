@@ -52,21 +52,4 @@ Go to [https://huggingface.co](https://huggingface.co) and create a free account
 4. Fill in the **question** you want to ask.
 5. Click **"Submit"** to send your question to the AI agent.
 6. **Enjoy your conversation** with the AI agent!
---- 
-### File-to-Text Plugin Configuration
-
-To use the **File-to-Text** plugin action, you’ll need to:
-
-1. Create a **Mistral** account by visiting [https://mistral.ai](https://mistral.ai) and clicking ***Try the API**.
-2. Generate an **API key** from your account settings.
-
-> The process is nearly identical to the Hugging Face API key generation:
->
-> * Navigate to your **profile settings**.
-> * Go to the **API Keys** section.
-> * Click **“Create new key”**, provide a name and an optional expiration date and create the new key.
-> * Copy and store the key securely—you won’t be able to view it again later.
-
-3. Return to the **File-to-Text Plugin** configuration in **Valtimo**.
-4. Paste the generated API key into the plugin’s **Token** field.
-5. Click **“Save”** to finalize the configuration.
+---

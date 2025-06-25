@@ -1,10 +1,5 @@
 [
   {
-    "processDefinitionKey": "HFP-file-to-text",
-    "canInitializeDocument": true,
-    "startableByUser": false
-  },
-  {
     "processDefinitionKey": "HFP-pingpong",
     "canInitializeDocument": true,
     "startableByUser": false
@@ -15,7 +10,7 @@
     "startableByUser": false
   },
   {
-    "processDefinitionKey": "HFP-test",
+    "processDefinitionKey": "HFP-chat",
     "canInitializeDocument": true,
     "startableByUser": false
   }

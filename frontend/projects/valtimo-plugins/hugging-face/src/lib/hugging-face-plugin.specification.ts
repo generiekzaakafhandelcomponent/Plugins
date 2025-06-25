@@ -22,7 +22,6 @@ import {HUGGING_FACE_PLUGIN_LOGO_BASE64} from './assets';
 import {GiveSummaryConfigurationComponent} from './components/give-summary/give-summary-configuration.component';
 import {ChatConfigurationComponent} from "./components/chat/chat-configuration.component";
 import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/chat-memorize-configuration.component";
-import {FileToTextConfigurationComponent} from "./components/file-to-text/file-to-text-configuration.component";
 
 const huggingFacePluginSpecification: PluginSpecification = {
         pluginId: 'smart-task-plugin',
@@ -32,7 +31,6 @@ const huggingFacePluginSpecification: PluginSpecification = {
             'give-summary': GiveSummaryConfigurationComponent,
             'chat': ChatConfigurationComponent,
             'chat-memorize': ChatMemorizeConfigurationComponent,
-            'file-to-text': FileToTextConfigurationComponent
         },
         pluginTranslations: {
             nl: {
@@ -63,11 +61,6 @@ const huggingFacePluginSpecification: PluginSpecification = {
                 previousAnswerTooltip: 'Voer de naam van de PV in waar het vorige antwoord van het chatmodel in word opgeslagen.',
                 maxQandASaved: 'Voer het aantal vragen en antwoorden in dat moet worden meegestuurd met de prompt als context.',
                 maxQandASavedTooltip: 'Voer het max aantal vragen en antwoorden in dat moet worden meegestuurd met de prompt als context.',
-                filePV: 'Voer de naam van de PV in waar het bestand is opgeslagen.',
-                pages: 'Voer het aantal pagina\'s in dat moet worden omgezet naar tekst.',
-                pagestooltip: 'Gebruik het voormat "1,2" om pagina 1 en 2 om te zetten naar tekst.',
-                includeImageBase64:'Vink de checkbox aan om afbeeldingen in de tekst op te nemen als base64.',
-                resultPV: 'Voer de naam van de PV in waar het resultaat van de tekstomzetting in moet worden opgeslagen.'
             },
             en: {
                 title: 'Smart Task Plugin',
@@ -97,11 +90,6 @@ const huggingFacePluginSpecification: PluginSpecification = {
                 previousAnswerTooltip: 'Enter the name of the PV where the chat model\'s previous answer is stored.',
                 maxQandASaved: 'Enter the max number of questions and answers to be sent with the prompt as context.',
                 maxQandASavedTooltip: 'Enter the max number of questions and answers to be sent with the prompt as context.',
-                filePV: 'Enter the name of the PV where the file is stored.',
-                pages: 'Enter the number of pages to convert to text.',
-                pagestooltip: 'Use the format "1,2" to convert pages 1 and 2 to text.',
-                includeImageBase64: 'Check the box to include images in the text as base64.',
-                resultPV: 'Enter the name of the PV where the result of the text conversion should be stored.'
             },
         }
     }

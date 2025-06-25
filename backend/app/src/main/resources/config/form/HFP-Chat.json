@@ -3,7 +3,9 @@
   "components": [
     {
       "key": "vraagAi",
-      "type": "textfield",
+      "type": "textarea",
+      "rows": 6,
+      "autoExpand": true,
       "input": true,
       "label": "Message for the AI model",
       "tableView": true,

@@ -5,7 +5,7 @@
     "pluginDefinitionKey": "smart-task-plugin",
     "properties": {
       "url": "https://router.huggingface.co/hf-inference/models/",
-      "token": "hf_YOUR_HUGGINGFACE_TOKEN"
+      "token": "YOUR_HUGGING_FACE_TOKEN"
     }
   },
   {
@@ -14,16 +14,7 @@
     "pluginDefinitionKey": "smart-task-plugin",
     "properties": {
       "url": "https://router.huggingface.co/",
-      "token": "hf_YOUR_HUGGINGFACE_TOKEN"
-    }
-  },
-  {
-    "id": "680a8db6-b67e-40a2-b4a0-999ab116d034",
-    "title": "File to Text (Autodeployed)",
-    "pluginDefinitionKey": "smart-task-plugin",
-    "properties": {
-      "url": "https://api.mistral.ai/",
-      "token": "M_YOUR_MISTRAL_TOKEN"
+      "token": "YOUR_HUGGING_FACE_TOKEN"
     }
   }
 ]
