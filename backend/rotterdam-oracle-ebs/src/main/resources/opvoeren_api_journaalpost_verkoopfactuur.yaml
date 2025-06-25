@@ -278,6 +278,7 @@ components:
         - factuurdatum
         - inkooporderreferentie
         - koper
+        - factuuradres
         - factuurregels
       type: object
       description: "Factuurgegevens zodat OracleEBS een factuur kan aanmaken en versturen."
@@ -358,6 +359,7 @@ components:
               $ref: '#/components/schemas/NietNatuurlijkPersoon'
     NatuurlijkPersoon:
       required:
+        - bsn
         - achternaam
         - voornamen
       type: object
@@ -391,6 +393,8 @@ components:
           $ref: '#/components/schemas/Adres'
     NietNatuurlijkPersoon:
       required:
+        - kvknummer
+        - kvkvestigingsnummer
         - statutaireNaam
       type: object
       properties:
