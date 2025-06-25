@@ -1,0 +1,37 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "file",
+      "type": "file",
+      "input": true,
+      "label": "Upload a PDF or image file to extract text",
+      "webcam": false,
+      "storage": "base64",
+      "fileTypes": [
+        {
+          "label": "",
+          "value": ""
+        }
+      ],
+      "tableView": false,
+      "attributes": {
+        "data-testid": "HFP-SaveFile-file"
+      },
+      "properties": {
+        "targetKey": "pv:/file"
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

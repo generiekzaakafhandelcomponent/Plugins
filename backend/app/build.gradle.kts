@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":backend:alfresco-authentication"))
     implementation(project(":backend:amsterdam-email-api"))
     implementation(project(":backend:berkelybridge-textgenerator"))
+    implementation(project(":backend:doc-scanner"))
     implementation(project(":backend:externe-klanttaak"))
     implementation(project(":backend:freemarker"))
     implementation(project(":backend:kvk-handelsregister"))
