@@ -6,6 +6,7 @@ include(
     "backend:amsterdam-email-api",
     "backend:berkelybridge-textgenerator",
     "backend:externe-klanttaak",
+    "backend:freemarker",
     "backend:haal-centraal",
     "backend:haal-centraal-auth",
     "backend:mTLS-SSLContext",

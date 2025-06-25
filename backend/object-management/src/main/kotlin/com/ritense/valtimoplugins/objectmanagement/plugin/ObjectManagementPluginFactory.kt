@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component
 @SkipComponentScan
 class ObjectManagementPluginFactory(
     pluginService: PluginService,
-    private val objectManagementCrudService: ObjectManagementCrudService,
+    val objectManagementCrudService: ObjectManagementCrudService,
     val valueResolverService: ValueResolverService
 ) : PluginFactory<ObjectManagementPlugin>(pluginService) {
 
