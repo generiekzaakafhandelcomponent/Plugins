@@ -7,10 +7,4 @@ data class AdresPostbus(
     override val postcode: String,
     override val plaatsnaam: String,
     override val landcode: String,
-): Adres(
-    naamContactpersoon = naamContactpersoon,
-    vestigingsnummerRotterdam = vestigingsnummerRotterdam,
-    postcode = postcode,
-    plaatsnaam = plaatsnaam,
-    landcode = landcode
-)
+): Adres

@@ -63,24 +63,22 @@ interface VerkoopfactuurOpvoerenConfig {
     regelsViaResolver?: string;
 }
 
-interface AdresLocatie {
+interface Adres {
     naamContactpersoon?: string;
     vestigingsnummerRotterdam?: string;
-    straatnaam: string;
-    huisnummer: number;
-    huisnummertoevoeging?: string;
     postcode: string;
     plaatsnaam: string;
     landcode: string;
 }
 
-interface AdresPostbus {
-    naamContactpersoon?: string;
-    vestigingsnummerRotterdam?: string;
+interface AdresLocatie extends Adres {
+    straatnaam: string;
+    huisnummer: number;
+    huisnummertoevoeging?: string;
+}
+
+interface AdresPostbus extends Adres {
     postbus: number;
-    postcode: string;
-    plaatsnaam: string;
-    landcode: string;
 }
 
 interface NatuurlijkPersoon {
