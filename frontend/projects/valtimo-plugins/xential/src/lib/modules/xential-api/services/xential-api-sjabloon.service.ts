@@ -30,12 +30,11 @@ export class XentialApiSjabloonService extends BaseApiService {
         super(http, configService);
     }
 
-    public getTemplates(sjabloonGroupId?: string): Observable<XentialApiSjabloon> {
+    public getTemplates(gebruikersId: string, sjabloonGroupId?: string): Observable<XentialApiSjabloon> {
         return this.http.get<XentialApiSjabloon>(
-            this.getApiUrl(
-                !sjabloonGroupId
-                    ? `/v1/xential/sjablonen`
-                    : `/v1/xential/sjablonen?sjabloonGroupId=${sjabloonGroupId}`
+            this.getApiUrl(!sjabloonGroupId
+                ? `/v1/xential/sjablonen?gebruikersId=${gebruikersId}`
+                : `/v1/xential/sjablonen?gebruikersId=${gebruikersId}&sjabloonGroupId=${sjabloonGroupId}`
             )
         );
     }

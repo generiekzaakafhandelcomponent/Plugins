@@ -20,20 +20,22 @@ import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
 import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
+import com.ritense.valtimoplugins.xential.service.XentialSjablonenService
 import com.ritense.valueresolver.ValueResolverService
 
 class XentialPluginFactory(
     pluginService: PluginService,
     private val esbClient: OpentunnelEsbClient,
     private val documentGenerationService: DocumentGenerationService,
-    private val valueResolverService: ValueResolverService
+    private val valueResolverService: ValueResolverService,
+    private val xentialSjablonenService: XentialSjablonenService,
 ) : PluginFactory<XentialPlugin>(pluginService) {
-
     override fun create(): XentialPlugin {
         return XentialPlugin(
             esbClient,
             documentGenerationService,
-            valueResolverService
+            valueResolverService,
+            xentialSjablonenService,
         )
     }
 }

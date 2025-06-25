@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.ritense.objectenapi.ObjectenApiPlugin
 import com.ritense.objectenapi.client.ObjectRecord
 import com.ritense.objectenapi.client.ObjectRequest
+import com.ritense.objectenapi.client.ObjectWrapper
 import com.ritense.objectenapi.client.ObjectsList
 import com.ritense.objectmanagement.domain.ObjectManagement
 import com.ritense.objectmanagement.repository.ObjectManagementRepository
@@ -28,7 +29,7 @@ import com.ritense.objecttypenapi.ObjecttypenApiPlugin
 import com.ritense.plugin.service.PluginService
 import java.net.URI
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 class ObjectManagementCrudService(
     private val pluginService: PluginService,
@@ -100,14 +101,30 @@ class ObjectManagementCrudService(
         }
     }
 
+    fun getObjectByObjectUrl(
+        objectManagementConfigurationId: UUID,
+        objectUrl: String,
+    ): ObjectWrapper {
+        return try {
+            objectManagementFacade.getObjectByUri(
+                objectName = getObjectManagementTitle(objectManagementConfigurationId),
+                objectUrl = URI(objectUrl)
+            )
+        } catch (e: Exception) {
+            throw RuntimeException("Failed to fetch object with object url: $objectUrl", e)
+        }
+    }
+
+    private fun getObjectManagementTitle(objectManagementConfigurationId: UUID): String {
+        return getObjectManagement(objectManagementConfigurationId).title
+    }
+
     private fun getObjectenApiPlugin(objectenApiPluginConfigurationId: UUID): ObjectenApiPlugin {
         return pluginService.createInstance<ObjectenApiPlugin>(objectenApiPluginConfigurationId)
-
     }
 
     private fun getObjecttypenApiPlugin(objecttypenApiPluginConfigurationId: UUID): ObjecttypenApiPlugin {
         return pluginService.createInstance<ObjecttypenApiPlugin>(objecttypenApiPluginConfigurationId)
-
     }
 
     private fun getObjectManagement(objectManagementId: UUID): ObjectManagement {

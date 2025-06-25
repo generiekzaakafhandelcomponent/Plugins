@@ -29,12 +29,11 @@ import org.springframework.web.bind.annotation.RestController
 @SkipComponentScan
 @RequestMapping("/api", produces = [ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE])
 class DocumentResource(
-    val documentGenerationService: DocumentGenerationService
+    val documentGenerationService: DocumentGenerationService,
 ) {
-
     @PostMapping("/v1/xential/document")
     fun handleSubmission(
-        @RequestBody message: DocumentCreatedMessage
+        @RequestBody message: DocumentCreatedMessage,
     ) {
         documentGenerationService.onDocumentGenerated(message)
     }

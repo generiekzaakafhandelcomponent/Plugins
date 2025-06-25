@@ -1,0 +1,38 @@
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+        disabled: disabled$ | async,
+        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+    } as obs"
+>
+
+    <div>
+        <v-input-label
+                [title]="'preparing access validation'"
+        ></v-input-label>
+    </div>
+    <v-input
+            name="toegangResultaatId"
+            [title]="'toegangResultaatId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.toegangResultaatId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
+            name="xentialGebruikersId"
+            [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.xentialGebruikersId"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
+            name="xentialDocumentProperties"
+            [title]="'xentialDocumentProperties' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.xentialDocumentProperties"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+</v-form>

@@ -59,6 +59,22 @@
       "defaultValue": "Debetnota"
     },
     {
+      "label": "Factuurdatum",
+      "key": "pv:factuurDatum",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "customDefaultValue": "value = moment().format('YYYY-MM-DD')"
+    },
+    {
+      "label": "Factuur vervaldatum",
+      "key": "pv:factuurVervaldatum",
+      "type": "textfield",
+      "input": true
+    },
+    {
       "label": "Inkoop Order referentie",
       "key": "pv:inkoopOrderReferentie",
       "type": "textfield",
@@ -145,9 +161,19 @@
           "type": "textfield",
           "input": true,
           "validate": {
-            "required": true
+            "required": false
           },
-          "defaultValue": "700"
+          "defaultValue": "702"
+        },
+        {
+          "label": "Bronsleutel",
+          "key": "pv:regelBronSleutel",
+          "type": "textfield",
+          "input": true,
+          "validate": {
+            "required": false
+          },
+          "defaultValue": "701"
         },
         {
           "label": "Omschrijving",

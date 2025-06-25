@@ -31,6 +31,8 @@
       "@valtimo-plugins/haal-centraal-auth": [
         "./dist/valtimo-plugins/haal-centraal-auth"
       ],
+      "@valtimo-plugins/freemarker": ["dist/valtimo-plugins/freemarker"],
+      "@valtimo-plugins/kvk-handelsregister": ["dist/valtimo-plugins/kvk-handelsregister"],
       "@valtimo-plugins/publictask": ["dist/valtimo-plugins/publictask"],
       "@valtimo-plugins/rotterdam-oracle-ebs": ["dist/valtimo-plugins/rotterdam-oracle-ebs"],
       "@valtimo-plugins/slack": ["dist/valtimo-plugins/slack"],

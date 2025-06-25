@@ -16,7 +16,14 @@
 
 plugins {
     id("org.openapi.generator") version "7.10.0"
+    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
 }
+
+//ktlint {
+//    filter {
+//        include("/**/src/**/*.kt")
+//    }
+//}
 
 dockerCompose {
     setProjectName("xential")
@@ -60,7 +67,7 @@ dependencies {
     testImplementation("com.ritense.valtimo:process-document")
     testImplementation("com.ritense.valtimo:test-utils-common")
 
-    testImplementation( "org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     testImplementation("org.mockito:mockito-core")
@@ -89,11 +96,12 @@ openApiGenerate {
     apiPackage = "com.rotterdam.esb.xential.api"
     invokerPackage = "com.rotterdam.esb.xential.invoker"
     modelPackage = "com.rotterdam.esb.xential.model"
-    configOptions = mapOf(
-        "useSpringBoot3" to "true",
-        "library" to "jvm-spring-restclient",
-        "serializationLibrary" to "jackson"
-    )
+    configOptions =
+        mapOf(
+            "useSpringBoot3" to "true",
+            "library" to "jvm-spring-restclient",
+            "serializationLibrary" to "jackson",
+        )
 }
 
 sourceSets {
@@ -114,5 +122,3 @@ tasks.named("sourcesJar") {
         "openApiGenerate",
     )
 }
-
-

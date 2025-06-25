@@ -213,8 +213,6 @@ components:
             $ref: '#/components/schemas/Bronspecifiekewaardesegment'
     Grootboekrekening:
       description: 'Direct de grootboek sleutel uit Oracle of een bron specifieke sleutel die vertaald moet worden.'
-      required:
-        - grootboeksleutel
       type: object
       oneOf:
         - properties:

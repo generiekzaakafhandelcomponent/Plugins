@@ -24,8 +24,7 @@ import java.util.UUID
 
 @Entity
 @Table(name = "xential_tokens")
-class XentialToken (
-
+class XentialToken(
     @Id
     @Column(name = "token", nullable = false, updatable = false)
     val token: UUID,
@@ -34,5 +33,5 @@ class XentialToken (
     @Column(name = "message_name", nullable = false, updatable = false)
     val messageName: String,
     @Column(name = "resume_url", nullable = true, updatable = false)
-    val resumeUrl: String?
+    val resumeUrl: String?,
 )

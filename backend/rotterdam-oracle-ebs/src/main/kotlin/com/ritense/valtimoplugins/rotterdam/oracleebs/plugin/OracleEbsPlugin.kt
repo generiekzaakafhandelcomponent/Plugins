@@ -2,6 +2,8 @@ package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -35,6 +37,8 @@ import java.math.BigDecimal
 import java.net.URI
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.util.LinkedHashMap
+import kotlin.String
 
 @Plugin(
     key = "rotterdam-oracle-ebs",
@@ -77,7 +81,7 @@ class OracleEbsPlugin(
         @PluginActionProperty boekjaar: String? = null,
         @PluginActionProperty boekperiode: String? = null,
         @PluginActionProperty regels: List<JournaalpostRegel>? = null,
-        @PluginActionProperty regelsViaResolver: String? = null
+        @PluginActionProperty regelsViaResolver: Any? = null
     ) {
         logger.info {
             "Journaalpost Opvoeren(" +
@@ -85,19 +89,29 @@ class OracleEbsPlugin(
                 "referentieNummer: $referentieNummer, " +
                 "sleutel: $sleutel, " +
                 "boekdatumTijd: $boekdatumTijd, " +
-                "categorie: $categorie" +
+                "categorie: $categorie, " +
+                "saldoSoort: $saldoSoort" +
             ")"
         }
 
-        if (regels.isNullOrEmpty() && regelsViaResolver.isNullOrBlank()) {
+        // prepare lines
+        if (regels.isNullOrEmpty() && regelsViaResolver == null) {
             throw IllegalArgumentException("Regels are not specified!")
         }
         val journaalpostRegels: List<JournaalpostRegel> = if (!regels.isNullOrEmpty()) {
             regels
         } else {
-            objectMapper.readValue(regelsViaResolver!!)
+            @Suppress("UNCHECKED_CAST")
+            when (regelsViaResolver) {
+                is ArrayList<*> -> regelsViaResolver.map {
+                    JournaalpostRegel.from(it as LinkedHashMap<String, String>)
+                }
+                is ArrayNode -> objectMapper.convertValue<List<JournaalpostRegel>>(regelsViaResolver)
+                is String -> objectMapper.readValue<List<JournaalpostRegel>>(regelsViaResolver)
+                else -> throw IllegalArgumentException("Unsupported type ${regelsViaResolver!!::class.simpleName}")
+            }
         }.also {
-            logger.debug { "Regels: $it" }
+            logger.info { "Regels: $it" }
         }
 
         OpvoerenJournaalpostVraag(
@@ -112,17 +126,16 @@ class OracleEbsPlugin(
                 journaalpostregels = journaalpostRegels.map { regel ->
                     val resolvedLineValues = resolveValuesFor(execution, mapOf(
                         GROOTBOEK_SLEUTEL_KEY to regel.grootboekSleutel,
+                        BRON_SLEUTEL_KEY to regel.bronSleutel,
                         BOEKING_TYPE_KEY to regel.boekingType,
                         BEDRAG_KEY to regel.bedrag,
                         OMSCHRIJVING_KEY to regel.omschrijving
                     )).also {
                         logger.debug { "Resolved line values: $it" }
                     }
+
                     Journaalpostregel(
-                        grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
-                            bronsleutel = null
-                        ),
+                        grootboekrekening = grootboekRekening(resolvedLineValues),
                         journaalpostregelboekingtype = boekingTypeFrom(resolvedLineValues[BOEKING_TYPE_KEY]!!),
                         journaalpostregelbedrag = doubleFrom(resolvedLineValues[BEDRAG_KEY]!!),
                         journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]!!),
@@ -135,8 +148,8 @@ class OracleEbsPlugin(
                 boekperiode = integerOrNullFrom(boekperiode)
             )
         ).let { request ->
-            logger.debug { "Trying to send OpvoerenJournaalpostVraag" }
-            logger.trace {
+            logger.info { "Trying to send OpvoerenJournaalpostVraag" }
+            logger.info {
                 "OpvoerenJournaalpostVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
             try {
@@ -170,17 +183,21 @@ class OracleEbsPlugin(
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
         @PluginActionProperty factuurKlasse: String,
+        @PluginActionProperty factuurDatum: String,
+        @PluginActionProperty factuurVervaldatum: String? = null,
         @PluginActionProperty inkoopOrderReferentie: String,
         @PluginActionProperty relatieType: String,
         @PluginActionProperty natuurlijkPersoon: NatuurlijkPersoon? = null,
         @PluginActionProperty nietNatuurlijkPersoon: NietNatuurlijkPersoon? = null,
         @PluginActionProperty regels: List<FactuurRegel>? = null,
-        @PluginActionProperty regelsViaResolver: String? = null
+        @PluginActionProperty regelsViaResolver: Any? = null
     ) {
         logger.info {
             "Verkoopfactuur Opvoeren(" +
                 "procesCode: $procesCode, " +
                 "referentieNummer: $referentieNummer, " +
+                "factuurKlasse: $factuurKlasse, " +
+                "factuurDatum: $factuurDatum, " +
                 "inkoopOrderReferentie: $inkoopOrderReferentie, " +
                 "relatieType: $relatieType" +
             ")"
@@ -196,17 +213,24 @@ class OracleEbsPlugin(
             }
         }
 
-
-        if (regels.isNullOrEmpty() && regelsViaResolver.isNullOrBlank()) {
+        // prepare lines
+        if (regels.isNullOrEmpty() && regelsViaResolver == null) {
             throw IllegalArgumentException("Regels are not specified!")
         }
         val factuurRegels: List<FactuurRegel> = if (!regels.isNullOrEmpty()) {
             regels
         } else {
-            // TODO: regels could be an object, not always a serialized JSON data structure
-            objectMapper.readValue(regelsViaResolver!!)
+            @Suppress("UNCHECKED_CAST")
+            when (regelsViaResolver) {
+                is ArrayList<*> -> regelsViaResolver.map {
+                    FactuurRegel.from(it as LinkedHashMap<String, String>)
+                }
+                is ArrayNode -> objectMapper.convertValue<List<FactuurRegel>>(regelsViaResolver)
+                is String -> objectMapper.readValue<List<FactuurRegel>>(regelsViaResolver)
+                else -> throw IllegalArgumentException("Unsupported type ${regelsViaResolver!!::class.simpleName}")
+            }
         }.also {
-            logger.debug { "Regels: $it" }
+            logger.info { "Regels: $it" }
         }
 
         OpvoerenVerkoopfactuurVraag(
@@ -215,7 +239,9 @@ class OracleEbsPlugin(
             factuur = Verkoopfactuur(
                 factuurtype = Verkoopfactuur.Factuurtype.Verkoopfactuur,
                 factuurklasse= factuurKlasseFrom(factuurKlasse),
-                factuurdatum = LocalDate.now(),
+                factuurdatum = localDateFrom(factuurDatum),
+                factuurvervaldatum =
+                    if (factuurVervaldatum.isNullOrBlank()) { null } else { localDateFrom(factuurVervaldatum) },
                 inkooporderreferentie = inkoopOrderReferentie,
                 koper = RelatieRotterdam(
                     relatienummerRotterdam = null,
@@ -272,6 +298,7 @@ class OracleEbsPlugin(
                         TARIEF_KEY to factuurRegel.tarief,
                         BTW_PERCENTAGE_KEY to factuurRegel.btwPercentage,
                         GROOTBOEK_SLEUTEL_KEY to factuurRegel.grootboekSleutel,
+                        BRON_SLEUTEL_KEY to factuurRegel.bronSleutel,
                         OMSCHRIJVING_KEY to factuurRegel.omschrijving
                     )).also {
                         logger.debug { "Resolved line values: $it" }
@@ -280,10 +307,7 @@ class OracleEbsPlugin(
                         factuurregelFacturatieHoeveelheid = valueAsBigDecimal(resolvedLineValues[HOEVEELHEID_KEY]!!),
                         factuurregelFacturatieTarief = valueAsBigDecimal(resolvedLineValues[TARIEF_KEY]!!),
                         btwPercentage = stringFrom(resolvedLineValues[BTW_PERCENTAGE_KEY]!!),
-                        grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
-                            bronsleutel = null,
-                        ),
+                        grootboekrekening = grootboekRekening(resolvedLineValues),
                         factuurregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]),
                         factuurregelFacturatieEenheid = null,
                         boekingsregel = null,
@@ -297,7 +321,6 @@ class OracleEbsPlugin(
                 },
                 transactiesoort = null,
                 factuurnummer = null,
-                factuurvervaldatum = null,
                 factureerregel = null,
                 factuurkenmerk = null,
                 factuurtoelichting = null,
@@ -310,13 +333,14 @@ class OracleEbsPlugin(
             ),
             bijlage = null
         ).let { request ->
-            logger.debug { "Trying to send OpvoerenVerkoopfactuurVraag" }
-            logger.trace {
+            logger.info { "Trying to send OpvoerenVerkoopfactuurVraag" }
+            logger.info {
                 "OpvoerenVerkoopfactuurVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
             try {
                 esbClient.verkoopFacturenApi(restClient()).opvoerenVerkoopfactuur(request).let { response ->
                     logger.debug { "Verkoopfactuur Opvoeren response: $response" }
+
                     execution.setVariable(pvResultVariable, mapOf(
                         "isGeslaagd" to response.isGeslaagd,
                         "melding" to response.melding,
@@ -331,6 +355,16 @@ class OracleEbsPlugin(
             }
         }
     }
+
+    private fun grootboekRekening( resolvedLineValues: Map<String, Any?>) =
+        Grootboekrekening(
+            grootboeksleutel = resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]?.let{ grootboekSleutel ->
+                stringFrom(grootboekSleutel).takeIf { it.isNotBlank() }
+            },
+            bronsleutel = resolvedLineValues[BRON_SLEUTEL_KEY]?.let{ bronSleutel ->
+                stringFrom(bronSleutel).takeIf { it.isNotBlank() }
+            }
+        )
 
     fun resolveValuesFor(
         execution: DelegateExecution,
@@ -384,6 +418,13 @@ class OracleEbsPlugin(
             value.startsWith("doc:") ||
             value.startsWith("pv:")
         )
+
+    private fun localDateFrom(value: Any): LocalDate =
+        when (value) {
+            is LocalDate -> value
+            is String -> LocalDate.parse(value.trim())
+            else -> throw IllegalArgumentException("Unsupported type ${value::class}")
+        }
 
     private fun offsetDateTimeFrom(value: Any): OffsetDateTime =
         when (value) {
@@ -462,6 +503,7 @@ class OracleEbsPlugin(
 
         private const val OMSCHRIJVING_KEY = "omschrijving"
         private const val GROOTBOEK_SLEUTEL_KEY = "grootboeksleutel"
+        private const val BRON_SLEUTEL_KEY = "bronSleutel"
         private const val BOEKING_TYPE_KEY = "boekingType"
         private const val BEDRAG_KEY = "bedrag"
         private const val ACHTERNAAM_KEY = "achternaam"

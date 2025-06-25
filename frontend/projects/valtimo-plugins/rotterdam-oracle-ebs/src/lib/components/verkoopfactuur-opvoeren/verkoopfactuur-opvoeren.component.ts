@@ -128,6 +128,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             procesCode: this.fb.control('', Validators.required),
             referentieNummer: this.fb.control('', Validators.required),
             factuurKlasse: this.fb.control('', Validators.required),
+            factuurDatum: this.fb.control('', Validators.required),
+            factuurVervaldatum: this.fb.control(''),
             inkoopOrderReferentie: this.fb.control('', Validators.required),
             relatieType: this.fb.control('', Validators.required),
             natuurlijkPersoonAchternaam: this.fb.control(''),
@@ -160,7 +162,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             hoeveelheid: this.fb.control('', Validators.required),
             tarief: this.fb.control('', Validators.required),
             btwPercentage: this.fb.control(null, Validators.required),
-            grootboekSleutel: this.fb.control('', Validators.required),
+            grootboekSleutel: this.fb.control(''),
+            bronSleutel: this.fb.control(''),
             omschrijving: this.fb.control('')
         });
     }
@@ -180,6 +183,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         procesCode: configuration.procesCode,
                         referentieNummer: configuration.referentieNummer,
                         factuurKlasse: this.fromFactuurKlasse(configuration.factuurKlasse),
+                        factuurDatum: configuration.factuurDatum,
+                        factuurVervaldatum: configuration.factuurVervaldatum,
                         inkoopOrderReferentie: configuration.inkoopOrderReferentie,
                         relatieType: configuration.relatieType,
                         natuurlijkPersoonAchternaam:
@@ -193,6 +198,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                             tarief: regel.tarief,
                             btwPercentage: regel.btwPercentage,
                             grootboekSleutel: regel.grootboekSleutel,
+                            bronSleutel: regel.bronSleutel,
                             omschrijving: regel.omschrijving
                         })) : null,
                         regelsViaResolver: configuration.regelsViaResolver
@@ -222,6 +228,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                     procesCode: formValue.procesCode,
                     referentieNummer: formValue.referentieNummer,
                     factuurKlasse: this.toFactuurKlasse(formValue.factuurKlasse),
+                    factuurDatum: formValue.factuurDatum,
+                    factuurVervaldatum: (formValue.regels != undefined) ? formValue.factuurVervaldatum : null,
                     inkoopOrderReferentie: formValue.inkoopOrderReferentie,
                     relatieType: this.toRelatieType(formValue.relatieType),
                     regels: (formValue.regels != undefined) ? formValue.regels.map(regel => ({
@@ -229,6 +237,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         tarief: regel.tarief,
                         btwPercentage: regel.btwPercentage,
                         grootboekSleutel: regel.grootboekSleutel,
+                        bronSleutel: regel.bronSleutel,
                         omschrijving: regel.omschrijving
                     })) : null,
                     regelsViaResolver: (formValue.regelsViaResolver != undefined) ? formValue.regelsViaResolver : null
@@ -300,6 +309,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             formValue.procesCode &&
             formValue.referentieNummer &&
             formValue.factuurKlasse &&
+            formValue.factuurDatum &&
             formValue.inkoopOrderReferentie &&
             formValue.relatieType &&
             (
@@ -332,7 +342,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         formValue.regels[i].hoeveelheid &&
                         formValue.regels[i].tarief &&
                         formValue.regels[i].btwPercentage &&
-                        formValue.regels[i].grootboekSleutel
+                        ( formValue.regels[i].grootboekSleutel || formValue.regels[i].bronSleutel )
                     )
                     if (!linesValid)
                         break;

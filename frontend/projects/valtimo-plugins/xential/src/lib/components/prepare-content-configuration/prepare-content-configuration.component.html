@@ -4,53 +4,55 @@
         disabled: disabled$ | async,
         prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
         fileFormats: fileFormats$ | async,
+        firstLevelGroupSelectItems: firstLevelGroupSelectItems$ | async,
+        secondLevelGroupSelectItems: secondLevelGroupSelectItems$ | async,
+        thirdLevelGroupSelectItems: thirdLevelGroupSelectItems$ | async
     } as obs"
 >
-
     <div>
         <v-input-label
-                [title]="'preparing doc creation'"
+                [title]="'preparing doc creation with template'"
         ></v-input-label>
     </div>
-    <hr/>
-    <ng-container
-            *ngIf="{xentialSjablonenSelectItems: xentialSjablonenSelectItems$ | async} as authObs"
-    >
-        <v-select
-                [items]="authObs.xentialSjablonenSelectItems"
-                [margin]="true"
-                name="xentialSjabloon"
-                [title]="'xentialSjabloon' | pluginTranslate: pluginId | async"
-                [disabled]="obs.disabled"
-                [defaultSelectionId]="obs.prefill?.xentialSjabloon"
-                [required]="true"
-                [loading]="!authObs.xentialSjablonenSelectItems"
-        ></v-select>
-    </ng-container>
+
     <v-input
-            name="xentialContent"
-            [title]="'xentialContent' | pluginTranslate: pluginId | async"
+            name="xentialDocumentPropertiesId"
+            [title]="'xentialDocumentPropertiesId' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.xentialContent"
+            [defaultValue]="obs.prefill?.xentialDocumentPropertiesId"
             [disabled]="obs.disabled"
             [required]="true"
     />
-    <v-input
-            name="gebruikersId"
-            [title]="'gebruikersId' | pluginTranslate: pluginId | async"
+    <v-select
+            [items]="obs?.firstLevelGroupSelectItems || []"
             [margin]="true"
-            [defaultValue]="obs.prefill?.gebruikersId"
+            name="firstTemplateGroupId"
+            [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
             [disabled]="obs.disabled"
+            [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
             [required]="true"
-    />
-    <v-input
-            name="templateId"
-            [title]="'templateId' | pluginTranslate: pluginId | async"
+            [loading]="!obs?.firstLevelGroupSelectItems"
+
+    ></v-select>
+    <v-select
+            [items]="obs?.secondLevelGroupSelectItems || []"
             [margin]="true"
-            [defaultValue]="obs.prefill?.templateId"
-            [disabled]="obs.disabled"
+            name="secondTemplateGroupId"
+            [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled || (obs?.secondLevelGroupSelectItems || [])?.length === 0"
             [required]="true"
-    />
+            [loading]="!obs?.secondLevelGroupSelectItems"
+    ></v-select>
+
+    <v-select
+            [items]="obs?.thirdLevelGroupSelectItems || []"
+            [margin]="true"
+            name="thirdTemplateGroupId"
+            [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled || (obs?.thirdLevelGroupSelectItems || [])?.length === 0"
+            [required]="true"
+            [loading]="!obs?.thirdLevelGroupSelectItems"
+    ></v-select>
     <v-select
             name="fileFormat"
             [title]="'fileFormat' | pluginTranslate: pluginId | async"
@@ -61,14 +63,6 @@
             [items]="obs.fileFormats"
     />
     <v-input
-            name="documentId"
-            [title]="'documentId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.documentId"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
-    <v-input
             name="eventMessageName"
             [title]="'eventMessageName' | pluginTranslate: pluginId | async"
             [margin]="true"
@@ -76,40 +70,4 @@
             [disabled]="obs.disabled"
             [required]="true"
     />
-    <valtimo-carbon-multi-input
-            name="verzendAdresData"
-            [title]="'verzendAdresData' | pluginTranslate: pluginId | async"
-            type="keyValue"
-            [disabled]="obs.disabled"
-            [defaultValues]="obs.prefill?.verzendAdresData"
-            [margin]="true"
-            [required]="false"
-            [tooltip]="'verzendAdresDataTooltip' | pluginTranslate: pluginId | async"
-            [minimumAmountOfRows]="0"
-            [initialAmountOfRows]="0"
-    ></valtimo-carbon-multi-input>
-    <valtimo-carbon-multi-input
-            name="colofonData"
-            [title]="'colofonData' | pluginTranslate: pluginId | async"
-            type="keyValue"
-            [disabled]="obs.disabled"
-            [defaultValues]="obs.prefill?.colofonData"
-            [margin]="true"
-            [required]="false"
-            [tooltip]="'colofonDataTooltip' | pluginTranslate: pluginId | async"
-            [minimumAmountOfRows]="0"
-            [initialAmountOfRows]="0"
-    ></valtimo-carbon-multi-input>
-    <valtimo-carbon-multi-input
-            name="documentDetailsData"
-            [title]="'documentDetailsData' | pluginTranslate: pluginId | async"
-            type="keyValue"
-            [disabled]="obs.disabled"
-            [defaultValues]="obs.prefill?.documentDetailsData"
-            [margin]="true"
-            [required]="false"
-            [tooltip]="'documentDetailsDataTooltip' | pluginTranslate: pluginId | async"
-            [minimumAmountOfRows]="0"
-            [initialAmountOfRows]="0"
-    ></valtimo-carbon-multi-input>
 </v-form>

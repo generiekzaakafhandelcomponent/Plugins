@@ -5,7 +5,6 @@ import com.ritense.valtimo.contract.authentication.UserManagementService
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
-import com.ritense.valueresolver.ValueResolverService
 import com.rotterdam.esb.xential.api.DefaultApi
 import com.rotterdam.esb.xential.model.DocumentCreatieResultaat
 import org.camunda.bpm.engine.RuntimeService
@@ -22,7 +21,6 @@ import org.springframework.web.client.RestClient
 import java.util.UUID
 
 class DocumentGenerationServiceTest {
-
     @Mock
     lateinit var execution: DelegateExecution
 
@@ -31,9 +29,6 @@ class DocumentGenerationServiceTest {
 
     @Mock
     lateinit var esbClient: OpentunnelEsbClient
-
-    @Mock
-    lateinit var runtimeService: RuntimeService
 
     @Mock
     lateinit var xentialTokenRepository: XentialTokenRepository
@@ -45,7 +40,7 @@ class DocumentGenerationServiceTest {
     lateinit var temporaryResourceStorageService: TemporaryResourceStorageService
 
     @Mock
-    lateinit var valueResolverService: ValueResolverService
+    lateinit var runtimeService: RuntimeService
 
     @InjectMocks
     lateinit var documentGenerationService: DocumentGenerationService
@@ -61,41 +56,32 @@ class DocumentGenerationServiceTest {
 
         whenever(esbClient.documentApi(any<RestClient>())).thenReturn(defaultApi)
 
-        val verzendAdres: MutableMap<String, Any> = HashMap()
-        val colofon: MutableMap<String, Any> = HashMap()
-        val documentDetails: MutableMap<String, Any> = HashMap()
-        val map: MutableMap<String, Any> = HashMap()
-        val xentialGebruikersId = "test"
-        val sjabloonId = UUID.randomUUID().toString()
-        map["verzendAdres"] = verzendAdres
-        map["colofon"] = colofon
-        map["documentDetails"] = documentDetails
+        val xentialDocumentProperties =
+            XentialDocumentProperties(
+                xentialGroupId = UUID.randomUUID(),
+                fileFormat = com.ritense.valtimoplugins.xential.domain.FileFormat.PDF,
+                documentId = "mijn-kenmerk",
+                messageName = "messageName",
+                content = "voorbeeld data",
+            )
 
-        val xentialDocumentProperties = XentialDocumentProperties(
-            xentialGroupId = UUID.randomUUID(),
-            fileFormat = com.ritense.valtimoplugins.xential.domain.FileFormat.PDF,
-            documentId = "mijn-kenmerk",
-            messageName = "messageName",
-            content = map
-        )
-
-        val creatieResultaat = DocumentCreatieResultaat(
-            documentCreatieSessieId = UUID.randomUUID().toString(),
-            status = DocumentCreatieResultaat.Status.VOLTOOID,
-            resumeUrl = null
-        )
+        val creatieResultaat =
+            DocumentCreatieResultaat(
+                documentCreatieSessieId = UUID.randomUUID().toString(),
+                status = DocumentCreatieResultaat.Status.VOLTOOID,
+                resumeUrl = null,
+            )
         whenever(defaultApi.creeerDocument(any(), any(), any())).thenReturn(creatieResultaat)
 
         documentGenerationService.generateDocument(
             defaultApi,
             UUID.randomUUID(),
-            xentialGebruikersId,
-            sjabloonId,
+            "xentialGebruikersId",
+            UUID.randomUUID().toString(),
             xentialDocumentProperties,
             execution,
         )
 
         verify(xentialTokenRepository).save(any<XentialToken>())
     }
-
 }

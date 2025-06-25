@@ -23,6 +23,7 @@ import {CreateObjectConfigurationComponent} from "./components/create-object/cre
 import {GetObjectsConfigurationComponent} from "./components/get-objects/get-objects-configuration.component";
 import {DeleteObjectConfigurationComponent} from "./components/delete-object/delete-object-configuration.component";
 import {UpdateObjectConfigurationComponent} from "./components/update-object/update-object-configuration.component";
+import {GetObjectDataConfigurationComponent} from "./components/get-object-data/get-object-data-configuration.component";
 
 const objectManagementPluginSpecification: PluginSpecification = {
     pluginId: 'object-management',
@@ -30,6 +31,7 @@ const objectManagementPluginSpecification: PluginSpecification = {
     pluginLogoBase64: OBJECT_MANAGEMENT_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
         'create-object': CreateObjectConfigurationComponent,
+        'get-object-data-by-url': GetObjectDataConfigurationComponent,
         'get-objects-unpaged': GetObjectsConfigurationComponent,
         'delete-object': DeleteObjectConfigurationComponent,
         'update-object': UpdateObjectConfigurationComponent,
@@ -46,13 +48,17 @@ const objectManagementPluginSpecification: PluginSpecification = {
             'delete-object': "Object verwijderen",
             'create-object': "Object aanmaken",
             'update-object': "Object bijwerken",
+            'get-object-data-by-url': "Object data ophalen",
             objectManagementConfigurationId: 'De ID van de object management configuratie',
             objectUrl: 'De URL van het object',
-            objectUrlTooltip: 'Definieert de variabelenaam die wordt gebruikt om de URL op te halen',
+            objectUrlTooltip: 'Definieert de variabelenaam van object URL',
             objectUrlProcessVariableName: 'De naam van de procesvariabele waar de URL opgeslagen gaat worden',
             objectData: 'De gegevens voor het object',
             listOfObjectProcessVariableName: 'Procesvariabelenaam voor de objectlijst',
             listOfObjectProcessVariableNameTooltip: 'Definieert de procesvariabelenaam die wordt gebruikt voor het opslaan van de objectlijst',
+            objectDataProcessVariableName: 'Procesvariabelenaam voor de object data',
+            objectDataProcessVariableNameTooltip: 'Definieert de procesvariabelenaam die wordt gebruikt voor het opslaan van de object data',
+            objectManagementConfigurationIdTooltip: 'Definieert de ID (UUID) van de object management configuratie'
         },
         en: {
             title: 'Object Management',
@@ -65,13 +71,17 @@ const objectManagementPluginSpecification: PluginSpecification = {
             'delete-object': "Delete Object",
             'create-object': "Create Object",
             'update-object': "Update Object",
+            'get-object-data-by-url': "Retrieve Object data",
             objectManagementConfigurationId: 'The ID of the object management configuration',
             objectUrl: 'The URL of the object',
-            objectUrlTooltip: 'Defines the variable name used to retrieve the URL',
+            objectUrlTooltip: 'Defines the variable name of object URL',
             objectUrlProcessVariableName: 'The name of the process variable where the URL will be stored',
             objectData: 'The data for the object',
             listOfObjectProcessVariableName: 'Process variable name for the Object List',
             listOfObjectProcessVariableNameTooltip: 'Defines the process variable name used for storing the object list',
+            objectDataProcessVariableName: 'Process variable for the object data',
+            objectDataProcessVariableNameTooltip: 'Defines the process variable name used for storing the object data',
+            objectManagementConfigurationIdTooltip: 'Defines the ID (UUID) of the object management configuration'
         },
         de: {
             title: 'Object Management',
@@ -84,13 +94,17 @@ const objectManagementPluginSpecification: PluginSpecification = {
             'delete-object': "Objekt löschen",
             'create-object': "Objekt erstellen",
             'update-object': "Objekt aktualisieren",
+            'get-object-data-by-url': "Objektdaten abrufen",
             objectManagementConfigurationId: 'Die ID der objektverwaltungskonfiguration',
             objectUrl: 'Die URL des objekts',
-            objectUrlTooltip: 'Definiert den variablennamen, der zum abrufen der URL verwendet wird',
+            objectUrlTooltip: 'Definiert den variablennamen der objekt URL',
             objectUrlProcessVariableName: 'Der name der prozessvariablen, in der die URL gespeichert wird',
             objectData: 'Die daten für das Objekt',
             listOfObjectProcessVariableName: 'Prozessvariablenname für die objektliste',
             listOfObjectProcessVariableNameTooltip: 'Definiert den prozessvariablennamen, der zum speichern der objektliste verwendet wird',
+            objectDataProcessVariableName: 'Prozessvariablenname für die Objektdaten',
+            objectDataProcessVariableNameTooltip: 'Definiert den prozessvariablennamen, die zum Speichern der Objektdaten verwendet wird',
+            objectManagementConfigurationIdTooltip: 'Definiert die ID (UUID) der objektverwaltungskonfiguration'
         }
     }
 }
