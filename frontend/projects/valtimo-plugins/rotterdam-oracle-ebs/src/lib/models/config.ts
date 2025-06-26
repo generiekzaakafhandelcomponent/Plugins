@@ -52,6 +52,9 @@ interface VerkoopfactuurOpvoerenConfig {
     factuurKlasse: string;
     factuurDatum: string;
     factuurVervaldatum?: string;
+    factuurAdresType: AdresType;
+    factuurAdresLocatie?: AdresLocatie;
+    factuurAdresPostbus?: AdresPostbus;
     inkoopOrderReferentie: string;
     relatieType: RelatieType;
     natuurlijkPersoon?: NatuurlijkPersoon;
@@ -60,12 +63,33 @@ interface VerkoopfactuurOpvoerenConfig {
     regelsViaResolver?: string;
 }
 
+interface Adres {
+    naamContactpersoon?: string;
+    vestigingsnummerRotterdam?: string;
+    postcode: string;
+    plaatsnaam: string;
+    landcode: string;
+}
+
+interface AdresLocatie extends Adres {
+    straatnaam: string;
+    huisnummer: number;
+    huisnummertoevoeging?: string;
+}
+
+interface AdresPostbus extends Adres {
+    postbus: number;
+}
+
 interface NatuurlijkPersoon {
+    bsn: string;
     achternaam: string;
     voornamen: string;
 }
 
 interface NietNatuurlijkPersoon {
+    kvkNummer: string;
+    kvkVestigingsnummer: string;
     statutaireNaam: string;
 }
 
@@ -76,6 +100,11 @@ interface FactuurRegel {
     grootboekSleutel: string;
     bronSleutel: string;
     omschrijving: string;
+}
+
+enum AdresType {
+    LOCATIE = "Locatie",
+    POSTBUS = "Postbus"
 }
 
 enum RelatieType {
@@ -105,9 +134,12 @@ export {
     JournaalpostOpvoerenConfig,
     JournaalpostRegel,
     VerkoopfactuurOpvoerenConfig,
+    AdresLocatie,
+    AdresPostbus,
     NatuurlijkPersoon,
     NietNatuurlijkPersoon,
     FactuurRegel,
+    AdresType,
     RelatieType,
     FactuurKlasse,
     BoekingType,

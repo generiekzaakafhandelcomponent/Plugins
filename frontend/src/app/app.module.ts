@@ -104,6 +104,10 @@ import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from "@valtimo/dashboard";
 import {DashboardManagementModule} from "@valtimo/dashboard-management";
 import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
+import {DocScannerPluginModule} from "../../projects/valtimo-plugins/doc-scanner/src/lib/doc-scanner-plugin-module";
+import {
+    docScannerPluginSpecification
+} from "../../projects/valtimo-plugins/doc-scanner/src/lib/doc-scanner-plugin.specification";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -128,6 +132,7 @@ export function tabsFactory() {
         PublictaskPluginModule,
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
+        DocScannerPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
         HuggingFacePluginModule,
@@ -198,6 +203,7 @@ export function tabsFactory() {
             alfrescoAuthPluginSpecification,
             amsterdamEmailapiPluginSpecification,
             berkelybridgeTextgeneratorPluginSpecification,
+            docScannerPluginSpecification,
             externeKlanttaakPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
