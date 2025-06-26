@@ -45,11 +45,14 @@
           "grootboekSleutel": {
             "type": "string"
           },
+          "bronSleutel": {
+            "type": "string"
+          },
           "omschrijving": {
             "type": "string"
           }
         },
-        "required": ["hoeveelheid", "tarief", "btwPercentage", "grootboekSleutel"]
+        "required": ["hoeveelheid", "tarief", "btwPercentage"]
       }
     }
   }

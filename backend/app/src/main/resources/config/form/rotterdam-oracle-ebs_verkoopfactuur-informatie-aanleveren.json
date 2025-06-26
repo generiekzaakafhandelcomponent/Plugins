@@ -75,6 +75,87 @@
       "input": true
     },
     {
+      "label": "Factuuradres - Type",
+      "key": "pv:factuurAdresType",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Locatie"
+    },
+    {
+      "label": "Factuuradres - Naam contactpersoon",
+      "key": "pv:factuurAdresNaamContactpersoon",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "Piet Hein Smit"
+    },
+    {
+      "label": "Factuuradres - Vestigingnummer Rotterdam",
+      "key": "pv:factuurAdresVestigingnummerRotterdam",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "12321312"
+    },
+    {
+      "label": "Factuuradres - Straatnaam",
+      "key": "pv:factuurAdresStraatnaam",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Koepellaan"
+    },
+    {
+      "label": "Factuuradres - Huisnummer",
+      "key": "pv:factuurAdresHuisnummer",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "2122"
+    },
+    {
+      "label": "Factuuradres - Huisnummertoevoeging",
+      "key": "pv:factuurAdresHuisnummertoevoeging",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "e"
+    },
+    {
+      "label": "Factuuradres - Postcode",
+      "key": "pv:factuurAdresPostcode",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "1234AB"
+    },
+    {
+      "label": "Factuuradres - Plaatsnaam",
+      "key": "pv:factuurAdresPlaatsnaam",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Rotterdam"
+    },
+    {
+      "label": "Factuuradres - Landcode",
+      "key": "pv:factuurAdresLandcode",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "NL"
+    },
+    {
       "label": "Inkoop Order referentie",
       "key": "pv:inkoopOrderReferentie",
       "type": "textfield",
