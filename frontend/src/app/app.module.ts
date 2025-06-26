@@ -101,6 +101,9 @@ import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/
 import {MtlsSslcontextPluginModule,mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
 import {LoggingModule} from '@valtimo/logging';
+import {DashboardModule} from "@valtimo/dashboard";
+import {DashboardManagementModule} from "@valtimo/dashboard-management";
+import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -184,7 +187,10 @@ export function tabsFactory() {
         TranslationManagementModule,
         TaskManagementModule,
         ExterneKlanttaakPluginModule,
-        RotterdamOracleEbsPluginModule
+        RotterdamOracleEbsPluginModule,
+        DashboardModule,
+        DashboardManagementModule,
+        KvkPluginModule,
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -208,7 +214,8 @@ export function tabsFactory() {
             suwinetPluginSpecification,
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
-            XentialPluginSpecification
+            XentialPluginSpecification,
+            kvkPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]

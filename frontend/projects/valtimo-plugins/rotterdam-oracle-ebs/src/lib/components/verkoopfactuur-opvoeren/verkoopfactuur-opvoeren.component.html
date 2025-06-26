@@ -7,7 +7,7 @@
   ~
   ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
   ~
-  ~ Unless required by applicable law or agreed to in writing, software
+  ~ Unless [required] by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" basis,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
@@ -26,7 +26,7 @@
             controlName="pvResultVariable"
             title="verkoopfactuur.pvResultVariable"
             tooltip="verkoopfactuur.pvResultVariable.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -35,7 +35,7 @@
             controlName="procesCode"
             title="verkoopfactuur.procesCode"
             tooltip="verkoopfactuur.procesCode.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
         <app-input-field
@@ -44,30 +44,35 @@
             controlName="referentieNummer"
             title="verkoopfactuur.referentieNummer"
             tooltip="verkoopfactuur.referentieNummer.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
-
-        <!--
-        <app-select-field
-            [pluginId]="pluginId"
-            [formGroup]="pluginActionForm"
-            controlName="factuurKlasse"
-            title="verkoopfactuur.factuurKlasse"
-            tooltip="verkoopfactuur.factuurKlasse.select.tooltip"
-            placeholder="verkoopfactuur.factuurKlasse.select.placeholder"
-            required="true"
-            [items]="factuurKlasseItems"
-        ></app-select-field>
-        -->
 
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
             controlName="factuurKlasse"
             title="verkoopfactuur.factuurKlasse"
-            tooltip="verkoopfactuur.factuurKlasse.input.tooltip"
-            required="true"
+            tooltip="verkoopfactuur.factuurKlasse.tooltip"
+            [required]="true"
             [presets]="factuurKlasseItems"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="factuurDatum"
+            title="verkoopfactuur.factuurDatum"
+            tooltip="verkoopfactuur.factuurDatum.tooltip"
+            [required]="true"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="factuurVervaldatum"
+            title="verkoopfactuur.factuurVervaldatum"
+            tooltip="verkoopfactuur.factuurVervaldatum.tooltip"
+            [required]="false"
         ></app-input-field>
 
         <app-input-field
@@ -76,35 +81,50 @@
             controlName="inkoopOrderReferentie"
             title="verkoopfactuur.inkoopOrderReferentie"
             tooltip="verkoopfactuur.inkoopOrderReferentie.tooltip"
-            required="true"
+            [required]="true"
         ></app-input-field>
 
-        <app-input-field
+        <app-select-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
-            controlName="natuurlijkPersoonAchternaam"
-            title="verkoopfactuur.natuurlijkPersoonAchternaam"
-            tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"
-            required="true"
-        ></app-input-field>
+            controlName="relatieType"
+            title="verkoopfactuur.relatieType"
+            tooltip="verkoopfactuur.relatieType.tooltip"
+            placeholder="verkoopfactuur.relatieType.placeholder"
+            [required]="true"
+            [items]="relatieTypeItems"
+        ></app-select-field>
 
-        <app-input-field
-            [pluginId]="pluginId"
-            [formGroup]="pluginActionForm"
-            controlName="natuurlijkPersoonVoornamen"
-            title="verkoopfactuur.natuurlijkPersoonVoornamen"
-            tooltip="verkoopfactuur.natuurlijkPersoonVoornamen.tooltip"
-            required="true"
-        ></app-input-field>
+        <ng-template [ngIf]="relatieType.value == RelatieType.NATUURLIJK_PERSOON">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="natuurlijkPersoonAchternaam"
+                title="verkoopfactuur.natuurlijkPersoonAchternaam"
+                tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"
+                [required]="true"
+            ></app-input-field>
 
-        <app-input-field
-            [pluginId]="pluginId"
-            [formGroup]="pluginActionForm"
-            controlName="nietNatuurlijkPersoonStatutaireNaam"
-            title="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam"
-            tooltip="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam.tooltip"
-            required="true"
-        ></app-input-field>
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="natuurlijkPersoonVoornamen"
+                title="verkoopfactuur.natuurlijkPersoonVoornamen"
+                tooltip="verkoopfactuur.natuurlijkPersoonVoornamen.tooltip"
+                [required]="true"
+            ></app-input-field>
+        </ng-template>
+
+        <ng-template [ngIf]="relatieType.value == RelatieType.NIET_NATUURLIJK_PERSOON">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="nietNatuurlijkPersoonStatutaireNaam"
+                title="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam"
+                tooltip="verkoopfactuur.nietNatuurlijkPersoonStatutaireNaam.tooltip"
+                [required]="true"
+            ></app-input-field>
+        </ng-template>
 
         <cds-toggle
             #regelsViaResolverToggle
@@ -119,7 +139,7 @@
         <ng-template [ngIf]="!regelsViaResolverToggle.checked">
             <div>
                 <v-input-label
-                    required="true"
+                    [required]="true"
                     [title]="'verkoopfactuur.regels' | pluginTranslate: pluginId | async"
                     [tooltip]="'verkoopfactuur.regels.tooltip' | pluginTranslate: pluginId | async"
                 >
@@ -133,7 +153,7 @@
                             controlName="hoeveelheid"
                             wrapperClass="line-field-wrapper"
                             title="verkoopfactuur.regel.hoeveelheid"
-                            required="true"
+                            [required]="true"
                         ></app-input-field>
 
                         <app-input-field
@@ -142,7 +162,7 @@
                             controlName="tarief"
                             wrapperClass="line-field-wrapper"
                             title="verkoopfactuur.regel.tarief"
-                            required="true"
+                            [required]="true"
                         ></app-input-field>
 
                         <app-input-field
@@ -151,7 +171,7 @@
                             controlName="btwPercentage"
                             wrapperClass="line-field-wrapper"
                             title="verkoopfactuur.regel.btwPercentage"
-                            required="true"
+                            [required]="true"
                         ></app-input-field>
 
                         <app-input-field
@@ -160,7 +180,16 @@
                             controlName="grootboekSleutel"
                             wrapperClass="line-field-wrapper"
                             title="verkoopfactuur.regel.grootboekSleutel"
-                            required="true"
+                            [required]="false"
+                        ></app-input-field>
+
+                        <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="bronSleutel"
+                                wrapperClass="line-field-wrapper"
+                                title="verkoopfactuur.regel.bronSleutel"
+                                [required]="false"
                         ></app-input-field>
 
                         <app-input-field
@@ -169,7 +198,7 @@
                             controlName="omschrijving"
                             wrapperClass="line-field-wrapper"
                             title="verkoopfactuur.regel.omschrijving"
-                            required="false"
+                            [required]="false"
                         ></app-input-field>
 
                         <div class="remove-line-wrapper">
@@ -203,7 +232,7 @@
                 controlName="regelsViaResolver"
                 title="verkoopfactuur.regelsViaResolver"
                 tooltip="verkoopfactuur.regelsViaResolver.tooltip"
-                required="true"
+                [required]="true"
             ></app-input-field>
             <div>
                 {{'verkoopfactuur.regelsViaResolver.example' | pluginTranslate: pluginId | async}}
@@ -213,6 +242,7 @@
         "tarief": "",
         "btwPercentage": "",
         "grootboekSleutel": "",
+        "bronSleutel": "",
         "omschrijving": "" // Optional
     &#125;,
     ...

@@ -34,6 +34,7 @@ import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimo.camunda.domain.CamundaTask
 import com.ritense.valtimo.contract.json.MapperSingleton
+import com.ritense.valtimo.security.exceptions.TaskNotFoundException
 import com.ritense.valtimo.service.CamundaProcessService
 import com.ritense.valtimo.service.CamundaTaskService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -82,7 +83,7 @@ open class ExterneKlanttaakEventListener(
                 }
                 ?: run {
                     logger.info {
-                        "Skipping Event: No ExterneKlantaakPlugin configuration found for handling this object"
+                        "Skipping Event: No Externe Klantaak Plugin configuration found for handling this object"
                     }
                     return@handle
                 }
@@ -119,11 +120,11 @@ open class ExterneKlanttaakEventListener(
         val camundaTask: CamundaTask =
             try {
                 taskService.findTaskById(klanttaak.verwerkerTaakId)
-            } catch (ex: Exception) {
-                throw RuntimeException(
-                    "Task with id ${klanttaak.verwerkerTaakId} not found. Can not handle this Externe Klanttaak.",
-                    ex
-                )
+            } catch (ex: TaskNotFoundException) {
+                logger.info {
+                    "Skipping Event: Could not find Camunda task with id ${klanttaak.verwerkerTaakId}. Externe Klanttaak doesn't belong to this application."
+                }
+                return
             }
 
         handleResourceAsExterneKlanttaak(

@@ -1,0 +1,51 @@
+[
+  {
+    "activityId": "XentialSelecteerSjabloon",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "xential.kies-sjabloon"
+  },
+  {
+    "activityId": "XentialErrorNaSelecteerSjabloon",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "xential.error-na-kies-sjabloon"
+  },
+  {
+    "activityId": "XentialToegangControleren",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "xential.resultaat-toegang-controleren"
+  },
+  {
+    "activityId": "OpenXentialWizardTask",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "xential.wizard"
+  },
+  {
+    "activityId": "XentialTestMapToegang",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
+    "pluginActionDefinitionKey": "validate-xential-toegang",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "toegangResultaatId": "toegangResultaat",
+      "xentialGebruikersId": "pv:xentialGebruikersId",
+      "xentialDocumentProperties": "pv:xentialDocumentProperties"
+    }
+  },
+  {
+    "activityId": "XentialDocumentCreateTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
+    "pluginActionDefinitionKey": "generate-document",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "xentialDocumentProperties": "pv:xentialDocumentProperties",
+      "xentialData": "pv:xentialData",
+      "xentialSjabloonId": "pv:xentialSjabloonId",
+      "xentialGebruikersId": "pv:xentialGebruikersId"
+    }
+  }
+]

@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
 import com.ritense.externeklanttaak.domain.IExterneKlanttaak
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakStatus.AFGEROND
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ExterneKlanttaakV1x1x0(
@@ -35,7 +35,7 @@ data class ExterneKlanttaakV1x1x0(
     val portaalformulier: PortaalFormulier? = null,
     val identificatie: TaakIdentificatie,
     val koppeling: TaakKoppeling? = null,
-    val verloopdatum: LocalDate? = null,
+    val verloopdatum: LocalDateTime? = null,
     val eigenaar: String? = DEFAULT_EIGENAAR,
 ) : IExterneKlanttaak {
     override fun canBeHandled(): Boolean = status == AFGEROND
@@ -87,7 +87,7 @@ data class ExterneKlanttaakV1x1x0(
 
     data class TaakKoppeling(
         val registratie: TaakKoppelingRegistratie,
-        val uuid: String?,
+        val value: String?,
     )
 
     enum class TaakKoppelingRegistratie(

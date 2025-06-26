@@ -23,6 +23,7 @@
       "@valtimo-plugins/amsterdam-emailapi": ["dist/valtimo-plugins/amsterdam-emailapi"],
       "@valtimo-plugins/berkelybridge": ["dist/valtimo-plugins/berkelybridge"],
       "@valtimo-plugins/freemarker": ["dist/valtimo-plugins/freemarker"],
+      "@valtimo-plugins/kvk-handelsregister": ["dist/valtimo-plugins/kvk-handelsregister"],
       "@valtimo-plugins/publictask": ["dist/valtimo-plugins/publictask"],
       "@valtimo-plugins/rotterdam-oracle-ebs": ["dist/valtimo-plugins/rotterdam-oracle-ebs"],
       "@valtimo-plugins/slack": ["dist/valtimo-plugins/slack"],

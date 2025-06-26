@@ -14,7 +14,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(
-    key = "kvkhandelsregister",
+    key = "kvk-handelsregister",
     title = "Kvk Handelsregister Plugin",
     description = "Kvk Handelsregister Kamer van Koophandel API plugin"
 )

@@ -24,8 +24,8 @@ import {
     PrepareContentConfigurationComponent
 } from "./components/prepare-content-configuration/prepare-content-configuration.component";
 import {
-    PrepareContentWithTemplateConfigurationComponent
-} from "./components/prepare-content-configuration-with-template/prepare-content-with-template-configuration.component";
+    ValidateAccessConfigurationComponent
+} from "./components/validate-access-configuration/validate-access-configuration.component";
 
 const XentialPluginSpecification: PluginSpecification = {
     pluginId: 'xential',
@@ -34,8 +34,7 @@ const XentialPluginSpecification: PluginSpecification = {
     functionConfigurationComponents: {
         'generate-document': GenerateDocumentConfigurationComponent,
         'prepare-content': PrepareContentConfigurationComponent,
-        'prepare-content-with-template': PrepareContentWithTemplateConfigurationComponent
-
+        'validate-xential-toegang': ValidateAccessConfigurationComponent
     },
     pluginTranslations: {
         nl: {
@@ -50,7 +49,8 @@ const XentialPluginSpecification: PluginSpecification = {
             clientId: 'Taak applicatie naam',
             clientPassword: 'Taak applicatie wachtwoord',
             'generate-document': 'Genereer document',
-            'prepare-content': 'Genereren document content',
+            'prepare-content': 'kies inhoud op basis van een template',
+            'validate-xential-toegang': 'Valideer toegang tot Xential Sjablonen',
             templateId: 'Template ID',
             fileFormat: 'Bestandsformaat',
             documentId: 'Document kenmerk',
@@ -62,7 +62,11 @@ const XentialPluginSpecification: PluginSpecification = {
             serverCertificate: 'Server certificaat als Base64 encoded string',
             clientPrivateKey: 'Client private key als Base64 encoded string',
             clientCertificate: 'Client certificaat als Base64 encoded string',
-            xentialContentId: 'document content proces variabele'
+            xentialDocumentPropertiesId: 'Document genereren Properties proces variabele',
+            xentialDocumentProperties: 'Document genereren Properties',
+            xentialData: 'inhoud voor het genereren van het document',
+            xentialSjabloonId: 'Sjabloon id van het te genereren document',
+            toegangResultaatId: 'Toegang tot xential test resultaat proces variabele',
         },
         en: {
             title: 'Xential',
@@ -77,6 +81,7 @@ const XentialPluginSpecification: PluginSpecification = {
             clientPassword: 'Client password',
             'generate-document': 'Generate document',
             'prepare-content': 'Generate document content',
+            'validate-xential-toegang': 'Validate access to Xential Sjablonen',
             templateId: 'Sjabloon ID',
             fileFormat: 'File format',
             documentId: 'Document ID',
@@ -88,7 +93,11 @@ const XentialPluginSpecification: PluginSpecification = {
             serverCertificate: 'Server certificate as Base64 encoded string',
             clientPrivateKey: 'Client private key as Base64 encoded string',
             clientCertificate: 'Client certificate as Base64 encoded string',
-            xentialContentId: 'document content process variable'
+            xentialDocumentPropertiesId: 'Generate Document Properties Process Variable',
+            xentialDocumentProperties: 'Generate Document Properties',
+            xentialData: 'content for generating the document',
+            xentialSjabloonId: 'Template ID of the document to be generated',
+            toegangResultaatId: 'Access to xential test result process variable',
         },
         de: {
             title: 'Xential',
@@ -97,6 +106,7 @@ const XentialPluginSpecification: PluginSpecification = {
             clientId: 'Kunden-ID',
             clientPassword: 'Kundenpasswort',
             'generate-document': 'Dokument generieren',
+            'validate-xential-toegang': 'Zugriff auf Xential-Vorlagen validieren',
             templateId: 'Vorlage ID',
             fileFormat: 'Dateiformat',
             xentialGebruikersId: 'Default Xential Benutzer Id',
@@ -108,7 +118,12 @@ const XentialPluginSpecification: PluginSpecification = {
             serverCertificate: 'Server Zertifikat als Base64 kodierter String',
             clientPrivateKey: 'Client private key als Base64 kodierter String',
             clientCertificate: 'Client Zertifikat als Base64 kodierter String',
-            xentialContentId: 'Dokumentinhalt verarbeitet Variablen'
+            xentialDocumentPropertiesId: 'Dokumenteigenschaften generieren Prozessvariable',
+            xentialDocumentProperties: 'Dokumenteigenschaften generieren',
+            xentialData: 'Inhalt zur Generierung des Dokuments',
+            xentialSjabloonId: 'Vorlagen-ID des zu generierenden Dokuments',
+            toegangResultaatId: 'Zugriff auf die Prozessvariable Xential Test Results',
+            'prepare-content': 'Inhalte basierend auf einer Vorlage auswählen'
         },
     },
 };

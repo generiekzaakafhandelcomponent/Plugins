@@ -10,7 +10,7 @@ const kvkPluginSpecification: PluginSpecification = {
     The plugin definition key of the plugin.
     This needs to be the same as the id received from the back-endÏÏ
      */
-    pluginId: 'kvkhandelsregister',
+    pluginId: 'kvk-handelsregister',
     /*
     A component of the interface PluginConfigurationComponent, used to configure the plugin itself.
      */

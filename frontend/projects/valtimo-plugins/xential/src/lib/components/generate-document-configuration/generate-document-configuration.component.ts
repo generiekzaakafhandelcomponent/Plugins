@@ -37,7 +37,7 @@ export class GenerateDocumentConfigurationComponent implements FunctionConfigura
 
     private handleValid(formValue: GenerateDocumentConfig): void {
         const valid = !!(
-            formValue.xentialContent &&
+            formValue.xentialDocumentProperties &&
             formValue.xentialData &&
             formValue.xentialSjabloonId &&
             formValue.xentialGebruikersId

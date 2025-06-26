@@ -22,11 +22,13 @@ import {
     PluginTranslationService
 } from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {FactuurKlasse, VerkoopfactuurOpvoerenConfig} from '../../models';
+import {FactuurKlasse, RelatieType, VerkoopfactuurOpvoerenConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NGXLogger} from "ngx-logger";
 import {Toggle} from "carbon-components-angular";
+import {EnumUtilsService} from "../../service/enum-utils.service";
+import {FormField} from "@valtimo/components/lib/components/camunda/form/generated/formfield/formfield.model";
 
 @Component({
     selector: 'valtimo-rotterdam-oracle-ebs-verkoopfactuur-opvoeren',
@@ -46,6 +48,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     private readonly formValue$ = new BehaviorSubject<VerkoopfactuurOpvoerenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    readonly relatieTypeItems: Array<string> = Object.values(RelatieType).map(item => (item.toString()));
     readonly factuurKlasseItems: Array<string> = Object.values(FactuurKlasse).map(item => (item.toString()));
 
     public pluginActionForm: FormGroup;
@@ -57,7 +60,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         private readonly translateService: TranslateService,
         private readonly pluginTranslationService: PluginTranslationService,
         private readonly logger: NGXLogger,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private enumSvc: EnumUtilsService
     ) { }
 
     ngOnInit(): void {
@@ -101,6 +105,22 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         this.lines.removeAt(index);
     }
 
+    get relatieType(): AbstractControl {
+        return this.pluginActionForm.get('relatieType')
+    }
+
+    get natuurlijkPersoonAchternaam(): AbstractControl {
+        return this.pluginActionForm.get('natuurlijkPersoonAchternaam')
+    }
+
+    get natuurlijkPersoonVoornamen(): AbstractControl {
+        return this.pluginActionForm.get('natuurlijkPersoonVoornamen')
+    }
+
+    get nietNatuurlijkPersoonStatutaireNaam(): AbstractControl {
+        return this.pluginActionForm.get('nietNatuurlijkPersoonStatutaireNaam')
+    }
+
     private initForm() {
         this.logger.debug('Initialising Form');
         this.pluginActionForm = this.fb.group({
@@ -108,14 +128,32 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             procesCode: this.fb.control('', Validators.required),
             referentieNummer: this.fb.control('', Validators.required),
             factuurKlasse: this.fb.control('', Validators.required),
+            factuurDatum: this.fb.control('', Validators.required),
+            factuurVervaldatum: this.fb.control(''),
             inkoopOrderReferentie: this.fb.control('', Validators.required),
-            natuurlijkPersoonAchternaam: this.fb.control('', Validators.required),
-            natuurlijkPersoonVoornamen: this.fb.control('', Validators.required),
-            nietNatuurlijkPersoonStatutaireNaam: this.fb.control(null, Validators.required),
+            relatieType: this.fb.control('', Validators.required),
+            natuurlijkPersoonAchternaam: this.fb.control(''),
+            natuurlijkPersoonVoornamen: this.fb.control(''),
+            nietNatuurlijkPersoonStatutaireNaam: this.fb.control(''),
             regelsViaResolverToggle: this.fb.control(''),
             regels: this.fb.array([]),
             regelsViaResolver: this.fb.control(null)
         });
+
+        this._subscriptions.add(
+            this.pluginActionForm.get('relatieType').valueChanges.subscribe(value => {
+                this.logger.debug('Relatie type changed', value);
+                const relatieType = this.toRelatieType(value);
+                if (relatieType == RelatieType.NATUURLIJK_PERSOON) {
+                    this.nietNatuurlijkPersoonStatutaireNaam.patchValue('')
+                } else if (relatieType == RelatieType.NIET_NATUURLIJK_PERSOON) {
+                    this.natuurlijkPersoonAchternaam.patchValue('')
+                    this.natuurlijkPersoonVoornamen.patchValue('')
+                } else {
+                    this.nietNatuurlijkPersoonStatutaireNaam.patchValue('')
+                }
+            })
+        )
     }
 
     private createLineFormGroup(): FormGroup {
@@ -124,7 +162,8 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             hoeveelheid: this.fb.control('', Validators.required),
             tarief: this.fb.control('', Validators.required),
             btwPercentage: this.fb.control(null, Validators.required),
-            grootboekSleutel: this.fb.control('', Validators.required),
+            grootboekSleutel: this.fb.control(''),
+            bronSleutel: this.fb.control(''),
             omschrijving: this.fb.control('')
         });
     }
@@ -143,16 +182,23 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         pvResultVariable: configuration.pvResultVariable,
                         procesCode: configuration.procesCode,
                         referentieNummer: configuration.referentieNummer,
-                        factuurKlasse: configuration.factuurKlasse,
+                        factuurKlasse: this.fromFactuurKlasse(configuration.factuurKlasse),
+                        factuurDatum: configuration.factuurDatum,
+                        factuurVervaldatum: configuration.factuurVervaldatum,
                         inkoopOrderReferentie: configuration.inkoopOrderReferentie,
-                        natuurlijkPersoonAchternaam: configuration.natuurlijkPersoon.achternaam,
-                        natuurlijkPersoonVoornamen: configuration.natuurlijkPersoon.voornamen,
-                        nietNatuurlijkPersoonStatutaireNaam: configuration.nietNatuurlijkPersoon.statutaireNaam,
+                        relatieType: configuration.relatieType,
+                        natuurlijkPersoonAchternaam:
+                            (configuration.natuurlijkPersoon != undefined) ? configuration.natuurlijkPersoon.achternaam : null,
+                        natuurlijkPersoonVoornamen:
+                            (configuration.natuurlijkPersoon != undefined) ? configuration.natuurlijkPersoon.voornamen : null,
+                        nietNatuurlijkPersoonStatutaireNaam:
+                            (configuration.nietNatuurlijkPersoon != undefined) ? configuration.nietNatuurlijkPersoon.statutaireNaam : null,
                         regels: (configuration.regels != undefined) ? configuration.regels.map( regel => ({
                             hoeveelheid: regel.hoeveelheid,
                             tarief: regel.tarief,
                             btwPercentage: regel.btwPercentage,
                             grootboekSleutel: regel.grootboekSleutel,
+                            bronSleutel: regel.bronSleutel,
                             omschrijving: regel.omschrijving
                         })) : null,
                         regelsViaResolver: configuration.regelsViaResolver
@@ -175,40 +221,82 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         this.logger.debug('Subscribing to form value changes');
         this._subscriptions.add(
             this.pluginActionForm.valueChanges.subscribe(formValue => {
-                this.logger.debug('pluginActionForm.rawValue', this.pluginActionForm.getRawValue())
+                this.logger.debug('pluginActionForm.rawValue', this.pluginActionForm.getRawValue());
 
-                // map form values to model
-                this.formValueChange({
+                let newFormValue: VerkoopfactuurOpvoerenConfig = {
                     pvResultVariable: formValue.pvResultVariable,
                     procesCode: formValue.procesCode,
                     referentieNummer: formValue.referentieNummer,
-                    factuurKlasse: formValue.factuurKlasse,
+                    factuurKlasse: this.toFactuurKlasse(formValue.factuurKlasse),
+                    factuurDatum: formValue.factuurDatum,
+                    factuurVervaldatum: (formValue.regels != undefined) ? formValue.factuurVervaldatum : null,
                     inkoopOrderReferentie: formValue.inkoopOrderReferentie,
-                    natuurlijkPersoon: {
-                        achternaam: formValue.natuurlijkPersoonAchternaam,
-                        voornamen: formValue.natuurlijkPersoonVoornamen
-                    },
-                    nietNatuurlijkPersoon: {
-                        statutaireNaam: formValue.nietNatuurlijkPersoonStatutaireNaam
-                    },
+                    relatieType: this.toRelatieType(formValue.relatieType),
                     regels: (formValue.regels != undefined) ? formValue.regels.map(regel => ({
                         hoeveelheid: regel.hoeveelheid,
                         tarief: regel.tarief,
                         btwPercentage: regel.btwPercentage,
                         grootboekSleutel: regel.grootboekSleutel,
+                        bronSleutel: regel.bronSleutel,
                         omschrijving: regel.omschrijving
                     })) : null,
                     regelsViaResolver: (formValue.regelsViaResolver != undefined) ? formValue.regelsViaResolver : null
-                });
+                }
+                if (newFormValue.relatieType == RelatieType.NATUURLIJK_PERSOON) {
+                    newFormValue = {
+                        natuurlijkPersoon: {
+                            achternaam: formValue.natuurlijkPersoonAchternaam,
+                            voornamen: formValue.natuurlijkPersoonVoornamen
+                        },
+                        ...newFormValue
+                    }
+
+                } else if (newFormValue.relatieType == RelatieType.NIET_NATUURLIJK_PERSOON) {
+                    newFormValue = {
+                        nietNatuurlijkPersoon: {
+                            statutaireNaam: formValue.nietNatuurlijkPersoonStatutaireNaam
+                        },
+                        ...newFormValue
+                    }
+                }
+                // map form values to model
+                this.formValueChange(newFormValue);
             })
         );
     }
 
-    private toFactuurKlasse(value: string): FactuurKlasse | undefined {
-        return Object.values(FactuurKlasse).includes(value as FactuurKlasse) ? (value as FactuurKlasse) : undefined;
+    private fromFactuurKlasse(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumValue(FactuurKlasse, value);
+        }
+    }
+
+    private toFactuurKlasse(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            return this.enumSvc.getEnumKey(FactuurKlasse, value);
+        }
+    }
+
+    private toRelatieType(value: string): RelatieType | undefined {
+        return Object.values(RelatieType).includes(value as RelatieType) ? (value as RelatieType) : undefined;
+    }
+
+    private isValueResolverPrefix(value: string): boolean {
+        return (
+            value.startsWith('case:')
+            ||
+            value.startsWith('doc:')
+            ||
+            value.startsWith('pv:')
+        )
     }
 
     private formValueChange(formValue: VerkoopfactuurOpvoerenConfig): void {
+        this.logger.debug('formValueChange', formValue);
         this.formValue$.next(formValue);
         this.handleValid(formValue);
     }
@@ -221,10 +309,22 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             formValue.procesCode &&
             formValue.referentieNummer &&
             formValue.factuurKlasse &&
+            formValue.factuurDatum &&
             formValue.inkoopOrderReferentie &&
-            formValue.natuurlijkPersoon.voornamen &&
-            formValue.natuurlijkPersoon.achternaam &&
-            formValue.nietNatuurlijkPersoon.statutaireNaam &&
+            formValue.relatieType &&
+            (
+                (
+                    formValue.relatieType == RelatieType.NATUURLIJK_PERSOON &&
+                    formValue.natuurlijkPersoon.voornamen &&
+                    formValue.natuurlijkPersoon.achternaam
+                )
+                ||
+                (
+                    formValue.relatieType == RelatieType.NIET_NATUURLIJK_PERSOON &&
+                    formValue.nietNatuurlijkPersoon.statutaireNaam
+                )
+            )
+            &&
             (
                 (this.regelsViaResolverToggle.checked == true && formValue.regelsViaResolver)
                 ||
@@ -242,7 +342,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         formValue.regels[i].hoeveelheid &&
                         formValue.regels[i].tarief &&
                         formValue.regels[i].btwPercentage &&
-                        formValue.regels[i].grootboekSleutel
+                        ( formValue.regels[i].grootboekSleutel || formValue.regels[i].bronSleutel )
                     )
                     if (!linesValid)
                         break;
@@ -280,4 +380,6 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             this.pluginActionForm.enable();
         }
     }
+
+    protected readonly RelatieType = RelatieType;
 }

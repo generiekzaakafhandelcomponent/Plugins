@@ -9,7 +9,7 @@
     "activityId": "factuur-informatie-aanleveren",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "rotterdam-oracle-ebs_verkoopfactuur-informatie-aanleveren-2"
+    "formDefinitionName": "rotterdam-oracle-ebs_verkoopfactuur-informatie-aanleveren-3"
   },
   {
     "activityId": "verkoopfactuur-opvoeren",
@@ -22,21 +22,21 @@
       "procesCode": "pv:procescode",
       "referentieNummer": "pv:referentienummer",
       "factuurKlasse": "pv:factuurKlasse",
+      "factuurDatum": "pv:factuurDatum",
+      "factuurVervaldatum": "pv:factuurVervaldatum",
       "inkoopOrderReferentie": "pv:inkoopOrderReferentie",
+      "relatieType": "Natuurlijk persoon",
       "natuurlijkPersoon": {
         "achternaam": "pv:natuurlijkPersoonAchternaam",
         "voornamen": "pv:natuurlijkPersoonVoornamen"
       },
-      "nietNatuurlijkPersoon": {
-        "statutaireNaam": "pv:nietNatuurlijkPersoonStatutaireNaam"
-      },
-      "regelsViaResolver": "pv:regels"
+      "regelsViaResolver": "doc:verkoopfactuurRegels"
     }
   },
   {
     "activityId": "verkoopfactuur-opvoeren-resultaat-bevestigen",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "rotterdam-oracle-ebs_verwerkingsstatus-bevestigen"
+    "formDefinitionName": "rotterdam-oracle-ebs_verkoopfactuur-verwerkingsstatus-bevestigen"
   }
 ]

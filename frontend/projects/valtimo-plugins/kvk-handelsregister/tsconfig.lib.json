@@ -1,7 +1,6 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "experimentalDecorators": true,
     "resolveJsonModule": true,
     "declarationMap": true,
     "outDir": "../../../out-tsc/lib",
@@ -21,6 +20,5 @@
     "enableResourceInlining": true,
     "allowSyntheticDefaultImports": true
   },
-  "exclude": [
-    "kvk-handelsregister/src/test.ts", "**/*.spec.ts"]
+  "exclude": ["src/test.ts", "**/*.spec.ts"]
 }

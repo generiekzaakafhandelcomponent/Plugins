@@ -23,5 +23,5 @@ data class XentialDocumentProperties(
     val fileFormat: FileFormat,
     val documentId: String,
     val messageName: String,
-    var content: Any?
+    var content: String?,
 )

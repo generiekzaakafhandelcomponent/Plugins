@@ -1,11 +1,11 @@
 [
   {
-    "processDefinitionKey": "xential-test",
+    "processDefinitionKey": "xential",
     "canInitializeDocument": true,
     "startableByUser": false
   },
   {
-    "processDefinitionKey": "xential-create-document",
+    "processDefinitionKey": "xential-genereren",
     "canInitializeDocument": false,
     "startableByUser": false
   }

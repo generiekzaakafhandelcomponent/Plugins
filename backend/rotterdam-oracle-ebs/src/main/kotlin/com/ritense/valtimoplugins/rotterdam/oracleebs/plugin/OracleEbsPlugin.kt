@@ -1,6 +1,9 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -8,10 +11,14 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.BoekingType
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.JournaalpostRegel
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NatuurlijkPersoon
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPersoon
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.RelatieType
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
 import com.rotterdam.esb.opvoeren.models.Factuurregel
@@ -30,6 +37,8 @@ import java.math.BigDecimal
 import java.net.URI
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.util.LinkedHashMap
+import kotlin.String
 
 @Plugin(
     key = "rotterdam-oracle-ebs",
@@ -72,26 +81,37 @@ class OracleEbsPlugin(
         @PluginActionProperty boekjaar: String? = null,
         @PluginActionProperty boekperiode: String? = null,
         @PluginActionProperty regels: List<JournaalpostRegel>? = null,
-        @PluginActionProperty regelsViaResolver: String? = null
+        @PluginActionProperty regelsViaResolver: Any? = null
     ) {
         logger.info {
             "Journaalpost Opvoeren(" +
                 "procesCode: $procesCode, " +
                 "referentieNummer: $referentieNummer, " +
                 "sleutel: $sleutel, " +
-                "categorie: $categorie" +
+                "boekdatumTijd: $boekdatumTijd, " +
+                "categorie: $categorie, " +
+                "saldoSoort: $saldoSoort" +
             ")"
         }
 
-        if (regels.isNullOrEmpty() && regelsViaResolver.isNullOrBlank()) {
+        // prepare lines
+        if (regels.isNullOrEmpty() && regelsViaResolver == null) {
             throw IllegalArgumentException("Regels are not specified!")
         }
         val journaalpostRegels: List<JournaalpostRegel> = if (!regels.isNullOrEmpty()) {
             regels
         } else {
-            objectMapper.readValue(regelsViaResolver!!)
+            @Suppress("UNCHECKED_CAST")
+            when (regelsViaResolver) {
+                is ArrayList<*> -> regelsViaResolver.map {
+                    JournaalpostRegel.from(it as LinkedHashMap<String, String>)
+                }
+                is ArrayNode -> objectMapper.convertValue<List<JournaalpostRegel>>(regelsViaResolver)
+                is String -> objectMapper.readValue<List<JournaalpostRegel>>(regelsViaResolver)
+                else -> throw IllegalArgumentException("Unsupported type ${regelsViaResolver!!::class.simpleName}")
+            }
         }.also {
-            logger.debug { "Regels: $it" }
+            logger.info { "Regels: $it" }
         }
 
         OpvoerenJournaalpostVraag(
@@ -106,17 +126,16 @@ class OracleEbsPlugin(
                 journaalpostregels = journaalpostRegels.map { regel ->
                     val resolvedLineValues = resolveValuesFor(execution, mapOf(
                         GROOTBOEK_SLEUTEL_KEY to regel.grootboekSleutel,
+                        BRON_SLEUTEL_KEY to regel.bronSleutel,
                         BOEKING_TYPE_KEY to regel.boekingType,
                         BEDRAG_KEY to regel.bedrag,
                         OMSCHRIJVING_KEY to regel.omschrijving
                     )).also {
                         logger.debug { "Resolved line values: $it" }
                     }
+
                     Journaalpostregel(
-                        grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
-                            bronsleutel = null
-                        ),
+                        grootboekrekening = grootboekRekening(resolvedLineValues),
                         journaalpostregelboekingtype = boekingTypeFrom(resolvedLineValues[BOEKING_TYPE_KEY]!!),
                         journaalpostregelbedrag = doubleFrom(resolvedLineValues[BEDRAG_KEY]!!),
                         journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]!!),
@@ -129,8 +148,10 @@ class OracleEbsPlugin(
                 boekperiode = integerOrNullFrom(boekperiode)
             )
         ).let { request ->
-            logger.debug { "Trying to send OpvoerenJournaalpostVraag" }
-            logger.trace { "OpvoerenJournaalpostVraag: $request" }
+            logger.info { "Trying to send OpvoerenJournaalpostVraag" }
+            logger.info {
+                "OpvoerenJournaalpostVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
+            }
             try {
                 esbClient.journaalPostenApi(restClient()).opvoerenJournaalpost(request).let { response ->
                     logger.debug { "Journaalpost Opvoeren response: $response" }
@@ -162,40 +183,54 @@ class OracleEbsPlugin(
         @PluginActionProperty procesCode: String,
         @PluginActionProperty referentieNummer: String,
         @PluginActionProperty factuurKlasse: String,
+        @PluginActionProperty factuurDatum: String,
+        @PluginActionProperty factuurVervaldatum: String? = null,
         @PluginActionProperty inkoopOrderReferentie: String,
-        @PluginActionProperty natuurlijkPersoon: NatuurlijkPersoon,
-        @PluginActionProperty nietNatuurlijkPersoon: NietNatuurlijkPersoon,
+        @PluginActionProperty relatieType: String,
+        @PluginActionProperty natuurlijkPersoon: NatuurlijkPersoon? = null,
+        @PluginActionProperty nietNatuurlijkPersoon: NietNatuurlijkPersoon? = null,
         @PluginActionProperty regels: List<FactuurRegel>? = null,
-        @PluginActionProperty regelsViaResolver: String? = null
+        @PluginActionProperty regelsViaResolver: Any? = null
     ) {
         logger.info {
             "Verkoopfactuur Opvoeren(" +
                 "procesCode: $procesCode, " +
-                "referentieNummer: $referentieNummer" +
+                "referentieNummer: $referentieNummer, " +
+                "factuurKlasse: $factuurKlasse, " +
+                "factuurDatum: $factuurDatum, " +
+                "inkoopOrderReferentie: $inkoopOrderReferentie, " +
+                "relatieType: $relatieType" +
             ")"
         }
-
-        val resolvedNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
-            ACHTERNAAM_KEY to natuurlijkPersoon.achternaam,
-            VOORNAMEN_KEY to natuurlijkPersoon.voornamen
-        )).also {
-            logger.debug { "Resolved natuurlijk persoon values: $it" }
-        }
-        val resolvedNietNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
-            STATUTAIRE_NAAM_KEY to nietNatuurlijkPersoon.statutaireNaam
-        )).also {
-            logger.debug { "Resolved niet natuurlijk persoon values: $it" }
+        val relatieTypeEnum = RelatieType.valueOf(relatieType.replace(" ", "_").uppercase())
+        if (relatieTypeEnum == RelatieType.NATUURLIJK_PERSOON) {
+            require(natuurlijkPersoon != null) {
+                "When relatieType is NATUURLIJK, natuurlijkPersoon should not be NULL"
+            }
+        } else {
+            require(nietNatuurlijkPersoon != null) {
+                "When relatieType is NIET_NATUURLIJK, nietNatuurlijkPersoon should not be NULL"
+            }
         }
 
-        if (regels.isNullOrEmpty() && regelsViaResolver.isNullOrBlank()) {
+        // prepare lines
+        if (regels.isNullOrEmpty() && regelsViaResolver == null) {
             throw IllegalArgumentException("Regels are not specified!")
         }
         val factuurRegels: List<FactuurRegel> = if (!regels.isNullOrEmpty()) {
             regels
         } else {
-            objectMapper.readValue(regelsViaResolver!!)
+            @Suppress("UNCHECKED_CAST")
+            when (regelsViaResolver) {
+                is ArrayList<*> -> regelsViaResolver.map {
+                    FactuurRegel.from(it as LinkedHashMap<String, String>)
+                }
+                is ArrayNode -> objectMapper.convertValue<List<FactuurRegel>>(regelsViaResolver)
+                is String -> objectMapper.readValue<List<FactuurRegel>>(regelsViaResolver)
+                else -> throw IllegalArgumentException("Unsupported type ${regelsViaResolver!!::class.simpleName}")
+            }
         }.also {
-            logger.debug { "Regels: $it" }
+            logger.info { "Regels: $it" }
         }
 
         OpvoerenVerkoopfactuurVraag(
@@ -204,38 +239,58 @@ class OracleEbsPlugin(
             factuur = Verkoopfactuur(
                 factuurtype = Verkoopfactuur.Factuurtype.Verkoopfactuur,
                 factuurklasse= factuurKlasseFrom(factuurKlasse),
-                factuurdatum = LocalDate.now(),
+                factuurdatum = localDateFrom(factuurDatum),
+                factuurvervaldatum =
+                    if (factuurVervaldatum.isNullOrBlank()) { null } else { localDateFrom(factuurVervaldatum) },
                 inkooporderreferentie = inkoopOrderReferentie,
                 koper = RelatieRotterdam(
-                    natuurlijkPersoon = com.rotterdam.esb.opvoeren.models.NatuurlijkPersoon(
-                        achternaam = stringFrom(resolvedNatuurlijkPersoonValues[ACHTERNAAM_KEY]!!),
-                        voornamen = stringFrom(resolvedNatuurlijkPersoonValues[VOORNAMEN_KEY]!!),
-                        bsn = null,
-                        relatienaam = null,
-                        tussenvoegsel = null,
-                        titel = null,
-                        telefoonnummer = null,
-                        mobielnummer = null,
-                        email = null,
-                        vestigingsadres = null
-                    ),
-                    nietNatuurlijkPersoon = com.rotterdam.esb.opvoeren.models.NietNatuurlijkPersoon(
-                        statutaireNaam = stringFrom(resolvedNietNatuurlijkPersoonValues[STATUTAIRE_NAAM_KEY]!!),
-                        kvknummer = null,
-                        kvkvestigingsnummer = null,
-                        rsin = null,
-                        ion = null,
-                        rechtsvorm = null,
-                        datumAanvang = null,
-                        datumEinde = null,
-                        telefoonnummer = null,
-                        email = null,
-                        website = null,
-                        tijdstipRegistratie = null,
-                        btwnummer = null,
-                        vestigingsadres = null
-                    ),
-                    relatienummerRotterdam = null
+                    relatienummerRotterdam = null,
+                    natuurlijkPersoon =
+                        if (relatieTypeEnum == RelatieType.NATUURLIJK_PERSOON) {
+                            val resolvedNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
+                                ACHTERNAAM_KEY to natuurlijkPersoon!!.achternaam,
+                                VOORNAMEN_KEY to natuurlijkPersoon.voornamen
+                            )).also {
+                                logger.debug { "Resolved natuurlijk persoon values: $it" }
+                            }
+                            com.rotterdam.esb.opvoeren.models.NatuurlijkPersoon(
+                                achternaam = stringFrom(resolvedNatuurlijkPersoonValues[ACHTERNAAM_KEY]!!),
+                                voornamen = stringFrom(resolvedNatuurlijkPersoonValues[VOORNAMEN_KEY]!!),
+                                bsn = null,
+                                relatienaam = null,
+                                tussenvoegsel = null,
+                                titel = null,
+                                telefoonnummer = null,
+                                mobielnummer = null,
+                                email = null,
+                                vestigingsadres = null
+                            )
+                        } else null
+                    ,
+                    nietNatuurlijkPersoon =
+                        if (relatieTypeEnum == RelatieType.NIET_NATUURLIJK_PERSOON) {
+                            val resolvedNietNatuurlijkPersoonValues = resolveValuesFor(execution, mapOf(
+                                STATUTAIRE_NAAM_KEY to nietNatuurlijkPersoon!!.statutaireNaam
+                            )).also {
+                                logger.debug { "Resolved niet natuurlijk persoon values: $it" }
+                            }
+                            com.rotterdam.esb.opvoeren.models.NietNatuurlijkPersoon(
+                                statutaireNaam = stringFrom(resolvedNietNatuurlijkPersoonValues[STATUTAIRE_NAAM_KEY]!!),
+                                kvknummer = null,
+                                kvkvestigingsnummer = null,
+                                rsin = null,
+                                ion = null,
+                                rechtsvorm = null,
+                                datumAanvang = null,
+                                datumEinde = null,
+                                telefoonnummer = null,
+                                email = null,
+                                website = null,
+                                tijdstipRegistratie = null,
+                                btwnummer = null,
+                                vestigingsadres = null
+                            )
+                        } else null
                 ),
                 factuurregels = factuurRegels.map { factuurRegel ->
                     val resolvedLineValues = resolveValuesFor(execution, mapOf(
@@ -243,6 +298,7 @@ class OracleEbsPlugin(
                         TARIEF_KEY to factuurRegel.tarief,
                         BTW_PERCENTAGE_KEY to factuurRegel.btwPercentage,
                         GROOTBOEK_SLEUTEL_KEY to factuurRegel.grootboekSleutel,
+                        BRON_SLEUTEL_KEY to factuurRegel.bronSleutel,
                         OMSCHRIJVING_KEY to factuurRegel.omschrijving
                     )).also {
                         logger.debug { "Resolved line values: $it" }
@@ -251,10 +307,7 @@ class OracleEbsPlugin(
                         factuurregelFacturatieHoeveelheid = valueAsBigDecimal(resolvedLineValues[HOEVEELHEID_KEY]!!),
                         factuurregelFacturatieTarief = valueAsBigDecimal(resolvedLineValues[TARIEF_KEY]!!),
                         btwPercentage = stringFrom(resolvedLineValues[BTW_PERCENTAGE_KEY]!!),
-                        grootboekrekening = Grootboekrekening(
-                            grootboeksleutel = stringFrom(resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]!!),
-                            bronsleutel = null,
-                        ),
+                        grootboekrekening = grootboekRekening(resolvedLineValues),
                         factuurregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]),
                         factuurregelFacturatieEenheid = null,
                         boekingsregel = null,
@@ -268,7 +321,6 @@ class OracleEbsPlugin(
                 },
                 transactiesoort = null,
                 factuurnummer = null,
-                factuurvervaldatum = null,
                 factureerregel = null,
                 factuurkenmerk = null,
                 factuurtoelichting = null,
@@ -281,14 +333,18 @@ class OracleEbsPlugin(
             ),
             bijlage = null
         ).let { request ->
-            logger.debug { "Trying to send OpvoerenVerkoopfactuurVraag" }
-            logger.trace { "OpvoerenVerkoopfactuurVraag: $request" }
+            logger.info { "Trying to send OpvoerenVerkoopfactuurVraag" }
+            logger.info {
+                "OpvoerenVerkoopfactuurVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
+            }
             try {
                 esbClient.verkoopFacturenApi(restClient()).opvoerenVerkoopfactuur(request).let { response ->
                     logger.debug { "Verkoopfactuur Opvoeren response: $response" }
+
                     execution.setVariable(pvResultVariable, mapOf(
                         "isGeslaagd" to response.isGeslaagd,
                         "melding" to response.melding,
+                        "factuurID" to response.factuurID,
                         "foutcode" to response.foutcode,
                         "foutmelding" to response.foutmelding
                     ))
@@ -299,6 +355,16 @@ class OracleEbsPlugin(
             }
         }
     }
+
+    private fun grootboekRekening( resolvedLineValues: Map<String, Any?>) =
+        Grootboekrekening(
+            grootboeksleutel = resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]?.let{ grootboekSleutel ->
+                stringFrom(grootboekSleutel).takeIf { it.isNotBlank() }
+            },
+            bronsleutel = resolvedLineValues[BRON_SLEUTEL_KEY]?.let{ bronSleutel ->
+                stringFrom(bronSleutel).takeIf { it.isNotBlank() }
+            }
+        )
 
     fun resolveValuesFor(
         execution: DelegateExecution,
@@ -331,13 +397,19 @@ class OracleEbsPlugin(
     }
 
     private fun saldoSoortFrom(value: Any): Journaalpost.Journaalpostsaldosoort =
-        Journaalpost.Journaalpostsaldosoort.valueOf(stringFrom(value))
+        SaldoSoort.valueOf(stringFrom(value).uppercase()).let {
+            Journaalpost.Journaalpostsaldosoort.valueOf(it.title)
+        }
 
     private fun boekingTypeFrom(value: Any): Journaalpostregel.Journaalpostregelboekingtype =
-        Journaalpostregel.Journaalpostregelboekingtype.valueOf(stringFrom(value))
+        BoekingType.valueOf(stringFrom(value).uppercase()).let {
+            Journaalpostregel.Journaalpostregelboekingtype.valueOf(it.title)
+        }
 
     private fun factuurKlasseFrom(value: Any): Verkoopfactuur.Factuurklasse =
-        Verkoopfactuur.Factuurklasse.valueOf(stringFrom(value))
+        FactuurKlasse.valueOf(stringFrom(value).uppercase()).let {
+            Verkoopfactuur.Factuurklasse.valueOf(it.title)
+        }
 
     private fun isResolvableValue(value: String): Boolean =
         value.isNotBlank() &&
@@ -346,6 +418,13 @@ class OracleEbsPlugin(
             value.startsWith("doc:") ||
             value.startsWith("pv:")
         )
+
+    private fun localDateFrom(value: Any): LocalDate =
+        when (value) {
+            is LocalDate -> value
+            is String -> LocalDate.parse(value.trim())
+            else -> throw IllegalArgumentException("Unsupported type ${value::class}")
+        }
 
     private fun offsetDateTimeFrom(value: Any): OffsetDateTime =
         when (value) {
@@ -408,10 +487,14 @@ class OracleEbsPlugin(
 
     private fun restClient(): RestClient =
         esbClient.createRestClient(
+            objectMapper = objectMapperWithNonAbsentInclusion(objectMapper),
             baseUrl = baseUrl.toString(),
             authenticationEnabled = authenticationEnabled.toBoolean(),
             mTlsSslContext = mTlsSslContextConfiguration
         )
+
+    private fun objectMapperWithNonAbsentInclusion(objectMapper: ObjectMapper): ObjectMapper =
+        objectMapper.copy().setSerializationInclusion(JsonInclude.Include.NON_ABSENT)
 
     companion object {
         private val logger = KotlinLogging.logger {}
@@ -420,6 +503,7 @@ class OracleEbsPlugin(
 
         private const val OMSCHRIJVING_KEY = "omschrijving"
         private const val GROOTBOEK_SLEUTEL_KEY = "grootboeksleutel"
+        private const val BRON_SLEUTEL_KEY = "bronSleutel"
         private const val BOEKING_TYPE_KEY = "boekingType"
         private const val BEDRAG_KEY = "bedrag"
         private const val ACHTERNAAM_KEY = "achternaam"

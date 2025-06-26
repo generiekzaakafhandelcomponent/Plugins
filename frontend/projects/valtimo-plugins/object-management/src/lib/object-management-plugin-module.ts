@@ -25,12 +25,14 @@ import {CreateObjectConfigurationComponent} from "./components/create-object/cre
 import {GetObjectsConfigurationComponent} from "./components/get-objects/get-objects-configuration.component";
 import {DeleteObjectConfigurationComponent} from "./components/delete-object/delete-object-configuration.component";
 import {UpdateObjectConfigurationComponent} from "./components/update-object/update-object-configuration.component";
+import {GetObjectDataConfigurationComponent} from "./components/get-object-data/get-object-data-configuration.component";
 
 @NgModule({
     declarations: [
         ObjectManagementConfigurationComponent,
         CreateObjectConfigurationComponent,
         GetObjectsConfigurationComponent,
+        GetObjectDataConfigurationComponent,
         DeleteObjectConfigurationComponent,
         UpdateObjectConfigurationComponent,
     ],
@@ -39,6 +41,7 @@ import {UpdateObjectConfigurationComponent} from "./components/update-object/upd
         ObjectManagementConfigurationComponent,
         CreateObjectConfigurationComponent,
         GetObjectsConfigurationComponent,
+        GetObjectDataConfigurationComponent,
         DeleteObjectConfigurationComponent,
         UpdateObjectConfigurationComponent,
     ],
