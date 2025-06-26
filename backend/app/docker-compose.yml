@@ -68,8 +68,8 @@ services:
     ports:
       - "8001:8000"
     depends_on:
-      -   openzaak-database
-      -   redis
+      - openzaak-database
+      - redis
     volumes:
       - openzaak-private-media:/app/private-media # persist data even if container shuts down
 
@@ -220,6 +220,33 @@ services:
   redis-open-notificaties:
     image: redis:6.2.6
     container_name: valtimo-plugins-local-redis-open-notificaties
+
+    #HaalCentraal
+  bag-api-simulator:
+    image: erikritense/bag-api-simulator-tmp:0.1
+    container_name: bag-api-simulator
+    ports:
+      - "5020:5020"
+    environment:
+      - AUTH_API_KEY=X-Api-Key
+      - AUTH_API_SECRET=SECRET
+
+  bewoningen-mock:
+    container_name: bewoningen-mock-2
+    image: ghcr.io/brp-api/bewoning-service-mock:2.0.1-latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Release
+      - ASPNETCORE_URLS=http://+:5010
+    ports:
+      - "5010:5010"
+    # volumes:
+    #   - ./src/config/BewoningService:/app/Data
+    networks:
+      - brp-api-network
+
+networks:
+  brp-api-network:
+    name: brp-api-network
 
 volumes:
   openzaak-private-media:

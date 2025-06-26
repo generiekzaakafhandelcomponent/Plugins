@@ -1,0 +1,24 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "haal-centraal-get-bewoningen",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": null,
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "get-bewoning-task",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "a7a8487a-7ad6-42ac-9df2-e6cb2fc1e1e6",
+    "pluginActionDefinitionKey": "hc-brp-get-bewoningen",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "adresseerbaarObjectIdentificatie": "doc:/adresseerbaarObjectIdentificatie",
+      "peildatum": "doc:/peildatum",
+      "resultProcessVariableName": "results"
+    }
+  }
+]
