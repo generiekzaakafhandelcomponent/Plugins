@@ -32,3 +32,4 @@ To set up the DocScanner plugin, follow these steps:
 
 * **Default Behaviour:**
   In the demo process, the plugin is configured to scan **only the first page** of any uploaded document.
+
