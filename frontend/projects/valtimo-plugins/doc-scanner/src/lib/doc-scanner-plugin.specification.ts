@@ -66,3 +66,5 @@ const docScannerPluginSpecification: PluginSpecification = {
 };
 
 export {docScannerPluginSpecification};
+
+
