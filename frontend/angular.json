@@ -392,6 +392,47 @@
         }
       }
     },
+    "@valtimo-plugins/doc-scanner": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/doc-scanner",
+      "sourceRoot": "projects/valtimo-plugins/doc-scanner/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/doc-scanner/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/doc-scanner/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/doc-scanner/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/doc-scanner/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/doc-scanner/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/doc-scanner/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/doc-scanner/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/doc-scanner/src/**/*.ts",
+              "projects/valtimo-plugins/doc-scanner/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/freemarker": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/freemarker",

@@ -137,6 +137,7 @@
     "@valtimo-plugins/alfresco-auth": "file:dist/valtimo-plugins/alfresco-auth",
     "@valtimo-plugins/amsterdam-emailapi": "file:dist/valtimo-plugins/amsterdam-emailapi",
     "@valtimo-plugins/berkelybridge": "file:dist/valtimo-plugins/berkelybridge",
+    "@valtimo-plugins/doc-scanner": "file:dist/valtimo-plugins/doc-scanner",
     "@valtimo-plugins/externe-klanttaak": "file:dist/valtimo-plugins/externe-klanttaak",
     "@valtimo-plugins/freemarker": "file:dist/valtimo-plugins/freemarker",
     "@valtimo-plugins/notify-nl": "file:dist/valtimo-plugins/notify-nl",
