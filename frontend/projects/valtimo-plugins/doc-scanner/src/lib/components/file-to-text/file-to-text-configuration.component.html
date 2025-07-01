@@ -1,0 +1,60 @@
+<!--
+  ~ Copyright 2015-2022 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
+>
+    <v-input
+            name="filePV"
+            [title]="'filePV' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.filePV"
+            [required]="true"
+            [tooltip]="'filePVTooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
+    <v-input
+            name="pages"
+            type="number"
+            [title]="'pages' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.pages"
+            [required]="false"
+            [tooltip]="'pagesTooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
+    <v-input
+            name="includeImageBase64"
+            type="checkbox"
+            [title]="'includeImageBase64' | pluginTranslate: pluginId | async"
+            [margin]="false"
+            [disabled]="obs.disabled"
+            [tooltip]="'includeImageBase64Tooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
+    <v-input
+            name="resultPV"
+            [title]="'resultPV' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.resultPV"
+            [required]="true"
+            [tooltip]="'resultPVTooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
+</v-form>

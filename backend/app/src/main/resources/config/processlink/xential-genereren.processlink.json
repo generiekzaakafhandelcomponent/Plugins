@@ -3,25 +3,25 @@
     "activityId": "XentialSelecteerSjabloon",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.kies-sjabloon"
+    "formDefinitionName": "xential-genereren.kies-sjabloon"
   },
   {
     "activityId": "XentialErrorNaSelecteerSjabloon",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.error-na-kies-sjabloon"
+    "formDefinitionName": "xential-genereren.error-na-kies-sjabloon"
   },
   {
     "activityId": "XentialToegangControleren",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.resultaat-toegang-controleren"
+    "formDefinitionName": "xential-genereren.resultaat-toegang-controleren"
   },
   {
     "activityId": "OpenXentialWizardTask",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.wizard"
+    "formDefinitionName": "xential-genereren.wizard"
   },
   {
     "activityId": "XentialTestMapToegang",
