@@ -82,6 +82,7 @@
     "@valtimo/choice-field": "12.14.1",
     "@valtimo/components": "12.14.1",
     "@valtimo/config": "12.14.1",
+    "@valtimo/zgw": "12.14.1",
     "@valtimo/dashboard": "12.14.1",
     "@valtimo/dashboard-management": "12.14.1",
     "@valtimo/decision": "12.14.1",

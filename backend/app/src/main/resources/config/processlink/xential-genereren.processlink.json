@@ -47,5 +47,31 @@
       "xentialSjabloonId": "pv:xentialSjabloonId",
       "xentialGebruikersId": "pv:xentialGebruikersId"
     }
+  },
+  {
+    "activityId": "XentialUploadDocument",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "5474fe57-532a-4050-8d89-32e62ca3e895",
+    "pluginActionDefinitionKey": "store-temp-document",
+    "actionProperties": {
+      "title": "Invoice PDF",
+      "fileName": "invoice.pdf",
+      "localDocumentLocation": "xentialResourceId",
+      "storedDocumentUrl": "pdfDocumentUrl",
+      "informatieobjecttype": "http://localhost:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad",
+      "taal": "nld",
+      "status": "definitief"
+    }
+  },
+  {
+    "activityId": "XentialKoppelDocumentAanZaak",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+    "pluginActionDefinitionKey": "link-document-to-zaak",
+    "actionProperties": {
+      "documentUrl": "pv:pdfDocumentUrl"
+    }
   }
 ]
