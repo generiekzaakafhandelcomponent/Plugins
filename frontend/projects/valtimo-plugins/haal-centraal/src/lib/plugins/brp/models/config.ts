@@ -17,7 +17,7 @@
 
 import {PluginConfigurationData} from '@valtimo/plugin';
 
-interface Config extends PluginConfigurationData {
+interface BrpConfig extends PluginConfigurationData {
     brpBaseUrl: string;
 }
 
@@ -27,4 +27,4 @@ interface BewoningenConfig {
     resultProcessVariableName: string;
 }
 
-export {Config, BewoningenConfig};
+export {BrpConfig, BewoningenConfig};

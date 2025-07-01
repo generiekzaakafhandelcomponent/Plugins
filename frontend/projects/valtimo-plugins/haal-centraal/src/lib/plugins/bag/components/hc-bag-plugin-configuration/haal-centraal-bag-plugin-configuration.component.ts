@@ -18,7 +18,7 @@
 import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from "@valtimo/plugin";
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from "@angular/core";
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from "rxjs";
-import {Config} from "../../models";
+import {BagConfig} from "../../models";
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({
@@ -34,11 +34,11 @@ export class HaalCentraalBagPluginConfigurationComponent
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string
     // If the plugin had already been saved, a prefilled configuration of the type Config is expected
-    @Input() prefillConfiguration$: Observable<Config>;
+    @Input() prefillConfiguration$: Observable<BagConfig>;
 
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<Config> =
-        new EventEmitter<Config>();
+    @Output() configuration: EventEmitter<BagConfig> =
+        new EventEmitter<BagConfig>();
     readonly authenticationPluginSelectItems$: Observable<Array<{ id: string; text: string }>> =
         combineLatest([
             this.pluginManagementService.getPluginConfigurationsByCategory(
@@ -57,7 +57,7 @@ export class HaalCentraalBagPluginConfigurationComponent
             )
         );
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<Config | null>(null);
+    private readonly formValue$ = new BehaviorSubject<BagConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     constructor(
@@ -80,7 +80,7 @@ export class HaalCentraalBagPluginConfigurationComponent
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: Config): void {
+    private handleValid(formValue: BagConfig): void {
         // The configuration is valid when a configuration title and url are defined
         const valid = !!(
             formValue.configurationTitle &&

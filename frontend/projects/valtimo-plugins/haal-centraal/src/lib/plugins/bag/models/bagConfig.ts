@@ -17,7 +17,7 @@
 
 import {PluginConfigurationData} from '@valtimo/plugin';
 
-interface Config extends PluginConfigurationData {
+interface BagConfig extends PluginConfigurationData {
     bagBaseUrl: string;
 }
 
@@ -29,4 +29,4 @@ interface OphalenAdresseerbaarObjectIdentificatie {
     exacteMatch: boolean,
     resultProcessVariableName: string;
 }
-export {Config, OphalenAdresseerbaarObjectIdentificatie};
+export {BagConfig, OphalenAdresseerbaarObjectIdentificatie};

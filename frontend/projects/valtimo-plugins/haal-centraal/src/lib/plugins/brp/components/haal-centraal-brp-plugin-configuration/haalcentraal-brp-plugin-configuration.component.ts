@@ -18,7 +18,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
-import {Config} from '../../models';
+import {BrpConfig} from '../../models';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -34,17 +34,17 @@ export class HaalcentraalBrpPluginConfigurationComponent
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
     // If the plugin had already been saved, a prefill configuration of the type SuwinetPluginConfig is expected
-    @Input() prefillConfiguration$: Observable<Config>;
+    @Input() prefillConfiguration$: Observable<BrpConfig>;
 
     // If the configuration data changes, output whether the data is valid or not
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     // If the configuration is valid, output a configuration of the type SuwinetPluginConfig
-    @Output() configuration: EventEmitter<Config> =
-        new EventEmitter<Config>();
+    @Output() configuration: EventEmitter<BrpConfig> =
+        new EventEmitter<BrpConfig>();
 
     private saveSubscription!: Subscription;
 
-    private readonly formValue$ = new BehaviorSubject<Config | null>(null);
+    private readonly formValue$ = new BehaviorSubject<BrpConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     readonly authenticationPluginSelectItems$: Observable<Array<{ id: string; text: string }>> =
@@ -83,7 +83,7 @@ export class HaalcentraalBrpPluginConfigurationComponent
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: Config): void {
+    private handleValid(formValue: BrpConfig): void {
         // The configuration is valid when a configuration title and url are defined
         const valid = !!(
             formValue.configurationTitle &&

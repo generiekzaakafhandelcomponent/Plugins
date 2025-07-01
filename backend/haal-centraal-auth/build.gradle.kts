@@ -25,7 +25,7 @@ dockerCompose {
         implementation(platform("com.ritense.valtimo:valtimo-dependency-versions:$valtimoVersion"))
         implementation("com.ritense.valtimo:valtimo-gzac-dependencies")
 
-        implementation("com.ritense.valtimoplugins:object-management:0.2.0")
+        implementation(project(":backend:object-management"))
 
         implementation("io.github.microutils:kotlin-logging")
 

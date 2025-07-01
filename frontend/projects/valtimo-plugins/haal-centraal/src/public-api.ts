@@ -30,11 +30,9 @@ export *
     * Public API Surface of haal-centraal-bag
  */
 
-export * from './lib/plugins/brp/models';
-export * from './lib/plugins/brp/haal-centraal-brp.plugin.module';
-export * from './lib/plugins/brp/haal-centraal-brp.plugin.specification';
-export *
-    from './lib/plugins/brp/components/haal-centraal-brp-plugin-configuration/haalcentraal-brp-plugin-configuration.component';
-export * from './lib/plugins/brp/components/haal-centraal-brp-bewoningen/haal-centraal-brp-bewoningen.component';
-export *
-    from './lib/plugins/bag/components/hc-bag-ophalen-adresseerbaar-object-identificatie/hc-bag-ophalen-adresseerbaar-object-identificatie.component';
+export * from './lib/plugins/bag/models';
+export * from './lib/plugins/bag/haal-centraal-bag-plugin.module';
+export * from './lib/plugins/bag/haal-centraal-bag-plugin.specification';
+export * from './lib/plugins/bag/components/hc-bag-ophalen-adresseerbaar-object-identificatie/hc-bag-ophalen-adresseerbaar-object-identificatie.component';
+export * from './lib/plugins/bag/components/hc-bag-plugin-configuration/haal-centraal-bag-plugin-configuration.component';
+export * from './lib/plugins/bag/components/hc-bag-ophalen-adresseerbaar-object-identificatie/hc-bag-ophalen-adresseerbaar-object-identificatie.component';

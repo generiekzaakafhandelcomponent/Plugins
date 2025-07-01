@@ -107,17 +107,13 @@ import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
 import {
-    HaalCentraalBrpAuthPluginModule
-} from "../../projects/valtimo-plugins/haal-centraal-auth/src/lib/haal-centraal-brp-auth.plugin.module";
+    HaalCentraalBrpAuthPluginModule,
+    haalCentraalBrpAuthPluginSpecification,
+} from "@valtimo-plugins/haal-centraal-auth";
 import {
-    haalCentraalBrpAuthPluginSpecification
-} from "../../projects/valtimo-plugins/haal-centraal-auth/src/lib/haal-centraal-brp-auth.plugin.specification";
-import {
-    HaalCentraalBrpPluginModule
-} from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/brp/haal-centraal-brp.plugin.module";
-import {
-    haalCentraalBrpPluginSpecification
-} from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/brp/haal-centraal-brp.plugin.specification";
+    HaalCentraalBrpPluginModule,
+    haalCentraalBrpPluginSpecification,
+} from "@valtimo-plugins/haal-centraal";
 import {
     haalCentraalBagPluginSpecification
 } from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/bag/haal-centraal-bag-plugin.specification";
