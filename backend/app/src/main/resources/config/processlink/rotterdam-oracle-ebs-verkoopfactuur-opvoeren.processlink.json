@@ -24,6 +24,7 @@
       "factuurKlasse": "pv:factuurKlasse",
       "factuurDatum": "pv:factuurDatum",
       "factuurVervaldatum": "pv:factuurVervaldatum",
+      "factuurKenmerk": "pv:factuurKenmerk",
       "factuurAdresType": "Locatie",
       "factuurAdresLocatie": {
         "naamContactpersoon": "pv:factuurAdresNaamContactpersoon",
