@@ -52,6 +52,7 @@ interface VerkoopfactuurOpvoerenConfig {
     factuurKlasse: string;
     factuurDatum: string;
     factuurVervaldatum?: string;
+    factuurKenmerk?: string;
     factuurAdresType: AdresType;
     factuurAdresLocatie?: AdresLocatie;
     factuurAdresPostbus?: AdresPostbus;
