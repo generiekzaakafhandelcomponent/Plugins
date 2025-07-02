@@ -8,6 +8,8 @@ include(
     "backend:doc-scanner",
     "backend:externe-klanttaak",
     "backend:freemarker",
+    "backend:haal-centraal",
+    "backend:haal-centraal-auth",
     "backend:mTLS-SSLContext",
     "backend:notify-nl",
     "backend:object-management",

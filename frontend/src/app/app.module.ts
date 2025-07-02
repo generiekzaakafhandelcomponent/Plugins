@@ -25,24 +25,24 @@ import {TaskModule} from '@valtimo/task';
 import {environment} from '../environments/environment';
 import {SecurityModule} from '@valtimo/security';
 import {
-  BpmnJsDiagramModule,
-  CardModule,
-  enableCustomFormioComponents,
-  MenuModule,
-  registerFormioFileSelectorComponent,
-  registerFormioUploadComponent,
-  registerFormioValueResolverSelectorComponent,
-  WidgetModule,
+    BpmnJsDiagramModule,
+    CardModule,
+    enableCustomFormioComponents,
+    MenuModule,
+    registerFormioFileSelectorComponent,
+    registerFormioUploadComponent,
+    registerFormioValueResolverSelectorComponent,
+    WidgetModule,
     ValuePathSelectorComponent
 
 } from '@valtimo/components';
 import {
-  DefaultTabs,
-  DossierDetailTabAuditComponent,
-  DossierDetailTabDocumentsComponent,
-  DossierDetailTabProgressComponent,
-  DossierDetailTabSummaryComponent,
-  DossierModule,
+    DefaultTabs,
+    DossierDetailTabAuditComponent,
+    DossierDetailTabDocumentsComponent,
+    DossierDetailTabProgressComponent,
+    DossierDetailTabSummaryComponent,
+    DossierModule,
 } from '@valtimo/dossier';
 import {ProcessModule} from '@valtimo/process';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -66,13 +66,13 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
 import {
-  ObjectenApiPluginModule,
-  objectenApiPluginSpecification,
-  ObjectTokenAuthenticationPluginModule,
-  objectTokenAuthenticationPluginSpecification,
-  ObjecttypenApiPluginModule,
-  objecttypenApiPluginSpecification,
-  PLUGINS_TOKEN
+    ObjectenApiPluginModule,
+    objectenApiPluginSpecification,
+    ObjectTokenAuthenticationPluginModule,
+    objectTokenAuthenticationPluginSpecification,
+    ObjecttypenApiPluginModule,
+    objecttypenApiPluginSpecification,
+    PLUGINS_TOKEN
 } from '@valtimo/plugin';
 import {TaskManagementModule} from '@valtimo/task-management';
 import {ProcessLinkModule} from '@valtimo/process-link';
@@ -81,7 +81,10 @@ import {ObjectModule} from "@valtimo/object";
 
 import {AlfrescoAuthPluginModule, alfrescoAuthPluginSpecification} from '@valtimo-plugins/alfresco-auth';
 import {AmsterdamEmailapiPluginModule, amsterdamEmailapiPluginSpecification} from '@valtimo-plugins/amsterdam-emailapi';
-import {BerkelybridgeTextgeneratorPluginModule, berkelybridgeTextgeneratorPluginSpecification} from '@valtimo-plugins/berkelybridge';
+import {
+    BerkelybridgeTextgeneratorPluginModule,
+    berkelybridgeTextgeneratorPluginSpecification
+} from '@valtimo-plugins/berkelybridge';
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {
     MailTemplatePluginModule,
@@ -92,14 +95,32 @@ import {
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
-import {RotterdamOracleEbsPluginModule, rotterdamOracleEbsPluginSpecification} from "@valtimo-plugins/rotterdam-oracle-ebs";
+import {
+    RotterdamOracleEbsPluginModule,
+    rotterdamOracleEbsPluginSpecification
+} from "@valtimo-plugins/rotterdam-oracle-ebs";
 import {SlackPluginModule, slackPluginSpecification} from '@valtimo-plugins/slack';
 import {SmtpMailPluginModule, smtpmailPluginSpecification} from '@valtimo-plugins/smtpmail';
 import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/spotler';
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
-import {MtlsSslcontextPluginModule,mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
+import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
+import {
+    HaalCentraalBrpAuthPluginModule,
+    haalCentraalBrpAuthPluginSpecification,
+} from "@valtimo-plugins/haal-centraal-auth";
+import {
+    HaalCentraalBrpPluginModule,
+    haalCentraalBrpPluginSpecification,
+} from "@valtimo-plugins/haal-centraal";
+import {
+    haalCentraalBagPluginSpecification
+} from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/bag/haal-centraal-bag-plugin.specification";
+import {
+    HaalCentraalBagPluginModule
+} from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/bag/haal-centraal-bag-plugin.module";
+
 import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from "@valtimo/dashboard";
 import {DashboardManagementModule} from "@valtimo/dashboard-management";
@@ -110,12 +131,12 @@ import {
 } from "../../projects/valtimo-plugins/doc-scanner/src/lib/doc-scanner-plugin.specification";
 
 export function tabsFactory() {
-  return new Map<string, object>([
-    [DefaultTabs.summary, DossierDetailTabSummaryComponent],
-    [DefaultTabs.progress, DossierDetailTabProgressComponent],
-    [DefaultTabs.audit, DossierDetailTabAuditComponent],
-    [DefaultTabs.documents, DossierDetailTabDocumentsComponent],
-  ]);
+    return new Map<string, object>([
+        [DefaultTabs.summary, DossierDetailTabSummaryComponent],
+        [DefaultTabs.progress, DossierDetailTabProgressComponent],
+        [DefaultTabs.audit, DossierDetailTabAuditComponent],
+        [DefaultTabs.documents, DossierDetailTabDocumentsComponent],
+    ]);
 }
 
 @NgModule({
@@ -136,6 +157,9 @@ export function tabsFactory() {
         MtlsSslcontextPluginModule,
         SlackPluginModule,
         HuggingFacePluginModule,
+        HaalCentraalBrpPluginModule,
+        HaalCentraalBagPluginModule,
+        HaalCentraalBrpAuthPluginModule,
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
@@ -207,6 +231,9 @@ export function tabsFactory() {
             externeKlanttaakPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
+            haalCentraalBrpPluginSpecification,
+            haalCentraalBagPluginSpecification,
+            haalCentraalBrpAuthPluginSpecification,
             objectManagementPluginSpecification,
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
