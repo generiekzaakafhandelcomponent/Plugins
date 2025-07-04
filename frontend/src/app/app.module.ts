@@ -82,6 +82,7 @@ import {
     objecttypenApiPluginSpecification,
     PLUGINS_TOKEN
 } from '@valtimo/plugin';
+import {ZgwModule} from '@valtimo/zgw';
 import {TaskManagementModule} from '@valtimo/task-management';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
