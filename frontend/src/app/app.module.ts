@@ -66,6 +66,14 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
 import {
+    CatalogiApiPluginModule,
+    catalogiApiPluginSpecification,
+    DocumentenApiPluginModule,
+    documentenApiPluginSpecification,
+    OpenZaakPluginModule,
+    openZaakPluginSpecification,
+    ZakenApiPluginModule,
+    zakenApiPluginSpecification,
     ObjectenApiPluginModule,
     objectenApiPluginSpecification,
     ObjectTokenAuthenticationPluginModule,
@@ -74,6 +82,7 @@ import {
     objecttypenApiPluginSpecification,
     PLUGINS_TOKEN
 } from '@valtimo/plugin';
+import {ZgwModule} from '@valtimo/zgw';
 import {TaskManagementModule} from '@valtimo/task-management';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
@@ -200,6 +209,10 @@ export function tabsFactory() {
         DossierManagementModule,
         PluginManagementModule,
         AccessControlManagementModule,
+        CatalogiApiPluginModule,
+        DocumentenApiPluginModule,
+        OpenZaakPluginModule,
+        ZakenApiPluginModule,
         ObjectenApiPluginModule,
         ObjecttypenApiPluginModule,
         ObjectTokenAuthenticationPluginModule,
@@ -220,6 +233,7 @@ export function tabsFactory() {
         DashboardModule,
         DashboardManagementModule,
         KvkPluginModule,
+        ZgwModule
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -248,7 +262,11 @@ export function tabsFactory() {
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
-            kvkPluginSpecification
+            kvkPluginSpecification,
+            catalogiApiPluginSpecification,
+            documentenApiPluginSpecification,
+            openZaakPluginSpecification,
+            zakenApiPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]

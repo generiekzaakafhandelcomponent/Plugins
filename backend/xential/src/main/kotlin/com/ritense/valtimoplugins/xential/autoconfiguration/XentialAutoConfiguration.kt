@@ -28,11 +28,13 @@ import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.ritense.valtimoplugins.xential.security.config.XentialApiHttpSecurityConfigurer
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
 import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
+import com.ritense.valtimoplugins.xential.service.XentialDocumentHelper
 import com.ritense.valtimoplugins.xential.service.XentialSjablonenService
 import com.ritense.valtimoplugins.xential.service.XentialUserIdHelper
 import com.ritense.valtimoplugins.xential.web.rest.DocumentResource
 import com.ritense.valtimoplugins.xential.web.rest.XentialSjablonenResource
 import com.ritense.valueresolver.ValueResolverService
+import com.ritense.zakenapi.service.ZaakDocumentService
 import org.camunda.bpm.engine.RuntimeService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -92,6 +94,13 @@ class XentialAutoConfiguration {
         temporaryResourceStorageService,
         runtimeService,
     )
+
+    @Bean
+    @ProcessBean
+    fun xentialDocumentHelper(zaakDocumentService: ZaakDocumentService) =
+        XentialDocumentHelper(
+            zaakDocumentService
+        )
 
     @Bean
     @ProcessBean
