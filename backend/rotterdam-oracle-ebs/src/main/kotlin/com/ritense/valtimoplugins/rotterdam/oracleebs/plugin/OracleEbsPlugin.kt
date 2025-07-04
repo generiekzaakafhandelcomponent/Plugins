@@ -203,6 +203,7 @@ class OracleEbsPlugin(
         @PluginActionProperty factuurKlasse: String,
         @PluginActionProperty factuurDatum: String,
         @PluginActionProperty factuurVervaldatum: String? = null,
+        @PluginActionProperty factuurKenmerk: String? = null,
         @PluginActionProperty factuurAdresType: String,
         @PluginActionProperty factuurAdresLocatie: AdresLocatie? = null,
         @PluginActionProperty factuurAdresPostbus: AdresPostbus? = null,
@@ -271,7 +272,7 @@ class OracleEbsPlugin(
                 transactiesoort = null,
                 factuurnummer = null,
                 factureerregel = null,
-                factuurkenmerk = null,
+                factuurkenmerk = factuurKenmerk,
                 factuurtoelichting = null,
                 gerelateerdFactuurnummer = null,
                 valutacode = VALUTACODE_EURO, // Alleen EUR wordt ondersteund

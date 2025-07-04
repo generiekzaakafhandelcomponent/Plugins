@@ -85,6 +85,13 @@
       "input": true
     },
     {
+      "label": "Factuurkenmerk",
+      "key": "pv:factuurKenmerk",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "20250702:VERGUNNING:BUURTFEEST"
+    },
+    {
       "label": "Factuuradres - Type",
       "key": "pv:factuurAdresType",
       "type": "textfield",

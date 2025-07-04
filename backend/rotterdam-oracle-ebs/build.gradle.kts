@@ -33,7 +33,7 @@ dependencies {
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:value-resolver")
 
-    implementation("com.ritense.valtimoplugins:mTLS-SSLContext:1.0.1")
+    implementation(project(":backend:mTLS-SSLContext"))
 
     // Spring core web functionality
     implementation("org.springframework:spring-web")

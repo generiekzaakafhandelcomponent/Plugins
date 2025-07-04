@@ -392,6 +392,47 @@
         }
       }
     },
+    "@valtimo-plugins/doc-scanner": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/doc-scanner",
+      "sourceRoot": "projects/valtimo-plugins/doc-scanner/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/doc-scanner/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/doc-scanner/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/doc-scanner/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/doc-scanner/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/doc-scanner/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/doc-scanner/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/doc-scanner/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/doc-scanner/src/**/*.ts",
+              "projects/valtimo-plugins/doc-scanner/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/freemarker": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/freemarker",
@@ -838,6 +879,72 @@
             "lintFilePatterns": [
               "projects/valtimo-plugins/xential/src/**/*.ts",
               "projects/valtimo-plugins/xential/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/haal-centraal": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/haal-centraal",
+      "sourceRoot": "projects/valtimo-plugins/haal-centraal/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/valtimo-plugins/haal-centraal/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/haal-centraal/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/haal-centraal/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/haal-centraal/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/haal-centraal-auth": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/haal-centraal-auth",
+      "sourceRoot": "projects/valtimo-plugins/haal-centraal-auth/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/valtimo-plugins/haal-centraal-auth/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/haal-centraal-auth/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/haal-centraal-auth/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/haal-centraal-auth/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
             ]
           }
         }

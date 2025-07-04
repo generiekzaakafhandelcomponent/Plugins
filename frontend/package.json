@@ -17,9 +17,11 @@
     "libs:build:alfresco-auth": "ng build @valtimo-plugins/alfresco-auth",
     "libs:build:amsterdam-emailapi": "ng build @valtimo-plugins/amsterdam-emailapi",
     "libs:build:berkelybridge": "ng build @valtimo-plugins/berkelybridge",
-    "lib:build:doc-scanner": "ng build @valtimo-plugins/doc-scanner",
+    "libs:build:doc-scanner": "ng build @valtimo-plugins/doc-scanner",
     "libs:build:externe-klanttaak": "ng build @valtimo-plugins/externe-klanttaak",
     "libs:build:freemarker": "ng build @valtimo-plugins/freemarker",
+    "libs:build:haal-centraal": "ng build @valtimo-plugins/haal-centraal",
+    "libs:build:haal-centraal-auth": "ng build @valtimo-plugins/haal-centraal-auth",
     "libs:build:kvk-handelsregister": "ng build @valtimo-plugins/kvk-handelsregister",
     "libs:build:mtls-sslcontext": "ng build @valtimo-plugins/mtls-sslcontext",
     "libs:build:notify-nl": "ng build @valtimo-plugins/notify-nl",
@@ -131,6 +133,8 @@
     "zone.js": "0.14.10"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.11",
+    "@angular/compiler-cli": "^17.3.0",
     "@types/jasmine": "5.1.4",
     "@types/jasminewd2": "2.0.13",
     "@types/node": "22.1.0",
@@ -138,6 +142,7 @@
     "@valtimo-plugins/alfresco-auth": "file:dist/valtimo-plugins/alfresco-auth",
     "@valtimo-plugins/amsterdam-emailapi": "file:dist/valtimo-plugins/amsterdam-emailapi",
     "@valtimo-plugins/berkelybridge": "file:dist/valtimo-plugins/berkelybridge",
+    "@valtimo-plugins/doc-scanner": "file:dist/valtimo-plugins/doc-scanner",
     "@valtimo-plugins/externe-klanttaak": "file:dist/valtimo-plugins/externe-klanttaak",
     "@valtimo-plugins/freemarker": "file:dist/valtimo-plugins/freemarker",
     "@valtimo-plugins/notify-nl": "file:dist/valtimo-plugins/notify-nl",
@@ -156,8 +161,10 @@
     "karma-coverage-istanbul-reporter": "3.0.3",
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.1.0",
+    "ng-packagr": "^17.3.0",
     "puppeteer": "23.0.1",
-    "sass": "1.77.8"
+    "sass": "1.77.8",
+    "typescript": "~5.4.2"
   },
   "overrides": {
     "@ng-bootstrap/ng-bootstrap": {

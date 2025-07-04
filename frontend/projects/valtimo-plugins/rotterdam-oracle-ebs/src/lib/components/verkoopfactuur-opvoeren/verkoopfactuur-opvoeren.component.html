@@ -75,6 +75,15 @@
             [required]="false"
         ></app-input-field>
 
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="factuurKenmerk"
+            title="verkoopfactuur.factuurKenmerk"
+            tooltip="verkoopfactuur.factuurKenmerk.tooltip"
+            [required]="false"
+        ></app-input-field>
+
         <app-select-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
@@ -226,7 +235,7 @@
                 [pluginId]="pluginId"
                 [formGroup]="pluginActionForm"
                 controlName="nietNatuurlijkPersoonKvkNummer"
-                title="verkoopfactuur.nietNatuurlijkKvkNummer"
+                title="verkoopfactuur.nietNatuurlijkPersoonKvkNummer"
                 tooltip="verkoopfactuur.nietNatuurlijkPersoonKvkNummer.tooltip"
                 [required]="true"
             ></app-input-field>
@@ -234,7 +243,7 @@
             <app-input-field
                 [pluginId]="pluginId"
                 [formGroup]="pluginActionForm"
-                controlName="nietNatuurlijkPersoonStatutaireKvkVestigingsnummer"
+                controlName="nietNatuurlijkPersoonKvkVestigingsnummer"
                 title="verkoopfactuur.nietNatuurlijkPersoonKvkVestigingsnummer"
                 tooltip="verkoopfactuur.nietNatuurlijkPersoonKvkVestigingsnummer.tooltip"
                 [required]="true"
