@@ -172,6 +172,8 @@ class XentialPlugin(
     )
     fun prepareContent(
         @PluginActionProperty fileFormat: FileFormat,
+        @PluginActionProperty documentFilename: String,
+        @PluginActionProperty informationObjectType: String,
         @PluginActionProperty eventMessageName: String,
         @PluginActionProperty xentialDocumentPropertiesId: String,
         @PluginActionProperty firstTemplateGroupId: UUID,
@@ -184,6 +186,8 @@ class XentialPlugin(
                 XentialDocumentProperties(
                     thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
                     fileFormat,
+                    documentFilename,
+                    informationObjectType,
                     "documentId",
                     eventMessageName,
                     null,

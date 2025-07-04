@@ -12,10 +12,10 @@
     "formDefinitionName": "xential-genereren.error-na-kies-sjabloon"
   },
   {
-    "activityId": "XentialToegangControleren",
+    "activityId": "XentialGeenToegang",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential-genereren.resultaat-toegang-controleren"
+    "formDefinitionName": "xential-genereren.geen-toegang"
   },
   {
     "activityId": "OpenXentialWizardTask",
@@ -55,11 +55,11 @@
     "pluginConfigurationId": "5474fe57-532a-4050-8d89-32e62ca3e895",
     "pluginActionDefinitionKey": "store-temp-document",
     "actionProperties": {
-      "title": "Invoice PDF",
-      "fileName": "invoice.pdf",
+      "title": "pv:xentialDocumentProperties.documentFilename",
+      "fileName": "pv:xentialDocumentProperties.documentFilename",
       "localDocumentLocation": "xentialResourceId",
       "storedDocumentUrl": "pdfDocumentUrl",
-      "informatieobjecttype": "http://localhost:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad",
+      "informatieobjecttype": "pv:xentialDocumentProperties.informationObjectType",
       "taal": "nld",
       "status": "definitief"
     }
