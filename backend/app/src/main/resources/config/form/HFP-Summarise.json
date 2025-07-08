@@ -1,0 +1,33 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "textArea",
+      "type": "textarea",
+      "input": true,
+      "rows": 15,
+      "label": "Text to Summarise",
+      "widget": "",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "summarise-textArea"
+      },
+      "autoExpand": true,
+      "properties": {
+        "targetKey": "doc:summarise"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

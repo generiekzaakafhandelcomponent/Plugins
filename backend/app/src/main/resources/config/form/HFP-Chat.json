@@ -1,0 +1,32 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "vraagAi",
+      "type": "textarea",
+      "rows": 6,
+      "autoExpand": true,
+      "input": true,
+      "label": "Message for the AI model",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "ai vraag-vraagAi"
+      },
+      "properties": {
+        "targetKey": "doc:/question"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

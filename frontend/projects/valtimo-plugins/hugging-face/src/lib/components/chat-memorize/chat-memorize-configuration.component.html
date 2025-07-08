@@ -31,6 +31,7 @@
              [tooltip]="'questionTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
     <v-input name="chatAnswerPV"
+             type="text"
              [title]="'chatAnswerPV' | pluginTranslate: pluginId | async"
              [margin]="true"
              [defaultValue]="obs.prefill?.chatAnswerPV"
@@ -39,7 +40,7 @@
              [tooltip]="'chatAnswerPVTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
     <v-input name="interpolatedQuestionPV"
-             type="textarea"
+             type="text"
              [title]="'interpolatedQuestionPV' | pluginTranslate: pluginId | async"
              [margin]="true"
              [defaultValue]="obs.prefill?.interpolatedQuestionPV"
@@ -47,4 +48,31 @@
              [required]="true"
              [tooltip]="'interpolatedQuestionPVTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
+    <v-input name=""
+             type="text"
+             [title]="'previousQuestion'| pluginTranslate: pluginId | async"
+             [margin]="true"
+             [defaultValue]="obs.prefill?.previousQuestion"
+             [disabled]="obs.disabled"
+             [required]="false"
+             [tooltip]="'previousQuestionTooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
+    <v-input name="previousAnswer"
+             type="text"
+             [title]="'previousAnswer' | pluginTranslate: pluginId | async"
+             [margin]="true"
+             [defaultValue]="obs.prefill?.previousAnswer"
+             [disabled]="obs.disabled"
+             [required]="false"
+             [tooltip]="'previousAnswerTooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
+    <v-input name="maxQandASaved"
+             type="text"
+             [title]="'maxQandASaved' | pluginTranslate: pluginId | async"
+             [margin]="true"
+             [defaultValue]="obs.prefill?.maxQandASaved"
+             [disabled]="obs.disabled"
+             [required]="false"
+             [tooltip]="'maxQandASavedTooltip' | pluginTranslate: pluginId | async">
+    </v-input>
 </v-form>

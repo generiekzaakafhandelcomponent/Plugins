@@ -20,7 +20,6 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.document.domain.Document
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
-import com.ritense.document.domain.impl.request.ModifyDocumentRequest
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -29,13 +28,14 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceSummaryModel
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceTextGenerationModel
+import com.ritense.valtimoplugins.huggingface.client.mistral.StringWrapper
 import freemarker.template.Configuration
 import freemarker.template.Configuration.VERSION_2_3_32
 import freemarker.template.Template
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.io.StringWriter
 import java.net.URI
-import java.util.UUID
+import java.util.*
 
 @Plugin(
     key = "smart-task-plugin",
@@ -62,14 +62,17 @@ open class HuggingFacePlugin(
     )
     open fun giveSummary(
         execution: DelegateExecution,
-        @PluginActionProperty longText: String
+        @PluginActionProperty longText: String,
+        @PluginActionProperty resultPV: String
     ) {
         huggingFaceSummaryModel.baseUri = url
         huggingFaceSummaryModel.token = token
         val result = huggingFaceSummaryModel.giveSummary(
             longText = longText,
         )
-        execution.setVariable("answer", result)
+
+        execution.setVariable(resultPV, StringWrapper(result))
+        println("Stored summary result: '$result' in variable $resultPV")
     }
 
     @PluginAction(
@@ -80,6 +83,8 @@ open class HuggingFacePlugin(
     )
     open fun chat(
         execution: DelegateExecution,
+        @PluginActionProperty interpolatedQuestionPV: String,
+        @PluginActionProperty chatAnswerPV: String,
         @PluginActionProperty question: String
     ) {
         huggingFaceTextGenerationModel.baseUri = url
@@ -92,17 +97,72 @@ open class HuggingFacePlugin(
         val chatResult = huggingFaceTextGenerationModel.mistralChat(
             question = interpolatedQuestion,
         )
-        execution.setVariable("question", interpolatedQuestion)
-        execution.setVariable("answer", chatResult)
+        execution.setVariable(interpolatedQuestionPV, StringWrapper(interpolatedQuestion))
+        execution.setVariable(chatAnswerPV, StringWrapper(chatResult))
+    }
 
-        val documentUpdate = jacksonObjectMapper().createObjectNode().apply {
-            put("chatResult", chatResult)
+    @PluginAction(
+        key = "chat-memorize",
+        title = "AI chat with Memory",
+        description = "Chat with an AI Agent with the ability to reverence older answers and questions",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun chatMemorize(
+        execution: DelegateExecution,
+        @PluginActionProperty question: String,
+        @PluginActionProperty chatAnswerPV: String,
+        @PluginActionProperty interpolatedQuestionPV: String,
+        @PluginActionProperty previousAnswer: String?,
+        @PluginActionProperty previousQuestion: String?,
+        @PluginActionProperty maxQandASaved: String?
+    ) {
+        huggingFaceTextGenerationModel.baseUri = url
+        huggingFaceTextGenerationModel.token = token
+
+        // Get the chat history from the process variable to build the full prompt
+        val chatHistoryWrapper = execution.getVariable("chatHistory") as? StringWrapper
+        val chatHistory = chatHistoryWrapper?.value ?: ""
+        val fullPrompt = "Contex:\n$chatHistory\nCurrentQuestion: $question"
+
+        // Get the Case
+        val documentId = JsonSchemaDocumentId.existingId(UUID.fromString(execution.businessKey))
+        val jsonSchemaDocument = documentService.getDocumentBy(documentId)
+
+        // Create interpolated question
+        val interpolatedQuestion = generate(fullPrompt, jsonSchemaDocument)
+
+        // Ask the AI model and check if the result is empty
+        val chatResult = huggingFaceTextGenerationModel.mistralChat(interpolatedQuestion)
+        if (chatResult.isEmpty()) {
+            throw RuntimeException("Empty chat result")
         }
-        val result = documentService.modifyDocument(ModifyDocumentRequest.create(jsonSchemaDocument, documentUpdate))
-        result.resultingDocument().orElseThrow {
-            val errors = result.errors().joinToString(", ") { it.asString() }
-            RuntimeException("failed to update document $errors")
+
+        // Update the chat history with the new question and answer
+        val updatedChatHistory = buildString {
+            append(chatHistory)
+            if (chatHistory.isNotBlank()) append("\n")
+            append("Q: $question\nA: $chatResult")
         }
+
+        // Delete previous Q and A if more than max Q and A saved
+        val qaPairs = updatedChatHistory.split(Regex("(?=^Q: )", RegexOption.MULTILINE)).filter { it.isNotBlank() }
+        val maxSaved = maxQandASaved?.toIntOrNull() ?: 0
+
+        val trimmedHistory = if (qaPairs.size > maxSaved) {
+            qaPairs.drop(qaPairs.size - maxSaved).joinToString(separator = "")
+        } else {
+            qaPairs.joinToString(separator = "")
+        }
+
+        // Set the result in the process variable
+        execution.setVariable(interpolatedQuestionPV, StringWrapper(interpolatedQuestion))
+        execution.setVariable(chatAnswerPV, StringWrapper(chatResult))
+        execution.setVariable("chatHistory", StringWrapper(trimmedHistory))
+
+        // Logging
+        println("Updated chat history:\n$updatedChatHistory")
+        println("Stored chat result: '$chatResult' in variable $chatAnswerPV")
+        println("Stored interpolated question: '$interpolatedQuestion' in variable $interpolatedQuestionPV")
     }
 
     fun generate(

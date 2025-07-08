@@ -52,12 +52,12 @@ class HuggingFaceAutoConfiguration {
         pluginService: PluginService,
         huggingFaceSummaryModel: HuggingFaceSummaryModel,
         huggingFaceTextGenerationModel: HuggingFaceTextGenerationModel,
-        documentService: JsonSchemaDocumentService
+        documentService: JsonSchemaDocumentService,
     ) = HuggingFacePluginFactory(
         pluginService,
         huggingFaceSummaryModel,
         huggingFaceTextGenerationModel,
-        documentService
+        documentService,
     )
 
 }

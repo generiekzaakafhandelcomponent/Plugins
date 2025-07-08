@@ -17,25 +17,23 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {GiveSummaryConfig} from '../../models';
+import {ChatMemorizeConfig} from '../../models';
 import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 
 @Component({
-    selector: 'valtimo-give-summary-configuration',
-    templateUrl: './give-summary-configuration.component.html',
-    styleUrls: ['./give-summary-configuration.component.scss'],
+    selector: 'valtimo-chat-memorize-configuration',
+    templateUrl: './chat-memorize-configuration.component.html',
 })
-export class GiveSummaryConfigurationComponent
-    implements FunctionConfigurationComponent, OnInit, OnDestroy {
+export class ChatMemorizeConfigurationComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$!: Observable<void>;
     @Input() disabled$!: Observable<boolean>;
     @Input() pluginId!: string;
-    @Input() prefillConfiguration$!: Observable<GiveSummaryConfig>;
+    @Input() prefillConfiguration$!: Observable<ChatMemorizeConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<GiveSummaryConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<ChatMemorizeConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     ngOnInit(): void {
@@ -46,13 +44,13 @@ export class GiveSummaryConfigurationComponent
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: GiveSummaryConfig): void {
+    formValueChange(formValue: ChatMemorizeConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: GiveSummaryConfig): void {
-        const valid = !!(formValue.longText, formValue.resultPV);
+    private handleValid(formValue: ChatMemorizeConfig): void {
+        const valid = !!(formValue.question, formValue.chatAnswerPV, formValue.interpolatedQuestionPV);
 
         this.valid$.next(valid);
         this.valid.emit(valid);
