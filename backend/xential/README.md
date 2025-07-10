@@ -11,11 +11,7 @@
     * [Plugin action: Generate document](#plugin-action-generate-document)
     * [endpoint: /xential/document](#endpoint-xentialdocument)
     * [endpoint: /xential/sjablonen](#endpoint-xentialsjablonen)
-    * [Running the example application](#running-the-example-application)
-      * [Start docker](#start-docker)
-      * [Start frontend](#start-frontend)
-      * [Start backend](#start-backend)
-      * [Keycloak users](#keycloak-users)
+  * [Running the example application](#running-the-example-application)
   * [Source code](#source-code)
 <!-- TOC -->
 
