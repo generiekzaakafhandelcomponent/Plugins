@@ -1,0 +1,18 @@
+{
+    "name": "slack",
+    "isGzac": false,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins:slack"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/slack",
+        "codeAdditions": [
+            {
+                "spec": "slackPluginSpecification",
+                "module": "SlackPluginModule"
+            }
+        ]
+    }
+}

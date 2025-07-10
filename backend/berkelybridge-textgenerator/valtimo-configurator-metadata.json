@@ -1,0 +1,18 @@
+{
+    "name": "berkelybridge-textgenerator",
+    "isGzac": false,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins/berkelybridge-textgenerator"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/berkeylybridge",
+        "codeAdditions": [
+            {
+                "spec": "berkelybridgeTextgeneratorPluginSpecification",
+                "module": "BerkelybridgeTextgeneratorPluginModule"
+            }
+        ]
+    }
+}

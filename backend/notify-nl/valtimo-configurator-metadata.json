@@ -1,0 +1,18 @@
+{
+    "name": "notify-nl",
+    "isGzac": false,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins/notify-nl"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/notify-nl",
+        "codeAdditions": [
+            {
+                "spec": "notifyNlPluginSpecification",
+                "module": "NotifyNlPluginModule"
+            }
+        ]
+    }
+}
