@@ -27,7 +27,8 @@ interface CreateObjectConfig {
 }
 
 interface GetObjectsConfig {
-    objectManagementConfigurationTitle: string;
+    objectManagementConfigurationId: string;
+    filterParameter: {key: string; value: string};
     listOfObjectProcessVariableName: string;
 }
 
