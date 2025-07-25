@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/alfresco-authentication"
+            "import": "com.ritense.valtimoplugins:alfresco-authentication"
         }
     ],
     "frontend": {

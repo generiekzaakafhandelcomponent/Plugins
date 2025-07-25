@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/notify-nl"
+            "import": "com.ritense.valtimoplugins:notify-nl"
         }
     ],
     "frontend": {

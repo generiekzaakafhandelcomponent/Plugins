@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/amsterdam-email-api"
+            "import": "com.ritense.valtimoplugins:amsterdam-email-api"
         }
     ],
     "frontend": {

@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/haal-centraal-auth"
+            "import": "com.ritense.valtimoplugins:haal-centraal-auth"
         }
     ],
     "frontend": {

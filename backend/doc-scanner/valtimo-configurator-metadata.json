@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/doc-scanner"
+            "import": "com.ritense.valtimoplugins:doc-scanner"
         }
     ],
     "frontend": {

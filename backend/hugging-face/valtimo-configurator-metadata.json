@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/hugging-face"
+            "import": "com.ritense.valtimoplugins:hugging-face"
         }
     ],
     "frontend": {

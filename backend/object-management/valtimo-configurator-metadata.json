@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/object-management"
+            "import": "com.ritense.valtimoplugins:object-management"
         }
     ],
     "frontend": {

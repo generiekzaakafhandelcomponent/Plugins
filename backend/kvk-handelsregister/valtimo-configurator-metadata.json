@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/kvk-handelsregister"
+            "import": "com.ritense.valtimoplugins:kvk-handelsregister"
         }
     ],
     "frontend": {

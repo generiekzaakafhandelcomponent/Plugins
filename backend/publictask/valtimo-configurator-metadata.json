@@ -3,7 +3,7 @@
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins/publictask"
+            "import": "com.ritense.valtimoplugins:publictask"
         }
     ],
     "frontend": {
