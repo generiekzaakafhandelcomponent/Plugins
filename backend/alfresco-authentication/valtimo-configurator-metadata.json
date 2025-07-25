@@ -7,7 +7,7 @@
         }
     ],
     "frontend": {
-        "import": "@valtimo-plugins/alfresco-authentication",
+        "import": "@valtimo-plugins/alfresco-auth",
         "codeAdditions": [
             {
                 "spec": "alfrescoAuthPluginSpecification",
