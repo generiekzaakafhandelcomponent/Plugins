@@ -16,7 +16,7 @@
 
 import {PluginConfigurationData} from '@valtimo/plugin';
 
-interface DocScannerConfig extends PluginConfigurationData {
+interface ValtimoOcrConfig extends PluginConfigurationData {
     url: string;
     token: string;
 }
@@ -28,4 +28,4 @@ interface FileToTextConfig {
     resultPV: string;
 }
 
-export {DocScannerConfig, FileToTextConfig};
+export {ValtimoOcrConfig, FileToTextConfig};

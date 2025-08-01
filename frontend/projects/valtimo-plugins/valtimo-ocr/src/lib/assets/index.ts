@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export * from './doc-scanner-plugin-logo';
+export * from './valtimo-ocr-plugin-logo';

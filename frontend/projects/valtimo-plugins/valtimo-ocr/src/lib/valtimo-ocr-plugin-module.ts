@@ -16,8 +16,8 @@
 
 import {NgModule} from '@angular/core';
 import {
-    DocScannerConfigurationComponent
-} from './components/doc-scanner-configuration/doc-scanner-configuration.component';
+    ValtimoOcrConfigurationComponent
+} from './components/valtimo-ocr-configuration/valtimo-ocr-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
@@ -25,14 +25,14 @@ import {FileToTextConfigurationComponent} from "./components/file-to-text/file-t
 
 @NgModule({
     declarations: [
-        DocScannerConfigurationComponent,
+        ValtimoOcrConfigurationComponent,
         FileToTextConfigurationComponent
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
     exports: [
-        DocScannerConfigurationComponent,
+        ValtimoOcrConfigurationComponent,
         FileToTextConfigurationComponent
     ],
 })
-export class DocScannerPluginModule {
+export class ValtimoOcrPluginModule {
 }

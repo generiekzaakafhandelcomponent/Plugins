@@ -17,23 +17,23 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PluginConfigurationComponent, PluginConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {DocScannerConfig} from '../../models';
+import {ValtimoOcrConfig} from '../../models';
 
 @Component({
-    selector: 'valtimo-doc-scanner-configuration',
-    templateUrl: './doc-scanner-configuration.component.html',
+    selector: 'valtimo-ocr-configuration',
+    templateUrl: './valtimo-ocr-configuration.component.html',
 })
-export class DocScannerConfigurationComponent
+export class ValtimoOcrConfigurationComponent
     implements PluginConfigurationComponent, OnInit, OnDestroy {
     @Input() save$!: Observable<void>;
     @Input() disabled$!: Observable<boolean>;
     @Input() pluginId!: string;
-    @Input() prefillConfiguration$!: Observable<DocScannerConfig>;
+    @Input() prefillConfiguration$!: Observable<ValtimoOcrConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
 
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<DocScannerConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<ValtimoOcrConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     ngOnInit(): void {
@@ -44,14 +44,14 @@ export class DocScannerConfigurationComponent
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: DocScannerConfig): void {
+    formValueChange(formValue: ValtimoOcrConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
 
         console.log(formValue)
     }
 
-    private handleValid(formValue: DocScannerConfig): void {
+    private handleValid(formValue: ValtimoOcrConfig): void {
         const valid = !!(formValue.configurationTitle && formValue.url && formValue.token);
 
         this.valid$.next(valid);

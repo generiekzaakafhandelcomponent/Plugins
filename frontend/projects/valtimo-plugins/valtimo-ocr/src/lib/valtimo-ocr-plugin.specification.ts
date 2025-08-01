@@ -16,22 +16,25 @@
 
 import {PluginSpecification} from '@valtimo/plugin';
 import {
-    DocScannerConfigurationComponent
-} from './components/doc-scanner-configuration/doc-scanner-configuration.component';
-import {DOC_SCANNER_PLUGIN_LOGO_BASE64} from './assets';
+    ValtimoOcrConfigurationComponent
+} from './components/valtimo-ocr-configuration/valtimo-ocr-configuration.component';
+import {VALTIMO_OCR_PLUGIN_LOGO_BASE64} from './assets';
 import {FileToTextConfigurationComponent} from "./components/file-to-text/file-to-text-configuration.component";
 
-const docScannerPluginSpecification: PluginSpecification = {
-    pluginId: 'doc-scanner',
-    pluginConfigurationComponent: DocScannerConfigurationComponent,
-    pluginLogoBase64: DOC_SCANNER_PLUGIN_LOGO_BASE64,
+const valtimoOcrPluginSpecification: PluginSpecification = {
+    pluginId: 'valtimo-ocr',
+    pluginConfigurationComponent: ValtimoOcrConfigurationComponent,
+    pluginLogoBase64: VALTIMO_OCR_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
         'file-to-text': FileToTextConfigurationComponent
     },
     pluginTranslations: {
         nl: {
-            title: 'Document Scanner Plugin',
-            description: 'Plugin voor het scannen van fotos en pdf\'s met behulp van AI.',
+            title: 'Valtimo OCR Plugin',
+            description: 'Deze plugin zet geüploade documenten of afbeeldingen automatisch om naar doorzoekbare platte tekst met behulp van optische tekenherkenning.',
+            configurationTitle: 'Configuratienaam',
+            configurationTitleTooltip:
+                'Onder deze naam zal de plugin te herkennen zijn in de rest van de applicatie',
             url: 'De URL van de Mistral OCR API endpoint',
             token: 'De API token voor de Mistral OCR API',
             filePV: 'De naam van de procesvariabele waarin het bestand staat',
@@ -41,8 +44,11 @@ const docScannerPluginSpecification: PluginSpecification = {
             'file-to-text': 'Bestand naar tekst',
         },
         en: {
-            title: 'Document Scanner Plugin',
-            description: 'Plugin for scanning photos and pdf\'s using AI.',
+            title: 'Valtimo OCR Plugin',
+            description: 'This plugin automatically converts uploaded documents or images into searchable plain text using optical character recognition.',
+            configurationTitle: 'Configuration name',
+            configurationTitleTooltip:
+                'Under this name, the plugin will be recognizable in the rest of the application',
             url: 'The URL of the Mistral OCR API endpoint',
             token: 'The API token for the Mistral OCR API',
             filePV: 'The name of the process variable containing the file',
@@ -52,8 +58,11 @@ const docScannerPluginSpecification: PluginSpecification = {
             'file-to-text': 'File to text',
         },
         de: {
-            title: 'Dokumentenscanner Plugin',
-            description: 'Plugin zum Scannen von Fotos und PDFs mit Hilfe von KI.',
+            title: 'Valtimo OCR Plugin',
+            description: 'Dieses Plugin konvertiert hochgeladene Dokumente oder Bilder mithilfe der optischen Zeichenerkennung automatisch in durchsuchbaren Klartext.',
+            configurationTitle: 'Konfigurationsname',
+            configurationTitleTooltip:
+                'Unter diesem Namen wird das Plugin im Rest der Anwendung erkennbar sein',
             url: 'Die URL des Mistral OCR API Endpunkts',
             token: 'Der API Token für die Mistral OCR API',
             filePV: 'Der Name der Prozessvariablen, in der die Datei gespeichert ist',
@@ -65,4 +74,4 @@ const docScannerPluginSpecification: PluginSpecification = {
     }
 };
 
-export {docScannerPluginSpecification};
+export {valtimoOcrPluginSpecification};

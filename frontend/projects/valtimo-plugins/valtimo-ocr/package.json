@@ -1,5 +1,5 @@
 {
-    "name": "@valtimo-plugins/doc-scanner",
+    "name": "@valtimo-plugins/valtimo-ocr",
   "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
