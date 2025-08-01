@@ -15,22 +15,22 @@
  *
  */
 
-package com.ritense.valtimoplugins.docscanner.plugin
+package com.ritense.valtimoplugins.valtimoocr.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.docscanner.client.MistralOCRModel
+import com.ritense.valtimoplugins.valtimoocr.client.MistralOCRModel
 import org.springframework.stereotype.Component
 
 @Component
 @SkipComponentScan
-class DocScannerPluginFactory(
+class ValtimoOcrPluginFactory(
     pluginService: PluginService,
     val mistralOCRModel: MistralOCRModel
-) : PluginFactory<DocScannerPlugin>(pluginService) {
+) : PluginFactory<ValtimoOcrPlugin>(pluginService) {
 
-    override fun create() = DocScannerPlugin(
+    override fun create() = ValtimoOcrPlugin(
         mistralOCRModel,
     )
 }

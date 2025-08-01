@@ -15,23 +15,8 @@
  *
  */
 
-package com.ritense.valtimoplugins.docscanner.client.mistral
+package com.ritense.valtimoplugins.valtimoocr.client
 
-sealed class MistralFile
-data class MistralDocument(
-    val document_url: String,
-    val document_name: String?,
-    val type: String?
-) : MistralFile()
-
-data class MistralImage(
-    val image_url: String,
-    val type: String?
-) : MistralFile()
-
-data class MistralFileRequest(
-    val model: String,
-    val document: MistralFile,
-    val pages: List<Int>? = null,
-    val include_image_base64: Boolean = false
-)
+class AiAgentException(
+    message: String?
+) : RuntimeException(message)

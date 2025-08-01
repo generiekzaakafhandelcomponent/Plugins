@@ -15,11 +15,11 @@
  *
  */
 
-package com.ritense.valtimoplugins.docscanner.client
+package com.ritense.valtimoplugins.valtimoocr.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.docscanner.client.mistral.*
+import com.ritense.valtimoplugins.valtimoocr.client.mistral.*
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body

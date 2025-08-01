@@ -15,7 +15,7 @@
  *
  */
 
-package com.ritense.valtimoplugins.docscanner.client.mistral
+package com.ritense.valtimoplugins.valtimoocr.client.mistral
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty

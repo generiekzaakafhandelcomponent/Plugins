@@ -24,7 +24,7 @@ pluginManager.withPlugin("maven-publish") {
                 version = pluginProperties.pluginVersion
 
                 pom {
-                    name = "Doc Scanner plugin module"
+                    name = "Valtimo Mistral OCR plugin module"
                     description = "A plugin for scanning pdf and images with AI"
                     developers {
                         developer {

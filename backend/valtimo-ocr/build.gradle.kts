@@ -16,7 +16,7 @@
  */
 
 dockerCompose {
-    setProjectName("doc-scanner")
+    setProjectName("valtimo-ocr")
     isRequiredBy(project.tasks.integrationTesting)
 
     tasks.integrationTesting {

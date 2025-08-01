@@ -15,25 +15,25 @@
  *
  */
 
-package com.ritense.valtimoplugins.docscanner.plugin
+package com.ritense.valtimoplugins.valtimoocr.plugin
 
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimoplugins.docscanner.client.MistralOCRModel
-import com.ritense.valtimoplugins.docscanner.client.mistral.MistralOCRPage
-import com.ritense.valtimoplugins.docscanner.client.mistral.OCRResult
+import com.ritense.valtimoplugins.valtimoocr.client.MistralOCRModel
+import com.ritense.valtimoplugins.valtimoocr.client.mistral.MistralOCRPage
+import com.ritense.valtimoplugins.valtimoocr.client.mistral.OCRResult
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(
-    key = "doc-scanner",
-    title = "Document Scanner Plugin",
+    key = "valtimo-ocr",
+    title = "Valtimo OCR Plugin",
     description = "Scans images and pdf files using Mistral OCR and converts them to text.",
 )
-open class DocScannerPlugin(
+open class ValtimoOcrPlugin(
     private val mistralOCRModel: MistralOCRModel,
 ) {
 
