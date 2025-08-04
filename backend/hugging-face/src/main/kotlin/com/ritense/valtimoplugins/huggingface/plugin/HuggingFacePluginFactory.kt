@@ -28,13 +28,11 @@ import org.springframework.stereotype.Component
 @SkipComponentScan
 class HuggingFacePluginFactory(
     pluginService: PluginService,
-    val huggingFaceSummaryModel: HuggingFaceSummaryModel,
     val huggingFaceTextGenerationModel: HuggingFaceTextGenerationModel,
     val documentService: JsonSchemaDocumentService,
 ) : PluginFactory<HuggingFacePlugin>(pluginService) {
 
     override fun create() = HuggingFacePlugin(
-        huggingFaceSummaryModel,
         huggingFaceTextGenerationModel,
         documentService,
     )

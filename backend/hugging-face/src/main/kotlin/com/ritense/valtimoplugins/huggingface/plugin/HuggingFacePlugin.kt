@@ -26,7 +26,6 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimoplugins.huggingface.client.HuggingFaceSummaryModel
 import com.ritense.valtimoplugins.huggingface.client.HuggingFaceTextGenerationModel
 import com.ritense.valtimoplugins.huggingface.client.mistral.StringWrapper
 import freemarker.template.Configuration
@@ -35,15 +34,14 @@ import freemarker.template.Template
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.io.StringWriter
 import java.net.URI
-import java.util.*
+import java.util.UUID
 
 @Plugin(
-    key = "smart-task-plugin",
-    title = "Smart Task Plugin",
+    key = "valtimo-llm-plugin",
+    title = "Valtimo LLM Plugin",
     description = "Interact with AI agents"
 )
 open class HuggingFacePlugin(
-    private val huggingFaceSummaryModel: HuggingFaceSummaryModel,
     private val huggingFaceTextGenerationModel: HuggingFaceTextGenerationModel,
     private val documentService: JsonSchemaDocumentService,
 ) {
@@ -53,27 +51,6 @@ open class HuggingFacePlugin(
 
     @PluginProperty(key = "token", secret = true)
     lateinit var token: String
-
-    @PluginAction(
-        key = "give-summary",
-        title = "Give summary",
-        description = "Make a summary of a long text",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
-    )
-    open fun giveSummary(
-        execution: DelegateExecution,
-        @PluginActionProperty longText: String,
-        @PluginActionProperty resultPV: String
-    ) {
-        huggingFaceSummaryModel.baseUri = url
-        huggingFaceSummaryModel.token = token
-        val result = huggingFaceSummaryModel.giveSummary(
-            longText = longText,
-        )
-
-        execution.setVariable(resultPV, StringWrapper(result))
-        println("Stored summary result: '$result' in variable $resultPV")
-    }
 
     @PluginAction(
         key = "chat",

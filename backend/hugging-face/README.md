@@ -37,10 +37,10 @@ Go to [https://huggingface.co](https://huggingface.co) and create a free account
 ### Step 3: Configure in Valtimo
 
 1. Go to **Valtimo** and open the **Plugins** tab.
-2. Search for the **Smart Task Plugins** with **(autodeployed)** behind it and click on it.
+2. Search for the **Valtimo LLM Plugins** with **(autodeployed)** behind it and click on it.
 3. Paste the token you copied earlier into the **Token** field.
 4. Click **"Save"** to store your configuration.
-5. Repeat this for the other plugin **Smart Task Plugin** so all processes are Executable.
+5. Repeat this for the other plugin **Valtimo LLM Plugin** so all processes are Executable.
 
 ---
 

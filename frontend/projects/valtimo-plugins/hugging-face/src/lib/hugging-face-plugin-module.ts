@@ -21,21 +21,18 @@ import {
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
-import {GiveSummaryConfigurationComponent} from './components/give-summary/give-summary-configuration.component';
 import {ChatConfigurationComponent} from "./components/chat/chat-configuration.component";
 import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/chat-memorize-configuration.component";
 
 @NgModule({
     declarations: [
         HuggingFaceConfigurationComponent,
-        GiveSummaryConfigurationComponent,
         ChatConfigurationComponent,
         ChatMemorizeConfigurationComponent,
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
     exports: [
         HuggingFaceConfigurationComponent,
-        GiveSummaryConfigurationComponent,
         ChatConfigurationComponent,
         ChatMemorizeConfigurationComponent,
     ],
