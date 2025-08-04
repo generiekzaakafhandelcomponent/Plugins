@@ -1,54 +1,69 @@
 # Xential plugin
-
 <!-- TOC -->
 * [Xential plugin](#xential-plugin)
-    * [Description](#description)
-      * [included plugin actions:](#included-plugin-actions)
-      * [included xential endpoints:](#included-xential-endpoints)
-  * [usage](#usage)
+  * [Description](#description)
+    * [Sjablonen](#sjablonen)
+    * [Document creatign requests](#document-creatign-requests)
+    * [receiving document content](#receiving-document-content)
+    * [Included plugin actions:](#included-plugin-actions)
+    * [Included xential endpoints:](#included-xential-endpoints)
+  * [Usage](#usage)
     * [Plugin action: Toegamg tot Xential toetsen](#plugin-action-toegamg-tot-xential-toetsen)
     * [Plugin action: Prepare content](#plugin-action-prepare-content)
     * [Plugin action: Generate document](#plugin-action-generate-document)
-    * [endpoint: /xential/document](#endpoint-xentialdocument)
-    * [endpoint: /xential/sjablonen](#endpoint-xentialsjablonen)
+    * [Endpoint: /xential/document](#endpoint-xentialdocument)
+    * [Endpoint: /xential/sjablonen](#endpoint-xentialsjablonen)
   * [Running the example application](#running-the-example-application)
   * [Source code](#source-code)
 <!-- TOC -->
 
-### Description
+## Description
 
-This plugin is intended to be used for sending request to the Xential Service of the Municipality Rotterdam which is
-available
-via their Enterprise Service Bus (ESB) and provides generating PDF and WORD documents. The plugin supports access to the
-Xential platform, and handle callback requests to store generated documents. Documents are generated with templates that
-are maintained in Xential.
+This plugin is designed to send requests to the Xential Service of the **Municipality of Rotterdam**, which is accessible via their **Enterprise Service Bus** (ESB). The service enables the generation of **PDF** and **Word documents**.
+
+The plugin provides:
+* Access to the sjablonen repository in Xential, structured as a hierarchical tree map
+* Sending requests to generate documents in the Xential platform
+* Support for handling callback requests to store generated documents
+
+### Sjablonen
+* Documents are created using sjablonen (templates) managed within Xential.
+Before sending a request to generate a document, the user selects the appropriate sjabloon.
+* Sjablonen are stored in Xential’s hierarchical tree structure.
+Access to specific sjabloon folders depends on the user’s permissions. The username of the frontend user is passed to Xential as the gebruikersId.
+
+### Document creatign requests
+* The document generation process is asynchronous.
+  When a request is made and all required variables for the template are included, a job is created in Xential to generate the document.
+* If any required variables are missing, a URL to a wizard in Xential is returned, allowing the end user to complete the request manually.
+
+### Receiving document content
+Once the job is complete, Xential sends a callback request to a specific URL—namely the /xential/document endpoint in Valtimo.
+At this endpoint, the generated document content is decoded and saved as a temporary file resource in the requested format (e.g. PDF or Word).
+As a final step, the document can be uploaded to the Document API.
 
 You can find more information about Xential [here](https://www.xential.com/documentcreatie)
 
-#### included plugin actions:
+### Included plugin actions:
 
 - <b>validate-xential-toegang</b>
 - <b>prepare-content</b>
 - <b>generate-document</b>
 
-#### included xential endpoints:
+### Included xential endpoints:
 
 - <b>/xential/document</b>
 - <b>/xential/sjablonen</b>
 
-When the job is ready Xential sends a request via a callback url, this is the endpoint in Valtimo that receives the
-content of the document. After this the content can be uploaded to the document API etc.
-<BR/>
-
-## usage
+## Usage
 
 Plugin actions can be linked to BPMN service tasks. Using the plugin comes down to a few simple steps:
 
 * Create a configuration instance for the plugin and configure the following properties:
-    * `baseUrl` - The URL of Xential .
-    * `mTlsSllContextConfigurationId` - The mTLS SSL Context configuration that should be used.
-    * `applicationName` - Is the name for basic authentication at Xential.
-    * `applicationPassword` - Is the password for basic authentication at Xential.
+  * `baseUrl` - The URL of Xential .
+  * `mTlsSllContextConfigurationId` - The mTLS SSL Context configuration that should be used.
+  * `applicationName` - Is the name for basic authentication at Xential.
+  * `applicationPassword` - Is the password for basic authentication at Xential.
 * Create process link between a BPMN service task and the desired plugin action.
 
 ### Plugin action: Toegamg tot Xential toetsen
@@ -86,7 +101,7 @@ a job to generate the document.
 * `xentialSjabloonId` - the UUID of the sjabloon (template) used to generate the document
 * `xentialGebruikersId` - the gebruikersId to validate access to the xential service
 
-### endpoint: /xential/document
+### Endpoint: /xential/document
 
 `/xential/document` will receive the content of the document
 
@@ -97,7 +112,7 @@ a job to generate the document.
 * `documentkenmerk` - not used
 * `data` - the actual content of the generated document
 
-### endpoint: /xential/sjablonen
+### Endpoint: /xential/sjablonen
 
 `/xential/sjablonen` returns a list of folders and or templates (sjablonen) retrieved from Xential based on the folder
 uuid. It enables navigation through the folder structure containing the templates, after which the
