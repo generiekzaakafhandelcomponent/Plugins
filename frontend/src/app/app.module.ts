@@ -134,10 +134,10 @@ import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from "@valtimo/dashboard";
 import {DashboardManagementModule} from "@valtimo/dashboard-management";
 import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
-import {DocScannerPluginModule} from "../../projects/valtimo-plugins/doc-scanner/src/lib/doc-scanner-plugin-module";
+import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin-module";
 import {
-    docScannerPluginSpecification
-} from "../../projects/valtimo-plugins/doc-scanner/src/lib/doc-scanner-plugin.specification";
+    valtimoOcrPluginSpecification
+} from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -162,7 +162,7 @@ export function tabsFactory() {
         PublictaskPluginModule,
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
-        DocScannerPluginModule,
+        ValtimoOcrPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
         HuggingFacePluginModule,
@@ -241,7 +241,7 @@ export function tabsFactory() {
             alfrescoAuthPluginSpecification,
             amsterdamEmailapiPluginSpecification,
             berkelybridgeTextgeneratorPluginSpecification,
-            docScannerPluginSpecification,
+            valtimoOcrPluginSpecification,
             externeKlanttaakPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
