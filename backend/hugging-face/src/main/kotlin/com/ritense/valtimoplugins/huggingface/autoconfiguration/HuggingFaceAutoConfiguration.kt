@@ -50,12 +50,10 @@ class HuggingFaceAutoConfiguration {
     @ConditionalOnMissingBean(HuggingFacePluginFactory::class)
     fun huggingFacePluginFactory(
         pluginService: PluginService,
-        huggingFaceSummaryModel: HuggingFaceSummaryModel,
         huggingFaceTextGenerationModel: HuggingFaceTextGenerationModel,
         documentService: JsonSchemaDocumentService,
     ) = HuggingFacePluginFactory(
         pluginService,
-        huggingFaceSummaryModel,
         huggingFaceTextGenerationModel,
         documentService,
     )

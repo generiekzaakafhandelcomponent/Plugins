@@ -23,11 +23,13 @@
 >
     <v-input name="question"
              type="textarea"
+             class="textarea-input"
              [title]="'question' | pluginTranslate: pluginId | async"
              [margin]="true"
              [defaultValue]="obs.prefill?.question"
              [disabled]="obs.disabled"
              [required]="true"
+             [rows]="10"
              [tooltip]="'questionTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
     <v-input name="chatAnswerPV"
@@ -39,7 +41,6 @@
              [tooltip]="'chatAnswerPVTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
     <v-input name="interpolatedQuestionPV"
-             type="textarea"
              [title]="'interpolatedQuestionPV' | pluginTranslate: pluginId | async"
              [margin]="true"
              [defaultValue]="obs.prefill?.interpolatedQuestionPV"
