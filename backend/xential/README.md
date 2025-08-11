@@ -1,10 +1,11 @@
 # Xential plugin
+
 <!-- TOC -->
 * [Xential plugin](#xential-plugin)
   * [Description](#description)
     * [Sjablonen](#sjablonen)
-    * [Document creatign requests](#document-creatign-requests)
-    * [receiving document content](#receiving-document-content)
+    * [Document creation requests](#document-creation-requests)
+    * [Receiving document content](#receiving-document-content)
     * [Included plugin actions:](#included-plugin-actions)
     * [Included xential endpoints:](#included-xential-endpoints)
   * [Usage](#usage)
@@ -14,7 +15,14 @@
     * [Endpoint: /xential/document](#endpoint-xentialdocument)
     * [Endpoint: /xential/sjablonen](#endpoint-xentialsjablonen)
   * [Running the example application](#running-the-example-application)
-  * [Source code](#source-code)
+  * [Development](#development)
+    * [Source code](#source-code)
+    * [Dependencies](#dependencies)
+      * [Backend](#backend)
+      * [Frontend](#frontend)
+    * [Adding a new version](#adding-a-new-version)
+      * [When adding a new version of an existing action:](#when-adding-a-new-version-of-an-existing-action)
+      * [When adding a action:](#when-adding-a-action)
 <!-- TOC -->
 
 ## Description
@@ -32,7 +40,7 @@ Before sending a request to generate a document, the user selects the appropriat
 * Sjablonen are stored in Xential’s hierarchical tree structure.
 Access to specific sjabloon folders depends on the user’s permissions. The username of the frontend user is passed to Xential as the gebruikersId.
 
-### Document creatign requests
+### Document creation requests
 * The document generation process is asynchronous.
   When a request is made and all required variables for the template are included, a job is created in Xential to generate the document.
 * If any required variables are missing, a URL to a wizard in Xential is returned, allowing the end user to complete the request manually.
@@ -125,9 +133,89 @@ desired template can be selected to generate the document. templates are called 
 ## Running the example application
 1. See [app frontend](../../frontend/README.md)
 2. See [app backend](../README.md)
-## Source code
 
+## Development
+### Source code
 The source code is split up into 2 modules:
 
 1. [Frontend](../../frontend/projects/valtimo-plugins/xential)
 2. [Backend](.)
+
+### Dependencies
+
+#### Backend
+
+The following Gradle dependency can be added to your `build.gradle` file:
+
+```kotlin
+dependencies {
+    implementation("com.ritense.valtimoplugins:xential:$xentialPluginVersion")
+}
+```
+
+The most recent version can be found [here](https://mvnrepository.com/artifact/com.ritense.valtimoplugins/xential).
+
+#### Frontend
+
+The following dependency can be added to your `package.json` file:
+
+```json
+{
+  "dependencies": {
+    "@valtimo-plugins/xential": "<latest version>"
+  }
+}
+```
+
+The most recent version can be found [here](https://www.npmjs.com/package/@valtimo-plugins/xential?activeTab=versions).
+
+In order to use the plugin in the frontend, the following must be added to your `app.module.ts`:
+
+```typescript
+import {
+    XentialPluginModule, XentialPluginSpecification
+} from '@valtimo-plugins/xential';
+
+@NgModule({
+    imports: [
+        XentialPluginModule,
+    ],
+    providers: [
+        {
+            provide: PLUGIN_TOKEN,
+            useValue: [
+                XentialPluginSpecification,
+            ]
+        }
+    ]
+})
+```
+
+### Adding a new version
+
+You might need to add a new version of an action should the contract change in the specification or a new action has to
+be added/supported.
+
+#### When adding a new version of an existing action:
+
+1. Make the required changes to the action in the plugin
+   * at the backend:
+      [XentialPlugin](src/main/kotlin/com/ritense/valtimoplugins/xential/plugin/XentialPlugin.kt).
+   * at the frontend:
+      [XentialPluginModule](../../frontend/projects/valtimo-plugins/xential/src/lib/xential.plugin.module.ts). 
+2. Update the README if necessary.
+3. Increase the plugin versions:
+   * in the backend: [plugin.properties](plugin.properties).
+   * in the frontend: [package.json](../../frontend/projects/valtimo-plugins/xential/package.json).
+
+#### When adding a action:
+
+1.  Make the required changes to the action in the plugin
+     * at the backend:
+     [XentialPlugin](src/main/kotlin/com/ritense/valtimoplugins/xential/plugin/XentialPlugin.kt).
+     * at the frontend:
+       [XentialPluginModule](../../frontend/projects/valtimo-plugins/xential/src/lib/xential.plugin.module.ts).
+2. Update the README if necessary.
+3. Increase the plugin versions:
+   * in the backend: [plugin.properties](plugin.properties).
+   * in the frontend: [package.json](../../frontend/projects/valtimo-plugins/xential/package.json).
