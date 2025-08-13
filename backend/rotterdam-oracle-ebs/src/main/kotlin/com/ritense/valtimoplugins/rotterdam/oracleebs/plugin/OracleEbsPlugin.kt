@@ -81,6 +81,7 @@ class OracleEbsPlugin(
         @PluginActionProperty categorie: String,
         @PluginActionProperty saldoSoort: String,
         @PluginActionProperty omschrijving: String? = null,
+        @PluginActionProperty grootboek: String? = null,
         @PluginActionProperty boekjaar: String? = null,
         @PluginActionProperty boekperiode: String? = null,
         @PluginActionProperty regels: List<JournaalpostRegel>? = null,
@@ -114,7 +115,7 @@ class OracleEbsPlugin(
                     journaalpostRegels = journaalpostRegels
                 ),
                 journaalpostomschrijving = omschrijving,
-                grootboek = null,
+                grootboek = if (grootboek.isNullOrBlank()) { null } else { grootboekFrom(grootboek) },
                 boekjaar = integerOrNullFrom(boekjaar),
                 boekperiode = integerOrNullFrom(boekperiode)
             )
@@ -309,7 +310,7 @@ class OracleEbsPlugin(
         adresType: AdresType,
         adresLocatie: AdresLocatie? = null,
         adresPostbus: AdresPostbus? = null
-    ){
+    ) {
         if (adresType == AdresType.LOCATIE) {
             require(adresLocatie != null) {
                 "When AdresType is LOCATIE, AdresLocatie should not be NULL"
@@ -478,8 +479,7 @@ class OracleEbsPlugin(
     private fun factuurRegelsFrom(
         execution: DelegateExecution,
         factuurRegels: List<FactuurRegel>
-    ) =
-        factuurRegels.map { factuurRegel ->
+    ) = factuurRegels.map { factuurRegel ->
             val resolvedValues = resolveValuesFor(execution, mapOf(
                 HOEVEELHEID_KEY to factuurRegel.hoeveelheid,
                 TARIEF_KEY to factuurRegel.tarief,
@@ -507,7 +507,7 @@ class OracleEbsPlugin(
             )
         }
 
-    private fun grootboekRekening( resolvedLineValues: Map<String, Any?>) =
+    private fun grootboekRekening(resolvedLineValues: Map<String, Any?>) =
         Grootboekrekening(
             grootboeksleutel = resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]?.let{ grootboekSleutel ->
                 stringFrom(grootboekSleutel).takeIf { it.isNotBlank() }
@@ -550,6 +550,11 @@ class OracleEbsPlugin(
     private fun saldoSoortFrom(value: Any): Journaalpost.Journaalpostsaldosoort =
         SaldoSoort.valueOf(stringFrom(value).uppercase()).let {
             Journaalpost.Journaalpostsaldosoort.valueOf(it.title)
+        }
+
+    private fun grootboekFrom(value: Any): Journaalpost.Grootboek =
+        stringFrom(value).let { grootboek ->
+            Journaalpost.Grootboek.entries.first { it.value == grootboek.uppercase() }
         }
 
     private fun boekingTypeFrom(value: Any): Journaalpostregel.Journaalpostregelboekingtype =

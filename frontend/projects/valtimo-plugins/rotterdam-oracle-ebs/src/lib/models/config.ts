@@ -31,6 +31,7 @@ interface JournaalpostOpvoerenConfig {
     categorie: string;
     saldoSoort: string;
     omschrijving?: string;
+    grootboek?: string;
     boekjaar?: string;
     boekperiode?: string;
     regels?: Array<JournaalpostRegel>;
@@ -130,6 +131,11 @@ enum SaldoSoort {
     WERKELIJK = "Werkelijk"
 }
 
+enum Grootboek {
+    _100 = "100",
+    R10 = "R10"
+}
+
 export {
     RotterdamEsbConfig,
     JournaalpostOpvoerenConfig,
@@ -144,5 +150,6 @@ export {
     RelatieType,
     FactuurKlasse,
     BoekingType,
-    SaldoSoort
+    SaldoSoort,
+    Grootboek
 }
