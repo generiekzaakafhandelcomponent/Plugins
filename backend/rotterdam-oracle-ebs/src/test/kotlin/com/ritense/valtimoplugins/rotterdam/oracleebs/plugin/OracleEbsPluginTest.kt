@@ -138,6 +138,7 @@ class OracleEbsPluginTest {
                 categorie = "Vergunningen",
                 saldoSoort = SaldoSoort.WERKELIJK.title,
                 omschrijving = "Aanvraag Omgevingsvergunning",
+                grootboek = "100",
                 boekjaar = "2025",
                 boekperiode = "2",
                 regels = journaalpostRegelsMetGrootboekSleutel()
@@ -172,6 +173,7 @@ class OracleEbsPluginTest {
                 categorie = "Vergunningen",
                 saldoSoort = SaldoSoort.WERKELIJK.title,
                 omschrijving = "Aanvraag Omgevingsvergunning",
+                grootboek = "R10",
                 boekjaar = "2025",
                 boekperiode = "2",
                 regelsViaResolver = objectMapper.writeValueAsString(journaalpostRegelsMetGrootboekSleutel())
