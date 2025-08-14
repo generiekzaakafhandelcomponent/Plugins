@@ -95,6 +95,10 @@ class OracleEbsPlugin(
                 "boekdatumTijd: $boekdatumTijd, " +
                 "categorie: $categorie, " +
                 "saldoSoort: $saldoSoort" +
+                "omschrijving: $omschrijving" +
+                "grootboek: $grootboek" +
+                "boekjaar: $boekjaar" +
+                "boekperiode: $boekperiode" +
             ")"
         }
 
@@ -121,6 +125,7 @@ class OracleEbsPlugin(
             )
         ).let { request ->
             logger.info { "Trying to send OpvoerenJournaalpostVraag" }
+            // TODO: change to debug after testing
             logger.info {
                 "OpvoerenJournaalpostVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
@@ -221,6 +226,8 @@ class OracleEbsPlugin(
                 "referentieNummer: $referentieNummer, " +
                 "factuurKlasse: $factuurKlasse, " +
                 "factuurDatum: $factuurDatum, " +
+                "factuurVervaldatum: $factuurVervaldatum, " +
+                "factuurKenmerk: $factuurKenmerk, " +
                 "factuurAdresType: $factuurAdresType, " +
                 "inkoopOrderReferentie: $inkoopOrderReferentie, " +
                 "relatieType: $relatieType" +
@@ -284,6 +291,7 @@ class OracleEbsPlugin(
             bijlage = null
         ).let { request ->
             logger.info { "Trying to send OpvoerenVerkoopfactuurVraag" }
+            // TODO: change to debug after testing
             logger.info {
                 "OpvoerenVerkoopfactuurVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
