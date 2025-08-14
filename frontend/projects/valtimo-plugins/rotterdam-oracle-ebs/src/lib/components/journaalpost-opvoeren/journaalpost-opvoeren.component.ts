@@ -229,7 +229,9 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
         if (this.isValueResolverPrefix(value)) {
             return value;
         } else {
-            return this.enumSvc.getEnumValue(Grootboek, value);
+            // If a numeric-like key (e.g., "100") is provided, treat it as "_100"
+            const normalizedKey = (/^\d/.test(value) && !value.startsWith('_')) ? `_${value}` : value;
+            return this.enumSvc.getEnumValue(Grootboek, normalizedKey);
         }
     }
 
@@ -237,7 +239,8 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
         if (this.isValueResolverPrefix(value)) {
             return value;
         } else {
-            return this.enumSvc.getEnumKey(Grootboek, value);
+            // If a numeric-like key, strip _ prefix from the key
+            return this.enumSvc.getEnumKey(Grootboek, value).replace(/^_/, '');
         }
     }
 
