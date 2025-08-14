@@ -17,7 +17,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {Injector, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HttpBackend, HttpClient, HttpClientModule} from '@angular/common/http';
+import { HttpBackend, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LayoutModule, TranslationManagementModule} from '@valtimo/layout';
@@ -148,12 +148,10 @@ export function tabsFactory() {
     ]);
 }
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
     ],
-    imports: [
-        ValuePathSelectorComponent,
+    bootstrap: [AppComponent], imports: [ValuePathSelectorComponent,
         AlfrescoAuthPluginModule,
         AmsterdamEmailapiPluginModule,
         BerkelybridgeTextgeneratorPluginModule,
@@ -218,7 +216,6 @@ export function tabsFactory() {
         ObjectTokenAuthenticationPluginModule,
         ObjectModule,
         ObjectManagementModule,
-        HttpClientModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -233,44 +230,40 @@ export function tabsFactory() {
         DashboardModule,
         DashboardManagementModule,
         KvkPluginModule,
-        ZgwModule
-    ],
-    providers: [{
-        provide: PLUGINS_TOKEN,
-        useValue: [
-            alfrescoAuthPluginSpecification,
-            amsterdamEmailapiPluginSpecification,
-            berkelybridgeTextgeneratorPluginSpecification,
-            valtimoOcrPluginSpecification,
-            externeKlanttaakPluginSpecification,
-            mailTemplatePluginSpecification,
-            notifyNlPluginSpecification,
-            haalCentraalBrpPluginSpecification,
-            haalCentraalBagPluginSpecification,
-            haalCentraalBrpAuthPluginSpecification,
-            objectManagementPluginSpecification,
-            objectTokenAuthenticationPluginSpecification,
-            objectenApiPluginSpecification,
-            objecttypenApiPluginSpecification,
-            publictaskPluginSpecification,
-            rotterdamOracleEbsPluginSpecification,
-            slackPluginSpecification,
-            huggingFacePluginSpecification,
-            smtpmailPluginSpecification,
-            spotlerPluginSpecification,
-            suwinetPluginSpecification,
-            textTemplatePluginSpecification,
-            mTlsSslcontextPluginSpecification,
-            XentialPluginSpecification,
-            kvkPluginSpecification,
-            catalogiApiPluginSpecification,
-            documentenApiPluginSpecification,
-            openZaakPluginSpecification,
-            zakenApiPluginSpecification
-        ]
-    }],
-    bootstrap: [AppComponent]
-})
+        ZgwModule], providers: [{
+            provide: PLUGINS_TOKEN,
+            useValue: [
+                alfrescoAuthPluginSpecification,
+                amsterdamEmailapiPluginSpecification,
+                berkelybridgeTextgeneratorPluginSpecification,
+                valtimoOcrPluginSpecification,
+                externeKlanttaakPluginSpecification,
+                mailTemplatePluginSpecification,
+                notifyNlPluginSpecification,
+                haalCentraalBrpPluginSpecification,
+                haalCentraalBagPluginSpecification,
+                haalCentraalBrpAuthPluginSpecification,
+                objectManagementPluginSpecification,
+                objectTokenAuthenticationPluginSpecification,
+                objectenApiPluginSpecification,
+                objecttypenApiPluginSpecification,
+                publictaskPluginSpecification,
+                rotterdamOracleEbsPluginSpecification,
+                slackPluginSpecification,
+                huggingFacePluginSpecification,
+                smtpmailPluginSpecification,
+                spotlerPluginSpecification,
+                suwinetPluginSpecification,
+                textTemplatePluginSpecification,
+                mTlsSslcontextPluginSpecification,
+                XentialPluginSpecification,
+                kvkPluginSpecification,
+                catalogiApiPluginSpecification,
+                documentenApiPluginSpecification,
+                openZaakPluginSpecification,
+                zakenApiPluginSpecification
+            ]
+        }, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {
     constructor(injector: Injector) {
         enableCustomFormioComponents(injector);
