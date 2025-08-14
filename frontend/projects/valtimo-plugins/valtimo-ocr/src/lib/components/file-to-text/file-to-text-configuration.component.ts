@@ -23,6 +23,7 @@ import {FileToTextConfig} from "../../models";
 @Component({
     selector: 'valtimo-file-to-text-configuration',
     templateUrl: './file-to-text-configuration.component.html',
+    standalone: false
 })
 export class FileToTextConfigurationComponent
     implements FunctionConfigurationComponent, OnInit, OnDestroy {

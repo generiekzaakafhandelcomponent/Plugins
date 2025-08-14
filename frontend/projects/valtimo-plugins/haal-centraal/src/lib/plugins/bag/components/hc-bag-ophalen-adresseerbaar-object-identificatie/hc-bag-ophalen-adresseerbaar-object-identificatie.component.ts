@@ -24,7 +24,8 @@ import {RadioValue} from "@valtimo/components";
 @Component({
     selector: 'ophalen-adresseerbaar-object-identificatie',
     templateUrl: './hc-bag-ophalen-adresseerbaar-object-identificatie.component.html',
-    styleUrls: ['./hc-bag-ophalen-adresseerbaar-object-identificatie.component.scss']
+    styleUrls: ['./hc-bag-ophalen-adresseerbaar-object-identificatie.component.scss'],
+    standalone: false
 })
 
 export class HcBagOphalenAdresseerbaarObjectIdentificatieComponent

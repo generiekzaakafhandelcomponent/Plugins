@@ -22,6 +22,7 @@ import {ValtimoOcrConfig} from '../../models';
 @Component({
     selector: 'valtimo-ocr-configuration',
     templateUrl: './valtimo-ocr-configuration.component.html',
+    standalone: false
 })
 export class ValtimoOcrConfigurationComponent
     implements PluginConfigurationComponent, OnInit, OnDestroy {
