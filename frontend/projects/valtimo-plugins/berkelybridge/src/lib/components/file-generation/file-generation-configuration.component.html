@@ -1,0 +1,126 @@
+<!--
+  ~ Copyright 2015-2024. Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~ express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
+>
+  <v-input
+          name="modelId"
+          [title]="'modelId' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.modelId"
+          [disabled]="obs.disabled"
+          [tooltip]="'modelIdTooltip' | pluginTranslate: pluginId | async"
+          [required]="true"
+  >
+  </v-input>
+  <v-input
+          name="templateId"
+          [title]="'templateId' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.templateId"
+          [disabled]="obs.disabled"
+          [tooltip]="'templateIdTooltip' | pluginTranslate: pluginId | async"
+          [required]="true"
+  >
+  </v-input>
+  <v-input
+          name="naam"
+          [title]="'naam' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.naam"
+          [disabled]="obs.disabled"
+          [tooltip]="'nameTooltip' | pluginTranslate: pluginId | async"
+          [required]="true"
+  >
+  </v-input>
+  <v-input
+          name="beschrijving"
+          [fullWidth]="true"
+          [defaultValue]="obs.prefill?.beschrijving"
+          [margin]="true"
+          [title]="'inputDescription' | pluginTranslate: pluginId | async"
+          [tooltip]="'inputDescriptionTooltip' | pluginTranslate: pluginId | async"
+          [required]="true"
+  ></v-input>
+  <v-select
+          *ngIf="formatItems$ | async as items"
+          [defaultSelectionId]="items[0].id"
+          [disabled]="obs.disabled"
+          [items]="items"
+          [margin]="true"
+          [required]="true"
+          [title]="'format' | pluginTranslate: pluginId | async"
+          [tooltip]="'formatTooltip' | pluginTranslate: pluginId | async"
+          [widthInPx]="200"
+          name="format"
+  ></v-select>
+  <v-input
+          name="variabeleNaam"
+          [title]="'variabeleNaam' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.variabeleNaam"
+          [disabled]="obs.disabled"
+          [tooltip]="'variabeleNaamTooltip' | pluginTranslate: pluginId | async"
+          [required]="true"
+  >
+  </v-input>
+  <v-select
+          *ngIf="languageItems$ | async as languageItems"
+          [defaultSelectionId]="languageItems[0].id"
+          [disabled]="obs.disabled"
+          [items]="languageItems"
+          [margin]="true"
+          [required]="true"
+          [title]="'language' | pluginTranslate: pluginId | async"
+          [tooltip]="'languageTooltip' | pluginTranslate: pluginId | async"
+          [widthInPx]="200"
+          name="taal"
+  ></v-select>
+  <v-select
+          *ngIf="informatieObjectTypes$ | async as informatieTypeItems"
+          [defaultSelectionId]="informatieTypeItems[0]?.id"
+          [items]="informatieTypeItems"
+          [disabled]="obs.disabled"
+          [margin]="true"
+          [required]="true"
+          [title]="'informatieobjecttype' | pluginTranslate: pluginId | async"
+          [tooltip]="'informatieobjecttypeTooltip' | pluginTranslate: pluginId | async"
+          [widthInPx]="200"
+          name="informatieObjectType"
+  ></v-select>
+  <valtimo-carbon-multi-input
+          name="parameters"
+          [title]="'parameters' | pluginTranslate: pluginId | async"
+          type="keyValue"
+          [required]="false"
+          [margin]="true"
+          [disabled]="obs.disabled"
+          [tooltip]="'parametersTooltip' | pluginTranslate: pluginId | async"
+          [initialAmountOfRows]="0"
+          [minimumAmountOfRows]="0"
+          [addRowText]="'addParameter' | pluginTranslate: pluginId | async"
+          [defaultValues]="obs.prefill?.parameters"
+  >
+  </valtimo-carbon-multi-input>
+</v-form>

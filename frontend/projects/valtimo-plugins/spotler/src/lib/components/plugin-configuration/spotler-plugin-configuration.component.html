@@ -30,43 +30,34 @@
           [margin]="true"
           [disabled]="obs.disabled"
           [defaultValue]="obs.prefill?.configurationTitle"
+          [widthPx]="350"
           [required]="true"
           [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
-          placeholder="Spotler plugin"
+          placeholder="Email API plugin"
   >
   </v-input>
   <v-input
-          name="clientId"
-          [title]="'clientId' | pluginTranslate: pluginId | async"
+          name="emailApiBaseUrl"
+          [title]="'emailApiBaseUrl' | pluginTranslate: pluginId | async"
           [margin]="true"
           [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.clientId"
+          [defaultValue]="obs.prefill?.emailApiBaseUrl"
+          [widthPx]="350"
           [required]="true"
-          [tooltip]="'clientIdTooltip' | pluginTranslate: pluginId | async"
-          placeholder="client-id"
+          [tooltip]="'emailApiBaseUrlTooltip' | pluginTranslate: pluginId | async"
+          placeholder="emailApiBaseUrl"
   >
   </v-input>
   <v-input
-          name="accountId"
-          [title]="'accountId' | pluginTranslate: pluginId | async"
+          name="subscriptionKey"
+          [title]="'subscriptionKey' | pluginTranslate: pluginId | async"
           [margin]="true"
           [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.accountId"
+          [defaultValue]="obs.prefill?.subscriptionKey"
+          [widthPx]="350"
           [required]="true"
-          [tooltip]="'accountIdTooltip' | pluginTranslate: pluginId | async"
-          placeholder="account-id"
-  >
-  </v-input>
-  <v-input
-          name="clientSecret"
-          type="password"
-          [title]="'clientSecret' | pluginTranslate: pluginId | async"
-          [margin]="true"
-          [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.clientSecret"
-          [required]="true"
-          [fullWidth]="true"
-          [tooltip]="'clientSecretTooltip' | pluginTranslate: pluginId | async"
+          [tooltip]="'subscriptionKeyTooltip' | pluginTranslate: pluginId | async"
+          placeholder="subscription key"
   >
   </v-input>
 </v-form>

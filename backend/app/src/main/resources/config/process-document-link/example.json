@@ -8,5 +8,10 @@
     "processDefinitionKey": "send-smtp-mail-process",
     "canInitializeDocument": true,
     "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "zend_amsterdam_email",
+    "canInitializeDocument": true,
+    "startableByUser": true
   }
 ]

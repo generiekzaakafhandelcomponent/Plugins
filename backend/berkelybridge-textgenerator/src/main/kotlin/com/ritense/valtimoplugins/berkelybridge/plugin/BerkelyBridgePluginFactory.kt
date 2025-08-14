@@ -21,16 +21,20 @@ package com.ritense.valtimoplugins.berkelybridge.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.berkelybridge.client.BerkelyBridgeClient
 import com.ritense.valueresolver.ValueResolverService
+import org.springframework.context.ApplicationEventPublisher
 
 class BerkelyBridgePluginFactory(
     pluginService: PluginService,
     val bbClient: BerkelyBridgeClient,
-    val valueResolver: ValueResolverService
+    val valueResolver: ValueResolverService,
+    val resourceService: TemporaryResourceStorageService,
+    val applicationEventPublisher: ApplicationEventPublisher,
 ) : PluginFactory<BerkelyBridgePlugin>(pluginService) {
 
     override fun create(): BerkelyBridgePlugin {
-        return BerkelyBridgePlugin(bbClient, valueResolver)
+        return BerkelyBridgePlugin(bbClient, valueResolver, resourceService, applicationEventPublisher)
     }
 }

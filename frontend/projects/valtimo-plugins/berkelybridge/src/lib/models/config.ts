@@ -21,6 +21,7 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface BerkelyBridgeTextGeneratorConfig extends PluginConfigurationData {
   berkelybridgeBaseUrl: string;
+  subscriptionKey: string;
 }
 
 interface TextGeneratieConfig {
@@ -28,9 +29,22 @@ interface TextGeneratieConfig {
   templateId: string;
   parameters: Array<{key: string; value: string}>;
   naam: string;
+  beschrijving: string;
+  format: string;
+  variabeleNaam: string;
+  informatieObjectType: string;
+}
+
+interface FileGeneratieConfig {
+  modelId: string;
+  templateId: string;
+  parameters: Array<{key: string; value: string}>;
+  taal: string;
+  naam: string;
+  omschrijving: string;
   format: string;
   variabeleNaam: string;
 }
 
 
-export {BerkelyBridgeTextGeneratorConfig, TextGeneratieConfig};
+export {BerkelyBridgeTextGeneratorConfig, TextGeneratieConfig, FileGeneratieConfig};
