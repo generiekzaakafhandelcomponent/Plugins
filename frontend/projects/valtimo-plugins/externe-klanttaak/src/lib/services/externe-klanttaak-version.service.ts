@@ -17,7 +17,7 @@
 import {Injectable} from '@angular/core';
 import {combineLatest, map, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {ConfigService} from '@valtimo/config';
+import {ConfigService} from '@valtimo/shared';
 import {
     ExterneKlanttaakPluginActionConfiguration,
     ExterneKlanttaakPluginConfig,

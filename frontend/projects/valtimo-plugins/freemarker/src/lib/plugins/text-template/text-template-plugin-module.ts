@@ -37,7 +37,7 @@ import {
     ModalModule,
     NotificationModule, TabsModule,
 } from 'carbon-components-angular';
-import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/config';
+import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {TextTemplateListComponent} from './components/text-template-list/text-template-list.component';
 import {TextTemplateAddEditModalComponent} from './components/text-template-add-edit-modal/text-template-add-edit-modal.component';
 import {TextTemplateEditorComponent} from './components/text-template-editor/text-template-editor.component';

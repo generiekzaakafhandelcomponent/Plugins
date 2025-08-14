@@ -18,7 +18,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {DeleteTemplatesRequest, Template, TemplateListItem, TemplateResponse, TemplateType, UpdateTemplateRequest,} from '../models';
-import {ConfigService, Page} from '@valtimo/config';
+import {ConfigService, Page} from '@valtimo/shared';
 
 @Injectable({
     providedIn: 'root',

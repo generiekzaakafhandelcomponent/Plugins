@@ -6,6 +6,8 @@ const rootDir = path.resolve(__dirname, '../../');
 const pkgPath = path.join(rootDir, 'package.json');
 const angularJsonPath = path.join(rootDir, 'angular.json');
 
+//'zone.js': '0.14.4',
+
 const updatedDeps = {
   '@webcomponents/custom-elements': '1.6.0',
   'core-js': '3.36.0',
@@ -14,7 +16,6 @@ const updatedDeps = {
   rxjs: '7.8.1',
   'swagger-ui': '5.4.2',
   tslib: '2.6.2',
-  'zone.js': '0.14.4',
   '@bpmn-io/dmn-migrate': '0.4.3',
   '@bpmn-io/properties-panel': '3.25.0',
   'bpmn-js': '18.0.0',
