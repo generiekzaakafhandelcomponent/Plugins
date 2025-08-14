@@ -1,0 +1,25 @@
+[
+  {
+    "activityId": "StartEvent",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "boom-edit",
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "GetObjectsTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "bc71b26b-6f91-4433-80b5-fdbc8e42cf1b",
+    "processLinkType": "plugin",
+    "pluginActionDefinitionKey": "get-objects-unpaged",
+    "actionProperties": {
+      "objectManagementConfigurationId": "b668aefa-1191-476b-9e08-0e7f7a907a3e",
+      "listOfObjectProcessVariableName": "testVar",
+      "filterParameter": [
+        {
+          "key": "/leeftijd",
+          "value": "212"
+        }
+      ]
+    }
+  }
+]
