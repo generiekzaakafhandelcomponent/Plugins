@@ -138,6 +138,7 @@ import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr
 import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
+import { SseModule } from '@valtimo/sse';
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -230,7 +231,7 @@ export function tabsFactory() {
         DashboardModule,
         DashboardManagementModule,
         KvkPluginModule,
-        ZgwModule], providers: [{
+        ZgwModule, SseModule], providers: [{
             provide: PLUGINS_TOKEN,
             useValue: [
                 alfrescoAuthPluginSpecification,
