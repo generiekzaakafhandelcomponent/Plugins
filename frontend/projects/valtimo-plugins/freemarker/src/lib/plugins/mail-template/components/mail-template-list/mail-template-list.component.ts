@@ -22,6 +22,7 @@ import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateListItem} from '../../../../models';
 
 @Component({
+    standalone: false,
     templateUrl: './mail-template-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

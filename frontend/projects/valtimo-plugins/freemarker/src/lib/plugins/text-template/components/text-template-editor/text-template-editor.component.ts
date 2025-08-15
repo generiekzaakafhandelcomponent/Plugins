@@ -24,6 +24,7 @@ import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
 
 @Component({
+    standalone: false,
     templateUrl: './text-template-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./text-template-editor.component.scss'],

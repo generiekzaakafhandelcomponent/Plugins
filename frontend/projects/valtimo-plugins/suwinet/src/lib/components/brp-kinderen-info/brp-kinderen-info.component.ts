@@ -19,7 +19,9 @@ import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {BrpKinderenInfoConfig} from '../../models';
 
+
 @Component({
+    standalone: false,
     selector: 'brp-partner-info',
     templateUrl: './brp-kinderen-info.component.html',
     styleUrls: ['./brp-kinderen-info.component.scss'],

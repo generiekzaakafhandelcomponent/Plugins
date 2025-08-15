@@ -17,7 +17,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
+import {FunctionConfigurationData} from "@valtimo/plugin";
 import {FileToTextConfig} from "../../models";
 
 @Component({

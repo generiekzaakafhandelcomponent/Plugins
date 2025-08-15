@@ -22,6 +22,7 @@ import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
+  standalone: false,
   selector: 'valtimo-hugging-face-configuration',
   templateUrl: './hugging-face-configuration.component.html',
   styleUrls: ['./hugging-face-configuration.component.scss'],

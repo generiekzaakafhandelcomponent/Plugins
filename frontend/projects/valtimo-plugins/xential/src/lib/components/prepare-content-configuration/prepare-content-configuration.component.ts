@@ -14,6 +14,7 @@ import {XentialApiSjabloonService} from "../../modules/xential-api/services/xent
 import {KeycloakUserService} from "@valtimo/keycloak";
 
 @Component({
+    standalone: false,
     selector: 'xential-prepare-content-configuration',
     templateUrl: './prepare-content-configuration.component.html'
 })

@@ -18,9 +18,10 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {ChatConfig} from '../../models';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
+import {FunctionConfigurationData} from "@valtimo/plugin";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-chat-configuration',
     templateUrl: './chat-configuration.component.html',
     styleUrls: ['./chat-configuration.component.scss'],

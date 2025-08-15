@@ -21,6 +21,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from "rx
 import {HaalCentraalAuthPluginConfig} from "../models/haal-centraal-auth-plugin-config";
 
 @Component({
+    standalone: false,
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'haal-centraal-auth-plugin-configuration',
     templateUrl: './haal-centraal-auth-plugin-configuration.component.html',

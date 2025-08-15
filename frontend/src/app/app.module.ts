@@ -1,3 +1,14 @@
+import {
+    BpmnJsDiagramModule,
+    MenuModule,
+    WidgetModule,
+    enableCustomFormioComponents,
+    registerFormioCurrencyComponent,
+    registerFormioUploadComponent,
+    registerFormioFileSelectorComponent,
+    registerFormioValueResolverSelectorComponent,
+    CarbonListComponent, ValuePathSelectorComponent
+} from '@valtimo/components';
 /*
  * Copyright 2015-2020 Ritense BV, the Netherlands.
  *
@@ -24,18 +35,6 @@ import {LayoutModule, TranslationManagementModule} from '@valtimo/layout';
 import {TaskModule} from '@valtimo/task';
 import {environment} from '../environments/environment';
 import {SecurityModule} from '@valtimo/security';
-import {
-    BpmnJsDiagramModule,
-    CardModule,
-    enableCustomFormioComponents,
-    MenuModule,
-    registerFormioFileSelectorComponent,
-    registerFormioUploadComponent,
-    registerFormioValueResolverSelectorComponent,
-    WidgetModule,
-    ValuePathSelectorComponent
-
-} from '@valtimo/components';
 import {
     DefaultTabs,
     CaseDetailTabAuditComponent,
@@ -83,7 +82,6 @@ import {
     PLUGINS_TOKEN
 } from '@valtimo/plugin';
 import {ZgwModule} from '@valtimo/zgw';
-import {TaskManagementModule} from '@valtimo/task-management';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
 import {ObjectModule} from "@valtimo/object";
@@ -152,7 +150,8 @@ export function tabsFactory() {
 @NgModule({ declarations: [
         AppComponent,
     ],
-    bootstrap: [AppComponent], imports: [ValuePathSelectorComponent,
+    bootstrap: [AppComponent], imports: [
+        ValuePathSelectorComponent,
         AlfrescoAuthPluginModule,
         AmsterdamEmailapiPluginModule,
         BerkelybridgeTextgeneratorPluginModule,
@@ -172,13 +171,10 @@ export function tabsFactory() {
         SpotlerPluginModule,
         SuwinetPluginModule,
         XentialPluginModule,
-        HttpClientModule,
-        CommonModule,
+                CommonModule,
         BrowserModule,
         AppRoutingModule,
-        LayoutModule,
-        CardModule,
-        WidgetModule,
+        LayoutModule,        WidgetModule,
         BootstrapModule,
         ConfigModule.forRoot(environment),
         LoggerModule.forRoot(environment.logger),
@@ -224,9 +220,7 @@ export function tabsFactory() {
                 deps: [HttpBackend, HttpClient, ConfigService, LocalizationService],
             },
         }),
-        TranslationManagementModule,
-        TaskManagementModule,
-        ExterneKlanttaakPluginModule,
+        TranslationManagementModule,        ExterneKlanttaakPluginModule,
         RotterdamOracleEbsPluginModule,
         DashboardModule,
         DashboardManagementModule,

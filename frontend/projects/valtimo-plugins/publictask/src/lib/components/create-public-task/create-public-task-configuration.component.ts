@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {CreatePublicTaskConfig} from '../../models';
 
 @Component({
+  standalone: false,
   selector: 'valtimo-create-public-task-configuration',
   templateUrl: './create-public-task-configuration.component.html',
 })

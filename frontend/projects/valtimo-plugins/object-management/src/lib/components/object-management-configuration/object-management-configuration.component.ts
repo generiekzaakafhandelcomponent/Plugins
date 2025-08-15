@@ -18,10 +18,9 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {PluginConfigurationComponent, PluginConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {ObjectManagementConfig} from '../../models';
-import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
-import {TranslateService} from '@ngx-translate/core';
 
 @Component({
+    standalone: false,
     selector: 'valtimo-object-management-configuration',
     templateUrl: './object-management-configuration.component.html',
 })

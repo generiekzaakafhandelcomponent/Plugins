@@ -23,6 +23,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {SendEmailConfig} from "../../models";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-send-email-configuration',
   templateUrl: './send-email-configuration.component.html',
   styleUrls: ['./send-email-configuration.component.scss'],

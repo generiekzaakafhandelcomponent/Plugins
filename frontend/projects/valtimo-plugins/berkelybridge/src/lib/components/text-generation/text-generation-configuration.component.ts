@@ -23,6 +23,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {TextGeneratieConfig} from "../../models";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-text-generation-configuration',
   templateUrl: './text-generation-configuration.component.html',
   styleUrls: ['./text-generation-configuration.component.scss'],

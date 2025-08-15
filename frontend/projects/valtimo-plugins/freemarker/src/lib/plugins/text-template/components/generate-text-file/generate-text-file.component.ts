@@ -18,12 +18,13 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap, take, tap} from 'rxjs';
 import {GenerateTextFileConfig} from '../../models';
-import {FunctionConfigurationData} from '@valtimo/plugin/lib/models/plugin';
+import {FunctionConfigurationData} from '@valtimo/plugin';
 import {ModalService, SelectItem} from '@valtimo/components';
 import {DocumentService} from '@valtimo/document';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 
 @Component({
+    standalone: false,
     selector: 'valtimo-generate-text-file-configuration',
     templateUrl: './generate-text-file.component.html',
 })

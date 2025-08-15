@@ -23,6 +23,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {SuwinetPluginConfig} from "../../models";
 
 @Component({
+  standalone: false,
   selector: 'suwinet-plugin-configuration',
   templateUrl: './suwinet-plugin-configuration.component.html',
   styleUrls: ['./suwinet-plugin-configuration.component.scss'],

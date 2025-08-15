@@ -18,12 +18,13 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {GiveSummaryConfig} from '../../models';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
+import {FunctionConfigurationData} from "@valtimo/plugin";
 
 @Component({
     selector: 'valtimo-give-summary-configuration',
     templateUrl: './give-summary-configuration.component.html',
     styleUrls: ['./give-summary-configuration.component.scss'],
+    standalone: true
 })
 export class GiveSummaryConfigurationComponent
     implements FunctionConfigurationComponent, OnInit, OnDestroy {

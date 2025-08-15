@@ -22,6 +22,7 @@ import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
+  standalone: false,
   selector: 'valtimo-slack-configuration',
   templateUrl: './slack-configuration.component.html',
   styleUrls: ['./slack-configuration.component.scss'],

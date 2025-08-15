@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} fro
 import {TextTemplateConfig} from '../../models';
 
 @Component({
+  standalone: false,
   selector: 'valtimo-text-template-configuration',
   templateUrl: './text-template-configuration.component.html',
 })

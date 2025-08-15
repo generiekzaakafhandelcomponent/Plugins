@@ -21,6 +21,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {BewoningenConfig} from '../../models';
 
 @Component({
+    standalone: false,
     selector: 'brp-get-bewoningen',
     templateUrl: './haal-centraal-brp-bewoningen.component.html',
     styleUrls: ['./haal-centraal-brp-bewoningen.component.scss']

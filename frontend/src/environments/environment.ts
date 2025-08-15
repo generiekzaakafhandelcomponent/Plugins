@@ -130,7 +130,7 @@ export const environment: ValtimoConfig = {
     uploadProvider: UploadProvider.DOCUMENTEN_API,
     caseFileSizeUploadLimitMB: 100,
     defaultDefinitionTable: defaultDefinitionColumns,
-    customDefinitionTables: {},
+//    customDefinitionTables: {},
     featureToggles: {
         disableCaseCount: true,
         enableObjectManagement: true

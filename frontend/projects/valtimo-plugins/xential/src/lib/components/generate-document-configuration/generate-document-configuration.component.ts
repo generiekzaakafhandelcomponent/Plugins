@@ -5,6 +5,7 @@ import {GenerateDocumentConfig} from "../../models";
 import {SelectItem, ValuePathSelectorPrefix} from "@valtimo/components";
 
 @Component({
+    standalone: false,
     selector: 'xential-generate-document-configuration',
     templateUrl: './generate-document-configuration.component.html'
 })

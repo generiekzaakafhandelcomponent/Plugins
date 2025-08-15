@@ -6,6 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
+    standalone: false,
     selector: 'zgw-haalcentraal-handelsregister-plugin-configuration',
     templateUrl: './kvk-plugin-configuration.component.html',
     styleUrls: ['./kvk-plugin-configuration.component.scss']

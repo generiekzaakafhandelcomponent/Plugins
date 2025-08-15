@@ -18,9 +18,10 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {PostMessageWithFileConfig} from '../../models';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
+import {FunctionConfigurationData} from "@valtimo/plugin";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-post-message-with-file-configuration',
   templateUrl: './post-message-with-file-configuration.component.html',
   styleUrls: ['./post-message-with-file-configuration.component.scss'],

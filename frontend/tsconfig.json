@@ -8,31 +8,69 @@
     "sourceMap": true,
     "declaration": false,
     "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2020",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2020", "dom", "dom.iterable"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2020",
+      "dom",
+      "dom.iterable"
+    ],
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
     "paths": {
-      "@src": ["src"],
-      "@src/*": ["src/*"],
-      "@valtimo-plugins/alfresco-auth": ["dist/valtimo-plugins/alfresco-auth"],
-      "@valtimo-plugins/amsterdam-emailapi": ["dist/valtimo-plugins/amsterdam-emailapi"],
-      "@valtimo-plugins/berkelybridge": ["dist/valtimo-plugins/berkelybridge"],
-      "@valtimo-plugins/freemarker": ["dist/valtimo-plugins/freemarker"],
-      "@valtimo-plugins/haal-centraal": ["./dist/valtimo-plugins/haal-centraal"],
-      "@valtimo-plugins/haal-centraal-auth": ["./dist/valtimo-plugins/haal-centraal-auth"],
-      "@valtimo-plugins/kvk-handelsregister": ["dist/valtimo-plugins/kvk-handelsregister"],
-      "@valtimo-plugins/publictask": ["dist/valtimo-plugins/publictask"],
-      "@valtimo-plugins/rotterdam-oracle-ebs": ["dist/valtimo-plugins/rotterdam-oracle-ebs"],
-      "@valtimo-plugins/slack": ["dist/valtimo-plugins/slack"],
-      "@valtimo-plugins/smtpmail": ["dist/valtimo-plugins/smtpmail"],
-      "@valtimo-plugins/spotler": ["dist/valtimo-plugins/spotler"],
-      "@valtimo-plugins/suwinet": ["dist/valtimo-plugins/suwinet"],
-      "@valtimo-plugins/xential": ["dist/valtimo-plugins/xential"]
+      "@src": [
+        "src"
+      ],
+      "@src/*": [
+        "src/*"
+      ],
+      "@valtimo-plugins/alfresco-auth": [
+        "dist/valtimo-plugins/alfresco-auth"
+      ],
+      "@valtimo-plugins/amsterdam-emailapi": [
+        "dist/valtimo-plugins/amsterdam-emailapi"
+      ],
+      "@valtimo-plugins/berkelybridge": [
+        "dist/valtimo-plugins/berkelybridge"
+      ],
+      "@valtimo-plugins/freemarker": [
+        "dist/valtimo-plugins/freemarker"
+      ],
+      "@valtimo-plugins/haal-centraal": [
+        "./dist/valtimo-plugins/haal-centraal"
+      ],
+      "@valtimo-plugins/haal-centraal-auth": [
+        "./dist/valtimo-plugins/haal-centraal-auth"
+      ],
+      "@valtimo-plugins/kvk-handelsregister": [
+        "dist/valtimo-plugins/kvk-handelsregister"
+      ],
+      "@valtimo-plugins/publictask": [
+        "dist/valtimo-plugins/publictask"
+      ],
+      "@valtimo-plugins/rotterdam-oracle-ebs": [
+        "dist/valtimo-plugins/rotterdam-oracle-ebs"
+      ],
+      "@valtimo-plugins/slack": [
+        "dist/valtimo-plugins/slack"
+      ],
+      "@valtimo-plugins/smtpmail": [
+        "dist/valtimo-plugins/smtpmail"
+      ],
+      "@valtimo-plugins/spotler": [
+        "dist/valtimo-plugins/spotler"
+      ],
+      "@valtimo-plugins/suwinet": [
+        "dist/valtimo-plugins/suwinet"
+      ],
+      "@valtimo-plugins/xential": [
+        "dist/valtimo-plugins/xential"
+      ]
     }
   },
   "files": [],

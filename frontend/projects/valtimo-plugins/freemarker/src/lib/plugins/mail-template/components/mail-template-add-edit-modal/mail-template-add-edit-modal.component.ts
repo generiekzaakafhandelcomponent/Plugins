@@ -20,6 +20,7 @@ import {TemplateMetadataModal} from '../../../../models';
 import {CARBON_CONSTANTS, KeyGeneratorService} from '@valtimo/components';
 
 @Component({
+    standalone: false,
     selector: 'valtimo-mail-template-add-edit-modal',
     templateUrl: './mail-template-add-edit-modal.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,

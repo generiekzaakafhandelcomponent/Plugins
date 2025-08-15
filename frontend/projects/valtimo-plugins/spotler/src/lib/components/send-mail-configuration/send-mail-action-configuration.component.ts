@@ -16,6 +16,7 @@ import {
 } from '@valtimo/components';
 
 @Component({
+    standalone: false,
     selector: 'spotler-send-mail-action-configuration',
     templateUrl: './send-mail-action-configuration.component.html',
     styleUrls: ['./send-mail-action-configuration.component.scss'],

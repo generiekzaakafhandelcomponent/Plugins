@@ -30,6 +30,7 @@ import {Toggle} from "carbon-components-angular";
 import {EnumUtilsService} from "../../service/enum-utils.service";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-rotterdam-oracle-ebs-verkoopfactuur-opvoeren',
     templateUrl: './verkoopfactuur-opvoeren.component.html',
     styleUrls: ['./verkoopfactuur-opvoeren.component.scss']

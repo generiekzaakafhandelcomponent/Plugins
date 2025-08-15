@@ -24,7 +24,7 @@ import {
     EditorModule,
     FormModule,
     InputModule as ValtimoInputModule,
-    ParagraphModule, RenderInPageHeaderDirectiveModule,
+    ParagraphModule, RenderInPageHeaderDirective,
     SelectModule,
 } from '@valtimo/components';
 import {GenerateMailContentComponent} from './components/generate-mail-content/generate-mail-content.component';
@@ -38,7 +38,8 @@ import {
     LoadingModule,
     ModalModule,
     NotificationModule, TabsModule,
-} from 'carbon-components-angular';import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
+} from 'carbon-components-angular';
+import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {MailTemplateListComponent} from './components/mail-template-list/mail-template-list.component';
 import {MailTemplateAddEditModalComponent} from './components/mail-template-add-edit-modal/mail-template-add-edit-modal.component';
 import {MailTemplateEditorComponent} from './components/mail-template-editor/mail-template-editor.component';
@@ -78,7 +79,7 @@ import {TemplateManagementRoutingModule} from './mail-template-management-routin
         LoadingModule,
         ModalModule,
         NotificationModule,
-        RenderInPageHeaderDirectiveModule,
+        RenderInPageHeaderDirective,
         TabsModule,
     ],
     exports: [

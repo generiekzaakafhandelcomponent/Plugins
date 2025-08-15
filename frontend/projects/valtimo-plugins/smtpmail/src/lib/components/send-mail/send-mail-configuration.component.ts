@@ -21,6 +21,7 @@ import {SendMailConfig} from '../../models';
 
 
 @Component({
+  standalone: false,
   selector: 'valtimo-send-mail-configuration',
   templateUrl: './send-mail-configuration.component.html',
 })

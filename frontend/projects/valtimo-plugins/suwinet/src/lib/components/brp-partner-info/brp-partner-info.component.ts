@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {BrpPartnerInfoConfig} from '../../models';
 
 @Component({
+    standalone: false,
     selector: 'brp-partner-info',
     templateUrl: './brp-partner-info.component.html',
     styleUrls: ['./brp-partner-info.component.scss'],

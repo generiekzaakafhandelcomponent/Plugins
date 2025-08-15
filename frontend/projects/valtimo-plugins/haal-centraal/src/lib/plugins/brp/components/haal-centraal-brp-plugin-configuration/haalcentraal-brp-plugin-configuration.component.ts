@@ -23,6 +23,7 @@ import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
+    standalone: false,
     selector: 'zgw-haalcentraal-handelsregister-plugin-configuration',
     templateUrl: './haalcentraal-brp-plugin-configuration.component.html',
     styleUrls: ['./haalcentraal-brp-plugin-configuration.component.scss']
