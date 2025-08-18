@@ -1,21 +1,17 @@
 {
-    "name": "haal-centraal",
+    "name": "suwinet",
     "isGzac": false,
     "backend": [
         {
-            "import": "com.ritense.valtimoplugins:haal-centraal"
+            "import": "com.ritense.valtimoplugins:suwinet"
         }
     ],
     "frontend": {
-        "import": "@valtimo-plugins/haal-centraal",
+        "import": "@valtimo-plugins/suwinet",
         "codeAdditions": [
             {
-                "spec": "haalCentraalBrpPluginSpecification",
-                "module": "HaalCentraalBrpPluginModule"
-            },
-            {
-                "spec": "haalCentraalBagPluginSpecification",
-                "module": "HaalCentraalBagPluginModule"
+                "spec": "suwinetPluginSpecification",
+                "module": "SuwinetPluginModule"
             }
         ]
     }
