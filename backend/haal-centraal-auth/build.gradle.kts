@@ -27,7 +27,7 @@ dockerCompose {
 
         implementation(project(":backend:object-management"))
 
-        implementation("io.github.microutils:kotlin-logging")
+        implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 

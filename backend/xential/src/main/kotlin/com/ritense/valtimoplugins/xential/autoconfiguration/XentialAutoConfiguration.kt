@@ -35,7 +35,7 @@ import com.ritense.valtimoplugins.xential.web.rest.DocumentResource
 import com.ritense.valtimoplugins.xential.web.rest.XentialSjablonenResource
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.service.ZaakDocumentService
-import org.camunda.bpm.engine.RuntimeService
+import org.operaton.bpm.engine.RuntimeService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan

@@ -24,9 +24,9 @@ import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalBadRequestException
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
 import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
-import mu.KotlinLogging
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 class HaalCentraalBagClient(
     private val webClient: HaalCentraalWebClient

@@ -55,7 +55,7 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
 
 
-    testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
     testImplementation("com.squareup.okhttp3:okhttp")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")

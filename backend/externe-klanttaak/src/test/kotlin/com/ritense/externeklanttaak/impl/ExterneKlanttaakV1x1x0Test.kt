@@ -32,7 +32,7 @@ import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSo
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSoort.URL
 import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakVersionV1x1x0
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimo.service.CamundaTaskService
+import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
@@ -59,7 +59,7 @@ class ExterneKlanttaakV1x1x0Test {
     private lateinit var pluginService: PluginService
     private lateinit var valueResolverService: ValueResolverService
     private lateinit var zaakUrlProvider: ZaakUrlProvider
-    private lateinit var taskservice: CamundaTaskService
+    private lateinit var taskservice: OperatonTaskService
     private lateinit var zakenApiPlugin: ZakenApiPlugin
 
     @BeforeEach

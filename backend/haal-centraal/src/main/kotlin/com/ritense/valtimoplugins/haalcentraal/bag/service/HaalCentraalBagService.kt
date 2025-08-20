@@ -22,8 +22,8 @@ import com.ritense.valtimoplugins.haalcentraal.bag.model.Address
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressDto
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressRequest
 import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
-import mu.KotlinLogging
 import java.net.URI
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 class HaalCentraalBagService(
     private val haalCentraalBagClient: HaalCentraalBagClient

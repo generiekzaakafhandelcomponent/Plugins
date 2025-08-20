@@ -16,8 +16,8 @@
 
 package com.ritense.externeklanttaak.domain
 
-import org.camunda.bpm.engine.delegate.DelegateExecution
-import org.camunda.bpm.engine.delegate.DelegateTask
+import org.operaton.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateTask
 import kotlin.reflect.KClass
 
 interface IExterneKlanttaakVersion {

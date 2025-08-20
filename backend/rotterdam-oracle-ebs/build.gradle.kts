@@ -52,11 +52,13 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-//    testImplementation("org.camunda.bpm:camunda-bpm-junit5:7.21.0")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
-    testImplementation("com.squareup.okhttp3:mockwebserver")
+//    testImplementation("org.camunda.bpm:camunda-bpm-junit5:7.21.0")
+//    testImplementation("org.operaton.bpm:operaton-bpm-junit5:1.0.0-beta-4")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
+
 }
 
 apply(from = "gradle/publishing.gradle")

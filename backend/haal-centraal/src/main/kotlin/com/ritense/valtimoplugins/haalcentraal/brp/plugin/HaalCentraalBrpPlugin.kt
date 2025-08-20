@@ -28,8 +28,9 @@ import com.ritense.valtimoplugins.haalcentraal.brp.exception.HcBewoningenNotFoun
 import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
 import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService
 import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
-import mu.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(

@@ -31,7 +31,7 @@ import com.ritense.valtimoplugins.huggingface.client.mistral.StringWrapper
 import freemarker.template.Configuration
 import freemarker.template.Configuration.VERSION_2_3_32
 import freemarker.template.Template
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.io.StringWriter
 import java.net.URI
 import java.util.UUID

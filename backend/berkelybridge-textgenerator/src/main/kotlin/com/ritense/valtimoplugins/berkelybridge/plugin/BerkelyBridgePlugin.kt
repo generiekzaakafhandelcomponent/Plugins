@@ -28,7 +28,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_STA
 import com.ritense.valtimoplugins.berkelybridge.client.BerkelyBridgeClient
 
 import com.ritense.valueresolver.ValueResolverService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "bbtextgenerator",

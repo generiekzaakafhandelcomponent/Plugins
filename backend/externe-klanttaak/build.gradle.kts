@@ -27,7 +27,7 @@ dependencies {
     implementation("com.ritense.valtimo:catalogi-api")
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
+    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:documenten-api")
     implementation("com.ritense.valtimo:outbox")
     implementation("com.ritense.valtimo:object-management")
@@ -39,7 +39,6 @@ dependencies {
     implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:value-resolver")
     implementation("com.ritense.valtimo:zaken-api")
-
     implementation(kotlin("reflect"))
 
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -59,7 +58,7 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
-
+    testImplementation("org.camunda.bpm.extension.mockito:camunda-bpm-mockito:5.16.0")
     testImplementation("org.postgresql:postgresql")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")

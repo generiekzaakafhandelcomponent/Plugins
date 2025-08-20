@@ -2,22 +2,22 @@
   "changesetId": "task-v1",
   "permissions": [
     {
-      "resourceType": "com.ritense.valtimo.camunda.domain.CamundaTask",
+      "resourceType": "com.ritense.valtimo.operaton.domain.CamundaTask",
       "action": "view",
       "roleKey": "ROLE_ADMIN"
     },
     {
-      "resourceType": "com.ritense.valtimo.camunda.domain.CamundaTask",
+      "resourceType": "com.ritense.valtimo.operaton.domain.CamundaTask",
       "action": "view_list",
       "roleKey": "ROLE_ADMIN"
     },
     {
-      "resourceType": "com.ritense.valtimo.camunda.domain.CamundaTask",
+      "resourceType": "com.ritense.valtimo.operaton.domain.CamundaTask",
       "action": "assign",
       "roleKey": "ROLE_ADMIN"
     },
     {
-      "resourceType": "com.ritense.valtimo.camunda.domain.CamundaTask",
+      "resourceType": "com.ritense.valtimo.operaton.domain.CamundaTask",
       "action": "complete",
       "roleKey": "ROLE_ADMIN"
     }

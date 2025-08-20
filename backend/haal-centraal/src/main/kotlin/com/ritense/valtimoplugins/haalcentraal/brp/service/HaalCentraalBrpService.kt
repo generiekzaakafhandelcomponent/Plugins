@@ -21,7 +21,7 @@ import com.ritense.valtimoplugins.haalcentraal.brp.client.HcBrpClient
 import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningDto
 import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
 import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.net.URI
 
 class HaalCentraalBrpService(

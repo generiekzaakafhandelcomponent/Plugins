@@ -25,7 +25,7 @@ dockerCompose {
 
 dependencies {
     implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
+    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:temporary-resource-storage")

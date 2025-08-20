@@ -4,7 +4,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
+val lalakiCentralVersion: String by project
 val valtimoVersion: String by project
+val ktlintVersion: String by project
 
 plugins {
     // Idea
@@ -21,18 +23,20 @@ plugins {
     kotlin("plugin.jpa")
     kotlin("plugin.allopen")
 
+    // Checkstyle
+    id("org.jlleitschuh.gradle.ktlint")
+
     // Other
     id("com.avast.gradle.docker-compose")
-    id("cn.lalaki.central") version "1.2.5"
+    id("cn.lalaki.central")
 }
 
 allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { url = uri("https://s01.oss.sonatype.org/content/repositories/releases/") }
         maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
-        maven { url = uri("https://repo.ritense.com/repository/maven-public/") }
-        maven { url = uri("https://repo.ritense.com/repository/maven-snapshot/") }
     }
 }
 
@@ -40,10 +44,6 @@ subprojects {
     println("Configuring ${project.path}")
 
     if (project.path.startsWith(":backend")) {
-
-        tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
-            mainClass.set("com.ritense.plugin.sandbox.PluginApplication")
-        }
         apply(plugin = "java")
         apply(plugin = "org.springframework.boot")
         apply(plugin = "io.spring.dependency-management")
@@ -56,19 +56,19 @@ subprojects {
         apply(plugin = "com.avast.gradle.docker-compose")
         apply(plugin = "maven-publish")
 
-        java.sourceCompatibility = JavaVersion.VERSION_17
-        java.targetCompatibility = JavaVersion.VERSION_17
+        java.sourceCompatibility = JavaVersion.VERSION_21
+        java.targetCompatibility = JavaVersion.VERSION_21
 
         tasks.withType<KotlinCompile> {
             compilerOptions {
-                jvmTarget = JvmTarget.JVM_17
+                jvmTarget = JvmTarget.JVM_21
                 javaParameters = true
             }
         }
 
         dependencies {
             implementation(platform("com.ritense.valtimo:valtimo-dependency-versions:$valtimoVersion"))
-            implementation("cn.lalaki.central:central:1.2.5")
+            implementation("cn.lalaki.central:central:$lalakiCentralVersion")
         }
 
         allOpen {
@@ -115,6 +115,10 @@ subprojects {
     if (project.path.startsWith(":backend") && project.name != "app" && project.name != "gradle" && project.name != "backend") {
         apply(from = "$rootDir/gradle/publishing.gradle")
     }
+}
+
+ktlint {
+    version.set("1.4.1")
 }
 
 tasks.bootJar {

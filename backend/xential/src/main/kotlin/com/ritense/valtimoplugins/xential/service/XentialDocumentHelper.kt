@@ -4,7 +4,7 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.zakenapi.service.ZaakDocumentService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import com.ritense.documentenapi.web.rest.dto.DocumentSearchRequest
 import com.ritense.valtimoplugins.xential.domain.FileFormat
 import com.ritense.valtimoplugins.xential.plugin.XentialPlugin

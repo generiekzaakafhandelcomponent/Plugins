@@ -20,9 +20,7 @@ import com.rotterdam.esb.opvoeren.models.Grootboekrekening
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
-import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.community.mockito.delegate.DelegateExecutionFake
-import org.hibernate.validator.constraints.Length
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -30,10 +28,12 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import org.operaton.bpm.engine.RuntimeService
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import java.time.LocalDateTime
-import kotlin.String
+
 
 class OracleEbsPluginTest {
 
@@ -75,6 +75,8 @@ class OracleEbsPluginTest {
     @Test
     fun `should resolve values`() {
         // given
+        val runtimeService: RuntimeService = runtimeService()
+        val bla = DelegateExecution()
         val execution = DelegateExecutionFake()
             .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
             .withVariable("invoiceAmount", 124.78)

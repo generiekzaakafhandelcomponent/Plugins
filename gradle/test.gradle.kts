@@ -17,7 +17,7 @@
 tasks.register<Test>("integrationTesting") {
     description = "Integration tests"
     group = "verification"
-    systemProperty("spring.profiles.include", "postgresql")
+    systemProperty("spring.profiles.include", "inttest,postgresql")
     useJUnitPlatform {
         includeTags("integration")
     }

@@ -19,13 +19,14 @@ package com.ritense.valtimoplugins.freemarker.plugin.text
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
-import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
+import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.valtimo.operaton.service.OperatonRuntimeService
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_TEXT
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "text-template",
@@ -56,7 +57,7 @@ open class TextTemplatePlugin(
 
     private fun generateTextContent(execution: DelegateExecution, templateKey: String): String {
         val document = processDocumentService.getDocument(
-            CamundaProcessInstanceId(execution.processInstanceId),
+            OperatonProcessInstanceId(execution.processInstanceId),
             execution
         )
         return templateService.generate(

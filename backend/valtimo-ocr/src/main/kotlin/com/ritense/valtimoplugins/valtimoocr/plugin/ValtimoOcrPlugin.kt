@@ -25,7 +25,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.valtimoocr.client.MistralOCRModel
 import com.ritense.valtimoplugins.valtimoocr.client.mistral.MistralOCRPage
 import com.ritense.valtimoplugins.valtimoocr.client.mistral.OCRResult
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(

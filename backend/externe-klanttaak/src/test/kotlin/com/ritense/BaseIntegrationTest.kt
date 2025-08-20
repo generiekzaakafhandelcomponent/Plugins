@@ -19,37 +19,29 @@ package com.ritense
 import com.ritense.authorization.specification.impl.NoopAuthorizationSpecificationFactory
 import com.ritense.catalogiapi.service.ZaaktypeUrlProvider
 import com.ritense.resource.service.ResourceService
-import com.ritense.valtimo.camunda.domain.CamundaTask
+import com.ritense.valtimo.operaton.domain.OperatonTask
 import com.ritense.valtimo.contract.authentication.UserManagementService
 import com.ritense.valtimo.contract.mail.MailSender
 import com.ritense.zakenapi.ResourceProvider
 import com.ritense.zakenapi.ZaakUrlProvider
 import org.junit.jupiter.api.Tag
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
+
 
 @SpringBootTest
 @Tag("integration")
 abstract class BaseIntegrationTest {
-    @MockBean
     lateinit var resourceService: ResourceService
 
-    @MockBean
     lateinit var userManagementService: UserManagementService
 
-    @MockBean
     lateinit var mailSender: MailSender
 
-    @MockBean
     lateinit var resourceProvider: ResourceProvider
 
-    @MockBean
     lateinit var zaakUrlProvider: ZaakUrlProvider
 
-    @MockBean
     lateinit var zaaktypeUrlProvider: ZaaktypeUrlProvider
 
-    @Autowired
-    lateinit var noopAuthorizationSpecificationFactory: NoopAuthorizationSpecificationFactory<CamundaTask>
+    lateinit var noopAuthorizationSpecificationFactory: NoopAuthorizationSpecificationFactory<OperatonTask>
 }

@@ -5,16 +5,15 @@ include(
     "backend:alfresco-authentication",
     "backend:amsterdam-email-api",
     "backend:berkelybridge-textgenerator",
-    "backend:valtimo-ocr",
     "backend:externe-klanttaak",
     "backend:freemarker",
-    "backend:haal-centraal",
-    "backend:haal-centraal-auth",
     "backend:mTLS-SSLContext",
     "backend:notify-nl",
     "backend:object-management",
     "backend:publictask",
     "backend:rotterdam-oracle-ebs",
+    "backend:haal-centraal",
+    "backend:haal-centraal-auth",
     "backend:slack",
     "backend:smtpmail",
     "backend:spotler",
@@ -31,9 +30,9 @@ pluginManagement {
     val springBootVersion: String by settings
     val springDependencyManagementVersion: String by settings
     val kotlinVersion: String by settings
-    val ktlintVersion: String by settings
-    val spotlessVersion: String by settings
     val dockerComposePluginVersion: String by settings
+    val lalakiCentralVersion: String by settings
+    val ktlintVersion: String by settings
 
     plugins {
         // Idea
@@ -52,5 +51,9 @@ pluginManagement {
 
         // Other
         id("com.avast.gradle.docker-compose") version dockerComposePluginVersion
+        id("cn.lalaki.central") version lalakiCentralVersion
+
+        // Checkstyle
+        id("org.jlleitschuh.gradle.ktlint") version ktlintVersion
     }
 }
