@@ -1,7 +1,0 @@
-[
-  {
-    "processDefinitionKey": "name-change-request",
-    "canInitializeDocument": true,
-    "startableByUser": false
-  }
-]

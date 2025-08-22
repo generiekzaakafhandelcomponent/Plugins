@@ -20,7 +20,6 @@ import com.rotterdam.esb.opvoeren.models.Grootboekrekening
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
-import org.camunda.community.mockito.delegate.DelegateExecutionFake
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,7 +27,6 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.operaton.bpm.engine.RuntimeService
 import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
@@ -44,7 +42,7 @@ class OracleEbsPluginTest {
     private lateinit var esbClient: EsbClient
     private lateinit var valueResolverService: ValueResolverService
     private lateinit var mTlsSslContext: MTlsSslContext
-
+    private lateinit var execution: DelegateExecution
     private lateinit var plugin: OracleEbsPlugin
 
     @BeforeEach
@@ -56,6 +54,7 @@ class OracleEbsPluginTest {
         esbClient = EsbClient()
         valueResolverService = mock()
         mTlsSslContext = mock()
+        execution = mock()
 
         plugin = OracleEbsPlugin(
             esbClient = esbClient,
@@ -75,16 +74,20 @@ class OracleEbsPluginTest {
     @Test
     fun `should resolve values`() {
         // given
-        val runtimeService: RuntimeService = runtimeService()
-        val bla = DelegateExecution()
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
-            .withVariable("invoiceAmount", 124.78)
         val invoiceAmount = 124.78
         val lastModified = LocalDateTime.parse("2025-03-19T16:15:30")
         val firstName = "John"
         val fixedValueA = "Fixed Value A"
         val fixedValueB = "Fixed Value B"
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
+        whenever(execution.getVariable("invoiceAmount"))
+            .thenReturn(invoiceAmount)
+
+//        val execution = DelegateExecutionFake()
+//            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+//            .withVariable("invoiceAmount", 124.78)
 
         val valuesToResolve = mapOf(
             "invoiceAmount" to "pv:invoiceAmount",
@@ -123,8 +126,11 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -158,8 +164,11 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost (regels via resolver as serialised JSON)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -193,8 +202,11 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost (regels via resolver as ArrayList (from doc or pv)) from grootboeksleutel`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -250,8 +262,11 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost (regels via resolver as ArrayList (from doc or pv)) with bronsleutel`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -302,8 +317,11 @@ class OracleEbsPluginTest {
     @Test
     fun `should push journaalpost (regels via resolver as ArrayNode)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -347,8 +365,11 @@ class OracleEbsPluginTest {
     @Test
     fun `should push verkoopfactuur`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -383,8 +404,12 @@ class OracleEbsPluginTest {
     @Test
     fun `should push verkoopfactuur (regels via resolver as serialised JSON)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
+
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -419,8 +444,11 @@ class OracleEbsPluginTest {
     @Test
     fun `should push verkoopfactuur (regels via resolver as ArrayList (from doc or pv)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 
@@ -464,8 +492,11 @@ class OracleEbsPluginTest {
     @Test
     fun `should push verkoopfactuur (regels via resolver as ArrayNode)`() {
         // given
-        val execution = DelegateExecutionFake()
-            .withProcessInstanceId("92edbc6c-c736-470d-8deb-382a69f25f43")
+        val processBusinessKey = "92edbc6c-c736-470d-8deb-382a69f25f43"
+        whenever(execution.processInstanceId)
+            .thenReturn(processBusinessKey)
+        whenever(execution.processBusinessKey)
+            .thenReturn(processBusinessKey)
 
         mockOkResponse(verwerkingsstatusGeslaagdAsJson())
 

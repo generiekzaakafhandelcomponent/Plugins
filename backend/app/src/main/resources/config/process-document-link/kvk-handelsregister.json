@@ -1,7 +1,0 @@
-[
-  {
-    "processDefinitionKey": "kvk-handelsregister",
-    "canInitializeDocument": true,
-    "startableByUser": false
-  }
-]

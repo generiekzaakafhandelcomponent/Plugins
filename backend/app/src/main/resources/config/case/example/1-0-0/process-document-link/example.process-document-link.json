@@ -1,0 +1,12 @@
+[
+    {
+        "processDefinitionKey": "SlackMessageExample",
+        "canInitializeDocument": true,
+        "startableByUser": true
+    },
+    {
+        "processDefinitionKey": "send-smtp-mail-process",
+        "canInitializeDocument": true,
+        "startableByUser": true
+    }
+]
