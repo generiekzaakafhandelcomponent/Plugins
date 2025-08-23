@@ -1,0 +1,13 @@
+{
+    "components": [
+        {
+            "type": "button",
+            "label": "je gaat nu een document aanmaken",
+            "showValidations": false,
+            "disableOnInvalid": true,
+            "tableView": false,
+            "key": "submit",
+            "input": true
+        }
+    ]
+}
