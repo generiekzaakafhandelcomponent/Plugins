@@ -145,6 +145,18 @@
             "action": "view",
             "roleKey": "ROLE_USER",
             "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+            "action": "view",
+            "roleKey": "ROLE_USER",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+            "action": "view_list",
+            "roleKey": "ROLE_USER",
+            "conditions": []
         }
     ]
 }
