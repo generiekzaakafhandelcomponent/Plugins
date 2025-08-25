@@ -19,9 +19,6 @@
     "paths": {
       "@src": ["src"],
       "@src/*": ["src/*"],
-      "@valtimo-plugins/alfresco-auth": ["dist/valtimo-plugins/alfresco-auth"],
-      "@valtimo-plugins/amsterdam-emailapi": ["dist/valtimo-plugins/amsterdam-emailapi"],
-      "@valtimo-plugins/berkelybridge": ["dist/valtimo-plugins/berkelybridge"],
       "@valtimo-plugins/freemarker": ["dist/valtimo-plugins/freemarker"],
       "@valtimo-plugins/haal-centraal": ["./dist/valtimo-plugins/haal-centraal"],
       "@valtimo-plugins/haal-centraal-auth": ["./dist/valtimo-plugins/haal-centraal-auth"],
