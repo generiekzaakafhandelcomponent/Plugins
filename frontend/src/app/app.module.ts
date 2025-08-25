@@ -88,12 +88,6 @@ import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
 import {ObjectModule} from "@valtimo/object";
 
-import {AlfrescoAuthPluginModule, alfrescoAuthPluginSpecification} from '@valtimo-plugins/alfresco-auth';
-import {AmsterdamEmailapiPluginModule, amsterdamEmailapiPluginSpecification} from '@valtimo-plugins/amsterdam-emailapi';
-import {
-    BerkelybridgeTextgeneratorPluginModule,
-    berkelybridgeTextgeneratorPluginSpecification
-} from '@valtimo-plugins/berkelybridge';
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {
     MailTemplatePluginModule,
@@ -154,9 +148,6 @@ export function tabsFactory() {
     ],
     imports: [
         ValuePathSelectorComponent,
-        AlfrescoAuthPluginModule,
-        AmsterdamEmailapiPluginModule,
-        BerkelybridgeTextgeneratorPluginModule,
         MailTemplatePluginModule,
         TextTemplatePluginModule,
         PublictaskPluginModule,
@@ -238,9 +229,6 @@ export function tabsFactory() {
     providers: [{
         provide: PLUGINS_TOKEN,
         useValue: [
-            alfrescoAuthPluginSpecification,
-            amsterdamEmailapiPluginSpecification,
-            berkelybridgeTextgeneratorPluginSpecification,
             valtimoOcrPluginSpecification,
             externeKlanttaakPluginSpecification,
             mailTemplatePluginSpecification,
