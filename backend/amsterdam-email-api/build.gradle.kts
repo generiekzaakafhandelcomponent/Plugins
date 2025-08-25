@@ -28,6 +28,9 @@ dependencies {
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:value-resolver")
+    implementation("com.ritense.valtimo:documenten-api") {
+        exclude(group = "com.ritense.valtimo", module = "catalogi-api")
+    }
 
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -42,6 +45,7 @@ dependencies {
     implementation("org.apache.httpcomponents:httpcore:4.4.15")
 
     implementation("com.auth0:java-jwt:4.4.0")
+    implementation("com.github.ksuid:ksuid:1.1.3")
 
     // Testing
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
@@ -63,4 +67,4 @@ dependencies {
 
 }
 
-apply(from = "gradle/publishing.gradle")
+//apply(from = "gradle/publishing.gradle")

@@ -18,9 +18,10 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {PluginConfigurationComponent} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
+import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {AmsterdamEmailApiConfig} from "../../models";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'valtimo-amsterdam-emailapi-configuration',
@@ -43,6 +44,31 @@ export class AmsterdamEmailapiConfigurationComponent
   private readonly formValue$ = new BehaviorSubject<AmsterdamEmailApiConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+  readonly authenticationPluginSelectItems$: Observable<Array<{id: string; text: string}>> =
+      combineLatest([
+        this.pluginManagementService.getPluginConfigurationsByCategory(
+            'documenten-api-authentication'
+        ),
+        this.translateService.stream('key'),
+      ]).pipe(
+          map(([configurations]) =>
+              configurations.map(configuration => ({
+                id: configuration.id,
+                text: `${configuration.title} - ${this.pluginTranslationService.instant(
+                    'title',
+                    configuration.pluginDefinition.key
+                )}`,
+              }))
+          )
+      );
+
+  constructor(
+      private readonly pluginManagementService: PluginManagementService,
+      private readonly pluginTranslationService: PluginTranslationService,
+      private readonly translateService: TranslateService,
+  ) {
+  }
+
   ngOnInit(): void {
     this.openSaveSubscription();
   }
@@ -58,10 +84,8 @@ export class AmsterdamEmailapiConfigurationComponent
 
   private handleValid(formValue: AmsterdamEmailApiConfig): void {
     const valid = !!(formValue.configurationTitle
-        && formValue.clientId
-        && formValue.clientSecret
         && formValue.emailApiBaseUrl
-        && formValue.tokenEndpoint);
+        && formValue.subscriptionKey);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

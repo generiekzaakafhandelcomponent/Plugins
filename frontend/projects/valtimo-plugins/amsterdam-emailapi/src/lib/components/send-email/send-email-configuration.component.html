@@ -24,13 +24,51 @@
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
   } as obs"
 >
+
+  <cds-inline-notification
+    style="margin-bottom: 34px;"
+    [notificationObj]="{
+            type: 'info',
+            title: 'Ontvangers velden',
+            message: 'Het Aan/CC/BCC veld verwacht een lijst aan email addressen. Wanneer dit veld is ingevuld, worden de \'Aan/CC/BCC email/naam\' velden genegeerd. Deze velden bestaan uitsluitend vanwege bestaande configuraties die deze velden nog gebruiken.',
+            showClose: false,
+            lowContrast: true}"
+  ></cds-inline-notification>
+
+  <v-input
+          name="zaakId"
+          [title]="'zaakId' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.zaakId"
+          [disabled]="obs.disabled"
+          [required]="true"
+  >
+  </v-input>
+  <v-input
+          name="relatieCodes"
+          [title]="'relatieCodes' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.relatieCodes"
+          [disabled]="obs.disabled"
+          [required]="false"
+  >
+  </v-input>
+  <v-input
+          name="to"
+          [title]="'to' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.to"
+          [disabled]="obs.disabled"
+          [required]="false"
+  >
+  </v-input>
   <v-input
           name="toEmail"
           [title]="'toEmail' | pluginTranslate: pluginId | async"
           [margin]="true"
           [defaultValue]="obs.prefill?.toEmail"
           [disabled]="obs.disabled"
-          [required]="true"
+          [required]="false"
   >
   </v-input>
   <v-input
@@ -61,6 +99,24 @@
   >
   </v-input>
   <v-input
+          name="attachments"
+          [title]="'attachments' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.attachments"
+          [disabled]="obs.disabled"
+          [required]="false"
+  >
+  </v-input>
+  <v-input
+          name="cc"
+          [title]="'cc' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.cc"
+          [disabled]="obs.disabled"
+          [required]="false"
+  >
+  </v-input>
+  <v-input
           name="ccEmail"
           [title]="'ccEmail' | pluginTranslate: pluginId | async"
           [margin]="true"
@@ -74,6 +130,15 @@
           [title]="'ccName' | pluginTranslate: pluginId | async"
           [margin]="true"
           [defaultValue]="obs.prefill?.ccName"
+          [disabled]="obs.disabled"
+          [required]="false"
+  >
+  </v-input>
+  <v-input
+          name="bcc"
+          [title]="'bcc' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.bcc"
           [disabled]="obs.disabled"
           [required]="false"
   >

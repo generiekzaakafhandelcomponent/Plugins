@@ -4,7 +4,7 @@ import com.ritense.valtimo.contract.audit.AuditEvent
 import java.time.LocalDateTime
 import java.util.*
 
-class EmailApiEvent(val eventMessage: String) : AuditEvent {
+class EmailApiEvent(val eventMessage: String): AuditEvent {
 
     var processUser: String = "system"
 

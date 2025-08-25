@@ -55,10 +55,12 @@ export class SendEmailConfigurationComponent
   }
 
   private handleValid(formValue: SendEmailConfig): void {
-    const valid = !!(formValue.toEmail)
-        && !!(formValue.emailSubject)
-        && !!(formValue.contentHtml)
-        && !!(formValue.fromAddress);
+    const valid =
+      !!(formValue.to || formValue.toEmail) &&
+      !!formValue.emailSubject &&
+      !!formValue.contentHtml &&
+      !!formValue.zaakId &&
+      !!formValue.fromAddress;
 
     this.valid$.next(valid);
     this.valid.emit(valid);
@@ -67,12 +69,12 @@ export class SendEmailConfigurationComponent
   private openSaveSubscription(): void {
     this.saveSubscription = this.save$?.subscribe(save => {
       combineLatest([this.formValue$, this.valid$])
-          .pipe(take(1))
-          .subscribe(([formValue, valid]) => {
-            if (valid) {
-              this.configuration.emit(formValue);
-            }
-          });
+        .pipe(take(1))
+        .subscribe(([formValue, valid]) => {
+          if (valid) {
+            this.configuration.emit(formValue);
+          }
+        });
     });
   }
 }
