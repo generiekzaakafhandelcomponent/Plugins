@@ -73,7 +73,6 @@ import {
   objecttypenApiPluginSpecification,
   PLUGINS_TOKEN
 } from '@valtimo/plugin';
-import {TaskManagementModule} from '@valtimo/task-management';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
 import {ObjectModule} from "@valtimo/object";
@@ -183,7 +182,6 @@ export function tabsFactory() {
             },
         }),
         TranslationManagementModule,
-        TaskManagementModule,
         ExterneKlanttaakPluginModule,
         RotterdamOracleEbsPluginModule,
         DashboardModule,

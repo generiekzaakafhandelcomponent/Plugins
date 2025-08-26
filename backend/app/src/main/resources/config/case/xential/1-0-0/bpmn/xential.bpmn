@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_13f33lz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://operaton.org/schema/modeler/1.0" id="Definitions_13f33lz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Operaton Platform" modeler:executionPlatformVersion="7.21.0">
   <bpmn:message id="Message_1cbdmsu" name="XENTIAL_TEST_DOC_RECEIVED" />
   <bpmn:collaboration id="Collaboration_15s7f2e">
     <bpmn:participant id="Participant_06az24z" name="Xential test flow" processRef="xential" />
@@ -10,9 +10,9 @@
     </bpmn:startEvent>
     <bpmn:userTask id="XentialFlowStarten" name="Start xential flow">
       <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:outputParameter name="xentialGebruikersId">${xentialUserIdHelper.getGebruikersId()}</camunda:outputParameter>
-        </camunda:inputOutput>
+        <operaton:inputOutput>
+          <operaton:outputParameter name="xentialGebruikersId">${xentialUserIdHelper.getGebruikersId()}</operaton:outputParameter>
+        </operaton:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_02rzsdc</bpmn:incoming>
       <bpmn:outgoing>Flow_194dpi4</bpmn:outgoing>
@@ -21,18 +21,18 @@
     <bpmn:sequenceFlow id="Flow_194dpi4" sourceRef="XentialFlowStarten" targetRef="XentialSjabloonMapSelecteren" />
     <bpmn:sequenceFlow id="Flow_13b5zop" sourceRef="XentialSjabloonMapSelecteren" targetRef="Activity_1g4qq7z" />
     <bpmn:sequenceFlow id="Flow_0i2yhfc" sourceRef="Activity_1g4qq7z" targetRef="Event_1hl2nsy" />
-    <bpmn:serviceTask id="XentialSjabloonMapSelecteren" name="sjabloon map selecteren" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:expression="${true}">
+    <bpmn:serviceTask id="XentialSjabloonMapSelecteren" name="sjabloon map selecteren" operaton:asyncBefore="true" operaton:asyncAfter="true" operaton:expression="${true}">
       <bpmn:incoming>Flow_194dpi4</bpmn:incoming>
       <bpmn:outgoing>Flow_13b5zop</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1hl2nsy">
       <bpmn:incoming>Flow_0i2yhfc</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:callActivity id="Activity_1g4qq7z" name="doc genereren" camunda:asyncBefore="true" camunda:asyncAfter="true" calledElement="xential-genereren">
+    <bpmn:callActivity id="Activity_1g4qq7z" name="doc genereren" operaton:asyncBefore="true" operaton:asyncAfter="true" calledElement="xential-genereren">
       <bpmn:extensionElements>
-        <camunda:in businessKey="#{execution.processBusinessKey}" />
-        <camunda:in source="xentialDocumentProperties" target="xentialDocumentProperties" />
-        <camunda:in source="xentialGebruikersId" target="xentialGebruikersId" />
+        <operaton:in businessKey="#{execution.processBusinessKey}" />
+        <operaton:in source="xentialDocumentProperties" target="xentialDocumentProperties" />
+        <operaton:in source="xentialGebruikersId" target="xentialGebruikersId" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_13b5zop</bpmn:incoming>
       <bpmn:outgoing>Flow_0i2yhfc</bpmn:outgoing>

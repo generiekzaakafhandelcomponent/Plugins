@@ -30,7 +30,7 @@ import com.ritense.valtimoplugins.amsterdam.emailapi.client.EmailClient
 import com.ritense.valtimoplugins.amsterdam.emailapi.client.EmailMessage
 import com.ritense.valtimoplugins.amsterdam.emailapi.client.Recipient
 import com.ritense.valueresolver.ValueResolverService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.springframework.http.*
 import org.springframework.util.MimeTypeUtils
 import org.springframework.util.StringUtils

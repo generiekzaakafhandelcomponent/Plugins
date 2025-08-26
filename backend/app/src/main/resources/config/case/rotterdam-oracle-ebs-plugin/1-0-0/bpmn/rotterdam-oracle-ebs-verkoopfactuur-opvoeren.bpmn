@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1n817fr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.33.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://operaton.org/schema/modeler/1.0" id="Definitions_1n817fr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.33.1" modeler:executionPlatform="Operaton Platform" modeler:executionPlatformVersion="7.22.0">
   <bpmn:process id="rotterdam-oracle-ebs-verkoopfactuur-opvoeren" name="Rotterdam - Oracle EBS plugin - Verkoopfactuur opvoeren" isExecutable="true">
     <bpmn:startEvent id="StartEvent">
       <bpmn:outgoing>Flow_1693eny</bpmn:outgoing>
@@ -9,7 +9,7 @@
       <bpmn:incoming>Flow_00wbuw8</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1tvz63t" sourceRef="verkoopfactuur-opvoeren" targetRef="verkoopfactuur-opvoeren-resultaat-bevestigen" />
-    <bpmn:serviceTask id="verkoopfactuur-opvoeren" name="Verkoopfactuur opvoeren" camunda:expression="${true}">
+    <bpmn:serviceTask id="verkoopfactuur-opvoeren" name="Verkoopfactuur opvoeren" operaton:expression="${true}">
       <bpmn:incoming>Flow_0rf9i0k</bpmn:incoming>
       <bpmn:outgoing>Flow_1tvz63t</bpmn:outgoing>
     </bpmn:serviceTask>

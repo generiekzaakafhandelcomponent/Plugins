@@ -25,7 +25,7 @@ import {
     FormModule,
     InputModule as ValtimoInputModule,
     ParagraphModule,
-    RenderInPageHeaderDirectiveModule,
+    RenderInPageHeaderDirective,
     SelectModule,
 } from '@valtimo/components';
 import {
@@ -72,7 +72,7 @@ import {GenerateTextFileComponent} from './components/generate-text-file/generat
         LoadingModule,
         ModalModule,
         NotificationModule,
-        RenderInPageHeaderDirectiveModule,
+        RenderInPageHeaderDirective,
         TabsModule,
     ],
     exports: [

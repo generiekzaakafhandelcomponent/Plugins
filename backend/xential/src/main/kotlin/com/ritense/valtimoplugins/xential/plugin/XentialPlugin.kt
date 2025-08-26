@@ -32,7 +32,7 @@ import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
 import com.ritense.valtimoplugins.xential.service.XentialSjablonenService
 import com.ritense.valueresolver.ValueResolverService
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.springframework.web.client.RestClient
 import java.net.URI
 import java.util.UUID

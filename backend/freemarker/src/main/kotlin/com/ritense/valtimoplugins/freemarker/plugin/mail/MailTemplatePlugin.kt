@@ -19,13 +19,13 @@ package com.ritense.valtimoplugins.freemarker.plugin.mail
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
-import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
+import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_MAIL
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "mail-template",
@@ -70,7 +70,7 @@ open class MailTemplatePlugin(
 
     private fun generateMailContent(execution: DelegateExecution, templateKey: String): String {
         val document = processDocumentService.getDocument(
-            CamundaProcessInstanceId(execution.processInstanceId),
+            OperatonProcessInstanceId(execution.processInstanceId),
             execution
         )
         return templateService.generate(

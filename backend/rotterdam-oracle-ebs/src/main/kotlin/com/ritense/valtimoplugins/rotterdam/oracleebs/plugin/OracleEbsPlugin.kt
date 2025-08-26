@@ -1,6 +1,5 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 
-import camundajar.impl.scala.annotation.switch
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -32,7 +31,7 @@ import com.rotterdam.esb.opvoeren.models.OpvoerenVerkoopfactuurVraag
 import com.rotterdam.esb.opvoeren.models.RelatieRotterdam
 import com.rotterdam.esb.opvoeren.models.Verkoopfactuur
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestClientResponseException
 import java.math.BigDecimal

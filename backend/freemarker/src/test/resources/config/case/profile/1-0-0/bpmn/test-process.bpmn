@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0uv9wiy" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://operaton.org/schema/modeler/1.0" id="Definitions_0uv9wiy" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Operaton Platform" modeler:executionPlatformVersion="7.17.0">
   <bpmn:process id="TestProcess" name="Test process" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1pder2a</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_1pder2a" sourceRef="StartEvent_1" targetRef="ServiceTask" />
-    <bpmn:serviceTask id="ServiceTask" name="Service task" camunda:expression="${null}">
+    <bpmn:serviceTask id="ServiceTask" name="Service task" operaton:expression="${null}">
       <bpmn:incoming>Flow_1pder2a</bpmn:incoming>
       <bpmn:outgoing>Flow_05spxbe</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -14,7 +14,7 @@
       <bpmn:incoming>Flow_07sl4jo</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_07sl4jo" sourceRef="user-task" targetRef="Event_12k61yv" />
-    <bpmn:userTask id="user-task" name="User task" camunda:candidateGroups="ROLE_USER">
+    <bpmn:userTask id="user-task" name="User task" operaton:candidateGroups="ROLE_USER">
       <bpmn:incoming>Flow_05spxbe</bpmn:incoming>
       <bpmn:outgoing>Flow_07sl4jo</bpmn:outgoing>
     </bpmn:userTask>

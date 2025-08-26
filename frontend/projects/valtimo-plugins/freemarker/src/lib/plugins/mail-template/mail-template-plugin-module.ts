@@ -25,8 +25,8 @@ import {
     FormModule,
     InputModule as ValtimoInputModule,
     ParagraphModule,
-    RenderInPageHeaderDirectiveModule,
-    SelectModule, ValtimoCdsOverflowButtonDirectiveModule,
+    RenderInPageHeaderDirective,
+    SelectModule,
 } from '@valtimo/components';
 import {GenerateMailContentComponent} from './components/generate-mail-content/generate-mail-content.component';
 import {GenerateMailFileComponent} from './components/generate-mail-file/generate-mail-file.component';
@@ -75,9 +75,8 @@ import {MailTemplateDeleteModalComponent} from './components/mail-template-delet
         LoadingModule,
         ModalModule,
         NotificationModule,
-        RenderInPageHeaderDirectiveModule,
+        RenderInPageHeaderDirective,
         TabsModule,
-        ValtimoCdsOverflowButtonDirectiveModule,
         MailTemplateDeleteModalComponent,
     ],
     exports: [

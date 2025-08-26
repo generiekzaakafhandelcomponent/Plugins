@@ -2,10 +2,10 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
                   xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
-                  xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0dt8m0a"
-                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.18.0"
-                  modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+                  xmlns:operaton="http://operaton.org/schema/1.0/bpmn"
+                  xmlns:modeler="http://operaton.org/schema/modeler/1.0" id="Definitions_0dt8m0a"
+                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.18.0"
+                  modeler:executionPlatform="Operaton Platform" modeler:executionPlatformVersion="7.17.0">
     <bpmn:process id="SlackMessageExample" name="Slack message example" isExecutable="true">
         <bpmn:startEvent id="StartEvent">
             <bpmn:outgoing>Flow_0m3mpzz</bpmn:outgoing>
@@ -15,7 +15,7 @@
             <bpmn:incoming>Flow_0dnfu37</bpmn:incoming>
         </bpmn:endEvent>
         <bpmn:sequenceFlow id="Flow_0dnfu37" sourceRef="SendSlackMessage" targetRef="EndEvent"/>
-        <bpmn:serviceTask id="SendSlackMessage" name="Send Slack message" camunda:expression="${null}">
+        <bpmn:serviceTask id="SendSlackMessage" name="Send Slack message" operaton:expression="${null}">
             <bpmn:incoming>Flow_0m3mpzz</bpmn:incoming>
             <bpmn:outgoing>Flow_0dnfu37</bpmn:outgoing>
         </bpmn:serviceTask>

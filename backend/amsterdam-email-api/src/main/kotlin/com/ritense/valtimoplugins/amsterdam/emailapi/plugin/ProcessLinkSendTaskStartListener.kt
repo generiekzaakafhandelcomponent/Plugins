@@ -22,7 +22,7 @@ package com.ritense.valtimoplugins.amsterdam.emailapi.plugin
 import com.ritense.plugin.repository.PluginProcessLinkRepository
 import com.ritense.plugin.service.PluginService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import org.camunda.bpm.engine.delegate.DelegateTask
+import org.operaton.bpm.engine.delegate.DelegateTask
 import org.springframework.context.event.EventListener
 
 open class ProcessLinkSendTaskStartListener(
@@ -32,8 +32,8 @@ open class ProcessLinkSendTaskStartListener(
 
     @EventListener(
         condition = ("#delegateTask.bpmnModelElementInstance != null " +
-                "&& #delegateTask.bpmnModelElementInstance.elementType.typeName == T(org.camunda.bpm.engine.ActivityTypes).TASK_SEND_TASK " +
-                "&& #delegateTask.eventName == T(org.camunda.bpm.engine.delegate.TaskListener).EVENTNAME_START")
+                "&& #delegateTask.bpmnModelElementInstance.elementType.typeName == T(org.operaton.bpm.engine.ActivityTypes).TASK_SEND_TASK " +
+                "&& #delegateTask.eventName == T(org.operaton.bpm.engine.delegate.TaskListener).EVENTNAME_START")
     )
     fun notify(delegateTask: DelegateTask) {
         val pluginProcessLinks = pluginProcessLinkRepository.findByProcessDefinitionIdAndActivityIdAndActivityType(

@@ -29,9 +29,9 @@ import com.ritense.valtimoplugins.publictask.repository.PublicTaskRepository
 import java.time.LocalDate
 import java.util.UUID
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.RuntimeService
-import org.camunda.bpm.engine.delegate.DelegateExecution
-import org.camunda.bpm.engine.delegate.DelegateTask
+import org.operaton.bpm.engine.RuntimeService
+import org.operaton.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateTask
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
@@ -67,13 +67,13 @@ class PublicTaskService(
     fun createPublicTaskHtml(publicTaskId: String): ResponseEntity<String> {
         val formHtml = try {
             val userTaskId = publicTaskRepository.getReferenceById(UUID.fromString(publicTaskId)).userTaskId
-            val camundaTaskData = runWithoutAuthorization {
+            val operatonTaskData = runWithoutAuthorization {
                 processLinkActivityService.openTask(userTaskId).properties as FormTaskOpenResultProperties
             }
             htmlRenderService.generatePublicTaskHtml(
                 fileName = PUBLIC_TASK_FILE_NAME,
                 variables = mapOf(
-                    "form_io_form" to camundaTaskData.prefilledForm.toPrettyString(),
+                    "form_io_form" to operatonTaskData.prefilledForm.toPrettyString(),
                     "public_task_url" to "$baseUrl$PUBLIC_TASK_URL?publicTaskId=$publicTaskId"
                 )
             )
@@ -95,7 +95,7 @@ class PublicTaskService(
                 .isBefore(LocalDate.now())
         ) return TASK_NOT_AVAILABLE_ERROR
 
-        val camundaTask = try {
+        val operatonTask = try {
             runWithoutAuthorization {
                 processLinkActivityService.openTask(publicTaskEntity.userTaskId)
             }
@@ -107,7 +107,7 @@ class PublicTaskService(
 
         val formSubmissionResult = runWithoutAuthorization {
             defaultFormSubmissionService.handleSubmission(
-                processLinkId = camundaTask.processLinkId,
+                processLinkId = operatonTask.processLinkId,
                 formData = submission,
                 documentId = publicTaskEntity.processBusinessKey,
                 documentDefinitionName = null,

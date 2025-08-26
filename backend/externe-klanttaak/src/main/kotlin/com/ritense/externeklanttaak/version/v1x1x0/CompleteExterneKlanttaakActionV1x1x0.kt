@@ -32,13 +32,13 @@ import com.ritense.externeklanttaak.version.v1x1x0.ExterneKlanttaakV1x1x0.TaakSt
 import com.ritense.notificatiesapi.exception.NotificatiesNotificationEventException
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
-import com.ritense.valtimo.service.CamundaTaskService
+import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.net.MalformedURLException
 import java.net.URI
 import java.util.UUID
@@ -46,7 +46,7 @@ import java.util.UUID
 class CompleteExterneKlanttaakActionV1x1x0(
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
-    private val taskService: CamundaTaskService,
+    private val taskService: OperatonTaskService,
     private val zaakUrlProvider: ZaakUrlProvider,
 ) : IPluginAction {
     fun complete(
