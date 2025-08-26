@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://operaton.org/schema/modeler/1.0" id="Definitions_0vol0sx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Operaton Platform" modeler:executionPlatformVersion="7.19.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0vol0sx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
   <bpmn:collaboration id="Collaboration_1gmd3lc">
     <bpmn:participant id="SuwinetRetrieveBrpPersonalInformation" name="Suwinet Retrieve BRP Personal Information" processRef="suwinet-brp-ophalen" />
     <bpmn:textAnnotation id="TextAnnotation_07okm9r">
@@ -8,10 +8,10 @@
     <bpmn:association id="Association_0kky9km" sourceRef="Activity_08qadpi" targetRef="TextAnnotation_07okm9r" />
   </bpmn:collaboration>
   <bpmn:process id="suwinet-brp-ophalen" name="Suwinet: Retrieve BRP Personal Information" isExecutable="true">
-    <bpmn:startEvent id="Event_0lg219h" operaton:asyncAfter="true">
+    <bpmn:startEvent id="Event_0lg219h" camunda:asyncAfter="true">
       <bpmn:outgoing>Flow_1tb0eas</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="Activity_08qadpi" name="ophalen BRP persoonsgegevens" operaton:asyncAfter="true" operaton:expression="${true}">
+    <bpmn:serviceTask id="Activity_08qadpi" name="ophalen BRP persoonsgegevens" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:incoming>Flow_1tb0eas</bpmn:incoming>
       <bpmn:outgoing>Flow_1qe90bb</bpmn:outgoing>
       <bpmn:property id="Property_1175sj0" name="__targetRef_placeholder" />
@@ -20,12 +20,12 @@
         <bpmn:targetRef>Property_1175sj0</bpmn:targetRef>
       </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1m2li20" name="store persoonsgegevens in document" operaton:asyncAfter="true" operaton:expression="${suwinetBrpStoreToDocService.storePersoonsgegevens(brpPersoonsgegevensInfo, &#34;/gegevensVanuitBronnen/persoon&#34;, execution.businessKey)}">
+    <bpmn:serviceTask id="Activity_1m2li20" name="store persoonsgegevens in document" camunda:asyncAfter="true" camunda:expression="${suwinetBrpStoreToDocService.storePersoonsgegevens(brpPersoonsgegevensInfo, &#34;/gegevensVanuitBronnen/persoon&#34;, execution.businessKey)}">
       <bpmn:extensionElements>
-        <operaton:inputOutput>
-          <operaton:outputParameter name="partnerBsn">${documentVariableDelegate.findValueByJsonPointerOrDefault("/gegevensVanuitBronnen/persoon/partnerBsn", execution, "")}</operaton:outputParameter>
-          <operaton:outputParameter name="kinderenBsns">${documentVariableDelegate.findValueByJsonPointerOrDefault("/gegevensVanuitBronnen/persoon/kinderenBsns", execution, "")}</operaton:outputParameter>
-        </operaton:inputOutput>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="partnerBsn">${documentVariableDelegate.findValueByJsonPointerOrDefault("/gegevensVanuitBronnen/persoon/partnerBsn", execution, "")}</camunda:outputParameter>
+          <camunda:outputParameter name="kinderenBsns">${documentVariableDelegate.findValueByJsonPointerOrDefault("/gegevensVanuitBronnen/persoon/kinderenBsns", execution, "")}</camunda:outputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1db28ks</bpmn:incoming>
       <bpmn:outgoing>Flow_1t85gku</bpmn:outgoing>
@@ -33,7 +33,7 @@
         <bpmn:targetRef>DocumentDataObjectReference</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_15dfru2" name="ophalen BRP partner gegevens" operaton:asyncAfter="true" operaton:expression="${true}">
+    <bpmn:serviceTask id="Activity_15dfru2" name="ophalen BRP partner gegevens" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:incoming>Flow_1o90ueh</bpmn:incoming>
       <bpmn:outgoing>Flow_0q570ig</bpmn:outgoing>
       <bpmn:property id="Property_1nmrhjy" name="__targetRef_placeholder" />
@@ -57,7 +57,7 @@
       <bpmn:outgoing>Flow_1u9o6ur</bpmn:outgoing>
       <bpmn:outgoing>Flow_07zbmo8</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_1o5iyv7" name="store persoonsgegevens partner in document" operaton:asyncAfter="true" operaton:expression="${suwinetBrpStoreToDocService.storePersoonsgegevens(brpPersoonsgegevensPartnerInfo, &#34;/gegevensVanuitBronnen/partner&#34;, execution.businessKey)}">
+    <bpmn:serviceTask id="Activity_1o5iyv7" name="store persoonsgegevens partner in document" camunda:asyncAfter="true" camunda:expression="${suwinetBrpStoreToDocService.storePersoonsgegevens(brpPersoonsgegevensPartnerInfo, &#34;/gegevensVanuitBronnen/partner&#34;, execution.businessKey)}">
       <bpmn:incoming>Flow_1u9o6ur</bpmn:incoming>
       <bpmn:outgoing>Flow_0vxg3x7</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DataOutputAssociation_01dbdxs">
@@ -81,7 +81,7 @@
       <bpmn:outgoing>Flow_1d2txnp</bpmn:outgoing>
       <bpmn:outgoing>Flow_1qsjhma</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_0407tm5" name="ophalen BRP kinderen gegevens" operaton:asyncAfter="true" operaton:expression="${true}">
+    <bpmn:serviceTask id="Activity_0407tm5" name="ophalen BRP kinderen gegevens" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:incoming>Flow_1qsjhma</bpmn:incoming>
       <bpmn:outgoing>Flow_0yekogb</bpmn:outgoing>
       <bpmn:property id="Property_11ujsas" name="__targetRef_placeholder" />
@@ -95,7 +95,7 @@
       <bpmn:outgoing>Flow_0fyfltj</bpmn:outgoing>
       <bpmn:outgoing>Flow_0vpb08m</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_1cq0lfb" name="store persoonsgegevens kinderen in document" operaton:asyncAfter="true" operaton:expression="${suwinetBrpStoreToDocService.storePersoonsgegevensKinderen(brpPersoonsgegevensKinderenInfo, brpPersoonsgegevensInfo, &#34;/gegevensVanuitBronnen/kinderen&#34;, execution.businessKey)}">
+    <bpmn:serviceTask id="Activity_1cq0lfb" name="store persoonsgegevens kinderen in document" camunda:asyncAfter="true" camunda:expression="${suwinetBrpStoreToDocService.storePersoonsgegevensKinderen(brpPersoonsgegevensKinderenInfo, brpPersoonsgegevensInfo, &#34;/gegevensVanuitBronnen/kinderen&#34;, execution.businessKey)}">
       <bpmn:incoming>Flow_0fyfltj</bpmn:incoming>
       <bpmn:outgoing>Flow_1g8197m</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DataOutputAssociation_1i6wv91">

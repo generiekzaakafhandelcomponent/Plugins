@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://operaton.org/schema/modeler/1.0" id="Definitions_0vol0sx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.29.0" modeler:executionPlatform="Operaton Platform" modeler:executionPlatformVersion="7.19.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0vol0sx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.29.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
   <bpmn:collaboration id="Collaboration_1gmd3lc">
     <bpmn:participant id="HandleNameChangeRequestParticipant" name="Handle name change request" processRef="name-change-request" />
   </bpmn:collaboration>
   <bpmn:process id="name-change-request" name="Handle name change request" isExecutable="true">
-    <bpmn:startEvent id="StartEvent" operaton:asyncAfter="true">
+    <bpmn:startEvent id="StartEvent" camunda:asyncAfter="true">
       <bpmn:outgoing>Flow_15ewkyi</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_15ewkyi" sourceRef="StartEvent" targetRef="Activity_1biafyo" />
@@ -29,15 +29,15 @@
     <bpmn:endEvent id="Event_0mzhoa1">
       <bpmn:incoming>Flow_07olat4</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="CompleteCaseTask" name="Complete case" operaton:asyncAfter="true" operaton:expression="${true}">
+    <bpmn:serviceTask id="CompleteCaseTask" name="Complete case" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:incoming>PositiveSequenceFlow</bpmn:incoming>
       <bpmn:outgoing>Flow_0kml5mn</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="CancelCaseTask" name="Cancel case" operaton:asyncAfter="true" operaton:expression="${true}">
+    <bpmn:serviceTask id="CancelCaseTask" name="Cancel case" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:incoming>NegativeOrMissingSequenceFlow</bpmn:incoming>
       <bpmn:outgoing>Flow_071c82t</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="ConfirmNameChangeTask" name="Confirm name change" operaton:candidateGroups="ROLE_USER">
+    <bpmn:userTask id="ConfirmNameChangeTask" name="Confirm name change" camunda:candidateGroups="ROLE_USER">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_15n49c9</bpmn:incoming>
       <bpmn:outgoing>Flow_1m4yavj</bpmn:outgoing>
@@ -45,9 +45,9 @@
     <bpmn:sequenceFlow id="Flow_15n49c9" sourceRef="Activity_1biafyo" targetRef="ConfirmNameChangeTask" />
     <bpmn:task id="Activity_1biafyo" name="Prepare variables">
       <bpmn:extensionElements>
-        <operaton:inputOutput>
-          <operaton:outputParameter name="duedate">${dateTime().plusDays(4).toDateTimeISO().toString()}</operaton:outputParameter>
-        </operaton:inputOutput>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="duedate">${dateTime().plusDays(4).toDateTimeISO().toString()}</camunda:outputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_15ewkyi</bpmn:incoming>
       <bpmn:outgoing>Flow_15n49c9</bpmn:outgoing>

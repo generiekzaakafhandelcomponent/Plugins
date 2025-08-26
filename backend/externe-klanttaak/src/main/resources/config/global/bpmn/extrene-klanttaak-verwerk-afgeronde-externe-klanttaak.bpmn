@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0v1ejyk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.31.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0v1ejyk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.31.0">
   <bpmn:collaboration id="Collaboration_1hhep9j">
     <bpmn:extensionElements />
     <bpmn:participant id="ExterneKlanttaakVerwerkAfgerondeExterneKlanttaakParticipant" name="Externe Klanttaak: Verwerk afgeronde externe klanttaak" processRef="externe-klanttaak-verwerk-afgeronde-externe-klanttaak" />
   </bpmn:collaboration>
   <bpmn:process id="externe-klanttaak-verwerk-afgeronde-externe-klanttaak" name="Externe Klanttaak: Verwerk afgeronde externe klanttaak" isExecutable="true">
     <bpmn:extensionElements>
-      <operaton:properties>
-        <operaton:property name="systemProcess" value="true" />
-      </operaton:properties>
+      <camunda:properties>
+        <camunda:property name="systemProcess" value="true" />
+      </camunda:properties>
     </bpmn:extensionElements>
     <bpmn:startEvent id="start-event">
       <bpmn:outgoing>Flow_125lm4p</bpmn:outgoing>
@@ -18,7 +18,7 @@
     <bpmn:endEvent id="end-event">
       <bpmn:incoming>Flow_1gm4977</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="VerwerkExterneKlanttaakTask" name="Verwerk externe klanttaak" operaton:asyncAfter="true" operaton:expression="${true}">
+    <bpmn:serviceTask id="VerwerkExterneKlanttaakTask" name="Verwerk externe klanttaak" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_125lm4p</bpmn:incoming>
       <bpmn:outgoing>Flow_1gm4977</bpmn:outgoing>

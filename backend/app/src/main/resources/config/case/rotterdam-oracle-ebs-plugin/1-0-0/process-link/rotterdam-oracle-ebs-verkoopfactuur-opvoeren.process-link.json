@@ -24,9 +24,22 @@
       "factuurKlasse": "pv:factuurKlasse",
       "factuurDatum": "pv:factuurDatum",
       "factuurVervaldatum": "pv:factuurVervaldatum",
+      "factuurKenmerk": "pv:factuurKenmerk",
+      "factuurAdresType": "Locatie",
+      "factuurAdresLocatie": {
+        "naamContactpersoon": "pv:factuurAdresNaamContactpersoon",
+        "vestigingsnummerRotterdam": "pv:factuurAdresVestigingsnummerRotterdam",
+        "straatnaam": "pv:factuurAdresStraatnaam",
+        "huisnummer": "pv:factuurAdresHuisnummer",
+        "huisnummertoevoeging": "pv:factuurAdresHuisnummertoevoeging",
+        "postcode": "pv:factuurAdresPostcode",
+        "plaatsnaam": "pv:factuurAdresPlaatsnaam",
+        "landcode": "pv:factuurAdresLandcode"
+      },
       "inkoopOrderReferentie": "pv:inkoopOrderReferentie",
       "relatieType": "Natuurlijk persoon",
       "natuurlijkPersoon": {
+        "bsn": "pv:natuurlijkPersoonBsn",
         "achternaam": "pv:natuurlijkPersoonAchternaam",
         "voornamen": "pv:natuurlijkPersoonVoornamen"
       },

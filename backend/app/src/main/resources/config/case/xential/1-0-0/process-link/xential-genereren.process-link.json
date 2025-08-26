@@ -3,25 +3,25 @@
     "activityId": "XentialSelecteerSjabloon",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.kies-sjabloon"
+    "formDefinitionName": "xential-genereren.kies-sjabloon"
   },
   {
     "activityId": "XentialErrorNaSelecteerSjabloon",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.error-na-kies-sjabloon"
+    "formDefinitionName": "xential-genereren.error-na-kies-sjabloon"
   },
   {
-    "activityId": "XentialToegangControleren",
+    "activityId": "XentialGeenToegang",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.resultaat-toegang-controleren"
+    "formDefinitionName": "xential-genereren.geen-toegang"
   },
   {
     "activityId": "OpenXentialWizardTask",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "xential.wizard"
+    "formDefinitionName": "xential-genereren.wizard"
   },
   {
     "activityId": "XentialTestMapToegang",
@@ -46,6 +46,32 @@
       "xentialData": "pv:xentialData",
       "xentialSjabloonId": "pv:xentialSjabloonId",
       "xentialGebruikersId": "pv:xentialGebruikersId"
+    }
+  },
+  {
+    "activityId": "XentialUploadDocument",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "5474fe57-532a-4050-8d89-32e62ca3e895",
+    "pluginActionDefinitionKey": "store-temp-document",
+    "actionProperties": {
+      "title": "pv:xentialDocumentProperties.documentFilename",
+      "fileName": "pv:xentialDocumentProperties.documentFilename",
+      "localDocumentLocation": "xentialResourceId",
+      "storedDocumentUrl": "pdfDocumentUrl",
+      "informatieobjecttype": "pv:xentialDocumentProperties.informationObjectType",
+      "taal": "nld",
+      "status": "definitief"
+    }
+  },
+  {
+    "activityId": "XentialKoppelDocumentAanZaak",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+    "pluginActionDefinitionKey": "link-document-to-zaak",
+    "actionProperties": {
+      "documentUrl": "pv:pdfDocumentUrl"
     }
   }
 ]

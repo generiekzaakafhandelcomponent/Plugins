@@ -6,9 +6,10 @@ on:
       - 'frontend/**'
     branches:
       - main
+      - feature/github-actions-workflows
       - v12
       - v13
-      - feature/github-actions-workflows
+      - v13.1
 
 jobs:
   # -------------------------------------------------------------

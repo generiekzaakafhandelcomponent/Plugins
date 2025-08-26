@@ -1,0 +1,100 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Beschikbare testadressen (BAG Simulator)",
+      "applyMaskOn": "change",
+      "autoExpand": true,
+      "disabled": true,
+      "tableView": true,
+      "defaultValue": "Postcode: 2511EB\nHuisnummer: 9\nHuisletter: B\nToevoeging: 1\n\nPostcode: 1053KW\nHuisnummer: 72\nHuisletter: D\nToevoeging: geen\n\nPostcode: 2514GN\nHuisnummer: 68\nHuisletter: geen\nToevoeging: geen\n",
+      "type": "textarea",
+      "input": true
+    },
+    {
+      "key": "postcode",
+      "type": "textfield",
+      "input": true,
+      "label": "Postcode",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "Get Adres-postcode"
+      },
+      "applyMaskOn": "change",
+      "defaultValue": "2514GN"
+    },
+    {
+      "key": "huisnummer",
+      "type": "textfield",
+      "input": true,
+      "label": "Huisnummer",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "Get Adres-huisnummer"
+      },
+      "applyMaskOn": "change",
+      "defaultValue": "68"
+    },
+    {
+      "key": "huisletter",
+      "type": "textfield",
+      "input": true,
+      "label": "Huisletter",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "Get Adres-huisletter"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "huisnummertoevoeging",
+      "type": "textfield",
+      "input": true,
+      "label": "Huisnummertoevoeging",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "Get Adres-huisnummertoevoeging"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "exacteOvereenkomst",
+      "type": "radio",
+      "input": true,
+      "label": "Exacte overeenkomst",
+      "inline": true,
+      "values": [
+        {
+          "label": "True",
+          "value": "true",
+          "shortcut": ""
+        },
+        {
+          "label": "False",
+          "value": "false",
+          "shortcut": ""
+        }
+      ],
+      "validate": {
+        "required": true
+      },
+      "tableView": false,
+      "attributes": {
+        "data-testid": "Get Adres-exacteOvereenkomst"
+      },
+      "defaultValue": false,
+      "optionsLabelPosition": "right"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

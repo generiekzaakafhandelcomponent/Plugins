@@ -31,6 +31,7 @@ interface JournaalpostOpvoerenConfig {
     categorie: string;
     saldoSoort: string;
     omschrijving?: string;
+    grootboek?: string;
     boekjaar?: string;
     boekperiode?: string;
     regels?: Array<JournaalpostRegel>;
@@ -39,6 +40,7 @@ interface JournaalpostOpvoerenConfig {
 
 interface JournaalpostRegel {
     grootboekSleutel: string;
+    bronSleutel: string;
     boekingType: string;
     bedrag: string;
     omschrijving?: string;
@@ -51,6 +53,10 @@ interface VerkoopfactuurOpvoerenConfig {
     factuurKlasse: string;
     factuurDatum: string;
     factuurVervaldatum?: string;
+    factuurKenmerk?: string;
+    factuurAdresType: AdresType;
+    factuurAdresLocatie?: AdresLocatie;
+    factuurAdresPostbus?: AdresPostbus;
     inkoopOrderReferentie: string;
     relatieType: RelatieType;
     natuurlijkPersoon?: NatuurlijkPersoon;
@@ -59,12 +65,33 @@ interface VerkoopfactuurOpvoerenConfig {
     regelsViaResolver?: string;
 }
 
+interface Adres {
+    naamContactpersoon?: string;
+    vestigingsnummerRotterdam?: string;
+    postcode: string;
+    plaatsnaam: string;
+    landcode: string;
+}
+
+interface AdresLocatie extends Adres {
+    straatnaam: string;
+    huisnummer: number;
+    huisnummertoevoeging?: string;
+}
+
+interface AdresPostbus extends Adres {
+    postbus: number;
+}
+
 interface NatuurlijkPersoon {
+    bsn: string;
     achternaam: string;
     voornamen: string;
 }
 
 interface NietNatuurlijkPersoon {
+    kvkNummer: string;
+    kvkVestigingsnummer: string;
     statutaireNaam: string;
 }
 
@@ -73,7 +100,13 @@ interface FactuurRegel {
     tarief: string;
     btwPercentage: string;
     grootboekSleutel: string;
+    bronSleutel: string;
     omschrijving: string;
+}
+
+enum AdresType {
+    LOCATIE = "Locatie",
+    POSTBUS = "Postbus"
 }
 
 enum RelatieType {
@@ -98,16 +131,25 @@ enum SaldoSoort {
     WERKELIJK = "Werkelijk"
 }
 
+enum Grootboek {
+    _100 = "100",
+    R10 = "R10"
+}
+
 export {
     RotterdamEsbConfig,
     JournaalpostOpvoerenConfig,
     JournaalpostRegel,
     VerkoopfactuurOpvoerenConfig,
+    AdresLocatie,
+    AdresPostbus,
     NatuurlijkPersoon,
     NietNatuurlijkPersoon,
     FactuurRegel,
+    AdresType,
     RelatieType,
     FactuurKlasse,
     BoekingType,
-    SaldoSoort
+    SaldoSoort,
+    Grootboek
 }

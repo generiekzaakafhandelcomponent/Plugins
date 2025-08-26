@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://operaton.org/schema/modeler/1.0" id="Definitions_0vol0sx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Operaton Platform" modeler:executionPlatformVersion="7.19.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0vol0sx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
   <bpmn:collaboration id="Collaboration_1gmd3lc">
     <bpmn:participant id="OphalenKvkHandelsregisterBedrijfsnaamParticipant" name="Ophalen Kvk Handelsregister bedrijfsnaam" processRef="ophalen-kvk-handelsregister-bedrijfsnaam" />
     <bpmn:textAnnotation id="TextAnnotation_07okm9r">
@@ -10,15 +10,15 @@
     </bpmn:textAnnotation>
   </bpmn:collaboration>
   <bpmn:process id="ophalen-kvk-handelsregister-bedrijfsnaam" name="Ophalen Kvk Handelsregister bedrijfsnaam" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1" operaton:asyncAfter="true">
+    <bpmn:startEvent id="StartEvent_1" camunda:asyncAfter="true">
       <bpmn:outgoing>Flow_1tb0eas</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="OphalenKvkHandelsregisterBedrijfsnaamTask" name="Ophalen Kvk Handelsregister bedrijfsnaam" operaton:asyncAfter="true" operaton:expression="${true}">
+    <bpmn:serviceTask id="OphalenKvkHandelsregisterBedrijfsnaamTask" name="Ophalen Kvk Handelsregister bedrijfsnaam" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_0wny6al</bpmn:incoming>
       <bpmn:outgoing>Flow_1qe90bb</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="StoreBedrijfsnaamTask" name="store vestigingen in document" operaton:asyncAfter="true" operaton:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/brongegevens/handelsregister&#34;, kvkBedrijfsnaam)}">
+    <bpmn:serviceTask id="StoreBedrijfsnaamTask" name="store vestigingen in document" camunda:asyncAfter="true" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/brongegevens/handelsregister&#34;, kvkBedrijfsnaam)}">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_0x3o4h3</bpmn:incoming>
       <bpmn:outgoing>Flow_098fu06</bpmn:outgoing>
@@ -51,7 +51,7 @@
     <bpmn:sequenceFlow id="Flow_0pi1mad" sourceRef="Activity_0hd9sq7" targetRef="Gateway_12lynhp" />
     <bpmn:sequenceFlow id="Flow_1vk7b5g" sourceRef="Gateway_12lynhp" targetRef="Activity_1yml4bs" />
     <bpmn:sequenceFlow id="Flow_1r6pngh" sourceRef="Activity_1yml4bs" targetRef="Event_1111mmu" />
-    <bpmn:serviceTask id="Activity_0hd9sq7" name="markeren kvk niet gevonden" operaton:asyncAfter="true" operaton:expression="${true}" operaton:resultVariable="nietGevonden">
+    <bpmn:serviceTask id="Activity_0hd9sq7" name="markeren kvk niet gevonden" camunda:asyncAfter="true" camunda:expression="${true}" camunda:resultVariable="nietGevonden">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_1ia9g59</bpmn:incoming>
       <bpmn:outgoing>Flow_0pi1mad</bpmn:outgoing>
@@ -59,18 +59,18 @@
     <bpmn:subProcess id="Activity_0sqw9de" name="Vestiging Postcode Matcher">
       <bpmn:incoming>Flow_098fu06</bpmn:incoming>
       <bpmn:outgoing>Flow_1of50fu</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics isSequential="true" operaton:collection="${kvkBedrijfsnaam.vestigingen}" operaton:elementVariable="vestiging" />
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${kvkBedrijfsnaam.vestigingen}" camunda:elementVariable="vestiging" />
       <bpmn:startEvent id="Event_1yd78g4">
         <bpmn:outgoing>Flow_082fcpm</bpmn:outgoing>
       </bpmn:startEvent>
       <bpmn:endEvent id="Event_1bi9gpr">
         <bpmn:incoming>Flow_082s6su</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:businessRuleTask id="matchMetDhRangeTask" name="match met dh range" operaton:asyncAfter="true" operaton:resultVariable="matchResult" operaton:decisionRef="wmv-2024-postcode-vestiging-dh-table" operaton:mapDecisionResult="singleResult">
+      <bpmn:businessRuleTask id="matchMetDhRangeTask" name="match met dh range" camunda:asyncAfter="true" camunda:resultVariable="matchResult" camunda:decisionRef="wmv-2024-postcode-vestiging-dh-table" camunda:mapDecisionResult="singleResult">
         <bpmn:extensionElements>
-          <operaton:inputOutput>
-            <operaton:outputParameter name="postcodeVestigingDenhaag">${matchResult.postcodeVestigingDenhaag}</operaton:outputParameter>
-          </operaton:inputOutput>
+          <camunda:inputOutput>
+            <camunda:outputParameter name="postcodeVestigingDenhaag">${matchResult.postcodeVestigingDenhaag}</camunda:outputParameter>
+          </camunda:inputOutput>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_082fcpm</bpmn:incoming>
         <bpmn:outgoing>Flow_168sd8m</bpmn:outgoing>
@@ -95,17 +95,17 @@
       <bpmn:sequenceFlow id="Flow_1bd03b9" sourceRef="VestigingGevondenTask" targetRef="Gateway_0qbm1r0" />
       <bpmn:intermediateThrowEvent id="VestigingGevondenTask" name="throw vestiging gevonden event">
         <bpmn:extensionElements>
-          <operaton:inputOutput>
-            <operaton:inputParameter name="vestigingMap">
-              <operaton:map>
-                <operaton:entry key="vestiging">${vestiging}</operaton:entry>
-              </operaton:map>
-            </operaton:inputParameter>
-          </operaton:inputOutput>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="vestigingMap">
+              <camunda:map>
+                <camunda:entry key="vestiging">${vestiging}</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+          </camunda:inputOutput>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_0ar6ps6</bpmn:incoming>
         <bpmn:outgoing>Flow_1bd03b9</bpmn:outgoing>
-        <bpmn:messageEventDefinition id="MessageEventDefinition_01o4myr" operaton:expression="${messageCorrelationService.sendCorrelationMessageByBusinessKeyWithVariable(&#34;VESTIGING_FOUND_MESSAGE&#34;,execution.businessKey,&#34;vestiging&#34;,vestigingMap)}" />
+        <bpmn:messageEventDefinition id="MessageEventDefinition_01o4myr" camunda:expression="${messageCorrelationService.sendCorrelationMessageByBusinessKeyWithVariable(&#34;VESTIGING_FOUND_MESSAGE&#34;,execution.businessKey,&#34;vestiging&#34;,vestigingMap)}" />
       </bpmn:intermediateThrowEvent>
     </bpmn:subProcess>
     <bpmn:sequenceFlow id="Flow_098fu06" sourceRef="StoreBedrijfsnaamTask" targetRef="Activity_0sqw9de" />
@@ -129,15 +129,15 @@
       <bpmn:outgoing>Flow_1sbodw7</bpmn:outgoing>
       <bpmn:outgoing>Flow_1jdsvtu</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_1ncmnhk" name="Markeren als vestiging is buiten postcode range" operaton:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/markeringen&#34;, markeringList)}">
+    <bpmn:serviceTask id="Activity_1ncmnhk" name="Markeren als vestiging is buiten postcode range" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/markeringen&#34;, markeringList)}">
       <bpmn:extensionElements>
-        <operaton:inputOutput>
-          <operaton:inputParameter name="markeringList">
-            <operaton:list>
-              <operaton:value>Geen vestigingen gevodenn in postcode range</operaton:value>
-            </operaton:list>
-          </operaton:inputParameter>
-        </operaton:inputOutput>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="markeringList">
+            <camunda:list>
+              <camunda:value>Geen vestigingen gevodenn in postcode range</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1sbodw7</bpmn:incoming>
       <bpmn:outgoing>Flow_109zlrm</bpmn:outgoing>
@@ -153,10 +153,10 @@
     </bpmn:endEvent>
     <bpmn:task id="Activity_1yml4bs" name="set output">
       <bpmn:extensionElements>
-        <operaton:inputOutput>
-          <operaton:outputParameter name="kvkNummerNietGevonden">${execution.hasVariable("nietGevonden")}</operaton:outputParameter>
-          <operaton:outputParameter name="vestigingNietGevonden">${!execution.hasVariable("vestiging")}</operaton:outputParameter>
-        </operaton:inputOutput>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="kvkNummerNietGevonden">${execution.hasVariable("nietGevonden")}</camunda:outputParameter>
+          <camunda:outputParameter name="vestigingNietGevonden">${!execution.hasVariable("vestiging")}</camunda:outputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1vk7b5g</bpmn:incoming>
       <bpmn:outgoing>Flow_1r6pngh</bpmn:outgoing>

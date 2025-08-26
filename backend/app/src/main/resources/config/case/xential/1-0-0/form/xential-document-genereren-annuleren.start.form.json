@@ -1,0 +1,13 @@
+{
+    "components": [
+        {
+            "type": "button",
+            "label": "document genereren annuleren",
+            "showValidations": false,
+            "disableOnInvalid": true,
+            "tableView": false,
+            "key": "submit",
+            "input": true
+        }
+    ]
+}

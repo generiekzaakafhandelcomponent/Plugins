@@ -377,7 +377,7 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
         val pluginPropertiesJson = """
             {
               "url": "${server.url("/")}",
-              "callbackUrl": "http://host.docker.internal:8080/api/v1/notificatiesapi/callback",
+              "callbackUrl": "http://localhost:8080/api/v1/notificatiesapi/callback",
               "authenticationPluginConfiguration": "9d92670c-a5b9-48e5-8053-fe1907574a32"
             }
         """.trimIndent()

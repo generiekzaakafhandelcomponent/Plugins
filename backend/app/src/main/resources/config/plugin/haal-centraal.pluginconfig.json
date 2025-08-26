@@ -1,0 +1,28 @@
+[
+  {
+    "id": "6a6a3adc-ad44-4774-bcb0-b1a34c426561",
+    "title": "Haal Centraal BRP AUTH (autodeployed)",
+    "pluginDefinitionKey": "haal-centraal-auth",
+    "properties": {
+      "authenticationSecret": "SECRET"
+    }
+  },
+  {
+    "id": "a7a8487a-7ad6-42ac-9df2-e6cb2fc1e1e6",
+    "title": "Haal Centraal BRP (autodeployed)",
+    "pluginDefinitionKey": "haalcentraalbrp",
+    "properties": {
+      "brpBaseUrl": "http://localhost:5010/haalcentraal/api/bewoning",
+      "authenticationPluginConfiguration": "6a6a3adc-ad44-4774-bcb0-b1a34c426561"
+    }
+  },
+  {
+    "id": "f53419b3-a825-4bc1-ab92-a44757b5666c",
+    "title": "Haal Centraal BAG (autodeployed)",
+    "pluginDefinitionKey": "haalcentraalbag",
+    "properties": {
+      "bagBaseUrl": "http://localhost:5020/haalcentraal/api/bag/v1/",
+      "authenticationPluginConfiguration": "6a6a3adc-ad44-4774-bcb0-b1a34c426561"
+    }
+  }
+]

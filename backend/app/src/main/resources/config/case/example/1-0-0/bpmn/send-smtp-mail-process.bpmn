@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://operaton.org/schema/modeler/1.0" id="Definitions_0dt8m0a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Operaton Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Operaton Platform" modeler:executionPlatformVersion="7.17.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0dt8m0a" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
   <bpmn:process id="send-smtp-mail-process" name="Send SMTP Mail process" processType="None" isClosed="false" isExecutable="true">
     <bpmn:startEvent id="StartEvent">
       <bpmn:outgoing>Flow_0m3mpzz</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0m3mpzz" sourceRef="StartEvent" targetRef="CreateMailFromTemplate" />
-    <bpmn:serviceTask id="CreateMailFromTemplate" name="Create Mail from template" implementation="##WebService" operaton:expression="${null}">
+    <bpmn:serviceTask id="CreateMailFromTemplate" name="Create Mail from template" implementation="##WebService" camunda:expression="${null}">
       <bpmn:incoming>Flow_0m3mpzz</bpmn:incoming>
       <bpmn:outgoing>Flow_0ux7rym</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -14,7 +14,7 @@
       <bpmn:incoming>Flow_0ndg7zz</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0ndg7zz" sourceRef="SendMail" targetRef="Event_1i2t034" />
-    <bpmn:serviceTask id="SendMail" name="Send mail" implementation="##WebService" operaton:expression="${null}">
+    <bpmn:serviceTask id="SendMail" name="Send mail" implementation="##WebService" camunda:expression="${null}">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_0ux7rym</bpmn:incoming>
       <bpmn:outgoing>Flow_0ndg7zz</bpmn:outgoing>

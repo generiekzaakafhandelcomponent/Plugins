@@ -15,46 +15,46 @@
   -->
 
 <v-form
-  (valueChange)="formValueChange($event)"
-  *ngIf="{
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
     disabled: disabled$ | async,
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
   } as obs"
 >
-  <v-input
-    name="configurationTitle"
-    [title]="'configurationTitle' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.configurationTitle"
-    [required]="true"
-    [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
-    [widthPx]="350"
-    placeholder="Hugging Face Plugin"
-  >
-  </v-input>
-  <v-input
-    name="url"
-    [title]="'url' | pluginTranslate: pluginId | async"
-    [fullWidth]="true"
-    [margin]="true"
-    [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.url"
-    [required]="true"
-    [tooltip]="'urlTooltip' | pluginTranslate: pluginId | async"
-    placeholder=""
-  >
-  </v-input>
-  <v-input
-    name="token"
-    type="password"
-    [title]="'token' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.clientSecret"
-    [required]="true"
-    [fullWidth]="true"
-    [tooltip]="'tokenTooltip' | pluginTranslate: pluginId | async"
-  >
-  </v-input>
+    <v-input
+            name="configurationTitle"
+            [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.configurationTitle"
+            [required]="true"
+            [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
+            [widthPx]="350"
+            placeholder="Valtimo LLM Plugin"
+    >
+    </v-input>
+    <v-input
+            name="url"
+            [title]="'url' | pluginTranslate: pluginId | async"
+            [fullWidth]="true"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.url"
+            [required]="true"
+            [tooltip]="'urlTooltip' | pluginTranslate: pluginId | async"
+            placeholder=""
+    >
+    </v-input>
+    <v-input
+            name="token"
+            type="password"
+            [title]="'token' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.clientSecret"
+            [required]="true"
+            [fullWidth]="true"
+            [tooltip]="'tokenTooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-input>
 </v-form>
