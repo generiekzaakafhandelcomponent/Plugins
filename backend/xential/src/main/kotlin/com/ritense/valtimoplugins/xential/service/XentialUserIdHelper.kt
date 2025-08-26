@@ -12,6 +12,9 @@ class XentialUserIdHelper(
     }
 
     fun getAssigneeUsername(assigneeId: String): String {
-        return userManagementService.findById(assigneeId).username
+        val user = userManagementService.findByUsername(assigneeId)
+//        val user = userManagementService.findById(assigneeId)
+
+        return user.username
     }
 }

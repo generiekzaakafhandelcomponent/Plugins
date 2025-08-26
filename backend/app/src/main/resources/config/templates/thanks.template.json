@@ -5,5 +5,5 @@
   "metadata": {
     "testKey": "testValue"
   },
-  "contentRef": "/config/template/thanks.ftlh"
+  "contentRef": "/config/templates/thanks.ftlh"
 }

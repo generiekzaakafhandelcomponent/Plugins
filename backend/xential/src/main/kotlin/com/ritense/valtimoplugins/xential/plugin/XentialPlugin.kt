@@ -116,6 +116,9 @@ class XentialPlugin(
     ) {
         logger.info { "generating document with XentialContent: $xentialDocumentProperties" }
 
+        //valueResolverService.resolveValue(execution, "case:caseProperty")
+
+
         val props = objectMapper.convertValue(xentialDocumentProperties) as XentialDocumentProperties
 
         props.content = xentialData
@@ -125,6 +128,7 @@ class XentialPlugin(
                 execution,
                 mapOf(
                     "content" to props.content,
+                    "xentialGebruikersId" to xentialGebruikersId,
                 ),
             )
 
@@ -132,7 +136,7 @@ class XentialPlugin(
         documentGenerationService.generateDocument(
             esbClient.documentApi(restClient(mTlsSslContextAutoConfigurationId)),
             UUID.fromString(execution.processInstanceId),
-            xentialGebruikersId,
+            resolvedValues["xentialGebruikersId"] as String,
             xentialSjabloonId,
             props,
             execution,
@@ -190,7 +194,7 @@ class XentialPlugin(
                     informationObjectType,
                     "documentId",
                     eventMessageName,
-                    null,
+                    null
                 )
 
             execution.processInstance.setVariable(
