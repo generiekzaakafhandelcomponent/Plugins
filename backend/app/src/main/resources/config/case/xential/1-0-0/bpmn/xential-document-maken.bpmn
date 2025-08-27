@@ -11,11 +11,12 @@
     <bpmn:endEvent id="Event_0qaoxcg">
       <bpmn:incoming>Flow_1unhpvg</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Activity_16w1lhl" name="assign to current" camunda:expression="${documentDelegateService.setAssignee(execution,xentialUserIdHelper.getCurrentUserEmail())}">
+    <bpmn:serviceTask id="Activity_16w1lhl" name="get username" camunda:asyncAfter="true" camunda:expression="${xentialUserIdHelper.getCurrentUsername()}" camunda:resultVariable="xentialGebruikersId">
       <bpmn:incoming>Flow_1cvybt6</bpmn:incoming>
       <bpmn:outgoing>Flow_17ee1dl</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="XentialSjabloonMapSelecteren" name="sjabloon map selecteren" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:expression="${true}">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_17ee1dl</bpmn:incoming>
       <bpmn:outgoing>Flow_15i8eql</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -23,6 +24,7 @@
       <bpmn:extensionElements>
         <camunda:in businessKey="#{execution.processBusinessKey}" />
         <camunda:in source="xentialDocumentProperties" target="xentialDocumentProperties" />
+        <camunda:in source="xentialGebruikersId" target="xentialGebruikersId" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_15i8eql</bpmn:incoming>
       <bpmn:outgoing>Flow_1unhpvg</bpmn:outgoing>

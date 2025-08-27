@@ -11,6 +11,11 @@ class XentialUserIdHelper(
         return user.email
     }
 
+    fun getCurrentUsername(): String {
+        val user = userManagementService.currentUser
+        return user.username
+    }
+
     fun getAssigneeUsername(assigneeId: String): String {
         return userManagementService.findById(assigneeId).username
     }
