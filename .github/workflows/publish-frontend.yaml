@@ -61,8 +61,6 @@ jobs:
         working-directory: frontend
       - run: npm install --legacy-peer-deps
         working-directory: frontend
-      - run: ls -lah dist
-        working-directory: frontend
       - run: rm -Rf dist/*
         working-directory: frontend
 
