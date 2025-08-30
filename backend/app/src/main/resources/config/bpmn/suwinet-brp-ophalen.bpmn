@@ -23,8 +23,8 @@
     <bpmn:serviceTask id="Activity_1m2li20" name="store persoonsgegevens in document" camunda:asyncAfter="true" camunda:expression="${suwinetBrpStoreToDocService.storePersoonsgegevens(brpPersoonsgegevensInfo, &#34;/gegevensVanuitBronnen/persoon&#34;, execution.businessKey)}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:outputParameter name="partnerBsn">${documentVariableDelegate.findValueByJsonPointerOrDefault("/gegevensVanuitBronnen/persoon/partnerBsn", execution, "")}</camunda:outputParameter>
-          <camunda:outputParameter name="kinderenBsns">${documentVariableDelegate.findValueByJsonPointerOrDefault("/gegevensVanuitBronnen/persoon/kinderenBsns", execution, "")}</camunda:outputParameter>
+          <camunda:outputParameter name="partnerBsn">${documentDelegateService.findValueByJsonPointerOrDefault(execution.getVariable("partnerBsn"), execution, "")}</camunda:outputParameter>
+          <camunda:outputParameter name="kinderenBsns">${documentDelegateService.findValueByJsonPointerOrDefault(execution.getVariable("kinderenBsns"), execution, "")}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1db28ks</bpmn:incoming>

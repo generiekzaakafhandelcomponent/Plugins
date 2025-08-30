@@ -244,6 +244,13 @@ services:
     networks:
       - brp-api-network
 
+  suwinet-simulator:
+    container_name: valtimo-plugins-local-suwinet-simulator
+    image: erikritense/suwinet-simulator:1.0.0
+    environment:
+      - SUWINET_USER=user
+      - SUWINET_PASSWORD=pwd
+
 networks:
   brp-api-network:
     name: brp-api-network
