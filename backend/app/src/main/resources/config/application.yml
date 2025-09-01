@@ -1,6 +1,8 @@
 spring:
   application:
     name: plugin-sandbox-application
+  profiles:
+    active: dev
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     time-zone: UTC
@@ -83,7 +85,15 @@ valtimo:
     encryption-secret: "abcdefghijklmnop"
   docker:
     filter:
-      ports: 8001,8002,8003,8006,8010,8011,8080
+      enabled: true
+      ports:
+        - 8080
+        - 8001
+        - 8002
+        - 8003
+        - 8006
+        - 8010
+        - 8011
   changelog:
     pbac:
       clear-tables: false
@@ -116,7 +126,7 @@ audit:
   record:
     retention: 365 # days
 
-camunda:
+operaton:
   bpm:
     history-level: AUDIT
     history-level-default: AUDIT

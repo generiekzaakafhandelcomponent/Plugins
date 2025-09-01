@@ -25,8 +25,8 @@ import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.rotterdam.esb.xential.api.DefaultApi
 import com.rotterdam.esb.xential.model.Sjabloondata
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.RuntimeService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.RuntimeService
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.io.ByteArrayInputStream
 import java.util.Base64
 import java.util.UUID

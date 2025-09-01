@@ -5,7 +5,9 @@ export interface PrepareContent extends PluginConfigurationData {
     firstTemplateGroupId: string;
     secondTemplateGroupId: string;
     thirdTemplateGroupId: string;
+    documentFilename: string;
     fileFormat: FileFormat;
+    informationObjectType: string;
     eventMessageName: string;
 }
 

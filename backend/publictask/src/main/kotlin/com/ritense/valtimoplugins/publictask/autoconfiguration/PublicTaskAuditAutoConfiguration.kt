@@ -19,7 +19,7 @@ package com.ritense.valtimoplugins.publictask.autoconfiguration
 import com.ritense.audit.service.AuditService
 import com.ritense.authorization.AuthorizationService
 import com.ritense.document.service.impl.JsonSchemaDocumentService
-import com.ritense.valtimoplugins.publictask.audit.PublicTaskCamundaProcessJsonSchemaDocumentAuditService
+import com.ritense.valtimoplugins.publictask.audit.PublicTaskOperatonProcessJsonSchemaDocumentAuditService
 import com.ritense.valtimoplugins.publictask.audit.PublicTaskCompletedListener
 import com.ritense.valtimoplugins.publictask.repository.PublicTaskRepository
 import org.springframework.context.ApplicationEventPublisher
@@ -46,7 +46,7 @@ class PublicTaskAuditAutoConfiguration {
         auditService: AuditService,
         documentService: JsonSchemaDocumentService,
         authorizationService: AuthorizationService
-    ) = PublicTaskCamundaProcessJsonSchemaDocumentAuditService(
+    ) = PublicTaskOperatonProcessJsonSchemaDocumentAuditService(
         auditService = auditService,
         documentService = documentService,
         authorizationService = authorizationService

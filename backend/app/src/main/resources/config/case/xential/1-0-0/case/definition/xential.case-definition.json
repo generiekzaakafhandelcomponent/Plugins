@@ -3,6 +3,6 @@
     "name": "Xential",
     "versionTag": "1.0.0",
     "final": false,
-    "canHaveAssignee": false,
-    "autoAssignTasks": false
+    "canHaveAssignee": true,
+    "autoAssignTasks": true
 }

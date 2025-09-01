@@ -16,6 +16,7 @@
 
 package com.ritense.valtimoplugins.freemarker.service
 
+import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.BaseIntegrationTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,7 +36,7 @@ class TemplateServiceIT : BaseIntegrationTest() {
 
     @Test
     fun `find a list of possible placeholders`() {
-        val template = templateService.getTemplate("placeholder-test-template", null, "mail")
+        val template = templateService.getTemplate("placeholder-test-template", CaseDefinitionId("profile", "1.0.0"), "mail")
 
         val placeholders = templateService.findPlaceholders(template)
 

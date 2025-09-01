@@ -27,7 +27,7 @@
       "roleKey": "ROLE_ADMIN"
     },
     {
-      "resourceType": "com.ritense.valtimo.camunda.domain.CamundaExecution",
+      "resourceType": "com.ritense.valtimo.operaton.domain.OperatonExecution",
       "action": "create",
       "roleKey": "ROLE_ADMIN"
     }

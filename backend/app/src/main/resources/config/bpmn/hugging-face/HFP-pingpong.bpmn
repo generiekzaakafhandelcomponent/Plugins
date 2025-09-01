@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+    
+  <bpmn:process id="HFP-pingpong" isClosed="false" isExecutable="true" name="Hugging Face AI Chat With Memory" processType="None">
+        
+    <bpmn:startEvent id="StartEvent_1" isInterrupting="true" parallelMultiple="false">
+            
+      <bpmn:outgoing>Flow_1erov2e</bpmn:outgoing>
+          
+    </bpmn:startEvent>
+        
+    <bpmn:sequenceFlow id="Flow_1erov2e" sourceRef="StartEvent_1" targetRef="Activity_1ajlppe"/>
+        
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="Activity_0mi00u6" implementation="##WebService" isForCompensation="false" name="Ping" startQuantity="1">
+            
+      <bpmn:incoming>Flow_0xi8ohl</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_0sbinfe</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="Activity_0ivhtl1" implementation="##WebService" isForCompensation="false" name="Pong" startQuantity="1">
+            
+      <bpmn:incoming>Flow_1md2s3b</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_0c53uyg</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="Activity_1ajlppe" implementation="##WebService" isForCompensation="false" name="Ping" startQuantity="1">
+            
+      <bpmn:incoming>Flow_1erov2e</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_0tq7o6a</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:sequenceFlow id="Flow_0tq7o6a" sourceRef="Activity_1ajlppe" targetRef="Activity_1fwj8z0"/>
+        
+    <bpmn:sequenceFlow id="Flow_0gwt1b5" sourceRef="Activity_1fwj8z0" targetRef="Activity_09oniby"/>
+        
+    <bpmn:sequenceFlow id="Flow_0e9usrq" sourceRef="Activity_09oniby" targetRef="Activity_1992kya"/>
+        
+    <bpmn:userTask completionQuantity="1" id="Activity_1992kya" implementation="##unspecified" isForCompensation="false" name="niewe vraag op gegeven antwoord" startQuantity="1">
+            
+      <bpmn:incoming>Flow_0e9usrq</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_1md2s3b</bpmn:outgoing>
+          
+    </bpmn:userTask>
+        
+    <bpmn:serviceTask camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/chatResult&quot;, chatAnswer1)}" completionQuantity="1" id="Activity_1fwj8z0" implementation="##WebService" isForCompensation="false" name="pv to doc" startQuantity="1">
+            
+      <bpmn:incoming>Flow_0tq7o6a</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_0gwt1b5</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/interpolatedQuestion&quot;, interpolatedQuestion1)}" completionQuantity="1" id="Activity_09oniby" implementation="##WebService" isForCompensation="false" name="pv to doc" startQuantity="1">
+            
+      <bpmn:incoming>Flow_0gwt1b5</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_0e9usrq</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:sequenceFlow id="Flow_1md2s3b" sourceRef="Activity_1992kya" targetRef="Activity_0ivhtl1"/>
+        
+    <bpmn:sequenceFlow id="Flow_0c53uyg" sourceRef="Activity_0ivhtl1" targetRef="Activity_1xvrg0z"/>
+        
+    <bpmn:sequenceFlow id="Flow_183obuw" sourceRef="Activity_1xvrg0z" targetRef="Activity_1h9cquk"/>
+        
+    <bpmn:sequenceFlow id="Flow_1t1ege1" sourceRef="Activity_1h9cquk" targetRef="Activity_14me3rr"/>
+        
+    <bpmn:userTask completionQuantity="1" id="Activity_14me3rr" implementation="##unspecified" isForCompensation="false" name="niewe vraag op gegeven antwoord" startQuantity="1">
+            
+      <bpmn:incoming>Flow_1t1ege1</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_0xi8ohl</bpmn:outgoing>
+          
+    </bpmn:userTask>
+        
+    <bpmn:serviceTask camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/interpolatedQuestion&quot;, interpolatedQuestion2)}" completionQuantity="1" id="Activity_1h9cquk" implementation="##WebService" isForCompensation="false" name="pv to doc" startQuantity="1">
+            
+      <bpmn:incoming>Flow_183obuw</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_1t1ege1</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/chatResult&quot;, chatAnswer2)}" completionQuantity="1" id="Activity_1xvrg0z" implementation="##WebService" isForCompensation="false" name="pv to doc" startQuantity="1">
+            
+      <bpmn:incoming>Flow_0c53uyg</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_183obuw</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:sequenceFlow id="Flow_0xi8ohl" sourceRef="Activity_14me3rr" targetRef="Activity_0mi00u6"/>
+        
+    <bpmn:sequenceFlow id="Flow_0sbinfe" sourceRef="Activity_0mi00u6" targetRef="Activity_1mcykpa"/>
+        
+    <bpmn:sequenceFlow id="Flow_1r82k7p" sourceRef="Activity_1mcykpa" targetRef="Activity_17qwdrk"/>
+        
+    <bpmn:serviceTask camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/chatResult&quot;, chatAnswer3)}" completionQuantity="1" id="Activity_1mcykpa" implementation="##WebService" isForCompensation="false" name="pv to doc" startQuantity="1">
+            
+      <bpmn:incoming>Flow_0sbinfe</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_1r82k7p</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/interpolatedQuestion&quot;, interpolatedQuestion3)}" completionQuantity="1" id="Activity_17qwdrk" implementation="##WebService" isForCompensation="false" name="pv to doc" startQuantity="1">
+            
+      <bpmn:incoming>Flow_1r82k7p</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_1vdo76y</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:sequenceFlow id="Flow_183a46d" sourceRef="Activity_06044my" targetRef="Activity_0jj6q69"/>
+        
+    <bpmn:sequenceFlow id="Flow_08jdfdc" sourceRef="Activity_0jj6q69" targetRef="Activity_00gb1of"/>
+        
+    <bpmn:endEvent id="Event_0xd4bux">
+            
+      <bpmn:incoming>Flow_07b1sd6</bpmn:incoming>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:sequenceFlow id="Flow_07b1sd6" sourceRef="Activity_00gb1of" targetRef="Event_0xd4bux"/>
+        
+    <bpmn:serviceTask camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/interpolatedQuestion&quot;, interpolatedQuestion4)}" completionQuantity="1" id="Activity_00gb1of" implementation="##WebService" isForCompensation="false" name="pv to doc" startQuantity="1">
+            
+      <bpmn:incoming>Flow_08jdfdc</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_07b1sd6</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/chatResult&quot;, chatAnswer4)}" completionQuantity="1" id="Activity_0jj6q69" implementation="##WebService" isForCompensation="false" name="pv to doc" startQuantity="1">
+            
+      <bpmn:incoming>Flow_183a46d</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_08jdfdc</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="Activity_06044my" implementation="##WebService" isForCompensation="false" name="Pong" startQuantity="1">
+            
+      <bpmn:incoming>Flow_0o8j0sf</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_183a46d</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:sequenceFlow id="Flow_1vdo76y" sourceRef="Activity_17qwdrk" targetRef="Activity_0wbq28c"/>
+        
+    <bpmn:userTask completionQuantity="1" id="Activity_0wbq28c" implementation="##unspecified" isForCompensation="false" name="niewe vraag op gegeven antwoord" startQuantity="1">
+            
+      <bpmn:incoming>Flow_1vdo76y</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_0o8j0sf</bpmn:outgoing>
+          
+    </bpmn:userTask>
+        
+    <bpmn:sequenceFlow id="Flow_0o8j0sf" sourceRef="Activity_0wbq28c" targetRef="Activity_06044my"/>
+      
+  </bpmn:process>
+    
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        
+    <bpmndi:BPMNPlane bpmnElement="HFP-pingpong" id="BPMNPlane_1">
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_07b1sd6" id="Flow_07b1sd6_di">
+                
+        <di:waypoint x="2500" y="120"/>
+                
+        <di:waypoint x="2552" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_08jdfdc" id="Flow_08jdfdc_di">
+                
+        <di:waypoint x="2350" y="120"/>
+                
+        <di:waypoint x="2400" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_183a46d" id="Flow_183a46d_di">
+                
+        <di:waypoint x="2200" y="120"/>
+                
+        <di:waypoint x="2250" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_1r82k7p" id="Flow_1r82k7p_di">
+                
+        <di:waypoint x="1740" y="120"/>
+                
+        <di:waypoint x="1790" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0sbinfe" id="Flow_0sbinfe_di">
+                
+        <di:waypoint x="1590" y="120"/>
+                
+        <di:waypoint x="1640" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0xi8ohl" id="Flow_0xi8ohl_di">
+                
+        <di:waypoint x="1440" y="120"/>
+                
+        <di:waypoint x="1490" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_1t1ege1" id="Flow_1t1ege1_di">
+                
+        <di:waypoint x="1290" y="120"/>
+                
+        <di:waypoint x="1340" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_183obuw" id="Flow_183obuw_di">
+                
+        <di:waypoint x="1140" y="120"/>
+                
+        <di:waypoint x="1190" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0c53uyg" id="Flow_0c53uyg_di">
+                
+        <di:waypoint x="990" y="120"/>
+                
+        <di:waypoint x="1040" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_1md2s3b" id="Flow_1md2s3b_di">
+                
+        <di:waypoint x="840" y="120"/>
+                
+        <di:waypoint x="890" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0e9usrq" id="Flow_0e9usrq_di">
+                
+        <di:waypoint x="680" y="120"/>
+                
+        <di:waypoint x="740" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0gwt1b5" id="Flow_0gwt1b5_di">
+                
+        <di:waypoint x="520" y="120"/>
+                
+        <di:waypoint x="580" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0tq7o6a" id="Flow_0tq7o6a_di">
+                
+        <di:waypoint x="360" y="120"/>
+                
+        <di:waypoint x="420" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_1erov2e" id="Flow_1erov2e_di">
+                
+        <di:waypoint x="209" y="120"/>
+                
+        <di:waypoint x="260" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_1vdo76y" id="Flow_1vdo76y_di">
+                
+        <di:waypoint x="1890" y="120"/>
+                
+        <di:waypoint x="1940" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0o8j0sf" id="Flow_0o8j0sf_di">
+                
+        <di:waypoint x="2040" y="120"/>
+                
+        <di:waypoint x="2100" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1" id="_BPMNShape_StartEvent_2">
+                
+        <dc:Bounds height="36" width="36" x="173" y="102"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_0mi00u6" id="Activity_1vr7odq_di">
+                
+        <dc:Bounds height="80" width="100" x="1490" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_0ivhtl1" id="Activity_0j0ulay_di">
+                
+        <dc:Bounds height="80" width="100" x="890" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_1ajlppe" id="Activity_19grbia_di">
+                
+        <dc:Bounds height="80" width="100" x="260" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_1992kya" id="Activity_1ejwpwj_di">
+                
+        <dc:Bounds height="80" width="100" x="740" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_1fwj8z0" id="Activity_0bfz1m6_di">
+                
+        <dc:Bounds height="80" width="100" x="420" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_09oniby" id="Activity_0uj3oue_di">
+                
+        <dc:Bounds height="80" width="100" x="580" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_14me3rr" id="Activity_0ujts86_di">
+                
+        <dc:Bounds height="80" width="100" x="1340" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_1h9cquk" id="Activity_1sc4wln_di">
+                
+        <dc:Bounds height="80" width="100" x="1190" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_1xvrg0z" id="Activity_0deun1f_di">
+                
+        <dc:Bounds height="80" width="100" x="1040" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_1mcykpa" id="Activity_1wufz52_di">
+                
+        <dc:Bounds height="80" width="100" x="1640" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_17qwdrk" id="Activity_1gsb022_di">
+                
+        <dc:Bounds height="80" width="100" x="1790" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_0wbq28c" id="Activity_0ro4jri_di">
+                
+        <dc:Bounds height="80" width="100" x="1940" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Event_0xd4bux" id="Event_0xd4bux_di">
+                
+        <dc:Bounds height="36" width="36" x="2552" y="102"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_00gb1of" id="Activity_0f74lf8_di">
+                
+        <dc:Bounds height="80" width="100" x="2400" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_0jj6q69" id="Activity_0g8gyjb_di">
+                
+        <dc:Bounds height="80" width="100" x="2250" y="80"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_06044my" id="Activity_0iztetj_di">
+                
+        <dc:Bounds height="80" width="100" x="2100" y="80"/>
+              
+      </bpmndi:BPMNShape>
+          
+    </bpmndi:BPMNPlane>
+      
+  </bpmndi:BPMNDiagram>
+  
+</bpmn:definitions>

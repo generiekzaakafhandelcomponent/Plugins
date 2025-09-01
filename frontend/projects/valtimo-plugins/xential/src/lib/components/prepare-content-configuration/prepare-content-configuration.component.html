@@ -63,6 +63,22 @@
             [items]="obs.fileFormats"
     />
     <v-input
+            name="documentFilename"
+            [title]="'documentFilename' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.documentFilename"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
+            name="informationObjectType"
+            [title]="'informationObjectType' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.informationObjectType"
+            [disabled]="obs.disabled"
+            [required]="true"
+    />
+    <v-input
             name="eventMessageName"
             [title]="'eventMessageName' | pluginTranslate: pluginId | async"
             [margin]="true"

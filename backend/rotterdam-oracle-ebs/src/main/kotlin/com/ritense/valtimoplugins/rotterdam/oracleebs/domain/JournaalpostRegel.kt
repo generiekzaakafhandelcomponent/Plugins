@@ -1,7 +1,8 @@
 package com.ritense.valtimoplugins.rotterdam.oracleebs.domain
 
 data class JournaalpostRegel(
-    val grootboekSleutel: String,
+    val grootboekSleutel: String?,
+    val bronSleutel: String?,
     val boekingType: String,
     val bedrag: String,
     val omschrijving: String? = null,
@@ -10,7 +11,8 @@ data class JournaalpostRegel(
     companion object {
         fun from(map: LinkedHashMap<String, String>) =
             JournaalpostRegel(
-                grootboekSleutel = map["grootboekSleutel"] as String,
+                grootboekSleutel = (map["grootboekSleutel"] as? String),
+                bronSleutel = (map["bronSleutel"] as? String),
                 boekingType = map["boekingType"] as String,
                 bedrag = map["bedrag"] as String,
                 omschrijving = map["omschrijving"] as String

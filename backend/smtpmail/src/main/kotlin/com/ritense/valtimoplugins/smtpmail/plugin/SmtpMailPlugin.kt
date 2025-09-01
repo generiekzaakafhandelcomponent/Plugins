@@ -25,7 +25,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_STA
 import com.ritense.valtimoplugins.smtpmail.dto.Email
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
 import com.ritense.valtimoplugins.smtpmail.service.SmtpMailService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "smtp-mail",

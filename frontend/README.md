@@ -4,7 +4,7 @@ First install:
 
 ```shell
 nvm use 20
-npm clean
+npm run clean
 npm install --legacy-peer-deps
 npm install
 npm run libs-build-all

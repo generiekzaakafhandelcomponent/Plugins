@@ -22,6 +22,16 @@
       "defaultValue": "123456789"
     },
     {
+      "label": "Burgerservicenummer (BSN)",
+      "key": "pv:natuurlijkPersoonBsn",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "123654987"
+    },
+    {
       "label": "Voornaam",
       "key": "pv:natuurlijkPersoonVoornamen",
       "type": "textfield",
@@ -75,6 +85,94 @@
       "input": true
     },
     {
+      "label": "Factuurkenmerk",
+      "key": "pv:factuurKenmerk",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "20250702:VERGUNNING:BUURTFEEST"
+    },
+    {
+      "label": "Factuuradres - Type",
+      "key": "pv:factuurAdresType",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Locatie"
+    },
+    {
+      "label": "Factuuradres - Naam contactpersoon",
+      "key": "pv:factuurAdresNaamContactpersoon",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "Piet Hein Smit"
+    },
+    {
+      "label": "Factuuradres - Vestigingnummer Rotterdam",
+      "key": "pv:factuurAdresVestigingnummerRotterdam",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "12321312"
+    },
+    {
+      "label": "Factuuradres - Straatnaam",
+      "key": "pv:factuurAdresStraatnaam",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Koepellaan"
+    },
+    {
+      "label": "Factuuradres - Huisnummer",
+      "key": "pv:factuurAdresHuisnummer",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "2122"
+    },
+    {
+      "label": "Factuuradres - Huisnummertoevoeging",
+      "key": "pv:factuurAdresHuisnummertoevoeging",
+      "type": "textfield",
+      "input": true,
+      "defaultValue": "e"
+    },
+    {
+      "label": "Factuuradres - Postcode",
+      "key": "pv:factuurAdresPostcode",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "1234AB"
+    },
+    {
+      "label": "Factuuradres - Plaatsnaam",
+      "key": "pv:factuurAdresPlaatsnaam",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "Rotterdam"
+    },
+    {
+      "label": "Factuuradres - Landcode",
+      "key": "pv:factuurAdresLandcode",
+      "type": "textfield",
+      "input": true,
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "NL"
+    },
+    {
       "label": "Inkoop Order referentie",
       "key": "pv:inkoopOrderReferentie",
       "type": "textfield",
@@ -106,6 +204,7 @@
         {
           "btwPercentage": "21",
           "grootboekSleutel": "740",
+          "bronSleutel": "321",
           "omschrijving": "Regel 1",
           "hoeveelheid": "3",
           "tarief": "34.5"
@@ -113,6 +212,7 @@
         {
           "btwPercentage": "9",
           "grootboekSleutel": "450",
+          "bronSleutel": "765",
           "omschrijving": "Regel 2",
           "hoeveelheid": "6",
           "tarief": "14.5"
@@ -155,7 +255,17 @@
           "input": true,
           "persistent": "client-only",
           "validate": {
-            "required": true
+            "required": false
+          }
+        },
+        {
+          "label": "Bronsleutel",
+          "key": "bronSleutel",
+          "type": "textfield",
+          "input": true,
+          "persistent": "client-only",
+          "validate": {
+            "required": false
           }
         },
         {

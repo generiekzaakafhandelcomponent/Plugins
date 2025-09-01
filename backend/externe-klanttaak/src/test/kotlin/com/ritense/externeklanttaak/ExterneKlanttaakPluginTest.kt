@@ -31,13 +31,13 @@ import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimo.contract.json.MapperSingleton
-import com.ritense.valtimo.service.CamundaTaskService
+import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
 import com.ritense.zakenapi.link.ZaakInstanceLinkService
 import java.util.UUID
-import org.camunda.bpm.engine.delegate.DelegateTask
+import org.operaton.bpm.engine.delegate.DelegateTask
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.verify
@@ -57,7 +57,7 @@ internal class ExterneKlanttaakPluginTest {
     private lateinit var zaakInstanceLinkService: ZaakInstanceLinkService
     private lateinit var externeKlanttaakPlugin: ExterneKlanttaakPlugin
     private lateinit var externeKlanttaakService: ExterneKlanttaakService
-    private lateinit var taskService: CamundaTaskService
+    private lateinit var taskService: OperatonTaskService
     private lateinit var zakenApiPlugin: ZakenApiPlugin
     private lateinit var zaakUrlProvider: ZaakUrlProvider
     private lateinit var objectMapper: ObjectMapper

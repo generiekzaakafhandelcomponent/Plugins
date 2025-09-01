@@ -1,0 +1,20 @@
+[
+  {
+    "id": "3397d7be-2b42-4ae7-b5b5-ea5ee83a0574",
+    "title": "Summary (Autodeployed)",
+    "pluginDefinitionKey": "valtimo-llm-plugin",
+    "properties": {
+      "url": "https://router.huggingface.co/hf-inference/models/",
+      "token": "YOUR_HUGGING_FACE_TOKEN"
+    }
+  },
+  {
+    "id": "84946d7a-4f19-449a-a8c6-31c08063b410",
+    "title": "Chat (Autodeployed)",
+    "pluginDefinitionKey": "valtimo-llm-plugin",
+    "properties": {
+      "url": "https://router.huggingface.co/",
+      "token": "YOUR_HUGGING_FACE_TOKEN"
+    }
+  }
+]

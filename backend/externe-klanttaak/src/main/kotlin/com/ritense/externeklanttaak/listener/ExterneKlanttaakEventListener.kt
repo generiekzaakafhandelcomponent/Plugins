@@ -30,13 +30,13 @@ import com.ritense.objectmanagement.domain.ObjectManagement
 import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.domain.PluginConfigurationId
 import com.ritense.plugin.service.PluginService
-import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
+import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
-import com.ritense.valtimo.camunda.domain.CamundaTask
+import com.ritense.valtimo.operaton.domain.OperatonTask
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.security.exceptions.TaskNotFoundException
-import com.ritense.valtimo.service.CamundaProcessService
-import com.ritense.valtimo.service.CamundaTaskService
+import com.ritense.valtimo.service.OperatonProcessService
+import com.ritense.valtimo.service.OperatonTaskService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.transaction.annotation.Transactional
@@ -46,9 +46,9 @@ import java.net.URI
 open class ExterneKlanttaakEventListener(
     private val objectManagementService: ObjectManagementService,
     private val pluginService: PluginService,
-    private val taskService: CamundaTaskService,
+    private val taskService: OperatonTaskService,
     private val processDocumentService: ProcessDocumentService,
-    private val processService: CamundaProcessService,
+    private val processService: OperatonProcessService,
 ) {
     @Transactional
     @RunWithoutAuthorization
@@ -117,39 +117,39 @@ open class ExterneKlanttaakEventListener(
             }
             return
         }
-        val camundaTask: CamundaTask =
+        val operatonTask: OperatonTask =
             try {
                 taskService.findTaskById(klanttaak.verwerkerTaakId)
             } catch (ex: TaskNotFoundException) {
                 logger.info {
-                    "Skipping Event: Could not find Camunda task with id ${klanttaak.verwerkerTaakId}. Externe Klanttaak doesn't belong to this application."
+                    "Skipping Event: Could not find Operaton task with id ${klanttaak.verwerkerTaakId}. Externe Klanttaak doesn't belong to this application."
                 }
                 return
             }
 
         handleResourceAsExterneKlanttaak(
             resourceUrl = resource.url,
-            camundaTask = camundaTask,
+            operatonTask = operatonTask,
             pluginConfigurationId = pluginConfigurationId,
         )
     }
 
     private fun handleResourceAsExterneKlanttaak(
         resourceUrl: URI,
-        camundaTask: CamundaTask,
+        operatonTask: OperatonTask,
         pluginConfigurationId: PluginConfigurationId
     ) {
 
         val externeKlanttaakPlugin: ExterneKlanttaakPlugin = pluginService.createInstance(pluginConfigurationId.id)
-        val processInstanceId = CamundaProcessInstanceId(camundaTask.getProcessInstanceId())
+        val processInstanceId = OperatonProcessInstanceId(operatonTask.getProcessInstanceId())
         val documentId = runWithoutAuthorization {
-            processDocumentService.getDocumentId(processInstanceId, camundaTask)
+            processDocumentService.getDocumentId(processInstanceId, operatonTask)
         }
         val variables = mapOf(
             EXTERNE_KLANTTAAK_OBJECT_URL.value to resourceUrl
         )
 
-        logger.debug { "Starting finalizer process for Externe Klanttaak with verwerker task id '${camundaTask.id}'" }
+        logger.debug { "Starting finalizer process for Externe Klanttaak with verwerker task id '${operatonTask.id}'" }
         startFinalizerProcess(
             processDefinitionKey = externeKlanttaakPlugin.finalizerProcess,
             businessKey = documentId.id.toString(),

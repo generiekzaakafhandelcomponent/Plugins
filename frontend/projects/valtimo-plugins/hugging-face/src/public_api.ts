@@ -22,5 +22,5 @@ export * from './lib/models';
 export * from './lib/hugging-face-plugin-module';
 export * from './lib/hugging-face-plugin.specification';
 export * from './lib/components/hugging-face-configuration/hugging-face-configuration.component';
-export * from './lib/components/give-summary/give-summary-configuration.component';
 export * from './lib/components/chat/chat-configuration.component';
+export * from './lib/components/chat-memorize/chat-memorize-configuration.component';
