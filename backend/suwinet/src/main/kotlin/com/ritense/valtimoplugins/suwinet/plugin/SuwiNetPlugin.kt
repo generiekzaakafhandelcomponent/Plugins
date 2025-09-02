@@ -6,9 +6,11 @@ import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
+import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -19,6 +21,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 @Suppress("UNUSED")
 class SuwiNetPlugin(
     private val suwinetBrpInfoService: SuwinetBrpInfoService,
+    private val suwinetRdwService: SuwinetRdwService,
 ) {
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
@@ -144,6 +147,41 @@ class SuwiNetPlugin(
             logger.info("Exiting scope due to nested error.", e)
             return
         }
+    }
+
+    @PluginAction(
+        key = "get-rdw-voertuigen",
+        title = "SuwiNet RDW voertuigen",
+        description = "SuwiNet RDW voertuigen plugin action",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getRdwVoertuigen(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+     logger.info { "Getting voertuigen for case ${execution.businessKey}" }
+
+        try {
+            suwinetRdwService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(
+                bsn = bsn, suwinetRdwService.getRDWService()
+            ).let {
+                if(it.motorVoertuigen.isNotEmpty()) {
+                    execution.processInstance.setVariable(
+                        resultProcessVariableName, objectMapper.convertValue(it)
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+
     }
 
     private fun getSuwinetSOAPClientConfig() =

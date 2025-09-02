@@ -18,7 +18,7 @@
  */
 
 /*
- * Public API Surface of slack
+ * Public API Surface of suwinet
  */
 
 export * from './lib/models';
@@ -28,3 +28,4 @@ export * from './lib/components/plugin-configuration/suwinet-plugin-configuratio
 export * from './lib/components/brp-kinderen-info/brp-kinderen-info.component';
 export * from './lib/components/brp-partner-info/brp-partner-info.component';
 export * from './lib/components/brp-persoon-info/brp-persoon-info.component';
+export * from './lib/components/rdw-voertuigen/rdw-voertuigen.component';

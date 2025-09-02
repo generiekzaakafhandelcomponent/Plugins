@@ -1,0 +1,12 @@
+[
+  {
+    "processDefinitionKey": "ophalen-brp-brongegevens",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-rdw-brongegevens",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

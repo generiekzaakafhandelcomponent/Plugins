@@ -45,3 +45,8 @@ export interface BrpKinderenInfoConfig {
     kinderenBsns: string;
     resultProcessVariableName: string;
 }
+
+export interface RdwVoertuigenConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+}

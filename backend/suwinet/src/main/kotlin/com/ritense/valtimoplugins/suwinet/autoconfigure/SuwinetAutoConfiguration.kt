@@ -10,6 +10,7 @@ import com.ritense.valtimoplugins.suwinet.service.DocumentWriterService
 import com.ritense.valtimoplugins.suwinet.service.NationaliteitenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpStoreToDocService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -58,6 +59,17 @@ class SuwinetAutoConfiguration {
 
     @Bean
     @ProcessBean
+    fun suwinetRdwService(
+        suwinetSOAPClient: SuwinetSOAPClient,
+    ): SuwinetRdwService {
+        return SuwinetRdwService(
+            suwinetSOAPClient
+        )
+    }
+
+
+    @Bean
+    @ProcessBean
     fun suwinetBrpStoreToDocService(
         documentWriterService: DocumentWriterService,
         documentService: DocumentService,
@@ -74,9 +86,11 @@ class SuwinetAutoConfiguration {
     @Bean
     fun suwiNetPluginFactory(
         pluginService: PluginService,
-        suwinetBrpInfoService: SuwinetBrpInfoService
+        suwinetBrpInfoService: SuwinetBrpInfoService,
+        suwinetRdwService: SuwinetRdwService
     ): SuwiNetPluginFactory = SuwiNetPluginFactory(
         pluginService,
-        suwinetBrpInfoService
+        suwinetBrpInfoService,
+        suwinetRdwService
     )
 }

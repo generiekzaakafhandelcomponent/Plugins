@@ -22,26 +22,30 @@ import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from '@angular/forms';
-import {FormModule, InputModule} from '@valtimo/components';
+import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
 import {SuwinetPluginConfigurationComponent} from './components/plugin-configuration/suwinet-plugin-configuration.component';
 import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon-info.component';
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
 import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinderen-info.component';
+import {RdwVoertuigenComponent} from './components/rdw-voertuigen/rdw-voertuigen.component';
+
 
 @NgModule({
     declarations: [
         SuwinetPluginConfigurationComponent,
         BrpPersoonInfoComponent,
         BrpPartnerInfoComponent,
-        BrpKinderenInfoComponent
+        BrpKinderenInfoComponent,
+        RdwVoertuigenComponent
 
     ],
-    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule],
     exports: [
         SuwinetPluginConfigurationComponent,
         BrpPersoonInfoComponent,
         BrpPartnerInfoComponent,
-        BrpKinderenInfoComponent
+        BrpKinderenInfoComponent,
+        RdwVoertuigenComponent
 
     ],
 })

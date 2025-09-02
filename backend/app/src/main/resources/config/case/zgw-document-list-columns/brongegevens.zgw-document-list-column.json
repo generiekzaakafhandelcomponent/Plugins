@@ -1,0 +1,30 @@
+{
+  "changesetId" : "brongegevens.zgw-document-list-column.1755807650655",
+  "case-definitions" : [
+    {
+      "key" : "brongegevens",
+      "columns" : [
+        {
+          "key" : "TITEL",
+          "defaultSort" : null
+        },
+        {
+          "key" : "CREATIEDATUM",
+          "defaultSort" : "DESC"
+        },
+        {
+          "key" : "AUTEUR",
+          "defaultSort" : null
+        },
+        {
+          "key" : "BESTANDSOMVANG",
+          "defaultSort" : null
+        },
+        {
+          "key" : "INFORMATIEOBJECTTYPE_OMSCHRIJVING",
+          "defaultSort" : null
+        }
+      ]
+    }
+  ]
+}

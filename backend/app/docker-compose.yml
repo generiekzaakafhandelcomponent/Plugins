@@ -224,7 +224,7 @@ services:
     #HaalCentraal
   bag-api-simulator:
     image: erikritense/bag-api-simulator-tmp:0.1
-    container_name: bag-api-simulator
+    container_name: valtimo-plugins-local-bag-api-simulator
     ports:
       - "5020:5020"
     environment:
@@ -232,7 +232,7 @@ services:
       - AUTH_API_SECRET=SECRET
 
   bewoningen-mock:
-    container_name: bewoningen-mock-2
+    container_name: valtimo-plugins-local-bewoningen-mock-2
     image: ghcr.io/brp-api/bewoning-service-mock:2.0.1-latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Release
@@ -250,6 +250,8 @@ services:
     environment:
       - SUWINET_USER=user
       - SUWINET_PASSWORD=pwd
+    ports:
+      - "8090:8090"
 
 networks:
   brp-api-network:
