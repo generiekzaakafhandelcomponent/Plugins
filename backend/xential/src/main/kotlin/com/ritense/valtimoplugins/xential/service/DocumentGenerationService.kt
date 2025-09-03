@@ -94,7 +94,7 @@ class DocumentGenerationService(
             runtimeService.createMessageCorrelation(xentialToken.messageName)
                 .processInstanceId(xentialToken.processId.toString())
                 .setVariable("xentialResourceId", resourceId)
-                .correlate()
+                .correlateAll()
         }
     }
 

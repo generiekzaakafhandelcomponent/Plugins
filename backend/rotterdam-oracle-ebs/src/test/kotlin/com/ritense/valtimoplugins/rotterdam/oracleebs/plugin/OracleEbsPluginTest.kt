@@ -37,13 +37,10 @@ import kotlin.String
 class OracleEbsPluginTest {
 
     private val objectMapper = MapperSingleton.get()
-
     private lateinit var mockWebServer: MockWebServer
-
     private lateinit var esbClient: EsbClient
     private lateinit var valueResolverService: ValueResolverService
     private lateinit var mTlsSslContext: MTlsSslContext
-
     private lateinit var plugin: OracleEbsPlugin
 
     @BeforeEach
