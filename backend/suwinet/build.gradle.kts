@@ -1,4 +1,5 @@
 import io.mateo.cxf.codegen.wsdl2java.Wsdl2Java
+import io.spring.gradle.dependencymanagement.org.apache.maven.model.Build
 
 /*
  * Copyright 2015-2023 Ritense BV, the Netherlands.
@@ -93,9 +94,9 @@ apply(from = "gradle/publishing.gradle")
 tasks.register<Wsdl2Java>("genBRPDossierPersoonGSD") {
     toolOptions {
         wsdl = "src/main/resources/soap/suwinet/Diensten/BRPDossierPersoonGSD/v0200-b02/Impl/BKWI.wsdl"
-        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf").get().asFile)
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genBRPDossierPersoonGSD").get().asFile)
         markGenerated.set(true)
-        packageNames.set(mutableListOf("com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD"))
+        packageNames.set(mutableListOf("com.ritense.valtimoplugins.dkd.brpdossierpersoongsd"))
         extendedSoapHeaders.set(true)
     }
     allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
@@ -104,9 +105,23 @@ tasks.register<Wsdl2Java>("genBRPDossierPersoonGSD") {
 tasks.register<Wsdl2Java>("genRDWDossierGSD") {
     toolOptions {
         wsdl = "src/main/resources/soap/suwinet/Diensten/RDWDossierGSD/v0200-b02/Impl/BKWI.wsdl"
-        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf").get().asFile)
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genRDWDossierGSD").get().asFile)
         markGenerated.set(true)
-        packageNames.set(listOf("com.ritense.valtimo.implementation.dkd.RDWDossier"))
+        packageNames.set(listOf("com.ritense.valtimoplugins.dkd.rdwdossier"))
+        extendedSoapHeaders.set(true)
+    }
+    allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
+    doFirst {
+        classpath = configurations["runtimeClasspath"]
+    }
+}
+
+tasks.register<Wsdl2Java>("genDUODossierPersoonGSD") {
+    toolOptions {
+        wsdl = "src/main/resources/soap/suwinet/Diensten/DUODossierPersoonGSD/v0300-b01/Impl/BKWI.wsdl"
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genDUODossierPersoonGSD").get().asFile)
+        markGenerated.set(true)
+        packageNames.set(listOf("com.ritense.valtimoplugins.dkd.duodossierpersoongsd"))
         extendedSoapHeaders.set(true)
     }
     allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
@@ -119,5 +134,6 @@ tasks.named("compileKotlin") {
     dependsOn(
         "genBRPDossierPersoonGSD",
         "genRDWDossierGSD",
+        "genDUODossierPersoonGSD",
     )
 }

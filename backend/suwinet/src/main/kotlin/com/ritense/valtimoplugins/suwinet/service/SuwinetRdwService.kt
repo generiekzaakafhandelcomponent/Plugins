@@ -1,12 +1,12 @@
 package com.ritense.valtimoplugins.suwinet.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.ritense.valtimo.implementation.dkd.RDWDossier.FWI
-import com.ritense.valtimo.implementation.dkd.RDWDossier.KentekenInfo
-import com.ritense.valtimo.implementation.dkd.RDWDossier.KentekenInfoResponse
-import com.ritense.valtimo.implementation.dkd.RDWDossier.ObjectFactory
-import com.ritense.valtimo.implementation.dkd.RDWDossier.RDW
-import com.ritense.valtimo.implementation.dkd.RDWDossier.VoertuigbezitInfoPersoonResponse
+import com.ritense.valtimoplugins.dkd.rdwdossier.FWI
+import com.ritense.valtimoplugins.dkd.rdwdossier.KentekenInfo
+import com.ritense.valtimoplugins.dkd.rdwdossier.KentekenInfoResponse
+import com.ritense.valtimoplugins.dkd.rdwdossier.ObjectFactory
+import com.ritense.valtimoplugins.dkd.rdwdossier.RDW
+import com.ritense.valtimoplugins.dkd.rdwdossier.VoertuigbezitInfoPersoonResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException

@@ -28,6 +28,7 @@ import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
 import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinderen-info.component';
 import {RdwVoertuigenComponent} from './components/rdw-voertuigen/rdw-voertuigen.component';
+import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-persoons-info.component";
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import {RdwVoertuigenComponent} from './components/rdw-voertuigen/rdw-voertuigen
         BrpPersoonInfoComponent,
         BrpPartnerInfoComponent,
         BrpKinderenInfoComponent,
-        RdwVoertuigenComponent
+        RdwVoertuigenComponent,
+        DuoPersoonsInfoComponent
 
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule],
@@ -45,7 +47,8 @@ import {RdwVoertuigenComponent} from './components/rdw-voertuigen/rdw-voertuigen
         BrpPersoonInfoComponent,
         BrpPartnerInfoComponent,
         BrpKinderenInfoComponent,
-        RdwVoertuigenComponent
+        RdwVoertuigenComponent,
+        DuoPersoonsInfoComponent
 
     ],
 })

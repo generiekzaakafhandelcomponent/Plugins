@@ -10,6 +10,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -22,7 +23,9 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 class SuwiNetPlugin(
     private val suwinetBrpInfoService: SuwinetBrpInfoService,
     private val suwinetRdwService: SuwinetRdwService,
-) {
+    private val suwinetDuoPersoonsInfoServive: SuwinetDuoPersoonsInfoService,
+
+    ) {
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
 
@@ -182,6 +185,38 @@ class SuwiNetPlugin(
             return
         }
 
+    }
+
+    @PluginAction(
+        key = "get-duo-persoonsinfo",
+        title = "SuwiNet DUO Persoons Info",
+        description = "SuwiNet DUO Persoons Info",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getDUOPersoonsInfo(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+        logger.info { "Getting DUO PersoonsInfo for case ${execution.businessKey}" }
+
+        try {
+            suwinetDuoPersoonsInfoServive.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetDuoPersoonsInfoServive.getPersoonsInfoByBsn(
+                bsn = bsn, suwinetDuoPersoonsInfoServive.createDuoService()
+            ).let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName,objectMapper.convertValue(it)
+                )
+            }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
     }
 
     private fun getSuwinetSOAPClientConfig() =

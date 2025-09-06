@@ -50,3 +50,9 @@ export interface RdwVoertuigenConfig {
     bsn: string;
     resultProcessVariableName: string;
 }
+
+export interface DUOPersoonsInfoComponent {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
