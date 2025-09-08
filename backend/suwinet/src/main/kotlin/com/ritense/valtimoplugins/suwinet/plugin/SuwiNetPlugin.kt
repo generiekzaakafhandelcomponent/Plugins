@@ -12,6 +12,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
 import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -23,7 +24,8 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 class SuwiNetPlugin(
     private val suwinetBrpInfoService: SuwinetBrpInfoService,
     private val suwinetRdwService: SuwinetRdwService,
-    private val suwinetDuoPersoonsInfoServive: SuwinetDuoPersoonsInfoService,
+    private val suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
+    private val suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService
 
     ) {
     @PluginProperty(key = "baseUrl", secret = false, required = true)
@@ -202,17 +204,52 @@ class SuwiNetPlugin(
         logger.info { "Getting DUO PersoonsInfo for case ${execution.businessKey}" }
 
         try {
-            suwinetDuoPersoonsInfoServive.setConfig(
+            suwinetDuoPersoonsInfoService.setConfig(
                 getSuwinetSOAPClientConfig()
             )
 
-            suwinetDuoPersoonsInfoServive.getPersoonsInfoByBsn(
-                bsn = bsn, suwinetDuoPersoonsInfoServive.createDuoService()
+            suwinetDuoPersoonsInfoService.getPersoonsInfoByBsn(
+                bsn = bsn, suwinetDuoPersoonsInfoService.createDuoService()
             ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName,objectMapper.convertValue(it)
                 )
             }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
+    @PluginAction(
+        key = "get-svb-persoonsinfo",
+        title = "SuwiNet SVB Persoonsgegevens",
+        description = "SuwiNet SVB Persoonsgegevens",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getSvbPersoonsInfo(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty maxPeriods: Int,
+        execution: DelegateExecution
+    ) {
+        logger.info { "Getting SVB info for case ${execution.businessKey}" }
+
+        try {
+            suwinetSvbPersoonsInfoService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetSvbPersoonsInfoService.getPersoonsgegevensByBsn(
+                bsn,
+                suwinetSvbPersoonsInfoService.createSvbInfo(),
+                maxPeriods
+            )?.let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+
         } catch (e: Exception) {
             logger.info("Exiting scope due to nested error.", e)
             return

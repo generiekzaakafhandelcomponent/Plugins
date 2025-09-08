@@ -56,3 +56,9 @@ export interface DUOPersoonsInfoComponent {
     resultProcessVariableName: string;
 }
 
+export interface SVBPersoonsInfoComponent {
+    bsn: string;
+    resultProcessVariableName: string;
+    maxPeriods: number;
+}
+

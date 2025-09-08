@@ -29,7 +29,7 @@ import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner
 import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinderen-info.component';
 import {RdwVoertuigenComponent} from './components/rdw-voertuigen/rdw-voertuigen.component';
 import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-persoons-info.component";
-
+import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
 
 @NgModule({
     declarations: [
@@ -38,8 +38,8 @@ import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-perso
         BrpPartnerInfoComponent,
         BrpKinderenInfoComponent,
         RdwVoertuigenComponent,
-        DuoPersoonsInfoComponent
-
+        DuoPersoonsInfoComponent,
+        SvbPersoonsInfoComponent
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule],
     exports: [
@@ -48,8 +48,8 @@ import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-perso
         BrpPartnerInfoComponent,
         BrpKinderenInfoComponent,
         RdwVoertuigenComponent,
-        DuoPersoonsInfoComponent
-
+        DuoPersoonsInfoComponent,
+        SvbPersoonsInfoComponent
     ],
 })
 export class SuwinetPluginModule {

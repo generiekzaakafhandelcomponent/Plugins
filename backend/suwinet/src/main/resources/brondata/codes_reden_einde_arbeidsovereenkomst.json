@@ -1,0 +1,54 @@
+[
+    {
+        "code": "01",
+        "name": "Opzegging door de werkgever binnen de proeftijd"
+    },
+    {
+        "code": "03",
+        "name": "Ontbinding door rechter op verzoek van de werkgever"
+    },
+    {
+        "code": "04",
+        "name": "Beëindiging arbeidsovereenkomst met wederzijds goedvinden op initiatief van de werkgever"
+    },
+    {
+        "code": "05",
+        "name": "Opzegging door de werkgever vanwege langdurige arbeidsongeschiktheid met toestemming van UWV"
+    },
+    {
+        "code": "06",
+        "name": "Opzegging door de werkgever vanwege bedrijfseconomische redenen met toestemming van UWV"
+    },
+    {
+        "code": "20",
+        "name": "Einde arbeidsovereenkomst door opzegging werknemer, door toedoen werknemer of op initiatief van de werknemer"
+    },
+    {
+        "code": "21",
+        "name": "Opzegging door werkgever om dringende reden (ontslag op staande voet)"
+    },
+    {
+        "code": "30",
+        "name": "Einde van rechtswege vanwege verstrijken duur arbeidsovereenkomst voor bepaalde tijd"
+    },
+    {
+        "code": "31",
+        "name": "Einde van rechtswege, om een andere reden (intreden ontbindende voorwaarde, pensionering, overlijden, e.d.)"
+    },
+    {
+        "code": "40",
+        "name": "Einde uitzendovereenkomst, inroepen uitzendbeding doorinlener vanwege ziekte uitzendkracht"
+    },
+    {
+        "code": "41",
+        "name": "Einde uitzendovereenkomst, inroepen uitzendbeding door inlener om een andere reden"
+    },
+    {
+        "code": "90",
+        "name": "De arbeidsovereenkomst loopt door, maar de inkomstenverhouding is administratief beëindigd"
+    },
+    {
+        "code": "99",
+        "name": "Een andere, hiervoor niet genoemde reden"
+    }
+]

@@ -130,10 +130,25 @@ tasks.register<Wsdl2Java>("genDUODossierPersoonGSD") {
     }
 }
 
+tasks.register<Wsdl2Java>("genSVBDossierPersoonGSD") {
+    toolOptions {
+        wsdl = "src/main/resources/soap/suwinet/Diensten/SVBDossierPersoonGSD/v0200-b01/Impl/BKWI.wsdl"
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genSVBDossierPersoonGSD").get().asFile)
+        markGenerated.set(true)
+        packageNames.set(listOf("com.ritense.valtimoplugins.dkd.svbdossierpersoongsd"))
+        extendedSoapHeaders.set(true)
+    }
+    allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
+    doFirst {
+        classpath = configurations["runtimeClasspath"]
+    }
+}
+
 tasks.named("compileKotlin") {
     dependsOn(
         "genBRPDossierPersoonGSD",
         "genRDWDossierGSD",
         "genDUODossierPersoonGSD",
+        "genSVBDossierPersoonGSD"
     )
 }
