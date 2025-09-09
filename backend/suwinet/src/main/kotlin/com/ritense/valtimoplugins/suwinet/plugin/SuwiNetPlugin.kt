@@ -12,6 +12,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetKadasterInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetUwvPersoonsIkvService
@@ -29,8 +30,8 @@ class SuwiNetPlugin(
     private val suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
     private val suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
     private val suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService,
-    private val suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService
-
+    private val suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService,
+    private val suwinetKadasterInfoService: SuwinetKadasterInfoService
     ) {
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
@@ -331,6 +332,39 @@ class SuwiNetPlugin(
                 suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
                 maxPeriods
             )?.let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
+    @PluginAction(
+        key = "get-kadastrale-objecten",
+        title = "SuwiNet kadaster info",
+        description = "SuwiNet Kadaster info",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getKadastraleObjecten(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+        logger.info { "Getting kadastrale objecten for case ${execution.businessKey}" }
+
+        try {
+            suwinetKadasterInfoService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetKadasterInfoService.getPersoonsinfoByBsn(
+                bsn, suwinetKadasterInfoService.createKadasterService()
+            ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )

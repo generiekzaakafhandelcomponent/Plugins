@@ -130,6 +130,21 @@ tasks.register<Wsdl2Java>("genDUODossierPersoonGSD") {
     }
 }
 
+tasks.register<Wsdl2Java>("genDUODossierStudiefinancieringGSD") {
+    toolOptions {
+        wsdl = "src/main/resources/soap/suwinet/Diensten/DUODossierStudiefinancieringGSD/v0200-b01/Impl/BKWI.wsdl"
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/DUODossierStudiefinancieringGSD").get().asFile)
+        markGenerated.set(true)
+        packageNames.set(listOf("com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd"))
+        extendedSoapHeaders.set(true)
+    }
+    allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
+    doFirst {
+        classpath = configurations["runtimeClasspath"]
+    }
+}
+
+
 tasks.register<Wsdl2Java>("genSVBDossierPersoonGSD") {
     toolOptions {
         wsdl = "src/main/resources/soap/suwinet/Diensten/SVBDossierPersoonGSD/v0200-b01/Impl/BKWI.wsdl"
@@ -144,12 +159,12 @@ tasks.register<Wsdl2Java>("genSVBDossierPersoonGSD") {
     }
 }
 
-tasks.register<Wsdl2Java>("genDUODossierStudiefinancieringGSD") {
+tasks.register<Wsdl2Java>("genKadasterDossierGSD") {
     toolOptions {
-        wsdl = "src/main/resources/soap/suwinet/Diensten/DUODossierStudiefinancieringGSD/v0200-b01/Impl/BKWI.wsdl"
-        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/DUODossierStudiefinancieringGSD").get().asFile)
+        wsdl ="src/main/resources/soap/suwinet/Diensten/KadasterDossierGSD/v0300-b02/Impl/BKWI.wsdl"
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genKadasterDossierGSD").get().asFile)
         markGenerated.set(true)
-        packageNames.set(listOf("com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd"))
+        packageNames.set(listOf("com.ritense.valtimo.implementation.dkd.KadasterInfo"))
         extendedSoapHeaders.set(true)
     }
     allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
@@ -177,6 +192,9 @@ tasks.named("compileKotlin") {
         "genBRPDossierPersoonGSD",
         "genRDWDossierGSD",
         "genDUODossierPersoonGSD",
-        "genSVBDossierPersoonGSD"
+        "genDUODossierStudiefinancieringGSD",
+        "genSVBDossierPersoonGSD",
+        "genKadasterDossierGSD",
+        "genUWVDossierInkomstenGSD",
     )
 }

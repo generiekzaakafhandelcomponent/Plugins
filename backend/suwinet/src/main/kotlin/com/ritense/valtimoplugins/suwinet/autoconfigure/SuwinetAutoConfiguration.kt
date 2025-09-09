@@ -15,6 +15,7 @@ import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpStoreToDocService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetKadasterInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetUwvPersoonsIkvService
@@ -134,6 +135,16 @@ class SuwinetAutoConfiguration {
 
     @Bean
     @ProcessBean
+    fun suwinetKadasterInfoService(
+        suwinetSOAPClient: SuwinetSOAPClient,
+    ): SuwinetKadasterInfoService {
+        return SuwinetKadasterInfoService(
+            suwinetSOAPClient
+        )
+    }
+
+    @Bean
+    @ProcessBean
     fun suwinetBrpStoreToDocService(
         documentWriterService: DocumentWriterService,
         documentService: DocumentService,
@@ -155,7 +166,8 @@ class SuwinetAutoConfiguration {
         suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
         suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
         suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService,
-        suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService
+        suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService,
+        suwinetKadasterInfoService: SuwinetKadasterInfoService
     ): SuwiNetPluginFactory = SuwiNetPluginFactory(
         pluginService,
         suwinetBrpInfoService,
@@ -163,6 +175,7 @@ class SuwinetAutoConfiguration {
         suwinetDuoPersoonsInfoService,
         suwinetDuoStudiefinancieringInfoService,
         suwinetSvbPersoonsInfoService,
-        suwinetUwvPersoonsIkvService
+        suwinetUwvPersoonsIkvService,
+        suwinetKadasterInfoService
     )
 }

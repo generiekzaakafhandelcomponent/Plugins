@@ -61,6 +61,11 @@ export interface DUOStudiefinancieringInfoComponent {
     resultProcessVariableName: string;
 }
 
+export interface KadasterobjectenConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
 export interface SVBPersoonsInfoComponent {
     bsn: string;
     resultProcessVariableName: string;
