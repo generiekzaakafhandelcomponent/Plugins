@@ -45,12 +45,6 @@ export interface BrpKinderenInfoConfig {
     kinderenBsns: string;
     resultProcessVariableName: string;
 }
-
-export interface RdwVoertuigenConfig {
-    bsn: string;
-    resultProcessVariableName: string;
-}
-
 export interface DUOPersoonsInfoComponent {
     bsn: string;
     resultProcessVariableName: string;
@@ -62,6 +56,11 @@ export interface DUOStudiefinancieringInfoComponent {
 }
 
 export interface KadasterobjectenConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
+export interface RdwVoertuigenConfig {
     bsn: string;
     resultProcessVariableName: string;
 }

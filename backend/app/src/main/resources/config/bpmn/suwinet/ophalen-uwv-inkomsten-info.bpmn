@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0a89r86" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:collaboration id="Collaboration_0ibnh30">
+    <bpmn:participant id="Participant_05wj6mq" name="SuwiNet: Ophalen UWV inkomsten info" processRef="ophalen-uwv-inkomsten-info" />
+  </bpmn:collaboration>
+  <bpmn:process id="ophalen-uwv-inkomsten-info" name="SuwiNet: Ophalen UWV inkomsten info" isExecutable="true">
+    <bpmn:endEvent id="Event_0ka80pn">
+      <bpmn:incoming>Flow_1h6adyd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_142ec5e</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_0nssmuy" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/uwvInkomsten&#34;, uwvInkomsten)}">
+      <bpmn:incoming>Flow_1b5me85</bpmn:incoming>
+      <bpmn:outgoing>Flow_1h6adyd</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="SuwinetOphalenUwvInkomsten" name="Suwinet: Ophalen UWV inkomsten info" camunda:expression="${true}">
+      <bpmn:incoming>Flow_142ec5e</bpmn:incoming>
+      <bpmn:outgoing>Flow_1b5me85</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1h6adyd" sourceRef="Activity_0nssmuy" targetRef="Event_0ka80pn" />
+    <bpmn:sequenceFlow id="Flow_142ec5e" sourceRef="StartEvent_1" targetRef="SuwinetOphalenUwvInkomsten" />
+    <bpmn:sequenceFlow id="Flow_1b5me85" sourceRef="SuwinetOphalenUwvInkomsten" targetRef="Activity_0nssmuy" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0ibnh30">
+      <bpmndi:BPMNShape id="Participant_05wj6mq_di" bpmnElement="Participant_05wj6mq" isHorizontal="true">
+        <dc:Bounds x="160" y="60" width="600" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ka80pn_di" bpmnElement="Event_0ka80pn">
+        <dc:Bounds x="692" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="262" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yj1xra_di" bpmnElement="Activity_0nssmuy">
+        <dc:Bounds x="540" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0dnhm84_di" bpmnElement="SuwinetOphalenUwvInkomsten">
+        <dc:Bounds x="370" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1h6adyd_di" bpmnElement="Flow_1h6adyd">
+        <di:waypoint x="640" y="180" />
+        <di:waypoint x="692" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_142ec5e_di" bpmnElement="Flow_142ec5e">
+        <di:waypoint x="298" y="180" />
+        <di:waypoint x="370" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1b5me85_di" bpmnElement="Flow_1b5me85">
+        <di:waypoint x="470" y="180" />
+        <di:waypoint x="540" y="180" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

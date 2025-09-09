@@ -40,10 +40,10 @@ import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastr
         BrpPersoonInfoComponent,
         BrpPartnerInfoComponent,
         BrpKinderenInfoComponent,
-        RdwVoertuigenComponent,
         DuoPersoonsInfoComponent,
         DuoStudiefinancieringComponent,
         KadastraleObjectenComponent,
+        RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
         UwvInkomstenInfoComponent
     ],
@@ -53,10 +53,10 @@ import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastr
         BrpPersoonInfoComponent,
         BrpPartnerInfoComponent,
         BrpKinderenInfoComponent,
-        RdwVoertuigenComponent,
         DuoPersoonsInfoComponent,
         DuoStudiefinancieringComponent,
         KadastraleObjectenComponent,
+        RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
         UwvInkomstenInfoComponent
     ],

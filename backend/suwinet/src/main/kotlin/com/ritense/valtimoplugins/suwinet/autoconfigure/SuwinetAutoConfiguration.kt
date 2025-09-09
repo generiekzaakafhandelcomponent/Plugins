@@ -171,11 +171,11 @@ class SuwinetAutoConfiguration {
     ): SuwiNetPluginFactory = SuwiNetPluginFactory(
         pluginService,
         suwinetBrpInfoService,
-        suwinetRdwService,
         suwinetDuoPersoonsInfoService,
         suwinetDuoStudiefinancieringInfoService,
+        suwinetKadasterInfoService,
+        suwinetRdwService,
         suwinetSvbPersoonsInfoService,
-        suwinetUwvPersoonsIkvService,
-        suwinetKadasterInfoService
+        suwinetUwvPersoonsIkvService
     )
 }

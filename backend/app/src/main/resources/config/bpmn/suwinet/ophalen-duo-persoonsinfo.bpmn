@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0911ols" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:collaboration id="Collaboration_0csgxwt">
+    <bpmn:participant id="Participant_1n21xbf" name="SuwiNet: DUO persoonsinfo" processRef="ophalen-duo-persoonsinfo" />
+  </bpmn:collaboration>
+  <bpmn:process id="ophalen-duo-persoonsinfo" name="SuwiNet: DUO Persoonsinfo" isExecutable="true">
+    <bpmn:startEvent id="Event_0njwbbh">
+      <bpmn:outgoing>Flow_1njaslx</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_02f94of">
+      <bpmn:incoming>Flow_0vwe56d</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="OphalenDuoPersoonsinfoTask" name="Ophalen Duo Persoonsinfo" camunda:expression="${true}">
+      <bpmn:incoming>Flow_1njaslx</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ea3r2l</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1ihtc8i" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/duoPersoonsinfo&#34;, duoPersoonsinfo)}">
+      <bpmn:incoming>Flow_0ea3r2l</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vwe56d</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1njaslx" sourceRef="Event_0njwbbh" targetRef="OphalenDuoPersoonsinfoTask" />
+    <bpmn:sequenceFlow id="Flow_0vwe56d" sourceRef="Activity_1ihtc8i" targetRef="Event_02f94of" />
+    <bpmn:sequenceFlow id="Flow_0ea3r2l" sourceRef="OphalenDuoPersoonsinfoTask" targetRef="Activity_1ihtc8i" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0csgxwt">
+      <bpmndi:BPMNShape id="Participant_1n21xbf_di" bpmnElement="Participant_1n21xbf" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="600" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0njwbbh_di" bpmnElement="Event_0njwbbh">
+        <dc:Bounds x="252" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_02f94of_di" bpmnElement="Event_02f94of">
+        <dc:Bounds x="652" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_096apmk_di" bpmnElement="OphalenDuoPersoonsinfoTask">
+        <dc:Bounds x="340" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nmng6b_di" bpmnElement="Activity_1ihtc8i">
+        <dc:Bounds x="510" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1njaslx_di" bpmnElement="Flow_1njaslx">
+        <di:waypoint x="288" y="200" />
+        <di:waypoint x="340" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vwe56d_di" bpmnElement="Flow_0vwe56d">
+        <di:waypoint x="610" y="200" />
+        <di:waypoint x="652" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ea3r2l_di" bpmnElement="Flow_0ea3r2l">
+        <di:waypoint x="440" y="200" />
+        <di:waypoint x="510" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
