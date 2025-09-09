@@ -67,3 +67,9 @@ export interface SVBPersoonsInfoComponent {
     maxPeriods: number;
 }
 
+export interface UwvInkomstenPersoonInfoConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+    maxPeriods: number;
+}
+

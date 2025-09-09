@@ -30,6 +30,7 @@ import {RdwVoertuigenComponent} from "./components/rdw-voertuigen/rdw-voertuigen
 import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-persoons-info.component";
 import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
 import {DuoStudiefinancieringComponent} from "./components/duo-studiefinanciering/duo-studiefinanciering.component";
+import {UwvInkomstenInfoComponent} from "./components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component";
 
 const suwinetPluginSpecification: PluginSpecification = {
   pluginId: 'suwinet',
@@ -42,7 +43,8 @@ const suwinetPluginSpecification: PluginSpecification = {
     'get-rdw-voertuigen': RdwVoertuigenComponent,
     'get-duo-persoonsinfo': DuoPersoonsInfoComponent,
     'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
-    'get-svb-persoonsinfo': SvbPersoonsInfoComponent
+    'get-svb-persoonsinfo': SvbPersoonsInfoComponent,
+    'get-uwv-inkomsten-info': UwvInkomstenInfoComponent
   },
   pluginTranslations: {
     nl: {

@@ -14,6 +14,7 @@ import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetUwvPersoonsIkvService
 import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -27,7 +28,8 @@ class SuwiNetPlugin(
     private val suwinetRdwService: SuwinetRdwService,
     private val suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
     private val suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
-    private val suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService
+    private val suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService,
+    private val suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService
 
     ) {
     @PluginProperty(key = "baseUrl", secret = false, required = true)
@@ -303,6 +305,42 @@ class SuwiNetPlugin(
             connectionTimeout = connectionTimeout,
             receiveTimeout = receiveTimeout
         )
+
+    @PluginAction(
+        key = "get-uwv-inkomsten-info",
+        title = "SuwiNet UWV inkomsten persoon info",
+        description = "SuwiNet UWV inkomsten info",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getUWVInkomsteninfo(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty maxPeriods: Int,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+
+        logger.info { "Getting uwv info for case ${execution.businessKey}" }
+        suwinetUwvPersoonsIkvService.setConfig(
+            getSuwinetSOAPClientConfig()
+        )
+
+        try {
+            suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
+                bsn = bsn,
+                suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
+                maxPeriods
+            )?.let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
 
     private fun String.isValidBsn(): Boolean {
         val bsnParts: List<Int> = split("").mapNotNull { it.toIntOrNull() }

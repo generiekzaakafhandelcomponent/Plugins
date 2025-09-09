@@ -32,4 +32,5 @@ export * from './lib/components/rdw-voertuigen/rdw-voertuigen.component';
 export * from './lib/components/duo-persoons-info/duo-persoons-info.component';
 export * from './lib/components/duo-studiefinanciering/duo-studiefinanciering.component';
 export * from './lib/components/svb-persoons-info/svb-persoons-info.component';
+export * from './lib/components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component';
 

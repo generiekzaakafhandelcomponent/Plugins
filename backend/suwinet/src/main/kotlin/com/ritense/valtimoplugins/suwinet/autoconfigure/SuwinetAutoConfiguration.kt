@@ -2,6 +2,8 @@ package com.ritense.valtimoplugins.suwinet.autoconfigure
 
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimo.common.service.UwvCodeService
+import com.ritense.valtimo.common.service.UwvSoortIkvService
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.plugin.SuwiNetPluginFactory
@@ -15,6 +17,7 @@ import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetUwvPersoonsIkvService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -101,6 +104,33 @@ class SuwinetAutoConfiguration {
         return SuwinetSvbPersoonsInfoService(suwinetSOAPClient, codesUitkeringsPeriodeService)
     }
 
+    @Bean
+    @ProcessBean
+    fun uwvCodeService() : UwvCodeService {
+        return UwvCodeService()
+    }
+
+    @Bean
+    @ProcessBean
+    fun uwvSoortIkvService() : UwvSoortIkvService {
+        return UwvSoortIkvService()
+    }
+
+    @Bean
+    @ProcessBean
+    fun suwinetUwvPersoonsIkvService(
+        suwinetSOAPClient: SuwinetSOAPClient,
+        dateTimeService: DateTimeService,
+        uwvCodeService: UwvCodeService,
+        uwvSoortIkvService: UwvSoortIkvService
+    ): SuwinetUwvPersoonsIkvService {
+        return SuwinetUwvPersoonsIkvService(
+            suwinetSOAPClient,
+            dateTimeService,
+            uwvCodeService,
+            uwvSoortIkvService
+        )
+    }
 
     @Bean
     @ProcessBean
@@ -124,13 +154,15 @@ class SuwinetAutoConfiguration {
         suwinetRdwService: SuwinetRdwService,
         suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
         suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
-        suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService
+        suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService,
+        suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService
     ): SuwiNetPluginFactory = SuwiNetPluginFactory(
         pluginService,
         suwinetBrpInfoService,
         suwinetRdwService,
         suwinetDuoPersoonsInfoService,
         suwinetDuoStudiefinancieringInfoService,
-        suwinetSvbPersoonsInfoService
+        suwinetSvbPersoonsInfoService,
+        suwinetUwvPersoonsIkvService
     )
 }

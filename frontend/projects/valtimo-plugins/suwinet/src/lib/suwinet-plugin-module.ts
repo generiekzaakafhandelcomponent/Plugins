@@ -31,6 +31,7 @@ import {RdwVoertuigenComponent} from './components/rdw-voertuigen/rdw-voertuigen
 import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-persoons-info.component";
 import {DuoStudiefinancieringComponent} from "./components/duo-studiefinanciering/duo-studiefinanciering.component";
 import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
+import {UwvInkomstenInfoComponent} from "./components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component";
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-perso
         RdwVoertuigenComponent,
         DuoPersoonsInfoComponent,
         DuoStudiefinancieringComponent,
-        SvbPersoonsInfoComponent
+        SvbPersoonsInfoComponent,
+        UwvInkomstenInfoComponent
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule],
     exports: [
@@ -52,7 +54,8 @@ import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-perso
         RdwVoertuigenComponent,
         DuoPersoonsInfoComponent,
         DuoStudiefinancieringComponent,
-        SvbPersoonsInfoComponent
+        SvbPersoonsInfoComponent,
+        UwvInkomstenInfoComponent
     ],
 })
 export class SuwinetPluginModule {

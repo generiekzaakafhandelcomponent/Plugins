@@ -147,9 +147,23 @@ tasks.register<Wsdl2Java>("genSVBDossierPersoonGSD") {
 tasks.register<Wsdl2Java>("genDUODossierStudiefinancieringGSD") {
     toolOptions {
         wsdl = "src/main/resources/soap/suwinet/Diensten/DUODossierStudiefinancieringGSD/v0200-b01/Impl/BKWI.wsdl"
-        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf").get().asFile)
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/DUODossierStudiefinancieringGSD").get().asFile)
         markGenerated.set(true)
         packageNames.set(listOf("com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd"))
+        extendedSoapHeaders.set(true)
+    }
+    allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
+    doFirst {
+        classpath = configurations["runtimeClasspath"]
+    }
+}
+
+tasks.register<Wsdl2Java>("genUWVDossierInkomstenGSD") {
+    toolOptions {
+        wsdl = "src/main/resources/soap/suwinet/Diensten/UWVDossierInkomstenGSD/v0200-b02/Impl/BKWI.wsdl"
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genUWVDossierInkomstenGSD").get().asFile)
+        markGenerated.set(true)
+        packageNames.set(listOf("com.ritense.valtimo.implementation.dkd.UWVDossierInkomstenGSD"))
         extendedSoapHeaders.set(true)
     }
     allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
