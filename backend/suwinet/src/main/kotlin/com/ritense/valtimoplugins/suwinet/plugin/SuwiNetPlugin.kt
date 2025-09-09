@@ -11,6 +11,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_STA
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
 import java.net.URI
@@ -25,6 +26,7 @@ class SuwiNetPlugin(
     private val suwinetBrpInfoService: SuwinetBrpInfoService,
     private val suwinetRdwService: SuwinetRdwService,
     private val suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
+    private val suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
     private val suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService
 
     ) {
@@ -213,6 +215,39 @@ class SuwiNetPlugin(
             ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName,objectMapper.convertValue(it)
+                )
+            }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
+    @PluginAction(
+        key = "get-duo-studiefinanciering",
+        title = "SuwiNet DUO studiefinanciering Info",
+        description = "SuwiNet DUO studiefinanciering Info",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getDUOStudiefinancieringInfo(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+        logger.info { "Getting DUO studiefinanciering for case ${execution.businessKey}" }
+
+        try {
+            suwinetDuoStudiefinancieringInfoService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetDuoStudiefinancieringInfoService.getStudiefinancieringInfoByBsn(
+                bsn = bsn,
+                suwinetDuoStudiefinancieringInfoService.createDuoStudiefinancieringService()
+            ).let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
                 )
             }
         } catch (e: Exception) {

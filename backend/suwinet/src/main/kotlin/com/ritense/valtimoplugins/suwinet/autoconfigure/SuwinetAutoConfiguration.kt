@@ -12,6 +12,7 @@ import com.ritense.valtimoplugins.suwinet.service.NationaliteitenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpStoreToDocService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
 import org.springframework.beans.factory.annotation.Value
@@ -85,6 +86,14 @@ class SuwinetAutoConfiguration {
 
     @Bean
     @ProcessBean
+    fun suwinetDuoStudiefinancieringInfoService(
+        suwinetSOAPClient: SuwinetSOAPClient
+    ): SuwinetDuoStudiefinancieringInfoService {
+        return SuwinetDuoStudiefinancieringInfoService(suwinetSOAPClient)
+    }
+
+    @Bean
+    @ProcessBean
     fun suwinetSvbPersoonsInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
         codesUitkeringsPeriodeService: CodesUitkeringsperiodeService
@@ -114,12 +123,14 @@ class SuwinetAutoConfiguration {
         suwinetBrpInfoService: SuwinetBrpInfoService,
         suwinetRdwService: SuwinetRdwService,
         suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
+        suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
         suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService
     ): SuwiNetPluginFactory = SuwiNetPluginFactory(
         pluginService,
         suwinetBrpInfoService,
         suwinetRdwService,
         suwinetDuoPersoonsInfoService,
+        suwinetDuoStudiefinancieringInfoService,
         suwinetSvbPersoonsInfoService
     )
 }

@@ -4,6 +4,7 @@ import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
 
@@ -12,6 +13,7 @@ class SuwiNetPluginFactory(
     private val suwinetBrpInfoService: SuwinetBrpInfoService,
     private val suwinetRdwService: SuwinetRdwService,
     private val suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
+    private val suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
     private val suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService
 ) : PluginFactory<SuwiNetPlugin>(pluginService) {
 
@@ -20,6 +22,7 @@ class SuwiNetPluginFactory(
             suwinetBrpInfoService,
             suwinetRdwService,
             suwinetDuoPersoonsInfoService,
+            suwinetDuoStudiefinancieringInfoService,
             suwinetSvbPersoonsInfoService
         )
     }

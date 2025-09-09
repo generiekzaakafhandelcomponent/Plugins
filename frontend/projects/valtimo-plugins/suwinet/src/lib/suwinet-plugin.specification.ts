@@ -29,6 +29,7 @@ import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinde
 import {RdwVoertuigenComponent} from "./components/rdw-voertuigen/rdw-voertuigen.component";
 import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-persoons-info.component";
 import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
+import {DuoStudiefinancieringComponent} from "./components/duo-studiefinanciering/duo-studiefinanciering.component";
 
 const suwinetPluginSpecification: PluginSpecification = {
   pluginId: 'suwinet',
@@ -40,6 +41,7 @@ const suwinetPluginSpecification: PluginSpecification = {
     'get-brp-kinderen-persoonsgegevens': BrpKinderenInfoComponent,
     'get-rdw-voertuigen': RdwVoertuigenComponent,
     'get-duo-persoonsinfo': DuoPersoonsInfoComponent,
+    'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
     'get-svb-persoonsinfo': SvbPersoonsInfoComponent
   },
   pluginTranslations: {

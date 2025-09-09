@@ -56,6 +56,11 @@ export interface DUOPersoonsInfoComponent {
     resultProcessVariableName: string;
 }
 
+export interface DUOStudiefinancieringInfoComponent {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
 export interface SVBPersoonsInfoComponent {
     bsn: string;
     resultProcessVariableName: string;

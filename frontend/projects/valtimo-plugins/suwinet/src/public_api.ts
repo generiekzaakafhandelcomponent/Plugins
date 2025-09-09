@@ -30,4 +30,6 @@ export * from './lib/components/brp-partner-info/brp-partner-info.component';
 export * from './lib/components/brp-persoon-info/brp-persoon-info.component';
 export * from './lib/components/rdw-voertuigen/rdw-voertuigen.component';
 export * from './lib/components/duo-persoons-info/duo-persoons-info.component';
+export * from './lib/components/duo-studiefinanciering/duo-studiefinanciering.component';
 export * from './lib/components/svb-persoons-info/svb-persoons-info.component';
+
