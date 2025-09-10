@@ -51,6 +51,7 @@ dependencies {
     implementation("com.ritense.valtimo:value-resolver")
     implementation("com.ritense.valtimo:zaken-api")
     implementation("com.ritense.valtimo:documenten-api")
+    implementation("com.ritense.valtimo:smartdocuments")
 
     implementation(project(":backend:mTLS-SSLContext"))
 
