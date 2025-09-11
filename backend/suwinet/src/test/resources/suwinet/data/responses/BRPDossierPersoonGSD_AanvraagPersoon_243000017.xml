@@ -1,0 +1,62 @@
+<brp:AanvraagPersoonResponse xmlns:brp="http://bkwi.nl/SuwiML/Diensten/BRPDossierPersoonGSD/v0200">
+    <ClientSuwi>
+        <Voornamen>Wilma woont niet meer thuis</Voornamen>
+        <Voorvoegsel>de</Voorvoegsel>
+        <SignificantDeelVanDeAchternaam>Jansen</SignificantDeelVanDeAchternaam>
+        <Geboortedat>20140927</Geboortedat>
+        <Burgerservicenr>243000017</Burgerservicenr>
+        <CdBrpGegevensGeheim>0</CdBrpGegevensGeheim>
+        <AanduidingNaamgebruik>1</AanduidingNaamgebruik>
+        <Geslacht>2</Geslacht>
+        <CdGeboortegemeente>0363</CdGeboortegemeente>
+        <Geboorteland>6030</Geboorteland>
+        <Titulatuur>
+            <CdAdellijkeTitelPredikaat>PS</CdAdellijkeTitelPredikaat>
+        </Titulatuur>
+        <GeldigheidGegevensPersoon>
+            <DatGeldigheidGegevens>20250310</DatGeldigheidGegevens>
+        </GeldigheidGegevensPersoon>
+
+        <Nationaliteit>
+            <CdNationaliteit>0001</CdNationaliteit>
+            <GeldigheidGegevensNationaliteit>
+                <DatGeldigheidGegevens>20250310</DatGeldigheidGegevens>
+            </GeldigheidGegevensNationaliteit>
+        </Nationaliteit>
+        <Nationaliteit>
+            <CdNationaliteit>0175</CdNationaliteit>
+        </Nationaliteit>
+
+        <Verblijfstitel>
+            <CdVerblijfstitel>41</CdVerblijfstitel>
+            <DatBVerblijfstitel>20120915</DatBVerblijfstitel>
+            <DatEVerblijfstitel>20240915</DatEVerblijfstitel>
+        </Verblijfstitel>
+
+        <DomicilieAdres>
+            <Postcd>2011XB</Postcd>
+            <Woonplaatsnaam>Den Haag</Woonplaatsnaam>
+            <Straatnaam>kerkstraatstraat</Straatnaam>
+            <Huisnr>42</Huisnr>
+            <IdentificatiecdVerblijfplaats>0530010002090227</IdentificatiecdVerblijfplaats>
+            <IdentificatiecdNraanduiding>0530200002130217</IdentificatiecdNraanduiding>
+            <Huisletter>A</Huisletter>
+            <Huisnrtoevoeging></Huisnrtoevoeging>
+        </DomicilieAdres>
+
+        <Ouder1>
+            <Voornamen>Henk</Voornamen>
+            <Voorvoegsel>de</Voorvoegsel>
+            <SignificantDeelVanDeAchternaam>Jansen</SignificantDeelVanDeAchternaam>
+            <Geboortedat>19600720</Geboortedat>
+            <Burgerservicenr>111111110</Burgerservicenr>
+        </Ouder1>
+        <Ouder2>
+            <Voornamen>Wilma</Voornamen>
+            <Voorvoegsel>de</Voorvoegsel>
+            <SignificantDeelVanDeAchternaam>Jansen</SignificantDeelVanDeAchternaam>
+            <Geboortedat>19620130</Geboortedat>
+            <Burgerservicenr>243004552</Burgerservicenr>
+        </Ouder2>
+    </ClientSuwi>
+</brp:AanvraagPersoonResponse>

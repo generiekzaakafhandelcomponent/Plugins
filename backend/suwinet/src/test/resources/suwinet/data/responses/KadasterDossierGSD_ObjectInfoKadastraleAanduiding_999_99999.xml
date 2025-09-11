@@ -1,0 +1,12 @@
+<ns3:ObjectInfoKadastraleAanduidingResponse xmlns:ns3="http://bkwi.nl/SuwiML/Diensten/KadasterDossierGSD/v0300" xmlns:ns2="http://bkwi.nl/SuwiML/FWI/v0203">
+    <fwi:FWI xmlns:fwi="http://bkwi.nl/SuwiML/FWI/v0205">
+        <Fout>
+            <Code>KIKI_0311</Code>
+            <Tekst>Opgegeven &lt;zoekingang> is niet bekend.</Tekst>
+            <Detail>Opgegeven &lt;zoekingang> is niet bekend. Productieordernummer=S22000008077 en Productieordernummer=S11000008053.</Detail>
+            <Bron>
+                <DN>ou=KIK-Inzage,o=Kadaster,c=nl</DN>
+            </Bron>
+        </Fout>
+    </fwi:FWI>
+</ns3:ObjectInfoKadastraleAanduidingResponse>

@@ -108,13 +108,12 @@ class SuwinetBrpInfoService(
 
 
     private fun getNationaliteiten(nationaliteiten: List<Nationaliteit>) = nationaliteiten.mapNotNull {
-        val nationaliteit = nationaliteitenService.getNationaliteit(
-            it.cdNationaliteit.trimStart('0')
-        )
-        nationaliteit?.let {
-            NationaliteitDto(
-                nationaliteit.code, nationaliteit.name
-            )
+        nationaliteit ->
+        val code = nationaliteit.cdNationaliteit?.trimStart('0')?.takeIf { it.isNotBlank() }
+        code?.let {
+            nationaliteitenService.getNationaliteit(it)?.let { found ->
+                NationaliteitDto(found.code, found.name)
+            }
         }
     }
 

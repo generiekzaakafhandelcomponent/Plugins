@@ -75,6 +75,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-migrationsupport:5.9.1")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito:mockito-junit-jupiter")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("com.jayway.jsonpath:json-path:2.7.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
@@ -177,7 +178,7 @@ tasks.register<Wsdl2Java>("genUWVDossierInkomstenGSD") {
         wsdl = "src/main/resources/soap/suwinet/Diensten/UWVDossierInkomstenGSD/v0200-b02/Impl/BKWI.wsdl"
         outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genUWVDossierInkomstenGSD").get().asFile)
         markGenerated.set(true)
-        packageNames.set(listOf("com.ritense.valtimo.implementation.dkd.UWVDossierInkomstenGSD"))
+        packageNames.set(listOf("com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD"))
         extendedSoapHeaders.set(true)
     }
     allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")

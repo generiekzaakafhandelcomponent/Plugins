@@ -1,0 +1,53 @@
+<ns3:ObjectInfoKadastraleAanduidingResponse xmlns:ns3="http://bkwi.nl/SuwiML/Diensten/KadasterDossierGSD/v0300" xmlns:ns2="http://bkwi.nl/SuwiML/FWI/v0203">
+    <OnroerendeZaak>
+        <DatToestandKadaster>20140407</DatToestandKadaster>
+        <CdTypeOnroerendeZaak>A</CdTypeOnroerendeZaak>
+        <DatOntstaan>19650113</DatOntstaan>
+        <KadastraleAanduiding>
+            <CdKadastraleGemeente>1189</CdKadastraleGemeente>
+            <KadastraleGemeentenaam>Alkmaar</KadastraleGemeentenaam>
+            <KadastraleSectie>G1</KadastraleSectie>
+            <KadastraalPerceelnr>43980</KadastraalPerceelnr>
+            <VolgnrKadastraalAppartementsrecht>2</VolgnrKadastraalAppartementsrecht>
+        </KadastraleAanduiding>
+        <OmsKadastraalObject>Bebouwd: Wonen (appartement)</OmsKadastraalObject>
+        <ZakelijkRecht>
+            <OmsZakelijkRecht>Eigendom (recht van)</OmsZakelijkRecht>
+        </ZakelijkRecht>
+        <LocatieOZ>
+            <StraatadresBag>
+                <Postcd>3191GQ</Postcd>
+                <Woonplaatsnaam>Alkmaar</Woonplaatsnaam>
+                <Straatnaam>Kaasmarkt</Straatnaam>
+                <Huisnr>2</Huisnr>
+            </StraatadresBag>
+        </LocatieOZ>
+        <BedrKoopsom>
+            <CdMunteenheid>EUR</CdMunteenheid>
+            <WaardeBedr>7525000</WaardeBedr>
+        </BedrKoopsom>
+        <JaarAankoop>1965</JaarAankoop>
+        <WijzeVerkrijgingEigendom>
+            <CdWijzeVerkrijgingEigendom>H</CdWijzeVerkrijgingEigendom>
+            <DatVerkrijgingEigendom>19930425</DatVerkrijgingEigendom>
+        </WijzeVerkrijgingEigendom>
+        <IndMeerGerechtigden>2</IndMeerGerechtigden>
+        <Gerechtigde>
+            <NatuurlijkPersoon>
+                <Burgerservicenr>444444440</Burgerservicenr>
+                <Voornamen>Martin</Voornamen>
+                <Voorvoegsel>de</Voorvoegsel>
+                <SignificantDeelVanDeAchternaam>Visser</SignificantDeelVanDeAchternaam>
+                <Geslacht>1</Geslacht>
+            </NatuurlijkPersoon>
+            <DomicilieAdres>
+                <StraatadresBag>
+                    <Postcd>1411EA</Postcd>
+                    <Woonplaatsnaam>Naarden</Woonplaatsnaam>
+                    <Straatnaam>Marktstraat</Straatnaam>
+                    <Huisnr>12</Huisnr>
+                </StraatadresBag>
+            </DomicilieAdres>
+        </Gerechtigde>
+    </OnroerendeZaak>
+</ns3:ObjectInfoKadastraleAanduidingResponse>

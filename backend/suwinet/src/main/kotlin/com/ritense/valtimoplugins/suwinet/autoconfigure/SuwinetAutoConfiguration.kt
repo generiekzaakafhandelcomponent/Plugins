@@ -2,8 +2,8 @@ package com.ritense.valtimoplugins.suwinet.autoconfigure
 
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimo.common.service.UwvCodeService
-import com.ritense.valtimo.common.service.UwvSoortIkvService
+import com.ritense.valtimoplugins.suwinet.service.UwvCodeService
+import com.ritense.valtimoplugins.suwinet.service.UwvSoortIkvService
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.plugin.SuwiNetPluginFactory

@@ -1,4 +1,4 @@
-package com.ritense.valtimo.common.service
+package com.ritense.valtimoplugins.suwinet.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue

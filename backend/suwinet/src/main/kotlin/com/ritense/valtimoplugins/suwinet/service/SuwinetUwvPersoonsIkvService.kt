@@ -1,14 +1,11 @@
 package com.ritense.valtimoplugins.suwinet.service
 
-
-import com.ritense.valtimo.common.service.UwvCodeService
-import com.ritense.valtimo.common.service.UwvSoortIkvService
-import com.ritense.valtimo.implementation.dkd.UWVDossierInkomstenGSD.FWI
-import com.ritense.valtimo.implementation.dkd.UWVDossierInkomstenGSD.ObjectFactory
-import com.ritense.valtimo.implementation.dkd.UWVDossierInkomstenGSD.StandaardBedr
-import com.ritense.valtimo.implementation.dkd.UWVDossierInkomstenGSD.UWVIkvInfo
-import com.ritense.valtimo.implementation.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfo
-import com.ritense.valtimo.implementation.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfoResponse
+import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.FWI
+import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.ObjectFactory
+import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.StandaardBedr
+import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVIkvInfo
+import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfo
+import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfoResponse
 import com.ritense.valtimo.suwinet.model.UwvPersoonsIkvDto
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
