@@ -85,11 +85,12 @@ class ObjectManagementCrudService(
         objectenApiPlugin.deleteObject(uri)
     }
 
-    fun getObjectsByObjectManagementTitle(
-        objectManagementTitle: String,
-        searchString: String? = null,
+    fun getObjectsByObjectManagementIdWithSearchParams(
+        objectManagementConfigurationId: UUID,
+        searchString: String?,
         ordering: String? = null
     ): ObjectsList {
+        val objectManagementTitle = getObjectManagementTitle(objectManagementConfigurationId)
         return try {
             objectManagementFacade.getObjectsUnpaged(
                 objectName = objectManagementTitle,
@@ -97,7 +98,7 @@ class ObjectManagementCrudService(
                 ordering = ordering
             )
         } catch (e: Exception) {
-            throw RuntimeException("Failed to fetch objects for objectManagement: $objectManagementTitle", e)
+            throw RuntimeException("Failed to fetch objects for objectManagement: $objectManagementConfigurationId", e)
         }
     }
 
