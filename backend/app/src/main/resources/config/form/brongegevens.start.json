@@ -1,0 +1,43 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "html",
+      "type" : "htmlelement",
+      "attrs" : [
+        {
+          "attr" : "",
+          "value" : ""
+        }
+      ],
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Brongegevens ophalen",
+      "tableView" : false,
+      "refreshOnChange" : false
+    },
+    {
+      "key" : "bsn",
+      "properties": {
+        "targetKey": "pv:bsn"
+      },
+      "type" : "textfield",
+      "input" : true,
+      "label" : "BSN",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "brongegevens.start-bsnAanvrager"
+      },
+      "applyMaskOn" : "change",
+      "defaultValue" : "999991954"
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Submit",
+      "tableView" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

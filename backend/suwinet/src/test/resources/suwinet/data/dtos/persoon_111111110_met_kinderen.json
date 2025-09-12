@@ -1,0 +1,39 @@
+{
+    "voornamen" : "Henk",
+    "voorvoegsel" : "de",
+    "achternaam" : "Jansen",
+    "geboortedatum" : "1960-07-20",
+    "bsn" : "111111110",
+    "adresBrp" : {
+        "straatnaam" : "Zomerdijkstraat",
+        "huisnummer" : 19,
+        "huisletter" : "C",
+        "huisnummertoevoeging" : "Huis",
+        "postcode" : "1079WZ",
+        "woonplaatsnaam" : "Amsterdam",
+        "aanduidingBijHuisnummer" : "",
+        "locatieomschrijving" : ""
+    },
+    "postadresBrp" : {
+        "straatnaam" : "Kerkstraat",
+        "huisnummer" : 79,
+        "huisletter" : "A",
+        "huisnummertoevoeging" : "Huis",
+        "postcode" : "2054RC",
+        "woonplaatsnaam" : "Utrecht",
+        "aanduidingBijHuisnummer" : "",
+        "locatieomschrijving" : ""
+    },
+    "verblijfstitel" : {
+        "codeVerblijfstitel" : {
+            "code" : "41",
+            "name" : ""
+        },
+        "datumAanvangVerblijfstitel" : "2012-09-15",
+        "datumEindeVerblijfstitel" : "2024-09-15"
+    },
+    "nationaliteiten" : [ ],
+    "kinderenBsns" : [ "243000157", "243000017", "010002546", "080000071" ],
+    "partnerBsn" : "999991954",
+    "datumOverlijden" : ""
+}

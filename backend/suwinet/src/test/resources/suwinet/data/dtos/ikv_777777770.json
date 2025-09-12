@@ -1,0 +1,348 @@
+{
+    "inkomsten": [
+        {
+            "naamRechtspersoon": "DE HANDELSKAMER",
+            "opgaven": [
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20230901",
+                    "datumEindOpgave": "20230930",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "11",
+                        "name": "11 Loon of salaris ambtenaren in de zin van de Ambtenarenwet",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "B",
+                        "name": "Bepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "12",
+                        "name": "persoonlijke arbeid tegen beloning"
+                    },
+                    "naamRechtspersoon": "DE HANDELSKAMER"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20231001",
+                    "datumEindOpgave": "20231031",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "11",
+                        "name": "11 Loon of salaris ambtenaren in de zin van de Ambtenarenwet",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "B",
+                        "name": "Bepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "12",
+                        "name": "persoonlijke arbeid tegen beloning"
+                    },
+                    "naamRechtspersoon": "DE HANDELSKAMER"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20231101",
+                    "datumEindOpgave": "20231130",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "11",
+                        "name": "11 Loon of salaris ambtenaren in de zin van de Ambtenarenwet",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "B",
+                        "name": "Bepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "12",
+                        "name": "persoonlijke arbeid tegen beloning"
+                    },
+                    "naamRechtspersoon": "DE HANDELSKAMER"
+                }
+            ]
+        },
+        {
+            "naamRechtspersoon": "GPL01-FTG01",
+            "opgaven": [
+                {
+                    "brutoSocialeVerzekeringsLoon": 338648,
+                    "loonLbPremieVolksverzekering": 3.5558E+5,
+                    "ingehoudenLbPremieVolksverzekering": 67051,
+                    "vakantietoeslag": 110324,
+                    "opgbRechtVakantietoeslag": 110324,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20230901",
+                    "datumEindOpgave": "20230930",
+                    "aantalVerloondeUren": 104,
+                    "codeSoortIkv": {
+                        "code": "15",
+                        "name": "15 Loon of salaris niet onder te brengen onder 11, 13 of 17",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "O",
+                        "name": "Onbepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "20",
+                        "name": "beschut werk"
+                    },
+                    "naamRechtspersoon": "GPL01-FTG01"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 338648,
+                    "loonLbPremieVolksverzekering": 3.5558E+5,
+                    "ingehoudenLbPremieVolksverzekering": 67051,
+                    "vakantietoeslag": 110324,
+                    "opgbRechtVakantietoeslag": 110324,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20231001",
+                    "datumEindOpgave": "20231031",
+                    "aantalVerloondeUren": 104,
+                    "codeSoortIkv": {
+                        "code": "15",
+                        "name": "15 Loon of salaris niet onder te brengen onder 11, 13 of 17",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "O",
+                        "name": "Onbepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "20",
+                        "name": "beschut werk"
+                    },
+                    "naamRechtspersoon": "GPL01-FTG01"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 338648,
+                    "loonLbPremieVolksverzekering": 3.5558E+5,
+                    "ingehoudenLbPremieVolksverzekering": 67051,
+                    "vakantietoeslag": 110324,
+                    "opgbRechtVakantietoeslag": 110324,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20231101",
+                    "datumEindOpgave": "20231130",
+                    "aantalVerloondeUren": 104,
+                    "codeSoortIkv": {
+                        "code": "15",
+                        "name": "15 Loon of salaris niet onder te brengen onder 11, 13 of 17",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "O",
+                        "name": "Onbepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "20",
+                        "name": "beschut werk"
+                    },
+                    "naamRechtspersoon": "GPL01-FTG01"
+                }
+            ]
+        },
+        {
+            "naamRechtspersoon": "UITVOERINGSINSTITUUT WERKNEMERSVERZEKERINGEN",
+            "opgaven": [
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20230901",
+                    "datumEindOpgave": "20230930",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "40",
+                        "name": "40 Uitkering in het kader van de Regeling werkhervatting gedeeltelijk arbeidsgeschikten WGA)",
+                        "type": "UITKERING"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "codeAardIkv": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "naamRechtspersoon": "UITVOERINGSINSTITUUT WERKNEMERSVERZEKERINGEN"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20231001",
+                    "datumEindOpgave": "20231031",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "40",
+                        "name": "40 Uitkering in het kader van de Regeling werkhervatting gedeeltelijk arbeidsgeschikten WGA)",
+                        "type": "UITKERING"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "codeAardIkv": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "naamRechtspersoon": "UITVOERINGSINSTITUUT WERKNEMERSVERZEKERINGEN"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20231101",
+                    "datumEindOpgave": "20231130",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "40",
+                        "name": "40 Uitkering in het kader van de Regeling werkhervatting gedeeltelijk arbeidsgeschikten WGA)",
+                        "type": "UITKERING"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "codeAardIkv": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "naamRechtspersoon": "UITVOERINGSINSTITUUT WERKNEMERSVERZEKERINGEN"
+                }
+            ]
+        },
+        {
+            "naamRechtspersoon": "SOCIALE VERZEKERINGSBANK",
+            "opgaven": [
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20230901",
+                    "datumEindOpgave": "20230930",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "23",
+                        "name": "23 Oorlogs- en verzetspensioenen",
+                        "type": "PENSIOEN"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "codeAardIkv": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "naamRechtspersoon": "SOCIALE VERZEKERINGSBANK"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20231001",
+                    "datumEindOpgave": "20231031",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "23",
+                        "name": "23 Oorlogs- en verzetspensioenen",
+                        "type": "PENSIOEN"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "codeAardIkv": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "naamRechtspersoon": "SOCIALE VERZEKERINGSBANK"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.428E+5,
+                    "loonLbPremieVolksverzekering": 1.4994E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 0,
+                    "opgbRechtExtraPrdSalaris": 0,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20231101",
+                    "datumEindOpgave": "20231130",
+                    "aantalVerloondeUren": 160,
+                    "codeSoortIkv": {
+                        "code": "23",
+                        "name": "23 Oorlogs- en verzetspensioenen",
+                        "type": "PENSIOEN"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "codeAardIkv": {
+                        "code": "-1",
+                        "name": "not found"
+                    },
+                    "naamRechtspersoon": "SOCIALE VERZEKERINGSBANK"
+                }
+            ]
+        }
+    ]
+}

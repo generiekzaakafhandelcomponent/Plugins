@@ -45,3 +45,35 @@ export interface BrpKinderenInfoConfig {
     kinderenBsns: string;
     resultProcessVariableName: string;
 }
+export interface DUOPersoonsInfoComponent {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
+export interface DUOStudiefinancieringInfoComponent {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
+export interface KadasterobjectenConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
+export interface RdwVoertuigenConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
+export interface SVBPersoonsInfoComponent {
+    bsn: string;
+    resultProcessVariableName: string;
+    maxPeriods: number;
+}
+
+export interface UwvInkomstenPersoonInfoConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+    maxPeriods: number;
+}
+

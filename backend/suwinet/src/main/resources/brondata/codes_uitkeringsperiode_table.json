@@ -1,0 +1,42 @@
+[
+    {
+        "code": "0",
+        "name": "Niet van toepassing"
+    },
+    {
+        "code": "1",
+        "name": "Dag"
+    },
+    {
+        "code": "2",
+        "name": "Week"
+    },
+    {
+        "code": "3",
+        "name": "2 weken"
+    },
+    {
+        "code": "4",
+        "name": "4 weken (13 maanden)"
+    },
+    {
+        "code": "5",
+        "name": "5 weken"
+    },
+    {
+        "code": "6",
+        "name": "Maand"
+    },
+    {
+        "code": "7",
+        "name": "Kwartaal"
+    },
+    {
+        "code": "8",
+        "name": "Jaar"
+    },
+    {
+        "code": "9",
+        "name": "Eenmalig"
+    }
+]

@@ -1,15 +1,16 @@
 package com.ritense.valtimoplugins.suwinet.service
 
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.AanvraagPersoonResponse
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.BRPInfo
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.ClientSuwi
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.FWI
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.Huwelijk
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.Kind
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.Nationaliteit
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.ObjectFactory
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.Straatadres
-import com.ritense.valtimo.implementation.dkd.BRPDossierPersoonGSD.Verblijfstitel
+
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.AanvraagPersoonResponse
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.BRPInfo
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.ClientSuwi
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.FWI
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Huwelijk
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Kind
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Nationaliteit
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.ObjectFactory
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Straatadres
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Verblijfstitel
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
@@ -107,13 +108,12 @@ class SuwinetBrpInfoService(
 
 
     private fun getNationaliteiten(nationaliteiten: List<Nationaliteit>) = nationaliteiten.mapNotNull {
-        val nationaliteit = nationaliteitenService.getNationaliteit(
-            it.cdNationaliteit.trimStart('0')
-        )
-        nationaliteit?.let {
-            NationaliteitDto(
-                nationaliteit.code, nationaliteit.name
-            )
+        nationaliteit ->
+        val code = nationaliteit.cdNationaliteit?.trimStart('0')?.takeIf { it.isNotBlank() }
+        code?.let {
+            nationaliteitenService.getNationaliteit(it)?.let { found ->
+                NationaliteitDto(found.code, found.name)
+            }
         }
     }
 
