@@ -148,7 +148,7 @@ class SuwinetAutoConfiguration {
     fun suwinetBrpStoreToDocService(
         documentWriterService: DocumentWriterService,
         documentService: DocumentService,
-        @Value("\${implementation.suwinet.maxAgeKindAlsThuiswonend: }") maxAgeKindAlsThuiswonend: Int
+        @Value("\${implementation.suwinet.maxAgeKindAlsThuiswonend:99}") maxAgeKindAlsThuiswonend: Int
     ): SuwinetBrpStoreToDocService {
         return SuwinetBrpStoreToDocService(
             documentWriterService,
