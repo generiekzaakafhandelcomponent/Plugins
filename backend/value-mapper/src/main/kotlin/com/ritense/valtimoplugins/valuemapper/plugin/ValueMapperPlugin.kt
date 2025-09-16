@@ -27,7 +27,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "value-mapper",
-    title = "",
+    title = "Value Mapper plugin",
     description = "Plugin for mapping and transforming values from a source JSON document to a target JSON document"
 )
 open class ValueMapperPlugin(
