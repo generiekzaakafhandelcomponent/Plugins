@@ -19,6 +19,7 @@ include(
     "backend:xential",
     "backend:hugging-face",
     "backend:kvk-handelsregister",
+    "backend:value-mapper",
     "frontend",
 )
 

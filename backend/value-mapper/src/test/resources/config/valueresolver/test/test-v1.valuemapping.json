@@ -1,0 +1,27 @@
+[
+    {
+        "defaultValue": {},
+        "sourcePointer": "/persoonsgegevens",
+        "targetPointer": "/persoon",
+        "transformations": []
+    },
+    {
+        "defaultValue": "LETTER",
+        "sourcePointer": "/contactgegevens/communicatievoorkeur",
+        "targetPointer": "/contacts/communicationChannel",
+        "transformations": [
+            {
+                "when": "a",
+                "then": "POST"
+            },
+            {
+                "when": "b",
+                "then": "EMAIL"
+            },
+            {
+                "when": "c",
+                "then": "TELEPHONE"
+            }
+        ]
+    }
+]
