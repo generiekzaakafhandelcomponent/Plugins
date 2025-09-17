@@ -17,4 +17,4 @@
  *
  */
 
-export * from './amsterdam-emailapi-plugin-logo';
+export * from './valuemapper-plugin-logo';

@@ -18,7 +18,7 @@
  */
 
 import {PluginSpecification} from '@valtimo/plugin';
-import {AMSTERDAM_EMAILAPI_PLUGIN_LOGO_BASE64} from './assets';
+import {VALUEMAPPER_PLUGIN_LOGO_BASE64} from './assets';
 import {
     ValueMapperConfigurationComponent
 } from "./components/valuemapper-configuration/valuemapper-configuration.component";
@@ -27,31 +27,30 @@ import {ProcessMappingComponent} from "./components/process-mapping/process-mapp
 const valueMapperPluginSpecification: PluginSpecification = {
   pluginId: 'value-mapper',
   pluginConfigurationComponent: ValueMapperConfigurationComponent,
-  pluginLogoBase64: AMSTERDAM_EMAILAPI_PLUGIN_LOGO_BASE64,
+  pluginLogoBase64: VALUEMAPPER_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
     'process-mapping-instructions': ProcessMappingComponent
   },
   pluginTranslations: {
     nl: {
-      title: 'Amsterdam Email API',
+      title: 'Value Mapper',
       description:
-          'Met de Amsterdam Email API plugin kun je in een process emails versturen',
+          'Map en transformeer waardes van bron naar doel met een value mapping definitie op een JSON document.  ',
       configurationTitle: 'Configuratienaam',
       configurationTitleTooltip:
           'Onder deze naam zal de plugin te herkennen zijn in de rest van de applicatie',
     },
     en: {
-      title: 'Amsterdam Email API',
+      title: 'Value Mapper',
       description:
-          'Alfresco is a document management system that implements the Document API standard for case-oriented working (the ZGW APIs). With this plugin you can use OAuth client credentials to link with Alfresco',
+          'Process mapping instructions from value mapping definition on a JSON document.',
       configurationTitle: 'Configuration name',
       configurationTitleTooltip:
           'Under this name, the plugin will be recognizable in the rest of the application',
     },
     de: {
-      title: 'Amsterdam Email API',
-      description:
-          'OpenNotificaties ist eine document management system, die den Document API-Standard für fallorientiertes Arbeiten (die ZGW-APIs) implementiert. Mit diesem Plugin können Sie Client-Zugangsdaten über OAuth mit Alfresco verknüpfen',
+      title: 'Value Mapper',
+      description: 'Prozesszuordnungsanweisungen aus der Wertezuordnungsdefinition in einem JSON-Dokument',
       configurationTitle: 'Konfigurationsname',
       configurationTitleTooltip:
           'Unter diesem Namen wird das Plugin im Rest der Anwendung erkennbar sein',

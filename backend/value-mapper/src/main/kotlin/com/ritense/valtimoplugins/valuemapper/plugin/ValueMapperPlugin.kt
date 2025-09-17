@@ -42,7 +42,7 @@ open class ValueMapperPlugin(
     @PluginAction(
         key = "process-mapping-instructions",
         title = "Process mapping instructions",
-        description = "Process mapping instructions from a value mapping file on a source JSON document to a target JSON document",
+        description = "Process mapping instructions from value mapping definition on a JSON document.",
         activityTypes = [SERVICE_TASK_START]
     )
     fun processMapping(

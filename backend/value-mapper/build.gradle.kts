@@ -44,6 +44,7 @@ dependencies {
     testImplementation("com.ritense.valtimo:test-utils-common")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
