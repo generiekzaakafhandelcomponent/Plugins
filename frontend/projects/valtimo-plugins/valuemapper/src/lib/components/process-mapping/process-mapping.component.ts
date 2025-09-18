@@ -21,6 +21,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {ProcessMappingConfig} from "../../models";
+import {ValueMapperService} from "../../service/valuemapper.service";
 
 @Component({
   selector: 'valtimo-process-mapping',
@@ -40,6 +41,11 @@ export class ProcessMappingComponent
   private readonly formValue$ = new BehaviorSubject<ProcessMappingConfig | null>(null);
   private saveSubscription!: Subscription;
   private readonly valid$ = new BehaviorSubject<boolean>(false);
+
+  readonly definitions$:Observable<Array<string>> = this.service.getValueMapperDefinitionsIds();
+
+  constructor(private service: ValueMapperService) {
+  }
 
   public ngOnInit(): void {
     this.openSaveSubscription();

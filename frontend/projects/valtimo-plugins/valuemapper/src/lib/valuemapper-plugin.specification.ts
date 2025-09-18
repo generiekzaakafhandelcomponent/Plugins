@@ -39,6 +39,8 @@ const valueMapperPluginSpecification: PluginSpecification = {
       configurationTitle: 'Configuratienaam',
       configurationTitleTooltip:
           'Onder deze naam zal de plugin te herkennen zijn in de rest van de applicatie',
+      definition: 'ValueMapper definitie',
+      definitionTooltip: 'Selecteer de ValueMapper definitie'
     },
     en: {
       title: 'Value Mapper',
@@ -47,6 +49,8 @@ const valueMapperPluginSpecification: PluginSpecification = {
       configurationTitle: 'Configuration name',
       configurationTitleTooltip:
           'Under this name, the plugin will be recognizable in the rest of the application',
+        definition: 'ValueMapper definition',
+        definitionTooltip: 'Select the ValueMapper definition'
     },
     de: {
       title: 'Value Mapper',
@@ -54,6 +58,8 @@ const valueMapperPluginSpecification: PluginSpecification = {
       configurationTitle: 'Konfigurationsname',
       configurationTitleTooltip:
           'Unter diesem Namen wird das Plugin im Rest der Anwendung erkennbar sein',
+        definition: 'ValueMapper definitie',
+        definitionTooltip: 'Wählen Sie die ValueMapper aus'
     },
   },
 };
