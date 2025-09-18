@@ -147,6 +147,7 @@
     "@valtimo-plugins/suwinet": "file:dist/valtimo-plugins/suwinet",
     "@valtimo-plugins/xential": "file:dist/valtimo-plugins/xential",
     "@valtimo-plugins/hugging-face": "file:dist/valtimo-plugins/hugging-face",
+    "@valtimo-plugins/hugging-face": "file:dist/valtimo-plugins/value-mapper",
     "jasmine-core": "5.2.0",
     "karma": "6.4.4",
     "karma-chrome-launcher": "3.2.0",

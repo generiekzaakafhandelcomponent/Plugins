@@ -22,4 +22,5 @@ export * from './lib/components/valuemapper-configuration/valuemapper-configurat
 export * from './lib/components/process-mapping/process-mapping.component'
 export * from './lib/valuemapper-plugin.specification'
 export * from './lib/valuemapper-plugin-module'
+export * from './lib/service/valuemapper.service'
 

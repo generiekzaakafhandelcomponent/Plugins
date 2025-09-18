@@ -30,13 +30,11 @@ import com.ritense.resource.domain.TemporaryResourceUploadedEvent
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.berkelybridge.client.BerkelyBridgeClient
 import com.ritense.valueresolver.ValueResolverService
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.net.URL
-import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.variable.Variables
-import org.camunda.bpm.engine.variable.value.SerializationDataFormat
 import org.springframework.context.ApplicationEventPublisher
-import kotlin.math.log
 
 private val logger = KotlinLogging.logger {}
 
