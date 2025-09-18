@@ -62,7 +62,7 @@ export class ProcessMappingComponent
 
   private handleValid(formValue: ProcessMappingConfig): void {
     const valid =
-      !!(formValue.mappingDefinitionId)
+      !!(formValue.definition)
 
     this.valid$.next(valid);
     this.valid.emit(valid);

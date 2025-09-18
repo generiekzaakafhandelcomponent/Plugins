@@ -1,0 +1,3813 @@
+[
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/persoongegevensPrefill/BsnPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/bsn"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/persoongegevensPrefill/voornaamPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/voornamen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/persoongegevensPrefill/achternaamPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/achternaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/persoongegevensPrefill/voorvoegselPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/voorvoegsel"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/persoongegevensPrefill/voorlettersPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/voorletters"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/contactgegevens/email",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/contactgegevens/email"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/contactgegevens/Telefoonnummer",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/contactgegevens/telefoon"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/persoongegevensPrefill/geboortedatumPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/geboortedatum"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/adresgegevensPrefillGroep/plaatsPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/adresBrp/woonplaatsnaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/adresgegevensPrefillGroep/straatPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/adresBrp/straatnaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/adresgegevensPrefillGroep/postcodePrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/adresBrp/postcode"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/adresgegevensPrefillGroep/HuisletterPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/adresBrp/huisletter"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/adresgegevensPrefillGroep/huisnummerPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/adresBrp/huisnummer"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/adresgegevensPrefillGroep/toevoegingPrefill",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/adresBrp/huisnummertoevoeging"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/uw-gegevens/digid/adresgegevensPrefillGroep/woonsituatie",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/woonsituatie"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/woonsituatie/woonsituatie",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/woonsituatie",
+        "transformations": [
+            {
+                "when": "IN_EEN_ZELFSTANDIGE_HUURWONING",
+                "then": "ZELFSTANDIGE_HUURWONING"
+            },
+            {
+                "when": "IK_HUUR_EEN_KAMER_EN_HEB_HIERVAN_EEN_HUURCONTRACT",
+                "then": "HUURCONTRACT"
+            },
+            {
+                "when": "IK_WOON_IN_BIJ_FAMILIE_VRIENDEN_OF_KENNISSEN",
+                "then": "WOON_IN"
+            },
+            {
+                "when": "IK_WOON_IN_MIJN_EIGEN_KOOPWONING_OF_WOONBOOT",
+                "then": "KOOPWONING"
+            },
+            {
+                "when": "IK_WOON_IN_EEN_WOONWAGEN",
+                "then": "WOONWAGEN"
+            },
+            {
+                "when": "IK_VERBLIJF_IN_EEN_ZORGINSTELLING",
+                "then": "ZORGINSTELLING"
+            },
+            {
+                "when": "IK_WOON_IN_EEN_INSTELLING_VOOR_MAATSCHAPPELIJKE_OPVANG",
+                "then": "MAATSCHAPPELIJKE_OPVANG"
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-aanvraag/uwAanvraag",
+        "targetPointer": "/gegevensVanuitAanvraag/bbzAanvraag",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-aanvraag/uwAanvraag/EEN_BBZ_UITKERING_VOOR_STARTENDE_ONDERNEMERS_OF_ONDERNEMERS_DIE_KORTER_DAN_1_5_JAAR_ONDERNEMEN",
+        "targetPointer": "/gegevensVanuitAanvraag/bbzLevensonderhoud",
+        "transformations": [
+            {
+                "when": true,
+                "then": "BBZ_STARTEND"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-aanvraag/uwAanvraag/EEN_BBZ_UITKERING_VOOR_ONDERNEMERS_DIE_LANGER_DAN_1_5_JAAR_ONDERNEMEN",
+        "targetPointer": "/gegevensVanuitAanvraag/bbzLevensonderhoud",
+        "transformations": [
+            {
+                "when": true,
+                "then": "BBZ_GEVESTIGD"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-aanvraag/uwAanvraag/EEN_BBZ_UITKERING_VOOR_OUDERE_ONDERNEMERS_DIE_VOOR_1_JANUARI_1960_ZIJN_GEBOREN",
+        "targetPointer": "/gegevensVanuitAanvraag/bbzLevensonderhoud",
+        "transformations": [
+            {
+                "when": true,
+                "then": "BBZ_OUDERE"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-aanvraag/uwAanvraag/EEN_BBZ_UITKERING_OMDAT_U_WILT_STOPPEN_MET_ONDERNEMEN",
+        "targetPointer": "/gegevensVanuitAanvraag/bbzLevensonderhoud",
+        "transformations": [
+            {
+                "when": true,
+                "then": "BBZ_STOPPEND"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-aanvraag/uwAanvraag/EEN_IOAZ_UITKERING_OMDAT_U_WILT_STOPPEN_MET_ONDERNEMEN_EN_OUDER_BENT_DAN_55_JAAR",
+        "targetPointer": "/gegevensVanuitAanvraag/bbzLevensonderhoud",
+        "transformations": [
+            {
+                "when": true,
+                "then": "IOAZ_STOPPEND"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-aanvraag/uwAanvraag/EEN_BEDRIJFSKREDIET",
+        "targetPointer": "/gegevensVanuitAanvraag/bbzKrediet"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/woonsituatieGr/woonsituatie",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/woonsituatie",
+        "transformations": [
+            {
+                "when": "IK_STA_INGESCHREVEN_BIJ_DE_GEMEENTE_OP_HET_ADRES_WAAR_IK_WOON",
+                "then": "BRP"
+            },
+            {
+                "when": "IK_WOON_OP_EEN_ANDER_ADRES_DAN_WAAR_IK_BEN_INGESCHREVEN",
+                "then": "ELDERS"
+            },
+            {
+                "when": "IK_ZIT_IN_ELEKTRONISCHE_DETENTIE",
+                "then": "DETENTIE"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/verblijfAdresGr/postcodeVerblijf",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/verblijfadres/postcode"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/verblijfAdresGr/huisnummerVerblijf",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/verblijfadres/huisnummer"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/verblijfAdresGr/huisletterVerblijf",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/verblijfadres/huisletter"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/verblijfAdresGr/huisnummerToevoeging",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/verblijfadres/huisnummertoevoeging"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/verblijfAdresGr/straatVerblijf",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/verblijfadres/straatnaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/verblijfAdresGr/woonplaatsVerblijf",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/verblijfadres/woonplaatsnaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/verblijfAdresGr/toelichtingVerblijf",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/verblijfadres/toelichtingNietIngeschrevenOpVerblijfadres"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/nationaliteitGR/nationaliteitBezit",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/nationaliteitOfVerblijfsstatus",
+        "transformations": [
+            {
+                "when": "IK_HEB_DE_NEDERLANDSE_NATIONALITEIT",
+                "then": "NEDERLANDSE_NATIONALITEIT"
+            },
+            {
+                "when": "IK_BEN_EU_ONDERDAAN",
+                "then": "EU_ONDERDAAN"
+            },
+            {
+                "when": "IK_HEB_EEN_GELDIGE_VERBLIJFSVERGUNNING",
+                "then": "GELDIGE_VERBLIJFSVERGUNNING"
+            },
+            {
+                "when": "IK_HEB_GEEN_VERBLIJFSVERGUNNING",
+                "then": "GEEN_VERBLIJFSVERGUNNING"
+            },
+            {
+                "when": "MIJN_VERBLIJFSVERGUNNING_IS_VERLOPEN",
+                "then": "VERLOPEN_VERBLIJFSVERGUNNING"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/nationaliteitGR/watGedaanBehouden",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/actiesVerblijfstatus",
+        "transformations": [
+            {
+                "when": "VERLENGING_VAN_MIJN_VERBLIJFSDOCUMENT_AANGEVRAAGD",
+                "then": "VERLENGING_VERBLIJFSDOCUMENT_AANGEVRAAGD"
+            },
+            {
+                "when": "BINNEN_DE_BEZWAARPERIODE_BEZWAAR_GEMAAKT_TEGEN_DE_AFWIJZING_VAN_MIJN_VERBLIJFSDOCUMENT_DOOR_DE_IND",
+                "then": "BEZWAAR_AFWIJZING"
+            },
+            {
+                "when": "GEEN_VERLENGING_VAN_HET_VERBLIJFSVERGUNNING_AANGEVRAAGD_EN_GEEN_BEZWAAR_GEMAAKT_TEGEN_DE_AFWIJZING",
+                "then": "GEEN"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/jaIkWilPostOntvangen",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/communicatievoorkeur",
+        "transformations": [
+            {
+                "when": true,
+                "then": "post"
+            },
+            {
+                "when": false,
+                "then": "portaal"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/contactAanvraagGr/hulpBijAanvraag",
+        "targetPointer": "/gegevensVanuitAanvraag/heeftHulpGehadBijAanvraag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/contactAanvraagGr/contactHulpGr/naamHulp",
+        "targetPointer": "/gegevensVanuitAanvraag/contactpersoon/naamContactpersoon"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/contactAanvraagGr/contactHulpGr/telefoonHulp",
+        "targetPointer": "/gegevensVanuitAanvraag/contactpersoon/telefoon"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/contactAanvraagGr/contactHulpGr/relatieHulp",
+        "targetPointer": "/gegevensVanuitAanvraag/contactpersoon/relatieTotAanvrager"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/achternaamParnter",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/achternaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/voorvoegsePartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/voorvoegsel"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/voorletterPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/voorletters"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/bsnPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/bsn"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/geboortePartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/geboortedatum"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/nationaliteitPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/nationaliteitOfVerblijfsstatus",
+        "transformations": [
+            {
+                "when": "MIJN_PARTNER_HEEFT_DE_NEDERLANDSE_NATIONALITEIT",
+                "then": "NEDERLANDSE_NATIONALITEIT"
+            },
+            {
+                "when": "MIJN_PARTNER_IS_EEN_EU_ONDERDAAN",
+                "then": "EU_ONDERDAAN"
+            },
+            {
+                "when": "MIJN_PARTNER_HEEFT_EEN_GELDIGE_VERBLIJFSVERGUNNING",
+                "then": "GELDIGE_VERBLIJFSVERGUNNING"
+            },
+            {
+                "when": "MIJN_PARTNER_HEEFT_GEEN_VERBLIJFSVERGUNNING",
+                "then": "GEEN_VERBLIJFSVERGUNNING"
+            },
+            {
+                "when": "DE_VERBLIJFSVERGUNNING_VAN_MIJN_PARTNER_IS_VERLOPEN",
+                "then": "VERLOPEN_VERBLIJFSVERGUNNING"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/partnerVerblijf",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/actiesVerblijfstatus",
+        "transformations": [
+            {
+                "when": "MIJN_PARTNER_HEEFT_VERLENGING_VAN_HET_VERBLIJFSDOCUMENT_AANGEVRAAGD",
+                "then": "VERLENGING_VERBLIJFSDOCUMENT_AANGEVRAAGD"
+            },
+            {
+                "when": "MIJN_PARTNER_HEEFT_BINNEN_DE_BEZWAARPERIODE_BEZWAAR_GEMAAKT_TEGEN_DE_AFWIJZING_VAN_HET_VERBLIJFSDOCUMENT_DOOR_DE_IND",
+                "then": "BEZWAAR_AFWIJZING"
+            },
+            {
+                "when": "MIJN_PARTNER_HEEFT_GEEN_VERLENGING_VAN_HET_VERBLIJFSDOCUMENT_AANGEVRAAGD_EN_GEEN_BEZWAAR_GEMAAKT_TEGEN_DE_AFWIJZING",
+                "then": "GEEN"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/partnerZelfdeAdres",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/woonsituatie",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": "PARTNER_INWONEND"
+            },
+            {
+                "when": "NEE_MIJN_PARTNER_WOONT_OP_EEN_ANDER_ADRES",
+                "then": "ELDERS"
+            },
+            {
+                "when": "NEE_IK_WEET_NIET_WAAR_MIJN_PARTNER_VERBLIJFT",
+                "then": "ONBEKEND"
+            },
+            {
+                "when": "NEE_MIJN_PARTNER_ZIT_IN_DETENTIE",
+                "then": "DETENTIE"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/Adresgegevensp/postcodep",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/verblijfadres/postcode"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/Adresgegevensp/huisnummerp",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/verblijfadres/huisnummer"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/Adresgegevensp/toevoegingHuisnummerPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/verblijfadres/huisnummertoevoeging"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/Adresgegevensp/Huisletterp",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/verblijfadres/huisletter"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/Adresgegevensp/straatp",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/verblijfadres/straatnaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensPartner/Adresgegevensp/plaatsp",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/verblijfadres/woonplaatsnaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gezinssituatieGr/thuiswonendeKinderen",
+        "targetPointer": "/gegevensVanuitAanvraag/additioneleVeldenPersoon/heeftThuiswonendeKinderen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gezinssituatieGr/partnerDieBijUWoont",
+        "targetPointer": "/gegevensVanuitAanvraag/additioneleVeldenPersoon/heeftPartner"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/10JaarOnafgebroken",
+        "targetPointer": "/gegevensVanuitAanvraag/tienJaarLoondienstOfDrieJaarZelfstandig"
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/kvk",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/kvkRegistratie/kvkInschrijfnummer"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/ondernemingNaam",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/kvkRegistratie/naamOnderneming"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/inschrijvingsDatum",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/kvkRegistratie/datumInschrijving"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/korteOmschrijving",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/kvkRegistratie/omschrijvingActiviteiten"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/rechtsvorm",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/kvkRegistratie/rechtsvorm"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/aantalVernoten",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/kvkRegistratie/aantalVennoten"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/eindBaas",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/directeurOfGrootaandeelhouder"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/bezitDiplomas",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/alleDiplomasEnVergunningen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/aanvraagFaillissement",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/faillissementVerklaardOfAangevraagd"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/aanvraagSurseance",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/uitstelVanBetalingAangevraagd"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/werkzaamhedenOfLopendeVerplichtingen",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/lopendeWerkzaamhedenOfVerplichtingen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/stoppenVerklaring",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/redenStoppenOnderneming"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-ondernemingen/ingeschrevenOnderneming/[]/stoppenOnderneming",
+        "targetPointer": "/gegevensVanuitAanvraag/ondernemingen/[]/stoppenOnderneming"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/nationaliteitGR/nationaliteitBezit",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/nationaliteitOfVerblijfsstatus",
+        "transformations": [
+            {
+                "when": "IK_HEB_DE_NEDERLANDSE_NATIONALITEIT",
+                "then": "NEDERLANDSE_NATIONALITEIT"
+            },
+            {
+                "when": "IK_BEN_EU_ONDERDAAN",
+                "then": "EU_ONDERDAAN"
+            },
+            {
+                "when": "IK_HEB_EEN_GELDIGE_VERBLIJFSVERGUNNING",
+                "then": "GELDIGE_VERBLIJFSVERGUNNING"
+            },
+            {
+                "when": "IK_HEB_GEEN_VERBLIJFSVERGUNNING",
+                "then": "GEEN_VERBLIJFSVERGUNNING"
+            },
+            {
+                "when": "MIJN_VERBLIJFSVERGUNNING_IS_VERLOPEN",
+                "then": "VERLOPEN_VERBLIJFSVERGUNNING"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-aanvullende-gegevens/nationaliteitGR/watGedaanBehouden",
+        "targetPointer": "/gegevensVanuitAanvraag/persoon/actiesVerblijfstatus",
+        "transformations": [
+            {
+                "when": "VERLENGING_VAN_MIJN_VERBLIJFSDOCUMENT_AANGEVRAAGD",
+                "then": "VERLENGING_VERBLIJFSDOCUMENT_AANGEVRAAGD"
+            },
+            {
+                "when": "BINNEN_DE_BEZWAARPERIODE_BEZWAAR_GEMAAKT_TEGEN_DE_AFWIJZING_VAN_MIJN_VERBLIJFSDOCUMENT_DOOR_DE_IND",
+                "then": "BEZWAAR_AFWIJZING"
+            },
+            {
+                "when": "GEEN_VERLENGING_VAN_HET_VERBLIJFSVERGUNNING_AANGEVRAAGD_EN_GEEN_BEZWAAR_GEMAAKT_TEGEN_DE_AFWIJZING",
+                "then": "GEEN"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensVanUwKinderengroep/gegevensVanUwKinderen/[]/voorletterSk",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderen/[]/voorletters"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensVanUwKinderengroep/gegevensVanUwKinderen/[]/voornamenZoalsOpPaspoortIdStaan",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderen/[]/voornamen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensVanUwKinderengroep/gegevensVanUwKinderen/[]/voorvoegselSk",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderen/[]/voorvoegsel"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensVanUwKinderengroep/gegevensVanUwKinderen/[]/achternaamk",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderen/[]/achternaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensVanUwKinderengroep/gegevensVanUwKinderen/[]/geboortedatumk",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderen/[]/geboortedatum"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensVanUwKinderengroep/gegevensVanUwKinderen/[]/burgerservicenummerk",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderen/[]/bsn"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensVanUwKinderengroep/gegevensVanUwKinderen/[]/veldengroepk/krijgtUKinderbijslagVoorDitKind",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderen/[]/kinderbijslag",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": "JA"
+            },
+            {
+                "when": "NEE",
+                "then": "NEE"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-gezinssamenstelling/gegevensVanUwKinderengroep/gegevensVanUwKinderen/[]/veldengroepk/welkSoortOpleidingVolgtUwKind",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderen/[]/soortOpleiding",
+        "transformations": [
+            {
+                "when": "MBO",
+                "then": "MBO"
+            },
+            {
+                "when": "HBO",
+                "then": "HBO"
+            },
+            {
+                "when": "WO",
+                "then": "WO"
+            },
+            {
+                "when": "MIJN_KIND_ZIT_OP_DE_BASISSCHOOL_MIDDELBARE_SCHOOL_OF_VOLGT_GEEN_OPLEIDING",
+                "then": "GEEN_OPLEIDING"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/hoeWonen",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/woonsituatie",
+        "transformations": [
+            {
+                "when": "IN_EEN_ZELFSTANDIGE_HUURWONING",
+                "then": "ZELFSTANDIGE_HUURWONING"
+            },
+            {
+                "when": "IK_HUUR_EEN_KAMER_EN_HEB_HIERVAN_EEN_HUURCONTRACT",
+                "then": "HUURCONTRACT"
+            },
+            {
+                "when": "IK_WOON_IN_BIJ_FAMILIE_VRIENDEN_OF_KENNISSEN",
+                "then": "WOON_IN"
+            },
+            {
+                "when": "IK_WOON_IN_MIJN_EIGEN_KOOPWONING_OF_WOONBOOT",
+                "then": "KOOPWONING"
+            },
+            {
+                "when": "IK_WOON_IN_EEN_WOONWAGEN",
+                "then": "WOONWAGEN"
+            },
+            {
+                "when": "IK_VERBLIJF_IN_EEN_ZORGINSTELLING",
+                "then": "ZORGINSTELLING"
+            },
+            {
+                "when": "IK_WOON_IN_EEN_INSTELLING_VOOR_MAATSCHAPPELIJKE_OPVANG",
+                "then": "MAATSCHAPPELIJKE_OPVANG"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/huurcontract",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/adreshouding/huisvesting/huurvorm/heeftHuurcontract",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": {
+                    "code": "1",
+                    "name": "Ja"
+                }
+            },
+            {
+                "when": "NEE",
+                "then": {
+                    "code": "2",
+                    "name": "Nee"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/vanWieKamer",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/adreshouding/huisvesting/huurvorm/naamVerhuurder"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/wieVerhuurder",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/adreshouding/huisvesting/huurvorm/naamVerhuurder"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/contractOpUwNaam",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/adreshouding/huisvesting/huurvorm/huurcontractStaatOpNaamAanvrager"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/welkeNaamHuurcontract",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/adreshouding/huisvesting/huurvorm/naamOpHuurcontract"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/hoeveelHuur",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/adreshouding/huisvesting/huurvorm/huurbedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/hoeveelHuurtoeslag",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/adreshouding/huisvesting/huurvorm/huurtoeslag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/bijOudersInwonen",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/aanvragerKanBijOudersWonen",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/huurGroep/waaromNietBijOudersWonen",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/redenWaaromAanvragerNietBijOudersKanWonen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/bijWieWoontU",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/aanvragerWoontBij",
+        "transformations": [
+            {
+                "when": "BIJ_MIJN_OUDER_S",
+                "then": "OUDERS"
+            },
+            {
+                "when": "BIJ_MIJN_KIND_EREN",
+                "then": "KIND"
+            },
+            {
+                "when": "BIJ_ANDERE_FAMILIELEDEN_ZOALS_BROER_ZUS_OF_NEEF_NICHT",
+                "then": "FAMILIELEDEN"
+            },
+            {
+                "when": "BIJ_VRIENDEN",
+                "then": "VRIENDEN"
+            },
+            {
+                "when": "BIJ_IEMAND_ANDERS",
+                "then": "ANDERS"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/wonenRelatie",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/adreshouding/huisvesting/huurvorm/relatieTotPersoon"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/maatschappelijkeOpvangGroep/WelkeOpvang",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/naamMaatschappelijkeOpvang"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/maatschappelijkeOpvangGroep/postcodeOpvang",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/postcodeMaatschappelijkeOpvang"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/maatschappelijkeOpvangGroep/huisnummerOpvang",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/huisnummerMaatschappelijkeOpvang"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/maatschappelijkeOpvangGroep/straatnaamMaatschappelijkeOpvang",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/straatnaamMaatschappelijkeOpvang"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/maatschappelijkeOpvangGroep/dagenOpvang",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/aantalDagenInInstellingOfOpvang"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/meerOpAdres",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewonersOpAdres"
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/achternaamMedebewoner",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/achternaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/voorvoegselMedebewoner",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/voorvoegsel"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/voorlettersMedebewoner",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/voorletters"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/geboortedatumMedebewoner",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/geboortedatum"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/relatieMedebewoner",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/relatieMedebewoner",
+        "transformations": [
+            {
+                "when": "OUDER_S",
+                "then": "OUDERS"
+            },
+            {
+                "when": "SCHOONOUDER_S",
+                "then": "SCHOONOUDERS"
+            },
+            {
+                "when": "MIJN_OPA_OMA_BROER_OF_ZUS",
+                "then": "OPA_OMA_BROER_ZUS"
+            },
+            {
+                "when": "IEMAND_DIE_EEN_KAMER_BIJ_MIJ_HUURT",
+                "then": "KAMER_VERHUUR"
+            },
+            {
+                "when": "IK_HUUR_EEN_KAMER_VAN_DEZE_PERSOON",
+                "then": "KAMER_HUUR"
+            },
+            {
+                "when": "GEEN",
+                "then": "GEEN_RELATIE"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/bsnMedebewoner2",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/bsn"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/grOntvangenHuur/ontvangenHuur",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/teOntvangenHuur"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/grOntvangenHuur/periodeHuur",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/frequentieOntvangenHuur",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "PER_4_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/relatieBeschrijving",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/toelichtingRelatieTotMedebewoner"
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/huishoudingSituatie",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/samenlevingsvorm",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/huishoudingSituatie/WIJ_ZIJN_IN_DE_AFGELOPEN_2_JAAR_GEHUWD_OF_GEREGISTREERD_PARTNER_GEWEEST",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/samenlevingsvorm",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "GEHUWD_PARTNER",
+                    "name": "Wij zijn in de afgelopen 2 jaar gehuwd (of geregistreerd partner) geweest"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/huishoudingSituatie/WIJ_HEBBEN_SAMEN_EEN_KIND_OF_EEN_ERKEND_KIND",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/samenlevingsvorm",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "SAMEN_KIND",
+                    "name": "Wij hebben samen een kind (of een erkend kind)"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/huishoudingSituatie/WIJ_HEBBEN_EEN_SAMENLEVINGSCONTRACT",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/samenlevingsvorm",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "SAMENLEVINGSCONTRACT",
+                    "name": "Wij hebben een samenlevingscontract"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/huishoudingSituatie/WIJ_WORDEN_OF_WERDEN_IN_DE_AFGELOPEN_2_JAAR_ALS_1_HUISHOUDEN_GEZIEN_DOOR_EEN_OVERHEIDSINSTANTIE",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/samenlevingsvorm",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "HUISHOUDEN_OVERHEID",
+                    "name": "Wij worden of werden, in de afgelopen 2 jaar, als 1 huishouden gezien door een overheidsinstantie (zoals de Belastingdienst)"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/huishoudingSituatie/WIJ_ZIJN_IN_DE_AFGELOPEN_2_JAAR_NIET_GEHUWD_OF_GEREGISTREERD_PARTNER_GEWEEST_WIJ_HEBBEN_SAMEN_GEEN_ERKEND_KIND_WIJ_HEBBEN_GEEN_SAMENLEVINGSCONTRACT_WIJ_WORDEN_OF_WERDEN_IN_DE_AFGELOPEN_2_JAAR_NIET_GEZIEN_ALS_1_HUISHOUDEN_DOOR_EEN_OVERHEIDSINSTANTIE",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/samenlevingsvorm",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "GEEN_RELATIE",
+                    "name": "Wij zijn in de afgelopen 2 jaar niet gehuwd of geregistreerd partner geweest, wij hebben samen geen(erkend) kind, wij hebben geen samenlevingscontract, wij worden of werden (in de afgelopen 2 jaar) niet gezien als 1 huishouden door een overheidsinstantie"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/gezamelijkHuishoudenTekst",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkHuishouden"
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/kostenVerdeling",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkHuishouden",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/kostenVerdeling/WIJ_DELEN_DE_KOSTEN_VAN_DE_HUUR",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkHuishouden",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "DELEN_HUUR",
+                    "name": "Wij delen de kosten van de huur"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/kostenVerdeling/WIJ_DELEN_DE_VASTE_LASTEN_ZOALS_GAS_EN_WATER",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkHuishouden",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "DELEN_VASTE_LASTEN",
+                    "name": "Wij delen de vaste lasten, zoals gas en water"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/kostenVerdeling/WIJ_DELEN_DE_KOSTEN_VAN_DE_BOODSCHAPPEN",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkHuishouden",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "DELEN_BOODSCHAPPEN",
+                    "name": "Wij delen de kosten van de boodschappen"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/kostenVerdeling/WIJ_DELEN_NIET_DE_KOSTEN_VAN_DE_HUUR_DE_VASTE_LASTEN_ZOALS_GAS_EN_WATER_OF_DE_KOSTEN_VAN_DE_BOODSCHAPPEN",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkHuishouden",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "NIET_DELEN",
+                    "name": "Wij delen niet de kosten van de huur, de vaste lasten (zoals gas en water) of de kosten van de boodschappen"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/samenEten",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkTijdsbesteding",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/samenEten/WIJ_ETEN_SAMEN",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkTijdsbesteding",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ETEN_SAMEN",
+                    "name": "Wij eten samen"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/samenEten/WIJ_GAAN_SAMEN_OP_VAKANTIE",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkTijdsbesteding",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "VAKANTIE_SAMEN",
+                    "name": "Wij gaan samen op vakantie"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/samenEten/WIJ_VERDELEN_OF_DOEN_SAMEN_DE_TAKEN_IN_HET_HUISHOUDEN",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkTijdsbesteding",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "TAKEN_VERDELEN",
+                    "name": "Wij verdelen, of doen samen de taken in het huishouden"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/samenEten/WIJ_ETEN_NIET_SAMEN_GAAN_NIET_SAMEN_OP_VAKANTIE_EN_VERDELEN_GEEN_TAKEN_IN_HET_HUISHOUDEN",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/gezamenlijkTijdsbesteding",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "NIET_SAMEN",
+                    "name": "Wij eten niet samen, gaan niet samen op vakantie en verdelen geen taken in het huishouden"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/medebewonerOpleiding",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/volgtOpleiding",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/soortOpleiding",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/soortOpleiding"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/opleidingOmschrijving",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/omschrijvingVolgtOpleiding"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/BblTraject",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/volgtBblTraject"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/andereBewonersGroep/andereBewonersGroep1/medebewonerHGroep/[]/BblTrajectAndereBewoner",
+        "targetPointer": "/gegevensVanuitAanvraag/medebewoners/[]/soortBblTraject"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/zorgInstellingGroep/wonenZorginstelling",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/naamZorginstelling"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/zorgInstellingGroep/postcodeZorginstelling",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/postcodeZorginstelling"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/zorgInstellingGroep/huisnummerZorginstelling",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/huisnummerZorginstelling"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-woonsituatie/zorgInstellingGroep/straatnaamZorginstelling",
+        "targetPointer": "/gegevensVanuitAanvraag/woonsituatie/straatnaamZorginstelling"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/uitkeringAanDerden",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/uitbetaling/aanDerden"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/hoeBetaaldKrijgen",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/wijzeVanUitbetaling",
+        "transformations": [
+            {
+                "when": "VOLLEDIG_OP_MIJN_REKENING",
+                "then": "VOLLEDIG_AANVRAGER"
+            },
+            {
+                "when": "VERDEELD_OVER_MIJZELF_EN_MIJN_PARTNER",
+                "then": "VERDEELD_AANVRAGER_PARTNER"
+            },
+            {
+                "when": "VOLLEDIG_OP_REKENING_VAN_MIJN_PARTNER",
+                "then": "VOLLEDIG_PARTNER"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/ibanUitbetaling",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/aanvrager/bankrekening/iban"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/naamRekeninghouderBetaling",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/aanvrager/bankrekening/tenaamstelling"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/welkIbanUitbetaaldPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/partner/bankrekening/iban"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/naamRekeninghouderBetalingPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/partner/bankrekening/tenaamstelling"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/uitbetalingGroep/waaromAanDerden",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/derden/redenAanDerden"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/uitbetalingGroep/ibanDerden",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/derden/bankrekening/iban"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/uitbetalingGroep/naamDerdenRekeninghouder",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/derden/bankrekening/tenaamstelling"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uitbetaling/uitbetalingGroep/adresDerdenRekeninghouder",
+        "targetPointer": "/gegevensVanuitAanvraag/uitbetaling/derden/bankrekening/adresRekeninghouder"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/voldoendeInkomsten",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/tijdelijkeOndersteuning",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/toestemmingOnderzoek",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/toepassingLevensvatbaarheidsonderzoek",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/resultaatDrieJaarBeschikbaar",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/nettoResultaatHuidigJaarMinDrie/nettoResultaatAanwezig",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "IK_HAD_IN_DIT_JAAR_GEEN_ONDERNEMING",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/resultaatTweeJaarBeschikbaar",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/nettoResultaatHuidigJaarMinTwee/nettoResultaatAanwezig",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "IK_HAD_IN_DIT_JAAR_GEEN_ONDERNEMING",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/resultaatEenJaarBeschikbaar",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/nettoResultaatHuidigJaarMinEen/nettoResultaatAanwezig",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "IK_HAD_IN_DIT_JAAR_GEEN_ONDERNEMING",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/resultaatHuidigJaar",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/nettoResultaatHuidigJaar/nettoResultaatAanwezig",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "IK_HEB_IN_HET_HUIDIGE_BOEKJAAR_GEEN_ONDERNEMING",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/resultaatDrieJaarGeleden",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/nettoResultaatHuidigJaarMinDrie/nettoResultaatBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/resultaatTweeJaarGeleden",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/nettoResultaatHuidigJaarMinTwee/nettoResultaatBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/resultaatEenJaarGeleden",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/nettoResultaatHuidigJaarMinEen/nettoResultaatBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/resultaatHuidigJaarBedrag",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/nettoResultaatHuidigJaar/nettoResultaatBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/aangifteBelastingAanleveren",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/kanJaarrekeningenAanleveren",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/situatieOndernemingGroep/redenNietAanleveren",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/redenNietAanleverenJaarrekeningen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/bedrijfspandGroep/typeBedrijfspand",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/typeBedrijfspand",
+        "transformations": [
+            {
+                "when": "IK_BEZIT_MIJN_BEDRIJFSPAND",
+                "then": {
+                    "value": "BEZIT",
+                    "label": "Aanvrager bezit zijn bedrijfspand"
+                }
+            },
+            {
+                "when": "IK_HUUR_MIJN_BEDRIJFSPAND",
+                "then": {
+                    "value": "HUUR",
+                    "label": "Aanvrager huurt zijn bedrijfspand"
+                }
+            },
+            {
+                "when": "IK_HEB_GEEN_BEDRIJFSPAND",
+                "then": {
+                    "value": "GEEN",
+                    "label": "Aanvrager heeft geen bedrijfspand"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/inkomenOndernemingGroep/winstKomendeMaanden",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/teVerwachtenWinstKomendeZesMaanden"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/inkomenOndernemingGroep/welkeMaandenHulp",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/maandenBenodigdeFinancieleHulp"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-financiele-situatie/inkomenOndernemingGroep/waaromHulp",
+        "targetPointer": "/gegevensVanuitAanvraag/financieleSituatieOnderneming/redenBenodigdeFinancieleHulp"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/BANK_EN_SPAARREKENINGEN_PRIVE_EN_ZAKELIJK_BINNEN_EN_BUITENLAND",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "BANKREKENING",
+                    "name": "Bank- en spaarrekeningen privé en zakelijk (binnen en buitenland)"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/OBLIGATIES_AANDELEN",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "BELEGGINGSPRODUCTEN",
+                    "name": "Obligaties / Aandelen"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/CRYPTO",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "CRYPTO",
+                    "name": "Crypto"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/CONTANTEN",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "CONTANTEN",
+                    "name": "Contanten"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/EEN_OF_MEERDERE_KOOPWONING_EN_IN_NEDERLAND_EN_OF_HET_BUITENLAND",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "WONING",
+                    "name": "Een of meerdere koopwoning(en) in Nederland en/of het buitenland"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/EEN_STUK_GROND_IN_NEDERLAND_EN_OF_HET_BUITENLAND",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "GROND",
+                    "name": "Een stuk grond in Nederland en/of het buitenland"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/EEN_MOTORVOERTUIG_AUTO_CAMPER_OF_MOTOR",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "MOTORVOERTUIG",
+                    "name": "Een motorvoertuig (auto, camper of motor)"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/CARAVAN",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "CARAVAN",
+                    "name": "Caravan"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/uwVermogenGroep/welkVermogen/VAARTUIG",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/soortenVermogen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "VAARTUIG",
+                    "name": "Vaartuig"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/bankrekeningen",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/rekeningenGroep/rekeningHerGroep/[]/welkeRekeningen",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/bankrekeningen/[]/soortRekening",
+        "transformations": [
+            {
+                "when": "NEDERLANDSE_PRIVE_REKENING",
+                "then": "REKENING_PRIVE_NL"
+            },
+            {
+                "when": "NEDERLANDSE_ZAKELIJKE_REKENING",
+                "then": "REKENING_ZAKELIJK_NL"
+            },
+            {
+                "when": "BUITENLANDSE_PRIVE_REKENING",
+                "then": "REKENING_PRIVE_BUITENLAND"
+            },
+            {
+                "when": "BUITENLANDSE_ZAKELIJKE_REKENING",
+                "then": "REKENING_ZAKELIJK_BUITENLAND"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/rekeningenGroep/rekeningHerGroep/[]/ibanPrive",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/bankrekeningen/[]/ibanNederland"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/rekeningenGroep/rekeningHerGroep/[]/ibanZakelijk",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/bankrekeningen/[]/ibanNederland"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/rekeningenGroep/rekeningHerGroep/[]/rekeningnBuitenlandPrive",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/bankrekeningen/[]/ibanBuitenland"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/rekeningenGroep/rekeningHerGroep/[]/rekeningnBuitenlandZakelijk",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/bankrekeningen/[]/ibanBuitenland"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/rekeningenGroep/rekeningHerGroep/[]/saldoRekening",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/bankrekeningen/[]/saldoRekening"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/rekeningenGroep/rekeningHerGroep/[]/uploadSaldoRekening",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/bankrekeningen/[]/uploadRekening"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/beleggingsproducten",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/aandelenGroep/aandelenHerGroep/[]/waardeObligatiesAandelen",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/beleggingsproducten/[]/waarde"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/aandelenGroep/aandelenHerGroep/[]/uploadAandelen",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/beleggingsproducten/[]/uploadBeleggingsproducs"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/cryptoCurrencies",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/cryptoGroep/cryptoHerGroep/[]/waardeCrypto",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/cryptoCurrencies/[]/waarde"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/contantenGroep/hoeveelContant",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/contantGeld"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/koopwoningen",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/koopwoningGroep/wozWoning",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/koopwoningen/[0]/woz"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/koopwoningGroep/resterendeHypotheek",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/koopwoningen/[0]/hypotheekWaarde"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/koopwoningGroep/productenAanHypotheek",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/koopwoningen/[0]/productenGekoppeld"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/grond",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/grondbezitGroep/grondbezitHerGroep/[]/waardeGrond",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/grond/[]/waarde"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/motorVoertuigen",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/motorvoertuigenGroep/voertuigHerGroep/[]/kenteken",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/motorVoertuigen/[]/kenteken"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/motorvoertuigenGroep/voertuigHerGroep/[]/dagwaardeVoertuig",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/motorVoertuigen/[]/dagwaarde"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/caravans",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/caravanGroep/caravanHerGroep/[]/dagwaardeCaravan",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/caravans/[]/dagwaarde"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/vaartuigen",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/vaartuigGroep/vaartiugHerGroep/[]/dagwaardeVaartuig",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/vaartuigen/[]/waarde"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/heeftSchulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/aanvragerHeeftSchulden",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": "JA"
+            },
+            {
+                "when": "NEE",
+                "then": "NEE"
+            },
+            {
+                "when": "",
+                "then": "ONBEKEND"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/schulden",
+        "transformations": [],
+        "defaultValue": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/schuldenGroep/schuldHerGroep/[]/schuldBedrag",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/schulden/[]/hoogteSchuld"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/schuldenGroep/schuldHerGroep/[]/schuldBijWie",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/schulden/[]/schuldEiser"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bezittingen-en-schulden/schuldenGroep/schuldHerGroep/[]/uploadSchuld",
+        "targetPointer": "/gegevensVanuitAanvraag/vermogen/schulden/[]/uploadSchuld"
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten/LOONDIENST",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "LOONDIENST",
+                    "name": "Loondienst"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten/UITKERING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "UITKERING",
+                    "name": "Uitkering"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten/PENSIOEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "PENSIOEN",
+                    "name": "Pensioen"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten/HEFFINGSKORTING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "HEFFINGSKORTING",
+                    "name": "Heffingskorting"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten/ALIMENTATIE",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ALIMENTATIE",
+                    "name": "Alimentatie"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten/INKOMEN_UIT_HET_BUITENLAND",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "BUITENLAND",
+                    "name": "Inkomen uit het buitenland"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten/INKOMSTEN_UIT_ONDERHUUR",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ONDERHUUR",
+                    "name": "Inkomsten uit onderhuur"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/vormenInkomsten/OVERIGE_INKOMSTEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "OVERIG",
+                    "name": "Overige inkomsten"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/naamWerkgever",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/bedrijfsNaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/nettoloon",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/nettoLoon"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/aantalUurWerk",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/aantalUurPerWeek"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/periodeNettoloon",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/periodiciteitUitbetalingLoon",
+        "transformations": [
+            {
+                "when": "PER_WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "PER_4_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "PER_MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "PER_KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/Loonheffingskorting",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/loonheffingskorting",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": {
+                    "code": "1",
+                    "name": "Ja"
+                }
+            },
+            {
+                "when": "NEE",
+                "then": {
+                    "code": "2",
+                    "name": "Nee"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon/1_KEER_PER_JAAR_VAKANTIEGELD",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "VAKANTIEGELD_PER_JAAR",
+                    "name": "1 keer per jaar vakantiegeld"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon/EEN_13DE_MAAND_OF_EINDEJAARSUITKERING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "DERTIENDE_MAAND_EINDEJAARSUITKERING",
+                    "name": "Een 13de maand of eindejaarsuitkering"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon/REISKOSTENVERGOEDING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "REISKOSTENVERGOEDING",
+                    "name": "Reiskostenvergoeding"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon/ONKOSTENVERGOEDING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ONKOSTENVERGOEDING",
+                    "name": "Onkostenvergoeding"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon/MAALTIJDVERGOEDING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "MAALTIJDVERGOEDING",
+                    "name": "Maaltijdvergoeding"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon/LOON_IN_NATURA",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "NATURA",
+                    "name": "Loon in natura (zoals eten of middelen)"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon/VAKANTIEGELD_BIJ_IEDERE_UITBETALING_VAN_MIJN_SALARIS",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "VAKANTIEGELD_IEDERE_UITBETALING",
+                    "name": "Vakantiegeld bij iedere uitbetaling van mijn salaris (dus niet 1 keer per jaar)"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/uitbetalingNaastLoon/GEEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "GEEN",
+                    "name": "Aanvrager ontvangt geen vakantiegeld 1 keer per jaar, geen 13de maand of eindejaarsuitkering, geen reiskostenvergoeding, geen onkostenvergoeding, geen maaltijdvergoeding, geen loon in natura, geen vakantiegeld bij iedere uitbetaling van mijn salaris"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/nettoNatura",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/waardeLoonInNatura"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/nettoMaaltijd",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/maaltijdvergoeding"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/nettoOnkosten",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/onkostenvergoeding"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/nettoReiskosten",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/reiskostenvergoeding"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/soortContract",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/soortContract",
+        "transformations": [
+            {
+                "when": "IK_HEB_EEN_VAST_CONTRACT",
+                "then": {
+                    "code": "1",
+                    "name": "Vast contract"
+                }
+            },
+            {
+                "when": "IK_HEB_EEN_CONTRACT_VOOR_BEPAALDE_TIJD",
+                "then": {
+                    "code": "2",
+                    "name": "Voor bepaalde tijd"
+                }
+            },
+            {
+                "when": "IK_HEB_EEN_CONTRACT_OP_OPROEP_BASIS",
+                "then": {
+                    "code": "3",
+                    "name": "Op oproepbasis"
+                }
+            },
+            {
+                "when": "IK_HEB_EEN_UITZENDCONTRACT",
+                "then": {
+                    "code": "4",
+                    "name": "Uitzendbureau"
+                }
+            },
+            {
+                "when": "IK_HEB_EEN_0_UREN_CONTRACT",
+                "then": {
+                    "code": "5",
+                    "name": "0-uren contract"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/urenvermindering",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/urenvermindering",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": {
+                    "code": "1",
+                    "name": "Ja"
+                }
+            },
+            {
+                "when": "NEE",
+                "then": {
+                    "code": "2",
+                    "name": "Nee"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/contractBeeindigd",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/contractBinnenkortBeeindigd",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": {
+                    "code": "1",
+                    "name": "Ja"
+                }
+            },
+            {
+                "when": "NEE",
+                "then": {
+                    "code": "2",
+                    "name": "Nee"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/loondienstWerkgeverS/werkgeversHerGroep/[]/einddatumContract",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/loondienst/[]/einddatumContract"
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen/AOW",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "AOW"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen/WAJONG",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "WAJONG"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen/WAO",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "WAO"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen/WW",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "WW"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen/WIA",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "WIA"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen/ANW",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "ANW"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen/BIJSTAND",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "BIJSTAND"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/uitkeringen/ZIEKTEWET",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "ZIEKTEWET"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/aowGroep/nettoAow",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/AOW/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/aowGroep/periodeAow",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/AOW/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/wajongGroep/nettoWajong",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/WAJONG/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/wajongGroep/periodeWajong",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/WAJONG/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/waoGroep/nettoWao",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/WAO/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/waoGroep/periodeWao",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/WAO/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/wwGroep/nettoWw",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/WW/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/wwGroep/periodeWw",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/WW/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/wiaGroep/nettoWia",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/WIA/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/wiaGroep/periodeWia",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/WIA/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/anwGroep/nettoAnw",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/ANW/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/anwGroep/periodeAnw",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/ANW/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/bijstandGroep/nettoBijstand",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/BIJSTAND/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/bijstandGroep/periodeBijstand",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/BIJSTAND/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/ziektewetGroep/nettoZiektewet",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/ZIEKTEWET/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/uitkeringenGroep/ziektewetGroep/periodeZiektewet",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/uitkering/ZIEKTEWET/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/pensioenen",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/pensioenenGroep/pensioenenHerGroep/[]/nettoPensioen",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/pensioenen/[]/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/pensioenenGroep/pensioenenHerGroep/[]/periodePensioen",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/pensioenen/[]/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/heffingskortingenGroep/welkeHeffingskortingen",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/heffingskorting/types",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/heffingskortingenGroep/welkeHeffingskortingen/INKOMENSAFHANKELIJKE_COMBINATIEKORTING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/heffingskorting/types",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "INKOMENSAFHANKELIJKE_COMBINATIEKORTING",
+                    "name": "Inkomensafhankelijke combinatiekorting"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/heffingskortingenGroep/welkeHeffingskortingen/ALGEMENE_HEFFINGSKORTING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/heffingskorting/types",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ALGEMENE_HEFFINGSKORTING",
+                    "name": "Algemene heffingskorting"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/heffingskortingenGroep/welkeHeffingskortingen/GEEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/heffingskorting/types",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "GEEN",
+                    "name": "Ik krijg geen inkomensafhankelijke combinatiekorting en geen algemene heffingskorting"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/heffingskortingenGroep/nettoHeffingskortingen",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/heffingskorting/totaalBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/alimentatieKind",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderAlimentatieAanvrager/ontvangtAlimentatie"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/AlimentatieZelf",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatieAanvrager/ontvangtAlimentatie"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/hoeveelAlimentatieKind",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderAlimentatieAanvrager/bedragAlimentatie"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/nettoKindAlimentatie",
+        "targetPointer": "/gegevensVanuitAanvraag/kinderAlimentatieAanvrager/bedragAlimentatie"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/nettoPartnerAlimentatie",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatieAanvrager/bedragAlimentatie"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/KrijgtRecht",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatieAanvrager/juisteBedragBetaaldDoorExPartner",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/lbioIngeschakeld",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatieAanvrager/lbioIngeschakeld",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/krijgtHulp",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatieAanvrager/bijdrageExPartnerVoorAndereRekeningen",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/alimentatieGroep/bedragHulp",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatieAanvrager/bedragAanAndereRekeningen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/buitenlandGoep/inkomenBuitenland",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/inkomstenBuitenland/heeftInkomstenBuitenland",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/buitenlandGoep/nettoBuitenland",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/inkomstenBuitenland/nettoInkomstenBuitenland"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/buitenlandGoep/periodeBuitenland",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/inkomstenBuitenland/periodeInkomstenBuitenland",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/onderhuurGroep/onderhuurBedrag",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/onderhuur/totaalBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-inkomsten/overigeInkomsten/overigbedrag",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenAanvrager/overig/totaalBedrag"
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/LOONDIENST",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "LOONDIENST",
+                    "name": "Loondienst"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/UITKERING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "UITKERING",
+                    "name": "Uitkering"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/PENSIOEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "PENSIOEN",
+                    "name": "Pensioen"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/HEFFINGSKORTING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "HEFFINGSKORTING",
+                    "name": "Heffingskorting"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/ALIMENTATIE",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ALIMENTATIE",
+                    "name": "Alimentatie"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/INKOMEN_UIT_HET_BUITENLAND",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "BUITENLAND",
+                    "name": "Inkomen uit het buitenland"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/INKOMSTEN_UIT_ONDERHUUR",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ONDERHUUR",
+                    "name": "Inkomsten uit onderhuur"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/OVERIGE_INKOMSTEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/soortInkomsten",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "OVERIG",
+                    "name": "Overige inkomsten"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/naamWerkgeverPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/bedrijfsNaam"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/nettoloonPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/nettoLoon"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/periodeNettoloonPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/periodiciteitUitbetalingLoon",
+        "transformations": [
+            {
+                "when": "PER_WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "PER_4_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "PER_MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "PER_KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/LoonheffingskortingPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/loonheffingskorting",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": {
+                    "code": "1",
+                    "name": "Ja"
+                }
+            },
+            {
+                "when": "NEE",
+                "then": {
+                    "code": "2",
+                    "name": "Nee"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner/1_KEER_PER_JAAR_VAKANTIEGELD",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "VAKANTIEGELD_PER_JAAR",
+                    "name": "1 keer per jaar vakantiegeld"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner/EEN_13DE_MAAND_OF_EINDEJAARSUITKERING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "DERTIENDE_MAAND_EINDEJAARSUITKERING",
+                    "name": "Een 13de maand of eindejaarsuitkering"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner/REISKOSTENVERGOEDING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "REISKOSTENVERGOEDING",
+                    "name": "Reiskostenvergoeding"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner/ONKOSTENVERGOEDING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ONKOSTENVERGOEDING",
+                    "name": "Onkostenvergoeding"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner/MAALTIJDVERGOEDING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "MAALTIJDVERGOEDING",
+                    "name": "Maaltijdvergoeding"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner/LOON_IN_NATURA",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "NATURA",
+                    "name": "Loon in natura (zoals eten of middelen)"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner/VAKANTIEGELD_BIJ_IEDERE_UITBETALING_VAN_MIJN_SALARIS",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "VAKANTIEGELD_IEDERE_UITBETALING",
+                    "name": "Vakantiegeld bij iedere uitbetaling van mijn salaris (dus niet 1 keer per jaar)"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/uitbetalingNaastLoonPartner/GEEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/additioneleVergoedingen",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "GEEN",
+                    "name": "Aanvrager ontvangt geen vakantiegeld 1 keer per jaar, geen 13de maand of eindejaarsuitkering, geen reiskostenvergoeding, geen onkostenvergoeding, geen maaltijdvergoeding, geen loon in natura, geen vakantiegeld bij iedere uitbetaling van mijn salaris"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/nettoNaturaPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/waardeLoonInNatura"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/nettoMaaltijdPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/maaltijdvergoeding"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/nettoOnkostenPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/onkostenvergoeding"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/nettoReiskostenPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/reiskostenvergoeding"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/soortContractPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/soortContract",
+        "transformations": [
+            {
+                "when": "IK_HEB_EEN_VAST_CONTRACT",
+                "then": {
+                    "code": "1",
+                    "name": "Vast contract"
+                }
+            },
+            {
+                "when": "IK_HEB_EEN_CONTRACT_VOOR_BEPAALDE_TIJD",
+                "then": {
+                    "code": "2",
+                    "name": "Voor bepaalde tijd"
+                }
+            },
+            {
+                "when": "IK_HEB_EEN_CONTRACT_OP_OPROEP_BASIS",
+                "then": {
+                    "code": "3",
+                    "name": "Op oproepbasis"
+                }
+            },
+            {
+                "when": "IK_HEB_EEN_UITZENDCONTRACT",
+                "then": {
+                    "code": "4",
+                    "name": "Uitzendbureau"
+                }
+            },
+            {
+                "when": "IK_HEB_EEN_0_UREN_CONTRACT",
+                "then": {
+                    "code": "5",
+                    "name": "0-uren contract"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/urenverminderingPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/urenvermindering",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": {
+                    "code": "1",
+                    "name": "Ja"
+                }
+            },
+            {
+                "when": "NEE",
+                "then": {
+                    "code": "2",
+                    "name": "Nee"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/contractBeeindigdPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/contractBinnenkortBeeindigd",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": {
+                    "code": "1",
+                    "name": "Ja"
+                }
+            },
+            {
+                "when": "NEE",
+                "then": {
+                    "code": "2",
+                    "name": "Nee"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/einddatumContractPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/einddatumContract"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/loondienstWerkgeverSPartner/werkgeversPartnerHerGroep/[]/aantalUurWerkPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/loondienst/[]/aantalUurPerWeek"
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner/AOW",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "AOW"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner/WAJONG",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "WAJONG"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner/WAO",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "WAO"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner/WW",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "WW"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner/WIA",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "WIA"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner/ANW",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "ANW"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner/BIJSTAND",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "BIJSTAND"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/uitkeringenPartner/ZIEKTEWET",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkeringTypes",
+        "transformations": [
+            {
+                "when": true,
+                "then": "ZIEKTEWET"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/aowPartnerGroep/nettoAowPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/AOW/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/aowPartnerGroep/periodeAowPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/AOW/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/wajongPartnerGroep/nettoWajongPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/WAJONG/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/wajongPartnerGroep/periodeWajongPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/WAJONG/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/WaoPartnerGroep/nettoWaoPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/WAO/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/WaoPartnerGroep/periodeWaoPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/WAO/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/wwPartnerGroep/nettoWwPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/WW/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/wwPartnerGroep/periodeWwPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/WW/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/wiaPartnerGroep/nettoWiaPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/WIA/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/wiaPartnerGroep/periodeWiaPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/WIA/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/anwPartnerGroep/nettoAnwPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/ANW/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/anwPartnerGroep/periodeAnwPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/ANW/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/bijstandPartnerGroep/nettoBijstandPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/BIJSTAND/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/bijstandPartnerGroep/periodeBijstandPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/BIJSTAND/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/ziektewetGroepPartner/nettoZiektewetPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/ZIEKTEWET/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/uitkeringenPartnerGroep/ziektewetGroepPartner/periodeZiektewetPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/uitkering/ZIEKTEWET/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/pensioenenPartnerGroep",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/pensioenen",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/pensioenenPartnerGroep/pensioenenPartnerHerGroep/[]/nettoPensioenPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/pensioenen/[]/nettoBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/pensioenenPartnerGroep/pensioenenPartnerHerGroep/[]/periodePensioenPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/pensioenen/[]/periodeUitkering",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "defaultValue": [],
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/heffingskortingenPartnerGroep/welkeHeffingskortingenPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/heffingskorting/types",
+        "transformations": []
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/heffingskortingenPartnerGroep/welkeHeffingskortingenPartner/INKOMENSAFHANKELIJKE_COMBINATIEKORTING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/heffingskorting/types",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "INKOMENSAFHANKELIJKE_COMBINATIEKORTING",
+                    "name": "Inkomensafhankelijke combinatiekorting"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/heffingskortingenPartnerGroep/welkeHeffingskortingenPartner/ALGEMENE_HEFFINGSKORTING",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/heffingskorting/types",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ALGEMENE_HEFFINGSKORTING",
+                    "name": "Algemene heffingskorting"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/heffingskortingenPartnerGroep/welkeHeffingskortingenPartner/GEEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/heffingskorting/types",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "GEEN",
+                    "name": "Ik krijg geen inkomensafhankelijke combinatiekorting en geen algemene heffingskorting"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/heffingskortingenPartnerGroep/nettoHeffingskortingenPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/heffingskorting/totaalBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/alimentatiePartnerGroep/alimentatieKindPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatie/ontvangtAlimentatie"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/alimentatiePartnerGroep/nettoKindAlimentatiePartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatie/bedragAlimentatie"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/alimentatiePartnerGroep/KrijgtRechtPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatie/juisteBedragBetaaldDoorExPartner",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/alimentatiePartnerGroep/lbioIngeschakeldPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatie/lbioIngeschakeld",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/alimentatiePartnerGroep/krijgtHulpPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatie/bijdrageExPartnerVoorAndereRekeningen",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/alimentatiePartnerGroep/nettoExAlimentatiePartner",
+        "targetPointer": "/gegevensVanuitAanvraag/partnerAlimentatie/bedragAanAndereRekeningen"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/buitenlandPartnerGoep/inkomenBuitenlandPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/inkomstenBuitenland/heeftInkomstenBuitenland",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/buitenlandPartnerGoep/nettoBuitenlandPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/inkomstenBuitenland/nettoInkomstenBuitenland"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/buitenlandPartnerGoep/periodeBuitenlandPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/inkomstenBuitenland/periodeInkomstenBuitenland",
+        "transformations": [
+            {
+                "when": "WEEK",
+                "then": {
+                    "code": "2",
+                    "name": "Week"
+                }
+            },
+            {
+                "when": "VIER_4_WEKEN",
+                "then": {
+                    "code": "4",
+                    "name": "4 weken (13 maanden)"
+                }
+            },
+            {
+                "when": "MAAND",
+                "then": {
+                    "code": "6",
+                    "name": "Maand"
+                }
+            },
+            {
+                "when": "KWARTAAL",
+                "then": {
+                    "code": "7",
+                    "name": "Kwartaal"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/onderhuurPartnerGroep/partnerKrijgtOnderhuur",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/inkomstenUitOnderhuur",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/onderhuurPartnerGroep/nettoOnderhuurPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/onderhuur/totaalBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/vormenInkomstenPartner/OVERIGE_INKOMSTEN",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/overig/heeftInkomstenOverig",
+        "transformations": [
+            {
+                "when": true,
+                "then": "JA"
+            },
+            {
+                "when": false,
+                "then": "NEE"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/overigeInkomstenPartner/overigBedragPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/inkomstenPartner/overig/totaalBedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-inkomsten-partner/ondernemerPartnerGroep/partnerIsOndernemer",
+        "targetPointer": "/gegevensVanuitAanvraag/partner/partnerIsOndernemer",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/andereLeningen",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/andereLeningenAangevraagd",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": "true"
+            },
+            {
+                "when": "NEE",
+                "then": "false"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/toelichtingAndereLeningen",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/toelichtingAndereLeningenAangevraagd"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/isBeslaglegging",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/dreigingVanBeslaglegging",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": "true"
+            },
+            {
+                "when": "NEE",
+                "then": "false"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/contactSchuldhulp",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/contactSchuldhulpverlening",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": "true"
+            },
+            {
+                "when": "NEE",
+                "then": "false"
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/toelichtingSchuldhulp",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/toelichtingContactSchuldhulpverlening"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/afsprakenSchuldhulp",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/afsprakenSchuldhulpverlening",
+        "transformations": [
+            {
+                "when": "ER_WORDT_EEN_SCHULDHULPVERLENINGSTRAJECT_OPGESTART",
+                "then": {
+                    "code": "SCHULDHULPVERLENINGS_TRAJECT",
+                    "name": "Er wordt een schuldhulpverleningstraject opgestart"
+                }
+            },
+            {
+                "when": "ER_WORDT_EEN_WSNP_TRAJECT_OPGESTART",
+                "then": {
+                    "code": "WNSP_TRAJECT",
+                    "name": "Er wordt een WSNP - traject opgestart"
+                }
+            },
+            {
+                "when": "ER_WORDT_GEEN_TRAJECT_OPGESTART",
+                "then": {
+                    "code": "GEEN_TRAJECT",
+                    "name": "Er wordt geen traject opgestart"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/wanneerTraject",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/startdatumTraject"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/redenGeenTrajct",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/redenNietOpstartenTraject"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/toelichtingBeslaglegging",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/toelichtingBeslaglegging"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/redenBedrijfskrediet/HERFINANCIERING",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/redenAanvraag",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "HERFINANCIERING",
+                    "name": "Herfinanciering"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/redenBedrijfskrediet/SANERING",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/redenAanvraag",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "SANERING",
+                    "name": "Sanering"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/redenBedrijfskrediet/ACHTERSTANDEN",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/redenAanvraag",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ACHTERSTANDEN",
+                    "name": "Achterstanden"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/redenBedrijfskrediet/INVESTERINGEN",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/redenAanvraag",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "INVESTERINGEN",
+                    "name": "Investeringen"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/redenBedrijfskrediet/ANDERS_NAMELIJK",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/redenAanvraag",
+        "transformations": [
+            {
+                "when": true,
+                "then": {
+                    "code": "ANDERS",
+                    "name": "Anders"
+                }
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/bedragBedrijfskrediet",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/bedrag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-bedrijfskrediet/toelichtingBedrijfskrediet",
+        "targetPointer": "/gegevensVanuitAanvraag/bedrijfskrediet/toelichtingAanvraag"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/hoeveelWerk",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidAanvrager/uurPerWeek"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/onbetaaldWerk",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidAanvrager/onbetaaldWerk",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/organisatieWerk",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidAanvrager/organisatieOnbetaaldWerk"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/SoortOnbetaaldWerk",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidAanvrager/soortOnbetaaldWerk"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/redenNietBeschikbaar",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidAanvrager/redenOnbeschikbaar"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/beschikbaarheidPartnerGroep/hoeveelWerkPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidPartner/uurPerWeek"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/beschikbaarheidPartnerGroep/onbetaaldWerkPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidPartner/onbetaaldWerk",
+        "transformations": [
+            {
+                "when": "JA",
+                "then": true
+            },
+            {
+                "when": "NEE",
+                "then": false
+            }
+        ]
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/beschikbaarheidPartnerGroep/organisatieoWerkPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidPartner/organisatieOnbetaaldWerk"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/beschikbaarheidPartnerGroep/soortWerkPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidPartner/soortOnbetaaldWerk"
+    },
+    {
+        "sourcePointer": "/verzoekOpenForms/foo-uw-beschikbaarheidioaz/beschikbaarheidPartnerGroep/redenNietBeschikbaarPartner",
+        "targetPointer": "/gegevensVanuitAanvraag/beschikbaarheidPartner/redenOnbeschikbaar"
+    }
+]

@@ -22,16 +22,18 @@
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
   } as obs"
 >
+    <ng-container
+            *ngIf="{definitions: definitions$| async} as definitions"
+    >
     <v-select
-            *ngIf="definitions$| async as definitions"
             [loading]="!definitions$"
             [items]="definitions"
             [margin]="true"
             name="definition"
             [title]="'definition' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
             [defaultSelectionId]="definitions[0]"
             [required]="true"
             [tooltip]="'definitionTooltip' | pluginTranslate: pluginId | async"
     ></v-select>
+    </ng-container>
 </v-form>

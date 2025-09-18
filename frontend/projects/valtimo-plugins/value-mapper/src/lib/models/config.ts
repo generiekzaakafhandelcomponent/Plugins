@@ -16,7 +16,7 @@
 
 
 interface ProcessMappingConfig {
-    mappingDefinitionId: string
+    definition: string
 }
 
 export{ProcessMappingConfig}

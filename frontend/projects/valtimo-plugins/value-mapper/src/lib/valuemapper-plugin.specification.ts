@@ -40,7 +40,8 @@ const valueMapperPluginSpecification: PluginSpecification = {
       configurationTitleTooltip:
           'Onder deze naam zal de plugin te herkennen zijn in de rest van de applicatie',
       definition: 'ValueMapper definitie',
-      definitionTooltip: 'Selecteer de ValueMapper definitie'
+      definitionTooltip: 'Selecteer de ValueMapper definitie',
+        'process-mapping-instructions': 'Proces mapping instructies'
     },
     en: {
       title: 'Value Mapper',
@@ -50,7 +51,8 @@ const valueMapperPluginSpecification: PluginSpecification = {
       configurationTitleTooltip:
           'Under this name, the plugin will be recognizable in the rest of the application',
         definition: 'ValueMapper definition',
-        definitionTooltip: 'Select the ValueMapper definition'
+        definitionTooltip: 'Select the ValueMapper definition',
+        'process-mapping-instructions': 'Process mapping instructions'
     },
     de: {
       title: 'Value Mapper',
@@ -59,7 +61,8 @@ const valueMapperPluginSpecification: PluginSpecification = {
       configurationTitleTooltip:
           'Unter diesem Namen wird das Plugin im Rest der Anwendung erkennbar sein',
         definition: 'ValueMapper definitie',
-        definitionTooltip: 'Wählen Sie die ValueMapper aus'
+        definitionTooltip: 'Wählen Sie die ValueMapper aus',
+        'process-mapping-instructions': 'Process mapping instructies'
     },
   },
 };
