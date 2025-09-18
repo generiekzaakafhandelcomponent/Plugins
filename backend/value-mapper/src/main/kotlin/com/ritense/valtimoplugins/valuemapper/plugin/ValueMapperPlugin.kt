@@ -19,12 +19,13 @@ package com.ritense.valtimoplugins.valuemapper.plugin
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
+import com.ritense.plugin.annotation.PluginCategory
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.valtimoplugins.valuemapper.ValueMapper
-import com.ritense.valtimoplugins.valuemapper.service.ValueMapperLoadingService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 
+@PluginCategory("mapping")
 @Plugin(
     key = "value-mapper",
     title = "Value Mapper plugin",

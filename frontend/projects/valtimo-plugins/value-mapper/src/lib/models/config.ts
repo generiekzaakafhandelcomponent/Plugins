@@ -14,12 +14,9 @@
  *  limitations under the License.
  */
 
-import {PluginConfigurationData} from "@valtimo/plugin";
-
-interface ValueMapperConfig extends PluginConfigurationData {}
 
 interface ProcessMappingConfig {
     mappingDefinitionId: string
 }
 
-export{ValueMapperConfig, ProcessMappingConfig}
+export{ProcessMappingConfig}

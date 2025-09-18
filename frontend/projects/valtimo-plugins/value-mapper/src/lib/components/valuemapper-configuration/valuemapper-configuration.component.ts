@@ -18,10 +18,11 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
-import {ValueMapperConfig} from "../../models";
-import {TranslateService} from "@ngx-translate/core";
+import {
+    PluginConfigurationComponent,
+    PluginConfigurationData,
+} from '@valtimo/plugin';
+import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 
 @Component({
   selector: 'valtimo-valuemapper-configuration',
@@ -34,39 +35,17 @@ export class ValueMapperConfigurationComponent
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
-  @Input() prefillConfiguration$: Observable<ValueMapperConfig>;
+  @Input() prefillConfiguration$: Observable<PluginConfigurationData>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() configuration: EventEmitter<ValueMapperConfig> =
-      new EventEmitter<ValueMapperConfig>();
+  @Output() configuration: EventEmitter<PluginConfigurationData> =
+      new EventEmitter<PluginConfigurationData>();
 
   private saveSubscription!: Subscription;
 
-  private readonly formValue$ = new BehaviorSubject<ValueMapperConfig | null>(null);
+  private readonly formValue$ = new BehaviorSubject<PluginConfigurationData | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
 
-  readonly authenticationPluginSelectItems$: Observable<Array<{id: string; text: string}>> =
-      combineLatest([
-        this.pluginManagementService.getPluginConfigurationsByCategory(
-            'mapping'
-        ),
-        this.translateService.stream('key'),
-      ]).pipe(
-          map(([configurations]) =>
-              configurations.map(configuration => ({
-                id: configuration.id,
-                text: `${configuration.title} - ${this.pluginTranslationService.instant(
-                    'title',
-                    configuration.pluginDefinition.key
-                )}`,
-              }))
-          )
-      );
-
-  constructor(
-      private readonly pluginManagementService: PluginManagementService,
-      private readonly pluginTranslationService: PluginTranslationService,
-      private readonly translateService: TranslateService,
-  ) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -77,15 +56,13 @@ export class ValueMapperConfigurationComponent
     this.saveSubscription?.unsubscribe();
   }
 
-  formValueChange(formValue: ValueMapperConfig): void {
+  formValueChange(formValue: PluginConfigurationData): void {
     this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: ValueMapperConfig): void {
-    const valid = !!(formValue.configurationTitle
-        && formValue.emailApiBaseUrl
-        && formValue.subscriptionKey);
+  private handleValid(formValue: PluginConfigurationData): void {
+    const valid = !!formValue.configurationTitle;
 
     this.valid$.next(valid);
     this.valid.emit(valid);

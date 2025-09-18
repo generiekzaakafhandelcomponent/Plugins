@@ -6,10 +6,12 @@ import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimoplugins.valuemapper.ValueMapper
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperDefinitionService
 import com.ritense.valtimoplugins.valuemapper.plugin.ValueMapperPluginFactory
+import com.ritense.valtimoplugins.valuemapper.security.ValueMapperHttpSecurityConfigurer
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperLoadingService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.core.io.ResourceLoader
 
 @Configuration
@@ -42,6 +44,15 @@ class ValueMapperAutoConfiguration {
     @ConditionalOnMissingBean(ValueMapperPluginFactory::class)
     fun valueMapperPluginFactory(pluginService: PluginService, valueMapper: ValueMapper): ValueMapperPluginFactory {
         return ValueMapperPluginFactory(pluginService, valueMapper)
+    }
+
+
+
+    @Order(401)
+    @Bean
+    @ConditionalOnMissingBean(ValueMapperHttpSecurityConfigurer::class)
+    fun valueMapperSecurityConfig(): ValueMapperHttpSecurityConfigurer {
+        return ValueMapperHttpSecurityConfigurer()
     }
 
 }

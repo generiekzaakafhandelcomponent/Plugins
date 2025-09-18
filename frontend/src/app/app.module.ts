@@ -99,11 +99,15 @@ import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule,mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
-import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
+//import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
 import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from "@valtimo/dashboard";
 import {DashboardManagementModule} from "@valtimo/dashboard-management";
 import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
+import {
+    valueMapperPluginSpecification
+} from "../../projects/valtimo-plugins/value-mapper/src/lib/valuemapper-plugin.specification";
+import {ValueMapperPluginModule} from "../../projects/valtimo-plugins/value-mapper/src/lib/valuemapper-plugin-module";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -130,7 +134,7 @@ export function tabsFactory() {
         ObjectManagementPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
-        HuggingFacePluginModule,
+  //      HuggingFacePluginModule,
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
@@ -191,6 +195,7 @@ export function tabsFactory() {
         DashboardModule,
         DashboardManagementModule,
         KvkPluginModule,
+        ValueMapperPluginModule
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -208,14 +213,15 @@ export function tabsFactory() {
             publictaskPluginSpecification,
             rotterdamOracleEbsPluginSpecification,
             slackPluginSpecification,
-            huggingFacePluginSpecification,
+    //        huggingFacePluginSpecification,
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
-            kvkPluginSpecification
+            kvkPluginSpecification,
+            valueMapperPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]
