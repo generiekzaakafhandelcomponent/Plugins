@@ -19,64 +19,76 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {ProcessMappingConfig} from "../../models";
 import {ValueMapperService} from "../../service/valuemapper.service";
 
 @Component({
-  selector: 'valtimo-process-mapping',
-  templateUrl: './process-mapping.component.html',
-  styleUrls: ['./process-mapping.component.scss'],
+    selector: 'valtimo-process-mapping',
+    templateUrl: './process-mapping.component.html',
+    styleUrls: ['./process-mapping.component.scss'],
 })
 export class ProcessMappingComponent
-  implements FunctionConfigurationComponent, OnInit, OnDestroy
-{
-  @Input() disabled$: Observable<boolean>;
-  @Input() pluginId: string;
-  @Input() prefillConfiguration$: Observable<ProcessMappingConfig>;
-  @Input() save$: Observable<void>;
-  @Output() configuration: EventEmitter<ProcessMappingConfig> = new EventEmitter<ProcessMappingConfig>();
-  @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
+    implements FunctionConfigurationComponent, OnInit, OnDestroy {
+    @Input() disabled$: Observable<boolean>;
+    @Input() pluginId: string;
+    @Input() prefillConfiguration$: Observable<ProcessMappingConfig>;
+    @Input() save$: Observable<void>;
+    @Output() configuration: EventEmitter<ProcessMappingConfig> = new EventEmitter<ProcessMappingConfig>();
+    @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private readonly formValue$ = new BehaviorSubject<ProcessMappingConfig | null>(null);
-  private saveSubscription!: Subscription;
-  private readonly valid$ = new BehaviorSubject<boolean>(false);
+    private readonly formValue$ = new BehaviorSubject<ProcessMappingConfig | null>(null);
+    private saveSubscription!: Subscription;
+    private readonly valid$ = new BehaviorSubject<boolean>(false);
 
-  readonly definitions$:Observable<Array<string>> = this.service.getValueMapperDefinitionsIds();
+    readonly definitions$: Observable<Array<{ id: string}>> =
+        this.service.getValueMapperDefinitionsIds()
+            .pipe(
+                map(definitions =>
+                    definitions.map(definition => (
+                            {
+                                id: definition,
+                                text: definition
+                            }
+                        )
+                    )
+                )
+            );
 
-  constructor(private service: ValueMapperService) {
-  }
 
-  public ngOnInit(): void {
-    this.openSaveSubscription();
-  }
+    constructor(private service: ValueMapperService) {
+    }
 
-  public ngOnDestroy(): void {
-    this.saveSubscription?.unsubscribe();
-  }
+    public ngOnInit(): void {
+        this.openSaveSubscription();
+    }
 
-  public formValueChange(formValue: ProcessMappingConfig): void {
-    this.formValue$.next(formValue);
-    this.handleValid(formValue);
-  }
+    public ngOnDestroy(): void {
+        this.saveSubscription?.unsubscribe();
+    }
 
-  private handleValid(formValue: ProcessMappingConfig): void {
-    const valid =
-      !!(formValue.definition)
+    public formValueChange(formValue: ProcessMappingConfig): void {
+        this.formValue$.next(formValue);
+        this.handleValid(formValue);
+    }
 
-    this.valid$.next(valid);
-    this.valid.emit(valid);
-  }
+    private handleValid(formValue: ProcessMappingConfig): void {
+        const valid =
+            !!(formValue.definition)
 
-  private openSaveSubscription(): void {
-    this.saveSubscription = this.save$?.subscribe(save => {
-      combineLatest([this.formValue$, this.valid$])
-        .pipe(take(1))
-        .subscribe(([formValue, valid]) => {
-          if (valid) {
-            this.configuration.emit(formValue);
-          }
+        this.valid$.next(valid);
+        this.valid.emit(valid);
+    }
+
+    private openSaveSubscription(): void {
+        this.saveSubscription = this.save$?.subscribe(save => {
+            combineLatest([this.formValue$, this.valid$])
+                .pipe(take(1))
+                .subscribe(([formValue, valid]) => {
+                    if (valid) {
+                        this.configuration.emit(formValue);
+                    }
+                });
         });
-    });
-  }
+    }
 }

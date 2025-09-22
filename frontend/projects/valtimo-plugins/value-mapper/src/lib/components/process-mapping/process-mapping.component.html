@@ -23,15 +23,14 @@
   } as obs"
 >
     <ng-container
-            *ngIf="{definitions: definitions$| async} as definitions"
+            *ngIf="{definitionItems: definitions$| async} as defObs"
     >
     <v-select
-            [loading]="!definitions$"
-            [items]="definitions"
+            [items]="defObs.definitionItems"
             [margin]="true"
             name="definition"
             [title]="'definition' | pluginTranslate: pluginId | async"
-            [defaultSelectionId]="definitions[0]"
+            [defaultSelectionId]="obs.prefill?.definition"
             [required]="true"
             [tooltip]="'definitionTooltip' | pluginTranslate: pluginId | async"
     ></v-select>

@@ -32,7 +32,7 @@ export class ValueMapperService {
         this.valtimoEndpointUri = `${this.configService.config.valtimoApi.endpointUri}management/`;
     }
 
-    getValueMapperDefinitionsIds():Observable<Array<string>> {
+    getValueMapperDefinitionsIds():Observable<string[]> {
         return this.http.get<Array<string>>(this.valtimoEndpointUri.concat('v1/value-mapper/definitions'))
     }
 }
