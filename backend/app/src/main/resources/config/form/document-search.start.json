@@ -1,0 +1,43 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Name",
+      "applyMaskOn": "change",
+      "tableView": true,
+      "validateWhenHidden": false,
+      "key": "name",
+      "type": "textfield",
+      "input": true
+    },
+    {
+      "label": "BSN",
+      "applyMaskOn": "change",
+      "tableView": true,
+      "validate": {
+        "required": true
+      },
+      "validateWhenHidden": false,
+      "key": "pv.bsn",
+      "type": "textfield",
+      "input": true
+    },
+    {
+      "label": "Email",
+      "applyMaskOn": "change",
+      "tableView": true,
+      "validateWhenHidden": false,
+      "key": "email",
+      "type": "email",
+      "input": true
+    },
+    {
+      "label": "Submit",
+      "showValidations": false,
+      "tableView": false,
+      "key": "submit",
+      "type": "button",
+      "input": true
+    }
+  ]
+}

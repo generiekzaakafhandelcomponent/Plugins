@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_0qeypci" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0">
+  <bpmn:process id="DocumentSearchProcess" name="Document search" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0cbxu2r</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0cbxu2r" sourceRef="StartEvent_1" targetRef="DocumentSearchTask" />
+    <bpmn:endEvent id="Event_0ify93v">
+      <bpmn:incoming>Flow_12c6uy0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0knc719" sourceRef="DataPreviewTask" targetRef="Gateway_00gqa9h" />
+    <bpmn:userTask id="DataPreviewTask" name="Data preview" camunda:asyncAfter="true">
+      <bpmn:incoming>NoSequenceFlow</bpmn:incoming>
+      <bpmn:outgoing>Flow_0knc719</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="ExistingCaseGateway" name="Existing case?" default="NoSequenceFlow">
+      <bpmn:incoming>Flow_0thyqzf</bpmn:incoming>
+      <bpmn:outgoing>NoSequenceFlow</bpmn:outgoing>
+      <bpmn:outgoing>YesSequenceFlow</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="NoSequenceFlow" name="No" sourceRef="ExistingCaseGateway" targetRef="DataPreviewTask" />
+    <bpmn:exclusiveGateway id="Gateway_00gqa9h">
+      <bpmn:incoming>Flow_0knc719</bpmn:incoming>
+      <bpmn:incoming>YesSequenceFlow</bpmn:incoming>
+      <bpmn:outgoing>Flow_12c6uy0</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_12c6uy0" sourceRef="Gateway_00gqa9h" targetRef="Event_0ify93v" />
+    <bpmn:sequenceFlow id="YesSequenceFlow" name="Yes" sourceRef="ExistingCaseGateway" targetRef="Gateway_00gqa9h">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable("result") &amp;&amp; execution.getVariable("result").size() &gt; 1}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0thyqzf" sourceRef="DocumentSearchTask" targetRef="ExistingCaseGateway" />
+    <bpmn:serviceTask id="DocumentSearchTask" name="Document search" camunda:asyncAfter="true" camunda:expression="${true}">
+      <bpmn:incoming>Flow_0cbxu2r</bpmn:incoming>
+      <bpmn:outgoing>Flow_0thyqzf</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="DocumentSearchProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ftjgxt_di" bpmnElement="DataPreviewTask">
+        <dc:Bounds x="600" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_138l422_di" bpmnElement="ExistingCaseGateway" isMarkerVisible="true">
+        <dc:Bounds x="465" y="92" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="456" y="73" width="71" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ify93v_di" bpmnElement="Event_0ify93v">
+        <dc:Bounds x="862" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_00gqa9h_di" bpmnElement="Gateway_00gqa9h" isMarkerVisible="true">
+        <dc:Bounds x="765" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nsney0_di" bpmnElement="DocumentSearchTask">
+        <dc:Bounds x="290" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0cbxu2r_di" bpmnElement="Flow_0cbxu2r">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="290" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0knc719_di" bpmnElement="Flow_0knc719">
+        <di:waypoint x="700" y="117" />
+        <di:waypoint x="765" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19h53kf_di" bpmnElement="NoSequenceFlow">
+        <di:waypoint x="515" y="117" />
+        <di:waypoint x="600" y="117" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="532" y="99" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12c6uy0_di" bpmnElement="Flow_12c6uy0">
+        <di:waypoint x="815" y="117" />
+        <di:waypoint x="862" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12uwgrp_di" bpmnElement="YesSequenceFlow">
+        <di:waypoint x="490" y="142" />
+        <di:waypoint x="490" y="210" />
+        <di:waypoint x="790" y="210" />
+        <di:waypoint x="790" y="142" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="501" y="163" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0thyqzf_di" bpmnElement="Flow_0thyqzf">
+        <di:waypoint x="390" y="117" />
+        <di:waypoint x="465" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

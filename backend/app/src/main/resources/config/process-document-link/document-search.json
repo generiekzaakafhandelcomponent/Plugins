@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "DocumentSearchProcess",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  }
+]
