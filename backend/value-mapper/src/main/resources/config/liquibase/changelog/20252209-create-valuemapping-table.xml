@@ -32,8 +32,7 @@
             <column name="key" type="VARCHAR(256)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="case_definition_name" type="VARCHAR(256)"/>
-            <column name="content" type="${jsonType}">
+            <column name="content" type="CLOB">
                 <constraints nullable="false"/>
             </column>
         </createTable>

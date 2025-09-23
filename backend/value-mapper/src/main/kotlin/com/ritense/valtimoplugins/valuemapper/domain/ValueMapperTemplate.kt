@@ -30,7 +30,7 @@ class ValueMapperTemplate(
     @Column(name = "id")
     val id: UUID,
 
-    @Column(name = "template_key")
+    @Column(name = "key")
     val key: String,
 
     @Column(name = "content")

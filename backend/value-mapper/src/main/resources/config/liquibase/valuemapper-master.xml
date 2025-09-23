@@ -23,9 +23,6 @@
     <property name="uuidType" value="BINARY(16)" dbms="mysql"/>
     <property name="uuidType" value="uuid" dbms="h2,postgresql"/>
 
-    <property name="jsonType" value="JSON" dbms="mysql"/>
-    <property name="jsonType" value="JSON" dbms="postgresql"/>
-
     <include file="changelog/20252209-create-valuemapping-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -5,6 +5,7 @@ import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
+import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTemplate
 import com.ritense.valtimoplugins.valuemapper.plugin.ValueMapper
 import com.ritense.valtimoplugins.valuemapper.plugin.ValueMapperPluginFactory
 import com.ritense.valtimoplugins.valuemapper.repository.ValueMapperTemplateRepository
@@ -12,6 +13,7 @@ import com.ritense.valtimoplugins.valuemapper.security.ValueMapperHttpSecurityCo
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperLoadingService
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperTemplateService
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -21,6 +23,7 @@ import org.springframework.core.io.ResourceLoader
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaRepositories(basePackageClasses = [ValueMapperTemplateRepository::class])
+@EntityScan(basePackageClasses = [ValueMapperTemplate::class])
 @EnableCaching
 @Configuration
 class ValueMapperAutoConfiguration {
@@ -63,9 +66,9 @@ class ValueMapperAutoConfiguration {
 
     @Order(HIGHEST_PRECEDENCE + 34)
     @Bean
-    @ConditionalOnMissingBean(name = ["valueMapperTemplateLiquibaseMasterChangeLogLocation"])
+    @ConditionalOnMissingBean(name = ["valueMapperLiquibaseMasterChangeLogLocation"])
     fun valueMapperTemplateLiquibaseMasterChangeLogLocation(): LiquibaseMasterChangeLogLocation {
-        return LiquibaseMasterChangeLogLocation("config/liquibase/template-master.xml")
+        return LiquibaseMasterChangeLogLocation("config/liquibase/valuemapper-master.xml")
     }
 
 }
