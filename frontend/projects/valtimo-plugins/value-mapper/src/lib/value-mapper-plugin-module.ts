@@ -26,13 +26,18 @@ import {FormModule, InputModule, SelectModule} from "@valtimo/components";
 import {NotificationModule} from 'carbon-components-angular';
 import {
     ValueMapperConfigurationComponent
-} from "./components/valuemapper-configuration/valuemapper-configuration.component";
+} from "./components/value-mapper-configuration/value-mapper-configuration.component";
 import {ProcessMappingComponent} from "./components/process-mapping/process-mapping.component";
+import {ValueMapperListComponent} from "./components/value-mapper-list/value-mapper-list.component";
+import {ValueMapperManagementRoutingModule} from "./value-mapper-management-routing.module";
+import {ValueMapperEditorComponent} from "./components/valuemapper-editor/value-mapper-editor.component";
 
 @NgModule({
   declarations: [
     ValueMapperConfigurationComponent,
-      ProcessMappingComponent
+      ProcessMappingComponent,
+      ValueMapperListComponent,
+      ValueMapperEditorComponent
   ],
   imports: [
     CommonModule,
@@ -42,10 +47,13 @@ import {ProcessMappingComponent} from "./components/process-mapping/process-mapp
     FormsModule,
     SelectModule,
     NotificationModule,
+      ValueMapperManagementRoutingModule
   ],
   exports: [
     ValueMapperConfigurationComponent,
-      ProcessMappingComponent
+      ProcessMappingComponent,
+      ValueMapperListComponent,
+      ValueMapperEditorComponent
   ],
 })
 export class ValueMapperPluginModule {}

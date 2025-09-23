@@ -26,8 +26,8 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 
 @Component({
   selector: 'valtimo-valuemapper-configuration',
-  templateUrl: './valuemapper-configuration.component.html',
-  styleUrls: ['./valuemapper-configuration.component.scss'],
+  templateUrl: './value-mapper-configuration.component.html',
+  styleUrls: ['./value-mapper-configuration.component.scss'],
 })
 export class ValueMapperConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy

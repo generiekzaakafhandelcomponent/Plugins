@@ -18,9 +18,11 @@
  */
 
 export * from './lib/models/index';
-export * from './lib/components/valuemapper-configuration/valuemapper-configuration.component'
+export * from './lib/components/value-mapper-configuration/value-mapper-configuration.component'
 export * from './lib/components/process-mapping/process-mapping.component'
-export * from './lib/valuemapper-plugin.specification'
-export * from './lib/valuemapper-plugin-module'
-export * from './lib/service/valuemapper.service'
+export * from './lib/components/value-mapper-list/value-mapper-list.component'
+export * from './lib/value-mapper-plugin.specification'
+export * from './lib/value-mapper-plugin-module'
+export * from './lib/service/value-mapper.service'
+
 

@@ -19,4 +19,9 @@ interface ProcessMappingConfig {
     definition: string
 }
 
-export{ProcessMappingConfig}
+interface ValueMapperListItem {
+    key: string;
+    readOnly: boolean;
+}
+
+export{ProcessMappingConfig, ValueMapperListItem}
