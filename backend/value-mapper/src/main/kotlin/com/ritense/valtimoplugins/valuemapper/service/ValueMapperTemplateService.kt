@@ -37,7 +37,7 @@ class ValueMapperTemplateService(
         return templateRepository.getAll()
     }
 
-    fun getTemplatesKeysPages(pageable: Pageable): Page<String> {
+    fun getTemplatesKeysPaged(pageable: Pageable): Page<String> {
         return templateRepository.findAllKeysPaged(pageable)
     }
 

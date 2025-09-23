@@ -49,7 +49,7 @@ class ValueMapperResource(
     @GetMapping("definitionsPage")
     fun getMappingDefinitionsPage(pageable: Pageable,
     ): ResponseEntity<Page<TemplateListItemResponse>> {
-        val templates = valueMapperTemplateService.getTemplatesKeysPages(pageable)
+        val templates = valueMapperTemplateService.getTemplatesKeysPaged(pageable)
         return ResponseEntity.ok(templates.map { TemplateListItemResponse( it, isReadOnly(it)) })
     }
 
