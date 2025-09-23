@@ -18,7 +18,8 @@ package com.ritense.valtimoplugins.valuemapper.web
 
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperDefinition
 import com.ritense.valtimoplugins.valuemapper.security.ValueMapperHttpSecurityConfigurer
-import com.ritense.valtimoplugins.valuemapper.service.ValueMapperDefinitionService
+import com.ritense.valtimoplugins.valuemapper.service.ValueMapperLoadingService
+import com.ritense.valtimoplugins.valuemapper.service.ValueMapperTemplateService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,16 +31,15 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+
 
 @WebMvcTest
-@ContextConfiguration(classes = [ValueMapperResource::class, ValueMapperHttpSecurityConfigurer::class])
+@ContextConfiguration(classes = [ValueMapperLoadingService::class, ValueMapperTemplateService::class, ValueMapperResource::class, ValueMapperHttpSecurityConfigurer::class])
 @WithMockUser(roles = ["ADMIN"])
 class ValueMapperResourceITTest {
 
     @MockBean
-    lateinit var definitionService: ValueMapperDefinitionService
+    lateinit var templateService: ValueMapperTemplateService
 
     @Autowired
     lateinit var mockMvc: MockMvc
@@ -48,7 +48,7 @@ class ValueMapperResourceITTest {
     fun shouldGetMappingDefinitions() {
         val definition = ValueMapperDefinition("def1", emptyList())
 
-        whenever(definitionService.getDefinitions()).thenReturn(mapOf("def1" to definition, "def2" to definition))
+        whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def1", "def2"))
 
         mockMvc.get("/api/management/v1/value-mapper/definitions") {
             accept = MediaType.APPLICATION_JSON

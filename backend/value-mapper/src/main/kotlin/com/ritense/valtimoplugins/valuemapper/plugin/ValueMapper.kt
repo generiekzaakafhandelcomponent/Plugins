@@ -1,16 +1,30 @@
-package com.ritense.valtimoplugins.valuemapper
+/*
+ *  Copyright 2015-2025 Ritense BV, the Netherlands.
+ *
+ *  Licensed under EUPL, Version 1.2 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" basis,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+package com.ritense.valtimoplugins.valuemapper.plugin
 
 import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
-import com.fasterxml.jackson.databind.node.JsonNodeType.ARRAY
-import com.fasterxml.jackson.databind.node.JsonNodeType.MISSING
-import com.fasterxml.jackson.databind.node.JsonNodeType.OBJECT
+import com.fasterxml.jackson.databind.node.JsonNodeType
 import com.fasterxml.jackson.databind.node.MissingNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node.ValueNode
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
+import com.ritense.authorization.AuthorizationContext
 import com.ritense.document.domain.Document
 import com.ritense.document.service.DocumentService
 import com.ritense.valtimo.contract.json.MapperSingleton
@@ -19,11 +33,13 @@ import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperDefinition
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTransformation
 import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperCommandException
 import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperMappingException
-import com.ritense.valtimoplugins.valuemapper.service.ValueMapperDefinitionService
+import com.ritense.valtimoplugins.valuemapper.service.ValueMapperTemplateService
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.stereotype.Service
 
+@Service
 open class ValueMapper(
-    private val valueMapperDefinitionService: ValueMapperDefinitionService,
+    private val templateService: ValueMapperTemplateService,
     private val documentService: DocumentService
 ) {
 
@@ -42,7 +58,7 @@ open class ValueMapper(
         mapperDefinitionId: String,
         businessKey: String
     ) {
-        val mapperDefinition = requireNotNull(getMapperDefinitions()[mapperDefinitionId])
+        val mapperDefinition = requireNotNull(templateService.getDefinition(mapperDefinitionId))
         { "No Mapper Definitions found with id $mapperDefinitionId" }
 
         documentService
@@ -67,7 +83,7 @@ open class ValueMapper(
         definitionId: String,
         inputObject: Map<String, Any>
     ): Any {
-        val mapperDefinition = requireNotNull(getMapperDefinitions()[definitionId])
+        val mapperDefinition = requireNotNull(templateService.getDefinition(definitionId))
         { "No Mapper Definitions found with id $definitionId" }
         val inputNode: ObjectNode = mapper.convertValue(inputObject)
 
@@ -85,7 +101,12 @@ open class ValueMapper(
         val mappingResult = inputNode.applyMapperDefinition(mapperDefinition)
 
         if (!mappingResult.isEmpty) {
-            runWithoutAuthorization { documentService.modifyDocument(this, mappingResult) }
+            AuthorizationContext.Companion.runWithoutAuthorization {
+                documentService.modifyDocument(
+                    this,
+                    mappingResult
+                )
+            }
         }
     }
 
@@ -308,21 +329,21 @@ open class ValueMapper(
             secondToLastNode = currentNode
             val nextKey = pathIterator.next()
             val nextNode: JsonNode = when (secondToLastNode.nodeType) {
-                ARRAY -> secondToLastNode.get(
+                JsonNodeType.ARRAY -> secondToLastNode.get(
                     nextKey.replace(ARRAY_DELIMITER_PARTS_MATCHER, "").toInt()
                 )
 
-                OBJECT -> secondToLastNode.get(nextKey)
+                JsonNodeType.OBJECT -> secondToLastNode.get(nextKey)
                 else -> throw ValueMapperMappingException(
                     "Node before \"$nextKey\" was not a ContainerNode in structure \"$targetPath\". " +
-                        "This could be due to multiple commands transformed values of incompatible types " +
-                        "into same structure."
+                            "This could be due to multiple commands transformed values of incompatible types " +
+                            "into same structure."
                 )
             } ?: mapper.missingNode()
 
             currentNode = when (currentNode) {
                 is ArrayNode -> when (nextNode.nodeType) {
-                    MISSING -> when (pathIterator.hasNext()) {
+                    JsonNodeType.MISSING -> when (pathIterator.hasNext()) {
                         true -> {
                             val nextOfNext = pathIterator.next()
                             pathIterator.previous()
@@ -340,7 +361,7 @@ open class ValueMapper(
                         false -> currentNode
                     }
 
-                    OBJECT, ARRAY -> nextNode
+                    JsonNodeType.OBJECT, JsonNodeType.ARRAY -> nextNode
 
                     else -> currentNode
                         .add(nextNode)
@@ -348,7 +369,7 @@ open class ValueMapper(
                 }
 
                 is ObjectNode -> when (nextNode.nodeType) {
-                    MISSING -> when (pathIterator.hasNext()) {
+                    JsonNodeType.MISSING -> when (pathIterator.hasNext()) {
                         false -> currentNode.putObject(nextKey)
                         true -> {
                             val nextOfNext = pathIterator.next()
@@ -360,7 +381,7 @@ open class ValueMapper(
                         }
                     }
 
-                    OBJECT, ARRAY -> nextNode
+                    JsonNodeType.OBJECT, JsonNodeType.ARRAY -> nextNode
 
                     else -> currentNode.replace(nextKey, nextNode)
                 }
@@ -374,13 +395,12 @@ open class ValueMapper(
             is ObjectNode -> secondToLastNode.replace(pathSteps.last(), targetValue)
             else -> throw ValueMapperMappingException(
                 "Can not add item/property to node of type ${secondToLastNode.nodeType}. " +
-                    "Make sure that your (transformed) value is compatible with the target structure."
+                        "Make sure that your (transformed) value is compatible with the target structure."
             )
         }
 
     }
 
-    private fun getMapperDefinitions(): Map<String, ValueMapperDefinition> = valueMapperDefinitionService.getDefinitions()
 
     companion object {
         const val JSON_POINTER_ARRAY_DELIMITER = "[]"

@@ -21,7 +21,6 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginCategory
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
-import com.ritense.valtimoplugins.valuemapper.ValueMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 
@@ -60,7 +59,6 @@ open class ValueMapperPlugin(
 
     companion object {
         private val logger = KotlinLogging.logger { }
-        const val VALUE_MAPPER_DEFINITION_SUFFIX = ".valuemapping.json"
     }
 
 }

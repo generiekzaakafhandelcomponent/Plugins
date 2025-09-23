@@ -5,14 +5,32 @@ import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperDefinition
 import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperDefinitionLoadingException
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.transaction.Transactional
+import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.context.event.EventListener
+import org.springframework.core.annotation.Order
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.core.io.support.ResourcePatternUtils
+import org.springframework.stereotype.Service
 import java.io.IOException
 
+@Transactional
+@Service
 class ValueMapperLoadingService(
-    private val resourceLoader: ResourceLoader
+    private val resourceLoader: ResourceLoader,
+    private val valueMapperTemplateService: ValueMapperTemplateService
 ) {
+
+    @Order(-1)
+    @EventListener(ApplicationReadyEvent::class)
+    fun importValueMappers() {
+        logger.info { "Importing all ValueMappers from $PATH}" }
+        loadResources().forEach { resource ->
+            valueMapperTemplateService.saveUpdate(resource.getId(), String(resource.contentAsByteArray))
+        }
+    }
 
     fun loadDefinitions(): Map<String, ValueMapperDefinition> {
         logger.info { "Loading all Value Mapper definitions from $PATH" }
@@ -37,6 +55,15 @@ class ValueMapperLoadingService(
         }
     }
 
+    @Cacheable(value = [VM_TEMPLATE_EXISTS_CACHE_NAME], key = "{ #key}")
+    fun resourceExists(
+        key: String
+    ): Boolean {
+        return loadResources().any { resource ->
+            resource.getId() == key
+        }
+    }
+
     private fun Resource.getId(): String {
         return this
             .filename
@@ -58,5 +85,6 @@ class ValueMapperLoadingService(
         private val mapper = MapperSingleton.get()
         const val VALUE_MAPPER_DEFINITION_SUFFIX = ".valuemapping.json"
         const val PATH = "classpath*:**/*.valuemapping.json"
+        private const val VM_TEMPLATE_EXISTS_CACHE_NAME = "VM_template.exists"
     }
 }

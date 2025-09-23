@@ -29,6 +29,7 @@ dependencies {
     implementation("com.ritense.valtimo:exporter")
     implementation("com.ritense.valtimo:importer")
     implementation("com.ritense.valtimo:plugin-valtimo")
+    implementation("com.ritense.valtimo:web")
     implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")

@@ -1,4 +1,20 @@
-package com.ritense.valtimoplugins.valuemapper
+/*
+ *  Copyright 2015-2025 Ritense BV, the Netherlands.
+ *
+ *  Licensed under EUPL, Version 1.2 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" basis,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+package com.ritense.valtimoplugins.valuemapper.domain
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -7,12 +23,10 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.ritense.document.domain.Document
 import com.ritense.document.service.DocumentService
-import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperDefinition
 import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperCommandException
-
-import com.ritense.valtimoplugins.valuemapper.service.ValueMapperDefinitionService
-
-import org.junit.jupiter.api.Assertions.assertNull
+import com.ritense.valtimoplugins.valuemapper.plugin.ValueMapper
+import com.ritense.valtimoplugins.valuemapper.service.ValueMapperTemplateService
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -22,6 +36,7 @@ import org.mockito.Answers
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -34,7 +49,7 @@ class ValueMapperTest {
     lateinit var documentService: DocumentService
 
     @Mock
-    lateinit var valueMapperDefinitionService: ValueMapperDefinitionService
+    lateinit var templateService: ValueMapperTemplateService
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     lateinit var document: Document
@@ -43,17 +58,19 @@ class ValueMapperTest {
 
     @BeforeEach
     fun setUp() {
-        valueMapper = ValueMapper(valueMapperDefinitionService, documentService)
+        valueMapper = ValueMapper(templateService, documentService)
     }
 
     @Test
     fun `should skip commands with no value at pointer`() {
+        val def = "no-value-no-default"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject("no-value-no-default", emptyMap())
+            valueMapper.applyToObject(def, emptyMap())
         )
 
         // then
@@ -62,12 +79,14 @@ class ValueMapperTest {
 
     @Test
     fun `should apply default when no transformation is found for given value`() {
+        val def = "test-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject("test-v1", mapOf("persoonsgegevens" to mapOf("voornamen" to "Anna")))
+            valueMapper.applyToObject(def, mapOf("persoonsgegevens" to mapOf("voornamen" to "Anna")))
         )
 
         // then
@@ -76,10 +95,12 @@ class ValueMapperTest {
 
     @Test
     fun `should not modify document if no commands were applied`() {
+        val def = "no-value-no-default"
+
         // given
         whenever(documentService.get(any())).thenReturn(document)
         whenever(document.content().asJson()).thenReturn(mapper.createObjectNode())
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
 
         // then
         assertDoesNotThrow {
@@ -90,8 +111,10 @@ class ValueMapperTest {
 
     @Test
     fun `should return unmodified object if no commands were applied`() {
+        val def = "no-value-no-default"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
         val inputObject = mapOf(
             "adres" to mapOf(
                 "plaats" to "Amsterdam"
@@ -112,13 +135,15 @@ class ValueMapperTest {
     @Test
     fun `should map (by adding) array to new target in command order`() {
 
+        val def = "test-array-moving-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(def)).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
             valueMapper.applyToObject(
-                "test-array-moving-v1",
+                def,
                 mapOf(
                     "mijn-kinderen" to listOf(
                         mapOf("voornaam" to "Jan"),
@@ -142,13 +167,15 @@ class ValueMapperTest {
 
     @Test
     fun `should transform and add simple value arrays to new target in command order`() {
+        val def = "test-array-transform-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(def)).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
             valueMapper.applyToObject(
-                "test-array-transform-v1",
+                def,
                 mapOf(
                     "selected-aanvraag-types" to listOf(
                         "NORM",
@@ -168,13 +195,15 @@ class ValueMapperTest {
 
     @Test
     fun `should skip array items that don't hit any transformation criteria`() {
+        val def = "test-array-transform-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
             valueMapper.applyToObject(
-                "test-array-transform-v1",
+                def,
                 mapOf(
                     "selected-aanvraag-types" to listOf(
                         3,
@@ -188,19 +217,21 @@ class ValueMapperTest {
         assert(mappingResult.at("/aanvraagTypes").size() == 1)
         assertEquals(mappingResult.at("/aanvraagTypes/0/code").textValue(), "NORMAL")
         assertEquals(mappingResult.at("/aanvraagTypes/0/value").textValue(), "This is a normal request")
-        assertNull(mappingResult.at("/aanvraagTypes/1/code").textValue())
-        assertNull(mappingResult.at("/aanvraagTypes/1/value").textValue())
+        Assertions.assertNull(mappingResult.at("/aanvraagTypes/1/code").textValue())
+        Assertions.assertNull(mappingResult.at("/aanvraagTypes/1/value").textValue())
     }
 
     @Test
     fun `should apply default to array items that don't hit any transformation criteria`() {
+
+        val def = "test-array-transform-v2"
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
             valueMapper.applyToObject(
-                "test-array-transform-v2",
+                def,
                 mapOf(
                     "selected-aanvraag-types" to listOf(
                         3,
@@ -220,13 +251,15 @@ class ValueMapperTest {
 
     @Test
     fun `should not fail`() {
+        val def = "test-array-transform-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
             valueMapper.applyToObject(
-                "test-array-transform-v1",
+                def,
                 mapOf(
                     "selected-aanvraag-types" to listOf(
                         "NORM",
@@ -248,8 +281,10 @@ class ValueMapperTest {
 
     @Test
     fun `should create empty array`() {
+        val def = "test-array-simple-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
@@ -270,8 +305,10 @@ class ValueMapperTest {
 
     @Test
     fun `should transform values from complex pointer to complex pointer`() {
+        val def ="test-array-complex-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(def)).thenReturn(testDefinitions[def])
 
         // when
         val inputObject = mapOf(
@@ -324,8 +361,10 @@ class ValueMapperTest {
 
     @Test
     fun `should error on invalid complex command`() {
+        val def = "test-invalid-complex-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
         val inputObject = emptyMap<String, Any>()
@@ -342,8 +381,10 @@ class ValueMapperTest {
 
     @Test
     fun `should skip complex command when no value and no default`() {
+        val def = "test-empty-value-complex-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
         val inputObject = emptyMap<String, Any>()
@@ -366,15 +407,18 @@ class ValueMapperTest {
         assertThrows<IllegalArgumentException> {
             valueMapper.applyToDocument(
                 "non-existing-v1",
-                document.id().toString())
+                document.id().toString()
+            )
         }
     }
 
     @Test
     fun `should fail when targetPointer points to root node`() {
+        val def = "test-invalid-pointer"
+
         // given
         whenever(documentService.get(any())).thenReturn(document)
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
         whenever(document.content().asJson()).thenReturn(
             mapper.convertValue(
                 mapOf("persoonsgegevens" to mapOf("voornaam" to "Kees"))
@@ -385,14 +429,17 @@ class ValueMapperTest {
         assertThrows<ValueMapperCommandException> {
             valueMapper.applyToDocument(
                 "test-invalid-pointer",
-                document.id().toString())
+                document.id().toString()
+            )
         }
     }
 
     @Test
     fun `should convert string to int and vice versa during mapping`() {
+        val def = "test-convert-types-valid-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
         val mappingResult: ObjectNode = mapper.convertValue(
@@ -424,8 +471,10 @@ class ValueMapperTest {
 
     @Test
     fun `should fail converting numeric string to boolean during mapping`() {
+        val def = "test-convert-type-invalid-v1"
+
         // given
-        whenever(valueMapperDefinitionService.getDefinitions()).thenReturn(testDefinitions)
+        whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
         assertThrows<ValueMapperCommandException> {

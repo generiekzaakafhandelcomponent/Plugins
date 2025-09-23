@@ -14,19 +14,7 @@
  *  limitations under the License.
  */
 
-package com.ritense.valtimoplugins.valuemapper.plugin
+package com.ritense.valtimoplugins.valuemapper.web
 
-import com.ritense.plugin.PluginFactory
-import com.ritense.plugin.service.PluginService
-import com.ritense.valtimoplugins.valuemapper.plugin.ValueMapper
+data class TemplateListItemResponse(val key: String, val readOnly: Boolean)
 
-
-open class ValueMapperPluginFactory(
-    pluginService: PluginService,
-    val valueMapper: ValueMapper
-): PluginFactory<ValueMapperPlugin>(pluginService) {
-
-    override fun create(): ValueMapperPlugin {
-        return ValueMapperPlugin(valueMapper)
-    }
-}
