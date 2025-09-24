@@ -31,16 +31,6 @@ import org.springframework.context.annotation.Bean
 class DocumentSearchAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(DocumentSearchPluginService::class)
-    fun documentSearchPluginService(
-        documentSearchService: DocumentSearchService,
-    ): DocumentSearchPluginService {
-        return DocumentSearchPluginService(
-            documentSearchService
-        )
-    }
-
-    @Bean
     @ConditionalOnMissingBean(DocumentSearchPluginFactory::class)
     fun documentSearchPluginFactory(
         pluginService: PluginService,
@@ -51,6 +41,16 @@ class DocumentSearchAutoConfiguration {
             pluginService,
             documentService,
             documentSearchPluginService,
+        )
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(DocumentSearchPluginService::class)
+    fun documentSearchPluginService(
+        documentSearchService: DocumentSearchService,
+    ): DocumentSearchPluginService {
+        return DocumentSearchPluginService(
+            documentSearchService
         )
     }
 }

@@ -13,8 +13,17 @@
     "processLinkType": "plugin",
     "actionProperties": {
       "documentPath": "/bsn",
-      "searchedValue": "pv:bsn",
+      "searchedValue": "doc:bsn",
       "resultProcessVariableName": "result"
     }
+  },
+  {
+    "activityId": "DataPreviewTask",
+    "activityType": "bpmn:UserTask:create",
+    "formDefinitionName": "document-search.document-id-preview",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "processLinkType": "form"
   }
 ]
