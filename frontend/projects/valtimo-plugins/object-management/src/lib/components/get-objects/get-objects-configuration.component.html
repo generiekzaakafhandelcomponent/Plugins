@@ -22,14 +22,27 @@
         } as obs"
 >
     <v-input
-            name="objectManagementConfigurationTitle"
-            [title]="'objectManagementConfigurationTitle' | pluginTranslate: pluginId | async"
+            name="objectManagementConfigurationId"
+            [title]="'objectManagementConfigurationId' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.objectManagementConfigurationTitle"
+            [defaultValue]="obs.prefill?.objectManagementConfigurationId"
             [disabled]="obs.disabled"
             [required]="true"
-            [tooltip]="'objectManagementConfigurationTitleTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'objectManagementConfigurationIdTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
+    <valtimo-carbon-multi-input
+            name="filterParameter"
+            [title]="'filterParameter' | pluginTranslate: pluginId | async"
+            type="keyValue"
+            [disabled]="obs.disabled"
+            [defaultValues]="obs.prefill?.filterParameter"
+            [margin]="true"
+            [required]="false"
+            [tooltip]="'filterParameterTooltip' | pluginTranslate: pluginId | async"
+            [minimumAmountOfRows]="0"
+            [maxRows]="1"
+            [initialAmountOfRows]="1"
+    ></valtimo-carbon-multi-input>
     <v-input
             name="listOfObjectProcessVariableName"
             [title]="'listOfObjectProcessVariableName' | pluginTranslate: pluginId | async"
