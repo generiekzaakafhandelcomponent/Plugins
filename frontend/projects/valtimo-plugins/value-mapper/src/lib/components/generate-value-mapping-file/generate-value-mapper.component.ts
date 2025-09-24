@@ -17,27 +17,27 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap, take, tap} from 'rxjs';
-import {GenerateTextFileConfig} from '../../models';
 import {FunctionConfigurationData} from '@valtimo/plugin/lib/models/plugin';
 import {ModalService, SelectItem} from '@valtimo/components';
 import {DocumentService} from '@valtimo/document';
-import {FreemarkerTemplateManagementService} from '../../../../services';
+import {ValueMapperService} from "../../service/value-mapper.service";
+import {GenerateValueMapperConfig} from "../../models";
 
 @Component({
-    selector: 'valtimo-generate-text-file-configuration',
-    templateUrl: './generate-text-file.component.html',
+    selector: 'valtimo-generate-value-mapper-configuration',
+    templateUrl: './generate-value-mapper.component.html',
 })
-export class GenerateTextFileComponent
+export class GenerateValueMapperComponent
     implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$!: Observable<void>;
     @Input() disabled$!: Observable<boolean>;
     @Input() pluginId!: string;
-    @Input() prefillConfiguration$!: Observable<GenerateTextFileConfig>;
+    @Input() prefillConfiguration$!: Observable<GenerateValueMapperConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<GenerateTextFileConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<GenerateValueMapperConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     readonly loading$ = new BehaviorSubject<boolean>(true);
@@ -51,11 +51,7 @@ export class GenerateTextFileComponent
         switchMap(processDocumentDefinitions =>
             combineLatest([
                 of({content: []}),
-                ...processDocumentDefinitions.map(processDocumentDefinition =>
-                    this.templateService.getAllTextTemplates(
-                        processDocumentDefinition.id.documentDefinitionId.name
-                    )
-                ),
+                    this.valueMapperService.getValueMapperDefinitions(),
             ])
         ),
         map(results => {
@@ -74,7 +70,7 @@ export class GenerateTextFileComponent
     constructor(
         private readonly modalService: ModalService,
         private readonly documentService: DocumentService,
-        private readonly templateService: FreemarkerTemplateManagementService
+        private readonly valueMapperService: ValueMapperService
     ) {
     }
 
@@ -86,12 +82,12 @@ export class GenerateTextFileComponent
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: GenerateTextFileConfig): void {
+    formValueChange(formValue: GenerateValueMapperConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: GenerateTextFileConfig): void {
+    private handleValid(formValue: GenerateValueMapperConfig): void {
         const valid = !!(formValue.textTemplateKey && formValue.processVariableName);
 
         this.valid$.next(valid);

@@ -20,6 +20,7 @@ import {ROLE_ADMIN} from '@valtimo/config';
 import {AuthGuardService} from '@valtimo/security';
 import {ValueMapperEditorComponent} from "./components/value-mapper-editor/value-mapper-editor.component";
 
+
 const routes: Routes = [
   {
     path: 'dossier-management/dossier/:name/value-mapper/:key',

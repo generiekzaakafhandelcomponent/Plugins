@@ -30,7 +30,7 @@ import {
 import {ProcessMappingComponent} from "./components/process-mapping/process-mapping.component";
 import {ValueMapperListComponent} from "./components/value-mapper-list/value-mapper-list.component";
 import {ValueMapperManagementRoutingModule} from "./value-mapper-management-routing.module";
-import {ValueMapperEditorComponent} from "./components/valuemapper-editor/value-mapper-editor.component";
+import {ValueMapperEditorComponent} from "./components/value-mapper-editor/value-mapper-editor.component";
 
 @NgModule({
   declarations: [

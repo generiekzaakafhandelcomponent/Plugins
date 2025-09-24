@@ -24,4 +24,27 @@ interface ValueMapperListItem {
     readOnly: boolean;
 }
 
-export{ProcessMappingConfig, ValueMapperListItem}
+interface TemplateResponse {
+    id: string
+    key: string;
+    content: string;
+    readOnly: boolean;
+}
+
+interface ValueMapperTemplate {
+    key: string;
+    content: string;
+}
+
+interface UpdateValueMapperTemplate {
+    id: string
+    key: string;
+    content: string;
+}
+
+interface GenerateValueMapperConfig {
+    key: string;
+    processVariableName: string;
+}
+
+export{ProcessMappingConfig, ValueMapperListItem, TemplateResponse, ValueMapperTemplate, UpdateValueMapperTemplate, GenerateValueMapperConfig}

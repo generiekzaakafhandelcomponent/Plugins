@@ -15,9 +15,10 @@
  */
 
 import {Injectable} from "@angular/core";
-import {ConfigService} from "@valtimo/config";
+import {ConfigService, Page} from "@valtimo/config";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {TemplateResponse, UpdateValueMapperTemplate, ValueMapperListItem, ValueMapperTemplate} from "../models";
 
 @Injectable({
     providedIn: 'root',
@@ -29,10 +30,47 @@ export class ValueMapperService {
         private readonly configService: ConfigService,
         private readonly http: HttpClient
     ) {
-        this.valtimoEndpointUri = `${this.configService.config.valtimoApi.endpointUri}management/`;
+        this.valtimoEndpointUri = `${this.configService.config.valtimoApi.endpointUri}management/v1/value-mapper/`;
     }
 
     getValueMapperDefinitionsIds():Observable<string[]> {
-        return this.http.get<Array<string>>(this.valtimoEndpointUri.concat('v1/value-mapper/definitions'))
+        return this.http.get<Array<string>>(this.valtimoEndpointUri.concat('definitions'))
+    }
+
+    public getValueMapperDefinitions(
+        page?: number,
+        pageSize?: number,
+    ): Observable<Page<ValueMapperListItem>> {
+        const params = {
+            page,
+            size: pageSize
+        };
+        Object.keys(params).forEach(key => {
+            if (params[key] == undefined) {
+                delete params[key];
+            }
+        });
+        return this.http.get<Page<ValueMapperListItem>>(
+            `${this.valtimoEndpointUri}definitionsPage`,
+            {params}
+        );
+    }
+
+    public getValueMapper(key: string): Observable<TemplateResponse> {
+        return this.http.get<TemplateResponse>(
+            `${this.valtimoEndpointUri}definitions/${key}`
+        );
+    }
+
+    public addValueMapper(template: ValueMapperTemplate): Observable<TemplateResponse> {
+        return this.http.post<TemplateResponse>(`${this.valtimoEndpointUri}definitions`, template);
+    }
+
+    public deleteValueMapper(key: string): Observable<null> {
+        return this.http.delete<null>(`${this.valtimoEndpointUri}definitions/${key}`);
+    }
+
+    public updateValueMapper(key: string, template: UpdateValueMapperTemplate): Observable<TemplateResponse> {
+        return this.http.put<TemplateResponse>(`${this.valtimoEndpointUri}definitions/${key}`, template);
     }
 }

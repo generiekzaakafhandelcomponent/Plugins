@@ -20,8 +20,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService, EditorModel, PageTitleService} from '@valtimo/components';
 import {NotificationService} from 'carbon-components-angular';
 import {TranslateService} from '@ngx-translate/core';
-import {TemplateResponse} from '../../../../models';
 import {ValueMapperService} from "../../service/value-mapper.service";
+import {TemplateResponse} from "../../models";
 
 @Component({
     templateUrl: './valuemapper-editor.component.html',
@@ -87,10 +87,12 @@ export class ValueMapperEditorComponent implements OnInit, AfterViewInit, OnDest
         this.disableSave();
         this.disableMore();
 
-        combineLatest([this.updatedModelValue$, this._caseDefinitionName$, this.templateKey$]).pipe(
+        combineLatest([this.updatedModelValue$, this.templateKey$]).pipe(
             switchMap(([updatedModelValue, templateKey]) =>
-                this.valueMapperService.updateTemplate(
+                this.valueMapperService.updateValueMapper(
+                    templateKey,
                     {
+                        id: "id",
                         key: templateKey,
                         content: updatedModelValue,
                     }
@@ -119,11 +121,11 @@ export class ValueMapperEditorComponent implements OnInit, AfterViewInit, OnDest
         this.disableSave();
         this.disableMore();
 
-        this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-            this.templateService.deleteTemplates({caseDefinitionName, type: 'text', templates}).pipe(take(1)).subscribe(_ =>
-                this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
-            )
-        );
+        // this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
+        //     this.valueMapperService.deleteTemplates({caseDefinitionName, type: 'text', templates}).pipe(take(1)).subscribe(_ =>
+        //         this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
+        //     )
+        // );
     }
 
     public showDeleteModal(): void {
@@ -133,9 +135,9 @@ export class ValueMapperEditorComponent implements OnInit, AfterViewInit, OnDest
     private loadTemplate(): void {
         combineLatest([this._caseDefinitionName$, this.templateKey$]).pipe(
             tap(([_, key]) => {
-                this.pageTitleService.setCustomPageTitle(`Text Template: ${key}`, true);
+                this.pageTitleService.setCustomPageTitle(`Value Mapper: ${key}`, true);
             }),
-            switchMap(([caseDefinitionName, key]) => this.templateService.getTextTemplate(caseDefinitionName, key)),
+            switchMap(([caseDefinitionName, key]) => this.valueMapperService.getValueMapper(key)),
             take(1),
         ).subscribe(result => {
             this.enableMore();
