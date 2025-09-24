@@ -31,13 +31,15 @@ import {ProcessMappingComponent} from "./components/process-mapping/process-mapp
 import {ValueMapperListComponent} from "./components/value-mapper-list/value-mapper-list.component";
 import {ValueMapperManagementRoutingModule} from "./value-mapper-management-routing.module";
 import {ValueMapperEditorComponent} from "./components/value-mapper-editor/value-mapper-editor.component";
+import {GenerateValueMapperComponent} from "./components/generate-value-mapping-file/generate-value-mapper.component";
 
 @NgModule({
   declarations: [
     ValueMapperConfigurationComponent,
       ProcessMappingComponent,
       ValueMapperListComponent,
-      ValueMapperEditorComponent
+      ValueMapperEditorComponent,
+      GenerateValueMapperComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,8 @@ import {ValueMapperEditorComponent} from "./components/value-mapper-editor/value
     ValueMapperConfigurationComponent,
       ProcessMappingComponent,
       ValueMapperListComponent,
-      ValueMapperEditorComponent
+      ValueMapperEditorComponent,
+      GenerateValueMapperComponent
   ],
 })
 export class ValueMapperPluginModule {}

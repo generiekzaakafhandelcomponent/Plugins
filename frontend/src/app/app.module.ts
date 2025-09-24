@@ -106,8 +106,8 @@ import {DashboardManagementModule} from "@valtimo/dashboard-management";
 import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
 import {
     valueMapperPluginSpecification
-} from "../../projects/valtimo-plugins/value-mapper/src/lib/valuemapper-plugin.specification";
-import {ValueMapperPluginModule} from "../../projects/valtimo-plugins/value-mapper/src/lib/valuemapper-plugin-module";
+} from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin.specification";
+import {ValueMapperPluginModule} from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin-module";
 
 export function tabsFactory() {
   return new Map<string, object>([

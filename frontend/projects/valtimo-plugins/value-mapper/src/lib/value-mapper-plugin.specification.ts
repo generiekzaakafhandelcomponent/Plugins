@@ -21,7 +21,7 @@ import {PluginSpecification} from '@valtimo/plugin';
 import {VALUEMAPPER_PLUGIN_LOGO_BASE64} from './assets';
 import {
     ValueMapperConfigurationComponent
-} from "./components/value-mapper-configuration/valuemapper-configuration.component";
+} from "./components/value-mapper-configuration/value-mapper-configuration.component";
 import {ProcessMappingComponent} from "./components/process-mapping/process-mapping.component";
 
 const valueMapperPluginSpecification: PluginSpecification = {

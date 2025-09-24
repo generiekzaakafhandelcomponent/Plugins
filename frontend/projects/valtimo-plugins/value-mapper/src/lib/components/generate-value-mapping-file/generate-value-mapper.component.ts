@@ -88,7 +88,7 @@ export class GenerateValueMapperComponent
     }
 
     private handleValid(formValue: GenerateValueMapperConfig): void {
-        const valid = !!(formValue.textTemplateKey && formValue.processVariableName);
+        const valid = !!(formValue.key );
 
         this.valid$.next(valid);
         this.valid.emit(valid);

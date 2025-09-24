@@ -21,7 +21,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {ProcessMappingConfig} from "../../models";
-import {ValueMapperService} from "../../service/valuemapper.service";
+import {ValueMapperService} from "../../service/value-mapper.service";
 
 @Component({
     selector: 'valtimo-process-mapping',
