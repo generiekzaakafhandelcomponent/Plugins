@@ -22,18 +22,19 @@ import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimo.contract.authentication.UserManagementService
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
-import com.ritense.valtimo.security.jwt.authentication.TokenAuthenticationService
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.plugin.XentialPluginFactory
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.ritense.valtimoplugins.xential.security.config.XentialApiHttpSecurityConfigurer
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
 import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
+import com.ritense.valtimoplugins.xential.service.XentialDocumentHelper
 import com.ritense.valtimoplugins.xential.service.XentialSjablonenService
 import com.ritense.valtimoplugins.xential.service.XentialUserIdHelper
 import com.ritense.valtimoplugins.xential.web.rest.DocumentResource
 import com.ritense.valtimoplugins.xential.web.rest.XentialSjablonenResource
 import com.ritense.valueresolver.ValueResolverService
+import com.ritense.zakenapi.service.ZaakDocumentService
 import org.camunda.bpm.engine.RuntimeService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -52,7 +53,6 @@ class XentialAutoConfiguration {
         pluginService: PluginService,
         esbClient: OpentunnelEsbClient,
         documentGenerationService: DocumentGenerationService,
-        tokenAuthenticationService: TokenAuthenticationService,
         valueResolverService: ValueResolverService,
         xentialSjablonenService: XentialSjablonenService,
     ) = XentialPluginFactory(
@@ -94,6 +94,13 @@ class XentialAutoConfiguration {
         temporaryResourceStorageService,
         runtimeService,
     )
+
+    @Bean
+    @ProcessBean
+    fun xentialDocumentHelper(zaakDocumentService: ZaakDocumentService) =
+        XentialDocumentHelper(
+            zaakDocumentService
+        )
 
     @Bean
     @ProcessBean

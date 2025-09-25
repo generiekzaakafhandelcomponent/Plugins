@@ -1,0 +1,8 @@
+{
+  "$id" : "suwinet-brongegevens.schema",
+  "type" : "object",
+  "title" : "Suwinet brongegevens",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "properties" : {},
+  "additionalProperties" : true
+}

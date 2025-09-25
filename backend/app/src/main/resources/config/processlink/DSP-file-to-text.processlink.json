@@ -1,0 +1,25 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "DSP-SaveFile",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "Activity_0xhu8q5",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "769c69de-eb8e-4ee6-8fc8-d3210f8190f3",
+    "pluginActionDefinitionKey": "file-to-text",
+    "actionProperties": {
+      "filePV": "file",
+      "pages": 1,
+      "includeImageBase64": null,
+      "resultPV": "result"
+    },
+    "processLinkType": "plugin"
+  }
+]

@@ -127,6 +127,14 @@
           "defaultValue": "Leges voor vergunning"
         },
         {
+          "label": "Grootboek",
+          "key": "pv:grootboek",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "100"
+        },
+        {
           "label": "Boekjaar",
           "key": "pv:boekjaar",
           "type": "textfield",

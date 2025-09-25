@@ -78,6 +78,112 @@
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
+            controlName="factuurKenmerk"
+            title="verkoopfactuur.factuurKenmerk"
+            tooltip="verkoopfactuur.factuurKenmerk.tooltip"
+            [required]="false"
+        ></app-input-field>
+
+        <app-select-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
+            controlName="factuurAdresType"
+            title="verkoopfactuur.factuurAdresType"
+            tooltip="verkoopfactuur.factuurAdresType.tooltip"
+            placeholder="verkoopfactuur.factuurAdresType.placeholder"
+            [required]="true"
+            [items]="adresTypeItems"
+        ></app-select-field>
+
+        <ng-template [ngIf]="factuurAdresType.value == AdresType.LOCATIE || factuurAdresType.value == AdresType.POSTBUS">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresNaamContactpersoon"
+                title="verkoopfactuur.factuurAdresNaamContactpersoon"
+                tooltip="verkoopfactuur.factuurAdresNaamContactpersoon.tooltip"
+            ></app-input-field>
+
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresVestigingsnummerRotterdam"
+                title="verkoopfactuur.factuurAdresVestigingsnummerRotterdam"
+                tooltip="verkoopfactuur.factuurAdresVestigingsnummerRotterdam.tooltip"
+            ></app-input-field>
+        </ng-template>
+
+        <ng-template [ngIf]="factuurAdresType.value == AdresType.LOCATIE">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresStraatnaam"
+                title="verkoopfactuur.factuurAdresStraatnaam"
+                tooltip="verkoopfactuur.factuurAdresStraatnaam.tooltip"
+                [required]="true"
+            ></app-input-field>
+
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresHuisnummer"
+                title="verkoopfactuur.factuurAdresHuisnummer"
+                tooltip="verkoopfactuur.factuurAdresHuisnummer.tooltip"
+                [required]="true"
+            ></app-input-field>
+
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresHuisnummertoevoeging"
+                title="verkoopfactuur.factuurAdresHuisnummertoevoeging"
+                tooltip="verkoopfactuur.factuurAdresHuisnummertoevoeging.tooltip"
+            ></app-input-field>
+        </ng-template>
+
+        <ng-template [ngIf]="factuurAdresType.value == AdresType.POSTBUS">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresPostbus"
+                title="verkoopfactuur.factuurAdresPostbus"
+                tooltip="verkoopfactuur.factuurAdresPostbus.tooltip"
+                [required]="true"
+            ></app-input-field>
+        </ng-template>
+
+        <ng-template [ngIf]="factuurAdresType.value == AdresType.LOCATIE || factuurAdresType.value == AdresType.POSTBUS">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresPostcode"
+                title="verkoopfactuur.factuurAdresPostcode"
+                tooltip="verkoopfactuur.factuurAdresPostcode.tooltip"
+                [required]="true"
+            ></app-input-field>
+
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresPlaatsnaam"
+                title="verkoopfactuur.factuurAdresPlaatsnaam"
+                tooltip="verkoopfactuur.factuurAdresPlaatsnaam.tooltip"
+                [required]="true"
+            ></app-input-field>
+
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="factuurAdresLandcode"
+                title="verkoopfactuur.factuurAdresLandcode"
+                tooltip="verkoopfactuur.factuurAdresLandcode.tooltip"
+                [required]="true"
+            ></app-input-field>
+        </ng-template>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
             controlName="inkoopOrderReferentie"
             title="verkoopfactuur.inkoopOrderReferentie"
             tooltip="verkoopfactuur.inkoopOrderReferentie.tooltip"
@@ -99,6 +205,15 @@
             <app-input-field
                 [pluginId]="pluginId"
                 [formGroup]="pluginActionForm"
+                controlName="natuurlijkPersoonBsn"
+                title="verkoopfactuur.natuurlijkPersoonBsn"
+                tooltip="verkoopfactuur.natuurlijkPersoonBsn.tooltip"
+                [required]="true"
+            ></app-input-field>
+
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
                 controlName="natuurlijkPersoonAchternaam"
                 title="verkoopfactuur.natuurlijkPersoonAchternaam"
                 tooltip="verkoopfactuur.natuurlijkPersoonAchternaam.tooltip"
@@ -116,6 +231,24 @@
         </ng-template>
 
         <ng-template [ngIf]="relatieType.value == RelatieType.NIET_NATUURLIJK_PERSOON">
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="nietNatuurlijkPersoonKvkNummer"
+                title="verkoopfactuur.nietNatuurlijkPersoonKvkNummer"
+                tooltip="verkoopfactuur.nietNatuurlijkPersoonKvkNummer.tooltip"
+                [required]="true"
+            ></app-input-field>
+
+            <app-input-field
+                [pluginId]="pluginId"
+                [formGroup]="pluginActionForm"
+                controlName="nietNatuurlijkPersoonKvkVestigingsnummer"
+                title="verkoopfactuur.nietNatuurlijkPersoonKvkVestigingsnummer"
+                tooltip="verkoopfactuur.nietNatuurlijkPersoonKvkVestigingsnummer.tooltip"
+                [required]="true"
+            ></app-input-field>
+
             <app-input-field
                 [pluginId]="pluginId"
                 [formGroup]="pluginActionForm"
@@ -184,12 +317,12 @@
                         ></app-input-field>
 
                         <app-input-field
-                                [pluginId]="pluginId"
-                                [formGroup]="line"
-                                controlName="bronSleutel"
-                                wrapperClass="line-field-wrapper"
-                                title="verkoopfactuur.regel.bronSleutel"
-                                [required]="false"
+                            [pluginId]="pluginId"
+                            [formGroup]="line"
+                            controlName="bronSleutel"
+                            wrapperClass="line-field-wrapper"
+                            title="verkoopfactuur.regel.bronSleutel"
+                            [required]="false"
                         ></app-input-field>
 
                         <app-input-field

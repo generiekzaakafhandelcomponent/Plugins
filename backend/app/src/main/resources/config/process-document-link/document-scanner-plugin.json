@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "DSP-file-to-text",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

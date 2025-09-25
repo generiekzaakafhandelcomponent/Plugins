@@ -1,0 +1,39 @@
+{
+  "voornamen" : "Catharina jong en woont thuis",
+  "voorvoegsel" : "de",
+  "achternaam" : "Jansen",
+  "geboortedatum" : "2013-10-07",
+  "bsn" : "243000157",
+  "adresBrp" : {
+    "straatnaam" : "Zomerdijkstraat",
+    "huisnummer" : 19,
+    "huisletter" : "C",
+    "huisnummertoevoeging" : "Huis",
+    "postcode" : "1079WZ",
+    "woonplaatsnaam" : "Amsterdam",
+    "aanduidingBijHuisnummer" : "",
+    "locatieomschrijving" : ""
+  },
+  "postadresBrp" : {
+    "straatnaam" : "",
+    "huisnummer" : 0,
+    "huisletter" : "",
+    "huisnummertoevoeging" : "",
+    "postcode" : "",
+    "woonplaatsnaam" : "",
+    "aanduidingBijHuisnummer" : "",
+    "locatieomschrijving" : ""
+  },
+  "verblijfstitel" : {
+    "codeVerblijfstitel" : {
+      "code" : "41",
+      "name" : ""
+    },
+    "datumAanvangVerblijfstitel" : "2012-09-15",
+    "datumEindeVerblijfstitel" : "2024-09-15"
+  },
+  "nationaliteiten" : [ ],
+  "kinderenBsns" : [ ],
+  "partnerBsn" : "",
+  "datumOverlijden" : ""
+}

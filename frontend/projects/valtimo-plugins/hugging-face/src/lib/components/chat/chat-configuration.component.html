@@ -23,11 +23,29 @@
 >
     <v-input name="question"
              type="textarea"
+             class="textarea-input"
              [title]="'question' | pluginTranslate: pluginId | async"
              [margin]="true"
              [defaultValue]="obs.prefill?.question"
              [disabled]="obs.disabled"
              [required]="true"
+             [rows]="10"
              [tooltip]="'questionTooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
+    <v-input name="chatAnswerPV"
+             [title]="'chatAnswerPV' | pluginTranslate: pluginId | async"
+             [margin]="true"
+             [defaultValue]="obs.prefill?.chatAnswerPV"
+             [disabled]="obs.disabled"
+             [required]="true"
+             [tooltip]="'chatAnswerPVTooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
+    <v-input name="interpolatedQuestionPV"
+             [title]="'interpolatedQuestionPV' | pluginTranslate: pluginId | async"
+             [margin]="true"
+             [defaultValue]="obs.prefill?.interpolatedQuestionPV"
+             [disabled]="obs.disabled"
+             [required]="true"
+             [tooltip]="'interpolatedQuestionPVTooltip' | pluginTranslate: pluginId | async"
     ></v-input>
 </v-form>

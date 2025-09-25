@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - feature/github-actions-workflows
+      - v13
 
 jobs:
   # -------------------------------------------------------------

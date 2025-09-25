@@ -22,13 +22,12 @@ import {
     PluginTranslationService
 } from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {FactuurKlasse, RelatieType, VerkoopfactuurOpvoerenConfig} from '../../models';
+import {AdresType, FactuurKlasse, RelatieType, VerkoopfactuurOpvoerenConfig} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NGXLogger} from "ngx-logger";
 import {Toggle} from "carbon-components-angular";
 import {EnumUtilsService} from "../../service/enum-utils.service";
-import {FormField} from "@valtimo/components/lib/components/camunda/form/generated/formfield/formfield.model";
 
 @Component({
     selector: 'valtimo-rotterdam-oracle-ebs-verkoopfactuur-opvoeren',
@@ -48,6 +47,7 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     private readonly formValue$ = new BehaviorSubject<VerkoopfactuurOpvoerenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    readonly adresTypeItems: Array<string> = Object.values(AdresType).map(item => (item.toString()));
     readonly relatieTypeItems: Array<string> = Object.values(RelatieType).map(item => (item.toString()));
     readonly factuurKlasseItems: Array<string> = Object.values(FactuurKlasse).map(item => (item.toString()));
 
@@ -105,8 +105,52 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         this.lines.removeAt(index);
     }
 
+    get factuurAdresType(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresType')
+    }
+
+    get factuurAdresNaamContactpersoon(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresNaamContactpersoon')
+    }
+
+    get factuurAdresVestigingsnummerRotterdam(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresVestigingsnummerRotterdam')
+    }
+
+    get factuurAdresStraatnaam(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresStraatnaam')
+    }
+
+    get factuurAdresHuisnummer(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresHuisnummer')
+    }
+
+    get factuurAdresHuisnummertoevoeging(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresHuisnummertoevoeging')
+    }
+
+    get factuurAdresPostbus(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresPostbus')
+    }
+
+    get factuurAdresPostcode(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresPostcode')
+    }
+
+    get factuurAdresPlaatsnaam(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresPlaatsnaam')
+    }
+
+    get factuurAdresLandcode(): AbstractControl {
+        return this.pluginActionForm.get('factuurAdresLandcode')
+    }
+
     get relatieType(): AbstractControl {
         return this.pluginActionForm.get('relatieType')
+    }
+
+    get natuurlijkPersoonBsn(): AbstractControl {
+        return this.pluginActionForm.get('natuurlijkPersoonBsn')
     }
 
     get natuurlijkPersoonAchternaam(): AbstractControl {
@@ -115,6 +159,14 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
 
     get natuurlijkPersoonVoornamen(): AbstractControl {
         return this.pluginActionForm.get('natuurlijkPersoonVoornamen')
+    }
+
+    get nietNatuurlijkPersoonKvkNummer(): AbstractControl {
+        return this.pluginActionForm.get('nietNatuurlijkPersoonKvkNummer')
+    }
+
+    get nietNatuurlijkPersoonKvkVestigingsnummer(): AbstractControl {
+        return this.pluginActionForm.get('nietNatuurlijkPersoonKvkVestigingsnummer')
     }
 
     get nietNatuurlijkPersoonStatutaireNaam(): AbstractControl {
@@ -130,23 +182,54 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             factuurKlasse: this.fb.control('', Validators.required),
             factuurDatum: this.fb.control('', Validators.required),
             factuurVervaldatum: this.fb.control(''),
+            factuurKenmerk: this.fb.control(''),
+            factuurAdresType: this.fb.control('', Validators.required),
+            factuurAdresNaamContactpersoon: this.fb.control(''),
+            factuurAdresVestigingsnummerRotterdam: this.fb.control(''),
+            factuurAdresStraatnaam: this.fb.control('', Validators.required),
+            factuurAdresHuisnummer: this.fb.control('', Validators.required),
+            factuurAdresHuisnummertoevoeging: this.fb.control(''),
+            factuurAdresPostbus: this.fb.control('', Validators.required),
+            factuurAdresPostcode: this.fb.control('', Validators.required),
+            factuurAdresPlaatsnaam: this.fb.control('', Validators.required),
+            factuurAdresLandcode: this.fb.control('', Validators.required),
             inkoopOrderReferentie: this.fb.control('', Validators.required),
             relatieType: this.fb.control('', Validators.required),
+            natuurlijkPersoonBsn: this.fb.control(''),
             natuurlijkPersoonAchternaam: this.fb.control(''),
             natuurlijkPersoonVoornamen: this.fb.control(''),
+            nietNatuurlijkPersoonKvkNummer: this.fb.control(''),
+            nietNatuurlijkPersoonKvkVestigingsnummer: this.fb.control(''),
             nietNatuurlijkPersoonStatutaireNaam: this.fb.control(''),
             regelsViaResolverToggle: this.fb.control(''),
             regels: this.fb.array([]),
             regelsViaResolver: this.fb.control(null)
         });
+        this._subscriptions.add(
+            this.pluginActionForm.get('factuurAdresType').valueChanges.subscribe(value => {
+                this.logger.debug('Factuur adres type changed', value);
+                const factuurAdresType = this.toAdresType(value);
+                if (factuurAdresType == AdresType.LOCATIE) {
+                    this.factuurAdresPostbus.patchValue('')
+                } else if (factuurAdresType == AdresType.POSTBUS) {
+                    this.factuurAdresStraatnaam.patchValue('')
+                    this.factuurAdresHuisnummer.patchValue('')
+                    this.factuurAdresHuisnummertoevoeging.patchValue('')
+                } else {
 
+                }
+            })
+        )
         this._subscriptions.add(
             this.pluginActionForm.get('relatieType').valueChanges.subscribe(value => {
                 this.logger.debug('Relatie type changed', value);
                 const relatieType = this.toRelatieType(value);
                 if (relatieType == RelatieType.NATUURLIJK_PERSOON) {
+                    this.nietNatuurlijkPersoonKvkNummer.patchValue('')
+                    this.nietNatuurlijkPersoonKvkVestigingsnummer.patchValue('')
                     this.nietNatuurlijkPersoonStatutaireNaam.patchValue('')
                 } else if (relatieType == RelatieType.NIET_NATUURLIJK_PERSOON) {
+                    this.natuurlijkPersoonBsn.patchValue('')
                     this.natuurlijkPersoonAchternaam.patchValue('')
                     this.natuurlijkPersoonVoornamen.patchValue('')
                 } else {
@@ -185,14 +268,10 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         factuurKlasse: this.fromFactuurKlasse(configuration.factuurKlasse),
                         factuurDatum: configuration.factuurDatum,
                         factuurVervaldatum: configuration.factuurVervaldatum,
+                        factuurKenmerk: configuration.factuurKenmerk,
+                        factuurAdresType:  configuration.factuurAdresType,
                         inkoopOrderReferentie: configuration.inkoopOrderReferentie,
                         relatieType: configuration.relatieType,
-                        natuurlijkPersoonAchternaam:
-                            (configuration.natuurlijkPersoon != undefined) ? configuration.natuurlijkPersoon.achternaam : null,
-                        natuurlijkPersoonVoornamen:
-                            (configuration.natuurlijkPersoon != undefined) ? configuration.natuurlijkPersoon.voornamen : null,
-                        nietNatuurlijkPersoonStatutaireNaam:
-                            (configuration.nietNatuurlijkPersoon != undefined) ? configuration.nietNatuurlijkPersoon.statutaireNaam : null,
                         regels: (configuration.regels != undefined) ? configuration.regels.map( regel => ({
                             hoeveelheid: regel.hoeveelheid,
                             tarief: regel.tarief,
@@ -203,9 +282,75 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                         })) : null,
                         regelsViaResolver: configuration.regelsViaResolver
                     });
+                    this.patchFactuurAdres(configuration)
+                    this.patchRelatie(configuration)
                 }
             })
         )
+    }
+
+    private patchFactuurAdres(configuration: VerkoopfactuurOpvoerenConfig) {
+        const adresType = this.toAdresType(configuration.factuurAdresType)
+        if (adresType == AdresType.LOCATIE || configuration.factuurAdresLocatie != undefined) {
+             this.pluginActionForm.patchValue({
+                factuurAdresNaamContactpersoon:
+                    (configuration.factuurAdresLocatie != undefined) ? configuration.factuurAdresLocatie.naamContactpersoon : null,
+                factuurAdresVestigingsnummerRotterdam:
+                    (configuration.factuurAdresLocatie != undefined) ? configuration.factuurAdresLocatie.vestigingsnummerRotterdam : null,
+                factuurAdresStraatnaam:
+                    (configuration.factuurAdresLocatie != undefined) ? configuration.factuurAdresLocatie.straatnaam : null,
+                factuurAdresHuisnummer:
+                    (configuration.factuurAdresLocatie != undefined) ? configuration.factuurAdresLocatie.huisnummer : null,
+                factuurAdresHuisnummertoevoeging:
+                    (configuration.factuurAdresLocatie != undefined) ? configuration.factuurAdresLocatie.huisnummertoevoeging : null,
+                factuurAdresPostcode:
+                    (configuration.factuurAdresLocatie != undefined) ? configuration.factuurAdresLocatie.postcode : null,
+                factuurAdresPlaatsnaam:
+                    (configuration.factuurAdresLocatie != undefined) ? configuration.factuurAdresLocatie.plaatsnaam : null,
+                factuurAdresLandcode:
+                    (configuration.factuurAdresLocatie != undefined) ? configuration.factuurAdresLocatie.landcode : null
+             })
+        }
+        if (adresType == AdresType.POSTBUS || configuration.factuurAdresPostbus != undefined) {
+            this.pluginActionForm.patchValue({
+                factuurAdresNaamContactpersoon:
+                    (configuration.factuurAdresPostbus != undefined) ? configuration.factuurAdresPostbus.naamContactpersoon : null,
+                factuurAdresVestigingsnummerRotterdam:
+                    (configuration.factuurAdresPostbus != undefined) ? configuration.factuurAdresPostbus.vestigingsnummerRotterdam : null,
+                factuurAdresPostbus:
+                    (configuration.factuurAdresPostbus != undefined) ? configuration.factuurAdresPostbus.postbus : null,
+                factuurAdresPostcode:
+                    (configuration.factuurAdresPostbus != undefined) ? configuration.factuurAdresPostbus.postcode : null,
+                factuurAdresPlaatsnaam:
+                    (configuration.factuurAdresPostbus != undefined) ? configuration.factuurAdresPostbus.plaatsnaam : null,
+                factuurAdresLandcode:
+                    (configuration.factuurAdresPostbus != undefined) ? configuration.factuurAdresPostbus.landcode : null
+            })
+        }
+    }
+
+    private patchRelatie(configuration: VerkoopfactuurOpvoerenConfig) {
+        const relatieType = this.toRelatieType(configuration.relatieType)
+        if (relatieType == RelatieType.NATUURLIJK_PERSOON || configuration.natuurlijkPersoon != undefined) {
+            this.pluginActionForm.patchValue({
+                natuurlijkPersoonBsn:
+                    (configuration.natuurlijkPersoon != undefined) ? configuration.natuurlijkPersoon.bsn : null,
+                natuurlijkPersoonAchternaam:
+                    (configuration.natuurlijkPersoon != undefined) ? configuration.natuurlijkPersoon.achternaam : null,
+                natuurlijkPersoonVoornamen:
+                    (configuration.natuurlijkPersoon != undefined) ? configuration.natuurlijkPersoon.voornamen : null,
+            })
+        }
+        if (relatieType == RelatieType.NIET_NATUURLIJK_PERSOON || configuration.nietNatuurlijkPersoon != undefined) {
+            this.pluginActionForm.patchValue({
+                nietNatuurlijkPersoonKvkNummer:
+                    (configuration.nietNatuurlijkPersoon != undefined) ? configuration.nietNatuurlijkPersoon.kvkNummer : null,
+                nietNatuurlijkPersoonKvkVestigingsnummer:
+                    (configuration.nietNatuurlijkPersoon != undefined) ? configuration.nietNatuurlijkPersoon.kvkVestigingsnummer : null,
+                nietNatuurlijkPersoonStatutaireNaam:
+                    (configuration.nietNatuurlijkPersoon != undefined) ? configuration.nietNatuurlijkPersoon.statutaireNaam : null,
+            })
+        }
     }
 
     private subscribeToDisableAndToggleFormState(): void {
@@ -229,7 +374,9 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                     referentieNummer: formValue.referentieNummer,
                     factuurKlasse: this.toFactuurKlasse(formValue.factuurKlasse),
                     factuurDatum: formValue.factuurDatum,
-                    factuurVervaldatum: (formValue.regels != undefined) ? formValue.factuurVervaldatum : null,
+                    factuurVervaldatum: (formValue.factuurVervaldatum != undefined) ? formValue.factuurVervaldatum : null,
+                    factuurKenmerk: (formValue.factuurKenmerk != undefined) ? formValue.factuurKenmerk : null,
+                    factuurAdresType: this.toAdresType(formValue.factuurAdresType),
                     inkoopOrderReferentie: formValue.inkoopOrderReferentie,
                     relatieType: this.toRelatieType(formValue.relatieType),
                     regels: (formValue.regels != undefined) ? formValue.regels.map(regel => ({
@@ -242,18 +389,49 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
                     })) : null,
                     regelsViaResolver: (formValue.regelsViaResolver != undefined) ? formValue.regelsViaResolver : null
                 }
+                // map factuur adres
+                if (newFormValue.factuurAdresType == AdresType.LOCATIE) {
+                    newFormValue = {
+                        factuurAdresLocatie: {
+                            naamContactpersoon: formValue.factuurAdresNaamContactpersoon,
+                            vestigingsnummerRotterdam: formValue.factuurAdresVestigingsnummerRotterdam,
+                            straatnaam: formValue.factuurAdresStraatnaam,
+                            huisnummer: formValue.factuurAdresHuisnummer,
+                            huisnummertoevoeging: formValue.factuurAdresHuisnummertoevoeging,
+                            postcode: formValue.factuurAdresPostcode,
+                            plaatsnaam: formValue.factuurAdresPlaatsnaam,
+                            landcode: formValue.factuurAdresLandcode
+                        },
+                        ...newFormValue
+                    }
+                } else if (newFormValue.factuurAdresType == AdresType.POSTBUS) {
+                    newFormValue = {
+                        factuurAdresPostbus: {
+                            naamContactpersoon: formValue.factuurAdresNaamContactperson,
+                            vestigingsnummerRotterdam: formValue.factuurAdresVestigingsnummerRotterdam,
+                            postbus: formValue.factuurAdresPostbus,
+                            postcode: formValue.factuurAdresPostcode,
+                            plaatsnaam: formValue.factuurAdresPlaatsnaam,
+                            landcode: formValue.factuurAdresLandcode,
+                        },
+                        ...newFormValue
+                    }
+                }
+                // map relatie
                 if (newFormValue.relatieType == RelatieType.NATUURLIJK_PERSOON) {
                     newFormValue = {
                         natuurlijkPersoon: {
+                            bsn: formValue.natuurlijkPersoonBsn,
                             achternaam: formValue.natuurlijkPersoonAchternaam,
                             voornamen: formValue.natuurlijkPersoonVoornamen
                         },
                         ...newFormValue
                     }
-
                 } else if (newFormValue.relatieType == RelatieType.NIET_NATUURLIJK_PERSOON) {
                     newFormValue = {
                         nietNatuurlijkPersoon: {
+                            kvkNummer: formValue.nietNatuurlijkPersoonKvkNummer,
+                            kvkVestigingsnummer: formValue.nietNatuurlijkPersoonKvkVestigingsnummer,
                             statutaireNaam: formValue.nietNatuurlijkPersoonStatutaireNaam
                         },
                         ...newFormValue
@@ -279,6 +457,10 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
         } else {
             return this.enumSvc.getEnumKey(FactuurKlasse, value);
         }
+    }
+
+    private toAdresType(value: string): AdresType | undefined {
+        return Object.values(AdresType).includes(value as AdresType) ? (value as AdresType) : undefined;
     }
 
     private toRelatieType(value: string): RelatieType | undefined {
@@ -310,17 +492,39 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
             formValue.referentieNummer &&
             formValue.factuurKlasse &&
             formValue.factuurDatum &&
+            formValue.factuurAdresType &&
+            (
+                (
+                    formValue.factuurAdresType == AdresType.LOCATIE &&
+                    formValue.factuurAdresLocatie.straatnaam &&
+                    formValue.factuurAdresLocatie.huisnummer &&
+                    formValue.factuurAdresLocatie.postcode &&
+                    formValue.factuurAdresLocatie.plaatsnaam &&
+                    formValue.factuurAdresLocatie.landcode
+                )
+                ||
+                (
+                    formValue.factuurAdresType == AdresType.POSTBUS &&
+                    formValue.factuurAdresPostbus.postbus &&
+                    formValue.factuurAdresPostbus.postcode &&
+                    formValue.factuurAdresPostbus.plaatsnaam &&
+                    formValue.factuurAdresPostbus.landcode
+                )
+            ) &&
             formValue.inkoopOrderReferentie &&
             formValue.relatieType &&
             (
                 (
                     formValue.relatieType == RelatieType.NATUURLIJK_PERSOON &&
+                    formValue.natuurlijkPersoon.bsn &&
                     formValue.natuurlijkPersoon.voornamen &&
                     formValue.natuurlijkPersoon.achternaam
                 )
                 ||
                 (
                     formValue.relatieType == RelatieType.NIET_NATUURLIJK_PERSOON &&
+                    formValue.nietNatuurlijkPersoon.kvkNummer &&
+                    formValue.nietNatuurlijkPersoon.kvkVestigingsnummer &&
                     formValue.nietNatuurlijkPersoon.statutaireNaam
                 )
             )
@@ -382,4 +586,5 @@ export class VerkoopfactuurOpvoerenComponent implements FunctionConfigurationCom
     }
 
     protected readonly RelatieType = RelatieType;
+    protected readonly AdresType = AdresType;
 }

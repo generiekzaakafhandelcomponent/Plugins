@@ -1,5 +1,6 @@
 import io.spring.gradle.dependencymanagement.org.codehaus.plexus.interpolation.os.Os.FAMILY_MAC
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
@@ -39,6 +40,10 @@ subprojects {
     println("Configuring ${project.path}")
 
     if (project.path.startsWith(":backend")) {
+
+        tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
+            mainClass.set("com.ritense.plugin.sandbox.PluginApplication")
+        }
         apply(plugin = "java")
         apply(plugin = "org.springframework.boot")
         apply(plugin = "io.spring.dependency-management")
@@ -55,8 +60,8 @@ subprojects {
         java.targetCompatibility = JavaVersion.VERSION_17
 
         tasks.withType<KotlinCompile> {
-            kotlinOptions {
-                jvmTarget = "17"
+            compilerOptions {
+                jvmTarget = JvmTarget.JVM_17
                 javaParameters = true
             }
         }
@@ -87,7 +92,7 @@ subprojects {
 
         tasks.test {
             useJUnitPlatform {
-                excludeTags ("integration")
+                excludeTags("integration")
             }
         }
 
@@ -107,7 +112,7 @@ subprojects {
             }
         }
     }
-    if(project.path.startsWith(":backend") && project.name != "app" && project.name != "gradle" && project.name != "backend") {
+    if (project.path.startsWith(":backend") && project.name != "app" && project.name != "gradle" && project.name != "backend") {
         apply(from = "$rootDir/gradle/publishing.gradle")
     }
 }

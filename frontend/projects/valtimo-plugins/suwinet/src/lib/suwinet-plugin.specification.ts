@@ -26,6 +26,12 @@ import {
 import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon-info.component';
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
 import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinderen-info.component';
+import {RdwVoertuigenComponent} from "./components/rdw-voertuigen/rdw-voertuigen.component";
+import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-persoons-info.component";
+import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
+import {DuoStudiefinancieringComponent} from "./components/duo-studiefinanciering/duo-studiefinanciering.component";
+import {UwvInkomstenInfoComponent} from "./components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component";
+import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastrale-objecten.component";
 
 const suwinetPluginSpecification: PluginSpecification = {
   pluginId: 'suwinet',
@@ -34,7 +40,13 @@ const suwinetPluginSpecification: PluginSpecification = {
   functionConfigurationComponents: {
     'get-brp-persoonsgegevens': BrpPersoonInfoComponent,
     'get-brp-partner-persoonsgegevens': BrpPartnerInfoComponent,
-    'get-brp-kinderen-persoonsgegevens': BrpKinderenInfoComponent
+    'get-brp-kinderen-persoonsgegevens': BrpKinderenInfoComponent,
+    'get-kadastrale-objecten': KadastraleObjectenComponent,
+    'get-rdw-voertuigen': RdwVoertuigenComponent,
+    'get-duo-persoonsinfo': DuoPersoonsInfoComponent,
+    'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
+    'get-svb-persoonsinfo': SvbPersoonsInfoComponent,
+    'get-uwv-inkomsten-info': UwvInkomstenInfoComponent
   },
   pluginTranslations: {
     nl: {

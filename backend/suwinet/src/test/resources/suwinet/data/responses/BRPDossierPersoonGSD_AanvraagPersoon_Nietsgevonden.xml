@@ -1,0 +1,3 @@
+<brp:AanvraagPersoonResponse xmlns:brp="http://bkwi.nl/SuwiML/Diensten/BRPDossierPersoonGSD/v0200">
+    <fwi:NietsGevonden xmlns:fwi="http://bkwi.nl/SuwiML/FWI/v0205"/>
+</brp:AanvraagPersoonResponse>

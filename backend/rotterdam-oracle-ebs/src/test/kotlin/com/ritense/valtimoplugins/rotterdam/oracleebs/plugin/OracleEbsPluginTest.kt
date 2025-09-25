@@ -3,6 +3,9 @@ package com.ritense.valtimoplugins.rotterdam.oracleebs.plugin
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.AdresLocatie
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.AdresPostbus
+import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.AdresType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.BoekingType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurKlasse
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.FactuurRegel
@@ -19,6 +22,7 @@ import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.community.mockito.delegate.DelegateExecutionFake
+import org.hibernate.validator.constraints.Length
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -29,6 +33,7 @@ import org.mockito.kotlin.whenever
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import java.time.LocalDateTime
+import kotlin.String
 
 class OracleEbsPluginTest {
 
@@ -133,6 +138,7 @@ class OracleEbsPluginTest {
                 categorie = "Vergunningen",
                 saldoSoort = SaldoSoort.WERKELIJK.title,
                 omschrijving = "Aanvraag Omgevingsvergunning",
+                grootboek = "100",
                 boekjaar = "2025",
                 boekperiode = "2",
                 regels = journaalpostRegelsMetGrootboekSleutel()
@@ -167,6 +173,7 @@ class OracleEbsPluginTest {
                 categorie = "Vergunningen",
                 saldoSoort = SaldoSoort.WERKELIJK.title,
                 omschrijving = "Aanvraag Omgevingsvergunning",
+                grootboek = "R10",
                 boekjaar = "2025",
                 boekperiode = "2",
                 regelsViaResolver = objectMapper.writeValueAsString(journaalpostRegelsMetGrootboekSleutel())
@@ -352,12 +359,12 @@ class OracleEbsPluginTest {
                 referentieNummer = "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 factuurDatum = "2025-05-21",
+                factuurAdresType = AdresType.LOCATIE.title,
+                factuurAdresLocatie = adresLocatie(),
+                factuurAdresPostbus = null,
                 inkoopOrderReferentie = "20250328-098",
                 relatieType = RelatieType.NATUURLIJK_PERSOON.title,
-                natuurlijkPersoon = NatuurlijkPersoon(
-                    achternaam = "Janssen",
-                    voornamen = "Jan"
-                ),
+                natuurlijkPersoon = natuurlijkPersoon(),
                 nietNatuurlijkPersoon = null,
                 regels = verkoopfactuurRegels()
             )
@@ -388,12 +395,13 @@ class OracleEbsPluginTest {
                 referentieNummer = "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 factuurDatum = "2025-05-21",
+                factuurAdresType = AdresType.POSTBUS.title,
+                factuurAdresLocatie = null,
+                factuurAdresPostbus = adresPostbus(),
                 inkoopOrderReferentie = "20250328-098",
                 relatieType = RelatieType.NIET_NATUURLIJK_PERSOON.title,
                 natuurlijkPersoon = null,
-                nietNatuurlijkPersoon = NietNatuurlijkPersoon(
-                    statutaireNaam = "J.Janssen - Groenten en Fruit"
-                ),
+                nietNatuurlijkPersoon = nietNatuurlijkPersoon(),
                 regelsViaResolver = objectMapper.writeValueAsString(verkoopfactuurRegels())
             )
         }
@@ -423,12 +431,13 @@ class OracleEbsPluginTest {
                 referentieNummer = "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 factuurDatum = "2025-05-21",
+                factuurAdresType = AdresType.POSTBUS.name,
+                factuurAdresLocatie = null,
+                factuurAdresPostbus = adresPostbus(),
                 inkoopOrderReferentie = "20250328-098",
                 relatieType = RelatieType.NIET_NATUURLIJK_PERSOON.title,
                 natuurlijkPersoon = null,
-                nietNatuurlijkPersoon = NietNatuurlijkPersoon(
-                    statutaireNaam = "J.Janssen - Groenten en Fruit"
-                ),
+                nietNatuurlijkPersoon = nietNatuurlijkPersoon(),
                 regelsViaResolver = verkoopfactuurRegels().map { factuurRegel ->
                     linkedMapOf(
                         HOEVEELHEID to factuurRegel.hoeveelheid,
@@ -467,12 +476,13 @@ class OracleEbsPluginTest {
                 referentieNummer = "2025-AGV-123456",
                 factuurKlasse = FactuurKlasse.CREDITNOTA.title,
                 factuurDatum = "2025-05-21",
+                factuurAdresType = AdresType.POSTBUS.title,
+                factuurAdresLocatie = null,
+                factuurAdresPostbus = adresPostbus(),
                 inkoopOrderReferentie = "20250328-098",
                 relatieType = RelatieType.NIET_NATUURLIJK_PERSOON.title,
                 natuurlijkPersoon = null,
-                nietNatuurlijkPersoon = NietNatuurlijkPersoon(
-                    statutaireNaam = "J.Janssen - Groenten en Fruit"
-                ),
+                nietNatuurlijkPersoon = nietNatuurlijkPersoon(),
                 regelsViaResolver = verkoopfactuurRegels().map { factuurRegel ->
                     objectMapper.createObjectNode().apply {
                         this.put(HOEVEELHEID, factuurRegel.hoeveelheid)
@@ -497,6 +507,38 @@ class OracleEbsPluginTest {
                 .isEqualTo("/verkoopfactuur/opvoeren")
         }
     }
+
+    private fun adresLocatie() = AdresLocatie(
+        naamContactpersoon = null,
+        vestigingsnummerRotterdam = null,
+        straatnaam = "Testlaan",
+        huisnummer = "78",
+        huisnummertoevoeging = null,
+        postcode = "1234AB",
+        plaatsnaam = "Abcoude",
+        landcode = "NL"
+    )
+
+    private fun adresPostbus() = AdresPostbus(
+        naamContactpersoon = null,
+        vestigingsnummerRotterdam = null,
+        postbus = "102",
+        postcode = "1234AB",
+        plaatsnaam = "Abcoude",
+        landcode = "NL"
+    )
+
+    private fun natuurlijkPersoon() = NatuurlijkPersoon(
+        bsn = "202525061",
+        achternaam = "Janssen",
+        voornamen = "Jan"
+    )
+
+    private fun nietNatuurlijkPersoon() = NietNatuurlijkPersoon(
+        kvkNummer = "",
+        kvkVestigingsnummer = "",
+        statutaireNaam = "J.Janssen - Groenten en Fruit"
+    )
 
     private fun journaalpostRegelsMetGrootboekSleutel() = listOf(
         JournaalpostRegel(

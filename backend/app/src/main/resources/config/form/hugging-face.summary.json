@@ -1,0 +1,73 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "interpolatedQuestion",
+      "type": "hidden",
+      "input": true,
+      "label": "interpolatedQuestion",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "HFP.summary-interpolatedQuestion"
+      },
+      "properties": {
+        "sourceKey": "doc:interpolatedQuestion"
+      }
+    },
+    {
+      "key": "chatResult",
+      "type": "hidden",
+      "input": true,
+      "label": "chatResult",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "HFP.summary-chatResult"
+      },
+      "properties": {
+        "sourceKey": "doc:chatResult"
+      }
+    },
+    {
+      "key": "summarise",
+      "type": "hidden",
+      "input": true,
+      "label": "summarise",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "HFP.summary-summarise"
+      },
+      "properties": {
+        "sourceKey": "doc:summarise"
+      }
+    },
+    {
+      "key": "summaryResult",
+      "type": "hidden",
+      "input": true,
+      "label": "summaryResult",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "HFP.summary-chatResult"
+      },
+      "properties": {
+        "sourceKey": "doc:summaryResult"
+      }
+    },
+    {
+      "key": "html",
+      "tag": "div",
+      "type": "htmlelement",
+      "attrs": [
+        {
+          "attr": "",
+          "value": ""
+        }
+      ],
+      "input": false,
+      "label": "HTML",
+      "content": "<section>\r\n  <h3>Valtimo LLM Plugin</h3>\r\n    {{ data.interpolatedQuestion.value ? `\r\n    <h4>Interpolated question</h4>\r\n    <dl class=\"row mb-5\">\r\n        <dt class=\"col-12\"><pre>${data.interpolatedQuestion.value}</pre></dt>\r\n    </dl>` : '' }}\r\n\r\n    {{ data.chatResult.value ? `\r\n    <h4>Chat results</h4>\r\n    <dl class=\"row mb-5\">\r\n        <dt class=\"col-12\"><pre>${data.chatResult.value}</pre></dt>\r\n    </dl>` : '' }}\r\n\r\n    {{ data.summarise ? `\r\n    <h4>Summarise</h4>\r\n    <dl class=\"row mb-5\">\r\n        <dt class=\"col-12\"><pre>${data.summarise}</pre></dt>\r\n    </dl>` : '' }}\r\n\r\n    {{ data.summaryResult.value ? `\r\n    <h4>Summary results</h4>\r\n    <dl class=\"row\">\r\n        <dt class=\"col-12\"><pre>${data.summaryResult.value}</pre></dt>\r\n    </dl>` : '' }}\r\n \r\n\r\n</section>\r\n\r\n<style>\r\n  pre{\r\n    padding: 10px;\r\n    overflow: auto;\r\n    white-space: pre-wrap;\r\n    min-height: 100px;\r\n    resize: both;\r\n  }\r\n</style>\r\n",
+      "tableView": false,
+      "refreshOnChange": false
+    }
+  ]
+}

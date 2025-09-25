@@ -1,0 +1,135 @@
+{
+    "voornamen" : "Henk",
+    "voorvoegsel" : "de",
+    "achternaam" : "Jansen",
+    "geboortedatum" : "1960-07-20",
+    "bsn" : "111111110",
+    "adresBrp" : {
+        "straatnaam" : "Zomerdijkstraat",
+        "huisnummer" : 19,
+        "huisletter" : "C",
+        "huisnummertoevoeging" : "Huis",
+        "postcode" : "1079WZ",
+        "woonplaatsnaam" : "Amsterdam",
+        "aanduidingBijHuisnummer" : "",
+        "locatieomschrijving" : ""
+    },
+    "postadresBrp" : {
+        "straatnaam" : "Kerkstraat",
+        "huisnummer" : 79,
+        "huisletter" : "A",
+        "huisnummertoevoeging" : "Huis",
+        "postcode" : "2054RC",
+        "woonplaatsnaam" : "Utrecht",
+        "aanduidingBijHuisnummer" : "",
+        "locatieomschrijving" : ""
+    },
+    "verblijfstitel" : {
+        "codeVerblijfstitel" : {
+            "code" : "41",
+            "name" : ""
+        },
+        "datumAanvangVerblijfstitel" : "2012-09-15",
+        "datumEindeVerblijfstitel" : "2024-09-15"
+    },
+    "nationaliteiten" : [ ],
+    "kinderen" : [ {
+        "voornamen" : "Catharina-Amalia Carmen woont thuis",
+        "voorvoegsel" : "de",
+        "achternaam" : "Jansen",
+        "geboortedatum" : "2013-10-07",
+        "bsn" : "243000157",
+        "adres" : {
+            "straatnaam" : "Zomerdijkstraat",
+            "huisnummer" : 19,
+            "huisletter" : "C",
+            "huisnummertoevoeging" : "Huis",
+            "postcode" : "1079WZ",
+            "woonplaatsnaam" : "Amsterdam",
+            "aanduidingBijHuisnummer" : "",
+            "locatieomschrijving" : ""
+        },
+        "datumOverlijden" : ""
+    }, {
+        "voornamen" : "Wilma woont niet meer thuis",
+        "voorvoegsel" : "de",
+        "achternaam" : "Jansen",
+        "geboortedatum" : "2014-09-27",
+        "bsn" : "243000017",
+        "adres" : {
+            "straatnaam" : "kerkstraatstraat",
+            "huisnummer" : 42,
+            "huisletter" : "A",
+            "huisnummertoevoeging" : "",
+            "postcode" : "2011XB",
+            "woonplaatsnaam" : "Den Haag",
+            "aanduidingBijHuisnummer" : "",
+            "locatieomschrijving" : ""
+        },
+        "datumOverlijden" : ""
+    }, {
+        "voornamen" : "Lev Overleden",
+        "voorvoegsel" : "de",
+        "achternaam" : "Jansen",
+        "geboortedatum" : "2017-08-19",
+        "bsn" : "010002546",
+        "adres" : {
+            "straatnaam" : "Zomerdijkstraat",
+            "huisnummer" : 19,
+            "huisletter" : "C",
+            "huisnummertoevoeging" : "Huis",
+            "postcode" : "1079WZ",
+            "woonplaatsnaam" : "Amsterdam",
+            "aanduidingBijHuisnummer" : "",
+            "locatieomschrijving" : ""
+        },
+        "datumOverlijden" : "2017-09-10"
+    }, {
+        "voornamen" : "Theo Al Te Oud",
+        "voorvoegsel" : "de",
+        "achternaam" : "Jansen",
+        "geboortedatum" : "1991-02-15",
+        "bsn" : "080000071",
+        "adres" : {
+            "straatnaam" : "Zomerdijkstraat",
+            "huisnummer" : 19,
+            "huisletter" : "C",
+            "huisnummertoevoeging" : "Huis",
+            "postcode" : "1079WZ",
+            "woonplaatsnaam" : "Amsterdam",
+            "aanduidingBijHuisnummer" : "",
+            "locatieomschrijving" : ""
+        },
+        "datumOverlijden" : ""
+    } ],
+    "partner" : {
+        "voornamen" : "Sierra",
+        "voorvoegsel" : "",
+        "achternaam" : "Kooyman",
+        "geboortedatum" : "1980-10-23",
+        "bsn" : "999991954",
+        "adresBrp" : {
+            "straatnaam" : "Zomerdijkstraat",
+            "huisnummer" : 19,
+            "huisletter" : "C",
+            "huisnummertoevoeging" : "Huis",
+            "postcode" : "1079WZ",
+            "woonplaatsnaam" : "Amsterdam",
+            "aanduidingBijHuisnummer" : "",
+            "locatieomschrijving" : ""
+        },
+        "postadresBrp" : {
+            "straatnaam" : "",
+            "huisnummer" : 0,
+            "huisletter" : "",
+            "huisnummertoevoeging" : "",
+            "postcode" : "",
+            "woonplaatsnaam" : "",
+            "aanduidingBijHuisnummer" : "",
+            "locatieomschrijving" : ""
+        },
+        "datumOverlijden" : "",
+        "zeldeAdresAlsAanvrager" : false
+    },
+    "datumOverlijden" : ""
+}

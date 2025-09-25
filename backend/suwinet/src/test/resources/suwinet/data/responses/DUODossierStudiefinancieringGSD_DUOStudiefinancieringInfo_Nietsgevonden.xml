@@ -1,0 +1,6 @@
+<ns4:DUOStudiefinancieringInfoResponse xmlns:ns3="http://bkwi.nl/SuwiML/FWI/v0205"
+                                       xmlns:ns4="http://bkwi.nl/SuwiML/Diensten/DUODossierStudiefinancieringGSD/v0200">
+    <ns3:NietsGevonden xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Niet gevonden
+    </ns3:NietsGevonden>
+</ns4:DUOStudiefinancieringInfoResponse>

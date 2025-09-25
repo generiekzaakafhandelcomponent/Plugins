@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0vol0sx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:collaboration id="Collaboration_1gmd3lc" isClosed="false">
+    <bpmn:participant id="SuwinetOphalenBRPBrongegevensParticipant" name="Suwinet: Ophalen BRP Brongegevens" processRef="ophalen-brp-brongegevens" />
+    <bpmn:textAnnotation id="TextAnnotation_07okm9r">
+      <bpmn:text>out: brpPersoonsgegevensInfo</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0kky9km" associationDirection="None" sourceRef="OphalenBRPPersoonsgegevensTask" targetRef="TextAnnotation_07okm9r" />
+    <bpmn:textAnnotation id="TextAnnotation_0gtwkh0">
+      <bpmn:text>input: bsn</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1fc5mab" associationDirection="None" sourceRef="StartEvent_1" targetRef="TextAnnotation_0gtwkh0" />
+  </bpmn:collaboration>
+  <bpmn:process id="ophalen-brp-brongegevens" name="Suwinet: Ophalen BRP Brongegevens" processType="None" isClosed="false" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" camunda:asyncAfter="true">
+      <bpmn:outgoing>Flow_1tb0eas</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="OphalenBRPPersoonsgegevensTask" name="Ophalen BRP persoonsgegevens" camunda:asyncAfter="true" implementation="##WebService" camunda:expression="${true}">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_1tb0eas</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qe90bb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1tb0eas" sourceRef="StartEvent_1" targetRef="OphalenBRPPersoonsgegevensTask" />
+    <bpmn:sequenceFlow id="Flow_1qe90bb" sourceRef="OphalenBRPPersoonsgegevensTask" targetRef="BsnInBrpBekendGateway" />
+    <bpmn:sequenceFlow id="JaSequenceFlow" name="Ja" sourceRef="HeeftPartnerGateway" targetRef="OphalenBRPPartnerGegevensTask">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${partnerBsn != ""}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1fjo3oc" sourceRef="OphalenBRPPartnerGegevensTask" targetRef="Gateway_130n1nh" />
+    <bpmn:sequenceFlow id="NeeSequenceFlow" name="nee" sourceRef="HeeftPartnerGateway" targetRef="Gateway_130n1nh" />
+    <bpmn:sequenceFlow id="Flow_01qrzj7" sourceRef="Gateway_130n1nh" targetRef="HeeftKinderenGateway" />
+    <bpmn:sequenceFlow id="NeeSequenceFlow1" name="nee" sourceRef="BsnInBrpBekendGateway" targetRef="Gateway_0j9g2o1" />
+    <bpmn:sequenceFlow id="JaSequenceFlow1" name="ja" sourceRef="BsnInBrpBekendGateway" targetRef="VoorbereidenProcesVariabelenTask">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable('brpPersoonsgegevensInfo')}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0yekogb" sourceRef="OphalenBRPKinderenGegevensTask" targetRef="Gateway_0mm9x3l" />
+    <bpmn:sequenceFlow id="NeeSequenceFlow2" name="Nee" sourceRef="HeeftKinderenGateway" targetRef="Gateway_0mm9x3l" />
+    <bpmn:sequenceFlow id="Flow_15itewt" sourceRef="Gateway_0mm9x3l" targetRef="Gateway_0j9g2o1" />
+    <bpmn:sequenceFlow id="JaSequenceFlow2" name="ja" sourceRef="HeeftKinderenGateway" targetRef="OphalenBRPKinderenGegevensTask">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${kinderenBsns  != "" &amp;&amp; kinderenBsns.size() &gt; 0}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0wh6hna" sourceRef="Gateway_0j9g2o1" targetRef="Activity_0lcttzh" />
+    <bpmn:sequenceFlow id="Flow_0wa981u" sourceRef="VoorbereidenProcesVariabelenTask" targetRef="HeeftPartnerGateway" />
+    <bpmn:exclusiveGateway id="BsnInBrpBekendGateway" name="bsn in brp bekend?" default="NeeSequenceFlow1">
+      <bpmn:incoming>Flow_1qe90bb</bpmn:incoming>
+      <bpmn:outgoing>NeeSequenceFlow1</bpmn:outgoing>
+      <bpmn:outgoing>JaSequenceFlow1</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="OphalenBRPPartnerGegevensTask" name="Ophalen BRP partner gegevens" camunda:asyncAfter="true" implementation="##WebService" camunda:expression="${true}">
+      <bpmn:incoming>JaSequenceFlow</bpmn:incoming>
+      <bpmn:outgoing>Flow_1fjo3oc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_130n1nh">
+      <bpmn:incoming>Flow_1fjo3oc</bpmn:incoming>
+      <bpmn:incoming>NeeSequenceFlow</bpmn:incoming>
+      <bpmn:outgoing>Flow_01qrzj7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="HeeftPartnerGateway" name="heeft partner?" default="NeeSequenceFlow">
+      <bpmn:incoming>Flow_0wa981u</bpmn:incoming>
+      <bpmn:outgoing>JaSequenceFlow</bpmn:outgoing>
+      <bpmn:outgoing>NeeSequenceFlow</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_0mm9x3l">
+      <bpmn:incoming>Flow_0yekogb</bpmn:incoming>
+      <bpmn:incoming>NeeSequenceFlow2</bpmn:incoming>
+      <bpmn:outgoing>Flow_15itewt</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="OphalenBRPKinderenGegevensTask" name="Ophalen BRP kinderen gegevens" camunda:asyncAfter="true" implementation="##WebService" camunda:expression="${true}">
+      <bpmn:incoming>JaSequenceFlow2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0yekogb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="HeeftKinderenGateway" name="heeft kinderen?" default="NeeSequenceFlow2">
+      <bpmn:incoming>Flow_01qrzj7</bpmn:incoming>
+      <bpmn:outgoing>JaSequenceFlow2</bpmn:outgoing>
+      <bpmn:outgoing>NeeSequenceFlow2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_0j9g2o1">
+      <bpmn:incoming>Flow_15itewt</bpmn:incoming>
+      <bpmn:incoming>NeeSequenceFlow1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wh6hna</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="VoorbereidenProcesVariabelenTask" name="Voorbereiden proces variabelen" camunda:asyncAfter="true" implementation="##WebService" camunda:expression="${true}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="partnerBsn">${brpPersoonsgegevensInfo.partnerBsn}</camunda:outputParameter>
+          <camunda:outputParameter name="kinderenBsns">${brpPersoonsgegevensInfo.kinderenBsns}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>JaSequenceFlow1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wa981u</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0k8t5dy">
+      <bpmn:incoming>Flow_0oinb9b</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0oinb9b" sourceRef="Activity_0lcttzh" targetRef="Event_0k8t5dy" />
+    <bpmn:serviceTask id="Activity_0lcttzh" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/brpPersoonsgegevensInfo&#34;, brpPersoonsgegevensInfo)}">
+      <bpmn:incoming>Flow_0wh6hna</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oinb9b</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:error id="Error_10q1uq2" name="Error_3lbup3a" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1gmd3lc">
+      <bpmndi:BPMNShape id="Participant_0gc491p_di" bpmnElement="SuwinetOphalenBRPBrongegevensParticipant" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1710" height="320" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="232" y="209" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j7h7ol_di" bpmnElement="OphalenBRPPersoonsgegevensTask">
+        <dc:Bounds x="310" y="187" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0atlwtc_di" bpmnElement="BsnInBrpBekendGateway" isMarkerVisible="true">
+        <dc:Bounds x="485" y="202" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="485" y="165" width="49" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h9dleo_di" bpmnElement="OphalenBRPPartnerGegevensTask">
+        <dc:Bounds x="890" y="187" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_130n1nh_di" bpmnElement="Gateway_130n1nh" isMarkerVisible="true">
+        <dc:Bounds x="1025" y="202" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0pttd74_di" bpmnElement="HeeftPartnerGateway" isMarkerVisible="true">
+        <dc:Bounds x="765" y="202" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="755" y="262" width="69" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0mm9x3l_di" bpmnElement="Gateway_0mm9x3l" isMarkerVisible="true">
+        <dc:Bounds x="1365" y="202" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0bvxvnr" bpmnElement="OphalenBRPKinderenGegevensTask">
+        <dc:Bounds x="1230" y="187" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0emfq92_di" bpmnElement="HeeftKinderenGateway" isMarkerVisible="true">
+        <dc:Bounds x="1115" y="202" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1102" y="262" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0j9g2o1_di" bpmnElement="Gateway_0j9g2o1" isMarkerVisible="true">
+        <dc:Bounds x="1455" y="202" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0dzqhbw" bpmnElement="VoorbereidenProcesVariabelenTask">
+        <dc:Bounds x="600" y="187" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0k8t5dy_di" bpmnElement="Event_0k8t5dy">
+        <dc:Bounds x="1742" y="209" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_16jzfoy_di" bpmnElement="Activity_0lcttzh">
+        <dc:Bounds x="1590" y="187" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1tb0eas_di" bpmnElement="Flow_1tb0eas">
+        <di:waypoint x="268" y="227" />
+        <di:waypoint x="310" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qe90bb_di" bpmnElement="Flow_1qe90bb">
+        <di:waypoint x="410" y="227" />
+        <di:waypoint x="485" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1irled2_di" bpmnElement="JaSequenceFlow">
+        <di:waypoint x="815" y="227" />
+        <di:waypoint x="890" y="227" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="837" y="209" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fjo3oc_di" bpmnElement="Flow_1fjo3oc">
+        <di:waypoint x="990" y="227" />
+        <di:waypoint x="1025" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06iw59e_di" bpmnElement="NeeSequenceFlow">
+        <di:waypoint x="790" y="202" />
+        <di:waypoint x="790" y="140" />
+        <di:waypoint x="1050" y="140" />
+        <di:waypoint x="1050" y="202" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="800" y="171" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01qrzj7_di" bpmnElement="Flow_01qrzj7">
+        <di:waypoint x="1075" y="227" />
+        <di:waypoint x="1115" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ia9g59_di" bpmnElement="NeeSequenceFlow1">
+        <di:waypoint x="510" y="252" />
+        <di:waypoint x="510" y="330" />
+        <di:waypoint x="1480" y="330" />
+        <di:waypoint x="1480" y="252" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="520" y="260" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19dml0z_di" bpmnElement="JaSequenceFlow1">
+        <di:waypoint x="535" y="227" />
+        <di:waypoint x="600" y="227" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="557" y="209" width="9" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yekogb_di" bpmnElement="Flow_0yekogb">
+        <di:waypoint x="1330" y="227" />
+        <di:waypoint x="1365" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0c20k42_di" bpmnElement="NeeSequenceFlow2">
+        <di:waypoint x="1140" y="202" />
+        <di:waypoint x="1140" y="140" />
+        <di:waypoint x="1390" y="140" />
+        <di:waypoint x="1390" y="202" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1149" y="171" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15itewt_di" bpmnElement="Flow_15itewt">
+        <di:waypoint x="1415" y="227" />
+        <di:waypoint x="1455" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pibvw0_di" bpmnElement="JaSequenceFlow2">
+        <di:waypoint x="1165" y="227" />
+        <di:waypoint x="1230" y="227" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1193" y="209" width="9" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wh6hna_di" bpmnElement="Flow_0wh6hna">
+        <di:waypoint x="1505" y="227" />
+        <di:waypoint x="1590" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wa981u_di" bpmnElement="Flow_0wa981u">
+        <di:waypoint x="700" y="227" />
+        <di:waypoint x="765" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oinb9b_di" bpmnElement="Flow_0oinb9b">
+        <di:waypoint x="1690" y="227" />
+        <di:waypoint x="1742" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_07okm9r_di" bpmnElement="TextAnnotation_07okm9r">
+        <dc:Bounds x="310" y="110" width="195" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0gtwkh0_di" bpmnElement="TextAnnotation_0gtwkh0">
+        <dc:Bounds x="210" y="140" width="80" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0kky9km_di" bpmnElement="Association_0kky9km">
+        <di:waypoint x="351" y="187" />
+        <di:waypoint x="370" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1fc5mab_di" bpmnElement="Association_1fc5mab">
+        <di:waypoint x="252" y="209" />
+        <di:waypoint x="258" y="170" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

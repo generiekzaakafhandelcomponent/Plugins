@@ -1,0 +1,25 @@
+<smls:KentekenInfoResponse xmlns:smls="http://bkwi.nl/SuwiML/Diensten/RDWDossierGSD/v0200">
+    <ClientSuwi>
+        <Aansprakelijke>
+            <Voertuig>
+                <KentekenVoertuig>ONBEKE</KentekenVoertuig>
+            </Voertuig>
+        </Aansprakelijke>
+    </ClientSuwi>
+    <fwi:FWI xmlns:fwi="http://bkwi.nl/SuwiML/FWI/v0205">
+        <Fout>
+            <Code>003</Code>
+            <Tekst>Supplier rdw returned error code 003 (Kenteken is onbekend)</Tekst>
+            <Bron>
+                <DN>cn=SUWI-RDW,o=RDW,c=nl</DN>
+            </Bron>
+        </Fout>
+        <Fout>
+            <Code>3</Code>
+            <Tekst>Supplier rdw returned error code 3 (Kenteken is onbekend)</Tekst>
+            <Bron>
+                <DN>cn=SUWI-RDW,o=RDW,c=nl</DN>
+            </Bron>
+        </Fout>
+    </fwi:FWI>
+</smls:KentekenInfoResponse>

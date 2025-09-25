@@ -1,0 +1,90 @@
+{
+    "inkomsten": [
+        {
+            "naamRechtspersoon": "MUZIEKHANDEL DWARSFLUIT",
+            "opgaven": [
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.835E+5,
+                    "loonLbPremieVolksverzekering": 1.926E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 1.5E+4,
+                    "opgbRechtExtraPrdSalaris": 1.5E+4,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20190909",
+                    "datumEindOpgave": "20191006",
+                    "aantalVerloondeUren": 125,
+                    "codeSoortIkv": {
+                        "code": "15",
+                        "name": "15 Loon of salaris niet onder te brengen onder 11, 13 of 17",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "O",
+                        "name": "Onbepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "11",
+                        "name": "uitzendkracht"
+                    },
+                    "naamRechtspersoon": "MUZIEKHANDEL DWARSFLUIT"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.835E+5,
+                    "loonLbPremieVolksverzekering": 1.926E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 1.5E+4,
+                    "opgbRechtExtraPrdSalaris": 1.5E+4,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20191007",
+                    "datumEindOpgave": "20191103",
+                    "aantalVerloondeUren": 125,
+                    "codeSoortIkv": {
+                        "code": "15",
+                        "name": "15 Loon of salaris niet onder te brengen onder 11, 13 of 17",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "O",
+                        "name": "Onbepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "11",
+                        "name": "uitzendkracht"
+                    },
+                    "naamRechtspersoon": "MUZIEKHANDEL DWARSFLUIT"
+                },
+                {
+                    "brutoSocialeVerzekeringsLoon": 1.835E+5,
+                    "loonLbPremieVolksverzekering": 1.926E+5,
+                    "ingehoudenLbPremieVolksverzekering": 0,
+                    "vakantietoeslag": 0,
+                    "opgbRechtVakantietoeslag": 0,
+                    "extraPrdSalaris": 1.5E+4,
+                    "opgbRechtExtraPrdSalaris": 1.5E+4,
+                    "vergoedingReiskostenOnbelast": 0,
+                    "datumAanvangOpgave": "20191202",
+                    "datumEindOpgave": "20191231",
+                    "aantalVerloondeUren": 125,
+                    "codeSoortIkv": {
+                        "code": "15",
+                        "name": "15 Loon of salaris niet onder te brengen onder 11, 13 of 17",
+                        "type": "LOONDIENST"
+                    },
+                    "codeSoortArbeidscontract": {
+                        "code": "O",
+                        "name": "Onbepaalde tijd"
+                    },
+                    "codeAardIkv": {
+                        "code": "11",
+                        "name": "uitzendkracht"
+                    },
+                    "naamRechtspersoon": "MUZIEKHANDEL DWARSFLUIT"
+                }
+            ]
+        }
+    ]
+}
