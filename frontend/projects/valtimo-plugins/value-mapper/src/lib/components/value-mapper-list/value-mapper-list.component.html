@@ -43,18 +43,18 @@
     ></valtimo-no-results>
 </valtimo-carbon-list>
 
-<valtimo-text-template-add-edit-modal
+<valtimo-value-mapper-add-edit-modal
         [open]="showAddModal$ | async"
         (closeEvent)="onAdd($event)"
-></valtimo-text-template-add-edit-modal>
+></valtimo-value-mapper-add-edit-modal>
 
 <ng-container *ngIf="{selectedRowKeys: selectedRowKeys$ | async} as obs">
-    <valtimo-text-template-delete-modal
+    <valtimovalue-mapper-delete-modal
             [deleteRowKeys]="obs.selectedRowKeys"
             [showDeleteModal$]="showDeleteModal$"
             (deleteEvent)="onDelete($event)"
     >
-    </valtimo-text-template-delete-modal>
+    </valtimovalue-mapper-delete-modal>
 </ng-container>
 
 <ng-template #addTemplateButton>

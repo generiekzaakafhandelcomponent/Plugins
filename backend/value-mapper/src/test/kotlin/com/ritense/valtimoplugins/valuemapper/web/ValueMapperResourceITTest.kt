@@ -111,7 +111,7 @@ class ValueMapperResourceITTest {
         val template = ValueMapperTemplate(UUID.randomUUID(), "def1", getValueMapperContent())
 
         whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def2"))
-        whenever(templateService.saveUpdate(any())).thenReturn(template)
+        whenever(templateService.saveUpdate(any(), any())).thenReturn(template)
         whenever(loadingService.resourceExists(any())).thenReturn(false)
 
         mockMvc.post("/api/management/v1/value-mapper/definitions") {
@@ -127,7 +127,7 @@ class ValueMapperResourceITTest {
             }
         }
 
-        verify(templateService).saveUpdate(any())
+        verify(templateService).saveUpdate(any(), any())
     }
 
     @Test
@@ -135,7 +135,7 @@ class ValueMapperResourceITTest {
         val template = ValueMapperTemplate(UUID.randomUUID(), "def1", getValueMapperContent())
 
         whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def1","def2"))
-        whenever(templateService.saveUpdate(any())).thenReturn(template)
+        whenever(templateService.saveUpdate(any(), any())).thenReturn(template)
         whenever(loadingService.resourceExists(any())).thenReturn(false)
 
         mockMvc.put("/api/management/v1/value-mapper/definitions/def1") {
@@ -151,7 +151,7 @@ class ValueMapperResourceITTest {
             }
         }
 
-        verify(templateService).saveUpdate(any())
+        verify(templateService).saveUpdate(any(), any())
     }
 
     @Test

@@ -24,9 +24,9 @@ import {ValueMapperService} from "../../service/value-mapper.service";
 import {TemplateResponse} from "../../models";
 
 @Component({
-    templateUrl: './valuemapper-editor.component.html',
+    templateUrl: './value-mapper-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./valuemapper-editor.component.scss'],
+    styleUrls: ['./value-mapper-editor.component.scss'],
     providers: [NotificationService],
 })
 export class ValueMapperEditorComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -151,7 +151,7 @@ export class ValueMapperEditorComponent implements OnInit, AfterViewInit, OnDest
     private setModel(content: string): void {
         this.model$.next({
             value: content,
-            language: 'freemarker2',
+            language: 'json',
         });
         this.updatedModelValue$.next(content);
     }

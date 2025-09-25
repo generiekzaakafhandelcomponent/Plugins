@@ -52,9 +52,6 @@ class ValueMapperTemplateService(
         return ValueMapperDefinition(template.key, commands)
     }
 
-    fun saveUpdate(template: ValueMapperTemplate): ValueMapperTemplate {
-        return templateRepository.save(template)
-    }
 
     fun saveUpdate(key: String, content: String): ValueMapperTemplate {
         val existingTemplate = templateRepository.findByKey(key);

@@ -22,14 +22,8 @@
   } as obs">
 
     <div class="template-explanation">
-        Text Templates use <a target="_blank" href="https://freemarker.apache.org/docs/dgui_quickstart_basics.html">FreeMarker</a>
-        to create placeholders inside the text. The data-model for FreeMarker is based upon nested <a
-            target="_blank" href="https://docs.valtimo.nl/reference/modules/value-resolver">Valtimo value-resolvers</a>
-        with a slightly different notation. For example: $&#123;doc.firstName&#125;. Retrieves
-        the `firstName` from the case.
-
-        Text Templates can be used as value resolvers. For example: $&#123;template.my-text-template&#125; or
-        `template:my-text-template`.
+        Value Mapper templates use JSON source- and targetpointers to map values from a source to a target.
+        Furthermore, transformations can be done on the source values using the transformation property in the Value Mapper template.
     </div>
 
     <valtimo-editor
@@ -76,10 +70,10 @@
 </ng-container>
 
 <ng-container *ngIf="{templateKey: templateKey$ | async} as obs">
-    <valtimo-text-template-delete-modal
+    <valtimo-value-mapper-delete-modal
             [deleteRowKeys]="[obs.templateKey]"
             [showDeleteModal$]="showDeleteModal$"
             (deleteEvent)="onDelete($event)"
     >
-    </valtimo-text-template-delete-modal>
+    </valtimo-value-mapper-delete-modal>
 </ng-container>

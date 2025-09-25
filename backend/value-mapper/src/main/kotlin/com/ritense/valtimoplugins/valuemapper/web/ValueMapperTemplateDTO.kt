@@ -18,4 +18,18 @@ package com.ritense.valtimoplugins.valuemapper.web
 
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTemplate
 
-data class TemplateResponse(val template : ValueMapperTemplate, val readOnly: Boolean)
+data class ValueMapperTemplateDTO(
+    val key: String,
+    val content: String,
+    val readOnly: Boolean
+) {
+    companion object {
+        fun of(template: ValueMapperTemplate, readOnly: Boolean): ValueMapperTemplateDTO {
+            return ValueMapperTemplateDTO(
+                key = template.key,
+                content = template.content,
+                readOnly = readOnly,
+            )
+        }
+    }
+}

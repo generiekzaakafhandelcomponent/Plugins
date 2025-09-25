@@ -47,4 +47,6 @@ interface GenerateValueMapperConfig {
     processVariableName: string;
 }
 
-export{ProcessMappingConfig, ValueMapperListItem, TemplateResponse, ValueMapperTemplate, UpdateValueMapperTemplate, GenerateValueMapperConfig}
+type TemplateMetadataModal = 'add' | 'edit';
+
+export{TemplateMetadataModal, ProcessMappingConfig, ValueMapperListItem, TemplateResponse, ValueMapperTemplate, UpdateValueMapperTemplate, GenerateValueMapperConfig}

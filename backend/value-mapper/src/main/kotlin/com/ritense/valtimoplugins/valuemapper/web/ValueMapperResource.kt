@@ -56,39 +56,41 @@ class ValueMapperResource(
     @GetMapping("definitions/{key}")
     fun getMappingDefinition(
         @PathVariable key: String,
-    ): ResponseEntity<TemplateResponse> {
+    ): ResponseEntity<ValueMapperTemplateDTO> {
         val template = valueMapperTemplateService.getTemplate(key)
-        return ResponseEntity.ok(TemplateResponse(template, isReadOnly(key)))
+        return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(key)))
     }
 
     @PostMapping("definitions")
     fun createTemplate(
-        @RequestBody template: ValueMapperTemplate,
-    ): ResponseEntity<TemplateResponse> {
+        @RequestBody template: ValueMapperTemplateDTO,
+    ): ResponseEntity<ValueMapperTemplateDTO> {
         if (valueMapperTemplateService.getTemplatesKeys().contains(template.key)) {
             throw BadRequestAlertException("The key ${template.key} already exists", ValueMapperTemplate::class.simpleName, "keyExists")
         }
 
         val template = valueMapperTemplateService.saveUpdate(
-            template
+            template.key,
+            template.content
         )
 
-        return ResponseEntity.ok(TemplateResponse(template, isReadOnly(template.key)))
+        return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(template.key)))
     }
 
     @PutMapping("definitions/{key}")
     fun updateTemplate(
         @PathVariable key: String,
-        @RequestBody template: ValueMapperTemplate,
-    ): ResponseEntity<TemplateResponse> {
+        @RequestBody template: ValueMapperTemplateDTO,
+    ): ResponseEntity<ValueMapperTemplateDTO> {
         if (template.key.isBlank() || key != template.key) {
             throw BadRequestAlertException("The template key ${template.key} is not equal to the path variabele", ValueMapperTemplate::class.simpleName, "keyNOtEqual")
         }
 
         val template = valueMapperTemplateService.saveUpdate(
-          template
+            template.key,
+            template.content
         )
-        return ResponseEntity.ok(TemplateResponse(template, isReadOnly(key)))
+        return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(key)))
     }
 
     @DeleteMapping("definitions/{key}")
