@@ -30,34 +30,43 @@
           [margin]="true"
           [disabled]="obs.disabled"
           [defaultValue]="obs.prefill?.configurationTitle"
-          [widthPx]="350"
           [required]="true"
           [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
-          placeholder="Email API plugin"
+          placeholder="Spotler plugin"
   >
   </v-input>
   <v-input
-          name="emailApiBaseUrl"
-          [title]="'emailApiBaseUrl' | pluginTranslate: pluginId | async"
+          name="clientId"
+          [title]="'clientId' | pluginTranslate: pluginId | async"
           [margin]="true"
           [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.emailApiBaseUrl"
-          [widthPx]="350"
+          [defaultValue]="obs.prefill?.clientId"
           [required]="true"
-          [tooltip]="'emailApiBaseUrlTooltip' | pluginTranslate: pluginId | async"
-          placeholder="emailApiBaseUrl"
+          [tooltip]="'clientIdTooltip' | pluginTranslate: pluginId | async"
+          placeholder="client-id"
   >
   </v-input>
   <v-input
-          name="subscriptionKey"
-          [title]="'subscriptionKey' | pluginTranslate: pluginId | async"
+          name="accountId"
+          [title]="'accountId' | pluginTranslate: pluginId | async"
           [margin]="true"
           [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.subscriptionKey"
-          [widthPx]="350"
+          [defaultValue]="obs.prefill?.accountId"
           [required]="true"
-          [tooltip]="'subscriptionKeyTooltip' | pluginTranslate: pluginId | async"
-          placeholder="subscription key"
+          [tooltip]="'accountIdTooltip' | pluginTranslate: pluginId | async"
+          placeholder="account-id"
+  >
+  </v-input>
+  <v-input
+          name="clientSecret"
+          type="password"
+          [title]="'clientSecret' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [disabled]="obs.disabled"
+          [defaultValue]="obs.prefill?.clientSecret"
+          [required]="true"
+          [fullWidth]="true"
+          [tooltip]="'clientSecretTooltip' | pluginTranslate: pluginId | async"
   >
   </v-input>
 </v-form>

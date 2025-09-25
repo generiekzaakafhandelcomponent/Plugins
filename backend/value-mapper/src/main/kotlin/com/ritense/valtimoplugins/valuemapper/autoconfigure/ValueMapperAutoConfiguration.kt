@@ -57,7 +57,7 @@ class ValueMapperAutoConfiguration {
 
 
 
-    @Order(401)
+    @Order(269)
     @Bean
     @ConditionalOnMissingBean(ValueMapperHttpSecurityConfigurer::class)
     fun valueMapperSecurityConfig(): ValueMapperHttpSecurityConfigurer {

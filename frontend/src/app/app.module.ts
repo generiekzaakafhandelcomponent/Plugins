@@ -133,6 +133,10 @@ import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
 import {DocumentSearchPluginModule, documentSearchPluginSpecification} from "@valtimo-plugins/document-search";
+import {ValueMapperPluginModule} from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin-module";
+import {
+    valueMapperPluginSpecification
+} from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -226,7 +230,9 @@ export function tabsFactory() {
         DashboardManagementModule,
         KvkPluginModule,
         DocumentSearchPluginModule,
-        ZgwModule
+        ZgwModule,
+        ValueMapperPluginModule,
+
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -254,6 +260,7 @@ export function tabsFactory() {
             XentialPluginSpecification,
             kvkPluginSpecification,
             documentSearchPluginSpecification,
+            valueMapperPluginSpecification,
             catalogiApiPluginSpecification,
             documentenApiPluginSpecification,
             openZaakPluginSpecification,
