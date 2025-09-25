@@ -65,18 +65,13 @@ class DocumentSearchPlugin(
         )
         val documentIds = results.map { it.id().toString() }
 
-        when (val count = documentIds.size) {
-            0 -> logger.info {
+        if (documentIds.isEmpty()) {
+            logger.info {
                 "No matching cases found (path='$documentPath', value='$searchedValue', businessKey='$businessKey')"
             }
-
-            1 -> logger.warn {
-                "1 matching case found: id='${documentIds.first()}' (path='$documentPath', value='$searchedValue', businessKey='$businessKey')"
-            }
-
-            else -> logger.warn {
-                "$count matching cases found: ids=${documentIds.joinToString(prefix = "[", postfix = "]")} " +
-                    "(path='$documentPath', value='$searchedValue', businessKey='$businessKey')"
+        } else {
+            logger.info {
+                "Match found id='${documentIds.first()}' path='$documentPath' value='$searchedValue' businessKey='$businessKey'"
             }
         }
 
