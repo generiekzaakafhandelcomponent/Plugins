@@ -1,0 +1,29 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "document-search.start",
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "DocumentSearchTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "790e7edd-675a-4c4a-8bf6-02fabfb66cfe",
+    "pluginActionDefinitionKey": "search-document",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "documentPath": "/bsn",
+      "searchedValue": "doc:bsn",
+      "resultProcessVariableName": "result"
+    }
+  },
+  {
+    "activityId": "DataPreviewTask",
+    "activityType": "bpmn:UserTask:create",
+    "formDefinitionName": "document-search.document-id-preview",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "processLinkType": "form"
+  }
+]

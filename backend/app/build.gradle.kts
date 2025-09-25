@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":backend:suwinet"))
     implementation(project(":backend:xential"))
     implementation(project(":backend:hugging-face"))
+    implementation(project(":backend:document-search"))
 }
 
 tasks.jar {

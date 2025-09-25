@@ -132,6 +132,7 @@ import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr
 import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
+import {DocumentSearchPluginModule, documentSearchPluginSpecification} from "@valtimo-plugins/document-search";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -224,6 +225,7 @@ export function tabsFactory() {
         DashboardModule,
         DashboardManagementModule,
         KvkPluginModule,
+        DocumentSearchPluginModule,
         ZgwModule
     ],
     providers: [{
@@ -251,6 +253,7 @@ export function tabsFactory() {
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
             kvkPluginSpecification,
+            documentSearchPluginSpecification,
             catalogiApiPluginSpecification,
             documentenApiPluginSpecification,
             openZaakPluginSpecification,
