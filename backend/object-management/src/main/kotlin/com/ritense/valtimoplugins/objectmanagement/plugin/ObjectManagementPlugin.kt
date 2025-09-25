@@ -67,6 +67,26 @@ open class ObjectManagementPlugin(
     }
 
     @PluginAction(
+        key = "create-object-scoped",
+        title = "Create Object (scoped)",
+        description = "Create a new Object (getting the object data from the execution's variable scope)",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun createObjectScoped(
+        execution: DelegateExecution,
+        @PluginActionProperty objectManagementConfigurationId: UUID,
+        @PluginActionProperty objectData: List<DataBindingConfig>,
+        @PluginActionProperty objectUrlProcessVariableName: String
+    ) {
+        val objectUrl = objectManagementCrudService.createObject(
+            objectManagementConfigurationId,
+            getObjectData(objectData, execution),
+        )
+
+        execution.setVariable(objectUrlProcessVariableName, objectUrl.toString())
+    }
+
+    @PluginAction(
         key = "update-object",
         title = "Update Object",
         description = "Update an existing Object",
@@ -121,20 +141,29 @@ open class ObjectManagementPlugin(
         logger.info { "Successfully retrieved ${objects.results.size} objects for object management: $objectManagementConfigurationTitle" }
     }
 
+    private fun getObjectData(keyValueMap: List<DataBindingConfig>, execution: DelegateExecution): JsonNode {
+        val resolvedValuesMap = valueResolverService.resolveValues(
+            execution.businessKey,
+            execution,
+            keyValueMap.map { it.value }
+        )
+
+        validateResolvedValues(keyValueMap, resolvedValuesMap, execution.businessKey)
+
+        return getObjectData(keyValueMap, resolvedValuesMap)
+    }
+
     private fun getObjectData(keyValueMap: List<DataBindingConfig>, documentId: String): JsonNode {
         val resolvedValuesMap = valueResolverService.resolveValues(
             documentId, keyValueMap.map { it.value }
         )
 
-        if (keyValueMap.size != resolvedValuesMap.size) {
-            val failedValues = keyValueMap
-                .filter { !resolvedValuesMap.containsKey(it.value) }
-                .joinToString(", ") { "'${it.key}' = '${it.value}'" }
-            throw IllegalArgumentException(
-                "Error in case: '${documentId}'. Failed to resolve values: $failedValues".trimMargin()
-            )
-        }
+        validateResolvedValues(keyValueMap, resolvedValuesMap, documentId)
 
+        return getObjectData(keyValueMap, resolvedValuesMap)
+    }
+
+    private fun getObjectData(keyValueMap: List<DataBindingConfig>, resolvedValuesMap: Map<String, Any?>): JsonNode {
         val objectDataMap = keyValueMap.associate { it.key to resolvedValuesMap[it.value] }
 
         val objectData = objectMapper.createObjectNode()
@@ -149,6 +178,21 @@ open class ObjectManagementPlugin(
         JsonPatchService.apply(jsonPatchBuilder.build(), objectData)
 
         return objectMapper.convertValue(objectData)
+    }
+
+    private fun validateResolvedValues(
+        keyValueMap: List<DataBindingConfig>,
+        resolvedValuesMap: Map<String, Any?>,
+        documentId: String
+    ) {
+        if (keyValueMap.size != resolvedValuesMap.size) {
+            val failedValues = keyValueMap
+                .filter { !resolvedValuesMap.containsKey(it.value) }
+                .joinToString(", ") { "'${it.key}' = '${it.value}'" }
+            throw IllegalArgumentException(
+                "Error in case: '${documentId}'. Failed to resolve values: $failedValues".trimMargin()
+            )
+        }
     }
 
     @PluginAction(
