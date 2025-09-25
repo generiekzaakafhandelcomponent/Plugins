@@ -21,7 +21,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule} from "@angular/forms";
 import {
     CarbonListModule,
     ConfirmationModalModule,
@@ -48,7 +48,6 @@ import {ProcessMappingComponent} from "./components/process-mapping/process-mapp
 import {ValueMapperListComponent} from "./components/value-mapper-list/value-mapper-list.component";
 import {ValueMapperManagementRoutingModule} from "./value-mapper-management-routing.module";
 import {ValueMapperEditorComponent} from "./components/value-mapper-editor/value-mapper-editor.component";
-import {GenerateValueMapperComponent} from "./components/generate-value-mapping-file/generate-value-mapper.component";
 import {
     ValueMapperAddEditModalComponent
 } from "./components/value-mapper-add-edit-modal/value-mapper-add-edit-modal.component";
@@ -64,7 +63,6 @@ import {TranslateModule} from "@ngx-translate/core";
       ProcessMappingComponent,
       ValueMapperListComponent,
       ValueMapperEditorComponent,
-      GenerateValueMapperComponent,
       ValueMapperAddEditModalComponent,
       ValueMapperDeleteModalComponent
   ],
@@ -97,7 +95,6 @@ import {TranslateModule} from "@ngx-translate/core";
       ProcessMappingComponent,
       ValueMapperListComponent,
       ValueMapperEditorComponent,
-      GenerateValueMapperComponent,
       ValueMapperAddEditModalComponent
   ],
     providers: [

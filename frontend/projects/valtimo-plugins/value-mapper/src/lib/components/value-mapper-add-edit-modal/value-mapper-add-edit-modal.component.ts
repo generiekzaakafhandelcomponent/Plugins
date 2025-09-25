@@ -31,7 +31,6 @@ export class ValueMapperAddEditModalComponent implements OnInit {
     @Input() set defaultKeyValue(value: string) {
         this._defaultKeyValue = value;
         this.setDefaultKeyValue(value);
-        console.log("defKey:" + value)
     }
 
     @Output() closeEvent = new EventEmitter<{ key: string; metadata?: any } | null>();
@@ -47,7 +46,6 @@ export class ValueMapperAddEditModalComponent implements OnInit {
         if (!key?.value) {
             return key
         }
-        key.setValue(this.keyGeneratorService.getUniqueKey(key.value, []));
         return key;
     }
 
