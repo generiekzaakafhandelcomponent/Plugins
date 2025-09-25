@@ -65,14 +65,8 @@ class DocumentSearchPlugin(
         )
         val documentIds = results.map { it.id().toString() }
 
-        if (documentIds.isEmpty()) {
-            logger.info {
-                "No matching cases found (path='$documentPath', value='$searchedValue', businessKey='$businessKey')"
-            }
-        } else {
-            logger.info {
-                "Match found id='${documentIds.first()}' path='$documentPath' value='$searchedValue' businessKey='$businessKey'"
-            }
+        logger.info {
+            "${documentIds.size} matching cases found (path='$documentPath', value='$searchedValue', businessKey='$businessKey')"
         }
 
         execution.processInstance.setVariable(resultProcessVariableName, documentIds)
