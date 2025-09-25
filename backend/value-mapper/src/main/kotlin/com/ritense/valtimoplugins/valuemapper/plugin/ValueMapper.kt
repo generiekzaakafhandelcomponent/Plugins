@@ -55,11 +55,11 @@ open class ValueMapper(
      * @param businessKey the businessKey/documentId of the document the Value Mapper Definition should be applied to.
      **/
     fun applyToDocument(
-        mapperDefinitionId: String,
+        definitionKey: String,
         businessKey: String
     ) {
-        val mapperDefinition = requireNotNull(templateService.getDefinition(mapperDefinitionId))
-        { "No Mapper Definitions found with id $mapperDefinitionId" }
+        val mapperDefinition = requireNotNull(templateService.getDefinition(definitionKey))
+        { "No Mapper Definitions found with id $definitionKey" }
 
         documentService
             .get(businessKey)

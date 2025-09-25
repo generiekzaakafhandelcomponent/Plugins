@@ -101,7 +101,7 @@ import {TranslateModule} from "@ngx-translate/core";
     {
         provide: CASE_MANAGEMENT_TAB_TOKEN,
         useValue: {
-            translationKey: 'Value mapper templates',
+            translationKey: 'Value mapper definitions',
             component: ValueMapperListComponent,
         },
         multi: true,

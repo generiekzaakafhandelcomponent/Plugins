@@ -16,7 +16,7 @@
 
 
 interface ProcessMappingConfig {
-    definition: string
+    definitionKey: string
 }
 
 interface ValueMapperListItem {

@@ -47,14 +47,14 @@ open class ValueMapperPlugin(
     )
     fun processMapping(
         execution: DelegateExecution,
-        @PluginActionProperty mappingDefinitionId: String
+        @PluginActionProperty definitionKey: String
     )
     {
         val businessKey = execution.businessKey
 
-        logger.info{"Processing mapping definition ${mappingDefinitionId} for process definition ${execution.processDefinitionId} with businesskey $businessKey"}
+        logger.info{"Processing mapping definition ${definitionKey} for process definition ${execution.processDefinitionId} with businesskey $businessKey"}
 
-        valueMapper.applyToDocument(mappingDefinitionId, businessKey)
+        valueMapper.applyToDocument(definitionKey, businessKey)
     }
 
     companion object {

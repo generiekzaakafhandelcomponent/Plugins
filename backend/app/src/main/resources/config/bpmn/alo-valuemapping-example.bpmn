@@ -4,20 +4,25 @@
     <bpmn:startEvent id="startAlo" name="startAlo">
       <bpmn:outgoing>Flow_1865rrw</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1865rrw" sourceRef="startAlo" targetRef="AanvraagForm" />
-    <bpmn:userTask id="AanvraagForm" name="AanvraagForm">
+    <bpmn:sequenceFlow id="Flow_1865rrw" sourceRef="startAlo" targetRef="AanvraagFormALO" />
+    <bpmn:userTask id="AanvraagFormALO" name="AanvraagFormALO">
       <bpmn:incoming>Flow_1865rrw</bpmn:incoming>
       <bpmn:outgoing>Flow_0owopzt</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0owopzt" sourceRef="AanvraagForm" targetRef="process-mapping" />
+    <bpmn:sequenceFlow id="Flow_0owopzt" sourceRef="AanvraagFormALO" targetRef="process-mapping" />
     <bpmn:endEvent id="endAlo" name="endAlo">
-      <bpmn:incoming>Flow_0wvkd3r</bpmn:incoming>
+      <bpmn:incoming>Flow_1n361im</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0wvkd3r" sourceRef="process-mapping" targetRef="endAlo" />
+    <bpmn:sequenceFlow id="Flow_0wvkd3r" sourceRef="process-mapping" targetRef="AanvraagReadOnlyFormALO" />
     <bpmn:serviceTask id="process-mapping" name="Process Mapping" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:incoming>Flow_0owopzt</bpmn:incoming>
       <bpmn:outgoing>Flow_0wvkd3r</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:userTask id="AanvraagReadOnlyFormALO" name="AanvraagReadOnlyFormALO">
+      <bpmn:incoming>Flow_0wvkd3r</bpmn:incoming>
+      <bpmn:outgoing>Flow_1n361im</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1n361im" sourceRef="AanvraagReadOnlyFormALO" targetRef="endAlo" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="alo-valuemapping-example">
@@ -27,17 +32,22 @@
           <dc:Bounds x="182" y="145" width="38" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1schn0a_di" bpmnElement="AanvraagForm">
+      <bpmndi:BPMNShape id="Activity_1schn0a_di" bpmnElement="AanvraagFormALO">
         <dc:Bounds x="270" y="80" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ldpmck_di" bpmnElement="endAlo">
-        <dc:Bounds x="592" y="102" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="593" y="145" width="35" height="14" />
-        </bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0yf7bmf_di" bpmnElement="process-mapping">
         <dc:Bounds x="430" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ldpmck_di" bpmnElement="endAlo">
+        <dc:Bounds x="732" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="733" y="145" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0dct6jx" bpmnElement="AanvraagReadOnlyFormALO">
+        <dc:Bounds x="580" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1865rrw_di" bpmnElement="Flow_1865rrw">
         <di:waypoint x="218" y="120" />
@@ -49,7 +59,11 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0wvkd3r_di" bpmnElement="Flow_0wvkd3r">
         <di:waypoint x="530" y="120" />
-        <di:waypoint x="592" y="120" />
+        <di:waypoint x="580" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1n361im_di" bpmnElement="Flow_1n361im">
+        <di:waypoint x="680" y="120" />
+        <di:waypoint x="732" y="120" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
