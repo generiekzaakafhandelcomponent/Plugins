@@ -47,6 +47,10 @@ interface GenerateValueMapperConfig {
     processVariableName: string;
 }
 
+interface DeleteTemplatesRequest {
+    templates: Array<string>;
+}
+
 type TemplateMetadataModal = 'add' | 'edit';
 
-export{TemplateMetadataModal, ProcessMappingConfig, ValueMapperListItem, TemplateResponse, ValueMapperTemplate, UpdateValueMapperTemplate, GenerateValueMapperConfig}
+export{DeleteTemplatesRequest, TemplateMetadataModal, ProcessMappingConfig, ValueMapperListItem, TemplateResponse, ValueMapperTemplate, UpdateValueMapperTemplate, GenerateValueMapperConfig}

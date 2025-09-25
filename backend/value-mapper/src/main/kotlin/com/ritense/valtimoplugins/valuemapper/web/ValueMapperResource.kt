@@ -63,7 +63,7 @@ class ValueMapperResource(
 
     @PostMapping("definitions")
     fun createTemplate(
-        @RequestBody template: ValueMapperTemplateDTO,
+        @RequestBody template: CreateValueMapperDTO,
     ): ResponseEntity<ValueMapperTemplateDTO> {
         if (valueMapperTemplateService.getTemplatesKeys().contains(template.key)) {
             throw BadRequestAlertException("The key ${template.key} already exists", ValueMapperTemplate::class.simpleName, "keyExists")
@@ -71,7 +71,7 @@ class ValueMapperResource(
 
         val template = valueMapperTemplateService.saveUpdate(
             template.key,
-            template.content
+            ""
         )
 
         return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(template.key)))
@@ -93,11 +93,11 @@ class ValueMapperResource(
         return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(key)))
     }
 
-    @DeleteMapping("definitions/{key}")
+    @DeleteMapping("definitions")
     fun deleteTemplates(
-        @PathVariable key: String
+        @RequestBody request: DeleteTemplateRequest
     ): ResponseEntity<Unit> {
-        valueMapperTemplateService.removeTemplate(key)
+        valueMapperTemplateService.removeTemplate(request.templates)
         return ResponseEntity.ok().build()
     }
 

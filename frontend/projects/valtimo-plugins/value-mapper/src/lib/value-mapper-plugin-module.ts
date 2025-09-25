@@ -21,22 +21,25 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {
     CarbonListModule,
     ConfirmationModalModule,
     EditorModule,
     FormModule,
-    RenderInPageHeaderDirectiveModule,
-    SelectModule
-} from "@valtimo/components";
+    InputModule as ValtimoInputModule,
+    ParagraphModule, RenderInPageHeaderDirectiveModule,
+    SelectModule,
+} from '@valtimo/components';
 import {
     ButtonModule,
     DialogModule,
+    DropdownModule,
     IconModule,
     InputModule,
+    LoadingModule,
     ModalModule,
-    NotificationModule
+    NotificationModule, TabsModule,
 } from 'carbon-components-angular';
 import {
     ValueMapperConfigurationComponent
@@ -68,28 +71,34 @@ import {TranslateModule} from "@ngx-translate/core";
     imports: [
         CommonModule,
         PluginTranslatePipeModule,
-        FormModule,
-        InputModule,
-        FormsModule,
-        SelectModule,
-        NotificationModule,
-        ConfirmationModalModule,
         ValueMapperManagementRoutingModule,
+        FormModule,
+        ParagraphModule,
+        SelectModule,
+        ConfirmationModalModule,
         TranslateModule,
+        ReactiveFormsModule,
         CarbonListModule,
         EditorModule,
-        DialogModule,
+        ValtimoInputModule,
         ButtonModule,
-        RenderInPageHeaderDirectiveModule,
+        DialogModule,
+        DropdownModule,
         IconModule,
+        InputModule,
+        LoadingModule,
         ModalModule,
+        NotificationModule,
+        RenderInPageHeaderDirectiveModule,
+        TabsModule,
     ],
   exports: [
     ValueMapperConfigurationComponent,
       ProcessMappingComponent,
       ValueMapperListComponent,
       ValueMapperEditorComponent,
-      GenerateValueMapperComponent
+      GenerateValueMapperComponent,
+      ValueMapperAddEditModalComponent
   ],
     providers: [
     {

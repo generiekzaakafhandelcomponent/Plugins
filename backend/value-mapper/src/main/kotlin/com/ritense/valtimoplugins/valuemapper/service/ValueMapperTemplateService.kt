@@ -25,18 +25,22 @@ import com.ritense.valtimoplugins.valuemapper.repository.ValueMapperTemplateRepo
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
+@Transactional
 @Service
 class ValueMapperTemplateService(
     private val templateRepository: ValueMapperTemplateRepository,
     private val objectMapper: ObjectMapper
 ) {
 
+    @Transactional(readOnly = true)
     fun getTemplatesKeys(): Set<String> {
         return templateRepository.getAll()
     }
 
+    @Transactional(readOnly = true)
     fun getTemplatesKeysPaged(pageable: Pageable): Page<String> {
         return templateRepository.findAllKeysPaged(pageable)
     }
@@ -45,6 +49,7 @@ class ValueMapperTemplateService(
         return templateRepository.findByKey(key)!!
     }
 
+    @Transactional(readOnly = true)
     fun getDefinition(key: String): ValueMapperDefinition {
         val template = getTemplate(key);
         val commands: List<ValueMapperCommand> = objectMapper.readValue(template.content)
@@ -65,7 +70,7 @@ class ValueMapperTemplateService(
         return templateRepository.save(existingTemplate)
     }
 
-    fun removeTemplate(key: String) {
-        templateRepository.deleteByKey(key)
+    fun removeTemplate(keys: List<String>) {
+        keys.forEach {   templateRepository.deleteByKey(it)}
     }
 }

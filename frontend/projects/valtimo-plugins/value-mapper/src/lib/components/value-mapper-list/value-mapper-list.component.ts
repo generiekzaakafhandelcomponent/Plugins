@@ -76,7 +76,7 @@ export class ValueMapperListComponent implements OnInit {
         this.valueMapperService.addValueMapper(data).subscribe(template => {
             this.showAddModal$.next(false);
             this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName => {
-                this.gotoTextTemplateEditor(caseDefinitionName, template.key);
+                this.gotoTemplateEditor(caseDefinitionName, template.key);
             })
         });
     }
@@ -86,23 +86,23 @@ export class ValueMapperListComponent implements OnInit {
         this.showDeleteModal$.next(true);
     }
 
-    // public onDelete(templates: Array<string>): void {
-    //     this.loading$.next(true);
-    //     this._caseDefinitionName$.pipe(
-    //         take(1),
-    //         switchMap(caseDefinitionName => this.templateService.deleteTemplates({caseDefinitionName, type: 'text', templates})),
-    //     ).subscribe(_ => {
-    //         this.reloadTemplateList();
-    //     });
-    // }
+    public onDelete(templates: Array<string>): void {
+        this.loading$.next(true);
+        this._caseDefinitionName$.pipe(
+            take(1),
+            switchMap(caseDefinitionName => this.valueMapperService.deleteValueMappers({templates})),
+        ).subscribe(_ => {
+            this.reloadTemplateList();
+        });
+    }
 
     public onRowClick(mapper: ValueMapperListItem ): void {
         this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-            this.gotoTextTemplateEditor(caseDefinitionName, mapper.key)
+            this.gotoTemplateEditor(caseDefinitionName, mapper.key)
         );
     }
 
-    private gotoTextTemplateEditor(caseDefinitionName: string, key: string): void {
+    private gotoTemplateEditor(caseDefinitionName: string, key: string): void {
         this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}/value-mapper/${key}`])
     }
 

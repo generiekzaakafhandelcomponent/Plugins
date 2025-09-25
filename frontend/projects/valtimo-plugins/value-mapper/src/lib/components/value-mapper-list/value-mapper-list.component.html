@@ -49,12 +49,12 @@
 ></valtimo-value-mapper-add-edit-modal>
 
 <ng-container *ngIf="{selectedRowKeys: selectedRowKeys$ | async} as obs">
-    <valtimovalue-mapper-delete-modal
+    <valtimo-value-mapper-delete-modal
             [deleteRowKeys]="obs.selectedRowKeys"
             [showDeleteModal$]="showDeleteModal$"
             (deleteEvent)="onDelete($event)"
     >
-    </valtimovalue-mapper-delete-modal>
+    </valtimo-value-mapper-delete-modal>
 </ng-container>
 
 <ng-template #addTemplateButton>

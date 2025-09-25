@@ -18,7 +18,13 @@ import {Injectable} from "@angular/core";
 import {ConfigService, Page} from "@valtimo/config";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {TemplateResponse, UpdateValueMapperTemplate, ValueMapperListItem, ValueMapperTemplate} from "../models";
+import {
+    DeleteTemplatesRequest,
+    TemplateResponse,
+    UpdateValueMapperTemplate,
+    ValueMapperListItem,
+    ValueMapperTemplate
+} from "../models";
 
 @Injectable({
     providedIn: 'root',
@@ -66,8 +72,8 @@ export class ValueMapperService {
         return this.http.post<TemplateResponse>(`${this.valtimoEndpointUri}definitions`, template);
     }
 
-    public deleteValueMapper(key: string): Observable<null> {
-        return this.http.delete<null>(`${this.valtimoEndpointUri}definitions/${key}`);
+    public deleteValueMappers(request: DeleteTemplatesRequest): Observable<null> {
+        return this.http.delete<null>(`${this.valtimoEndpointUri}definitions`, {body: request});
     }
 
     public updateValueMapper(key: string, template: UpdateValueMapperTemplate): Observable<TemplateResponse> {

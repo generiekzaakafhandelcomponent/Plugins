@@ -156,20 +156,21 @@ class ValueMapperResourceITTest {
 
     @Test
     fun shoulRemoveMappingDefinition() {
-        val template = ValueMapperTemplate(UUID.randomUUID(), "def1", getValueMapperContent())
+        val deleteTemplateRequest = DeleteTemplateRequest(listOf("def1", "def2"))
 
         whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def1","def2"))
         whenever(loadingService.resourceExists(any())).thenReturn(false)
 
-        mockMvc.delete("/api/management/v1/value-mapper/definitions/def1") {
+        mockMvc.delete("/api/management/v1/value-mapper/definitions") {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
+            content =  mapper.writeValueAsString(deleteTemplateRequest)
             with(csrf())
         }.andExpect {
             status { isOk() }
         }
 
-        verify(templateService).removeTemplate(eq("def1"))
+        verify(templateService).removeTemplate(eq(listOf("def1", "def2")))
     }
 
     @Test

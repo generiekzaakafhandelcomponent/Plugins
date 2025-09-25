@@ -36,7 +36,7 @@ class ValueMapperHttpSecurityConfigurer: HttpSecurityConfigurer {
                     .requestMatchers(antMatcher(GET, "/api/management/v1/value-mapper/definitions/{key}")).hasAuthority(ADMIN)
                     .requestMatchers(antMatcher(POST, "/api/management/v1/value-mapper/definitions")).hasAuthority(ADMIN)
                     .requestMatchers(antMatcher(PUT, "/api/management/v1/value-mapper/definitions/{key}")).hasAuthority(ADMIN)
-                    .requestMatchers(antMatcher(DELETE, "/api/management/v1/value-mapper/definitions/{key}")).hasAuthority(ADMIN)
+                    .requestMatchers(antMatcher(DELETE, "/api/management/v1/value-mapper/definitions")).hasAuthority(ADMIN)
             }
         } catch (e: Exception) {
             throw HttpConfigurerConfigurationException(e)
