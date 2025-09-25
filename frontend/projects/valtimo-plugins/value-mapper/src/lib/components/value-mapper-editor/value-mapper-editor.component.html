@@ -45,16 +45,6 @@
              } as obs"
              class="buttons-container"
         >
-            <cds-overflow-menu class="overflow-button">
-                <cds-overflow-menu-option
-                        [disabled]="obs.moreDisabled || obs.template?.readOnly"
-                        type="danger"
-                        (selected)="showDeleteModal()"
-                >{{ 'interface.delete' | translate }}
-                </cds-overflow-menu-option
-                >
-            </cds-overflow-menu>
-
             <button
                     [disabled]="(saveDisabled$ | async) || obs.template?.readOnly"
                     cdsButton="primary"

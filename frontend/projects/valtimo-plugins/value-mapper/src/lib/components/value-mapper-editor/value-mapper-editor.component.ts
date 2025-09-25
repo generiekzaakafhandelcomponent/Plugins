@@ -116,22 +116,6 @@ export class ValueMapperEditorComponent implements OnInit, AfterViewInit, OnDest
         });
     }
 
-    public onDelete(templates: Array<string>): void {
-        this.disableEditor();
-        this.disableSave();
-        this.disableMore();
-
-        // this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-        //     this.valueMapperService.deleteTemplates({caseDefinitionName, type: 'text', templates}).pipe(take(1)).subscribe(_ =>
-        //         this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
-        //     )
-        // );
-    }
-
-    public showDeleteModal(): void {
-        this.showDeleteModal$.next(true);
-    }
-
     private loadTemplate(): void {
         combineLatest([this._caseDefinitionName$, this.templateKey$]).pipe(
             tap(([_, key]) => {
