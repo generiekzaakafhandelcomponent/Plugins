@@ -23,13 +23,8 @@ pluginManager.withPlugin("maven-publish") {
                 version = pluginProperties.pluginVersion
 
                 pom {
-<<<<<<<< HEAD:backend/documents-xtra/gradle/publishing.gradle
-                    name = "Document Xtra plugin module"
-                    description = "The Document Xtra plugin module allows you to do extra actions on information objects in the Docuementen API"
-========
                     name = "Haal Centraal Plugin"
                     description = "A Plugin for Haal Centraal"
->>>>>>>> upstream/main:backend/haal-centraal/gradle/publishing.gradle
                     developers {
                         developer {
                             id = "team-valtimo"
