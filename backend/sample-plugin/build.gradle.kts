@@ -38,11 +38,11 @@ repositories {
     maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
 }
 
-val valtimoVersion: String by project
-val postgresqlDriverVersion: String by project
-val nettyResolverDnsNativeMacOsVersion: String by project
-val mockitoKotlinVersion: String by project
-val camundaBpmAssertVersion: String by project
+val valtimoVersion: String = "12.16.1.RELEASE"
+val postgresqlDriverVersion: String = "42.7.4"
+val nettyResolverDnsNativeMacOsVersion: String = "4.1.105.Final"
+val mockitoKotlinVersion: String = "5.4.0"
+val camundaBpmAssertVersion: String = "15.0.0"
 
 dependencies {
     implementation(platform("com.ritense.valtimo:valtimo-dependency-versions:$valtimoVersion"))
@@ -87,17 +87,10 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
-    }
-}
-
 dockerCompose {
     setProjectName("valtimo-docker-compose")
     useDockerComposeV2 = true
-    useComposeFiles.add("${buildDir.absolutePath}/docker/extract/valtimo-docker-compose-v-12/docker-compose.yaml")
+    useComposeFiles.add("${layout.buildDirectory}/docker/extract/valtimo-docker-compose-v-12/docker-compose.yaml")
     stopContainers = false
     removeContainers = false
     removeVolumes = false
@@ -110,3 +103,5 @@ dockerCompose {
 ktlint {
     version.set("1.4.1")
 }
+
+apply(from = "gradle/publishing.gradle")
