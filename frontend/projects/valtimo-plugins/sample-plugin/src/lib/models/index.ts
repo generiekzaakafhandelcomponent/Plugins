@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export * from '../../../../sample-plugin/src/lib/assets/sample-plugin-logo';
+export * from './config';
