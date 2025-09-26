@@ -19,8 +19,7 @@
  */
 
 export * from './lib/models';
-export * from './lib/slack-plugin-module';
-export * from './lib/slack-plugin.specification';
-export * from './lib/components/slack-configuration/slack-configuration.component';
-export * from './lib/components/post-message/post-message-configuration.component';
-export * from './lib/components/post-message-with-file/post-message-with-file-configuration.component';
+export * from './lib/sample-plugin.module';
+export * from './lib/sample-plugin.specification';
+export * from './lib/components/sample-plugin-configuration/sample-plugin-configuration.component';
+export * from './lib/components/sample-action-configuration/sample-action-configuration.component';

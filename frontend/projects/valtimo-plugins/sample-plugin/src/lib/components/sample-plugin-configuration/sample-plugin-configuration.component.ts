@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PluginConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take, tap} from 'rxjs';
-import {SamplePluginConfig} from '../models';
+import {SamplePluginConfig} from '../../models';
 
 @Component({
   selector: 'valtimo-sample-plugin-configuration',

@@ -1,6 +1,6 @@
 import {PluginSpecification} from '@valtimo/plugin';
 import {SamplePluginConfigurationComponent} from './components/sample-plugin-configuration/sample-plugin-configuration.component';
-import {SAMPLE_PLUGIN_LOGO_BASE64} from './assets/assets';
+import {SAMPLE_PLUGIN_LOGO_BASE64} from './assets';
 import {SampleActionConfigurationComponent} from './components/sample-action-configuration/sample-action-configuration.component';
 
 const samplePluginSpecification: PluginSpecification = {
