@@ -720,6 +720,47 @@
         }
       }
     },
+    "@valtimo-plugins/value-mapper": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/value-mapper",
+      "sourceRoot": "projects/valtimo-plugins/value-mapper/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/value-mapper/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/value-mapper/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/value-mapper/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/value-mapper/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/value-mapper/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/value-mapper/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/value-mapper/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/value-mapper/src/**/*.ts",
+              "projects/valtimo-plugins/value-mapper/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/xential": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/xential",

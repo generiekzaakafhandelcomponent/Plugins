@@ -1,0 +1,43 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "woonSituatieBron",
+      "type": "textfield",
+      "input": true,
+      "label": "Woon situatie bron",
+      "disabled": true,
+      "tableView": true,
+      "properties": {
+        "sourceKey": "doc:/verzoekGegevensTeTransformeren/alo-aanvullende-gegevens/grWoonsituatie/woonsituatie"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "alo-read-only-woonSituatieBron"
+      }
+    },
+    {
+      "key": "woonSituatieDoel",
+      "type": "textfield",
+      "input": true,
+      "label": "Woon situatie doel",
+      "disabled": true,
+      "tableView": true,
+      "properties": {
+        "sourceKey": "doc:/gegevensVanuitAanvraag/persoon/woonsituatie"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "alo-read-only-woonSituatieDoel"
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

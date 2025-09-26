@@ -1,0 +1,144 @@
+{
+    "$id": "persoon.schema",
+    "type": "object",
+    "title": "Persoon",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": false,
+    "properties": {
+        "voorletters": {
+            "type": "string"
+        },
+        "voornamen": {
+            "type": "string"
+        },
+        "voorvoegsel": {
+            "type": "string"
+        },
+        "achternaam": {
+            "type": "string"
+        },
+        "volledigeNaam": {
+            "type": "string"
+        },
+        "geboortedatum": {
+            "type": "string"
+        },
+        "communicatievoorkeur": {
+            "type": "string",
+            "enum": [
+                "portaal",
+                "post"
+            ]
+        },
+        "contactgegevens": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9_-]+([.][A-Za-z0-9_-]+)*@[A-Za-z0-9_-]+([.][A-Za-z0-9_-]+)*[.][A-Za-z0-9]+$"
+                        },
+                        {
+                            "type": "string",
+                            "enum": [
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                "telefoon": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "correspondentieadres": {
+            "type": "string",
+            "enum": [
+                "adresBrp",
+                "postadresBrp",
+                "verblijfadres"
+            ]
+        },
+        "woonsituatie": {
+            "type": "string",
+            "enum": [
+                "BRP",
+                "PARTNER_INWONEND",
+                "ELDERS",
+                "DETENTIE",
+                "DAKLOOS",
+                "ONBEKEND"
+            ]
+        },
+        "redenNietIngeschrevenOpVerblijfadres": {
+            "type": "string"
+        },
+        "toelichtingNietIngeschrevenOpVerblijfadres": {
+            "type": "string"
+        },
+        "nationaliteitOfVerblijfsstatus": {
+            "type": ["string", "null"],
+            "enum": [
+                "NEDERLANDSE_NATIONALITEIT",
+                "EU_ONDERDAAN",
+                "GELDIGE_VERBLIJFSVERGUNNING",
+                "GEEN_VERBLIJFSVERGUNNING",
+                "VERLOPEN_VERBLIJFSVERGUNNING",
+                "IS_GEEN_NEDERLANDER",
+                null
+            ]
+        },
+        "actiesVerblijfstatus": {
+            "type": "string",
+            "enum": [
+                "VERLENGING_VERBLIJFSDOCUMENT_AANGEVRAAGD",
+                "BEZWAAR_AFWIJZING",
+                "GEEN"
+            ]
+        },
+        "identiteitsbewijsGeupload": {
+            "type": "boolean"
+        },
+        "partnerIsOndernemer": {
+            "type": "boolean"
+        },
+        "zeldeAdresAlsAanvrager": {
+            "type": "boolean"
+        },
+        "kinderenBsns": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "partnerBsn": {
+            "type": "string"
+        },
+         "datumOverlijden": {
+            "type": "string"
+        },
+        "heeftPartner": {
+            "type": "string",
+            "enum": [
+                "JA",
+                "NEE"
+            ]
+        },
+        "heeftThuiswonendeKinderen": {
+            "type": "string",
+            "enum": [
+                "JA",
+                "NEE"
+            ]
+        },
+        "uOfUwPartnerHeeftNietDeNederlandseNationaliteit": {
+            "type": "string",
+            "enum": [
+                "JA",
+                "NEE"
+            ]
+        }
+    }
+}

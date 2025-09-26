@@ -1,0 +1,33 @@
+{
+  "$id": "alo.schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ALO",
+  "type": "object",
+  "properties": {
+    "verzoekGegevensTeTransformeren": {
+      "type": "object",
+      "properties": {}
+    },
+    "gegevensVanuitAanvraag": {
+      "type": "object",
+      "properties": {
+        "startDatum": {
+          "type": "string",
+          "description": "Start date for the aanvraag process"
+        },
+        "persoon": {
+          "type": "object",
+          "$ref": "/document/definition/reference/sd/persoon-sd-v2.schema.json"
+        },
+        "woonsituatie": {
+          "type": "object",
+          "$ref": "/document/definition/reference/sd/woonsituatie-sd-v2.schema.json"
+        },
+        "additionalProperties": true,
+        "complaint": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

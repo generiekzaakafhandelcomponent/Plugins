@@ -1,0 +1,34 @@
+[
+  {
+    "sourcePointer": "/verzoekGegevensTeTransformeren/alo-aanvullende-gegevens/grWoonsituatie/woonsituatie",
+    "targetPointer": "/gegevensVanuitAanvraag/persoon/woonsituatie",
+    "transformations": [
+      {
+        "when": "WAAR_IK_WOON",
+        "then": "BRP"
+      },
+      {
+        "when": "ANDER_ADRES",
+        "then": "ELDERS"
+      },
+      {
+        "when": "ELEKTRONISCHE_DETENTIE",
+        "then": "DETENTIE"
+      }
+    ]
+  },
+  {
+    "sourcePointer": "/verzoekGegevensTeTransformeren/alo-aanvullende-gegevens/lieverPost",
+    "targetPointer": "/gegevensVanuitAanvraag/persoon/communicatievoorkeur",
+    "transformations": [
+      {
+        "when": true,
+        "then": "post"
+      },
+      {
+        "when": false,
+        "then": "portaal"
+      }
+    ]
+  }
+  ]
