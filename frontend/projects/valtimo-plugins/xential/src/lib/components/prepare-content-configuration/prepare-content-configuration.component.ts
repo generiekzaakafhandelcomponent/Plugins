@@ -139,6 +139,8 @@ export class PrepareContentConfigurationComponent implements FunctionConfigurati
             formValue.xentialDocumentPropertiesId &&
             formValue.firstTemplateGroupId &&
             formValue.fileFormat &&
+            formValue.documentFilename &&
+            formValue.informationObjectType &&
             formValue.eventMessageName
         );
 

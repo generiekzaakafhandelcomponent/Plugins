@@ -26,7 +26,7 @@ import com.ritense.processdocument.domain.impl.request.NewDocumentAndStartProces
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processdocument.service.result.NewDocumentAndStartProcessResult
 import com.ritense.resource.service.TemporaryResourceStorageService
-import com.ritense.valtimo.camunda.service.CamundaRuntimeService
+import com.ritense.valtimo.operaton.service.OperatonRuntimeService
 import com.ritense.valtimo.contract.json.MapperSingleton
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach
@@ -46,7 +46,7 @@ class MailTemplatePluginIT : BaseIntegrationTest() {
     lateinit var pluginService: PluginService
 
     @Autowired
-    lateinit var camundaRuntimeService: CamundaRuntimeService
+    lateinit var operatonRuntimeService: OperatonRuntimeService
 
     @Autowired
     lateinit var storageService: TemporaryResourceStorageService
@@ -65,7 +65,7 @@ class MailTemplatePluginIT : BaseIntegrationTest() {
         val result = createDocumentAndStartProcess("""{ "lastname": "Doe", "houseNumber": 133 }""")
 
         val contentId = runWithoutAuthorization {
-            camundaRuntimeService.getVariables(
+            operatonRuntimeService.getVariables(
                 result.resultingProcessInstanceId().get().toString(),
                 listOf("contentId")
             )["contentId"] as String

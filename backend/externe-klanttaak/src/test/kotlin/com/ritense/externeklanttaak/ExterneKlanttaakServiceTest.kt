@@ -42,7 +42,7 @@ import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.objecttypenapi.ObjecttypenApiPlugin
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
-import com.ritense.valtimo.service.CamundaTaskService
+import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valueresolver.ValueResolverService
 import java.net.URI
 import java.time.Instant
@@ -50,8 +50,8 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.Date
 import java.util.UUID
-import org.camunda.bpm.engine.delegate.DelegateExecution
-import org.camunda.bpm.engine.delegate.DelegateTask
+import org.operaton.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateTask
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -72,7 +72,7 @@ internal class ExterneKlanttaakServiceTest {
     private lateinit var objectenApiPlugin: ObjectenApiPlugin
     private lateinit var objecttypenApiPlugin: ObjecttypenApiPlugin
     private lateinit var valueResolverService: ValueResolverService
-    private lateinit var taskService: CamundaTaskService
+    private lateinit var taskService: OperatonTaskService
     private lateinit var objectManagement: ObjectManagement
     private lateinit var externeKlanttaakVersion: IExterneKlanttaakVersion
 

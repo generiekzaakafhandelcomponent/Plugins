@@ -1,6 +1,0 @@
-services:
-  db:
-    ports:
-      - "54343:5432"
-    environment:
-      - POSTGRES_DB=alfresco-authentication-test

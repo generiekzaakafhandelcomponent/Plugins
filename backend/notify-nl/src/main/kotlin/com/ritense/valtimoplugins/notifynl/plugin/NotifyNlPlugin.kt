@@ -24,7 +24,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.notifynl.client.NotifyNlClient
 import com.ritense.valtimoplugins.notifynl.domain.SendSmsRequest
 import com.ritense.valtimoplugins.notifynl.service.NotifyNlTokenGenerationService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 import java.util.UUID
 

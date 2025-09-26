@@ -17,10 +17,10 @@ dependencies {
     }
 
     // Plugins
-    implementation(project(":backend:alfresco-authentication"))
-    implementation(project(":backend:amsterdam-email-api"))
-    implementation(project(":backend:berkelybridge-textgenerator"))
+    implementation(project(":backend:valtimo-ocr"))
     implementation(project(":backend:externe-klanttaak"))
+    implementation(project(":backend:haal-centraal"))
+    implementation(project(":backend:haal-centraal-auth"))
     implementation(project(":backend:freemarker"))
     implementation(project(":backend:kvk-handelsregister"))
     implementation(project(":backend:mTLS-SSLContext"))

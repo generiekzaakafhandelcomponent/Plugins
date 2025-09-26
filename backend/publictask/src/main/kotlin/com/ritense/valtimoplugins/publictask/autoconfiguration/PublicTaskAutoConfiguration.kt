@@ -26,7 +26,7 @@ import com.ritense.valtimoplugins.publictask.plugin.PublicTaskPluginFactory
 import com.ritense.valtimoplugins.publictask.repository.PublicTaskRepository
 import com.ritense.valtimoplugins.publictask.service.PublicTaskService
 import com.ritense.valtimo.contract.annotation.ProcessBean
-import org.camunda.bpm.engine.RuntimeService
+import org.operaton.bpm.engine.RuntimeService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan

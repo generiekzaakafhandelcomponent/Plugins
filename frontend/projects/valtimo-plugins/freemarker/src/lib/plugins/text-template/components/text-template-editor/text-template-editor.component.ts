@@ -21,10 +21,10 @@ import {
     BreadcrumbService,
     CarbonListModule,
     EditorModel, EditorModule,
-    PageTitleService, RenderInPageHeaderDirectiveModule,
-    ValtimoCdsOverflowButtonDirectiveModule
+    PageTitleService,
+    RenderInPageHeaderDirective
 } from '@valtimo/components';
-import {ButtonModule, DialogModule, NotificationService, TabsModule} from 'carbon-components-angular';
+import {ButtonModule, DialogModule, IconModule, NotificationService, TabsModule} from 'carbon-components-angular';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
@@ -43,12 +43,12 @@ import {TextTemplateDeleteModalComponent} from '../text-template-delete-modal/te
         TranslateModule,
         TabsModule,
         DialogModule,
-        ValtimoCdsOverflowButtonDirectiveModule,
         TextTemplateDeleteModalComponent,
         CarbonListModule,
         ButtonModule,
         EditorModule,
-        RenderInPageHeaderDirectiveModule,
+        RenderInPageHeaderDirective,
+        IconModule,
     ]
 })
 export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {

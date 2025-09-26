@@ -51,9 +51,9 @@ import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
 import com.ritense.zakenapi.domain.rol.RolNatuurlijkPersoon
 import com.ritense.zakenapi.domain.rol.RolNietNatuurlijkPersoon
-import com.ritense.zakenapi.domain.rol.RolType
+import com.ritense.zakenapi.domain.rol.RolTypeGeneriekeBeschrijving
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateTask
+import org.operaton.bpm.engine.delegate.DelegateTask
 import java.net.URI
 import java.time.Instant
 import java.time.LocalDate
@@ -170,7 +170,7 @@ class CreateExterneKlanttaakActionV1x1x0(
         val (zaakUrl, zakenApiPlugin) = getZaakUrlAndPluginByDocumentId(businessKey)
 
         val initiator = requireNotNull(
-            zakenApiPlugin.getZaakRollen(zaakUrl, RolType.INITIATOR).firstOrNull()
+            zakenApiPlugin.getZaakRollen(zaakUrl, RolTypeGeneriekeBeschrijving.INITIATOR).firstOrNull()
         ) { "No initiator role found for zaak with URL $zaakUrl" }
 
         return requireNotNull(

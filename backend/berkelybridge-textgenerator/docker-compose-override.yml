@@ -1,6 +1,0 @@
-services:
-  db:
-    ports:
-      - "54345:5432"
-    environment:
-      - POSTGRES_DB=berkelybridge-textgenerator-test

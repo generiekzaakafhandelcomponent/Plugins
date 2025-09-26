@@ -6,9 +6,10 @@ on:
       - 'frontend/**'
     branches:
       - main
+      - feature/github-actions-workflows
       - v12
       - v13
-      - feature/github-actions-workflows
+      - v13.1
 
 jobs:
   # -------------------------------------------------------------
@@ -59,6 +60,8 @@ jobs:
       - run: npm install --global @angular/cli
         working-directory: frontend
       - run: npm install --legacy-peer-deps
+        working-directory: frontend
+      - run: rm -Rf dist/*
         working-directory: frontend
 
       - id: constructBuildTask

@@ -44,6 +44,10 @@ subprojects {
     println("Configuring ${project.path}")
 
     if (project.path.startsWith(":backend")) {
+
+        tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
+            mainClass.set("com.ritense.plugin.sandbox.PluginApplication")
+        }
         apply(plugin = "java")
         apply(plugin = "org.springframework.boot")
         apply(plugin = "io.spring.dependency-management")

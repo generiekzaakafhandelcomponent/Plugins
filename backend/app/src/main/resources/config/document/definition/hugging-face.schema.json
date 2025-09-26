@@ -1,0 +1,27 @@
+{
+  "$id": "hugging-face.schema",
+  "type": "object",
+  "title": "Valtimo LLM Plugin",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "question": {
+      "type": "string"
+    },
+    "summarise": {
+      "type": "string"
+    },
+    "chatResult": {
+      "type": "object"
+    },
+    "maxQandASaved": {
+      "type": "string"
+    },
+    "summaryResult": {
+      "type": "object"
+    },
+    "interpolatedQuestion": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

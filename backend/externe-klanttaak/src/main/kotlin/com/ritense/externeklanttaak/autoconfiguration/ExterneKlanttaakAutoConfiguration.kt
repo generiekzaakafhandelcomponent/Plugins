@@ -26,8 +26,8 @@ import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimo.contract.security.config.HttpSecurityConfigurer
-import com.ritense.valtimo.service.CamundaProcessService
-import com.ritense.valtimo.service.CamundaTaskService
+import com.ritense.valtimo.service.OperatonProcessService
+import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.link.ZaakInstanceLinkService
 import org.springframework.boot.autoconfigure.AutoConfiguration
@@ -61,7 +61,7 @@ class ExterneKlanttaakAutoConfiguration {
         valueResolverService: ValueResolverService,
         processDocumentService: ProcessDocumentService,
         zaakInstanceLinkService: ZaakInstanceLinkService,
-        taskService: CamundaTaskService,
+        taskService: OperatonTaskService,
     ): ExterneKlanttaakService {
         return ExterneKlanttaakService(
             objectManagementService,
@@ -90,9 +90,9 @@ class ExterneKlanttaakAutoConfiguration {
     fun externeKlanttaakEventListener(
         pluginService: PluginService,
         objectManagementService: ObjectManagementService,
-        taskService: CamundaTaskService,
+        taskService: OperatonTaskService,
         processDocumentService: ProcessDocumentService,
-        processService: CamundaProcessService,
+        processService: OperatonProcessService,
     ): ExterneKlanttaakEventListener {
         return ExterneKlanttaakEventListener(
             objectManagementService,

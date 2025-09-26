@@ -11,7 +11,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "suwinet", title = "SuwiNet Plugin", description = "Suwinet plugin description"

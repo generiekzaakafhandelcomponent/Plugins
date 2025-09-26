@@ -23,10 +23,9 @@ import {
     EditorModel,
     EditorModule,
     PageTitleService,
-    RenderInPageHeaderDirectiveModule,
-    ValtimoCdsOverflowButtonDirectiveModule
+    RenderInPageHeaderDirective,
 } from '@valtimo/components';
-import {ButtonModule, DialogModule, NotificationService, TabsModule} from 'carbon-components-angular';
+import {ButtonModule, DialogModule, IconModule, NotificationService, TabsModule} from 'carbon-components-angular';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
@@ -45,12 +44,12 @@ import {MailTemplateDeleteModalComponent} from '../mail-template-delete-modal/ma
         TranslateModule,
         TabsModule,
         DialogModule,
-        ValtimoCdsOverflowButtonDirectiveModule,
         MailTemplateDeleteModalComponent,
         CarbonListModule,
         ButtonModule,
         EditorModule,
-        RenderInPageHeaderDirectiveModule,
+        RenderInPageHeaderDirective,
+        IconModule,
     ]
 })
 export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {

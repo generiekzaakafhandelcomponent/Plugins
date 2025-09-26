@@ -18,15 +18,17 @@ package com.ritense.valtimoplugins.xential.service
 
 import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.smartdocuments.domain.DocumentFormatOption
 import com.ritense.valtimoplugins.xential.domain.DocumentCreatedMessage
+import com.ritense.valtimoplugins.xential.domain.FileFormat
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.rotterdam.esb.xential.api.DefaultApi
 import com.rotterdam.esb.xential.model.Sjabloondata
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.RuntimeService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.RuntimeService
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.io.ByteArrayInputStream
 import java.util.Base64
 import java.util.UUID
@@ -78,6 +80,16 @@ class DocumentGenerationService(
         logger.info { "ready" }
     }
 
+    private fun setMimeType(format: FileFormat): String {
+        val mime = when (format.toString()) {
+            FileFormat.PDF.toString() -> DocumentFormatOption.PDF
+            FileFormat.WORD.toString() -> DocumentFormatOption.DOCX
+            else -> null
+        }
+
+        return mime?.mediaType?.toString() ?:""
+    }
+
     fun onDocumentGenerated(message: DocumentCreatedMessage) {
         val bytes = Base64.getDecoder().decode(message.data)
 
@@ -85,16 +97,19 @@ class DocumentGenerationService(
             xentialTokenRepository.findById(UUID.fromString(message.documentCreatieSessieId))
                 .orElseThrow { NoSuchElementException("Could not find Xential Token ${message.documentCreatieSessieId}") }
 
-        logger.info { "Retrieved content from Xential Callback, token: ${xentialToken.token}" }
+        logger.info { "Retrieved content from Xential Callback, token: ${xentialToken.token}, type: ${message.formaat}" }
 
         ByteArrayInputStream(bytes).use { inputStream ->
             val metadata =
-                mapOf(MetadataType.FILE_NAME.key to "${xentialToken.processId}-${xentialToken.messageName}.tmp")
+                mapOf(
+                    MetadataType.FILE_NAME.key to "${xentialToken.processId}-${xentialToken.messageName}.tmp",
+                    MetadataType.CONTENT_TYPE.key to setMimeType(message.formaat)
+                )
             val resourceId = temporaryResourceStorageService.store(inputStream, metadata)
             runtimeService.createMessageCorrelation(xentialToken.messageName)
                 .processInstanceId(xentialToken.processId.toString())
                 .setVariable("xentialResourceId", resourceId)
-                .correlate()
+                .correlateAll()
         }
     }
 

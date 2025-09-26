@@ -31,18 +31,17 @@ class PluginApplication {
         fun main(args: Array<String>) {
             val app = runApplication<PluginApplication>(*args)
 
-            logger.info(
+            logger.info {
                 """
-----------------------------------------------------------
-	Application '{}' is running! Access URLs:
-	Local: 		http://localhost:{}
-	External: 	http://{}:{}
-----------------------------------------------------------""",
-                app.environment.getProperty("spring.application.name"),
-                app.environment.getProperty("server.port"),
-                InetAddress.getLocalHost().hostAddress,
-                app.environment.getProperty("server.port")
-            )
+
+                ----------------------------------------------------------
+                |    Application '${app.environment.getProperty("spring.application.name")}' is running!
+                |    Active profile(s): [${app.environment.getProperty("spring.profiles.active")}].
+                |    Local URL: [http://127.0.0.1:${app.environment.getProperty("server.port")}].
+                |    External URL: [http://${InetAddress.getLocalHost().hostAddress}:${app.environment.getProperty("server.port")}]
+                ----------------------------------------------------------
+                """.trimIndent()
+            }
         }
     }
 

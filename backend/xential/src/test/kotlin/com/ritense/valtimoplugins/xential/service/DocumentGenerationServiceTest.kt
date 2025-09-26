@@ -7,8 +7,8 @@ import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.rotterdam.esb.xential.api.DefaultApi
 import com.rotterdam.esb.xential.model.DocumentCreatieResultaat
-import org.camunda.bpm.engine.RuntimeService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.RuntimeService
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
@@ -60,6 +60,8 @@ class DocumentGenerationServiceTest {
             XentialDocumentProperties(
                 xentialGroupId = UUID.randomUUID(),
                 fileFormat = com.ritense.valtimoplugins.xential.domain.FileFormat.PDF,
+                documentFilename = "documentNaam",
+                informationObjectType = "object-type",
                 documentId = "mijn-kenmerk",
                 messageName = "messageName",
                 content = "voorbeeld data",

@@ -17,14 +17,14 @@
 package com.ritense.valtimoplugins.publictask.audit
 
 import com.ritense.valtimoplugins.publictask.repository.PublicTaskRepository
-import com.ritense.valtimo.camunda.TaskCompletedListener
+import com.ritense.valtimo.operaton.TaskCompletedListener
 import com.ritense.valtimo.contract.audit.utils.AuditHelper
 import com.ritense.valtimo.contract.event.TaskCompletedEvent
 import com.ritense.valtimo.contract.utils.RequestHelper
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.UUID
-import org.camunda.bpm.engine.delegate.DelegateTask
+import org.operaton.bpm.engine.delegate.DelegateTask
 import org.springframework.context.ApplicationEventPublisher
 
 class PublicTaskCompletedListener(

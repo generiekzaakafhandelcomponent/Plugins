@@ -33,12 +33,12 @@ import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.objecttypenapi.ObjecttypenApiPlugin
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.json.MapperSingleton
-import com.ritense.valtimo.service.CamundaTaskService
+import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valueresolver.ValueResolverService
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
-import org.camunda.bpm.engine.delegate.DelegateTask
+import org.operaton.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateTask
 import java.net.URI
 import java.time.LocalDate
 import java.util.UUID
@@ -47,7 +47,7 @@ open class ExterneKlanttaakService(
     private val objectManagementService: ObjectManagementService,
     private val pluginService: PluginService,
     private val valueResolverService: ValueResolverService,
-    private val taskService: CamundaTaskService,
+    private val taskService: OperatonTaskService,
 ) {
     internal fun createExterneKlanttaak(
         klanttaakVersion: IExterneKlanttaakVersion,
