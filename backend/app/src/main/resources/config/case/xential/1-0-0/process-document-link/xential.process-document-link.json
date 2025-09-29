@@ -18,5 +18,10 @@
     "processDefinitionKey": "xential-document-genereren-annuleren",
     "canInitializeDocument": false,
     "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "xential-document-genereren-start",
+    "canInitializeDocument": false,
+    "startableByUser": true
   }
 ]
