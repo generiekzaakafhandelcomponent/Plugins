@@ -1,0 +1,12 @@
+[
+  {
+    "processDefinitionKey": "SlackMessageExample",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "alo-valuemapping-example",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  }
+]

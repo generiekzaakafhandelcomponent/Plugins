@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":backend:xential"))
     implementation(project(":backend:hugging-face"))
     implementation(project(":backend:document-search"))
+    implementation(project(":backend:value-mapper"))
 }
 
 tasks.jar {

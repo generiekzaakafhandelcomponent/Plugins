@@ -1,0 +1,80 @@
+{
+    "$id": "woonsituatie.schema",
+    "type": "object",
+    "title": "Woonsituatie",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": false,
+    "properties": {
+        "woonsituatie": {
+            "type": "string",
+            "enum": [
+                "ZELFSTANDIGE_HUURWONING",
+                "HUURCONTRACT",
+                "WOON_IN",
+                "KOOPWONING",
+                "WOONWAGEN",
+                "ZORGINSTELLING",
+                "MAATSCHAPPELIJKE_OPVANG",
+                "ZELFSTANDIG_WONEND",
+                "VERBLIJF_INSTELLING"
+            ]
+        },
+        "aanvragerKanBijOudersWonen": {
+            "type": "boolean"
+        },
+        "redenWaaromAanvragerNietBijOudersKanWonen": {
+            "type": "string"
+        },
+        "aanvragerWoontBij": {
+            "type": "string",
+            "enum": [
+                "OUDERS",
+                "KIND",
+                "FAMILIELEDEN",
+                "VRIENDEN",
+                "ANDERS"
+            ]
+        },
+        "naamZorginstelling": {
+            "type": "string"
+        },
+        "adresZorginstelling": {
+            "$ref": "#/definitions/adresgegevens"
+        },
+        "naamMaatschappelijkeOpvang": {
+            "type": "string"
+        },
+        "adresMaatschappelijkeOpvang": {
+            "$ref": "#/definitions/adresgegevens"
+        },
+        "aantalDagenInInstellingOfOpvang": {
+            "type": "number"
+        }
+    },
+    "definitions": {
+        "adresgegevens": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "postcode": {
+                    "type": "string"
+                },
+                "huisnummer": {
+                    "type": "number"
+                },
+                "huisnummertoevoeging": {
+                    "type": "string"
+                },
+                "huisletter": {
+                    "type": "string"
+                },
+                "straatnaam": {
+                    "type": "string"
+                },
+                "plaats": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
