@@ -64,7 +64,6 @@ import {ConfigModule, ConfigService, CustomMultiTranslateHttpLoaderFactory, Loca
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
-import {ZgwModule} from '@valtimo/zgw';
 import {
     CatalogiApiPluginModule,
     catalogiApiPluginSpecification,

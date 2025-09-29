@@ -17,7 +17,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TemplateMetadataModal} from '../../../../models';
-import {CARBON_CONSTANTS, KeyGeneratorService, ValtimoCdsModalDirectiveModule} from '@valtimo/components';
+import {CARBON_CONSTANTS, KeyGeneratorService, ValtimoCdsModalDirective} from '@valtimo/components';
 import {CommonModule} from '@angular/common';
 import {ButtonModule, ComboBoxModule, InputModule, ListItem, ModalModule} from 'carbon-components-angular';
 import {TranslateModule} from '@ngx-translate/core';
@@ -36,7 +36,7 @@ import {DOCUMENT_TYPES} from '../../models';
         ReactiveFormsModule,
         InputModule,
         ComboBoxModule,
-        ValtimoCdsModalDirectiveModule
+        ValtimoCdsModalDirective,
     ]
 })
 export class DocumentTemplateAddEditModalComponent implements OnInit {

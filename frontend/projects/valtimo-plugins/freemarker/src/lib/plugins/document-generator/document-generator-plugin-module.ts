@@ -25,7 +25,7 @@ import {
     FormModule,
     InputModule as ValtimoInputModule,
     ParagraphModule,
-    RenderInPageHeaderDirectiveModule,
+    RenderInPageHeaderDirective,
     SelectModule,
 } from '@valtimo/components';
 import {
@@ -74,7 +74,7 @@ import {GeneratePdfComponent} from './components/generate-pdf/generate-pdf.compo
         LoadingModule,
         ModalModule,
         NotificationModule,
-        RenderInPageHeaderDirectiveModule,
+        RenderInPageHeaderDirective,
         TabsModule,
     ],
     exports: [

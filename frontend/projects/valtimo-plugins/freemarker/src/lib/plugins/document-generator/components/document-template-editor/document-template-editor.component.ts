@@ -23,8 +23,8 @@ import {
     EditorModel,
     EditorModule,
     PageTitleService,
-    RenderInPageHeaderDirectiveModule,
-    ValtimoCdsOverflowButtonDirectiveModule
+    RenderInPageHeaderDirective,
+    ValtimoCdsOverflowButtonDirective
 } from '@valtimo/components';
 import {ButtonModule, DialogModule, NotificationService, TabsModule} from 'carbon-components-angular';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -45,12 +45,12 @@ import {DocumentTemplateDeleteModalComponent} from '../document-template-delete-
         TranslateModule,
         TabsModule,
         DialogModule,
-        ValtimoCdsOverflowButtonDirectiveModule,
+        ValtimoCdsOverflowButtonDirective,
         DocumentTemplateDeleteModalComponent,
         CarbonListModule,
         ButtonModule,
         EditorModule,
-        RenderInPageHeaderDirectiveModule,
+        RenderInPageHeaderDirective,
     ]
 })
 export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {
