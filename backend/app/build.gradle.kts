@@ -25,6 +25,7 @@ dependencies {
     implementation(project(":backend:object-management"))
     implementation(project(":backend:publictask"))
     implementation(project(":backend:rotterdam-oracle-ebs"))
+    implementation(project(":backend:sample-plugin"))
     implementation(project(":backend:slack"))
     implementation(project(":backend:smtpmail"))
     implementation(project(":backend:spotler"))

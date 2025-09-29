@@ -1,10 +1,10 @@
-package com.ritense.valtimoplugins.SamplePlugin.plugin
+package com.ritense.valtimoplugins.sampleplugin.plugin
 
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimoplugins.SamplePlugin.client.SampleService
+import com.ritense.valtimoplugins.sampleplugin.client.SampleService
 import org.springframework.stereotype.Component
 
 /**
@@ -21,29 +21,8 @@ import org.springframework.stereotype.Component
 class SamplePlugin(
     private val sampleService: SampleService
 ) {
-    @PluginProperty(key = "api_url", secret = false)
+    @PluginProperty(key = "apiUrl", secret = false)
     lateinit var apiUrl: String
-
-    /**
-     * Example action
-     * Sends a GET request to an API endpoint and returns the response.
-     */
-    @PluginAction(
-        key = "api-sample-action",
-        title = "API test action",
-        description = "API plugin action",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
-    )
-    fun pingAPI(): String {
-        try {
-            println(sampleService.printAPIResults(api_url = apiUrl))
-            return sampleService.printAPIResults(api_url = apiUrl)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("Error: ${e.cause}")
-            return "Error: ${e.message}"
-        }
-    }
 
     /**
      * Example action

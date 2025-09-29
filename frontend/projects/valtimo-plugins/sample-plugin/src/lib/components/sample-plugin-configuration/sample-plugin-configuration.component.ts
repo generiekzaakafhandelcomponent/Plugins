@@ -44,7 +44,7 @@ export class SamplePluginConfigurationComponent
 
   private handleValid(formValue: SamplePluginConfig): void {
     // The configuration is valid when a configuration title and url are defined
-    const valid = !!(formValue.configurationTitle && formValue.api_url);
+    const valid = !!(formValue.configurationTitle && formValue.apiUrl);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

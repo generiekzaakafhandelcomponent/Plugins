@@ -133,6 +133,10 @@ import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
 import {DocumentSearchPluginModule, documentSearchPluginSpecification} from "@valtimo-plugins/document-search";
+import {SamplePluginModule} from "../../projects/valtimo-plugins/sample-plugin/src/lib/sample-plugin.module";
+import {
+    samplePluginSpecification
+} from "../../projects/valtimo-plugins/sample-plugin/src/lib/sample-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -161,6 +165,7 @@ export function tabsFactory() {
         HaalCentraalBrpPluginModule,
         HaalCentraalBagPluginModule,
         HaalCentraalBrpAuthPluginModule,
+        SamplePluginModule,
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
@@ -244,6 +249,7 @@ export function tabsFactory() {
             objecttypenApiPluginSpecification,
             publictaskPluginSpecification,
             rotterdamOracleEbsPluginSpecification,
+            samplePluginSpecification,
             slackPluginSpecification,
             huggingFacePluginSpecification,
             smtpmailPluginSpecification,

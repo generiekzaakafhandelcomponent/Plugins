@@ -1,8 +1,8 @@
-package com.ritense.valtimoplugins.SamplePlugin.plugin
+package com.ritense.valtimoplugins.sampleplugin.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimoplugins.SamplePlugin.client.SampleService
+import com.ritense.valtimoplugins.sampleplugin.client.SampleService
 import org.springframework.stereotype.Component
 
 /**

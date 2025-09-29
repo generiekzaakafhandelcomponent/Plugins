@@ -1,7 +1,7 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface SamplePluginConfig extends PluginConfigurationData {
-  api_url: string;
+  apiUrl: string;
 }
 
 interface SampleActionConfig {

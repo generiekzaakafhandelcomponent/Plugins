@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.SamplePlugin.client
+package com.ritense.valtimoplugins.sampleplugin.client
 
 import org.springframework.http.ResponseEntity
 import java.time.OffsetDateTime

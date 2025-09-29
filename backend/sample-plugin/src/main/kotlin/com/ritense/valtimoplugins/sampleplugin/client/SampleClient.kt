@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.SamplePlugin.client
+package com.ritense.valtimoplugins.sampleplugin.client
 
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
