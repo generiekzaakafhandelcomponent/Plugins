@@ -58,7 +58,9 @@ const objectManagementPluginSpecification: PluginSpecification = {
             listOfObjectProcessVariableNameTooltip: 'Definieert de procesvariabelenaam die wordt gebruikt voor het opslaan van de objectlijst',
             objectDataProcessVariableName: 'Procesvariabelenaam voor de object data',
             objectDataProcessVariableNameTooltip: 'Definieert de procesvariabelenaam die wordt gebruikt voor het opslaan van de object data',
-            objectManagementConfigurationIdTooltip: 'Definieert de ID (UUID) van de object management configuratie'
+            objectManagementConfigurationIdTooltip: 'Definieert de ID (UUID) van de object management configuratie',
+            filterParameter: 'Filterparameter',
+            filterParameterTooltip: 'Een queryparameter om objecten te filteren op basis van hun gegevens (pad en waarde)'
         },
         en: {
             title: 'Object Management',
@@ -81,7 +83,9 @@ const objectManagementPluginSpecification: PluginSpecification = {
             listOfObjectProcessVariableNameTooltip: 'Defines the process variable name used for storing the object list',
             objectDataProcessVariableName: 'Process variable for the object data',
             objectDataProcessVariableNameTooltip: 'Defines the process variable name used for storing the object data',
-            objectManagementConfigurationIdTooltip: 'Defines the ID (UUID) of the object management configuration'
+            objectManagementConfigurationIdTooltip: 'Defines the ID (UUID) of the object management configuration',
+            filterParameter: 'Filter parameter',
+            filterParameterTooltip: 'A query parameter used to filter objects based on their data (path and value)'
         },
         de: {
             title: 'Object Management',
@@ -104,7 +108,9 @@ const objectManagementPluginSpecification: PluginSpecification = {
             listOfObjectProcessVariableNameTooltip: 'Definiert den prozessvariablennamen, der zum speichern der objektliste verwendet wird',
             objectDataProcessVariableName: 'Prozessvariablenname für die Objektdaten',
             objectDataProcessVariableNameTooltip: 'Definiert den prozessvariablennamen, die zum Speichern der Objektdaten verwendet wird',
-            objectManagementConfigurationIdTooltip: 'Definiert die ID (UUID) der objektverwaltungskonfiguration'
+            objectManagementConfigurationIdTooltip: 'Definiert die ID (UUID) der objektverwaltungskonfiguration',
+            filterParameter: 'Filterparameter',
+            filterParameterTooltip: 'Ein Abfrageparameter, um Objekte basierend auf ihren Daten (Pfad und Wert) zu filtern'
         }
     }
 }

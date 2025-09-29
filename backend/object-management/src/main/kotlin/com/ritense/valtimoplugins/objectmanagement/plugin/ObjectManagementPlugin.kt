@@ -77,7 +77,7 @@ open class ObjectManagementPlugin(
         @PluginActionProperty objectUrl: URI,
         @PluginActionProperty objectManagementConfigurationId: UUID,
         @PluginActionProperty objectData: List<DataBindingConfig>,
-        ) {
+    ) {
         objectManagementCrudService.updateObject(
             objectManagementConfigurationId,
             objectUrl,
@@ -111,14 +111,20 @@ open class ObjectManagementPlugin(
     )
     open fun getObjectsUnpaged(
         execution: DelegateExecution,
-        @PluginActionProperty objectManagementConfigurationTitle: String,
+        @PluginActionProperty objectManagementConfigurationId: UUID,
+        @PluginActionProperty filterParameter: List<DataBindingConfig>?,
         @PluginActionProperty listOfObjectProcessVariableName: String
     ) {
-        val objects = objectManagementCrudService.getObjectsByObjectManagementTitle(objectManagementConfigurationTitle)
+        val searchString: String? = filterParameter?.firstOrNull()
+            ?.let { convertToSearchString(it.key, it.value) }
+
+        val objects = objectManagementCrudService.getObjectsByObjectManagementIdWithSearchParams(
+            objectManagementConfigurationId, searchString
+        )
         val processedObject = objects.results.map { it.record.data }
 
         execution.setVariable(listOfObjectProcessVariableName, processedObject)
-        logger.info { "Successfully retrieved ${objects.results.size} objects for object management: $objectManagementConfigurationTitle" }
+        logger.info { "Successfully retrieved ${objects.results.size} objects for object management: $objectManagementConfigurationId" }
     }
 
     private fun getObjectData(keyValueMap: List<DataBindingConfig>, documentId: String): JsonNode {
@@ -171,6 +177,17 @@ open class ObjectManagementPlugin(
 
         execution.setVariable(objectDataProcessVariableName, objectData)
         logger.info { "Successfully retrieved object with url: $objectUrl" }
+    }
+
+    private fun convertToSearchString(key: String?, value: String?): String? {
+        if (key.isNullOrBlank() || value.isNullOrBlank()) return null
+
+        val cleanedKey = key
+            .trimStart('/')
+            .split("/")
+            .joinToString("__")
+
+        return "${cleanedKey}__exact__${value.trim()}"
     }
 
     companion object {
