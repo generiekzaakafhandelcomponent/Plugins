@@ -19,7 +19,6 @@ package com.ritense.valtimoplugins.freemarker.web.rest
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimo.contract.domain.ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE
-import com.ritense.valtimoplugins.freemarker.service.TemplateImporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.CreateTemplateRequest
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.DeleteTemplateRequest
@@ -44,7 +43,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/management", produces = [APPLICATION_JSON_UTF8_VALUE])
 class TemplateManagementResource(
     private val templateService: TemplateService,
-    private val templateImporter: TemplateImporter,
 ) {
 
     @GetMapping("/v1/template")
@@ -53,16 +51,18 @@ class TemplateManagementResource(
         @RequestParam(value = "caseDefinitionKey", required = false) caseDefinitionKey: String?,
         @RequestParam(value = "caseDefinitionVersionTag", required = false) caseDefinitionVersionTag: String?,
         @RequestParam(value = "templateType", required = false) templateType: String?,
+        @RequestParam(value = "templateTypes", required = false) templateTypes: List<String>?,
         pageable: Pageable,
     ): ResponseEntity<Page<TemplateListItemResponse>> {
         val caseDefinitionId = caseDefinitionKey?.let {
             CaseDefinitionId(caseDefinitionKey, caseDefinitionVersionTag!!)
         }
         val templates = templateService.findTemplates(
-            templateKey,
-            caseDefinitionId,
-            templateType,
-            pageable
+            templateKey = templateKey,
+            caseDefinitionId = caseDefinitionId,
+            templateType = templateType,
+            templateTypes = templateTypes,
+            pageable = pageable
         )
         return ResponseEntity.ok(templates.map { TemplateListItemResponse.of(it) })
     }
@@ -110,7 +110,7 @@ class TemplateManagementResource(
     fun deleteTemplates(
         @RequestBody request: DeleteTemplateRequest,
     ): ResponseEntity<Unit> {
-        templateService.deleteTemplates(request.caseDefinitionId(), request.type, request.templates)
+        templateService.deleteTemplates(request.caseDefinitionId(), request.templates)
         return ResponseEntity.ok().build()
     }
 }

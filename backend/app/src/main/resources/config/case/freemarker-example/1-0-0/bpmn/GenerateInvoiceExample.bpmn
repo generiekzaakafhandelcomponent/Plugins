@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
+  <bpmn:process id="GenerateInvoiceExample" name="Generate invoice example" processType="None" isClosed="false" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0c2slhy</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0c2slhy" sourceRef="StartEvent_1" targetRef="Gateway_0xqa6jf" />
+    <bpmn:endEvent id="Event_1xuqlsw">
+      <bpmn:incoming>Flow_1efk50o</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0ha7qc2" sourceRef="GenerateInvoicePdfTask" targetRef="UploadPdf" />
+    <bpmn:serviceTask id="GenerateInvoicePdfTask" name="Generate Invoice PDF" camunda:asyncBefore="true" implementation="##WebService" camunda:expression="${null}">
+      <bpmn:incoming>Flow_0nowjss</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ha7qc2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_10ac1er" sourceRef="UploadPdf" targetRef="LinkPdfToZaak" />
+    <bpmn:serviceTask id="UploadPdf" name="Upload PDF to Documenten API" camunda:asyncBefore="true" camunda:expression="${null}">
+      <bpmn:incoming>Flow_0ha7qc2</bpmn:incoming>
+      <bpmn:outgoing>Flow_10ac1er</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1efk50o" sourceRef="LinkPdfToZaak" targetRef="Event_1xuqlsw" />
+    <bpmn:serviceTask id="LinkPdfToZaak" name="Link PDF to Zaak" camunda:asyncBefore="true" camunda:expression="${null}">
+      <bpmn:incoming>Flow_10ac1er</bpmn:incoming>
+      <bpmn:outgoing>Flow_1efk50o</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0nowjss" sourceRef="Gateway_0xqa6jf" targetRef="GenerateInvoicePdfTask" />
+    <bpmn:parallelGateway id="Gateway_0xqa6jf">
+      <bpmn:incoming>Flow_0c2slhy</bpmn:incoming>
+      <bpmn:outgoing>Flow_0nowjss</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0053bwp</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:endEvent id="Event_0lx74nt">
+      <bpmn:incoming>Flow_0ad3z50</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="GenerateInvoiceCsvTask" name="Generate Invoice CSV" camunda:asyncBefore="true" implementation="##WebService" camunda:expression="${null}">
+      <bpmn:incoming>Flow_0053bwp</bpmn:incoming>
+      <bpmn:outgoing>Flow_17cpr3i</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="UploadCsv" name="Upload CSV to Documenten API" camunda:asyncBefore="true" camunda:expression="${null}">
+      <bpmn:incoming>Flow_17cpr3i</bpmn:incoming>
+      <bpmn:outgoing>Flow_0h2x2ki</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="LinkCsvToZaak" name="Link CSV to Zaak" camunda:asyncBefore="true" camunda:expression="${null}">
+      <bpmn:incoming>Flow_0h2x2ki</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ad3z50</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0ad3z50" sourceRef="LinkCsvToZaak" targetRef="Event_0lx74nt" />
+    <bpmn:sequenceFlow id="Flow_17cpr3i" sourceRef="GenerateInvoiceCsvTask" targetRef="UploadCsv" />
+    <bpmn:sequenceFlow id="Flow_0h2x2ki" sourceRef="UploadCsv" targetRef="LinkCsvToZaak" />
+    <bpmn:sequenceFlow id="Flow_0053bwp" sourceRef="Gateway_0xqa6jf" targetRef="GenerateInvoiceCsvTask" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="GenerateInvoiceExample">
+      <bpmndi:BPMNShape id="Activity_0sod4hd_di" bpmnElement="GenerateInvoicePdfTask">
+        <dc:Bounds x="340" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vrmej5_di" bpmnElement="UploadPdf">
+        <dc:Bounds x="500" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1xuqlsw_di" bpmnElement="Event_1xuqlsw">
+        <dc:Bounds x="812" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0wyw1aq_di" bpmnElement="LinkPdfToZaak">
+        <dc:Bounds x="650" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_18w2ija" bpmnElement="Event_0lx74nt">
+        <dc:Bounds x="812" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0p94edj" bpmnElement="GenerateInvoiceCsvTask">
+        <dc:Bounds x="340" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0i9o99n" bpmnElement="UploadCsv">
+        <dc:Bounds x="500" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0uwliox" bpmnElement="LinkCsvToZaak">
+        <dc:Bounds x="650" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0etx0jg_di" bpmnElement="Gateway_0xqa6jf">
+        <dc:Bounds x="234" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0ha7qc2_di" bpmnElement="Flow_0ha7qc2">
+        <di:waypoint x="440" y="120" />
+        <di:waypoint x="500" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10ac1er_di" bpmnElement="Flow_10ac1er">
+        <di:waypoint x="600" y="120" />
+        <di:waypoint x="650" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1efk50o_di" bpmnElement="Flow_1efk50o">
+        <di:waypoint x="750" y="120" />
+        <di:waypoint x="812" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nowjss_di" bpmnElement="Flow_0nowjss">
+        <di:waypoint x="284" y="120" />
+        <di:waypoint x="340" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_02b00h7" bpmnElement="Flow_0ad3z50">
+        <di:waypoint x="750" y="240" />
+        <di:waypoint x="812" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0u32cam" bpmnElement="Flow_17cpr3i">
+        <di:waypoint x="440" y="240" />
+        <di:waypoint x="500" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1pwtdob" bpmnElement="Flow_0h2x2ki">
+        <di:waypoint x="600" y="240" />
+        <di:waypoint x="650" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0053bwp_di" bpmnElement="Flow_0053bwp">
+        <di:waypoint x="259" y="145" />
+        <di:waypoint x="259" y="240" />
+        <di:waypoint x="340" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0c2slhy_di" bpmnElement="Flow_0c2slhy">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="234" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

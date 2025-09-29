@@ -38,10 +38,10 @@ class TemplateServiceIT : BaseIntegrationTest() {
     fun `find a list of possible placeholders`() {
         val template = templateService.getTemplate("placeholder-test-template", CaseDefinitionId("profile", "1.0.0"), "mail")
 
-        val placeholders = templateService.findPlaceholders(template)
+        val placeholders = templateService.findPlaceholders(template.content).keys
 
         assertEquals(
-            listOf(
+            setOf(
                 "doc:lastname",
                 "doc:houseNumber",
                 "case:createdBy",

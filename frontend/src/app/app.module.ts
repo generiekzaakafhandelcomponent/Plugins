@@ -88,6 +88,8 @@ import {ObjectModule} from "@valtimo/object";
 
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {
+    DocumentGeneratorPluginModule,
+    documentGeneratorPluginSpecification,
     MailTemplatePluginModule,
     mailTemplatePluginSpecification,
     TextTemplatePluginModule,
@@ -147,6 +149,8 @@ export function tabsFactory() {
     ],
     imports: [
         ValuePathSelectorComponent,
+        ZgwModule,
+        DocumentGeneratorPluginModule,
         MailTemplatePluginModule,
         TextTemplatePluginModule,
         PublictaskPluginModule,
@@ -228,6 +232,7 @@ export function tabsFactory() {
         useValue: [
             valtimoOcrPluginSpecification,
             externeKlanttaakPluginSpecification,
+            documentGeneratorPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
             haalCentraalBrpPluginSpecification,
