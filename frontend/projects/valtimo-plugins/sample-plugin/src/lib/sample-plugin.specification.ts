@@ -32,15 +32,15 @@ const samplePluginSpecification: PluginSpecification = {
    */
   pluginTranslations: {
     nl: {
-      title: 'Sample',
-      description: 'Sample',
+      title: 'Voorbeeld Plugin',
+      description: 'Dit is een voorbeeld plugin die beschikt over een API call action.',
       api_url: 'API URL',
       username: 'gebruikersnaam',
       password: 'wachtwoord'
     },
     en: {
-      title: 'Sample',
-      description: 'Sample"',
+      title: 'Sample Plugin',
+      description: 'This is a sample plugin demonstrating an API call action."',
       api_url: 'API URL',
       username: 'username',
       password: 'password'

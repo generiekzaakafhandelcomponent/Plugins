@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
 @Plugin(
     key = "sample-plugin",
     title = "Sample Plugin",
-    description = "Test plugin description",
+    description = "This is a sample plugin demonstrating an API call action.",
 )
 @Component
 class SamplePlugin(
