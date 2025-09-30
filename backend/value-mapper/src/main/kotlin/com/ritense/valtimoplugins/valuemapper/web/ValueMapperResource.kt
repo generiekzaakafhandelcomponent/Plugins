@@ -35,25 +35,25 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/management/v1/value-mapper", produces = [APPLICATION_JSON])
+@RequestMapping("/api/management", produces = [APPLICATION_JSON])
 class ValueMapperResource(
     private val loadingService: ValueMapperLoadingService,
     private val valueMapperTemplateService: ValueMapperTemplateService
 ) {
 
-    @GetMapping("definitions")
+    @GetMapping("/v1/value-mapper/definitions")
     fun getMappingDefinitions(): Set<String> {
         return valueMapperTemplateService.getTemplatesKeys()
     }
 
-    @GetMapping("definitionsPage")
+    @GetMapping("/v1/value-mapper/definitionsPage")
     fun getMappingDefinitionsPage(pageable: Pageable,
     ): ResponseEntity<Page<TemplateListItemResponse>> {
         val templates = valueMapperTemplateService.getTemplatesKeysPaged(pageable)
         return ResponseEntity.ok(templates.map { TemplateListItemResponse( it, isReadOnly(it)) })
     }
 
-    @GetMapping("definitions/{key}")
+    @GetMapping("/v1/value-mapper/definitions/{key}")
     fun getMappingDefinition(
         @PathVariable key: String,
     ): ResponseEntity<ValueMapperTemplateDTO> {
@@ -61,7 +61,7 @@ class ValueMapperResource(
         return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(key)))
     }
 
-    @PostMapping("definitions")
+    @PostMapping("/v1/value-mapper/definitions")
     fun createTemplate(
         @RequestBody template: CreateValueMapperDTO,
     ): ResponseEntity<ValueMapperTemplateDTO> {
@@ -77,7 +77,7 @@ class ValueMapperResource(
         return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(template.key)))
     }
 
-    @PutMapping("definitions/{key}")
+    @PutMapping("/v1/value-mapper/definitions/{key}")
     fun updateTemplate(
         @PathVariable key: String,
         @RequestBody template: ValueMapperTemplateDTO,
@@ -93,7 +93,7 @@ class ValueMapperResource(
         return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(key)))
     }
 
-    @DeleteMapping("definitions")
+    @DeleteMapping("/v1/value-mapper/definitions")
     fun deleteTemplates(
         @RequestBody request: DeleteTemplateRequest
     ): ResponseEntity<Unit> {
