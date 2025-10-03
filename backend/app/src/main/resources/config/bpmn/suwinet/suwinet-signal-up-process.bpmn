@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0jdxk2i" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:message id="Message_14jve1u" name="Message_14jve1u" />
+  <bpmn:message id="Message_28peuic" name="SUWINET_DOWN_MESSAGE" />
+  <bpmn:signal id="Signal_0knksc2" name="suwinet-up-signal" />
+  <bpmn:collaboration id="Collaboration_1po1p7s">
+    <bpmn:participant id="Participant_suwinet-signal-up-process" name="suwinet-signal-up-process" processRef="suwinet-signal-up-process" />
+  </bpmn:collaboration>
+  <bpmn:process id="suwinet-signal-up-process" name="suwinet-signal-up-process" isExecutable="true">
+    <bpmn:endEvent id="suwinet-up-signal" name="suwinet-up-signal">
+      <bpmn:incoming>Flow_136eb6r</bpmn:incoming>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_0lxmpi3" signalRef="Signal_0knksc2" />
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_0mtoabm" name="suwinet UP form">
+      <bpmn:incoming>Flow_0me7plr</bpmn:incoming>
+      <bpmn:outgoing>Flow_136eb6r</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="suwinet-down-event-start-message-receiver" name="suwinet-down-event-start-message-receiver">
+      <bpmn:outgoing>Flow_0me7plr</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1woxr7y" messageRef="Message_28peuic" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_136eb6r" sourceRef="Activity_0mtoabm" targetRef="suwinet-up-signal" />
+    <bpmn:sequenceFlow id="Flow_0me7plr" sourceRef="suwinet-down-event-start-message-receiver" targetRef="Activity_0mtoabm" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1po1p7s">
+      <bpmndi:BPMNShape id="Participant_1pz8f5d_di" bpmnElement="Participant_suwinet-signal-up-process" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="460" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1t3kwpc_di" bpmnElement="suwinet-up-signal">
+        <dc:Bounds x="472" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="448" y="205" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1igzx0l_di" bpmnElement="Activity_0mtoabm">
+        <dc:Bounds x="320" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1fj0sgz_di" bpmnElement="suwinet-down-event-start-message-receiver">
+        <dc:Bounds x="232" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="210" y="205" width="88" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_136eb6r_di" bpmnElement="Flow_136eb6r">
+        <di:waypoint x="420" y="180" />
+        <di:waypoint x="472" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0me7plr_di" bpmnElement="Flow_0me7plr">
+        <di:waypoint x="268" y="180" />
+        <di:waypoint x="320" y="180" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

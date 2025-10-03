@@ -131,8 +131,15 @@ class SuwiNetPlugin(
                 )
             }
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            when(e) {
+                is SuwinetError -> {
+                    throw BpmnError(e.errorCode)
+                }
+                else -> {
+                    logger.info("Exiting scope due to nested error.", e)
+                    return
+                }
+            }
         }
     }
 
@@ -167,8 +174,15 @@ class SuwiNetPlugin(
                 }
             }
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            when(e) {
+                is SuwinetError -> {
+                    throw BpmnError(e.errorCode)
+                }
+                else -> {
+                    logger.info("Exiting scope due to nested error.", e)
+                    return
+                }
+            }
         }
     }
 
