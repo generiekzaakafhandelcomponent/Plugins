@@ -13,12 +13,15 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Straatadres
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Verblijfstitel
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.WebServiceException
+import java.io.IOException
 
 class SuwinetBrpInfoService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
@@ -46,15 +49,22 @@ class SuwinetBrpInfoService(
 
         logger.info { "Getting BRP personal info from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
 
-        val result = runCatching {
-
+        try {
             val request = objectFactory.createRequest().apply {
                 burgerservicenr = bsn
             }
             val person = brpService.aanvraagPersoon(request)
-            person.unwrapResponse()
+
+            return person.unwrapResponse()
+        } catch (e: WebServiceException) {
+            when(e.cause) {
+                is IOException -> {
+                    logger.error { "Error connecting to Suwinet while getting BRP personal info from $bsn" }
+                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+                }
+                else -> throw e
+            }
         }
-        return result.getOrThrow()
     }
 
     private fun AanvraagPersoonResponse.unwrapResponse(): PersoonDto? {
