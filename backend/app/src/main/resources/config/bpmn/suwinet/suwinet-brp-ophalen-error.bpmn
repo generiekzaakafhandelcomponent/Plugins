@@ -8,18 +8,6 @@
       <bpmn:incoming>Flow_1cnhoye</bpmn:incoming>
       <bpmn:outgoing>Flow_1qe90bb</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1m2li20" name="store persoonsgegevens in document" camunda:asyncAfter="true" camunda:expression="${true}">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:outputParameter name="partnerBsn">${"112356996"}</camunda:outputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1db28ks</bpmn:incoming>
-      <bpmn:outgoing>Flow_1t85gku</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_0atf5y9">
-        <bpmn:targetRef>DocumentDataObjectReference</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-    </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="Gateway_0i1o294" name="heeft partner?" default="Flow_1d8agm6">
       <bpmn:incoming>Flow_1t85gku</bpmn:incoming>
       <bpmn:outgoing>Flow_1o90ueh</bpmn:outgoing>
@@ -30,13 +18,6 @@
       <bpmn:outgoing>Flow_1db28ks</bpmn:outgoing>
       <bpmn:outgoing>Flow_1w20pf8</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_1o5iyv7" name="store persoonsgegevens partner in document" camunda:asyncAfter="true" camunda:expression="${suwinetBrpStoreToDocService.storePersoonsgegevens(brpPersoonsgegevensPartnerInfo, &#34;/gegevensVanuitBronnen/partner&#34;, execution.businessKey)}">
-      <bpmn:incoming>Flow_1u9o6ur</bpmn:incoming>
-      <bpmn:outgoing>Flow_0vxg3x7</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_01dbdxs">
-        <bpmn:targetRef>DataObjectReference_05lqrnh</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-    </bpmn:serviceTask>
     <bpmn:exclusiveGateway id="Gateway_12gpieh">
       <bpmn:incoming>Flow_1d8agm6</bpmn:incoming>
       <bpmn:incoming>Flow_0vxg3x7</bpmn:incoming>
@@ -114,11 +95,11 @@
     <bpmn:sequenceFlow id="Flow_1o90ueh" name="ja" sourceRef="Gateway_0i1o294" targetRef="Gateway_1m4kjxg">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${partnerBsn != ""}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0q570ig" sourceRef="Activity_15dfru2" targetRef="Gateway_1mhs5fc" />
+    <bpmn:sequenceFlow id="Flow_0q570ig" sourceRef="ophalen-brp-partner" targetRef="Gateway_1mhs5fc" />
     <bpmn:sequenceFlow id="Flow_1d8agm6" sourceRef="Gateway_0i1o294" targetRef="Gateway_12gpieh" />
     <bpmn:sequenceFlow id="Flow_1w20pf8" sourceRef="Gateway_1i5s10r" targetRef="Event_0nkf7ir" />
     <bpmn:sequenceFlow id="Flow_1u9o6ur" name="has brpPersoonsgegevensPartnerInfo" sourceRef="Gateway_1mhs5fc" targetRef="Activity_1o5iyv7">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable('brpPersoonsgegevensPartnerInfo')}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_07zbmo8" sourceRef="Gateway_1mhs5fc" targetRef="Gateway_16pafpn" />
     <bpmn:sequenceFlow id="Flow_0vxg3x7" sourceRef="Activity_1o5iyv7" targetRef="Gateway_12gpieh" />
@@ -126,7 +107,7 @@
     <bpmn:sequenceFlow id="Flow_1fow3m6" sourceRef="Gateway_16pafpn" targetRef="Gateway_0emfq92" />
     <bpmn:sequenceFlow id="Flow_1d2txnp" sourceRef="Gateway_0emfq92" targetRef="Gateway_0d9jdgq" />
     <bpmn:sequenceFlow id="Flow_1qsjhma" name="ja" sourceRef="Gateway_0emfq92" targetRef="Activity_0407tm5">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${kinderenBsns != "" &amp;&amp; kinderenBsns.size() &gt; 0}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0yekogb" sourceRef="Activity_0407tm5" targetRef="Gateway_1no8ob2" />
     <bpmn:sequenceFlow id="Flow_0fyfltj" name="has brpPersoonsgegevensKinderenInfo" sourceRef="Gateway_1no8ob2" targetRef="Activity_1cq0lfb">
@@ -155,22 +136,17 @@
       <bpmn:outgoing>Flow_1u9o6ur</bpmn:outgoing>
       <bpmn:outgoing>Flow_07zbmo8</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_15dfru2" name="ophalen BRP partner gegevens" camunda:asyncAfter="true" camunda:expression="${true}">
+    <bpmn:serviceTask id="ophalen-brp-partner" name="ophalen BRP partner gegevens" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_0bymsdt</bpmn:incoming>
       <bpmn:outgoing>Flow_0q570ig</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0bymsdt" sourceRef="Gateway_1m4kjxg" targetRef="Activity_15dfru2" />
-    <bpmn:exclusiveGateway id="Gateway_1m4kjxg">
+    <bpmn:sequenceFlow id="Flow_0bymsdt" sourceRef="Gateway_1m4kjxg" targetRef="ophalen-brp-partner" />
+    <bpmn:exclusiveGateway id="Gateway_1m4kjxg" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1o90ueh</bpmn:incoming>
-      <bpmn:incoming>Flow_0iiwea4</bpmn:incoming>
+      <bpmn:incoming>Flow_12nsg25</bpmn:incoming>
       <bpmn:outgoing>Flow_0bymsdt</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_0iiwea4" sourceRef="suwinet-up-event" targetRef="Gateway_1m4kjxg" />
-    <bpmn:boundaryEvent id="suwinet-up-event" name="suwinet up" attachedToRef="Activity_15dfru2">
-      <bpmn:outgoing>Flow_0iiwea4</bpmn:outgoing>
-      <bpmn:signalEventDefinition id="SignalEventDefinition_0wqtoks" signalRef="Signal_2r9uikr" />
-    </bpmn:boundaryEvent>
     <bpmn:userTask id="CorrigeerBSNTask" name="Corrigeer BSN">
       <bpmn:incoming>Flow_1xejmkx</bpmn:incoming>
       <bpmn:outgoing>Flow_10eb4sc</bpmn:outgoing>
@@ -179,21 +155,44 @@
       <bpmn:incoming>Flow_1o34nfc</bpmn:incoming>
       <bpmn:outgoing>Flow_1t8yxoj</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:boundaryEvent id="suwinet-down-error" name="suwinet-down-error" attachedToRef="Activity_15dfru2">
+    <bpmn:boundaryEvent id="suwinet-down-error" name="suwinet-down-error" camunda:asyncAfter="true" attachedToRef="ophalen-brp-partner">
       <bpmn:outgoing>Flow_0w3srnv</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_023gwli" errorRef="Error_05vaq43" />
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0w3srnv" sourceRef="suwinet-down-error" targetRef="suwinet-down-message" />
-    <bpmn:intermediateThrowEvent id="suwinet-down-message" name="suwinet-down-message">
+    <bpmn:intermediateThrowEvent id="suwinet-down-message" name="suwinet-down-message" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_0w3srnv</bpmn:incoming>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0z4ufj7" camunda:expression="${correlationService.sendStartMessage(&#34;SUWINET_DOWN_MESSAGE&#34;)}" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0z4ufj7" camunda:expression="${correlationService.sendStartMessage(&#34;SUWINET_IS_DOWN_MESSAGE_2&#34;, execution.businessKey)}" />
     </bpmn:intermediateThrowEvent>
+    <bpmn:userTask id="Activity_1m2li20" name="form" camunda:asyncAfter="true">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="partnerBsn">${"444444440"}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1db28ks</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t85gku</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0atf5y9">
+        <bpmn:targetRef>DocumentDataObjectReference</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_1o5iyv7" name="form" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_1u9o6ur</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vxg3x7</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_01dbdxs">
+        <bpmn:targetRef>DataObjectReference_05lqrnh</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:boundaryEvent id="suwinet-up-message-catch" name="suwinet-up-message-catch" camunda:asyncAfter="true" attachedToRef="ophalen-brp-partner">
+      <bpmn:outgoing>Flow_12nsg25</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_05f58xl" messageRef="Message_3ffgla6" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_12nsg25" sourceRef="suwinet-up-message-catch" targetRef="Gateway_1m4kjxg" />
   </bpmn:process>
   <bpmn:error id="Error_10q1uq2" name="Error_3lbup3a" />
   <bpmn:error id="Error_05vaq43" name="suwinet-connect-error" errorCode="SUWINET_CONNECT_ERROR" />
   <bpmn:error id="Error_0mxyp94" name="SUWINET_BSN_NOT_FOUND" errorCode="SUWINET_BSN_NOT_FOUND" />
-  <bpmn:signal id="Signal_1m8c29f" name="Signal_1m8c29f" />
-  <bpmn:signal id="Signal_2r9uikr" name="suwinet-up-signal" />
+  <bpmn:message id="Message_3ffgla6" name="SUWINET_IS_UP" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1gmd3lc">
       <bpmndi:BPMNShape id="Participant_0gc491p_di" bpmnElement="SuwinetRetrieveBrpPersonalInformation" isHorizontal="true">
@@ -204,10 +203,6 @@
         <dc:Bounds x="480" y="210" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_18kpldq" bpmnElement="Activity_1m2li20">
-        <dc:Bounds x="800" y="210" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_105n7w2" bpmnElement="Gateway_0i1o294" isMarkerVisible="true">
         <dc:Bounds x="945" y="225" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -216,10 +211,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0kkahqw" bpmnElement="Gateway_1i5s10r" isMarkerVisible="true">
         <dc:Bounds x="635" y="225" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_19530x6" bpmnElement="Activity_1o5iyv7">
-        <dc:Bounds x="1390" y="313" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1ye4lok" bpmnElement="Gateway_12gpieh" isMarkerVisible="true">
         <dc:Bounds x="1505" y="225" width="50" height="50" />
@@ -292,7 +283,7 @@
       <bpmndi:BPMNShape id="BPMNShape_0qls7or" bpmnElement="Gateway_1mhs5fc" isMarkerVisible="true">
         <dc:Bounds x="1285" y="328" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_050lqu2" bpmnElement="Activity_15dfru2">
+      <bpmndi:BPMNShape id="BPMNShape_050lqu2" bpmnElement="ophalen-brp-partner">
         <dc:Bounds x="1130" y="313" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1m4kjxg_di" bpmnElement="Gateway_1m4kjxg" isMarkerVisible="true">
@@ -310,16 +301,18 @@
           <dc:Bounds x="1146" y="152" width="71" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14ly1uc_di" bpmnElement="Activity_1m2li20">
+        <dc:Bounds x="800" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nwhrps_di" bpmnElement="Activity_1o5iyv7">
+        <dc:Bounds x="1390" y="313" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1skavng_di" bpmnElement="suwinet-down-error">
         <dc:Bounds x="1162" y="295" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1148" y="265" width="71" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1jisz4x_di" bpmnElement="suwinet-up-event">
-        <dc:Bounds x="1162" y="375" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1203" y="413" width="53" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1cvyjsz_di" bpmnElement="suwinet-connect-failure-event">
@@ -332,6 +325,12 @@
         <dc:Bounds x="502" y="192" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="543" y="162" width="74" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1n8emx9_di" bpmnElement="suwinet-up-message-catch">
+        <dc:Bounds x="1152" y="375" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1182" y="406" width="75" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1cnhoye_di" bpmnElement="Flow_1cnhoye">
@@ -468,23 +467,15 @@
         <di:waypoint x="1065" y="353" />
         <di:waypoint x="1130" y="353" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0iiwea4_di" bpmnElement="Flow_0iiwea4">
-        <di:waypoint x="1180" y="411" />
-        <di:waypoint x="1180" y="460" />
-        <di:waypoint x="1040" y="460" />
-        <di:waypoint x="1040" y="378" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0w3srnv_di" bpmnElement="Flow_0w3srnv">
         <di:waypoint x="1180" y="295" />
         <di:waypoint x="1180" y="218" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0zl632o" bpmnElement="DataOutputAssociation_0atf5y9">
-        <di:waypoint x="850" y="290" />
-        <di:waypoint x="850" y="355" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_0133zee" bpmnElement="DataOutputAssociation_01dbdxs">
-        <di:waypoint x="1441" y="393" />
-        <di:waypoint x="1441" y="418" />
+      <bpmndi:BPMNEdge id="Flow_12nsg25_di" bpmnElement="Flow_12nsg25">
+        <di:waypoint x="1170" y="411" />
+        <di:waypoint x="1170" y="431" />
+        <di:waypoint x="1040" y="431" />
+        <di:waypoint x="1040" y="378" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataInputAssociation_05hp249_di" bpmnElement="DataInputAssociation_05hp249">
         <di:waypoint x="1920" y="418" />
@@ -493,6 +484,14 @@
       <bpmndi:BPMNEdge id="BPMNEdge_1vj3n97" bpmnElement="DataOutputAssociation_1i6wv91">
         <di:waypoint x="2251" y="393" />
         <di:waypoint x="2251" y="418" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0zl632o" bpmnElement="DataOutputAssociation_0atf5y9">
+        <di:waypoint x="850" y="290" />
+        <di:waypoint x="850" y="355" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_0133zee" bpmnElement="DataOutputAssociation_01dbdxs">
+        <di:waypoint x="1441" y="393" />
+        <di:waypoint x="1441" y="418" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
