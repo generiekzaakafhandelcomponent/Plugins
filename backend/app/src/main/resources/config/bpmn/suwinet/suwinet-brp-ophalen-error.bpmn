@@ -4,7 +4,10 @@
     <bpmn:participant id="SuwinetRetrieveBrpPersonalInformation" name="Suwinet Retrieve BRP Personal Information" processRef="suwinet-brp-ophalen-error" />
   </bpmn:collaboration>
   <bpmn:process id="suwinet-brp-ophalen-error" name="Suwinet: Retrieve BRP Personal Information Error" isExecutable="true">
-    <bpmn:serviceTask id="Activity_08qadpi" name="ophalen BRP persoonsgegevens" camunda:asyncAfter="true" camunda:expression="${true}">
+    <bpmn:serviceTask id="Activity_08qadpi" name="ophalen BRP persoonsgegevens" camunda:asyncBefore="true" camunda:exclusive="false" camunda:expression="${true}">
+      <bpmn:extensionElements>
+        <camunda:failedJobRetryTimeCycle>R2/PT30S,PT4M</camunda:failedJobRetryTimeCycle>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1cnhoye</bpmn:incoming>
       <bpmn:outgoing>Flow_1qe90bb</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -144,7 +147,6 @@
     <bpmn:sequenceFlow id="Flow_0bymsdt" sourceRef="Gateway_1m4kjxg" targetRef="ophalen-brp-partner" />
     <bpmn:exclusiveGateway id="Gateway_1m4kjxg" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1o90ueh</bpmn:incoming>
-      <bpmn:incoming>Flow_12nsg25</bpmn:incoming>
       <bpmn:outgoing>Flow_0bymsdt</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:userTask id="CorrigeerBSNTask" name="Corrigeer BSN">
@@ -155,15 +157,6 @@
       <bpmn:incoming>Flow_1o34nfc</bpmn:incoming>
       <bpmn:outgoing>Flow_1t8yxoj</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:boundaryEvent id="suwinet-down-error" name="suwinet-down-error" camunda:asyncAfter="true" attachedToRef="ophalen-brp-partner">
-      <bpmn:outgoing>Flow_0w3srnv</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_023gwli" errorRef="Error_05vaq43" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_0w3srnv" sourceRef="suwinet-down-error" targetRef="suwinet-down-message" />
-    <bpmn:intermediateThrowEvent id="suwinet-down-message" name="suwinet-down-message" camunda:asyncAfter="true">
-      <bpmn:incoming>Flow_0w3srnv</bpmn:incoming>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0z4ufj7" camunda:expression="${correlationService.sendStartMessage(&#34;SUWINET_IS_DOWN_MESSAGE_2&#34;, execution.businessKey)}" />
-    </bpmn:intermediateThrowEvent>
     <bpmn:userTask id="Activity_1m2li20" name="form" camunda:asyncAfter="true">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -183,11 +176,6 @@
         <bpmn:targetRef>DataObjectReference_05lqrnh</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:userTask>
-    <bpmn:boundaryEvent id="suwinet-up-message-catch" name="suwinet-up-message-catch" camunda:asyncAfter="true" attachedToRef="ophalen-brp-partner">
-      <bpmn:outgoing>Flow_12nsg25</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_05f58xl" messageRef="Message_3ffgla6" />
-    </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_12nsg25" sourceRef="suwinet-up-message-catch" targetRef="Gateway_1m4kjxg" />
   </bpmn:process>
   <bpmn:error id="Error_10q1uq2" name="Error_3lbup3a" />
   <bpmn:error id="Error_05vaq43" name="suwinet-connect-error" errorCode="SUWINET_CONNECT_ERROR" />
@@ -295,12 +283,6 @@
       <bpmndi:BPMNShape id="Activity_1v18qo0_di" bpmnElement="SuwinetBeschikbaarTask">
         <dc:Bounds x="330" y="380" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_15bvo0f_di" bpmnElement="suwinet-down-message">
-        <dc:Bounds x="1162" y="182" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1146" y="152" width="71" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_14ly1uc_di" bpmnElement="Activity_1m2li20">
         <dc:Bounds x="800" y="210" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -308,12 +290,6 @@
       <bpmndi:BPMNShape id="Activity_1nwhrps_di" bpmnElement="Activity_1o5iyv7">
         <dc:Bounds x="1390" y="313" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1skavng_di" bpmnElement="suwinet-down-error">
-        <dc:Bounds x="1162" y="295" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1148" y="265" width="71" height="27" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1cvyjsz_di" bpmnElement="suwinet-connect-failure-event">
         <dc:Bounds x="502" y="272" width="36" height="36" />
@@ -325,12 +301,6 @@
         <dc:Bounds x="502" y="192" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="543" y="162" width="74" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1n8emx9_di" bpmnElement="suwinet-up-message-catch">
-        <dc:Bounds x="1152" y="375" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1182" y="406" width="75" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1cnhoye_di" bpmnElement="Flow_1cnhoye">
@@ -466,16 +436,6 @@
       <bpmndi:BPMNEdge id="Flow_0bymsdt_di" bpmnElement="Flow_0bymsdt">
         <di:waypoint x="1065" y="353" />
         <di:waypoint x="1130" y="353" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0w3srnv_di" bpmnElement="Flow_0w3srnv">
-        <di:waypoint x="1180" y="295" />
-        <di:waypoint x="1180" y="218" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_12nsg25_di" bpmnElement="Flow_12nsg25">
-        <di:waypoint x="1170" y="411" />
-        <di:waypoint x="1170" y="431" />
-        <di:waypoint x="1040" y="431" />
-        <di:waypoint x="1040" y="378" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataInputAssociation_05hp249_di" bpmnElement="DataInputAssociation_05hp249">
         <di:waypoint x="1920" y="418" />

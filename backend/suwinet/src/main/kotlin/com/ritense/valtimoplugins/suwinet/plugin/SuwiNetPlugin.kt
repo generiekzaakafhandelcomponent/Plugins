@@ -75,9 +75,12 @@ class SuwiNetPlugin(
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP info for case ${execution.businessKey}" }
-        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
         try {
+            require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef"
+                throw SuwinetError(NotFoundException("not found"), "SUWINET_BSN_NOT_FOUND")
+            }
+
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig()
             )
