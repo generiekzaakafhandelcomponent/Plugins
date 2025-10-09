@@ -23,8 +23,7 @@ import {
     EditorModel,
     EditorModule,
     PageTitleService,
-    RenderInPageHeaderDirective,
-    ValtimoCdsOverflowButtonDirective
+    RenderInPageHeaderDirective
 } from '@valtimo/components';
 import {ButtonModule, DialogModule, NotificationService, TabsModule} from 'carbon-components-angular';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
@@ -45,7 +44,6 @@ import {DocumentTemplateDeleteModalComponent} from '../document-template-delete-
         TranslateModule,
         TabsModule,
         DialogModule,
-        ValtimoCdsOverflowButtonDirective,
         DocumentTemplateDeleteModalComponent,
         CarbonListModule,
         ButtonModule,
@@ -61,9 +59,6 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
     public readonly moreDisabled$ = new BehaviorSubject<boolean>(true);
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
-
-    public readonly canUpdateGlobalConfiguration$ =
-        this.environmentService.canUpdateGlobalConfiguration();
 
     private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
         filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),

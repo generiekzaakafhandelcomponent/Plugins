@@ -38,7 +38,6 @@ import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.xhtmlrenderer.pdf.ITextRenderer
 import kotlin.concurrent.thread
 
-
 @Plugin(
     key = "document-generator",
     title = "Document generator Plugin",

@@ -12,6 +12,7 @@
     "buildDev": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --configuration=dev --output-path=deployment/dist",
     "test": "ng test",
     "libs-build-all": "rimraf dist && npm-run-all libs:build:*",
+    "libs-build-all-cicd": "rimraf dist && npm-run-all -p -l --max-parallel 8 libs:build:*",
     "libs-publish-all": "node ./scripts/libs.publish.all.js",
     "libs:build:valtimo-ocr": "ng build @valtimo-plugins/valtimo-ocr",
     "libs:build:externe-klanttaak": "ng build @valtimo-plugins/externe-klanttaak",

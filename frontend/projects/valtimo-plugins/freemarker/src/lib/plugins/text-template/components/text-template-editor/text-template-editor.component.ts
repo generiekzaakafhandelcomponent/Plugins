@@ -60,9 +60,6 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
 
-    public readonly canUpdateGlobalConfiguration$ =
-        this.environmentService.canUpdateGlobalConfiguration();
-
     private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
         filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
     );

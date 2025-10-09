@@ -22,29 +22,49 @@
   } as obs">
 
     <div class="template-explanation">
-        <p>
-            @if (obs.template.type === 'pdf') {
+        @if (obs.template.type === 'pdf') {
+            <p>
                 <strong>PDF Templates</strong> use HTML in combination with
-                <a target="_blank" href="https://freemarker.apache.org/docs/dgui_quickstart_basics.html">FreeMarker</a>
+                <a href="https://freemarker.apache.org/docs/dgui_quickstart_basics.html" target="_blank"
+                   rel="noopener noreferrer">
+                    FreeMarker
+                </a>
                 to define placeholders within the HTML structure. The FreeMarker data model is based on nested
-                <a target="_blank" href="https://docs.valtimo.nl/features/value-resolvers">Valtimo value
-                    resolvers</a>, but uses a slightly different syntax.<br>
-                For example: <code>$&#123;doc.firstName&#125;</code> retrieves the
+                <a href="https://docs.valtimo.nl/features/value-resolvers" target="_blank" rel="noopener noreferrer">
+                    Valtimo value resolvers
+                </a>,
+                but uses a slightly different syntax.
+            </p>
+            <p>
+                For example, <code>$&#123;doc.firstName&#125;</code> retrieves the
                 <code>firstName</code> value from the case.
-            } @else {
-                <strong>CSV Templates</strong> use a semicolon (<code>;</code>) as a separator and utilize
-                <a target="_blank" href="https://freemarker.apache.org/docs/dgui_quickstart_basics.html">FreeMarker</a>
-                to define placeholders within the CSV content. The FreeMarker data model is based on nested
-                <a target="_blank" href="https://docs.valtimo.nl/features/value-resolvers">Valtimo value
-                    resolvers</a>, but uses a slightly different syntax.<br>
-                For example: <code>$&#123;doc.firstName&#125;</code> retrieves the <code>firstName</code> value from the case.
-            }
-        </p>
-        <p>
-            <strong>Document Templates</strong> can also act as value resolvers.
-            For instance: <code>$&#123;template.my-document-template&#125;</code> or
-            <code>template:my-document-template</code>.
-        </p>
+            </p>
+            <p>
+                The notation <code>&lt;#list docs as doc&gt;...&lt;/#list&gt;</code> streams all documents in the
+                current case.
+            </p>
+        } @else {
+            <p>
+                <strong>CSV Templates</strong> use a semicolon (<code>;</code>) as a separator.
+                <a href="https://freemarker.apache.org/docs/dgui_quickstart_basics.html" target="_blank"
+                   rel="noopener noreferrer">
+                    FreeMarker
+                </a>
+                is used to define placeholders within the CSV content. The FreeMarker data model is based on nested
+                <a href="https://docs.valtimo.nl/features/value-resolvers" target="_blank" rel="noopener noreferrer">
+                    Valtimo value resolvers
+                </a>,
+                but uses a slightly different syntax.
+            </p>
+            <p>
+                For example, <code>$&#123;doc.firstName&#125;</code> retrieves the
+                <code>firstName</code> value from the case.
+            </p>
+            <p>
+                The notation <code>&lt;#list docs as doc&gt;...&lt;/#list&gt;</code> streams all documents in the
+                current case.
+            </p>
+        }
     </div>
 
     <cds-tabs type="contained">

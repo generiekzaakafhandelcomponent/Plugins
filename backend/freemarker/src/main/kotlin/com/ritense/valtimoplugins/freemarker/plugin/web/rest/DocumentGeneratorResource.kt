@@ -27,7 +27,6 @@ import java.net.URLConnection
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType.APPLICATION_PDF
 import org.springframework.http.MediaType.APPLICATION_OCTET_STREAM
-import org.springframework.http.MediaType.TEXT_PLAIN
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

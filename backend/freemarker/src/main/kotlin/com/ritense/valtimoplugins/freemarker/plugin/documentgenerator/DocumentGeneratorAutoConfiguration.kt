@@ -16,7 +16,6 @@
 
 package com.ritense.valtimoplugins.freemarker.plugin.documentgenerator
 
-import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.resource.service.TemporaryResourceStorageService

@@ -19,6 +19,7 @@ package com.ritense.valtimoplugins.freemarker.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.Document
+import com.ritense.document.domain.impl.JsonSchemaDocument
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimo.contract.case_.CaseDefinitionChecker
 import com.ritense.valtimo.contract.case_.CaseDefinitionId
@@ -27,6 +28,7 @@ import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.SHOW_MISSING_PLACEHOLDER
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.THROW_ERROR_WHEN_MISSING_PLACEHOLDER
+import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byCaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKey
@@ -42,6 +44,7 @@ import freemarker.template.TemplateException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.io.StringWriter
 import java.util.UUID
+import java.util.stream.Stream
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -58,6 +61,7 @@ class TemplateService(
     private val valueResolverService: ValueResolverService,
     private val freemarkerConfiguration: Configuration,
     private val caseDefinitionChecker: CaseDefinitionChecker,
+    private val jsonSchemaDocumentRepositoryStreaming: JsonSchemaDocumentRepositoryStreaming,
 ) {
 
     fun generate(
@@ -105,33 +109,36 @@ class TemplateService(
         document: Document? = null,
         missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER,
     ): String {
-        val dataModel = mutableMapOf<String, Any?>()
-        document?.let { dataModel["doc"] = objectMapper.convertValue<Map<String, Any?>>(document.content().asJson()) }
-        dataModel["pv"] = processVariables
+        streamDocuments(document?.definitionId()?.caseDefinitionId()?.key).use { documentsStream ->
+            val dataModel = mutableMapOf<String, Any?>()
+            document?.let { dataModel["doc"] = objectMapper.convertValue<Map<String, Any?>>(document.content().asJson()) }
+            document?.let { dataModel["docs"] = streamToMap(documentsStream) }
+            dataModel["pv"] = processVariables
 
-        val template = Template(UUID.randomUUID().toString(), templateContent, freemarkerConfiguration)
-        var exceptionCaught: Exception? = null
+            val template = Template(UUID.randomUUID().toString(), templateContent, freemarkerConfiguration)
+            var exceptionCaught: Exception? = null
 
-        for (i in 1..10) {
-            try {
-                val writer = StringWriter()
-                template.createProcessingEnvironment(dataModel, writer).process()
-                return writer.toString()
-            } catch (e: TemplateException) {
-                if (!resolveDataModel(
-                        document = document,
-                        templateName = templateName,
-                        templateContent = templateContent,
-                        incompleteDataModel = dataModel,
-                        missingPlaceholderStrategy = missingPlaceholderStrategy
-                    )
-                ) {
-                    throw e
+            for (i in 1..10) {
+                try {
+                    val writer = StringWriter()
+                    template.createProcessingEnvironment(dataModel, writer).process()
+                    return writer.toString()
+                } catch (e: TemplateException) {
+                    if (!resolveDataModel(
+                            document = document,
+                            templateName = templateName,
+                            templateContent = templateContent,
+                            incompleteDataModel = dataModel,
+                            missingPlaceholderStrategy = missingPlaceholderStrategy
+                        )
+                    ) {
+                        throw e
+                    }
+                    exceptionCaught = e
                 }
-                exceptionCaught = e
             }
+            throw exceptionCaught!!
         }
-        throw exceptionCaught!!
     }
 
     fun findPlaceholders(
@@ -459,6 +466,27 @@ class TemplateService(
             else -> mutableMapOf<String, Any>()
         }
     }
+
+    private fun streamDocuments(caseDefinitionKey: String?): Stream<JsonSchemaDocument> {
+        return if (caseDefinitionKey == null) {
+            emptyList<JsonSchemaDocument>().stream()
+        } else {
+            jsonSchemaDocumentRepositoryStreaming
+                .streamAllByCaseDefinitionKey(caseDefinitionKey)
+        }
+    }
+
+    private fun streamToMap(stream: Stream<JsonSchemaDocument>): Iterable<Map<String, Any?>> {
+        return Iterable {
+            val iterator = stream.iterator()
+            object : Iterator<Map<String, Any?>> {
+                override fun hasNext(): Boolean = iterator.hasNext()
+                override fun next(): Map<String, Any?> =
+                    objectMapper.convertValue<Map<String, Any?>>(iterator.next().content().asJson())
+            }
+        }
+    }
+
 
     companion object {
         private val logger = KotlinLogging.logger {}

@@ -49,15 +49,15 @@ const mailTemplatePluginSpecification: PluginSpecification = {
     en: {
       title: 'Mail Templates',
       'generate-mail-file': 'Generate Mail File',
-      'generate-mail-content': 'Generate Mail Content',
+      'generate-mail-content': 'Generate Mail Content (deprecated)',
       description: 'Create mail templates with Freemarker.',
       configurationTitle: 'Configuration Name',
       configurationTitleTooltip:
           'The name of the current plug-in configuration. The configuration can be found under this name in the rest of the application.',
       generateMailContentDescription:
-          'This action generates the content of an mail based on a template. The mail text is stored in a Process Variable.',
+          'This action generates the content of an mail based on a template. The mail text is then stored in a Process Variable. This action is deprecated because the mail text can be bigger than a Process Variable can store. Please use action "Generate Mail File" instead',
       generateMailFileDescription:
-          'This action generates the content of an mail and saves the result in a temporary file. The file ID is stored in a Process Variable.',
+          'This action generates the content of an mail and saves the result in a temporary file. The file ID is then stored in a Process Variable.',
       mailTemplateKey: 'Mail Template',
       mailTemplateKeyTooltip: 'The mail will be generated based on this template.',
       processVariableName: 'Process Variable Name',
