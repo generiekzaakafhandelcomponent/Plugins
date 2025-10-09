@@ -17,11 +17,7 @@ https://github.com/user-attachments/assets/3b27631d-bbda-406e-b6b7-f6e5be21f9b9
 
 For creating PDF and CSV documents.
 
-
-
-https://github.com/user-attachments/assets/1c1b1d0c-5470-4bdc-bad6-918f17cbebf3
-
-
+https://github.com/user-attachments/assets/7f67de58-3d46-49fb-ba3a-d713e858ec1b
 
 # Dependencies
 
