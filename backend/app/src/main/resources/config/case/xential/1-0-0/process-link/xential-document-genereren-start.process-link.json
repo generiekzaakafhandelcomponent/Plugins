@@ -1,0 +1,8 @@
+[
+  {
+    "activityId": "CreeerDocumentStartEvent",
+    "activityType": "bpmn:StartEvent:start",
+    "processLinkType": "form",
+    "formDefinitionName": "xential-document-maken.start"
+  }
+]

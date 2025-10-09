@@ -19,9 +19,9 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap, take, tap,} from 'rxjs';
 import {GenerateMailContentConfig} from '../../models';
-import {ModalService, SelectItem} from '@valtimo/components';
+import {SelectItem} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
-import {DocumentService} from '@valtimo/document';
+import {CaseManagementParams, ManagementContext} from '@valtimo/shared';
 
 @Component({
     standalone: false,
@@ -33,58 +33,31 @@ export class GenerateMailContentComponent
     @Input() save$!: Observable<void>;
     @Input() disabled$!: Observable<boolean>;
     @Input() pluginId!: string;
+    @Input() context$: Observable<[ManagementContext, CaseManagementParams]>;
     @Input() prefillConfiguration$!: Observable<GenerateMailContentConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
-    private saveSubscription!: Subscription;
     private readonly formValue$ = new BehaviorSubject<GenerateMailContentConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
+    private _subscriptions = new Subscription();
 
     readonly loading$ = new BehaviorSubject<boolean>(true);
 
-    readonly mailTemplateItems$: Observable<Array<SelectItem>> = this.modalService.modalData$.pipe(
-        switchMap(params =>
-            this.documentService.findProcessDocumentDefinitionsByProcessDefinitionKey(
-                params?.processDefinitionKey
-            )
-        ),
-        switchMap(processDocumentDefinitions =>
-            combineLatest([
-                of({content: []}),
-                ...processDocumentDefinitions.map(processDocumentDefinition =>
-                    this.templateService.getAllMailTemplates(
-                        processDocumentDefinition.id.documentDefinitionId.name
-                    )
-                ),
-            ])
-        ),
-        map(results => {
-            return results
-                .flatMap(result => result.content)
-                .map(template => ({
-                    id: template.key,
-                    text: template.key,
-                }));
-        }),
-        tap(() => {
-            this.loading$.next(false);
-        })
-    );
+    readonly mailTemplateItems$ = new BehaviorSubject<Array<SelectItem>>([]);
 
     constructor(
-        private readonly modalService: ModalService,
-        private readonly documentService: DocumentService,
         private readonly templateService: FreemarkerTemplateManagementService
     ) {
     }
 
     ngOnInit(): void {
         this.openSaveSubscription();
+        this.initContextHandling();
     }
 
     ngOnDestroy(): void {
-        this.saveSubscription?.unsubscribe();
+        this._subscriptions.unsubscribe();
     }
 
     formValueChange(formValue: GenerateMailContentConfig): void {
@@ -100,7 +73,7 @@ export class GenerateMailContentComponent
     }
 
     private openSaveSubscription(): void {
-        this.saveSubscription = this.save$?.subscribe(save => {
+        const saveSubscription = this.save$?.subscribe(save => {
             combineLatest([this.formValue$, this.valid$])
                 .pipe(take(1))
                 .subscribe(([formValue, valid]) => {
@@ -109,5 +82,38 @@ export class GenerateMailContentComponent
                     }
                 });
         });
+        this._subscriptions.add(saveSubscription);
     }
+
+    private initContextHandling(): void {
+        if (!this.context$) {
+            return;
+        }
+
+        const contextSub = this.context$.pipe(
+            switchMap(([managementContext, caseDefinitionId]) => {
+                    if (managementContext == 'case') {
+                        return this.templateService.getAllMailTemplates(
+                            caseDefinitionId?.caseDefinitionKey,
+                            caseDefinitionId?.caseDefinitionVersionTag,
+                        );
+                    } else {
+                        console.error('Freemarker plugin does not support global templates')
+                        return of(null);
+                    }
+                }
+            ),
+            map(results =>
+                results?.content.map(template => ({
+                    id: template.key,
+                    text: template.key,
+                })) || []
+            ),
+            tap(() => this.loading$.next(false))
+        )
+            .subscribe(results => this.mailTemplateItems$.next(results));
+
+        this._subscriptions.add(contextSub);
+    }
+
 }
