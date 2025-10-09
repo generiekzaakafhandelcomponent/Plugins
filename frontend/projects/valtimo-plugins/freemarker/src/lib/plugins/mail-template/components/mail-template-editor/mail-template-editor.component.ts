@@ -150,7 +150,7 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         });
     }
 
-    public onDelete(templates: Array<string>): void {
+    public onDelete(templates: Array<any>): void {
         this.disableEditor();
         this.disableSave();
         this.disableMore();
@@ -159,7 +159,6 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             this.templateService.deleteTemplates({
                 caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
                 caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
-                type: 'mail',
                 templates
             }).pipe(take(1)).subscribe(_ =>
                 this.router.navigate([`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/mail-template`])

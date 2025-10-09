@@ -17,7 +17,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
-import {DeleteTemplatesRequest, Template, TemplateListItem, TemplateResponse, TemplateType, UpdateTemplateRequest,} from '../models';
+import {
+    DeleteTemplatesRequest,
+    Template,
+    TemplateListItem,
+    TemplatePreviewRequest,
+    TemplateResponse,
+    TemplateType,
+    UpdateTemplateRequest,
+} from '../models';
 import {ConfigService, InterceptorSkip, Page} from '@valtimo/shared';
 
 @Injectable({
@@ -35,17 +43,26 @@ export class FreemarkerTemplateManagementService {
     }
 
     public getAllMailTemplates(caseDefinitionKey?: string, caseDefinitionVersionTag?: string): Observable<Page<TemplateListItem>> {
-        return this.getTemplates(caseDefinitionKey, caseDefinitionVersionTag, 'mail', undefined, 0, 10000);
+        return this.getTemplates(caseDefinitionKey, caseDefinitionVersionTag, 'mail', undefined, undefined, 0, 10000);
     }
 
     public getAllTextTemplates(caseDefinitionKey?: string, caseDefinitionVersionTag?: string): Observable<Page<TemplateListItem>> {
-        return this.getTemplates(caseDefinitionKey, caseDefinitionVersionTag, 'text', undefined, 0, 10000);
+        return this.getTemplates(caseDefinitionKey, caseDefinitionVersionTag, 'text', undefined, undefined, 0, 10000);
+    }
+
+    public getAllDocumentTemplates(caseDefinitionKey?: string, caseDefinitionVersionTag?: string): Observable<Page<TemplateListItem>> {
+        return this.getTemplates(caseDefinitionKey, caseDefinitionVersionTag, undefined, ['csv', 'pdf'], undefined, 0, 10000);
+    }
+
+    public getAllTemplates(caseDefinitionKey?: string, caseDefinitionVersionTag?: string, templateType?: TemplateType): Observable<Page<TemplateListItem>> {
+        return this.getTemplates(caseDefinitionKey, caseDefinitionVersionTag, templateType, undefined, undefined, 0, 10000);
     }
 
     public getTemplates(
         caseDefinitionKey?: string,
         caseDefinitionVersionTag?: string,
         templateType?: TemplateType,
+        templateTypes?: TemplateType[],
         templateKey?: string,
         page?: number,
         pageSize?: number,
@@ -54,6 +71,7 @@ export class FreemarkerTemplateManagementService {
             caseDefinitionKey,
             caseDefinitionVersionTag,
             templateType,
+            templateTypes,
             templateKey,
             page,
             size: pageSize
@@ -93,6 +111,10 @@ export class FreemarkerTemplateManagementService {
 
     public updateTemplate(template: UpdateTemplateRequest): Observable<TemplateResponse> {
         return this.http.put<TemplateResponse>(`${this.valtimoEndpointUri}v1/template`, template);
+    }
+
+    public previewTemplate(template: TemplatePreviewRequest): Observable<Blob> {
+        return this.http.post(`${this.valtimoEndpointUri}v1/template/preview`, template, {responseType: 'blob'});
     }
 
     public isFinal(

@@ -19,24 +19,32 @@ package com.ritense.valtimoplugins.freemarker.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.Document
+import com.ritense.document.domain.impl.JsonSchemaDocument
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimo.contract.case_.CaseDefinitionChecker
 import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
+import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy
+import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE
+import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.SHOW_MISSING_PLACEHOLDER
+import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.THROW_ERROR_WHEN_MISSING_PLACEHOLDER
+import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byCaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKey
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKeyAndCaseDefinitionIdAndType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byType
+import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byTypes
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.query
+import com.ritense.valtimoplugins.freemarker.web.rest.dto.TemplateKeyType
 import com.ritense.valueresolver.ValueResolverService
 import freemarker.template.Configuration
 import freemarker.template.Template
 import freemarker.template.TemplateException
-import java.io.StringWriter
-import java.util.Stack
-import java.util.UUID
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.io.StringWriter
+import java.util.UUID
+import java.util.stream.Stream
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -53,6 +61,7 @@ class TemplateService(
     private val valueResolverService: ValueResolverService,
     private val freemarkerConfiguration: Configuration,
     private val caseDefinitionChecker: CaseDefinitionChecker,
+    private val jsonSchemaDocumentRepositoryStreaming: JsonSchemaDocumentRepositoryStreaming,
 ) {
 
     fun generate(
@@ -70,10 +79,10 @@ class TemplateService(
         templateType: String,
         document: Document,
         processVariables: Map<String, Any?> = emptyMap(),
-        strict: Boolean = true,
+        missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER,
     ): String {
         val template = getTemplate(templateKey, document.definitionId().caseDefinitionId(), templateType)
-        return generate(template, document, processVariables, strict)
+        return generate(template, document, processVariables, missingPlaceholderStrategy)
     }
 
     fun generate(template: ValtimoTemplate, document: Document) = generate(template, document, emptyMap())
@@ -82,47 +91,78 @@ class TemplateService(
         valtimoTemplate: ValtimoTemplate,
         document: Document,
         processVariables: Map<String, Any?>,
-        strict: Boolean = true,
+        missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER,
     ): String {
-        val dataModel = mutableMapOf<String, Any?>(
-            "doc" to objectMapper.convertValue<Map<String, Any?>>(document.content().asJson()),
-            "pv" to processVariables
+        return generate(
+            templateName = valtimoTemplate.toString(),
+            templateContent = valtimoTemplate.content,
+            document = document,
+            processVariables = processVariables,
+            missingPlaceholderStrategy = missingPlaceholderStrategy,
         )
+    }
 
-        val template = Template(UUID.randomUUID().toString(), valtimoTemplate.content, freemarkerConfiguration)
-        var exceptionCaught: Exception? = null
+    fun generate(
+        templateName: String,
+        templateContent: String,
+        processVariables: Map<String, Any?> = emptyMap(),
+        document: Document? = null,
+        missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER,
+    ): String {
+        streamDocuments(document?.definitionId()?.caseDefinitionId()?.key).use { documentsStream ->
+            val dataModel = mutableMapOf<String, Any?>()
+            document?.let { dataModel["doc"] = objectMapper.convertValue<Map<String, Any?>>(document.content().asJson()) }
+            document?.let { dataModel["docs"] = streamToMap(documentsStream) }
+            dataModel["pv"] = processVariables
 
-        for (i in 1..10) {
-            try {
-                val writer = StringWriter()
-                template.createProcessingEnvironment(dataModel, writer).process()
-                return writer.toString()
-            } catch (e: TemplateException) {
-                if (!resolveDataModel(document, valtimoTemplate, dataModel, strict)) {
-                    throw e
+            val template = Template(UUID.randomUUID().toString(), templateContent, freemarkerConfiguration)
+            var exceptionCaught: Exception? = null
+
+            for (i in 1..10) {
+                try {
+                    val writer = StringWriter()
+                    template.createProcessingEnvironment(dataModel, writer).process()
+                    return writer.toString()
+                } catch (e: TemplateException) {
+                    if (!resolveDataModel(
+                            document = document,
+                            templateName = templateName,
+                            templateContent = templateContent,
+                            incompleteDataModel = dataModel,
+                            missingPlaceholderStrategy = missingPlaceholderStrategy
+                        )
+                    ) {
+                        throw e
+                    }
+                    exceptionCaught = e
                 }
-                exceptionCaught = e
             }
+            throw exceptionCaught!!
         }
-        throw exceptionCaught!!
     }
 
     fun findPlaceholders(
-        template: ValtimoTemplate,
+        templateContent: String,
         incompleteDataModel: Map<String, Any?> = mutableMapOf()
-    ): List<String> {
+    ): Map<String, Any> {
         // Might not find placeholders that are hidden behind a freemarker-condition
-        val completeDataModel = findCompleteDataModelWithDummyData(template, incompleteDataModel)
-        return getPlaceholdersFromDataModel(completeDataModel)
+        val completeDataModel = findCompleteDataModelWithDummyData(templateContent, incompleteDataModel)
+        return extractPlaceholders(completeDataModel)
     }
 
     fun findTemplates(
         templateKey: String? = null,
         caseDefinitionId: CaseDefinitionId? = null,
         templateType: String? = null,
+        templateTypes: List<String>? = null,
         pageable: Pageable,
     ): Page<ValtimoTemplate> {
-        val query = buildSpecification(templateKey, caseDefinitionId, templateType)
+        val query = buildSpecification(
+            templateKey = templateKey,
+            caseDefinitionId = caseDefinitionId,
+            templateType = templateType,
+            templateTypes = templateTypes
+        )
         return templateRepository.findAll(query, pageable)
     }
 
@@ -130,8 +170,14 @@ class TemplateService(
         templateKey: String? = null,
         caseDefinitionId: CaseDefinitionId? = null,
         templateType: String? = null,
+        templateTypes: List<String>? = null,
     ): List<ValtimoTemplate> {
-        val query = buildSpecification(templateKey, caseDefinitionId, templateType)
+        val query = buildSpecification(
+            templateKey = templateKey,
+            caseDefinitionId = caseDefinitionId,
+            templateType = templateType,
+            templateTypes = templateTypes
+        )
         return templateRepository.findAll(query)
     }
 
@@ -207,16 +253,15 @@ class TemplateService(
 
     fun deleteTemplates(
         caseDefinitionId: CaseDefinitionId?,
-        templateType: String,
-        templateKeys: List<String>
+        templates: List<TemplateKeyType>,
     ) {
         if (caseDefinitionId == null) {
             caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
         } else {
             caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
         }
-        templateKeys.forEach { key ->
-            deleteTemplate(key, caseDefinitionId, templateType)
+        templates.forEach { template ->
+            deleteTemplate(template.key, caseDefinitionId, template.type)
         }
     }
 
@@ -246,6 +291,7 @@ class TemplateService(
         templateKey: String? = null,
         caseDefinitionId: CaseDefinitionId? = null,
         templateType: String? = null,
+        templateTypes: List<String>? = null,
     ): Specification<ValtimoTemplate> {
         var query = query()
         if (!templateKey.isNullOrEmpty()) {
@@ -257,88 +303,133 @@ class TemplateService(
         if (!templateType.isNullOrEmpty()) {
             query = query.and(byType(templateType))
         }
+        if (templateTypes != null) {
+            query = query.and(byTypes(templateTypes))
+        }
         return query
     }
 
     private fun resolveDataModel(
-        document: Document,
-        template: ValtimoTemplate,
-        incompleteDataModel: MutableMap<String, Any?>,
-        strict: Boolean = true
+        templateName: String,
+        templateContent: String,
+        document: Document? = null,
+        incompleteDataModel: MutableMap<String, Any?> = mutableMapOf(),
+        missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER
     ): Boolean {
-        val resolvedPlaceholders = getPlaceholdersFromDataModel(incompleteDataModel)
-        val newPlaceholders = findPlaceholders(template, incompleteDataModel)
-            .filter { !resolvedPlaceholders.contains(it) }
-        valueResolverService.resolveValues(document.id().toString(), newPlaceholders).forEach { (placeholder, value) ->
-            if (value != null && placeholder != value) {
-                putPlaceholder(placeholder, value, incompleteDataModel)
-            } else if (!strict) {
-                logger.warn { "Unresolved placeholder '$placeholder'. Template: '$template', document: '${document.id()}'" }
-                putPlaceholder(placeholder, "", incompleteDataModel)
+        val resolvedPlaceholders = extractPlaceholders(incompleteDataModel)
+        val newPlaceholders = findPlaceholders(templateContent, incompleteDataModel)
+            .filter { !resolvedPlaceholders.keys.contains(it.key) }
+        val resolvedValues = if (document == null) {
+            newPlaceholders
+        } else {
+            try {
+                valueResolverService.resolveValues(document.id().toString(), newPlaceholders.keys)
+            } catch (ignore: Exception) {
+                newPlaceholders.keys.associate { newPlaceholder ->
+                    try {
+                        newPlaceholder to valueResolverService.resolveValues(
+                            document.id().toString(),
+                            listOf(newPlaceholder)
+                        )[newPlaceholder]
+                    } catch (ignore: Exception) {
+                        newPlaceholder to null
+                    }
+                }
+            }
+        }
+        resolvedValues.forEach { (placeholder, value) ->
+            if (placeholder == value || value == null) {
+                val dummyValue = newPlaceholders[placeholder]!!
+                val newValue = when (missingPlaceholderStrategy) {
+                    SHOW_MISSING_PLACEHOLDER -> dummyValue
+                    THROW_ERROR_WHEN_MISSING_PLACEHOLDER -> error("Failed to resolve '$placeholder' for template: '$templateName'")
+                    REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE -> if (dummyValue is String) "" else dummyValue
+                }
+                logger.warn { "Unresolved placeholder '$placeholder'. Template: '$templateName'" }
+                putPlaceholder(placeholder, newValue, incompleteDataModel)
             } else {
-                error("Failed to resolve '$placeholder' for template: '$template'")
+                putPlaceholder(placeholder, value, incompleteDataModel)
             }
         }
         return newPlaceholders.isNotEmpty()
     }
 
-    private fun getPlaceholdersFromDataModel(
-        dataModel: Map<String, Any?>,
-        stack: Stack<Any> = Stack(),
-        placeholders: MutableList<String> = mutableListOf()
-    ): List<String> {
-        dataModel.forEach { (key, value) ->
-            getPlaceholdersFromDataModel(key, value, stack, placeholders)
-        }
-        if (dataModel.isEmpty()) {
-            placeholders.add(stack.joinToString(".").replaceFirst('.', ':'))
-        }
-        return placeholders
-    }
-
-    private fun getPlaceholdersFromDataModel(
-        dataModel: List<Any?>,
-        stack: Stack<Any> = Stack(),
-        placeholders: MutableList<String> = mutableListOf()
-    ): List<String> {
-        dataModel.forEachIndexed { index, value ->
-            getPlaceholdersFromDataModel("[$index]", value, stack, placeholders)
-        }
-        if (dataModel.isEmpty()) {
-            placeholders.add(stack.joinToString(".").replaceFirst('.', ':'))
-        }
-        return placeholders
-    }
-
-    private fun getPlaceholdersFromDataModel(
-        key: String,
+    private fun extractPlaceholders(
         value: Any?,
-        stack: Stack<Any> = Stack(),
-        placeholders: MutableList<String> = mutableListOf()
-    ) {
-        stack.push(key)
+        path: MutableList<String> = mutableListOf(),
+        placeholders: MutableMap<String, Any> = mutableMapOf()
+    ): Map<String, Any> {
         when (value) {
-            is Map<*, *> -> getPlaceholdersFromDataModel(value as Map<String, Any?>, stack, placeholders)
-            is List<*> -> getPlaceholdersFromDataModel(value as List<Any?>, stack, placeholders)
-            else -> placeholders.add(stack.joinToString(".").replaceFirst('.', ':'))
+            is Map<*, *> -> {
+                if (value.isEmpty()) {
+                    placeholders.put(
+                        path.joinToString(".").replaceFirst('.', ':'),
+                        value
+                    )
+                } else {
+                    value.forEach { (key, v) ->
+                        require(key is String)
+                        path.add(key)
+                        extractPlaceholders(v, path, placeholders)
+                        path.removeLast()
+                    }
+                }
+            }
+
+            is List<*> -> {
+                if (value.isEmpty()) {
+                    placeholders.put(
+                        path.joinToString(".").replaceFirst('.', ':'),
+                        value
+                    )
+                } else {
+                    value.forEachIndexed { index, item ->
+                        path.add("[$index]")
+                        extractPlaceholders(item, path, placeholders)
+                        path.removeLast()
+                    }
+                }
+            }
+
+            null -> {
+                placeholders.put(
+                    path.joinToString(".").replaceFirst('.', ':'),
+                    Any::class
+                )
+            }
+
+            else -> {
+                placeholders.put(
+                    path.joinToString(".").replaceFirst('.', ':'),
+                    value
+                )
+            }
         }
-        stack.pop()
+        return placeholders
     }
 
     private fun findCompleteDataModelWithDummyData(
-        valtimoTemplate: ValtimoTemplate,
+        templateContent: String,
         incompleteDataModel: Map<String, Any?> = mutableMapOf()
     ): Map<String, Any?> {
         val dataModel = incompleteDataModel.toMutableMap()
-        val template = Template(UUID.randomUUID().toString(), valtimoTemplate.content, freemarkerConfiguration)
+        val template = Template(UUID.randomUUID().toString(), templateContent, freemarkerConfiguration)
+        var prevPlaceholder: String? = null
+        var dummyValueIndex = 0
         for (i in 1..100) {
             try {
                 val writer = StringWriter()
                 template.createProcessingEnvironment(dataModel, writer).process()
                 break
             } catch (e: TemplateException) {
-                val missingPlaceholder = e.blamedExpressionString ?: throw e
-                putPlaceholder(missingPlaceholder, getRandomDummyValue(), dataModel)
+                val missingPlaceholder = e.blamedExpressionString?.substringBefore(' ') ?: prevPlaceholder
+                if (missingPlaceholder == null || !e.ftlInstructionStack.contains(missingPlaceholder)) {
+                    throw e
+                }
+                if (prevPlaceholder == missingPlaceholder) dummyValueIndex++ else dummyValueIndex = 0
+                val dummyValue = getDummyValue("\${$missingPlaceholder}", dummyValueIndex)
+                putPlaceholder(missingPlaceholder, dummyValue, dataModel)
+                prevPlaceholder = missingPlaceholder
             }
         }
         return dataModel
@@ -367,14 +458,35 @@ class TemplateService(
         }
     }
 
-    private fun getRandomDummyValue(): Any {
-        return when (Random.nextInt(4)) {
-            0 -> "value"
+    private fun getDummyValue(stringValue: String, index: Int): Any {
+        return when (index % 4) {
+            0 -> stringValue
             1 -> Random.nextInt(0, 100)
             2 -> listOf<Any>()
             else -> mutableMapOf<String, Any>()
         }
     }
+
+    private fun streamDocuments(caseDefinitionKey: String?): Stream<JsonSchemaDocument> {
+        return if (caseDefinitionKey == null) {
+            emptyList<JsonSchemaDocument>().stream()
+        } else {
+            jsonSchemaDocumentRepositoryStreaming
+                .streamAllByCaseDefinitionKey(caseDefinitionKey)
+        }
+    }
+
+    private fun streamToMap(stream: Stream<JsonSchemaDocument>): Iterable<Map<String, Any?>> {
+        return Iterable {
+            val iterator = stream.iterator()
+            object : Iterator<Map<String, Any?>> {
+                override fun hasNext(): Boolean = iterator.hasNext()
+                override fun next(): Map<String, Any?> =
+                    objectMapper.convertValue<Map<String, Any?>>(iterator.next().content().asJson())
+            }
+        }
+    }
+
 
     companion object {
         private val logger = KotlinLogging.logger {}

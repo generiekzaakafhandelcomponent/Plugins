@@ -60,9 +60,6 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
 
-    public readonly canUpdateGlobalConfiguration$ =
-        this.environmentService.canUpdateGlobalConfiguration();
-
     private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
         filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
     );
@@ -152,7 +149,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         });
     }
 
-    public onDelete(templates: Array<string>): void {
+    public onDelete(templates: Array<any>): void {
         this.disableEditor();
         this.disableSave();
         this.disableMore();
@@ -161,7 +158,6 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             this.templateService.deleteTemplates({
                 caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
                 caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
-                type: 'text',
                 templates
             }).pipe(take(1)).subscribe(_ =>
                 this.router.navigate([`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/text-template`])

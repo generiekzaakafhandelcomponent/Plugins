@@ -1,5 +1,43 @@
 [
     {
+        "id": "b609a0a3-886e-4b3d-ae0d-c01effb311ee",
+        "title": "OpenZaak Authentication",
+        "pluginDefinitionKey": "openzaak",
+        "properties": {
+            "clientId": "valtimo_client",
+            "clientSecret": "e09b8bc5-5831-4618-ab28-41411304309d"
+        }
+    },
+    {
+        "id": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+        "title": "Zaken API",
+        "pluginDefinitionKey": "zakenapi",
+        "properties": {
+            "url": "http://localhost:8001/zaken/api/v1/",
+            "authenticationPluginConfiguration": "b609a0a3-886e-4b3d-ae0d-c01effb311ee"
+        }
+    },
+    {
+        "id": "22c78b91-0b0f-4008-8d8f-c4a84b8e71ec",
+        "title": "Catalogi API",
+        "pluginDefinitionKey": "catalogiapi",
+        "properties": {
+            "url": "http://localhost:8001/catalogi/api/v1/",
+            "authenticationPluginConfiguration": "b609a0a3-886e-4b3d-ae0d-c01effb311ee"
+        }
+    },
+    {
+        "id": "5474fe57-532a-4050-8d89-32e62ca3e895",
+        "title": "Documenten API",
+        "pluginDefinitionKey": "documentenapi",
+        "properties": {
+            "url": "http://localhost:8001/documenten/api/v1/",
+            "bronorganisatie": "051845623",
+            "authenticationPluginConfiguration": "b609a0a3-886e-4b3d-ae0d-c01effb311ee",
+            "apiVersion": "1.4.2-maykin-1.13.0"
+        }
+    },
+    {
         "id": "37bc4316-d4b3-4ba2-8d80-8ded0c283224",
         "title": "Objects API Authentication (Autodeployed)",
         "pluginDefinitionKey": "objecttokenauthentication",

@@ -22,6 +22,7 @@ import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
 import com.ritense.valtimoplugins.freemarker.config.TemplateHttpSecurityConfigurer
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
 import com.ritense.valtimoplugins.freemarker.listener.TemplateCaseEventListener
+import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
 import com.ritense.valtimoplugins.freemarker.service.TemplateExporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateImporter
@@ -29,7 +30,8 @@ import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valtimoplugins.freemarker.web.rest.TemplateManagementResource
 import com.ritense.valueresolver.ValueResolverService
 import freemarker.template.Configuration
-import freemarker.template.Configuration.VERSION_2_3_32
+import freemarker.template.Configuration.VERSION_2_3_34
+import freemarker.template.DefaultObjectWrapperBuilder
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -39,15 +41,21 @@ import org.springframework.core.annotation.Order
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @AutoConfiguration
-@EnableJpaRepositories(basePackageClasses = [TemplateRepository::class])
+@EnableJpaRepositories(basePackageClasses = [TemplateRepository::class, JsonSchemaDocumentRepositoryStreaming::class])
 @EntityScan(basePackageClasses = [ValtimoTemplate::class])
 class TemplateAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(Configuration::class)
     fun freemarkerConfiguration(): Configuration {
-        val configuration = Configuration(VERSION_2_3_32)
+        val configuration = Configuration(VERSION_2_3_34)
         configuration.logTemplateExceptions = false
+
+        val objectWrapper = DefaultObjectWrapperBuilder(configuration.incompatibleImprovements).apply {
+            iterableSupport = true
+        }.build()
+        configuration.objectWrapper = objectWrapper
+
         return configuration
     }
 
@@ -59,6 +67,7 @@ class TemplateAutoConfiguration {
         valueResolverService: ValueResolverService,
         freemarkerConfiguration: Configuration,
         caseDefinitionChecker: CaseDefinitionChecker,
+        jsonSchemaDocumentRepositoryStreaming: JsonSchemaDocumentRepositoryStreaming,
     ): TemplateService {
         return TemplateService(
             templateRepository,
@@ -66,6 +75,7 @@ class TemplateAutoConfiguration {
             valueResolverService,
             freemarkerConfiguration,
             caseDefinitionChecker,
+            jsonSchemaDocumentRepositoryStreaming,
         )
     }
 
@@ -109,11 +119,9 @@ class TemplateAutoConfiguration {
     @ConditionalOnMissingBean(TemplateManagementResource::class)
     fun templateManagementResource(
         templateService: TemplateService,
-        templateImporter: TemplateImporter,
     ): TemplateManagementResource {
         return TemplateManagementResource(
             templateService,
-            templateImporter
         )
     }
 

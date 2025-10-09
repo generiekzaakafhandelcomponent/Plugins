@@ -16,5 +16,7 @@
 
 package com.ritense.valtimoplugins.freemarker.model
 
+val TEMPLATE_TYPE_CSV = "csv"
 val TEMPLATE_TYPE_MAIL = "mail"
+val TEMPLATE_TYPE_PDF = "pdf"
 val TEMPLATE_TYPE_TEXT = "text"
