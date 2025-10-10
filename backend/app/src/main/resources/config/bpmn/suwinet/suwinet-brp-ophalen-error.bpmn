@@ -4,33 +4,16 @@
     <bpmn:participant id="SuwinetRetrieveBrpPersonalInformation" name="Suwinet Retrieve BRP Personal Information" processRef="suwinet-brp-ophalen-error" />
   </bpmn:collaboration>
   <bpmn:process id="suwinet-brp-ophalen-error" name="Suwinet: Retrieve BRP Personal Information Error" isExecutable="true">
-    <bpmn:serviceTask id="Activity_08qadpi" name="ophalen BRP persoonsgegevens" camunda:asyncBefore="true" camunda:exclusive="false" camunda:expression="${true}">
-      <bpmn:extensionElements>
-        <camunda:failedJobRetryTimeCycle>R2/PT30S,PT4M</camunda:failedJobRetryTimeCycle>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1cnhoye</bpmn:incoming>
-      <bpmn:outgoing>Flow_1qe90bb</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="Gateway_0i1o294" name="heeft partner?" default="Flow_1d8agm6">
-      <bpmn:incoming>Flow_1t85gku</bpmn:incoming>
-      <bpmn:outgoing>Flow_1o90ueh</bpmn:outgoing>
-      <bpmn:outgoing>Flow_1d8agm6</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:exclusiveGateway id="Gateway_1i5s10r" default="Flow_1w20pf8">
-      <bpmn:incoming>Flow_1qe90bb</bpmn:incoming>
-      <bpmn:outgoing>Flow_1db28ks</bpmn:outgoing>
-      <bpmn:outgoing>Flow_1w20pf8</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
     <bpmn:exclusiveGateway id="Gateway_12gpieh">
-      <bpmn:incoming>Flow_1d8agm6</bpmn:incoming>
       <bpmn:incoming>Flow_0vxg3x7</bpmn:incoming>
+      <bpmn:incoming>Flow_1d8agm6</bpmn:incoming>
       <bpmn:outgoing>Flow_1klab2p</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:dataObjectReference id="DataObjectReference_05lqrnh" name="Document" dataObjectRef="DataObject_0nwiutv" />
     <bpmn:dataObject id="DataObject_0nwiutv" />
     <bpmn:exclusiveGateway id="Gateway_16pafpn">
-      <bpmn:incoming>Flow_07zbmo8</bpmn:incoming>
       <bpmn:incoming>Flow_1klab2p</bpmn:incoming>
+      <bpmn:incoming>Flow_07zbmo8</bpmn:incoming>
       <bpmn:outgoing>Flow_1fow3m6</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:exclusiveGateway id="Gateway_0emfq92" name="heeft kinderen?" default="Flow_1d2txnp">
@@ -77,8 +60,6 @@
     <bpmn:endEvent id="Event_0nkf7ir">
       <bpmn:incoming>Flow_1w20pf8</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:dataObjectReference id="DocumentDataObjectReference" name="Document" dataObjectRef="DataObject_0yso51b" />
-    <bpmn:dataObject id="DataObject_0yso51b" />
     <bpmn:dataStoreReference id="DataStoreReference_1iay1zv" name="Suwinet" />
     <bpmn:startEvent id="StartSuwinetBrpOphalenEvent" name="StartSuwinetBrpOphalen" camunda:asyncAfter="true">
       <bpmn:outgoing>Flow_1tb0eas</bpmn:outgoing>
@@ -90,21 +71,6 @@
       <bpmn:outgoing>Flow_1cnhoye</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1cnhoye" sourceRef="Gateway_0p811e8" targetRef="Activity_08qadpi" />
-    <bpmn:sequenceFlow id="Flow_1qe90bb" sourceRef="Activity_08qadpi" targetRef="Gateway_1i5s10r" />
-    <bpmn:sequenceFlow id="Flow_1db28ks" name="pv brpPersoonsgegevensInfo is set" sourceRef="Gateway_1i5s10r" targetRef="Activity_1m2li20">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable('brpPersoonsgegevensInfo')}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1t85gku" sourceRef="Activity_1m2li20" targetRef="Gateway_0i1o294" />
-    <bpmn:sequenceFlow id="Flow_1o90ueh" name="ja" sourceRef="Gateway_0i1o294" targetRef="Gateway_1m4kjxg">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${partnerBsn != ""}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0q570ig" sourceRef="ophalen-brp-partner" targetRef="Gateway_1mhs5fc" />
-    <bpmn:sequenceFlow id="Flow_1d8agm6" sourceRef="Gateway_0i1o294" targetRef="Gateway_12gpieh" />
-    <bpmn:sequenceFlow id="Flow_1w20pf8" sourceRef="Gateway_1i5s10r" targetRef="Event_0nkf7ir" />
-    <bpmn:sequenceFlow id="Flow_1u9o6ur" name="has brpPersoonsgegevensPartnerInfo" sourceRef="Gateway_1mhs5fc" targetRef="Activity_1o5iyv7">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_07zbmo8" sourceRef="Gateway_1mhs5fc" targetRef="Gateway_16pafpn" />
     <bpmn:sequenceFlow id="Flow_0vxg3x7" sourceRef="Activity_1o5iyv7" targetRef="Gateway_12gpieh" />
     <bpmn:sequenceFlow id="Flow_1klab2p" sourceRef="Gateway_12gpieh" targetRef="Gateway_16pafpn" />
     <bpmn:sequenceFlow id="Flow_1fow3m6" sourceRef="Gateway_16pafpn" targetRef="Gateway_0emfq92" />
@@ -123,32 +89,8 @@
     <bpmn:sequenceFlow id="Flow_1tb0eas" sourceRef="StartSuwinetBrpOphalenEvent" targetRef="Gateway_0p811e8" />
     <bpmn:sequenceFlow id="Flow_1o34nfc" sourceRef="suwinet-connect-failure-event" targetRef="SuwinetBeschikbaarTask" />
     <bpmn:sequenceFlow id="Flow_1t8yxoj" sourceRef="SuwinetBeschikbaarTask" targetRef="Gateway_0p811e8" />
-    <bpmn:boundaryEvent id="suwinet-bsn-notfound-event" name="suwinet-bsn-notfound-event" attachedToRef="Activity_08qadpi">
-      <bpmn:outgoing>Flow_1xejmkx</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_0kqw6bq" errorRef="Error_0mxyp94" />
-    </bpmn:boundaryEvent>
-    <bpmn:boundaryEvent id="suwinet-connect-failure-event" name="suwinet-connect-failure-event" attachedToRef="Activity_08qadpi">
-      <bpmn:documentation>suwinet-connect-failure-event</bpmn:documentation>
-      <bpmn:outgoing>Flow_1o34nfc</bpmn:outgoing>
-      <bpmn:errorEventDefinition id="ErrorEventDefinition_1f1wc6i" errorRef="Error_05vaq43" />
-    </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_1xejmkx" sourceRef="suwinet-bsn-notfound-event" targetRef="CorrigeerBSNTask" />
     <bpmn:sequenceFlow id="Flow_10eb4sc" sourceRef="CorrigeerBSNTask" targetRef="Gateway_0p811e8" />
-    <bpmn:exclusiveGateway id="Gateway_1mhs5fc" default="Flow_07zbmo8">
-      <bpmn:incoming>Flow_0q570ig</bpmn:incoming>
-      <bpmn:outgoing>Flow_1u9o6ur</bpmn:outgoing>
-      <bpmn:outgoing>Flow_07zbmo8</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="ophalen-brp-partner" name="ophalen BRP partner gegevens" camunda:asyncAfter="true" camunda:expression="${true}">
-      <bpmn:extensionElements />
-      <bpmn:incoming>Flow_0bymsdt</bpmn:incoming>
-      <bpmn:outgoing>Flow_0q570ig</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0bymsdt" sourceRef="Gateway_1m4kjxg" targetRef="ophalen-brp-partner" />
-    <bpmn:exclusiveGateway id="Gateway_1m4kjxg" camunda:asyncAfter="true">
-      <bpmn:incoming>Flow_1o90ueh</bpmn:incoming>
-      <bpmn:outgoing>Flow_0bymsdt</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
     <bpmn:userTask id="CorrigeerBSNTask" name="Corrigeer BSN">
       <bpmn:incoming>Flow_1xejmkx</bpmn:incoming>
       <bpmn:outgoing>Flow_10eb4sc</bpmn:outgoing>
@@ -157,6 +99,44 @@
       <bpmn:incoming>Flow_1o34nfc</bpmn:incoming>
       <bpmn:outgoing>Flow_1t8yxoj</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:userTask id="Activity_1o5iyv7" name="form" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_1u9o6ur</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vxg3x7</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_01dbdxs">
+        <bpmn:targetRef>DataObjectReference_05lqrnh</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1mhs5fc" default="Flow_07zbmo8">
+      <bpmn:incoming>Flow_0q570ig</bpmn:incoming>
+      <bpmn:outgoing>Flow_07zbmo8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1u9o6ur</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_07zbmo8" sourceRef="Gateway_1mhs5fc" targetRef="Gateway_16pafpn" />
+    <bpmn:sequenceFlow id="Flow_1u9o6ur" name="has brpPersoonsgegevensPartnerInfo" sourceRef="Gateway_1mhs5fc" targetRef="Activity_1o5iyv7">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1m4kjxg" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_1o90ueh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bymsdt</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0bymsdt" sourceRef="Gateway_1m4kjxg" targetRef="ophalen-brp-partner" />
+    <bpmn:serviceTask id="ophalen-brp-partner" name="ophalen BRP partner gegevens" camunda:asyncAfter="true" camunda:expression="${true}">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_0bymsdt</bpmn:incoming>
+      <bpmn:outgoing>Flow_0q570ig</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0q570ig" sourceRef="ophalen-brp-partner" targetRef="Gateway_1mhs5fc" />
+    <bpmn:exclusiveGateway id="Gateway_0i1o294" name="heeft partner?" default="Flow_1d8agm6">
+      <bpmn:incoming>Flow_1t85gku</bpmn:incoming>
+      <bpmn:outgoing>Flow_1d8agm6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1o90ueh</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1d8agm6" sourceRef="Gateway_0i1o294" targetRef="Gateway_12gpieh" />
+    <bpmn:sequenceFlow id="Flow_1o90ueh" name="ja" sourceRef="Gateway_0i1o294" targetRef="Gateway_1m4kjxg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${partnerBsn != ""}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:dataObjectReference id="DocumentDataObjectReference" name="Document" dataObjectRef="DataObject_0yso51b" />
+    <bpmn:dataObject id="DataObject_0yso51b" />
     <bpmn:userTask id="Activity_1m2li20" name="form" camunda:asyncAfter="true">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -169,13 +149,37 @@
         <bpmn:targetRef>DocumentDataObjectReference</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_1o5iyv7" name="form" camunda:asyncAfter="true">
-      <bpmn:incoming>Flow_1u9o6ur</bpmn:incoming>
-      <bpmn:outgoing>Flow_0vxg3x7</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_01dbdxs">
-        <bpmn:targetRef>DataObjectReference_05lqrnh</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1t85gku" sourceRef="Activity_1m2li20" targetRef="Gateway_0i1o294" />
+    <bpmn:exclusiveGateway id="Gateway_1i5s10r" default="Flow_1w20pf8">
+      <bpmn:incoming>Flow_1qe90bb</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w20pf8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1db28ks</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1w20pf8" sourceRef="Gateway_1i5s10r" targetRef="Event_0nkf7ir" />
+    <bpmn:sequenceFlow id="Flow_1db28ks" name="pv brpPersoonsgegevensInfo is set" sourceRef="Gateway_1i5s10r" targetRef="Activity_1m2li20">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable('brpPersoonsgegevensInfo')}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1qe90bb" sourceRef="Activity_08qadpi" targetRef="Gateway_1i5s10r" />
+    <bpmn:callActivity id="Activity_08qadpi" name="ophalen BRP persoonsgegevens" camunda:asyncBefore="true" camunda:asyncAfter="true" calledElement="ophalen-brp-brongegevens-small">
+      <bpmn:extensionElements>
+        <camunda:failedJobRetryTimeCycle>R3/PT30S,PT4M</camunda:failedJobRetryTimeCycle>
+        <camunda:in local="true" variables="all" />
+        <camunda:out local="true" variables="all" />
+        <camunda:in businessKey="#{execution.processBusinessKey}" />
+        <camunda:in source="bsn" target="bsn" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1cnhoye</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qe90bb</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:boundaryEvent id="suwinet-connect-failure-event" name="suwinet-connect-failure-event" attachedToRef="Activity_08qadpi">
+      <bpmn:documentation>suwinet-connect-failure-event</bpmn:documentation>
+      <bpmn:outgoing>Flow_1o34nfc</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1f1wc6i" errorRef="Error_05vaq43" />
+    </bpmn:boundaryEvent>
+    <bpmn:boundaryEvent id="suwinet-bsn-notfound-event" name="suwinet-bsn-notfound-event" attachedToRef="Activity_08qadpi">
+      <bpmn:outgoing>Flow_1xejmkx</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0kqw6bq" errorRef="Error_0mxyp94" />
+    </bpmn:boundaryEvent>
   </bpmn:process>
   <bpmn:error id="Error_10q1uq2" name="Error_3lbup3a" />
   <bpmn:error id="Error_05vaq43" name="suwinet-connect-error" errorCode="SUWINET_CONNECT_ERROR" />
@@ -185,10 +189,6 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1gmd3lc">
       <bpmndi:BPMNShape id="Participant_0gc491p_di" bpmnElement="SuwinetRetrieveBrpPersonalInformation" isHorizontal="true">
         <dc:Bounds x="152" y="80" width="2576" height="510" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_13zyqih" bpmnElement="Activity_08qadpi">
-        <dc:Bounds x="480" y="210" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_105n7w2" bpmnElement="Gateway_0i1o294" isMarkerVisible="true">
@@ -290,6 +290,9 @@
       <bpmndi:BPMNShape id="Activity_1nwhrps_di" bpmnElement="Activity_1o5iyv7">
         <dc:Bounds x="1390" y="313" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cghfb7_di" bpmnElement="Activity_08qadpi">
+        <dc:Bounds x="480" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1cvyjsz_di" bpmnElement="suwinet-connect-failure-event">
         <dc:Bounds x="502" y="272" width="36" height="36" />
