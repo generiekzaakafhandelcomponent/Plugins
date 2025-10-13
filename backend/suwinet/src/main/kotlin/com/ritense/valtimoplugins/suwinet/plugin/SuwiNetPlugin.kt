@@ -327,6 +327,23 @@ class SuwiNetPlugin(
         }
     }
 
+    @PluginAction(
+        key = "ophalen-bijstandsregelingen",
+        title = "SuwiNet ophalen Bijstandsregelingen",
+        description = "SuwiNet Bijstandsregelingen",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getBijstandsregelingen(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        logger.info { "Getting Bijstandsregelingen for case ${execution.businessKey}" }
+
+        //TODO
+    }
+
+
     private fun getSuwinetSOAPClientConfig() =
         SuwinetSOAPClientConfig(
             baseUrl = baseUrl.toASCIIString(),
