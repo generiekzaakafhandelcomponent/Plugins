@@ -4,7 +4,7 @@
     "title": "Summary (Autodeployed)",
     "pluginDefinitionKey": "smart-task-plugin",
     "properties": {
-      "url": "https://router.huggingface.co/hf-inference/models/",
+      "url": "https://api.mistral.ai/",
       "token": "YOUR_MISTRAL_TOKEN"
     }
   },
@@ -13,7 +13,7 @@
     "title": "Chat (Autodeployed)",
     "pluginDefinitionKey": "smart-task-plugin",
     "properties": {
-      "url": "https://router.huggingface.co/",
+      "url": "https://api.mistral.ai/",
       "token": "YOUR_MISTRAL_TOKEN"
     }
   }

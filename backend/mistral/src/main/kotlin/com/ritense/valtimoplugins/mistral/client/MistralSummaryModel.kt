@@ -17,6 +17,8 @@
 package com.ritense.valtimoplugins.mistral.client
 
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimoplugins.mistral.client.mistral.MistralMessage
+import com.ritense.valtimoplugins.mistral.client.mistral.MistralRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
@@ -33,14 +35,18 @@ class MistralSummaryModel(
 ) {
 
     fun giveSummary(longText: String): String {
-        val result = post("facebook/bart-large-cnn", mapOf("inputs" to longText))
+        val request = MistralRequest(
+            model = "mistral-medium",
+            messages = listOf(MistralMessage(role = "user", content = longText)),
+            max_tokens = 500,
+            stream = false
+        )
+
+        val result = post("v1/chat/completions", request)
         return result.summaryText
     }
 
-    private fun post(path: String, multipartFormData: Map<String, Any>): SummaryResponse {
-        val body = LinkedMultiValueMap<String, Any>()
-        multipartFormData.forEach { body.add(it.key, it.value) }
-
+    private fun post(path: String, body: Any): SummaryResponse {
         val response = restClientBuilder
             .clone()
             .build()
@@ -60,12 +66,10 @@ class MistralSummaryModel(
             .accept(org.springframework.http.MediaType.APPLICATION_JSON)
             .body(body)
             .retrieve()
-            .body<List<SummaryResponse>>()!!
+            .body<SummaryResponse>()!!
 
-        if (response.isEmpty()) {
-            throw AiAgentException("Empty summary text")
-        }
-        return response.first()
+
+        return response
     }
 
     companion object {

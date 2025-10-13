@@ -39,9 +39,9 @@ const mistralPluginSpecification: PluginSpecification = {
                 chat: 'Stel een vraag aan een chatmodel',
                 'chat-memorize': 'Stel een vraag aan een chatmodel die vorige vragen en antwoorden onthoudt',
                 url: 'API-URL',
-                urlTooltip: 'URL van de Hugging Face REST-API',
+                urlTooltip: 'URL van de Mistral REST-API',
                 description:
-                    'Interactie met Hugging Face-modellen: vat tekst samen met het BART-model of stel vragen aan een chatmodel.',
+                    'Interactie met Mistral-modellen: vat tekst samen met het BART-model of stel vragen aan een chatmodel.',
                 configurationTitle: 'Configuratienaam',
                 configurationTitleTooltip:
                     'Naam waaronder deze pluginconfiguratie binnen de applicatie beschikbaar is.',
@@ -68,9 +68,9 @@ const mistralPluginSpecification: PluginSpecification = {
                 chat: 'Ask a question to a chat model',
                 'chat-memorize': 'Ask a question to a chat model that remembers previous questions and answers',
                 url: 'API URL',
-                urlTooltip: 'URL of the Hugging Face REST API',
+                urlTooltip: 'URL of the Mistral REST API',
                 description:
-                    'Interact with Hugging Face models: summarize text with the BART model or ask questions to a chat model.',
+                    'Interact with Mistral models: summarize text with the BART model or ask questions to a chat model.',
                 configurationTitle: 'Configuration name',
                 configurationTitleTooltip:
                     'Name under which this plugin configuration is available in the application.',

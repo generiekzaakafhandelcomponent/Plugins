@@ -108,7 +108,7 @@ import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
-import {MistralPluginModule, mistralPluginSpecification} from "@valtimo-plugins/mistral";
+import {MistralPluginModule, mistralPluginSpecification} from '@valtimo-plugins/mistral';
 import {
     HaalCentraalBrpAuthPluginModule,
     haalCentraalBrpAuthPluginSpecification,

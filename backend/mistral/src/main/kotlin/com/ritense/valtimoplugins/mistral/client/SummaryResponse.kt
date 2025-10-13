@@ -19,5 +19,30 @@ package com.ritense.valtimoplugins.mistral.client
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class SummaryResponse(
-    @JsonProperty("summary_text") val summaryText: String
+    val id: String?,
+    val objectType: String? = null,
+    val created: Long? = null,
+    val model: String?,
+    val choices: List<Choice>?,
+    val usage: Usage? = null
+) {
+    val summaryText: String
+        get() = choices?.firstOrNull()?.message?.content ?: ""
+}
+
+data class Choice(
+    val index: Int?,
+    val message: Message?,
+    @JsonProperty("finish_reason") val finishReason: String?
+)
+
+data class Message(
+    val role: String?,
+    val content: String?
+)
+
+data class Usage(
+    @JsonProperty("prompt_tokens") val promptTokens: Int?,
+    @JsonProperty("completion_tokens") val completionTokens: Int?,
+    @JsonProperty("total_tokens") val totalTokens: Int?
 )

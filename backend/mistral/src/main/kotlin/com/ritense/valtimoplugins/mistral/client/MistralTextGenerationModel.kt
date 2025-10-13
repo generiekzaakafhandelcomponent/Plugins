@@ -37,9 +37,9 @@ class MistralTextGenerationModel(
 
     fun mistralChat(question: String): String {
         val result = post(
-            "together/v1/chat/completions",
+            "v1/chat/completions",
             GemmaRequest(
-                model = "mistralai/Mistral-7B-Instruct-v0.3",
+                model = "mistral-medium-2508",
                 messages = listOf(
                     GemmaMessage(
                         role = "user",
@@ -53,9 +53,9 @@ class MistralTextGenerationModel(
 
     fun gemmaChat(question: String): String {
         val result = post(
-            "nebius/v1/chat/completions",
+            "v1/chat/completions",
             GemmaRequest(
-                model = "google/gemma-2-2b-it-fast",
+                model = "mistral-medium-2508",
                 messages = listOf(
                     GemmaMessage(
                         role = "user",
