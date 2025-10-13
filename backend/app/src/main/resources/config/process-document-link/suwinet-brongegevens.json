@@ -1,0 +1,32 @@
+[
+  {
+    "processDefinitionKey": "ophalen-brp-brongegevens",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-duo-persoonsinfo",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-duo-studiefinanciering-info",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-kadaster-info",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-rdw-brongegevens",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-uwv-inkomsten-info",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

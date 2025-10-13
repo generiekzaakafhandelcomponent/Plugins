@@ -81,6 +81,7 @@ class OracleEbsPlugin(
         @PluginActionProperty categorie: String,
         @PluginActionProperty saldoSoort: String,
         @PluginActionProperty omschrijving: String? = null,
+        @PluginActionProperty grootboek: String? = null,
         @PluginActionProperty boekjaar: String? = null,
         @PluginActionProperty boekperiode: String? = null,
         @PluginActionProperty regels: List<JournaalpostRegel>? = null,
@@ -94,6 +95,10 @@ class OracleEbsPlugin(
                 "boekdatumTijd: $boekdatumTijd, " +
                 "categorie: $categorie, " +
                 "saldoSoort: $saldoSoort" +
+                "omschrijving: $omschrijving" +
+                "grootboek: $grootboek" +
+                "boekjaar: $boekjaar" +
+                "boekperiode: $boekperiode" +
             ")"
         }
 
@@ -114,12 +119,13 @@ class OracleEbsPlugin(
                     journaalpostRegels = journaalpostRegels
                 ),
                 journaalpostomschrijving = omschrijving,
-                grootboek = null,
+                grootboek = if (grootboek.isNullOrBlank()) { null } else { grootboekFrom(grootboek) },
                 boekjaar = integerOrNullFrom(boekjaar),
                 boekperiode = integerOrNullFrom(boekperiode)
             )
         ).let { request ->
             logger.info { "Trying to send OpvoerenJournaalpostVraag" }
+            // TODO: change to debug after testing
             logger.info {
                 "OpvoerenJournaalpostVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
@@ -203,6 +209,7 @@ class OracleEbsPlugin(
         @PluginActionProperty factuurKlasse: String,
         @PluginActionProperty factuurDatum: String,
         @PluginActionProperty factuurVervaldatum: String? = null,
+        @PluginActionProperty factuurKenmerk: String? = null,
         @PluginActionProperty factuurAdresType: String,
         @PluginActionProperty factuurAdresLocatie: AdresLocatie? = null,
         @PluginActionProperty factuurAdresPostbus: AdresPostbus? = null,
@@ -219,6 +226,8 @@ class OracleEbsPlugin(
                 "referentieNummer: $referentieNummer, " +
                 "factuurKlasse: $factuurKlasse, " +
                 "factuurDatum: $factuurDatum, " +
+                "factuurVervaldatum: $factuurVervaldatum, " +
+                "factuurKenmerk: $factuurKenmerk, " +
                 "factuurAdresType: $factuurAdresType, " +
                 "inkoopOrderReferentie: $inkoopOrderReferentie, " +
                 "relatieType: $relatieType" +
@@ -271,7 +280,7 @@ class OracleEbsPlugin(
                 transactiesoort = null,
                 factuurnummer = null,
                 factureerregel = null,
-                factuurkenmerk = null,
+                factuurkenmerk = factuurKenmerk,
                 factuurtoelichting = null,
                 gerelateerdFactuurnummer = null,
                 valutacode = VALUTACODE_EURO, // Alleen EUR wordt ondersteund
@@ -282,6 +291,7 @@ class OracleEbsPlugin(
             bijlage = null
         ).let { request ->
             logger.info { "Trying to send OpvoerenVerkoopfactuurVraag" }
+            // TODO: change to debug after testing
             logger.info {
                 "OpvoerenVerkoopfactuurVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
@@ -308,7 +318,7 @@ class OracleEbsPlugin(
         adresType: AdresType,
         adresLocatie: AdresLocatie? = null,
         adresPostbus: AdresPostbus? = null
-    ){
+    ) {
         if (adresType == AdresType.LOCATIE) {
             require(adresLocatie != null) {
                 "When AdresType is LOCATIE, AdresLocatie should not be NULL"
@@ -477,8 +487,7 @@ class OracleEbsPlugin(
     private fun factuurRegelsFrom(
         execution: DelegateExecution,
         factuurRegels: List<FactuurRegel>
-    ) =
-        factuurRegels.map { factuurRegel ->
+    ) = factuurRegels.map { factuurRegel ->
             val resolvedValues = resolveValuesFor(execution, mapOf(
                 HOEVEELHEID_KEY to factuurRegel.hoeveelheid,
                 TARIEF_KEY to factuurRegel.tarief,
@@ -506,7 +515,7 @@ class OracleEbsPlugin(
             )
         }
 
-    private fun grootboekRekening( resolvedLineValues: Map<String, Any?>) =
+    private fun grootboekRekening(resolvedLineValues: Map<String, Any?>) =
         Grootboekrekening(
             grootboeksleutel = resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]?.let{ grootboekSleutel ->
                 stringFrom(grootboekSleutel).takeIf { it.isNotBlank() }
@@ -549,6 +558,11 @@ class OracleEbsPlugin(
     private fun saldoSoortFrom(value: Any): Journaalpost.Journaalpostsaldosoort =
         SaldoSoort.valueOf(stringFrom(value).uppercase()).let {
             Journaalpost.Journaalpostsaldosoort.valueOf(it.title)
+        }
+
+    private fun grootboekFrom(value: Any): Journaalpost.Grootboek =
+        stringFrom(value).let { grootboek ->
+            Journaalpost.Grootboek.entries.first { it.value == grootboek.uppercase() }
         }
 
     private fun boekingTypeFrom(value: Any): Journaalpostregel.Journaalpostregelboekingtype =

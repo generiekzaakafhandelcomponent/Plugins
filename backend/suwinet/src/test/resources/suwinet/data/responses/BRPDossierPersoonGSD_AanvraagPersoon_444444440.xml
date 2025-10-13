@@ -1,0 +1,59 @@
+<brp:AanvraagPersoonResponse xmlns:brp="http://bkwi.nl/SuwiML/Diensten/BRPDossierPersoonGSD/v0200">
+    <ClientSuwi>
+        <Voornamen>Martin Maarten</Voornamen>
+        <Voorvoegsel>de</Voorvoegsel>
+        <SignificantDeelVanDeAchternaam>Visser</SignificantDeelVanDeAchternaam>
+        <Geboortedat>19440611</Geboortedat>
+        <Burgerservicenr>444444440</Burgerservicenr>
+        <CdBrpGegevensGeheim>0</CdBrpGegevensGeheim>
+        <ANr>2621930280</ANr>
+        <AanduidingNaamgebruik>1</AanduidingNaamgebruik>
+        <Geslacht>2</Geslacht>
+        <CdGeboortegemeente>0363</CdGeboortegemeente>
+        <Geboorteland>6030</Geboorteland>
+        <GeldigheidGegevensPersoon>
+            <DatGeldigheidGegevens>19650310</DatGeldigheidGegevens>
+        </GeldigheidGegevensPersoon>
+        <Nationaliteit>
+            <CdNationaliteit>0001</CdNationaliteit>
+            <GeldigheidGegevensNationaliteit>
+                <DatGeldigheidGegevens>19650310</DatGeldigheidGegevens>
+            </GeldigheidGegevensNationaliteit>
+        </Nationaliteit>
+        <DomicilieAdres>
+            <Postcd>1079WZ</Postcd>
+            <Woonplaatsnaam>Amsterdam</Woonplaatsnaam>
+            <Straatnaam>Zomerdijkstraat</Straatnaam>
+            <NaamOpenbareRuimte>Zomerdijkstraat</NaamOpenbareRuimte>
+            <Huisnr>19</Huisnr>
+            <Huisnrtoevoeging>III</Huisnrtoevoeging>
+            <Huisletter>G</Huisletter>
+            <Locatieoms>Bij het hek recht omhoog</Locatieoms>
+            <AanduidingBijHuisnr>de trekbel</AanduidingBijHuisnr>
+            <IdentificatiecdVerblijfplaats>0530010002090227</IdentificatiecdVerblijfplaats>
+            <IdentificatiecdNraanduiding>0530200002130217</IdentificatiecdNraanduiding>
+        </DomicilieAdres>
+        <AangifteAdreshoudingBrp>
+            <CdGemeenteVanInschrijving>0363</CdGemeenteVanInschrijving>
+            <DatVanInschrijvingBijGemeente>19650310</DatVanInschrijvingBijGemeente>
+            <DatBAdreshoudingBrp>19650310</DatBAdreshoudingBrp>
+        </AangifteAdreshoudingBrp>
+        <Ouder1>
+            <Voornamen>Eveline Johanna</Voornamen>
+            <SignificantDeelVanDeAchternaam>Holthuizen</SignificantDeelVanDeAchternaam>
+            <Geboortedat>19310612</Geboortedat>
+            <Burgerservicenr>999994013</Burgerservicenr>
+            <ANr>4893843925</ANr>
+            <DatBFamilierechtelijkeBetrekking>19650310</DatBFamilierechtelijkeBetrekking>
+        </Ouder1>
+        <Ouder2>
+            <Voornamen>Dirk</Voornamen>
+            <SignificantDeelVanDeAchternaam>Holthuizen</SignificantDeelVanDeAchternaam>
+            <Geboortedat>19460121</Geboortedat>
+            <Burgerservicenr>999994293</Burgerservicenr>
+            <ANr>9356019650</ANr>
+            <DatBFamilierechtelijkeBetrekking>19650310</DatBFamilierechtelijkeBetrekking>
+        </Ouder2>
+        <InschrijvingsgegevensBrp/>
+    </ClientSuwi>
+</brp:AanvraagPersoonResponse>

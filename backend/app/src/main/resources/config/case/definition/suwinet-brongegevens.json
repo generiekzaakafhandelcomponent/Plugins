@@ -1,0 +1,7 @@
+{
+  "canHaveAssignee" : false,
+  "autoAssignTasks" : false,
+  "hasExternalStartForm" : false,
+  "externalStartFormUrl" : null,
+  "externalStartFormDescription" : null
+}

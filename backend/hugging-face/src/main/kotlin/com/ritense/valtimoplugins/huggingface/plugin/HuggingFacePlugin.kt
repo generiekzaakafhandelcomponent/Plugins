@@ -20,6 +20,7 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.document.domain.Document
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
+import com.ritense.document.domain.impl.request.ModifyDocumentRequest
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -35,7 +36,7 @@ import freemarker.template.Template
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.io.StringWriter
 import java.net.URI
-import java.util.*
+import java.util.UUID
 
 @Plugin(
     key = "smart-task-plugin",

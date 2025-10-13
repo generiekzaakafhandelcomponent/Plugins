@@ -60,6 +60,8 @@ class DocumentGenerationServiceTest {
             XentialDocumentProperties(
                 xentialGroupId = UUID.randomUUID(),
                 fileFormat = com.ritense.valtimoplugins.xential.domain.FileFormat.PDF,
+                documentFilename = "documentNaam",
+                informationObjectType = "object-type",
                 documentId = "mijn-kenmerk",
                 messageName = "messageName",
                 content = "voorbeeld data",

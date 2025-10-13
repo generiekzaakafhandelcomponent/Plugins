@@ -1,0 +1,39 @@
+{
+    "voornamen" : "Wilma woont niet meer thuis",
+    "voorvoegsel" : "de",
+    "achternaam" : "Jansen",
+    "geboortedatum" : "2014-09-27",
+    "bsn" : "243000017",
+    "adresBrp" : {
+        "straatnaam" : "kerkstraatstraat",
+        "huisnummer" : 42,
+        "huisletter" : "A",
+        "huisnummertoevoeging" : "",
+        "postcode" : "2011XB",
+        "woonplaatsnaam" : "Den Haag",
+        "aanduidingBijHuisnummer" : "",
+        "locatieomschrijving" : ""
+    },
+    "postadresBrp" : {
+        "straatnaam" : "",
+        "huisnummer" : 0,
+        "huisletter" : "",
+        "huisnummertoevoeging" : "",
+        "postcode" : "",
+        "woonplaatsnaam" : "",
+        "aanduidingBijHuisnummer" : "",
+        "locatieomschrijving" : ""
+    },
+    "verblijfstitel" : {
+        "codeVerblijfstitel" : {
+            "code" : "41",
+            "name" : ""
+        },
+        "datumAanvangVerblijfstitel" : "2012-09-15",
+        "datumEindeVerblijfstitel" : "2024-09-15"
+    },
+    "nationaliteiten" : [ ],
+    "kinderenBsns" : [ ],
+    "partnerBsn" : "",
+    "datumOverlijden" : ""
+}

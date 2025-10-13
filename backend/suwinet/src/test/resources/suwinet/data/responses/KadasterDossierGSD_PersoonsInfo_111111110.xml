@@ -1,0 +1,108 @@
+<ns3:PersoonsInfoResponse xmlns:ns3="http://bkwi.nl/SuwiML/Diensten/KadasterDossierGSD/v0300" xmlns:ns2="http://bkwi.nl/SuwiML/FWI/v0203">
+    <ClientSuwi>
+        <Burgerservicenr>111111110</Burgerservicenr>
+        <Voornamen>Henk</Voornamen>
+        <SignificantDeelVanDeAchternaam>Jansen</SignificantDeelVanDeAchternaam>
+        <Geslacht>1</Geslacht>
+        <Geboortedat>19600720</Geboortedat>
+        <DomicilieAdres>
+            <StraatadresBag>
+                <Postcd>8012TB</Postcd>
+                <Woonplaatsnaam>ZWOLLE</Woonplaatsnaam>
+                <Straatnaam>Van der Laenstraat</Straatnaam>
+                <Huisnr>121</Huisnr>
+            </StraatadresBag>
+        </DomicilieAdres>
+        <DatToestandKadaster>20170317</DatToestandKadaster>
+        <Eigendom>
+            <OnroerendeZaak>
+                <CdTypeOnroerendeZaak>P</CdTypeOnroerendeZaak>
+                <DatOntstaan>19890615</DatOntstaan>
+                <KadastraleAanduiding>
+                    <CdKadastraleGemeente>1189</CdKadastraleGemeente>
+                    <KadastraleGemeentenaam>Zwolle</KadastraleGemeentenaam>
+                    <KadastraleSectie>DD</KadastraleSectie>
+                    <KadastraalPerceelnr>11482</KadastraalPerceelnr>
+                </KadastraleAanduiding>
+                <OmsKadastraalObject>Bebouwd: Wonen</OmsKadastraalObject>
+                <ZakelijkRecht>
+                    <OmsZakelijkRecht>Eigendom (recht van)</OmsZakelijkRecht>
+                </ZakelijkRecht>
+                <PubliekrechtelijkeBeperking>
+                    <AantekeningKadastraalObject>
+                        <OmsAantekeningKadastraalObject>Er zijn geen beperkingen bekend in de Landelijke Voorziening WKPB.</OmsAantekeningKadastraalObject>
+                    </AantekeningKadastraalObject>
+                </PubliekrechtelijkeBeperking>
+                <IndMeerGerechtigden>1</IndMeerGerechtigden>
+            </OnroerendeZaak>
+            <OnroerendeZaak>
+                <CdTypeOnroerendeZaak>P</CdTypeOnroerendeZaak>
+                <DatOntstaan>19890615</DatOntstaan>
+                <KadastraleAanduiding>
+                    <CdKadastraleGemeente>1189</CdKadastraleGemeente>
+                    <KadastraleGemeentenaam>Zwolle</KadastraleGemeentenaam>
+                    <KadastraleSectie>G1</KadastraleSectie>
+                    <KadastraalPerceelnr>43970</KadastraalPerceelnr>
+                </KadastraleAanduiding>
+                <OmsKadastraalObject>Bebouwd: Wonen</OmsKadastraalObject>
+                <ZakelijkRecht>
+                    <OmsZakelijkRecht>Eigendom (recht van)</OmsZakelijkRecht>
+                </ZakelijkRecht>
+                <PubliekrechtelijkeBeperking>
+                    <AantekeningKadastraalObject>
+                        <OmsAantekeningKadastraalObject>Er zijn geen beperkingen bekend in de Landelijke Voorziening WKPB.</OmsAantekeningKadastraalObject>
+                    </AantekeningKadastraalObject>
+                </PubliekrechtelijkeBeperking>
+                <IndMeerGerechtigden>1</IndMeerGerechtigden>
+            </OnroerendeZaak>
+            <OnroerendeZaak>
+                <CdTypeOnroerendeZaak>P</CdTypeOnroerendeZaak>
+                <DatOntstaan>19890615</DatOntstaan>
+                <KadastraleAanduiding>
+                    <CdKadastraleGemeente>277</CdKadastraleGemeente>
+                    <KadastraleGemeentenaam>Hilversum</KadastraleGemeentenaam>
+                    <KadastraleSectie>HH</KadastraleSectie>
+                    <KadastraalPerceelnr>12051</KadastraalPerceelnr>
+                </KadastraleAanduiding>
+                <OmsKadastraalObject>Bebouwd: Wonen</OmsKadastraalObject>
+                <ZakelijkRecht>
+                    <OmsZakelijkRecht>Eigendom (recht van)</OmsZakelijkRecht>
+                </ZakelijkRecht>
+                <PubliekrechtelijkeBeperking>
+                    <AantekeningKadastraalObject>
+                        <OmsAantekeningKadastraalObject>Er zijn geen beperkingen bekend in de Landelijke Voorziening WKPB.</OmsAantekeningKadastraalObject>
+                    </AantekeningKadastraalObject>
+                </PubliekrechtelijkeBeperking>
+                <IndMeerGerechtigden>1</IndMeerGerechtigden>
+            </OnroerendeZaak>
+            <OnroerendeZaak>
+                <CdTypeOnroerendeZaak>P</CdTypeOnroerendeZaak>
+                <DatOntstaan>19890615</DatOntstaan>
+                <KadastraleAanduiding>
+                    <CdKadastraleGemeente>1189</CdKadastraleGemeente>
+                    <KadastraleGemeentenaam>Zwolle</KadastraleGemeentenaam>
+                    <KadastraleSectie>G1</KadastraleSectie>
+                    <KadastraalPerceelnr>43980</KadastraalPerceelnr>
+                </KadastraleAanduiding>
+                <OmsKadastraalObject>Bebouwd: Wonen</OmsKadastraalObject>
+                <ZakelijkRecht>
+                    <OmsZakelijkRecht>Eigendom (recht van)</OmsZakelijkRecht>
+                </ZakelijkRecht>
+                <LocatieOZ>
+                    <StraatadresBag>
+                        <Postcd>8012TB</Postcd>
+                        <Woonplaatsnaam>Zwolle</Woonplaatsnaam>
+                        <Straatnaam>Van der Laenstraat</Straatnaam>
+                        <Huisnr>121</Huisnr>
+                    </StraatadresBag>
+                </LocatieOZ>
+                <PubliekrechtelijkeBeperking>
+                    <AantekeningKadastraalObject>
+                        <OmsAantekeningKadastraalObject>Er zijn geen beperkingen bekend in de Landelijke Voorziening WKPB.</OmsAantekeningKadastraalObject>
+                    </AantekeningKadastraalObject>
+                </PubliekrechtelijkeBeperking>
+                <IndMeerGerechtigden>1</IndMeerGerechtigden>
+            </OnroerendeZaak>
+        </Eigendom>
+    </ClientSuwi>
+</ns3:PersoonsInfoResponse>

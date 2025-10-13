@@ -1,0 +1,86 @@
+[
+    {
+        "code": "01",
+        "name": "arbeidsovereenkomst"
+    },
+    {
+        "code": "02",
+        "name": "aanneming van werk"
+    },
+    {
+        "code": "03",
+        "name": "bestuurder coˆperatieve vereniging met werknemerszelfbestuur"
+    },
+    {
+        "code": "04",
+        "name": "deelvisser"
+    },
+    {
+        "code": "06",
+        "name": "musicus/artiest"
+    },
+    {
+        "code": "07",
+        "name": "stagiair"
+    },
+    {
+        "code": "08",
+        "name": "thuiswerker"
+    },
+    {
+        "code": "09",
+        "name": "vertegenwoordiger/provisiewerker"
+    },
+    {
+        "code": "10",
+        "name": "wsw-er"
+    },
+    {
+        "code": "11",
+        "name": "uitzendkracht"
+    },
+    {
+        "code": "12",
+        "name": "persoonlijke arbeid tegen beloning"
+    },
+    {
+        "code": "13",
+        "name": "ambtenaar/abp'er"
+    },
+    {
+        "code": "14",
+        "name": "topsporter"
+    },
+    {
+        "code": "17",
+        "name": "vutter"
+    },
+    {
+        "code": "18",
+        "name": "publiekrechtelijke aanstelling"
+    },
+    {
+        "code": "20",
+        "name": "beschut werk"
+    },
+    {
+        "code": "78",
+        "name": "werk als zelfstandige"
+    },
+    {
+        "code": "79",
+        "name": "opting-in regeling"
+    },
+    {
+        "code": "80",
+        "name": "sekswerker in fictieve dienstbetrekking"
+    },
+    {
+        "code": "81",
+        "name": "overige fictieve dienstbetrekking"
+    },
+    {
+        "code": "82",
+        "name": "Payrolling"
+    }
+]

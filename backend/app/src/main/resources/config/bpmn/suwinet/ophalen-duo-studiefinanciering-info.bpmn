@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_128rse3" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:collaboration id="Collaboration_06pfqwp">
+    <bpmn:participant id="Participant_1q34tue" name="Suwinet: Duo Studiefinanciering Info" processRef="ophalen-duo-studiefinanciering-info" />
+  </bpmn:collaboration>
+  <bpmn:process id="ophalen-duo-studiefinanciering-info" name="Suwinet: Duo Studiefinanciering Info" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1pegrc5</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_1940m36">
+      <bpmn:incoming>Flow_0t2nnmv</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="SuwinetDuoStudiefinancieringInfo" name="Suwinet: Duo Studiefinanciering Info" camunda:expression="${true}">
+      <bpmn:incoming>Flow_1pegrc5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1eprbn3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0ag75n7" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/duoStudiefinanciering&#34;, duoStudiefinanciering)}">
+      <bpmn:incoming>Flow_1eprbn3</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t2nnmv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1pegrc5" sourceRef="StartEvent_1" targetRef="SuwinetDuoStudiefinancieringInfo" />
+    <bpmn:sequenceFlow id="Flow_0t2nnmv" sourceRef="Activity_0ag75n7" targetRef="Event_1940m36" />
+    <bpmn:sequenceFlow id="Flow_1eprbn3" sourceRef="SuwinetDuoStudiefinancieringInfo" targetRef="Activity_0ag75n7" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_06pfqwp">
+      <bpmndi:BPMNShape id="Participant_1q34tue_di" bpmnElement="Participant_1q34tue" isHorizontal="true">
+        <dc:Bounds x="132" y="82" width="718" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="222" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1940m36_di" bpmnElement="Event_1940m36">
+        <dc:Bounds x="682" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cn4olx_di" bpmnElement="SuwinetDuoStudiefinancieringInfo">
+        <dc:Bounds x="330" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03rxpdx_di" bpmnElement="Activity_0ag75n7">
+        <dc:Bounds x="510" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1pegrc5_di" bpmnElement="Flow_1pegrc5">
+        <di:waypoint x="258" y="200" />
+        <di:waypoint x="330" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t2nnmv_di" bpmnElement="Flow_0t2nnmv">
+        <di:waypoint x="610" y="200" />
+        <di:waypoint x="682" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1eprbn3_di" bpmnElement="Flow_1eprbn3">
+        <di:waypoint x="430" y="200" />
+        <di:waypoint x="510" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

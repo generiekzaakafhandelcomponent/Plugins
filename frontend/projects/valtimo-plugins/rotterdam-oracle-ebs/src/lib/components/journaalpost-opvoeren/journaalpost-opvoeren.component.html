@@ -96,6 +96,16 @@
         <app-input-field
             [pluginId]="pluginId"
             [formGroup]="pluginActionForm"
+            controlName="grootboek"
+            title="journaalpost.grootboek"
+            tooltip="journaalpost.grootboek.tooltip"
+            [required]="false"
+            [presets]="grootboekItems"
+        ></app-input-field>
+
+        <app-input-field
+            [pluginId]="pluginId"
+            [formGroup]="pluginActionForm"
             controlName="boekjaar"
             title="journaalpost.boekjaar"
             tooltip="journaalpost.boekjaar.tooltip"

@@ -146,129 +146,6 @@
         }
       }
     },
-    "@valtimo-plugins/alfresco-auth": {
-      "projectType": "library",
-      "root": "projects/valtimo-plugins/alfresco-auth",
-      "sourceRoot": "projects/valtimo-plugins/alfresco-auth/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/valtimo-plugins/alfresco-auth/tsconfig.lib.json",
-            "project": "projects/valtimo-plugins/alfresco-auth/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/valtimo-plugins/alfresco-auth/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/valtimo-plugins/alfresco-auth/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/valtimo-plugins/alfresco-auth/src/test.ts",
-            "tsConfig": "projects/valtimo-plugins/alfresco-auth/tsconfig.spec.json",
-            "karmaConfig": "projects/valtimo-plugins/alfresco-auth/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/valtimo-plugins/alfresco-auth/src/**/*.ts",
-              "projects/valtimo-plugins/alfresco-auth/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "@valtimo-plugins/amsterdam-emailapi": {
-      "projectType": "library",
-      "root": "projects/valtimo-plugins/amsterdam-emailapi",
-      "sourceRoot": "projects/valtimo-plugins/amsterdam-emailapi/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/valtimo-plugins/amsterdam-emailapi/tsconfig.lib.json",
-            "project": "projects/valtimo-plugins/amsterdam-emailapi/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/valtimo-plugins/amsterdam-emailapi/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/valtimo-plugins/amsterdam-emailapi/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/valtimo-plugins/amsterdam-emailapi/src/test.ts",
-            "tsConfig": "projects/valtimo-plugins/amsterdam-emailapi/tsconfig.spec.json",
-            "karmaConfig": "projects/valtimo-plugins/amsterdam-emailapi/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/valtimo-plugins/amsterdam-emailapi/src/**/*.ts",
-              "projects/valtimo-plugins/amsterdam-emailapi/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "@valtimo-plugins/berkelybridge": {
-      "projectType": "library",
-      "root": "projects/valtimo-plugins/berkelybridge",
-      "sourceRoot": "projects/valtimo-plugins/berkelybridge/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/valtimo-plugins/berkelybridge/tsconfig.lib.json",
-            "project": "projects/valtimo-plugins/berkelybridge/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/valtimo-plugins/berkelybridge/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/valtimo-plugins/berkelybridge/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/valtimo-plugins/berkelybridge/src/test.ts",
-            "tsConfig": "projects/valtimo-plugins/berkelybridge/tsconfig.spec.json",
-            "karmaConfig": "projects/valtimo-plugins/berkelybridge/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/valtimo-plugins/berkelybridge/src/**/*.ts",
-              "projects/valtimo-plugins/berkelybridge/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
     "@valtimo-plugins/notify-nl": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/notify-nl",
@@ -387,6 +264,47 @@
             "lintFilePatterns": [
               "projects/valtimo-plugins/object-management/src/**/*.ts",
               "projects/valtimo-plugins/object-management/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/valtimo-ocr": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/valtimo-ocr",
+      "sourceRoot": "projects/valtimo-plugins/valtimo-ocr/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/valtimo-ocr/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/valtimo-ocr/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/valtimo-ocr/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/valtimo-ocr/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/valtimo-ocr/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/valtimo-ocr/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/valtimo-ocr/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/valtimo-ocr/src/**/*.ts",
+              "projects/valtimo-plugins/valtimo-ocr/src/**/*.html"
             ]
           }
         }
@@ -802,6 +720,47 @@
         }
       }
     },
+    "@valtimo-plugins/value-mapper": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/value-mapper",
+      "sourceRoot": "projects/valtimo-plugins/value-mapper/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/value-mapper/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/value-mapper/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/value-mapper/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/value-mapper/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/value-mapper/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/value-mapper/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/value-mapper/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/value-mapper/src/**/*.ts",
+              "projects/valtimo-plugins/value-mapper/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/xential": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/xential",
@@ -838,6 +797,113 @@
             "lintFilePatterns": [
               "projects/valtimo-plugins/xential/src/**/*.ts",
               "projects/valtimo-plugins/xential/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/haal-centraal": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/haal-centraal",
+      "sourceRoot": "projects/valtimo-plugins/haal-centraal/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/valtimo-plugins/haal-centraal/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/haal-centraal/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/haal-centraal/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/haal-centraal/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/haal-centraal-auth": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/haal-centraal-auth",
+      "sourceRoot": "projects/valtimo-plugins/haal-centraal-auth/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/valtimo-plugins/haal-centraal-auth/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/haal-centraal-auth/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/haal-centraal-auth/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/haal-centraal-auth/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/document-search": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/document-search",
+      "sourceRoot": "projects/valtimo-plugins/document-search/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/document-search/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/document-search/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/document-search/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/document-search/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/document-search/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/document-search/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/document-search/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/document-search/src/**/*.ts",
+              "projects/valtimo-plugins/document-search/src/**/*.html"
             ]
           }
         }

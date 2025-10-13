@@ -22,7 +22,7 @@ import {
     PluginTranslationService
 } from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {BoekingType, FactuurKlasse, JournaalpostOpvoerenConfig, SaldoSoort} from '../../models';
+import {BoekingType, Grootboek, JournaalpostOpvoerenConfig, SaldoSoort} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NGXLogger} from "ngx-logger";
@@ -48,6 +48,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     readonly saldoSoortItems: Array<string> = Object.values(SaldoSoort).map(item => (item.toString()));
+    readonly grootboekItems: Array<string> = Object.values(Grootboek).map(item => (item.toString()));
     readonly boekingTypeItems: Array<string> = Object.values(BoekingType).map(item => (item.toString()));
 
     public pluginActionForm: FormGroup;
@@ -115,6 +116,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
             categorie: this.fb.control('', Validators.required),
             saldoSoort: this.fb.control(null, Validators.required),
             omschrijving: this.fb.control('', Validators.required),
+            grootboek: this.fb.control(null, Validators.required),
             boekjaar: this.fb.control('', Validators.required),
             boekperiode: this.fb.control('', Validators.required),
             regelsViaResolverToggle: this.fb.control(''),
@@ -153,6 +155,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                         categorie: configuration.categorie,
                         saldoSoort: this.fromSaldoSoort(configuration.saldoSoort),
                         omschrijving: configuration.omschrijving,
+                        grootboek: this.fromGrootboek(configuration.grootboek),
                         boekjaar: configuration.boekjaar,
                         boekperiode: configuration.boekperiode,
                         regels: (configuration.regels != undefined) ? configuration?.regels?.map( regel => ({
@@ -190,6 +193,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                     categorie: formValue.categorie,
                     saldoSoort: this.toSaldoSoort(formValue.saldoSoort),
                     omschrijving: formValue.omschrijving,
+                    grootboek: this.toGrootboek(formValue.grootboek),
                     boekjaar: formValue.boekjaar,
                     boekperiode: formValue.boekperiode,
                     regels: (formValue.regels != undefined) ? formValue.regels.map(regel => ({
@@ -218,6 +222,25 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
             return value;
         } else {
             return this.enumSvc.getEnumKey(SaldoSoort, value);
+        }
+    }
+
+    private fromGrootboek(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            // If a numeric-like key (e.g., "100") is provided, treat it as "_100"
+            const normalizedKey = (/^\d/.test(value) && !value.startsWith('_')) ? `_${value}` : value;
+            return this.enumSvc.getEnumValue(Grootboek, normalizedKey);
+        }
+    }
+
+    private toGrootboek(value: string): string | undefined {
+        if (this.isValueResolverPrefix(value)) {
+            return value;
+        } else {
+            // If a numeric-like key, strip _ prefix from the key
+            return this.enumSvc.getEnumKey(Grootboek, value).replace(/^_/, '');
         }
     }
 

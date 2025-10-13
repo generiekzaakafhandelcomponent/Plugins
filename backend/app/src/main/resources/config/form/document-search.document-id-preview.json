@@ -1,0 +1,22 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Result",
+      "applyMaskOn": "change",
+      "tableView": true,
+      "validateWhenHidden": false,
+      "key": "pv.result",
+      "type": "textfield",
+      "input": true
+    },
+    {
+      "label": "Submit",
+      "showValidations": false,
+      "tableView": false,
+      "key": "submit",
+      "type": "button",
+      "input": true
+    }
+  ]
+}

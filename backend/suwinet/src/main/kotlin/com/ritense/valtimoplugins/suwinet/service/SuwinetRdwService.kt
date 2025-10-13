@@ -1,0 +1,186 @@
+package com.ritense.valtimoplugins.suwinet.service
+
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.ritense.valtimoplugins.dkd.rdwdossier.FWI
+import com.ritense.valtimoplugins.dkd.rdwdossier.KentekenInfo
+import com.ritense.valtimoplugins.dkd.rdwdossier.KentekenInfoResponse
+import com.ritense.valtimoplugins.dkd.rdwdossier.ObjectFactory
+import com.ritense.valtimoplugins.dkd.rdwdossier.RDW
+import com.ritense.valtimoplugins.dkd.rdwdossier.VoertuigbezitInfoPersoonResponse
+import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
+import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
+import com.ritense.valtimoplugins.suwinet.model.MotorvoertuigDto
+import com.ritense.valtimoplugins.suwinet.model.SoortVoertuig
+import io.github.oshai.kotlinlogging.KotlinLogging
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+
+const val SUWINET_DATE_PATTERN = "yyyyMMdd"
+const val SUWINET_TIME_PATTERN = "HHmmss00"
+
+class SuwinetRdwService(
+    private val suwinetSOAPClient: SuwinetSOAPClient
+) {
+    lateinit var rdwService: RDW
+    lateinit var soapClientConfig: SuwinetSOAPClientConfig
+
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+        this.soapClientConfig = soapClientConfig
+    }
+
+    fun getRDWService(): RDW {
+        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        return suwinetSOAPClient.configureKeystore(soapClientConfig.keystoreCertificatePath, soapClientConfig.keystoreKey)
+            .configureTruststore(soapClientConfig.truststoreCertificatePath, soapClientConfig.truststoreKey)
+            .configureBasicAuth(soapClientConfig.basicAuthName, soapClientConfig.basicAuthSecret)
+            .getService<RDW>(completeUrl,
+                soapClientConfig.connectionTimeout,soapClientConfig.receiveTimeout)
+    }
+
+    fun getVoertuigbezitInfoPersoonByBsn(
+        bsn: String,
+        rdwService: RDW
+    ): MotorvoertuigDto {
+
+        /* configure soap service */
+        this.rdwService = rdwService
+
+        logger.info { "retrieving RDW Voertuigen info from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+
+        val result = runCatching {
+            /* retrieve voertuigen bezit by bsn */
+            val kentekens = retrieveVoertuigenBezitInfo(bsn)
+
+            /* retrieve voertuigen details from kenteken list */
+            getVoertuigenDetails(kentekens)
+        }
+
+        return result.getOrThrow()
+    }
+
+    private fun retrieveVoertuigenBezitInfo(bsn: String): List<String> {
+
+        val voertuigbezitInfoPersoonRequest = objectFactory.createVoertuigbezitInfoPersoon()
+        voertuigbezitInfoPersoonRequest.burgerservicenr = bsn
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val currentDate = LocalDate.now().format(formatter)
+        voertuigbezitInfoPersoonRequest.datBPeilperiodeAansprakelijkheid = currentDate
+        val response = rdwService.voertuigbezitInfoPersoon(voertuigbezitInfoPersoonRequest)
+        return response.unwrapResponse()
+    }
+
+    private fun getVoertuigenDetails(kentekens: List<String>) =
+        MotorvoertuigDto(
+            kentekens.mapNotNull {
+                getMotorvoertuigDetails(it)
+            }
+        )
+
+
+
+    private fun getMotorvoertuigDetails(
+        kenteken: String
+    ) = try {
+        retrieveAansprakelijkeInfoFromSuwi(kenteken)?.let { mapToSimpleMotorvoertuig(it) }
+    } catch (e: Error) {
+        logger.error{ "error retrieving: $e" }
+        null
+    }
+
+    fun mapToSimpleMotorvoertuig(rdwAansprakelijke: KentekenInfoResponse.ClientSuwi.Aansprakelijke?): MotorvoertuigDto.Motorvoertuig {
+
+        val rdwVoertuig = rdwAansprakelijke?.voertuig
+        val soortVoertuig = rdwVoertuig?.cdSrtVoertuig?.let { SoortVoertuig.findByCode(it) }
+        val soortVoertuigNode = objectMapper.createObjectNode()
+        soortVoertuigNode.put("name", soortVoertuig?.naam ?: "Onbekend")
+        soortVoertuigNode.put("code", soortVoertuig?.code ?: rdwVoertuig?.cdSrtVoertuig)
+        return MotorvoertuigDto.Motorvoertuig(
+            kenteken = rdwVoertuig?.kentekenVoertuig ?: "",
+            soortMotorvoertuig = soortVoertuigNode,
+            merk = rdwVoertuig?.merkVoertuig ?: "",
+            model = rdwVoertuig?.typeVoertuig ?: "",
+            datumEersteInschrijving = rdwVoertuig?.datEersteInschrijvingVoertuigNat?.let { toDate(it) } ?: "",
+            datumRegistratieAansprakelijkheid = rdwAansprakelijke?.datRegistratieAansprakelijkheid?.let { toDate(it) } ?: ""
+        )
+    }
+
+    private fun retrieveAansprakelijkeInfoFromSuwi(
+        kenteken: String
+    ): KentekenInfoResponse.ClientSuwi.Aansprakelijke? {
+        val kentekenInfoRequest = createKentekenRequest(kenteken)
+        val rdwResponse = rdwService.kentekenInfo(kentekenInfoRequest)
+        var aansprakelijke: KentekenInfoResponse.ClientSuwi.Aansprakelijke? = null
+        rdwResponse.unwrapKentekenInfoResponse().forEach{
+            when(it) {
+                is KentekenInfoResponse.ClientSuwi -> aansprakelijke = it.aansprakelijke.firstOrNull()
+                is FWI -> {
+                    val msg = it.foutOrWaarschuwingOrInformatie.joinToString { melding ->
+                        "${melding.value.code}: ${melding.name} / ${melding.value}\n"
+                    }
+                    logger.info { "FWI: $msg" }
+                }
+            }
+        }
+        return aansprakelijke
+    }
+
+    private fun createKentekenRequest(kenteken: String): KentekenInfo? {
+        val kentekenInfoRequest = objectFactory.createKentekenInfo()
+        kentekenInfoRequest.kentekenVoertuig = kenteken
+        val dateFormatter = DateTimeFormatter.ofPattern(SUWINET_DATE_PATTERN)
+        kentekenInfoRequest.peildatAansprakelijkheid = LocalDate.now().format(dateFormatter)
+        val timeFormatter = DateTimeFormatter.ofPattern(SUWINET_TIME_PATTERN)
+        kentekenInfoRequest.peiltijdAansprakelijkheid = LocalDateTime.now().format(timeFormatter)
+        return kentekenInfoRequest
+    }
+
+    private fun KentekenInfoResponse.unwrapKentekenInfoResponse(): List<Any> {
+
+        if (content.isNullOrEmpty()) {
+            throw IllegalStateException("KentekenInfoResponse contains no value")
+        }
+
+        return content.mapNotNull {
+            when (it.value) {
+                is KentekenInfoResponse.ClientSuwi -> it.value as KentekenInfoResponse.ClientSuwi
+                is FWI -> it.value as FWI
+
+                else -> {
+                    throw IllegalStateException("KentekenInfoResponse value un")
+                }
+            }
+        }
+    }
+
+    private fun VoertuigbezitInfoPersoonResponse.unwrapResponse(): List<String> {
+
+        return if (!clientSuwi.isNullOrEmpty()) {
+            clientSuwi[0].aansprakelijke.map {
+                it.voertuig.kentekenVoertuig
+            }
+        } else if( fwi != null ) {
+            throw SuwinetResultFWIException(
+                fwi.foutOrWaarschuwingOrInformatie.joinToString { "${it.name} / ${it.value}\n" }
+            )
+        } else {
+            listOf<String>()
+        }
+    }
+
+    private fun toDateString(date: LocalDate) = date.format(dateOutFormatter)
+    private fun toDate(date: String) = toDateString(LocalDate.parse(date, dateInFormatter))
+
+    companion object {
+        private const val SERVICE_PATH = "RDWDossierGSD-v0200/v1"
+        private const val SUWINET_DATE_IN_PATTERN = "yyyyMMdd"
+        private const val DATE_OUT_PATTERN = "yyyy-MM-dd"
+        private val dateInFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(SUWINET_DATE_IN_PATTERN)
+        private val dateOutFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_OUT_PATTERN)
+        private val objectMapper = jacksonObjectMapper()
+        private val objectFactory = ObjectFactory()
+        private val logger = KotlinLogging.logger {}
+    }
+}

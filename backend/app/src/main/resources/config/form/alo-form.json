@@ -1,0 +1,29 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "woonSituatie",
+      "type": "textfield",
+      "input": true,
+      "label": "Woon situatie",
+      "tableView": true,
+      "properties": {
+        "sourceKey": "WAAR_IK_WOON",
+        "targetKey": "doc:/verzoekGegevensTeTransformeren/alo-aanvullende-gegevens/grWoonsituatie/woonsituatie"
+      },
+      "applyMaskOn": "change",
+      "placeholder": "vul uw woonsituatie in",
+      "attributes": {
+        "data-testid": "alo-start-woonSituatie"
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

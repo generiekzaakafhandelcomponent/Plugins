@@ -1,0 +1,38 @@
+{
+    "voornamen" : "Martin Maarten",
+    "voorvoegsel" : "de",
+    "achternaam" : "Visser",
+    "geboortedatum" : "1944-06-11",
+    "bsn" : "444444440",
+    "adresBrp" : {
+        "straatnaam" : "Zomerdijkstraat",
+        "huisnummer" : 19,
+        "huisletter" : "G",
+        "huisnummertoevoeging" : "III",
+        "postcode" : "1079WZ",
+        "woonplaatsnaam" : "Amsterdam",
+        "aanduidingBijHuisnummer" : "de trekbel",
+        "locatieomschrijving" : "Bij het hek recht omhoog"
+    },
+    "postadresBrp" : {
+        "straatnaam" : "",
+        "huisnummer" : 0,
+        "huisletter" : "",
+        "huisnummertoevoeging" : "",
+        "postcode" : "",
+        "woonplaatsnaam" : "",
+        "aanduidingBijHuisnummer" : "",
+        "locatieomschrijving" : ""
+    },
+    "verblijfstitel" : {
+        "codeVerblijfstitel" : {
+            "code" : "-1",
+            "name" : ""
+        },
+        "datumAanvangVerblijfstitel" : "",
+        "datumEindeVerblijfstitel" : ""
+    },
+    "nationaliteiten" : [ ],
+    "kinderenBsns" : [ ],
+    "datumOverlijden" : ""
+}

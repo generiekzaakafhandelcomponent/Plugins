@@ -6,9 +6,16 @@ import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
+import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetKadasterInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetUwvPersoonsIkvService
 import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -19,6 +26,12 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 @Suppress("UNUSED")
 class SuwiNetPlugin(
     private val suwinetBrpInfoService: SuwinetBrpInfoService,
+    private val suwinetDuoPersoonsInfoService: SuwinetDuoPersoonsInfoService,
+    private val suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
+    private val suwinetKadasterInfoService: SuwinetKadasterInfoService,
+    private val suwinetRdwService: SuwinetRdwService,
+    private val suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService,
+    private val suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService
 ) {
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
@@ -146,6 +159,174 @@ class SuwiNetPlugin(
         }
     }
 
+    @PluginAction(
+        key = "get-duo-persoonsinfo",
+        title = "SuwiNet DUO Persoons Info",
+        description = "SuwiNet DUO Persoons Info",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getDUOPersoonsInfo(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+        logger.info { "Getting DUO PersoonsInfo for case ${execution.businessKey}" }
+
+        try {
+            suwinetDuoPersoonsInfoService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetDuoPersoonsInfoService.getPersoonsInfoByBsn(
+                bsn = bsn, suwinetDuoPersoonsInfoService.createDuoService()
+            ).let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName,objectMapper.convertValue(it)
+                )
+            }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
+    @PluginAction(
+        key = "get-duo-studiefinanciering",
+        title = "SuwiNet DUO studiefinanciering Info",
+        description = "SuwiNet DUO studiefinanciering Info",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getDUOStudiefinancieringInfo(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+        logger.info { "Getting DUO studiefinanciering for case ${execution.businessKey}" }
+
+        try {
+            suwinetDuoStudiefinancieringInfoService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetDuoStudiefinancieringInfoService.getStudiefinancieringInfoByBsn(
+                bsn = bsn,
+                suwinetDuoStudiefinancieringInfoService.createDuoStudiefinancieringService()
+            ).let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
+    @PluginAction(
+        key = "get-kadastrale-objecten",
+        title = "SuwiNet kadaster info",
+        description = "SuwiNet Kadaster info",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getKadastraleObjecten(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+        logger.info { "Getting kadastrale objecten for case ${execution.businessKey}" }
+
+        try {
+            suwinetKadasterInfoService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetKadasterInfoService.getPersoonsinfoByBsn(
+                bsn, suwinetKadasterInfoService.createKadasterService()
+            ).let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
+    @PluginAction(
+        key = "get-rdw-voertuigen",
+        title = "SuwiNet RDW voertuigen",
+        description = "SuwiNet RDW voertuigen plugin action",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getRdwVoertuigen(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+        logger.info { "Getting voertuigen for case ${execution.businessKey}" }
+
+        try {
+            suwinetRdwService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(
+                bsn = bsn, suwinetRdwService.getRDWService()
+            ).let {
+                if(it.motorVoertuigen.isNotEmpty()) {
+                    execution.processInstance.setVariable(
+                        resultProcessVariableName, objectMapper.convertValue(it)
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+
+    }
+
+    @PluginAction(
+        key = "get-svb-persoonsinfo",
+        title = "SuwiNet SVB Persoonsgegevens",
+        description = "SuwiNet SVB Persoonsgegevens",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getSvbPersoonsInfo(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty maxPeriods: Int,
+        execution: DelegateExecution
+    ) {
+        logger.info { "Getting SVB info for case ${execution.businessKey}" }
+
+        try {
+            suwinetSvbPersoonsInfoService.setConfig(
+                getSuwinetSOAPClientConfig()
+            )
+
+            suwinetSvbPersoonsInfoService.getPersoonsgegevensByBsn(
+                bsn,
+                suwinetSvbPersoonsInfoService.createSvbInfo(),
+                maxPeriods
+            )?.let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
     private fun getSuwinetSOAPClientConfig() =
         SuwinetSOAPClientConfig(
             baseUrl = baseUrl.toASCIIString(),
@@ -158,6 +339,42 @@ class SuwiNetPlugin(
             connectionTimeout = connectionTimeout,
             receiveTimeout = receiveTimeout
         )
+
+    @PluginAction(
+        key = "get-uwv-inkomsten-info",
+        title = "SuwiNet UWV inkomsten persoon info",
+        description = "SuwiNet UWV inkomsten info",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getUWVInkomsteninfo(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty maxPeriods: Int,
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+
+        logger.info { "Getting uwv info for case ${execution.businessKey}" }
+        suwinetUwvPersoonsIkvService.setConfig(
+            getSuwinetSOAPClientConfig()
+        )
+
+        try {
+            suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
+                bsn = bsn,
+                suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
+                maxPeriods
+            )?.let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
 
     private fun String.isValidBsn(): Boolean {
         val bsnParts: List<Int> = split("").mapNotNull { it.toIntOrNull() }

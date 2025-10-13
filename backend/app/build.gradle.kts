@@ -14,11 +14,10 @@ dependencies {
     }
 
     // Plugins
-    implementation(project(":backend:alfresco-authentication"))
-    implementation(project(":backend:amsterdam-email-api"))
-    implementation(project(":backend:berkelybridge-textgenerator"))
-    implementation(project(":backend:doc-scanner"))
+    implementation(project(":backend:valtimo-ocr"))
     implementation(project(":backend:externe-klanttaak"))
+    implementation(project(":backend:haal-centraal"))
+    implementation(project(":backend:haal-centraal-auth"))
     implementation(project(":backend:freemarker"))
     implementation(project(":backend:kvk-handelsregister"))
     implementation(project(":backend:mTLS-SSLContext"))
@@ -32,6 +31,8 @@ dependencies {
     implementation(project(":backend:suwinet"))
     implementation(project(":backend:xential"))
     implementation(project(":backend:hugging-face"))
+    implementation(project(":backend:document-search"))
+    implementation(project(":backend:value-mapper"))
 }
 
 tasks.jar {

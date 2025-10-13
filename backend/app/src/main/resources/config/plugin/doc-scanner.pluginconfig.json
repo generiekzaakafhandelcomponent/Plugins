@@ -1,8 +1,8 @@
 [
   {
     "id": "769c69de-eb8e-4ee6-8fc8-d3210f8190f3",
-    "title": "Document Scanner (Autodeployed)",
-    "pluginDefinitionKey": "doc-scanner",
+    "title": "Valtimo Mistral OCR (Autodeployed)",
+    "pluginDefinitionKey": "valtimo-ocr",
     "properties": {
       "url": "https://api.mistral.ai/",
       "token": "YOUR_MISTRAL_API_KEY_HERE"

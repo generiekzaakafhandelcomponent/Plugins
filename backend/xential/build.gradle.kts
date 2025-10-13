@@ -42,8 +42,11 @@ dependencies {
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
+    implementation("com.ritense.valtimo:zaken-api")
+    implementation("com.ritense.valtimo:documenten-api")
 
-    implementation("com.ritense.valtimoplugins:mTLS-SSLContext:1.0.1")
+    implementation(project(":backend:mTLS-SSLContext"))
+
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 

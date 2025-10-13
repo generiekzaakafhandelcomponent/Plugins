@@ -1,0 +1,30 @@
+[
+  {
+    "activityId": "startAlo",
+    "activityType": "bpmn:StartEvent:start",
+    "processLinkType": "form",
+    "formDefinitionName": "start"
+  },
+  {
+    "activityId": "AanvraagFormALO",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "alo-form"
+  },
+  {
+    "activityId": "process-mapping",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "8661ca7e-9ae7-4688-90be-68c3ca828f89",
+    "pluginActionDefinitionKey": "process-mapping-instructions",
+    "actionProperties": {
+      "definitionKey": "aanvraag-levensonderhoud-v1"
+    }
+  },
+  {
+    "activityId": "AanvraagReadOnlyFormALO",
+    "activityType": "bpmn:UserTask:create",
+    "processLinkType": "form",
+    "formDefinitionName": "alo-form-readonly"
+  }
+]
