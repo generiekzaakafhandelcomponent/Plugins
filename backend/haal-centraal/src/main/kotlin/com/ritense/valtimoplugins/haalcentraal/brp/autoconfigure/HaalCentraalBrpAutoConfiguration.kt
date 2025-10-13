@@ -22,15 +22,15 @@ import com.ritense.valtimoplugins.haalcentraal.brp.client.HcBrpClient
 import com.ritense.valtimoplugins.haalcentraal.brp.plugin.HaalCentraalBrpPluginFactory
 import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService
 import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
-import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.boot.autoconfigure.AutoConfiguration
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
-@Configuration
-@EnableConfigurationProperties
+@AutoConfiguration
 class HaalCentraalBrpAutoConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean(HcBrpClient::class)
     fun hcBrpClient(
         haalCentraalWebClient: HaalCentraalWebClient
     ): HcBrpClient {
@@ -38,6 +38,7 @@ class HaalCentraalBrpAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(HaalCentraalBrpService::class)
     fun haalCentraalBrpService(
         hcBrpClient: HcBrpClient
     ): HaalCentraalBrpService {
@@ -45,6 +46,7 @@ class HaalCentraalBrpAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(HaalCentraalBrpPluginFactory::class)
     fun haalCentraalBrpPluginFactory(
         haalCentraalBrpService: HaalCentraalBrpService,
         pluginService: PluginService

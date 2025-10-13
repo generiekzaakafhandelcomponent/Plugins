@@ -1,5 +1,16 @@
 [
   {
+    "activityId": "Activity_0nx3m0b",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "3397d7be-2b42-4ae7-b5b5-ea5ee83a0574",
+    "pluginActionDefinitionKey": "give-summary",
+    "actionProperties": {
+      "longText": "doc:/summarise",
+      "resultPV": "summaryResult"
+    },
+    "processLinkType": "plugin"
+  },
+  {
     "activityId": "StartEvent_1",
     "activityType": "bpmn:StartEvent:start",
     "formDefinitionName": "HFP-Summarise",

@@ -12,6 +12,7 @@ import com.ritense.valtimoplugins.valuemapper.repository.ValueMapperTemplateRepo
 import com.ritense.valtimoplugins.valuemapper.security.ValueMapperHttpSecurityConfigurer
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperLoadingService
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperTemplateService
+import com.ritense.valtimoplugins.valuemapper.web.ValueMapperResource
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.cache.annotation.EnableCaching
@@ -55,7 +56,17 @@ class ValueMapperAutoConfiguration {
         return ValueMapperPluginFactory(pluginService, valueMapper)
     }
 
-
+    @Bean
+    @ConditionalOnMissingBean(ValueMapperResource::class)
+    fun valueMapperResource(
+        loadingService: ValueMapperLoadingService,
+        valueMapperTemplateService: ValueMapperTemplateService
+    ): ValueMapperResource {
+        return ValueMapperResource(
+            loadingService,
+            valueMapperTemplateService
+        )
+    }
 
     @Order(269)
     @Bean
