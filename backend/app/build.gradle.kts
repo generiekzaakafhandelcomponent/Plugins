@@ -31,7 +31,7 @@ dependencies {
     implementation(project(":backend:spotler"))
     implementation(project(":backend:suwinet"))
     implementation(project(":backend:xential"))
-    implementation(project(":backend:hugging-face"))
+    implementation(project(":backend:mistral"))
     implementation(project(":backend:document-search"))
     implementation(project(":backend:value-mapper"))
 }

@@ -108,7 +108,7 @@ import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
-import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
+import {MistralPluginModule, mistralPluginSpecification} from "@valtimo-plugins/mistral";
 import {
     HaalCentraalBrpAuthPluginModule,
     haalCentraalBrpAuthPluginSpecification,
@@ -165,7 +165,7 @@ export function tabsFactory() {
         ValtimoOcrPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
-        HuggingFacePluginModule,
+        MistralPluginModule,
         HaalCentraalBrpPluginModule,
         HaalCentraalBagPluginModule,
         HaalCentraalBrpAuthPluginModule,
@@ -257,7 +257,7 @@ export function tabsFactory() {
             rotterdamOracleEbsPluginSpecification,
             samplePluginSpecification,
             slackPluginSpecification,
-            huggingFacePluginSpecification,
+            mistralPluginSpecification,
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
