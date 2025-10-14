@@ -19,8 +19,12 @@ package com.ritense.valtimoplugins.haalcentraal.bag.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.haalcentraal.bag.service.HaalCentraalBagService
+import org.springframework.stereotype.Component
 
+@Component
+@SkipComponentScan
 class HaalCentraalBagPluginFactory(
     private val haalCentraalBagService: HaalCentraalBagService,
     pluginService: PluginService
