@@ -19,11 +19,7 @@ package com.ritense.valtimoplugins.haalcentraalauth.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import org.springframework.stereotype.Component
 
-@Component
-@SkipComponentScan
 class HaalCentraalAuthPluginFactory(
     pluginService: PluginService
 ) : PluginFactory<HaalCentraalAuthPlugin>(pluginService) {

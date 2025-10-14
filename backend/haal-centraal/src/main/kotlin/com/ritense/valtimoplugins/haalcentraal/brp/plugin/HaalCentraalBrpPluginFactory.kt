@@ -19,12 +19,8 @@ package com.ritense.valtimoplugins.haalcentraal.brp.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService
-import org.springframework.stereotype.Component
 
-@Component
-@SkipComponentScan
 class HaalCentraalBrpPluginFactory(
     private val haalCentraalBrpService: HaalCentraalBrpService,
     pluginService: PluginService
