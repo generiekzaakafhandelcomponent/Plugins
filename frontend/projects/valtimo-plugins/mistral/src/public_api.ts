@@ -15,7 +15,7 @@
  */
 
 /*
- * Public API Surface of mistral
+ * Public API Surface of Mistral
  */
 
 export * from './lib/models';

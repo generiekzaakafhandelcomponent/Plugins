@@ -135,12 +135,6 @@
             val chatResult = mistralTextGenerationModel.mistralChat(interpolatedQuestion)
             if (chatResult.isEmpty()) throw RuntimeException("Empty chat result")
 
-            // Convert Markdown to HTML
-            val parser = org.commonmark.parser.Parser.builder().build()
-            val document = parser.parse(chatResult)
-            val htmlRenderer = org.commonmark.renderer.html.HtmlRenderer.builder().build()
-            val htmlResult = htmlRenderer.render(document)
-
             // Update chat history
             val updatedChatHistory = buildString {
                 append(chatHistory)
@@ -158,17 +152,13 @@
                 qaPairs.joinToString(separator = "\n")
             }
 
-            // Convert history from Markdown to HTML before saving
-            val historyDocument = parser.parse(trimmedHistory)
-            val historyHtml = htmlRenderer.render(historyDocument)
-
             // Save HTML result and formatted history
             execution.setVariable(interpolatedQuestionPV, StringWrapper(interpolatedQuestion))
-            execution.setVariable(chatAnswerPV, StringWrapper(htmlResult))
-            execution.setVariable("chatHistory", StringWrapper(historyHtml))
+            execution.setVariable(chatAnswerPV, StringWrapper(chatResult))
+            execution.setVariable("chatHistory", StringWrapper(trimmedHistory))
 
-            println("Updated chat history:\n$historyHtml")
-            println("Stored chat result: '$htmlResult' in variable $chatAnswerPV")
+            println("Updated chat history:\n$updatedChatHistory")
+            println("Stored chat result: '$chatResult' in variable $chatAnswerPV")
             println("Stored interpolated question: '$interpolatedQuestion' in variable $interpolatedQuestionPV")
         }
 

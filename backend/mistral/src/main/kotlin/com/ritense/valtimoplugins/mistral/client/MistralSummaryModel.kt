@@ -37,7 +37,22 @@ class MistralSummaryModel(
     fun giveSummary(longText: String): String {
         val request = MistralRequest(
             model = "mistral-medium",
-            messages = listOf(MistralMessage(role = "user", content = longText)),
+            messages = listOf(
+                MistralMessage(role = "user", content = longText),
+                MistralMessage(
+                role = "system",
+                content = """
+                    You are a writing assistant that produces clear, well-formatted plain text.
+                        - Write in complete sentences and organize ideas into readable paragraphs and when needed paragraph titles.
+                        - Use blank lines between paragraphs for readability.
+                        - Do NOT use any markup, such as HTML tags, Markdown, asterisks, or backticks.
+                        - Do NOT include lists, bullet points, or numbered items unless the user explicitly requests them.
+                        - Output must be plain text only, no formatting symbols or code fences.
+                        - Keep the tone natural and professional.
+                        - Replace **text_here** or *text_here* with HTML so it would become <b>text_here</b>.
+                        - Do NOT use long dashes like — or ---.
+                """.trimIndent())
+            ),
             max_tokens = 500,
             stream = false
         )

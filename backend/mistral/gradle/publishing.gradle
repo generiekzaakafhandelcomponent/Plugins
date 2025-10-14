@@ -23,7 +23,7 @@ pluginManager.withPlugin("maven-publish") {
                 version = pluginProperties.pluginVersion
 
                 pom {
-                    name = "Hugging Face plugin module"
+                    name = "Mistral plugin module"
                     description = "A plugin for chatting with AI agents"
                     developers {
                         developer {

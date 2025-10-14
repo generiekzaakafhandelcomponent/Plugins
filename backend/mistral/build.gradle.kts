@@ -29,7 +29,6 @@ dependencies {
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
     implementation("com.ritense.valtimo:document")
-    implementation("org.commonmark:commonmark:0.27.0")
     implementation("org.freemarker:freemarker:2.3.33")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")

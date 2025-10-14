@@ -48,7 +48,7 @@ class MistralAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(MistralPluginFactory::class)
-    fun huggingFacePluginFactory(
+    fun mistralPluginFactory(
         pluginService: PluginService,
         mistralSummaryModel: MistralSummaryModel,
         mistralTextGenerationModel: MistralTextGenerationModel,

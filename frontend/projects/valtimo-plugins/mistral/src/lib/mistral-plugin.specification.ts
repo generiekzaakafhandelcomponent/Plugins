@@ -35,13 +35,13 @@ const mistralPluginSpecification: PluginSpecification = {
         pluginTranslations: {
             nl: {
                 title: 'Valtimo LLM Plugin',
-                'give-summary': 'Vat een lange tekst samen met het BART-model',
+                'give-summary': 'Maak een samenvatting van een lange tekst',
                 chat: 'Stel een vraag aan een chatmodel',
                 'chat-memorize': 'Stel een vraag aan een chatmodel die vorige vragen en antwoorden onthoudt',
                 url: 'API-URL',
                 urlTooltip: 'URL van de Mistral REST-API',
                 description:
-                    'Interactie met Mistral-modellen: vat tekst samen met het BART-model of stel vragen aan een chatmodel.',
+                    'Interactie met Mistral-modellen: vat tekst samen of stel vragen aan een chatmodel.',
                 configurationTitle: 'Configuratienaam',
                 configurationTitleTooltip:
                     'Naam waaronder deze pluginconfiguratie binnen de applicatie beschikbaar is.',
@@ -64,13 +64,13 @@ const mistralPluginSpecification: PluginSpecification = {
             },
             en: {
                 title: 'Valtimo LLM Plugin',
-                'give-summary': 'Summarize long text with the BART model',
+                'give-summary': 'Summarize a long text',
                 chat: 'Ask a question to a chat model',
                 'chat-memorize': 'Ask a question to a chat model that remembers previous questions and answers',
                 url: 'API URL',
                 urlTooltip: 'URL of the Mistral REST API',
                 description:
-                    'Interact with Mistral models: summarize text with the BART model or ask questions to a chat model.',
+                    'Interact with Mistral models: summarize text or ask questions to a chat model.',
                 configurationTitle: 'Configuration name',
                 configurationTitleTooltip:
                     'Name under which this plugin configuration is available in the application.',
