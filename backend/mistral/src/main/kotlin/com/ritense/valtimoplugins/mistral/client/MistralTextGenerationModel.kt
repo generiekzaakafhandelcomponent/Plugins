@@ -18,6 +18,7 @@ package com.ritense.valtimoplugins.mistral.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimoplugins.mistral.client.mistral.MISTRAL_SYSTEM_MESSAGE
 import com.ritense.valtimoplugins.mistral.client.mistral.MistralMessage
 import com.ritense.valtimoplugins.mistral.client.mistral.MistralRequest
 import com.ritense.valtimoplugins.mistral.client.mistral.MistralResponse
@@ -45,20 +46,7 @@ class MistralTextGenerationModel(
                         role = "user",
                         content = question
                     ),
-                    MistralMessage(
-                        role = "system",
-                        content = """
-                            You are a writing assistant that produces clear, well-formatted plain text.
-                                - Write in complete sentences and organize ideas into readable paragraphs and when needed paragraph titles.
-                                - Use blank lines between paragraphs for readability.
-                                - Do NOT use any markup, such as HTML tags, Markdown, asterisks, or backticks.
-                                - Do NOT include lists, bullet points, or numbered items unless the user explicitly requests them.
-                                - Output must be plain text only, no formatting symbols or code fences.
-                                - Keep the tone natural and professional.
-                                - Replace **text_here** or *text_here* with HTML so it would become <b>text_here</b>.
-                                - Do NOT use long dashes like — or ---.
-                        """.trimIndent()
-                    )
+                    MISTRAL_SYSTEM_MESSAGE
                 )
             )
         )
