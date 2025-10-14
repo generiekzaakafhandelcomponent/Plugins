@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package com.ritense.valtimoplugins.mistral.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.mistral.client.gemma.GemmaMessage
-import com.ritense.valtimoplugins.mistral.client.gemma.GemmaRequest
-import com.ritense.valtimoplugins.mistral.client.gemma.GemmaResponse
+import com.ritense.valtimoplugins.mistral.client.mistral.MistralMessage
+import com.ritense.valtimoplugins.mistral.client.mistral.MistralRequest
+import com.ritense.valtimoplugins.mistral.client.mistral.MistralResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
@@ -38,10 +38,10 @@ class MistralTextGenerationModel(
     fun mistralChat(question: String): String {
         val result = post(
             "v1/chat/completions",
-            GemmaRequest(
+            MistralRequest(
                 model = "mistral-medium-2508",
                 messages = listOf(
-                    GemmaMessage(
+                    MistralMessage(
                         role = "user",
                         content = question
                     )
@@ -51,23 +51,7 @@ class MistralTextGenerationModel(
         return result
     }
 
-    fun gemmaChat(question: String): String {
-        val result = post(
-            "v1/chat/completions",
-            GemmaRequest(
-                model = "mistral-medium-2508",
-                messages = listOf(
-                    GemmaMessage(
-                        role = "user",
-                        content = question
-                    )
-                )
-            )
-        )
-        return result
-    }
-
-    private fun post(path: String, gemmaRequest: GemmaRequest): String {
+    private fun post(path: String, mistralRequest: MistralRequest): String {
         val response = restClientBuilder
             .clone()
             .build()
@@ -85,9 +69,9 @@ class MistralTextGenerationModel(
                 it.setBearerAuth(token!!)
             }
             .accept(org.springframework.http.MediaType.APPLICATION_JSON)
-            .body(ObjectMapper().writeValueAsString(gemmaRequest))
+            .body(ObjectMapper().writeValueAsString(mistralRequest))
             .retrieve()
-            .body<GemmaResponse>()!!
+            .body<MistralResponse>()!!
 
         if (response.choices.isEmpty()) {
             throw AiAgentException("Empty response")
@@ -98,5 +82,4 @@ class MistralTextGenerationModel(
     companion object {
         private val logger = KotlinLogging.logger {}
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2023 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ dependencies {
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
     implementation("com.ritense.valtimo:document")
+    implementation("org.commonmark:commonmark:0.27.0")
     implementation("org.freemarker:freemarker:2.3.33")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")

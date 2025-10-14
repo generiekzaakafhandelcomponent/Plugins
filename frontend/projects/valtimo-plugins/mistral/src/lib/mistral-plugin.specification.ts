@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ const mistralPluginSpecification: PluginSpecification = {
         },
         pluginTranslations: {
             nl: {
-                title: 'Smart Task Plugin',
+                title: 'Valtimo LLM Plugin',
                 'give-summary': 'Vat een lange tekst samen met het BART-model',
                 chat: 'Stel een vraag aan een chatmodel',
                 'chat-memorize': 'Stel een vraag aan een chatmodel die vorige vragen en antwoorden onthoudt',
@@ -63,7 +63,7 @@ const mistralPluginSpecification: PluginSpecification = {
                 maxQandASavedTooltip: 'Voer het max aantal vragen en antwoorden in dat moet worden meegestuurd met de prompt als context.',
             },
             en: {
-                title: 'Smart Task Plugin',
+                title: 'Valtimo LLM Plugin',
                 'give-summary': 'Summarize long text with the BART model',
                 chat: 'Ask a question to a chat model',
                 'chat-memorize': 'Ask a question to a chat model that remembers previous questions and answers',
