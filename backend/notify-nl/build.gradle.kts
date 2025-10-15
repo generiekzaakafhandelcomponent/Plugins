@@ -25,26 +25,7 @@ dockerCompose {
 
 dependencies {
     implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
     implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:process-document")
-    implementation("com.ritense.valtimo:temporary-resource-storage")
-    implementation("com.ritense.valtimo:value-resolver")
-
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
-
-    // Testing
-    testImplementation("com.ritense.valtimo:local-resource")
-    testImplementation("com.ritense.valtimo:test-utils-common")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
-    testImplementation("org.mockito:mockito-core")
-    testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
-
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
 apply(from = "gradle/publishing.gradle")
