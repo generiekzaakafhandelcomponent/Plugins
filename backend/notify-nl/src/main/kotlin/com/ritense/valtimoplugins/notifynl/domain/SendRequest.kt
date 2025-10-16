@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.notifynl.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
 data class SendSmsRequest(
     @JsonProperty("phone_number")
@@ -26,8 +27,12 @@ data class SendSmsRequest(
 )
 
 data class SendEmailRequest(
-    @JsonProperty("email")
+    @JsonProperty("email_address")
     val email: String,
     @JsonProperty("template_id")
     val templateId: String
 )
+
+data class StringWrapper(
+    val value: String
+) : Serializable

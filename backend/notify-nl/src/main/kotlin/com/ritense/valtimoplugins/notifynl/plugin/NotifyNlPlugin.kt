@@ -24,6 +24,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.notifynl.client.NotifyNlClient
 import com.ritense.valtimoplugins.notifynl.domain.SendEmailRequest
 import com.ritense.valtimoplugins.notifynl.domain.SendSmsRequest
+import com.ritense.valtimoplugins.notifynl.domain.StringWrapper
 import com.ritense.valtimoplugins.notifynl.service.NotifyNlTokenGenerationService
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
@@ -61,6 +62,8 @@ open class NotifyNlPlugin(
         val sendSmsRequest = SendSmsRequest(phoneNumber, templateId)
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
         notifyNlClient.sendSms(url, sendSmsRequest, token)
+        val Test : String = ""
+        execution.setVariable("result", StringWrapper(sendSmsRequest))
     }
 
     @PluginAction(
@@ -77,5 +80,6 @@ open class NotifyNlPlugin(
         val sendEmailRequest = SendEmailRequest(email, templateId)
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
         notifyNlClient.sendEmail(url, sendEmailRequest, token)
+        execution.setVariable("result", sendEmailRequest)
     }
 }

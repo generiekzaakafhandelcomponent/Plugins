@@ -9,6 +9,9 @@
     },
     "email": {
       "type": "string"
+    },
+    "result": {
+      "type": "string"
     }
   },
   "additionalProperties": false
