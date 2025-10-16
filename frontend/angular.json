@@ -515,6 +515,47 @@
         }
       }
     },
+    "@valtimo-plugins/sample-plugin": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/sample-plugin",
+      "sourceRoot": "projects/valtimo-plugins/sample-plugin/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/sample-plugin/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/sample-plugin/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/sample-plugin/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/sample-plugin/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/sample-plugin/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/sample-plugin/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/sample-plugin/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/sample-plugin/src/**/*.ts",
+              "projects/valtimo-plugins/sample-plugin/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/slack": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/slack",
@@ -556,24 +597,24 @@
         }
       }
     },
-    "@valtimo-plugins/hugging-face": {
+    "@valtimo-plugins/mistral": {
       "projectType": "library",
-      "root": "projects/valtimo-plugins/hugging-face",
-      "sourceRoot": "projects/valtimo-plugins/hugging-face/src",
+      "root": "projects/valtimo-plugins/mistral",
+      "sourceRoot": "projects/valtimo-plugins/mistral/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/valtimo-plugins/hugging-face/tsconfig.lib.json",
-            "project": "projects/valtimo-plugins/hugging-face/ng-package.json"
+            "tsConfig": "projects/valtimo-plugins/mistral/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/mistral/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/valtimo-plugins/hugging-face/tsconfig.lib.prod.json"
+              "tsConfig": "projects/valtimo-plugins/mistral/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/valtimo-plugins/hugging-face/tsconfig.lib.json"
+              "tsConfig": "projects/valtimo-plugins/mistral/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -581,17 +622,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/valtimo-plugins/hugging-face/src/test.ts",
-            "tsConfig": "projects/valtimo-plugins/hugging-face/tsconfig.spec.json",
-            "karmaConfig": "projects/valtimo-plugins/hugging-face/karma.conf.js"
+            "main": "projects/valtimo-plugins/mistral/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/mistral/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/mistral/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/valtimo-plugins/hugging-face/src/**/*.ts",
-              "projects/valtimo-plugins/hugging-face/src/**/*.html"
+              "projects/valtimo-plugins/mistral/src/**/*.ts",
+              "projects/valtimo-plugins/mistral/src/**/*.html"
             ]
           }
         }
