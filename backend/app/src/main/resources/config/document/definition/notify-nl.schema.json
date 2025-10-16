@@ -11,7 +11,7 @@
       "type": "string"
     },
     "result": {
-      "type": "string"
+      "type": "object"
     }
   },
   "additionalProperties": false

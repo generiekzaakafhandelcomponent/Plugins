@@ -62,8 +62,11 @@ open class NotifyNlPlugin(
         val sendSmsRequest = SendSmsRequest(phoneNumber, templateId)
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
         notifyNlClient.sendSms(url, sendSmsRequest, token)
-        val Test : String = ""
-        execution.setVariable("result", StringWrapper(sendSmsRequest))
+        val response : String = """
+          phone number: $phoneNumber
+          template id: $templateId
+        """.trimIndent()
+        execution.setVariable("result", StringWrapper(response))
     }
 
     @PluginAction(
@@ -80,6 +83,10 @@ open class NotifyNlPlugin(
         val sendEmailRequest = SendEmailRequest(email, templateId)
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
         notifyNlClient.sendEmail(url, sendEmailRequest, token)
-        execution.setVariable("result", sendEmailRequest)
+        val response : String = """
+          email: $email
+          template id: $templateId
+        """.trimIndent()
+        execution.setVariable("result", StringWrapper(response))
     }
 }
