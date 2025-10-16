@@ -1,0 +1,12 @@
+[
+  {
+    "processDefinitionKey": "notify-nl-send-email-process",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "notify-nl-send-sms-process",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

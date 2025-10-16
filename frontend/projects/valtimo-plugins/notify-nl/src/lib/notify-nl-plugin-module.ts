@@ -20,16 +20,19 @@ import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
 import {NotifyNlConfigurationComponent} from "./components/notify-nl-configuration/notify-nl-configuration.component";
 import {SendSmsConfigurationComponent} from "./components/send-sms/send-sms-configuration.component";
+import {SendEmailConfigurationComponent} from "./components/send-email/send-email-configuration.component";
 
 @NgModule({
   declarations: [
     NotifyNlConfigurationComponent,
-    SendSmsConfigurationComponent
+    SendSmsConfigurationComponent,
+    SendEmailConfigurationComponent
   ],
   imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
   exports: [
     NotifyNlConfigurationComponent,
-    SendSmsConfigurationComponent
+    SendSmsConfigurationComponent,
+    SendEmailConfigurationComponent
   ],
 })
 export class NotifyNlPluginModule {}

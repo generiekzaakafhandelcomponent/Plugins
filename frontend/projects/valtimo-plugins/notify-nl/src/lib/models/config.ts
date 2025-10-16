@@ -19,14 +19,17 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 interface NotifyNlConfig extends PluginConfigurationData {
   url: string;
   serviceId: string;
-
   secretKey: string;
 }
 
 interface SendSmsConfig {
   phoneNumber: string;
-
   templateId: string;
 }
 
-export {NotifyNlConfig, SendSmsConfig};
+interface SendEmailConfig {
+  email: string;
+  templateId: string;
+}
+
+export {NotifyNlConfig, SendSmsConfig, SendEmailConfig};

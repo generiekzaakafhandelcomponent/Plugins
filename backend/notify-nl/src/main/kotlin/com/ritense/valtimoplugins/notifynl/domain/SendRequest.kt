@@ -24,3 +24,10 @@ data class SendSmsRequest(
     @JsonProperty("template_id")
     val templateId: String
 )
+
+data class SendEmailRequest(
+    @JsonProperty("email")
+    val email: String,
+    @JsonProperty("template_id")
+    val templateId: String
+)

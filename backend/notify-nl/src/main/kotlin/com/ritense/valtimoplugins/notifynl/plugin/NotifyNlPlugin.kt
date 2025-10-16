@@ -22,6 +22,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.notifynl.client.NotifyNlClient
+import com.ritense.valtimoplugins.notifynl.domain.SendEmailRequest
 import com.ritense.valtimoplugins.notifynl.domain.SendSmsRequest
 import com.ritense.valtimoplugins.notifynl.service.NotifyNlTokenGenerationService
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -60,5 +61,21 @@ open class NotifyNlPlugin(
         val sendSmsRequest = SendSmsRequest(phoneNumber, templateId)
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
         notifyNlClient.sendSms(url, sendSmsRequest, token)
+    }
+
+    @PluginAction(
+        key = "send-email",
+        title = "Send E-mail",
+        description = "Sends an E-mail",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun sendEmailMessage(
+        execution: DelegateExecution,
+        @PluginActionProperty email: String,
+        @PluginActionProperty templateId: String
+    ) {
+        val sendEmailRequest = SendEmailRequest(email, templateId)
+        val token = tokenGenerationService.generateToken(serviceId, secretKey)
+        notifyNlClient.sendEmail(url, sendEmailRequest, token)
     }
 }

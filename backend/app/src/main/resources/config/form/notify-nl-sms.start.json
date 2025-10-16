@@ -1,0 +1,25 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Recipient Phonenumber",
+      "applyMaskOn": "change",
+      "autoExpand": true,
+      "tableView": true,
+      "key": "recipientPhonenumber",
+      "properties": {
+        "targetKey": "doc:/phoneNumber"
+      },
+      "type": "textarea",
+      "input": true
+    },
+    {
+      "type": "button",
+      "label": "Submit",
+      "key": "submit",
+      "disableOnInvalid": true,
+      "input": true,
+      "tableView": false
+    }
+  ]
+}
