@@ -597,24 +597,24 @@
         }
       }
     },
-    "@valtimo-plugins/mistral": {
+    "@valtimo-plugins/valtimo-llm": {
       "projectType": "library",
-      "root": "projects/valtimo-plugins/mistral",
-      "sourceRoot": "projects/valtimo-plugins/mistral/src",
+      "root": "projects/valtimo-plugins/valtimo-llm",
+      "sourceRoot": "projects/valtimo-plugins/valtimo-llm/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/valtimo-plugins/mistral/tsconfig.lib.json",
-            "project": "projects/valtimo-plugins/mistral/ng-package.json"
+            "tsConfig": "projects/valtimo-plugins/valtimo-llm/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/valtimo-llm/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/valtimo-plugins/mistral/tsconfig.lib.prod.json"
+              "tsConfig": "projects/valtimo-plugins/valtimo-llm/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/valtimo-plugins/mistral/tsconfig.lib.json"
+              "tsConfig": "projects/valtimo-plugins/valtimo-llm/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -622,17 +622,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/valtimo-plugins/mistral/src/test.ts",
-            "tsConfig": "projects/valtimo-plugins/mistral/tsconfig.spec.json",
-            "karmaConfig": "projects/valtimo-plugins/mistral/karma.conf.js"
+            "main": "projects/valtimo-plugins/valtimo-llm/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/valtimo-llm/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/valtimo-llm/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/valtimo-plugins/mistral/src/**/*.ts",
-              "projects/valtimo-plugins/mistral/src/**/*.html"
+              "projects/valtimo-plugins/valtimo-llm/src/**/*.ts",
+              "projects/valtimo-plugins/valtimo-llm/src/**/*.html"
             ]
           }
         }
