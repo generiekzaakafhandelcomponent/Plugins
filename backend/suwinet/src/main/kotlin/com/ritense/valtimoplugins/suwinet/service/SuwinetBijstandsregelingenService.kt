@@ -9,7 +9,7 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.ClientSuwi
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.FWI
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
-import com.ritense.valtimoplugins.suwinet.model.BijstandsRegelingDto
+import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.BijstandsRegelingDto
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 
