@@ -50,7 +50,7 @@ const haalCentraalBagPluginSpecification: PluginSpecification = {
             configurationTitle: 'Configuratienaam',
             configurationTitleTooltip:
                 'Haal Centraal Bag Plugin',
-            title: 'Haal Centraal Bag Plugin',
+            title: 'Haal Centraal BAG API',
             description: 'De BAG API plugin is bedoeld voor individuele bevragingen te doen op de landelijke voorziening Basisregistratie Adressen en Gebouwen (LV BAG)',
             bagBaseUrl: 'Url naar bag service',
             authenticationPluginConfiguration: 'Configuratie authenticatie plugin',
@@ -67,7 +67,7 @@ const haalCentraalBagPluginSpecification: PluginSpecification = {
             configurationTitle: 'Configuration name',
             configurationTitleTooltip:
                 'Haal Centraal Bag Plugin',
-            title: 'Haal Centraal Bag Plugin',
+            title: 'Haal Centraal BAG API',
             description: 'The BAG API plugin is intended for individual queries to the national facility Basic Registration of Addresses and Buildings (LV BAG)',
             bagBaseUrl: 'Base url to bag service',
             authenticationPluginConfiguration: 'Authentication plugin configuration',
