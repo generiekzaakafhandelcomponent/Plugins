@@ -1,5 +1,7 @@
 package com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen
 
+import java.time.LocalDate
+
 /**
  * De aanvraag voor een UITKERING die door of voor een CLIENT SUWI bij een
  * UITVOERINGSORGAAN is ingediend.
@@ -7,7 +9,11 @@ package com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen
 
 data class AanvraagUitkeringDto(
 
-    val datAanvraagUitkering: String?,
+    /**
+     *  De datum van de dag waarop de AANVRAAG UITKERING door het
+     * UITVOERINGSORGAAN is ontvangen.
+     */
+    val datAanvraagUitkering: LocalDate?,
     val szWet: SzWetDto?,
     val beslissingOpAanvraagUitkering: BeslissingOpAanvraagUitkeringDto?,
     val partnerAanvraagUitkering: PartnerBijstandDto,
