@@ -1,0 +1,552 @@
+openapi: 3.0.3
+info:
+  title: Docsys Template API
+  description: API for generating PDF documents from templates with key-value parameters
+  version: 1.0.0
+
+paths:
+  /templates/{templateId}/generate:
+    post:
+      summary: Generate PDF synchronously
+      description: Generates a PDF document from a template and returns the PDF file immediately
+      operationId: generatePdfSync
+      tags:
+        - PDF Generation
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          description: Unique identifier of the template to use
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneratePdfRequest'
+            examples:
+              brief-aankondigig:
+                summary: Brief aankondigig
+                value:
+                  filename: "brief-aankondiging-zaak-01234"
+                  parameters:
+                    firstName: "Tess"
+                    lastName: "Terloops"
+                    date: "2025-10-16"
+      responses:
+        '200':
+          description: PDF generated successfully
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /templates/{templateId}/generate-async:
+    post:
+      summary: Generate PDF asynchronously
+      description: Initiates asynchronous PDF generation and returns a job ID for status tracking. Used for larger PDF's.
+      operationId: generatePdfAsync
+      tags:
+        - PDF Generation
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          description: Unique identifier of the template to use
+          schema:
+            type: string
+          example: "besluit-template-001"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneratePdfRequest'
+            examples:
+              report:
+                summary: Complex report generation
+                value:
+                  parameters:
+                    firstName: "Tess"
+                    lastName: "Terloops"
+                    date: "2025-10-16"
+      responses:
+        '202':
+          description: PDF generation job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncJobResponse'
+              example:
+                jobId: "job-550e8400-e29b-41d4-a716-446655440000"
+                status: "pending"
+                createdAt: "2024-10-16T10:30:00Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /jobs/{jobId}/status:
+    get:
+      summary: Check PDF generation job status
+      description: Retrieves the current status of an asynchronous PDF generation job
+      operationId: getJobStatus
+      tags:
+        - Job Management
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          description: Unique identifier of the generation job
+          schema:
+            type: string
+          example: "job-550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: Job status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatusResponse'
+              examples:
+                processing:
+                  summary: Job processing
+                  value:
+                    jobId: "job-550e8400-e29b-41d4-a716-446655440000"
+                    status: "processing"
+                    createdAt: "2024-10-16T10:30:00Z"
+                    startedAt: "2024-10-16T10:30:05Z"
+                completed:
+                  summary: Job completed
+                  value:
+                    jobId: "job-550e8400-e29b-41d4-a716-446655440000"
+                    status: "completed"
+                    createdAt: "2024-10-16T10:30:00Z"
+                    startedAt: "2024-10-16T10:30:05Z"
+                    completedAt: "2024-10-16T10:30:15Z"
+                    downloadUrl: "https://api.docsys.nl/v1/jobs/job-550e8400-e29b-41d4-a716-446655440000/download"
+                    expiresAt: "2024-10-17T10:30:15Z"
+                failed:
+                  summary: Job failed
+                  value:
+                    jobId: "job-550e8400-e29b-41d4-a716-446655440000"
+                    status: "failed"
+                    createdAt: "2024-10-16T10:30:00Z"
+                    startedAt: "2024-10-16T10:30:05Z"
+                    failedAt: "2024-10-16T10:30:10Z"
+                    error: "Template rendering failed: Missing required parameter 'firstName'"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /jobs/{jobId}/download:
+    get:
+      summary: Download generated PDF
+      description: Downloads the PDF file for a completed generation job
+      operationId: downloadPdf
+      tags:
+        - Job Management
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          description: Unique identifier of the generation job
+          schema:
+            type: string
+          example: "job-550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: PDF file retrieved successfully
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          description: PDF file has expired and is no longer available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Gone"
+                message: "The requested PDF file has expired and is no longer available"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /templates/{templateId}/preview:
+    post:
+      summary: Preview PDF generation
+      description: Generates a preview of the PDF document without saving it. Returns a low-resolution for quick preview purposes.
+      operationId: previewPdf
+      tags:
+        - PDF Generation
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          description: Unique identifier of the template to use
+          schema:
+            type: string
+          example: "brief-aankondiging-template-001"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewPdfRequest'
+            examples:
+              invoice:
+                summary: Brief aankondigig preview
+                value:
+                  parameters:
+                    firstName: "Tess"
+                    lastName: "Terloops"
+                    date: "2025-10-16"
+      responses:
+        '200':
+          description: PDF preview generated successfully
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+              description: Suggested filename for the preview PDF
+              example: 'inline; filename="preview.pdf"'
+            X-Preview-Mode:
+              schema:
+                type: string
+              description: Indicates this is a preview version
+              example: 'true'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /templates/{templateId}/validate:
+    post:
+      summary: Validate template parameters
+      description: Validates whether all required parameters for the template are present and correctly formatted
+      operationId: validateParameters
+      tags:
+        - PDF Generation
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          description: Unique identifier of the template to validate against
+          schema:
+            type: string
+          example: "brief-aankondigig-template-001"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateParametersRequest'
+            examples:
+              valid:
+                summary: Valid parameters
+                value:
+                  parameters:
+                    firstName: "Tess"
+                    lastName: "Terloops"
+                    date: "2025-10-16"
+              invalid:
+                summary: Missing required parameters
+                value:
+                  parameters:
+                    lastName: "Terloops"
+      responses:
+        '200':
+          description: Validation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResponse'
+              examples:
+                valid:
+                  summary: All parameters valid
+                  value:
+                    valid: true
+                    templateId: "brief-aankondigig-template-001"
+                    message: "All required parameters are present and valid"
+                invalid:
+                  summary: Missing parameters
+                  value:
+                    valid: false
+                    templateId: "brief-aankondiging-template-001"
+                    message: "Validation failed"
+                    errors:
+                      - field: "firstName"
+                        message: "Required parameter 'firstName' is missing"
+                      - field: "date"
+                        message: "Required parameter 'date' is missing"
+                    missingParameters:
+                      - "firstName"
+                      - "date"
+                    providedParameters:
+                      - "lastName"
+                invalidFormat:
+                  summary: Invalid parameter format
+                  value:
+                    valid: false
+                    templateId: "brief-aankondiging-template-001"
+                    message: "Validation failed"
+                    errors:
+                      - field: "date"
+                        message: "Parameter 'date' must be in format YYYY-MM-DD"
+                    invalidParameters:
+                      - "date"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    GeneratePdfRequest:
+      type: object
+      required:
+        - parameters
+      properties:
+        parameters:
+          type: object
+          description: Key-value pairs for template variables
+          additionalProperties:
+            type: string
+          example:
+            firstName: "Tess"
+
+
+    ValidateParametersRequest:
+      type: object
+      required:
+        - parameters
+      properties:
+        parameters:
+          type: object
+          description: Key-value pairs for template variables to validate
+          additionalProperties:
+            type: string
+          example:
+            firstName: "Tess"
+            lastName: "Terloops"
+            date: "2025-10-16"
+
+    ValidationResponse:
+      type: object
+      required:
+        - valid
+        - templateId
+        - message
+      properties:
+        valid:
+          type: boolean
+          description: Whether the provided parameters are valid
+          example: true
+        templateId:
+          type: string
+          description: The template ID that was validated against
+          example: "brief-aankondigig-template-001"
+        message:
+          type: string
+          description: Human-readable validation message
+          example: "All required parameters are present and valid"
+        errors:
+          type: array
+          description: List of validation errors (only present when valid is false)
+          items:
+            type: object
+            required:
+              - field
+              - message
+            properties:
+              field:
+                type: string
+                description: The parameter field with the error
+                example: "date"
+              message:
+                type: string
+                description: Description of the validation error
+                example: "Required parameter 'date' is missing"
+        missingParameters:
+          type: array
+          description: List of required parameters that are missing
+          items:
+            type: string
+          example: ["date"]
+        invalidParameters:
+          type: array
+          description: List of parameters that have invalid values or formats
+          items:
+            type: string
+          example: ["date"]
+        providedParameters:
+          type: array
+          description: List of parameters that were provided in the request
+          items:
+            type: string
+          example: ["firstName", "lastName"]
+
+    PreviewPdfRequest:
+      type: object
+      required:
+        - parameters
+      properties:
+        parameters:
+          type: object
+          description: Key-value pairs for template variables
+          additionalProperties:
+            type: string
+          example:
+            firstName: "Tess"
+            lastName: "Terloops"
+            date: "2025-10-16"
+    AsyncJobResponse:
+      type: object
+      required:
+        - jobId
+        - status
+        - createdAt
+      properties:
+        jobId:
+          type: string
+          description: Unique identifier for the generation job
+          example: "job-550e8400-e29b-41d4-a716-446655440000"
+        status:
+          type: string
+          enum: [processing, completed]
+          description: Current status of the job
+          example: "processing"
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the job was created
+          example: "2024-10-16T10:30:00Z"
+
+    JobStatusResponse:
+      type: object
+      required:
+        - jobId
+        - status
+        - createdAt
+      properties:
+        jobId:
+          type: string
+          description: Unique identifier for the generation job
+          example: "job-550e8400-e29b-41d4-a716-446655440000"
+        status:
+          type: string
+          enum: [processing, completed, failed]
+          description: Current status of the job
+          example: "completed"
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the job was created
+          example: "2024-10-16T10:30:00Z"
+        startedAt:
+          type: string
+          format: date-time
+          description: Timestamp when processing started
+          example: "2024-10-16T10:30:05Z"
+        completedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the job completed successfully
+          example: "2024-10-16T10:30:15Z"
+        failedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the job failed
+          example: "2024-10-16T10:30:10Z"
+        downloadUrl:
+          type: string
+          format: uri
+          description: URL to download the generated PDF (only present when status is completed)
+          example: "https://api.docsys.nl/v1/jobs/job-550e8400-e29b-41d4-a716-446655440000/download"
+        expiresAt:
+          type: string
+          format: date-time
+          description: Timestamp when the download URL expires
+          example: "2024-10-17T10:30:15Z"
+        error:
+          type: string
+          description: Error message (only present when status is failed)
+          example: "Template rendering failed: Missing required parameter"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "Bad Request"
+        message:
+          type: string
+          description: Detailed error message
+          example: "Invalid template parameters provided"
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Bad Request"
+            message: "Invalid template parameters provided"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Not Found"
+            message: "Template or job not found"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Internal Server Error"
+            message: "An unexpected error occurred"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authentication
+
+security:
+  - bearerAuth: []
