@@ -4,15 +4,19 @@ import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInf
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.FWI
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse.ClientSuwi
+import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.Bron
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.ObjectFactory
+import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.PartnerBijstand
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.AanvraagUitkeringDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.BeslissingOpAanvraagUitkeringDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.BijstandsRegelingenDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.BronDto
+import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.PartnerBijstandDto
+import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SpecifiekeGegevensBijzBijstandDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SzWetDto
 
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -48,8 +52,6 @@ class SuwinetBijstandsregelingenService (
 
         /* retrieve duo studiefinanciering info by bsn */
         val result = runCatching {
-
-
 
             val bijstandsregelingenInfoRequest = ObjectFactory().createBijstandsregelingenInfo_Type()
                 .apply {
@@ -92,8 +94,25 @@ class SuwinetBijstandsregelingenService (
         }
     }
 
+    private fun getSpeciekeGegevensBijzBijstand(specifiekeGegevensBijzBijstand: MutableList<ClientSuwi.SpecifiekeGegevensBijzBijstand>): kotlin.collections.List<com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SpecifiekeGegevensBijzBijstandDto> =
+       specifiekeGegevensBijzBijstand.map {
+           specifiekeGegevensBijzBijstandItem -> SpecifiekeGegevensBijzBijstandDto(
+               cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand,
+                omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand,
+               datBetaalbaarBijzBijstand = LocalDate.parse(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
+                partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
+               szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet.cdSzWet),
+               bron = BronDto(
+                   cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron.cdKolomSuwi,
+                   cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi,
+                   cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi,
+                   )
+
+           )
+       }
+
     private fun getAanvraagUitkeringen(aanvraagUitkering: MutableList<ClientSuwi.AanvraagUitkering>): List<AanvraagUitkeringDto> = aanvraagUitkering
-        .mapNotNull { aanvraag ->
+        .map { aanvraag ->
             AanvraagUitkeringDto(
                 datAanvraagUitkering = LocalDate.parse(aanvraag.datAanvraagUitkering),
                 szWet = SzWetDto(aanvraag.szWet.cdSzWet),
@@ -103,7 +122,26 @@ class SuwinetBijstandsregelingenService (
             )
         }
 
-    private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto = beslissingOpAanvraagUitkering
+    private fun getBron(bron: Bron): BronDto? = BronDto(
+        cdKolomSuwi = bron.cdKolomSuwi,
+        cdPartijSuwi = bron.cdPartijSuwi,
+        cdVestigingSuwi = bron.cdVestigingSuwi,
+    )
+
+    private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand): PartnerBijstandDto  =
+        PartnerBijstandDto(
+            burgerservicenr = partnerAanvraagUitkering.burgerservicenr,
+            voorletters = partnerAanvraagUitkering.voorletters,
+            voorvoegsel = partnerAanvraagUitkering.voorvoegsel,
+            significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
+            geboortedat = LocalDate.parse(partnerAanvraagUitkering.geboortedat),
+        )
+
+    private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
+        BeslissingOpAanvraagUitkeringDto(
+            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering,
+            datDagtekeningBeslisOpAanvrUitk = LocalDate.parse(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
+        )
 
 
     companion object {
