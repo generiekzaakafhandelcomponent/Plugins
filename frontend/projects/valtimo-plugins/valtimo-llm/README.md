@@ -1,4 +1,4 @@
-# Mistral plugin
+# Valtimo LLM plugin
 
 For chatting with an AI agents using Mistral.
 

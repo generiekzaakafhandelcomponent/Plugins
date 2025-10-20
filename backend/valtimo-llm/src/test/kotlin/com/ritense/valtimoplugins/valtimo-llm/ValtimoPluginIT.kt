@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral
+package com.ritense.valtimoplugins.`valtimo-llm`
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional
 import kotlin.test.fail
 
 @Transactional
-class MistralPluginIT : BaseIntegrationTest() {
+class ValtimoPluginIT : BaseIntegrationTest() {
 
     @Autowired
     lateinit var processDocumentService: ProcessDocumentService

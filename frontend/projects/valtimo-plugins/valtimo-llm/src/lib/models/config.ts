@@ -16,7 +16,7 @@
 
 import {PluginConfigurationData} from '@valtimo/plugin';
 
-interface MistralConfig extends PluginConfigurationData {
+interface ValtimoLlmConfig extends PluginConfigurationData {
     url: string;
     token: string;
 }
@@ -43,4 +43,4 @@ interface ChatMemorizeConfig {
     maxQandASaved: string;
 }
 
-export {MistralConfig, GiveSummaryConfig, ChatConfig, ChatMemorizeConfig};
+export {ValtimoLlmConfig, GiveSummaryConfig, ChatConfig, ChatMemorizeConfig};

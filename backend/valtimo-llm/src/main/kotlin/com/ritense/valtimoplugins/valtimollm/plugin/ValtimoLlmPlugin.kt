@@ -14,7 +14,7 @@
      * limitations under the License.
      */
 
-    package com.ritense.valtimoplugins.mistral.plugin
+    package com.ritense.valtimoplugins.valtimollm.plugin
 
     import com.fasterxml.jackson.module.kotlin.convertValue
     import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -26,9 +26,9 @@
     import com.ritense.plugin.annotation.PluginActionProperty
     import com.ritense.plugin.annotation.PluginProperty
     import com.ritense.processlink.domain.ActivityTypeWithEventName
-    import com.ritense.valtimoplugins.mistral.client.MistralSummaryModel
-    import com.ritense.valtimoplugins.mistral.client.MistralTextGenerationModel
-    import com.ritense.valtimoplugins.mistral.client.mistral.StringWrapper
+    import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmSummaryModel
+    import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmTextGenerationModel
+    import com.ritense.valtimoplugins.valtimollm.client.mistral.StringWrapper
     import freemarker.template.Configuration
     import freemarker.template.Configuration.VERSION_2_3_32
     import freemarker.template.Template
@@ -42,9 +42,9 @@
         title = "Valtimo LLM Plugin",
         description = "Interact with AI agents"
     )
-    open class MistralPlugin(
-        private val mistralSummaryModel: MistralSummaryModel,
-        private val mistralTextGenerationModel: MistralTextGenerationModel,
+    open class ValtimoLlmPlugin(
+        private val valtimoLlmSummaryModel: ValtimoLlmSummaryModel,
+        private val valtimoLlmTextGenerationModel: ValtimoLlmTextGenerationModel,
         private val documentService: JsonSchemaDocumentService,
     ) {
 
@@ -65,9 +65,9 @@
             @PluginActionProperty longText: String,
             @PluginActionProperty resultPV: String
         ) {
-            mistralSummaryModel.baseUri = url
-            mistralSummaryModel.token = token
-            val result = mistralSummaryModel.giveSummary(
+            valtimoLlmSummaryModel.baseUri = url
+            valtimoLlmSummaryModel.token = token
+            val result = valtimoLlmSummaryModel.giveSummary(
                 longText = longText,
             )
 
@@ -87,14 +87,14 @@
             @PluginActionProperty chatAnswerPV: String,
             @PluginActionProperty question: String
         ) {
-            mistralTextGenerationModel.baseUri = url
-            mistralTextGenerationModel.token = token
+            valtimoLlmTextGenerationModel.baseUri = url
+            valtimoLlmTextGenerationModel.token = token
 
             // Get the Case
             val id = JsonSchemaDocumentId.existingId(UUID.fromString(execution.businessKey))
             val jsonSchemaDocument = documentService.getDocumentBy(id)
             val interpolatedQuestion = generate(question, jsonSchemaDocument)
-            val chatResult = mistralTextGenerationModel.mistralChat(
+            val chatResult = valtimoLlmTextGenerationModel.mistralChat(
                 question = interpolatedQuestion,
             )
             execution.setVariable(interpolatedQuestionPV, StringWrapper(interpolatedQuestion))
@@ -116,8 +116,8 @@
             @PluginActionProperty previousQuestion: String?,
             @PluginActionProperty maxQandASaved: String?
         ) {
-            mistralTextGenerationModel.baseUri = url
-            mistralTextGenerationModel.token = token
+            valtimoLlmTextGenerationModel.baseUri = url
+            valtimoLlmTextGenerationModel.token = token
 
             // Get chat history
             val chatHistoryWrapper = execution.getVariable("chatHistory") as? StringWrapper
@@ -132,7 +132,7 @@
             val interpolatedQuestion = generate(fullPrompt, jsonSchemaDocument)
 
             // Ask the AI model
-            val chatResult = mistralTextGenerationModel.mistralChat(interpolatedQuestion)
+            val chatResult = valtimoLlmTextGenerationModel.mistralChat(interpolatedQuestion)
             if (chatResult.isEmpty()) throw RuntimeException("Empty chat result")
 
             // Update chat history

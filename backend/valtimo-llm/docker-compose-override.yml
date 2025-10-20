@@ -3,4 +3,4 @@ services:
     ports:
       - "54341:5432"
     environment:
-      - POSTGRES_DB=mistral-test
+      - POSTGRES_DB=valtimo-llm-test

@@ -23,7 +23,7 @@ pluginManager.withPlugin("maven-publish") {
                 version = pluginProperties.pluginVersion
 
                 pom {
-                    name = "Mistral plugin module"
+                    name = "Valtimo LLM plugin module"
                     description = "A plugin for chatting with AI agents"
                     developers {
                         developer {

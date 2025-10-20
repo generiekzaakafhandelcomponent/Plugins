@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral
+package com.ritense.valtimoplugins.valtimollm.client
 
-abstract class BaseTest {
-
-    fun readFileAsString(fileName: String): String = this::class.java.getResource(fileName)!!.readText(Charsets.UTF_8)
-
-}
+class AiAgentException(
+    message: String?
+) : RuntimeException(message)

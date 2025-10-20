@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral.client
+package com.ritense.valtimoplugins.valtimollm.client
 
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.mistral.client.mistral.MISTRAL_SYSTEM_MESSAGE
-import com.ritense.valtimoplugins.mistral.client.mistral.MistralMessage
-import com.ritense.valtimoplugins.mistral.client.mistral.MistralRequest
+import com.ritense.valtimoplugins.valtimollm.client.mistral.MISTRAL_SYSTEM_MESSAGE
+import com.ritense.valtimoplugins.valtimollm.client.mistral.MistralMessage
+import com.ritense.valtimoplugins.valtimollm.client.mistral.MistralRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
-import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import java.net.URI
 
 @Component
 @SkipComponentScan
-class MistralSummaryModel(
+class ValtimoLlmSummaryModel(
     private val restClientBuilder: RestClient.Builder,
     var baseUri: URI? = null,
     var token: String? = null,
@@ -64,10 +64,10 @@ class MistralSummaryModel(
                     .build()
             }
             .headers {
-                it.contentType = org.springframework.http.MediaType.APPLICATION_JSON
+                it.contentType = MediaType.APPLICATION_JSON
                 it.setBearerAuth(token!!)
             }
-            .accept(org.springframework.http.MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
             .body(body)
             .retrieve()
             .body<SummaryResponse>()!!

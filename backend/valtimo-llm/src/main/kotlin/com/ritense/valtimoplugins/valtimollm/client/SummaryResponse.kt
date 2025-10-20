@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral.client
+package com.ritense.valtimoplugins.valtimollm.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

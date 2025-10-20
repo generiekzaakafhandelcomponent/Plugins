@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral
+package com.ritense.valtimoplugins.`valtimo-llm`
 
 import com.ritense.valtimo.contract.config.LiquibaseRunnerAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
