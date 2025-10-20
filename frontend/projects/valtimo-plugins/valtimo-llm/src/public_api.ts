@@ -19,9 +19,15 @@
  */
 
 export * from './lib/models';
+<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/public_api.ts
 export * from './lib/valtimo-llm-plugin-module';
 export * from './lib/valtimo-llm-plugin.specification';
 export * from './lib/components/valtimo-llm-configuration/valtimo-llm-configuration.component';
+========
+export * from './lib/mistral-plugin-module';
+export * from './lib/mistral-plugin.specification';
+export * from './lib/components/mistral-configuration/mistral-configuration.component';
+>>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/public_api.ts
 export * from './lib/components/chat/chat-configuration.component';
 export * from './lib/components/chat-memorize/chat-memorize-configuration.component';
 export * from './lib/components/give-summary/give-summary-configuration.component';
