@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.`valtimo-llm`.autoconfiguration
+package com.ritense.valtimoplugins.valtimollm.autoconfiguration
 
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmSummaryModel
-import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmTextGenerationModel
-import com.ritense.valtimoplugins.`valtimo-llm`.plugin.ValtimoLlmPluginFactory
+import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmSummaryModel
+import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmTextGenerationModel
+import com.ritense.valtimoplugins.valtimollm.plugin.ValtimoLlmPluginFactory
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean

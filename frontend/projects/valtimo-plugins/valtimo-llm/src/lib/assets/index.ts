@@ -14,8 +14,4 @@
  * limitations under the License.
  */
 
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/assets/index.ts
 export * from './valtimo-llm-plugin-logo';
-========
-export * from './mistral-plugin-logo';
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/assets/index.ts

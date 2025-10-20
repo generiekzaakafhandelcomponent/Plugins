@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.`valtimo-llm`.client.mistral
+package com.ritense.valtimoplugins.valtimollm.client.mistral
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable

@@ -17,12 +17,12 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PluginConfigurationComponent, PluginConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
-import {MistralConfig} from '../../models';
+import {ValtimoLlmConfig} from '../../models';
 import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-    selector: 'valtimo-mistral-configuration',
+    selector: 'valtimo-llm-configuration',
     templateUrl: './valtimo-llm-configuration.component.html',
     styleUrls: ['./valtimo-llm-configuration.component.scss'],
 })
@@ -32,7 +32,7 @@ export class ValtimoLlmConfigurationComponent
     @Input() save$!: Observable<void>;
     @Input() disabled$!: Observable<boolean>;
     @Input() pluginId!: string;
-    @Input() prefillConfiguration$!: Observable<MistralConfig>;
+    @Input() prefillConfiguration$!: Observable<ValtimoLlmConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
 
@@ -58,7 +58,7 @@ export class ValtimoLlmConfigurationComponent
             )
         );
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<MistralConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<ValtimoLlmConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     ngOnInit(): void {
@@ -69,12 +69,12 @@ export class ValtimoLlmConfigurationComponent
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: MistralConfig): void {
+    formValueChange(formValue: ValtimoLlmConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: MistralConfig): void {
+    private handleValid(formValue: ValtimoLlmConfig): void {
         const valid = !!(formValue.configurationTitle && formValue.url && formValue.token);
 
         this.valid$.next(valid);

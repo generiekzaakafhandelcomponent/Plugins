@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.`valtimo-llm`.plugin
+package com.ritense.valtimoplugins.valtimollm.plugin
 
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmSummaryModel
-import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmTextGenerationModel
+import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmSummaryModel
+import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmTextGenerationModel
 import org.springframework.stereotype.Component
 
 @Component

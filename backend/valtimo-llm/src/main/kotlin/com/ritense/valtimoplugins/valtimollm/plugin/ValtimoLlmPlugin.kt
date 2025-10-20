@@ -14,7 +14,7 @@
      * limitations under the License.
      */
 
-    package com.ritense.valtimoplugins.`valtimo-llm`.plugin
+    package com.ritense.valtimoplugins.valtimollm.plugin
 
     import com.fasterxml.jackson.module.kotlin.convertValue
     import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -26,9 +26,9 @@
     import com.ritense.plugin.annotation.PluginActionProperty
     import com.ritense.plugin.annotation.PluginProperty
     import com.ritense.processlink.domain.ActivityTypeWithEventName
-    import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmSummaryModel
-    import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmTextGenerationModel
-    import com.ritense.valtimoplugins.`valtimo-llm`.client.mistral.StringWrapper
+    import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmSummaryModel
+    import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmTextGenerationModel
+    import com.ritense.valtimoplugins.valtimollm.client.mistral.StringWrapper
     import freemarker.template.Configuration
     import freemarker.template.Configuration.VERSION_2_3_32
     import freemarker.template.Template

@@ -18,7 +18,7 @@ import {PluginSpecification} from '@valtimo/plugin';
 import {
     ValtimoLlmConfigurationComponent
 } from './components/valtimo-llm-configuration/valtimo-llm-configuration.component';
-import {MISTRAL_PLUGIN_LOGO_BASE64} from './assets';
+import {VALTIMO_LLM_PLUGIN_LOGO_BASE64} from './assets';
 import {GiveSummaryConfigurationComponent} from './components/give-summary/give-summary-configuration.component';
 import {ChatConfigurationComponent} from "./components/chat/chat-configuration.component";
 import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/chat-memorize-configuration.component";
@@ -26,7 +26,7 @@ import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/cha
 const valtimoLlmPluginSpecification: PluginSpecification = {
         pluginId: 'smart-task-plugin',
         pluginConfigurationComponent: ValtimoLlmConfigurationComponent,
-        pluginLogoBase64: MISTRAL_PLUGIN_LOGO_BASE64,
+        pluginLogoBase64: VALTIMO_LLM_PLUGIN_LOGO_BASE64,
         functionConfigurationComponents: {
             'give-summary': GiveSummaryConfigurationComponent,
             'chat': ChatConfigurationComponent,
