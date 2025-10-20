@@ -8,13 +8,6 @@ This project also contains a working example application which is meant to showc
 
 Make sure docker is running. Then use the following commands:
 
-```shell
-cd backend
-docker compose up
-```
-
-### Start backend
-
 By gradle script:
 
 `Plugins -> backend -> app -> Tasks -> application -> bootRun`
