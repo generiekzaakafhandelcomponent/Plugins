@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.mistral.client.mistral
+package com.ritense.valtimoplugins.`valtimo-llm`.client.mistral
 
 data class MistralRequest(
     val model: String,

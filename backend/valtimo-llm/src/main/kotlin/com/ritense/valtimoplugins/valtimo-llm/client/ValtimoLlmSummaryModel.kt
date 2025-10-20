@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral.client
+package com.ritense.valtimoplugins.`valtimo-llm`.client
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.mistral.client.mistral.MISTRAL_SYSTEM_MESSAGE
-import com.ritense.valtimoplugins.mistral.client.mistral.MistralMessage
-import com.ritense.valtimoplugins.mistral.client.mistral.MistralRequest
-import com.ritense.valtimoplugins.mistral.client.mistral.MistralResponse
+import com.ritense.valtimoplugins.`valtimo-llm`.client.mistral.MISTRAL_SYSTEM_MESSAGE
+import com.ritense.valtimoplugins.`valtimo-llm`.client.mistral.MistralMessage
+import com.ritense.valtimoplugins.`valtimo-llm`.client.mistral.MistralRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
@@ -30,30 +29,28 @@ import java.net.URI
 
 @Component
 @SkipComponentScan
-class MistralTextGenerationModel(
+class ValtimoLlmSummaryModel(
     private val restClientBuilder: RestClient.Builder,
     var baseUri: URI? = null,
     var token: String? = null,
 ) {
 
-    fun mistralChat(question: String): String {
-        val result = post(
-            "v1/chat/completions",
-            MistralRequest(
-                model = "mistral-medium-2508",
-                messages = listOf(
-                    MistralMessage(
-                        role = "user",
-                        content = question
-                    ),
-                    MISTRAL_SYSTEM_MESSAGE
-                )
-            )
+    fun giveSummary(longText: String): String {
+        val request = MistralRequest(
+            model = "mistral-medium",
+            messages = listOf(
+                MistralMessage(role = "user", content = longText),
+                MISTRAL_SYSTEM_MESSAGE
+            ),
+            max_tokens = 500,
+            stream = false
         )
-        return result
+
+        val result = post("v1/chat/completions", request)
+        return result.summaryText
     }
 
-    private fun post(path: String, mistralRequest: MistralRequest): String {
+    private fun post(path: String, body: Any): SummaryResponse {
         val response = restClientBuilder
             .clone()
             .build()
@@ -67,18 +64,16 @@ class MistralTextGenerationModel(
                     .build()
             }
             .headers {
-                it.contentType = org.springframework.http.MediaType.APPLICATION_JSON
+                it.contentType = MediaType.APPLICATION_JSON
                 it.setBearerAuth(token!!)
             }
-            .accept(org.springframework.http.MediaType.APPLICATION_JSON)
-            .body(ObjectMapper().writeValueAsString(mistralRequest))
+            .accept(MediaType.APPLICATION_JSON)
+            .body(body)
             .retrieve()
-            .body<MistralResponse>()!!
+            .body<SummaryResponse>()!!
 
-        if (response.choices.isEmpty()) {
-            throw AiAgentException("Empty response")
-        }
-        return response.choices.first().message.content
+
+        return response
     }
 
     companion object {

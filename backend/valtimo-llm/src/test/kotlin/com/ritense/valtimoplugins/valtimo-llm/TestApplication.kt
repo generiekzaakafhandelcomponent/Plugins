@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral
+package com.ritense.valtimoplugins.`valtimo-llm`
 
-abstract class BaseTest {
+import com.ritense.valtimo.contract.config.LiquibaseRunnerAutoConfiguration
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
-    fun readFileAsString(fileName: String): String = this::class.java.getResource(fileName)!!.readText(Charsets.UTF_8)
+@SpringBootApplication(
+    scanBasePackageClasses = [LiquibaseRunnerAutoConfiguration::class]
+)
+class TestApplication {
 
+    fun main(args: Array<String>) {
+        runApplication<TestApplication>(*args)
+    }
 }

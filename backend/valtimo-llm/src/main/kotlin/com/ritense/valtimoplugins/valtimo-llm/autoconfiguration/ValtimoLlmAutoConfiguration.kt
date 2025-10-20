@@ -14,49 +14,49 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral.autoconfiguration
+package com.ritense.valtimoplugins.`valtimo-llm`.autoconfiguration
 
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimoplugins.mistral.client.MistralSummaryModel
-import com.ritense.valtimoplugins.mistral.client.MistralTextGenerationModel
-import com.ritense.valtimoplugins.mistral.plugin.MistralPluginFactory
+import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmSummaryModel
+import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmTextGenerationModel
+import com.ritense.valtimoplugins.`valtimo-llm`.plugin.ValtimoLlmPluginFactory
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.web.client.RestClient
 
 @AutoConfiguration
-class MistralAutoConfiguration {
+class ValtimoLlmAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(MistralSummaryModel::class)
+    @ConditionalOnMissingBean(ValtimoLlmSummaryModel::class)
     fun MistralSummaryModel(
         restClientBuilder: RestClient.Builder
-    ) = MistralSummaryModel(
+    ) = ValtimoLlmSummaryModel(
         restClientBuilder, null, null
     )
 
     @Bean
-    @ConditionalOnMissingBean(MistralTextGenerationModel::class)
+    @ConditionalOnMissingBean(ValtimoLlmTextGenerationModel::class)
     fun MistralTextGenerationModel(
         restClientBuilder: RestClient.Builder
-    ) = MistralTextGenerationModel(
+    ) = ValtimoLlmTextGenerationModel(
         restClientBuilder, null, null
     )
 
 
     @Bean
-    @ConditionalOnMissingBean(MistralPluginFactory::class)
+    @ConditionalOnMissingBean(ValtimoLlmPluginFactory::class)
     fun mistralPluginFactory(
         pluginService: PluginService,
-        mistralSummaryModel: MistralSummaryModel,
-        mistralTextGenerationModel: MistralTextGenerationModel,
+        valtimoLlmSummaryModel: ValtimoLlmSummaryModel,
+        valtimoLlmTextGenerationModel: ValtimoLlmTextGenerationModel,
         documentService: JsonSchemaDocumentService,
-    ) = MistralPluginFactory(
+    ) = ValtimoLlmPluginFactory(
         pluginService,
-        mistralSummaryModel,
-        mistralTextGenerationModel,
+        valtimoLlmSummaryModel,
+        valtimoLlmTextGenerationModel,
         documentService,
     )
 

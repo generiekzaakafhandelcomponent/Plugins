@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral.plugin
+package com.ritense.valtimoplugins.`valtimo-llm`.plugin
 
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.mistral.client.MistralSummaryModel
-import com.ritense.valtimoplugins.mistral.client.MistralTextGenerationModel
+import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmSummaryModel
+import com.ritense.valtimoplugins.`valtimo-llm`.client.ValtimoLlmTextGenerationModel
 import org.springframework.stereotype.Component
 
 @Component
 @SkipComponentScan
-class MistralPluginFactory(
+class ValtimoLlmPluginFactory(
     pluginService: PluginService,
-    val mistralSummaryModel: MistralSummaryModel,
-    val mistralTextGenerationModel: MistralTextGenerationModel,
+    val valtimoLlmSummaryModel: ValtimoLlmSummaryModel,
+    val valtimoLlmTextGenerationModel: ValtimoLlmTextGenerationModel,
     val documentService: JsonSchemaDocumentService,
-) : PluginFactory<MistralPlugin>(pluginService) {
+) : PluginFactory<ValtimoLlmPlugin>(pluginService) {
 
-    override fun create() = MistralPlugin(
-        mistralSummaryModel,
-        mistralTextGenerationModel,
+    override fun create() = ValtimoLlmPlugin(
+        valtimoLlmSummaryModel,
+        valtimoLlmTextGenerationModel,
         documentService,
     )
 }

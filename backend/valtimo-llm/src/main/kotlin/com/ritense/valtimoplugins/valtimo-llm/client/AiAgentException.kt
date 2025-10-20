@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.mistral.client
+package com.ritense.valtimoplugins.`valtimo-llm`.client
 
 class AiAgentException(
     message: String?
