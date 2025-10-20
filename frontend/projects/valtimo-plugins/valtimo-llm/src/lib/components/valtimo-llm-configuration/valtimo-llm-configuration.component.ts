@@ -23,10 +23,10 @@ import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'valtimo-mistral-configuration',
-  templateUrl: './mistral-configuration.component.html',
-  styleUrls: ['./mistral-configuration.component.scss'],
+  templateUrl: './valtimo-llm-configuration.component.html',
+  styleUrls: ['./valtimo-llm-configuration.component.scss'],
 })
-export class MistralConfigurationComponent
+export class ValtimoLlmConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy
 {
   @Input() save$!: Observable<void>;

@@ -16,8 +16,8 @@
 
 import {NgModule} from '@angular/core';
 import {
-    MistralConfigurationComponent
-} from './components/mistral-configuration/mistral-configuration.component';
+    ValtimoLlmConfigurationComponent
+} from './components/valtimo-llm-configuration/valtimo-llm-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
@@ -27,18 +27,18 @@ import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/cha
 
 @NgModule({
     declarations: [
-        MistralConfigurationComponent,
+        ValtimoLlmConfigurationComponent,
         GiveSummaryConfigurationComponent,
         ChatConfigurationComponent,
         ChatMemorizeConfigurationComponent,
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
     exports: [
-        MistralConfigurationComponent,
+        ValtimoLlmConfigurationComponent,
         GiveSummaryConfigurationComponent,
         ChatConfigurationComponent,
         ChatMemorizeConfigurationComponent,
     ],
 })
-export class MistralPluginModule {
+export class ValtimoLlmPluginModule {
 }

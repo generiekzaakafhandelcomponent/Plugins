@@ -14,4 +14,14 @@
  * limitations under the License.
  */
 
-export * from './mistral-plugin-logo';
+/*
+ * Public API Surface of Mistral
+ */
+
+export * from './lib/models';
+export * from './lib/valtimo-llm-plugin-module';
+export * from './lib/valtimo-llm-plugin.specification';
+export * from './lib/components/valtimo-llm-configuration/valtimo-llm-configuration.component';
+export * from './lib/components/chat/chat-configuration.component';
+export * from './lib/components/chat-memorize/chat-memorize-configuration.component';
+export * from './lib/components/give-summary/give-summary-configuration.component';
