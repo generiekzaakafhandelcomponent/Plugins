@@ -16,13 +16,8 @@
 
 import {NgModule} from '@angular/core';
 import {
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module.ts
     ValtimoLlmConfigurationComponent
 } from './components/valtimo-llm-configuration/valtimo-llm-configuration.component';
-========
-    MistralConfigurationComponent
-} from './components/mistral-configuration/mistral-configuration.component';
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/mistral-plugin-module.ts
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
@@ -32,30 +27,18 @@ import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/cha
 
 @NgModule({
     declarations: [
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module.ts
         ValtimoLlmConfigurationComponent,
-========
-        MistralConfigurationComponent,
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/mistral-plugin-module.ts
         GiveSummaryConfigurationComponent,
         ChatConfigurationComponent,
         ChatMemorizeConfigurationComponent,
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
     exports: [
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module.ts
         ValtimoLlmConfigurationComponent,
-========
-        MistralConfigurationComponent,
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/mistral-plugin-module.ts
         GiveSummaryConfigurationComponent,
         ChatConfigurationComponent,
         ChatMemorizeConfigurationComponent,
     ],
 })
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module.ts
 export class ValtimoLlmPluginModule {
-========
-export class MistralPluginModule {
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/mistral-plugin-module.ts
 }

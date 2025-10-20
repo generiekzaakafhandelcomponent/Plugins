@@ -22,81 +22,74 @@ import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-  selector: 'valtimo-mistral-configuration',
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/components/valtimo-llm-configuration/valtimo-llm-configuration.component.ts
-  templateUrl: './valtimo-llm-configuration.component.html',
-  styleUrls: ['./valtimo-llm-configuration.component.scss'],
+    selector: 'valtimo-mistral-configuration',
+    templateUrl: './valtimo-llm-configuration.component.html',
+    styleUrls: ['./valtimo-llm-configuration.component.scss'],
 })
 export class ValtimoLlmConfigurationComponent
-========
-  templateUrl: './mistral-configuration.component.html',
-  styleUrls: ['./mistral-configuration.component.scss'],
-})
-export class MistralConfigurationComponent
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/components/mistral-configuration/mistral-configuration.component.ts
-  implements PluginConfigurationComponent, OnInit, OnDestroy
+    implements PluginConfigurationComponent, OnInit, OnDestroy
 {
-  @Input() save$!: Observable<void>;
-  @Input() disabled$!: Observable<boolean>;
-  @Input() pluginId!: string;
-  @Input() prefillConfiguration$!: Observable<MistralConfig>;
-  @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
+    @Input() save$!: Observable<void>;
+    @Input() disabled$!: Observable<boolean>;
+    @Input() pluginId!: string;
+    @Input() prefillConfiguration$!: Observable<MistralConfig>;
+    @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
 
-  constructor(
-      private readonly pluginManagementService: PluginManagementService,
-      private readonly translateService: TranslateService,
-      private readonly pluginTranslationService: PluginTranslationService
-  ) {}
+    constructor(
+        private readonly pluginManagementService: PluginManagementService,
+        private readonly translateService: TranslateService,
+        private readonly pluginTranslationService: PluginTranslationService
+    ) {}
 
-  readonly authenticationPluginSelectItems$: Observable<Array<{id?: string; text: string}>> =
-    combineLatest([
-      this.pluginManagementService.getPluginConfigurationsByCategory('slack-authentication'),
-      this.translateService.stream('key'),
-    ]).pipe(
-      map(([configurations]) =>
-        configurations.map(configuration => ({
-          id: configuration.id,
-          text: `${configuration.title} - ${this.pluginTranslationService.instant(
-            'title',
-            configuration.pluginDefinition!.key
-          )}`,
-        }))
-      )
-    );
-  private saveSubscription!: Subscription;
-  private readonly formValue$ = new BehaviorSubject<MistralConfig | null>(null);
-  private readonly valid$ = new BehaviorSubject<boolean>(false);
+    readonly authenticationPluginSelectItems$: Observable<Array<{id?: string; text: string}>> =
+        combineLatest([
+            this.pluginManagementService.getPluginConfigurationsByCategory('slack-authentication'),
+            this.translateService.stream('key'),
+        ]).pipe(
+            map(([configurations]) =>
+                configurations.map(configuration => ({
+                    id: configuration.id,
+                    text: `${configuration.title} - ${this.pluginTranslationService.instant(
+                        'title',
+                        configuration.pluginDefinition!.key
+                    )}`,
+                }))
+            )
+        );
+    private saveSubscription!: Subscription;
+    private readonly formValue$ = new BehaviorSubject<MistralConfig | null>(null);
+    private readonly valid$ = new BehaviorSubject<boolean>(false);
 
-  ngOnInit(): void {
-    this.openSaveSubscription();
-  }
+    ngOnInit(): void {
+        this.openSaveSubscription();
+    }
 
-  ngOnDestroy() {
-    this.saveSubscription?.unsubscribe();
-  }
+    ngOnDestroy() {
+        this.saveSubscription?.unsubscribe();
+    }
 
-  formValueChange(formValue: MistralConfig): void {
-    this.formValue$.next(formValue);
-    this.handleValid(formValue);
-  }
+    formValueChange(formValue: MistralConfig): void {
+        this.formValue$.next(formValue);
+        this.handleValid(formValue);
+    }
 
-  private handleValid(formValue: MistralConfig): void {
-    const valid = !!(formValue.configurationTitle && formValue.url && formValue.token);
+    private handleValid(formValue: MistralConfig): void {
+        const valid = !!(formValue.configurationTitle && formValue.url && formValue.token);
 
-    this.valid$.next(valid);
-    this.valid.emit(valid);
-  }
+        this.valid$.next(valid);
+        this.valid.emit(valid);
+    }
 
-  private openSaveSubscription(): void {
-    this.saveSubscription = this.save$?.subscribe(save => {
-      combineLatest([this.formValue$, this.valid$])
-        .pipe(take(1))
-        .subscribe(([formValue, valid]) => {
-          if (valid) {
-            this.configuration.emit(formValue!);
-          }
+    private openSaveSubscription(): void {
+        this.saveSubscription = this.save$?.subscribe(save => {
+            combineLatest([this.formValue$, this.valid$])
+                .pipe(take(1))
+                .subscribe(([formValue, valid]) => {
+                    if (valid) {
+                        this.configuration.emit(formValue!);
+                    }
+                });
         });
-    });
-  }
+    }
 }

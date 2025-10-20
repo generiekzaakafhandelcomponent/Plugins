@@ -16,27 +16,16 @@
 
 import {PluginSpecification} from '@valtimo/plugin';
 import {
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification.ts
     ValtimoLlmConfigurationComponent
 } from './components/valtimo-llm-configuration/valtimo-llm-configuration.component';
-========
-    MistralConfigurationComponent
-} from './components/mistral-configuration/mistral-configuration.component';
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/mistral-plugin.specification.ts
 import {MISTRAL_PLUGIN_LOGO_BASE64} from './assets';
 import {GiveSummaryConfigurationComponent} from './components/give-summary/give-summary-configuration.component';
 import {ChatConfigurationComponent} from "./components/chat/chat-configuration.component";
 import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/chat-memorize-configuration.component";
 
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification.ts
 const valtimoLlmPluginSpecification: PluginSpecification = {
         pluginId: 'smart-task-plugin',
         pluginConfigurationComponent: ValtimoLlmConfigurationComponent,
-========
-const mistralPluginSpecification: PluginSpecification = {
-        pluginId: 'smart-task-plugin',
-        pluginConfigurationComponent: MistralConfigurationComponent,
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/mistral-plugin.specification.ts
         pluginLogoBase64: MISTRAL_PLUGIN_LOGO_BASE64,
         functionConfigurationComponents: {
             'give-summary': GiveSummaryConfigurationComponent,
@@ -106,8 +95,4 @@ const mistralPluginSpecification: PluginSpecification = {
     }
 ;
 
-<<<<<<<< HEAD:frontend/projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification.ts
 export {valtimoLlmPluginSpecification};
-========
-export {mistralPluginSpecification};
->>>>>>>> upstream/main:frontend/projects/valtimo-plugins/mistral/src/lib/mistral-plugin.specification.ts
