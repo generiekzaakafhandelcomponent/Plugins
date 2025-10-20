@@ -32,6 +32,9 @@ import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-perso
 import {DuoStudiefinancieringComponent} from "./components/duo-studiefinanciering/duo-studiefinanciering.component";
 import {UwvInkomstenInfoComponent} from "./components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component";
 import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastrale-objecten.component";
+import {
+    BijstandsregelingenInfoComponent
+} from "./components/bijstandsregelingen-info/bijstandsregelingen-info.component";
 
 const suwinetPluginSpecification: PluginSpecification = {
     pluginId: 'suwinet',
@@ -46,7 +49,8 @@ const suwinetPluginSpecification: PluginSpecification = {
         'get-duo-persoonsinfo': DuoPersoonsInfoComponent,
         'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
         'get-svb-persoonsinfo': SvbPersoonsInfoComponent,
-        'get-uwv-inkomsten-info': UwvInkomstenInfoComponent
+        'get-uwv-inkomsten-info': UwvInkomstenInfoComponent,
+        'ophalen-bijstandsregelingen': BijstandsregelingenInfoComponent
     },
     pluginTranslations: {
         nl: {
