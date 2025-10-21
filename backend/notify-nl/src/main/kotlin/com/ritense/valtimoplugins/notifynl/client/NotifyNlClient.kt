@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,16 @@
 
 package com.ritense.valtimoplugins.notifynl.client
 
-import com.ritense.valtimoplugins.notifynl.domain.SendEmailRequest
-import com.ritense.valtimoplugins.notifynl.domain.SendEmailResponse
-import com.ritense.valtimoplugins.notifynl.domain.SendSmsRequest
-import com.ritense.valtimoplugins.notifynl.domain.SendSmsResponse
+import com.ritense.valtimoplugins.notifynl.domain.email.EmailRequest
+import com.ritense.valtimoplugins.notifynl.domain.email.SendEmailResponse
+import com.ritense.valtimoplugins.notifynl.domain.notification.GetMessageResponse
+import com.ritense.valtimoplugins.notifynl.domain.notification.NotificationRequest
+import com.ritense.valtimoplugins.notifynl.domain.notification.SendSmsResponse
+import com.ritense.valtimoplugins.notifynl.domain.notification.SmsRequest
+import com.ritense.valtimoplugins.notifynl.domain.template.AllTemplatesRequest
+import com.ritense.valtimoplugins.notifynl.domain.template.GetAllTemplatesResponse
+import com.ritense.valtimoplugins.notifynl.domain.template.GetTemplateResponse
+import com.ritense.valtimoplugins.notifynl.domain.template.TemplateRequest
 import org.springframework.http.MediaType
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
@@ -28,7 +34,7 @@ import java.net.URI
 class NotifyNlClient(
     private val restClientBuilder: RestClient.Builder
 ) {
-    fun sendSms(baseUri: URI, body: SendSmsRequest, token: String): SendSmsResponse {
+    fun sendSms(baseUri: URI, body: SmsRequest, token: String): SendSmsResponse {
         return restClientBuilder
             .clone()
             .build()
@@ -51,7 +57,7 @@ class NotifyNlClient(
             .body<SendSmsResponse>()!!
     }
 
-    fun sendEmail(baseUri: URI, body: SendEmailRequest, token: String): SendEmailResponse {
+    fun sendEmail(baseUri: URI, body: EmailRequest, token: String): SendEmailResponse {
         return restClientBuilder
             .clone()
             .build()
@@ -72,5 +78,75 @@ class NotifyNlClient(
             .body(body)
             .retrieve()
             .body<SendEmailResponse>()!!
+    }
+
+    fun getTemplate(baseUri: URI, body: TemplateRequest, token: String): GetTemplateResponse {
+        return restClientBuilder
+            .clone()
+            .build()
+            .get()
+            .uri {
+                it.scheme(baseUri.scheme)
+                    .host(baseUri.host)
+                    .path(baseUri.path)
+                    .path("/v2/template/${body.templateId}")
+                    .port(baseUri.port)
+                    .build()
+            }
+            .headers {
+                it.contentType = MediaType.APPLICATION_JSON
+                it.setBearerAuth(token)
+            }
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .body<GetTemplateResponse>()!!
+    }
+
+    fun getAllTemplates(baseUri: URI, body: AllTemplatesRequest, token: String): GetAllTemplatesResponse {
+        return restClientBuilder
+            .clone()
+            .build()
+            .get()
+            .uri {
+                it.scheme(baseUri.scheme)
+                    .host(baseUri.host)
+                    .path(baseUri.path)
+                    .path("/v2/templates")
+                    .port(baseUri.port)
+                    .apply {
+                        if (body.templateType.isNotBlank()) {
+                            queryParam("template_type", body.templateType)
+                        }
+                    }
+                    .build()
+            }
+            .headers {
+                it.accept = listOf(MediaType.APPLICATION_JSON)
+                it.setBearerAuth(token)
+            }
+            .retrieve()
+            .body<GetAllTemplatesResponse>()!!
+    }
+
+    fun getMessage(baseUri: URI, body: NotificationRequest, token: String): GetMessageResponse {
+        return restClientBuilder
+            .clone()
+            .build()
+            .get()
+            .uri {
+                it.scheme(baseUri.scheme)
+                    .host(baseUri.host)
+                    .path(baseUri.path)
+                    .path("/v2/notifications/${body.notificationId}")
+                    .port(baseUri.port)
+                    .build()
+            }
+            .headers {
+                it.contentType = MediaType.APPLICATION_JSON
+                it.setBearerAuth(token)
+            }
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .body<GetMessageResponse>()!!
     }
 }

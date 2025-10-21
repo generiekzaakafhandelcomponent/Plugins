@@ -1,13 +1,22 @@
 {
   "$id": "notify-nl.schema",
   "type": "object",
-  "title": "Notify-NL Plugin",
+  "title": "NotifyNL Plugin",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
     "phoneNumber": {
       "type": "string"
     },
     "email": {
+      "type": "string"
+    },
+    "notificationId": {
+      "type": "string"
+    },
+    "templateId": {
+      "type": "string"
+    },
+    "templateType": {
       "type": "string"
     },
     "result": {

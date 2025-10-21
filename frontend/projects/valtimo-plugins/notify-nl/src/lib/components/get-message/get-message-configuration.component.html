@@ -22,21 +22,12 @@
   } as obs"
 >
   <v-input
-    name="email"
-    [title]="'email' | pluginTranslate: pluginId | async"
+    name="notificationId"
+    [title]="'notificationId' | pluginTranslate: pluginId | async"
     [margin]="true"
-    [defaultValue]="obs.prefill?.email"
+    [defaultValue]="obs.prefill?.notificationId"
     [disabled]="obs.disabled"
     [required]="true"
-    [tooltip]="'emailTooltip' | pluginTranslate: pluginId | async"
-  ></v-input>
-  <v-input
-    name="templateId"
-    [title]="'templateId' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [defaultValue]="obs.prefill?.templateId"
-    [disabled]="obs.disabled"
-    [required]="true"
-    [tooltip]="'templateIdTooltip' | pluginTranslate: pluginId | async"
+    [tooltip]="'notificationIdTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
 </v-form>

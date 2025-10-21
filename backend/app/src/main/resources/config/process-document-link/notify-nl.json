@@ -8,5 +8,20 @@
     "processDefinitionKey": "notify-nl-send-sms-process",
     "canInitializeDocument": true,
     "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "notify-nl-get-message-process",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "notify-nl-get-template-process",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "notify-nl-get-all-templates-process",
+    "canInitializeDocument": true,
+    "startableByUser": false
   }
 ]
