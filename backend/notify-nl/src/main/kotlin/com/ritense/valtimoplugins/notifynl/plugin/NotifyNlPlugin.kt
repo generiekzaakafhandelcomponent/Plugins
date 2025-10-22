@@ -24,6 +24,10 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.notifynl.client.NotifyNlClient
 import com.ritense.valtimoplugins.notifynl.domain.StringWrapper
 import com.ritense.valtimoplugins.notifynl.domain.email.EmailRequest
+import com.ritense.valtimoplugins.notifynl.domain.letter.AddressWrapper
+import com.ritense.valtimoplugins.notifynl.domain.letter.LetterRequest
+import com.ritense.valtimoplugins.notifynl.domain.letter.SimpleAddress
+import com.ritense.valtimoplugins.notifynl.domain.letter.buildPersonalisation
 import com.ritense.valtimoplugins.notifynl.domain.notification.NotificationRequest
 import com.ritense.valtimoplugins.notifynl.domain.notification.SmsRequest
 import com.ritense.valtimoplugins.notifynl.domain.template.AllTemplatesRequest
@@ -66,7 +70,6 @@ open class NotifyNlPlugin(
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
         val smsResponse = notifyNlClient.sendSms(url, smsRequest, token)
         val formattedResponse = smsResponse.formattedResponse(smsRequest)
-        println(formattedResponse)
         execution.setVariable("result", StringWrapper(formattedResponse))
     }
 
@@ -85,7 +88,36 @@ open class NotifyNlPlugin(
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
         val emailResponse = notifyNlClient.sendEmail(url, emailRequest, token)
         val formattedResponse = emailResponse.formattedResponse(emailRequest)
-        println(emailResponse.toString())
+        execution.setVariable("result", StringWrapper(formattedResponse))
+    }
+
+    @PluginAction(
+        key = "send-letter",
+        title = "Send Letter",
+        description = "Sends a letter to a given recipient.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun sendLetter(
+        execution: DelegateExecution,
+        @PluginActionProperty address: List<AddressWrapper>,
+        @PluginActionProperty templateId: String
+    ) {
+        val addressList = address.mapNotNull { wrapper ->
+            wrapper.address?.address?.let {
+                SimpleAddress(
+                    street = it.road ?: "",
+                    number = it.house_number ?: "",
+                    postalCode = it.postcode ?: "",
+                    city = it.city ?: ""
+                )
+            }
+        }
+
+        val personalisation = buildPersonalisation(addressList)
+        val letterRequest = LetterRequest(templateId, personalisation)
+        val token = tokenGenerationService.generateToken(serviceId, secretKey)
+        val letterResponse = notifyNlClient.sendLetter(url, letterRequest, token)
+        val formattedResponse = letterResponse.formattedResponse(letterRequest)
         execution.setVariable("result", StringWrapper(formattedResponse))
     }
 
@@ -119,7 +151,7 @@ open class NotifyNlPlugin(
     ) {
         val allTemplatesRequest = AllTemplatesRequest(templateType)
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
-        val allTemplatesResponse = notifyNlClient.getAllTemplates(url, allTemplatesRequest, token)
+        val allTemplatesResponse = notifyNlClient.getAllTemplates(url, token, templateType)
         val formattedResponse = allTemplatesResponse.formattedResponse(allTemplatesRequest)
         println(allTemplatesResponse.toString())
         execution.setVariable("result", StringWrapper(formattedResponse))
@@ -139,7 +171,6 @@ open class NotifyNlPlugin(
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
         val messageResponse = notifyNlClient.getMessage(url, notificationRequest, token)
         val formattedResponse = messageResponse.formattedResponse(notificationRequest)
-        println(messageResponse.toString())
         execution.setVariable("result", StringWrapper(formattedResponse))
     }
 }

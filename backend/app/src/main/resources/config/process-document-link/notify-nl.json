@@ -10,6 +10,11 @@
     "startableByUser": false
   },
   {
+    "processDefinitionKey": "notify-nl-send-letter-process",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
     "processDefinitionKey": "notify-nl-get-message-process",
     "canInitializeDocument": true,
     "startableByUser": false

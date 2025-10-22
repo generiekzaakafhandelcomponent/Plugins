@@ -13,11 +13,11 @@ data class SendEmailResponse (
 ) {
     fun formattedResponse(request: EmailRequest): String = """
         Recipient:
-        Recipient Phone number: ${request.email}
+        Recipient E-mail: ${request.email}
         Message: ${content.body}
         
         Sender:
-        Sender Phone number: ${content.fromEmail}
+        Sender E-mail: ${content.fromEmail}
         Scheduled for: ${scheduledFor ?: "n/a"}
         Reference: ${reference ?: "n/a"}
         URI: $uri

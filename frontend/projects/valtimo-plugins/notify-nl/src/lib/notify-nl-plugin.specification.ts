@@ -24,6 +24,7 @@ import {GetTemplateConfigurationComponent} from "./components/get-template/get-t
 import {
     GetAllTemplatesConfigurationComponent
 } from "./components/get-all-templates/get-all-templates-configuration.component";
+import {SendLetterConfigurationComponent} from "./components/send-letter/send-letter-configuration.component";
 
 const notifyNlPluginSpecification: PluginSpecification = {
   pluginId: 'notify-nl',
@@ -32,6 +33,7 @@ const notifyNlPluginSpecification: PluginSpecification = {
   functionConfigurationComponents: {
     'send-sms': SendSmsConfigurationComponent,
     'send-email': SendEmailConfigurationComponent,
+    'send-letter': SendLetterConfigurationComponent,
     'get-template': GetMessageConfigurationComponent,
     'get-all-templates': GetAllTemplatesConfigurationComponent,
     'get-message': GetTemplateConfigurationComponent

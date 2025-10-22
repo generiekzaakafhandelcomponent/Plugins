@@ -18,6 +18,8 @@ package com.ritense.valtimoplugins.notifynl.client
 
 import com.ritense.valtimoplugins.notifynl.domain.email.EmailRequest
 import com.ritense.valtimoplugins.notifynl.domain.email.SendEmailResponse
+import com.ritense.valtimoplugins.notifynl.domain.letter.LetterRequest
+import com.ritense.valtimoplugins.notifynl.domain.letter.LetterResponse
 import com.ritense.valtimoplugins.notifynl.domain.notification.GetMessageResponse
 import com.ritense.valtimoplugins.notifynl.domain.notification.NotificationRequest
 import com.ritense.valtimoplugins.notifynl.domain.notification.SendSmsResponse
@@ -80,6 +82,29 @@ class NotifyNlClient(
             .body<SendEmailResponse>()!!
     }
 
+    fun sendLetter(baseUri: URI, body: LetterRequest, token: String): LetterResponse {
+        return restClientBuilder
+            .clone()
+            .build()
+            .post()
+            .uri {
+                it.scheme(baseUri.scheme)
+                    .host(baseUri.host)
+                    .path(baseUri.path)
+                    .path("/v2/notifications/letter")
+                    .port(baseUri.port)
+                    .build()
+            }
+            .headers {
+                it.contentType = MediaType.APPLICATION_JSON
+                it.setBearerAuth(token)
+            }
+            .accept(MediaType.APPLICATION_JSON)
+            .body(body)
+            .retrieve()
+            .body<LetterResponse>()!!
+    }
+
     fun getTemplate(baseUri: URI, body: TemplateRequest, token: String): GetTemplateResponse {
         return restClientBuilder
             .clone()
@@ -102,7 +127,7 @@ class NotifyNlClient(
             .body<GetTemplateResponse>()!!
     }
 
-    fun getAllTemplates(baseUri: URI, body: AllTemplatesRequest, token: String): GetAllTemplatesResponse {
+    fun getAllTemplates(baseUri: URI, token: String, templateType: String? = null): GetAllTemplatesResponse {
         return restClientBuilder
             .clone()
             .build()
@@ -114,8 +139,8 @@ class NotifyNlClient(
                     .path("/v2/templates")
                     .port(baseUri.port)
                     .apply {
-                        if (body.templateType.isNotBlank()) {
-                            queryParam("template_type", body.templateType)
+                        if (!templateType.isNullOrBlank()) {
+                            queryParam("type", templateType)
                         }
                     }
                     .build()

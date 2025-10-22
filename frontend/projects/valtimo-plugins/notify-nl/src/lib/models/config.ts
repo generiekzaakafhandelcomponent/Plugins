@@ -32,6 +32,11 @@ interface SendEmailConfig {
   templateId: string;
 }
 
+interface SendLetterConfig {
+    templateId: string;
+    address: string;
+}
+
 interface GetMessageConfig {
     notificationId: string;
 }
@@ -44,4 +49,4 @@ interface GetAllTemplatesConfig {
     templateType: string;
 }
 
-export {NotifyNlConfig, SendSmsConfig, SendEmailConfig, GetMessageConfig, GetTemplateConfig, GetAllTemplatesConfig};
+export {NotifyNlConfig, SendSmsConfig, SendEmailConfig, GetMessageConfig, GetTemplateConfig, GetAllTemplatesConfig, SendLetterConfig};

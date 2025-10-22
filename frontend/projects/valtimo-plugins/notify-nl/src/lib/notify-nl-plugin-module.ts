@@ -26,12 +26,14 @@ import {GetTemplateConfigurationComponent} from "./components/get-template/get-t
 import {
     GetAllTemplatesConfigurationComponent
 } from "./components/get-all-templates/get-all-templates-configuration.component";
+import {SendLetterConfigurationComponent} from "./components/send-letter/send-letter-configuration.component";
 
 @NgModule({
   declarations: [
     NotifyNlConfigurationComponent,
     SendSmsConfigurationComponent,
     SendEmailConfigurationComponent,
+    SendLetterConfigurationComponent,
     GetMessageConfigurationComponent,
     GetTemplateConfigurationComponent,
     GetAllTemplatesConfigurationComponent
@@ -41,6 +43,7 @@ import {
     NotifyNlConfigurationComponent,
     SendSmsConfigurationComponent,
     SendEmailConfigurationComponent,
+    SendLetterConfigurationComponent,
     GetMessageConfigurationComponent,
     GetTemplateConfigurationComponent,
     GetAllTemplatesConfigurationComponent
