@@ -48,13 +48,14 @@ An example of the process:
 ![example public task process](img/public-task-process.png)
  
 2. This will correlate a message to start a new subprocess. Add this subprocess to the implementation.
-   
+
 An example of the process: 
 
 ![example create url process](img/create-url-process.png)
 
 3. Link the Process Link to the **Create Public Task URL task**
 4. Implement a notification function to send the URL to the Assignee candidate
+   - The URL of the public task is stored in a process variable named `url`.
 5. Part of the plugin code is a controller with two endpoints. The first endpoint will be called by the created URL and will send a HTML back with the form that is linked to the usertask
 6. The second endpoint is called by the form which will contain the submission of the form and will complete the task with said submission. 
 
