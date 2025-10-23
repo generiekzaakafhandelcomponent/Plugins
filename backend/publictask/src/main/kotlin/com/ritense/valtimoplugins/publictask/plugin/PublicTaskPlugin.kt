@@ -40,13 +40,11 @@ class PublicTaskPlugin(
         description = "create a public task and expose it",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-
     fun createPublicTask(
         execution: DelegateExecution,
         @PluginActionProperty pvAssigneeCandidateContactData: String,
         @PluginActionProperty timeToLive: String?,
     ) {
-
         val publicTaskData = PublicTaskData.from(
             userTaskId = UUID.fromString(execution.getVariableLocal("userTaskId") as String),
             processBusinessKey = execution.processBusinessKey,

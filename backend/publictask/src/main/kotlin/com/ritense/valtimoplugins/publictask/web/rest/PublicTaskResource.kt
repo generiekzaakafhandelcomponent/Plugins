@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping(value = ["/api/v1/public-task"])
@@ -33,7 +34,7 @@ class PublicTaskResource(
 ) {
 
     @GetMapping
-    fun sendPublicTaskHtml(@RequestParam publicTaskId: String): ResponseEntity<String> =
+    fun sendPublicTaskHtml(@RequestParam publicTaskId: UUID): ResponseEntity<String> =
         publicTaskService.createPublicTaskHtml(publicTaskId)
 
     @PostMapping
