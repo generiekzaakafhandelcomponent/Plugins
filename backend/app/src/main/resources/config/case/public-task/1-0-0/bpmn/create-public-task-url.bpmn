@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.40.0">
+  <bpmn:process id="create-public-task-url" name="Create Public Task URL" processType="None" isClosed="false" isExecutable="true" operaton:versionTag="CD:example:1.0.0">
+    <bpmn:sequenceFlow id="Flow_03ct38e" sourceRef="StartEvent_1" targetRef="st-get-assignee-candiate" />
+    <bpmn:serviceTask id="st-create-public-task-url" name="Create public task URL" implementation="##WebService" camunda:expression="" operaton:asyncAfter="true" operaton:expression="${null}">
+      <bpmn:incoming>Flow_0gwjvqr</bpmn:incoming>
+      <bpmn:outgoing>Flow_19ga70g</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:task id="Activity_0ckkujf" />
+    <bpmn:sequenceFlow id="Flow_19ga70g" sourceRef="st-create-public-task-url" targetRef="ut-communicate-public-task-url" />
+    <bpmn:endEvent id="Event_022xmo8">
+      <bpmn:incoming>Flow_1lf6z8q</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1lf6z8q" sourceRef="ut-communicate-public-task-url" targetRef="Event_022xmo8" />
+    <bpmn:userTask id="ut-communicate-public-task-url" name="Communicate Public Task URL" implementation="##unspecified">
+      <bpmn:incoming>Flow_19ga70g</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lf6z8q</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_03ct38e</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_10dm0zn" messageRef="Message_2g87hsd" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0gwjvqr" sourceRef="st-get-assignee-candiate" targetRef="st-create-public-task-url" />
+    <bpmn:serviceTask id="st-get-assignee-candiate" name="Get assignee candidate" implementation="##unspecified" camunda:expression="${execution.setVariable(&#39;assigneeCandidate&#39;, valueResolverDelegateService.resolveValue(execution, &#39;doc:publicTaskAssignee&#39;))}">
+      <bpmn:incoming>Flow_03ct38e</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gwjvqr</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:message id="Message_2g87hsd" name="startNotifyAssigneeMessage" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="create-public-task-url">
+      <bpmndi:BPMNShape id="Activity_1ubur3d_di" bpmnElement="st-create-public-task-url">
+        <dc:Bounds x="360" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0q634cj_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="132" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0thshwr_di" bpmnElement="st-get-assignee-candiate">
+        <dc:Bounds x="220" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_07n0dto_di" bpmnElement="ut-communicate-public-task-url">
+        <dc:Bounds x="510" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_022xmo8_di" bpmnElement="Event_022xmo8">
+        <dc:Bounds x="662" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_03ct38e_di" bpmnElement="Flow_03ct38e">
+        <di:waypoint x="168" y="120" />
+        <di:waypoint x="220" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19ga70g_di" bpmnElement="Flow_19ga70g">
+        <di:waypoint x="460" y="120" />
+        <di:waypoint x="510" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lf6z8q_di" bpmnElement="Flow_1lf6z8q">
+        <di:waypoint x="610" y="120" />
+        <di:waypoint x="662" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gwjvqr_di" bpmnElement="Flow_0gwjvqr">
+        <di:waypoint x="320" y="120" />
+        <di:waypoint x="360" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,23 @@
+[
+  {
+    "activityId" : "st-create-public-task-url",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "a45c1762-7819-47bb-b492-959db9cfd810",
+    "pluginActionDefinitionKey" : "create-public-task",
+    "actionProperties" : {
+      "pvAssigneeCandidateContactData" : "pv:assigneeCandidate",
+      "timeToLive" : "7"
+    },
+    "processLinkType" : "plugin"
+  },
+  {
+    "activityId" : "ut-communicate-public-task-url",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "communicate-public-task-url",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "small",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]
