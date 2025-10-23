@@ -54,8 +54,7 @@
 
     Formio.createForm(document.getElementById('formio'), formJson).then(function (form) {
         form.on('submit', function (submission) {
-            console.log('Form submitted', submission);
-
+            console.debug('Form submitted', submission);
             fetch('${public_task_url}', {
                 method: 'POST',
                 headers: {
@@ -64,10 +63,11 @@
                 body: JSON.stringify(submission.data)
             })
                 .then(response => {
+                    console.debug('Response', response);
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    return response.json();
+                    return response.text();
                 })
                 .then(data => console.log('Success:', data))
                 .catch((error) => console.error('Error:', error));
