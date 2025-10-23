@@ -44,218 +44,218 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD:-keycloak}
 
   #zgw
-  openzaak:
-    image: openzaak/open-zaak:1.12.4
-    container_name: valtimo-plugins-local-openzaak
-    platform: linux/amd64
-    environment:
-      - DB_HOST=openzaak-database
-      - DB_POST=5433
-      - SECRET_KEY=veryRestrictedSecretKey
-      - DB_USER=openzaak
-      - DB_PASSWORD=openzaak
-      - DB_NAME=openzaak
-      - CACHE_DEFAULT=redis:6379/0
-      - CACHE_AXES=redis:6379/0
-      - DEBUG=true
-      - ALLOWED_HOSTS=localhost,host.docker.internal,172.17.0.1,openzaak
-      - OPENZAAK_SUPERUSER_USERNAME=admin
-      - OPENZAAK_SUPERUSER_EMAIL=admin@admin.org
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - DJANGO_SUPERUSER_PASSWORD=admin
-      - SENDFILE_BACKEND=django_sendfile.backends.simple
-    ports:
-      - "8001:8000"
-    depends_on:
-      - openzaak-database
-      - redis
-    volumes:
-      - openzaak-private-media:/app/private-media # persist data even if container shuts down
-
-  openzaak-database:
-    image: mdillon/postgis:11
-    container_name: valtimo-plugins-local-openzaak-database
-    platform: linux/amd64
-    ports:
-      - "8091:5432"
-    environment:
-      - POSTGRES_USER=openzaak
-      - POSTGRES_PASSWORD=openzaak
-      - POSTGRES_DB=openzaak
-    volumes:
-      - ./imports/open-zaak:/docker-entrypoint-initdb.d
-
-  redis:
-    image: redis:6.2.6
-    container_name: valtimo-plugins-local-redis
-
-  objecten-api:
-    image: maykinmedia/objects-api:2.1.1
-    container_name: valtimo-plugins-local-objecten-api
-    platform: linux/amd64
-    ports:
-      - "8010:8000"
-    environment: &objects-env
-      - CORS_ALLOW_ALL_ORIGINS=true
-      - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
-      - DJANGO_SETTINGS_MODULE=objects.conf.docker
-      - DB_HOST=objecten-api-database
-      - DEBUG=true
-      - TWO_FACTOR_FORCE_OTP_ADMIN=False # this is not available yet in this version
-      - TWO_FACTOR_PATCH_ADMIN=False
-    depends_on:
-      - objecten-api-database
-
-  objecten-api-database:
-    image: postgis/postgis:13-3.1
-    container_name: valtimo-plugins-local-objecten-api-database
-    platform: linux/amd64
-    environment:
-      - POSTGRES_USER=objects
-      - POSTGRES_PASSWORD=objects
-      - POSTGRES_DB=objects
-
-  objecten-api-import:
-    image: maykinmedia/objects-api:2.1.1
-    container_name: valtimo-plugins-local-objects-api-import
-    platform: linux/amd64
-    environment: *objects-env
-    # in the current version of django it is not possible to create a new user with password without user interaction by using the createsuperuser command
-    command: sh init/init.sh
-    volumes:
-      - ./imports/objects-api/fixtures:/app/src/objects/fixtures
-      - ./imports/objects-api/init:/app/init
-    depends_on:
-      - objecten-api
-
-  objecttypen-api:
-    image: maykinmedia/objecttypes-api:2.1.0
-    container_name: valtimo-plugins-local-objecttypen-api
-    platform: linux/amd64
-    ports:
-      - "8011:8000"
-    environment: &objecttypes-env
-      - CORS_ALLOW_ALL_ORIGINS=true
-      - SECRET_KEY=${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cy$$15d}
-      - DJANGO_SETTINGS_MODULE=objecttypes.conf.docker
-      - DB_HOST=objecttypen-api-database
-      - DEBUG=true
-      - TWO_FACTOR_FORCE_OTP_ADMIN=False # this is not available yet in this version
-      - TWO_FACTOR_PATCH_ADMIN=False
-    depends_on:
-      - objecttypen-api-database
-
-  objecttypen-api-database:
-    image: postgres:14.1
-    container_name: valtimo-plugins-local-objecttypen-api-database
-    environment:
-      - POSTGRES_USER=objecttypes
-      - POSTGRES_PASSWORD=objecttypes
-      - POSTGRES_DB=objecttypes
-
-  objecttypen-api-import:
-    image: maykinmedia/objecttypes-api:2.1.0
-    container_name: valtimo-plugins-local-objecttypen-api-import
-    platform: linux/amd64
-    environment: *objecttypes-env
-    command: sh init/init.sh
-    volumes:
-      - ./imports/objecttypes-api/fixtures:/app/src/objecttypes/fixtures
-      - ./imports/objecttypes-api/init:/app/init
-    depends_on:
-      - objecttypen-api
-
-  open-notificaties-rabbitmq:
-    image: rabbitmq:3.9-management
-    container_name: valtimo-plugins-local-open-notificaties-rabbitmq
-    expose:
-      - 5672
-      - 15672
-
-  open-notificaties:
-    image: openzaak/open-notificaties:1.4.3
-    container_name: valtimo-plugins-local-open-notificaties
-    platform: linux/amd64
-    ports:
-      - "8002:8000"
-    environment: &notificaties-env
-      - DJANGO_SETTINGS_MODULE=nrc.conf.docker
-      - SECRET_KEY=${SECRET_KEY:-4wHY2Cp5`4(q%)]cuWxPQJRp5kN?g+`.Xah>%6Fsq6+)R>p_}
-      - ALLOWED_HOSTS=*
-      - CACHE_DEFAULT=redis-open-notificaties:6379/0
-      - CACHE_AXES=redis-open-notificaties:6379/1
-      - DB_PORT=5432
-      - DB_HOST=open-notificaties-database
-      - DB_NAME=notifications
-      - DB_USER=notifications
-      - DB_PASSWORD=notifications
-      - DEBUG=true
-      - RABBITMQ_HOST=open-notificaties-rabbitmq
-      - PUBLISH_BROKER_URL=redis://redis-open-notificaties:6379/0
-      - CELERY_BROKER_URL=redis://redis-open-notificaties:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis-open-notificaties:6379/0
-      - CELERY_LOGLEVEL=DEBUG
-      - CELERY_WORKER_CONCURRENCY=${CELERY_WORKER_CONCURRENCY:-4}
-
-  open-notificaties-celery:
-    image: openzaak/open-notificaties:1.4.3
-    container_name: valtimo-plugins-local-open-notificaties-celery
-    platform: linux/amd64
-    environment: *notificaties-env
-    command: /celery_worker.sh
-
-  open-notificaties-database:
-    image: postgres:13.5  # open-notificaties doesn't work with postgres 14.
-    container_name: valtimo-plugins-local-open-notificaties-database
-    ports:
-      - "54319:5432"
-    environment:
-      - POSTGRES_USER=${DB_USER:-notifications}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-notifications}
-      - POSTGRES_DB=notifications
-    volumes:
-      - ./imports/open-notificaties:/docker-entrypoint-initdb.d
-
-  redis-open-notificaties:
-    image: redis:6.2.6
-    container_name: valtimo-plugins-local-redis-open-notificaties
-
-    #HaalCentraal
-  bag-api-simulator:
-    image: erikritense/bag-api-simulator-tmp:0.1
-    container_name: valtimo-plugins-local-bag-api-simulator
-    ports:
-      - "5020:5020"
-    environment:
-      - AUTH_API_KEY=X-Api-Key
-      - AUTH_API_SECRET=SECRET
-
-  bewoningen-mock:
-    container_name: valtimo-plugins-local-bewoningen-mock-2
-    image: ghcr.io/brp-api/bewoning-service-mock:2.0.1-latest
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Release
-      - ASPNETCORE_URLS=http://+:5010
-    ports:
-      - "5010:5010"
-    # volumes:
-    #   - ./src/config/BewoningService:/app/Data
-    networks:
-      - brp-api-network
-
-  suwinet-simulator:
-    container_name: valtimo-plugins-local-suwinet-simulator
-    image: erikritense/suwinet-simulator:1.0.0
-    environment:
-      - SUWINET_USER=user
-      - SUWINET_PASSWORD=pwd
-    ports:
-      - "8090:8090"
-
-networks:
-  brp-api-network:
-    name: brp-api-network
-
-volumes:
-  openzaak-private-media:
+#  openzaak:
+#    image: openzaak/open-zaak:1.12.4
+#    container_name: valtimo-plugins-local-openzaak
+#    platform: linux/amd64
+#    environment:
+#      - DB_HOST=openzaak-database
+#      - DB_POST=5433
+#      - SECRET_KEY=veryRestrictedSecretKey
+#      - DB_USER=openzaak
+#      - DB_PASSWORD=openzaak
+#      - DB_NAME=openzaak
+#      - CACHE_DEFAULT=redis:6379/0
+#      - CACHE_AXES=redis:6379/0
+#      - DEBUG=true
+#      - ALLOWED_HOSTS=localhost,host.docker.internal,172.17.0.1,openzaak
+#      - OPENZAAK_SUPERUSER_USERNAME=admin
+#      - OPENZAAK_SUPERUSER_EMAIL=admin@admin.org
+#      - CELERY_BROKER_URL=redis://redis:6379/0
+#      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+#      - DJANGO_SUPERUSER_PASSWORD=admin
+#      - SENDFILE_BACKEND=django_sendfile.backends.simple
+#    ports:
+#      - "8001:8000"
+#    depends_on:
+#      - openzaak-database
+#      - redis
+#    volumes:
+#      - openzaak-private-media:/app/private-media # persist data even if container shuts down
+#
+#  openzaak-database:
+#    image: mdillon/postgis:11
+#    container_name: valtimo-plugins-local-openzaak-database
+#    platform: linux/amd64
+#    ports:
+#      - "8091:5432"
+#    environment:
+#      - POSTGRES_USER=openzaak
+#      - POSTGRES_PASSWORD=openzaak
+#      - POSTGRES_DB=openzaak
+#    volumes:
+#      - ./imports/open-zaak:/docker-entrypoint-initdb.d
+#
+#  redis:
+#    image: redis:6.2.6
+#    container_name: valtimo-plugins-local-redis
+#
+#  objecten-api:
+#    image: maykinmedia/objects-api:2.1.1
+#    container_name: valtimo-plugins-local-objecten-api
+#    platform: linux/amd64
+#    ports:
+#      - "8010:8000"
+#    environment: &objects-env
+#      - CORS_ALLOW_ALL_ORIGINS=true
+#      - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
+#      - DJANGO_SETTINGS_MODULE=objects.conf.docker
+#      - DB_HOST=objecten-api-database
+#      - DEBUG=true
+#      - TWO_FACTOR_FORCE_OTP_ADMIN=False # this is not available yet in this version
+#      - TWO_FACTOR_PATCH_ADMIN=False
+#    depends_on:
+#      - objecten-api-database
+#
+#  objecten-api-database:
+#    image: postgis/postgis:13-3.1
+#    container_name: valtimo-plugins-local-objecten-api-database
+#    platform: linux/amd64
+#    environment:
+#      - POSTGRES_USER=objects
+#      - POSTGRES_PASSWORD=objects
+#      - POSTGRES_DB=objects
+#
+#  objecten-api-import:
+#    image: maykinmedia/objects-api:2.1.1
+#    container_name: valtimo-plugins-local-objects-api-import
+#    platform: linux/amd64
+#    environment: *objects-env
+#    # in the current version of django it is not possible to create a new user with password without user interaction by using the createsuperuser command
+#    command: sh init/init.sh
+#    volumes:
+#      - ./imports/objects-api/fixtures:/app/src/objects/fixtures
+#      - ./imports/objects-api/init:/app/init
+#    depends_on:
+#      - objecten-api
+#
+#  objecttypen-api:
+#    image: maykinmedia/objecttypes-api:2.1.0
+#    container_name: valtimo-plugins-local-objecttypen-api
+#    platform: linux/amd64
+#    ports:
+#      - "8011:8000"
+#    environment: &objecttypes-env
+#      - CORS_ALLOW_ALL_ORIGINS=true
+#      - SECRET_KEY=${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cy$$15d}
+#      - DJANGO_SETTINGS_MODULE=objecttypes.conf.docker
+#      - DB_HOST=objecttypen-api-database
+#      - DEBUG=true
+#      - TWO_FACTOR_FORCE_OTP_ADMIN=False # this is not available yet in this version
+#      - TWO_FACTOR_PATCH_ADMIN=False
+#    depends_on:
+#      - objecttypen-api-database
+#
+#  objecttypen-api-database:
+#    image: postgres:14.1
+#    container_name: valtimo-plugins-local-objecttypen-api-database
+#    environment:
+#      - POSTGRES_USER=objecttypes
+#      - POSTGRES_PASSWORD=objecttypes
+#      - POSTGRES_DB=objecttypes
+#
+#  objecttypen-api-import:
+#    image: maykinmedia/objecttypes-api:2.1.0
+#    container_name: valtimo-plugins-local-objecttypen-api-import
+#    platform: linux/amd64
+#    environment: *objecttypes-env
+#    command: sh init/init.sh
+#    volumes:
+#      - ./imports/objecttypes-api/fixtures:/app/src/objecttypes/fixtures
+#      - ./imports/objecttypes-api/init:/app/init
+#    depends_on:
+#      - objecttypen-api
+#
+#  open-notificaties-rabbitmq:
+#    image: rabbitmq:3.9-management
+#    container_name: valtimo-plugins-local-open-notificaties-rabbitmq
+#    expose:
+#      - 5672
+#      - 15672
+#
+#  open-notificaties:
+#    image: openzaak/open-notificaties:1.4.3
+#    container_name: valtimo-plugins-local-open-notificaties
+#    platform: linux/amd64
+#    ports:
+#      - "8002:8000"
+#    environment: &notificaties-env
+#      - DJANGO_SETTINGS_MODULE=nrc.conf.docker
+#      - SECRET_KEY=${SECRET_KEY:-4wHY2Cp5`4(q%)]cuWxPQJRp5kN?g+`.Xah>%6Fsq6+)R>p_}
+#      - ALLOWED_HOSTS=*
+#      - CACHE_DEFAULT=redis-open-notificaties:6379/0
+#      - CACHE_AXES=redis-open-notificaties:6379/1
+#      - DB_PORT=5432
+#      - DB_HOST=open-notificaties-database
+#      - DB_NAME=notifications
+#      - DB_USER=notifications
+#      - DB_PASSWORD=notifications
+#      - DEBUG=true
+#      - RABBITMQ_HOST=open-notificaties-rabbitmq
+#      - PUBLISH_BROKER_URL=redis://redis-open-notificaties:6379/0
+#      - CELERY_BROKER_URL=redis://redis-open-notificaties:6379/0
+#      - CELERY_RESULT_BACKEND=redis://redis-open-notificaties:6379/0
+#      - CELERY_LOGLEVEL=DEBUG
+#      - CELERY_WORKER_CONCURRENCY=${CELERY_WORKER_CONCURRENCY:-4}
+#
+#  open-notificaties-celery:
+#    image: openzaak/open-notificaties:1.4.3
+#    container_name: valtimo-plugins-local-open-notificaties-celery
+#    platform: linux/amd64
+#    environment: *notificaties-env
+#    command: /celery_worker.sh
+#
+#  open-notificaties-database:
+#    image: postgres:13.5  # open-notificaties doesn't work with postgres 14.
+#    container_name: valtimo-plugins-local-open-notificaties-database
+#    ports:
+#      - "54319:5432"
+#    environment:
+#      - POSTGRES_USER=${DB_USER:-notifications}
+#      - POSTGRES_PASSWORD=${DB_PASSWORD:-notifications}
+#      - POSTGRES_DB=notifications
+#    volumes:
+#      - ./imports/open-notificaties:/docker-entrypoint-initdb.d
+#
+#  redis-open-notificaties:
+#    image: redis:6.2.6
+#    container_name: valtimo-plugins-local-redis-open-notificaties
+#
+#    #HaalCentraal
+#  bag-api-simulator:
+#    image: erikritense/bag-api-simulator-tmp:0.1
+#    container_name: valtimo-plugins-local-bag-api-simulator
+#    ports:
+#      - "5020:5020"
+#    environment:
+#      - AUTH_API_KEY=X-Api-Key
+#      - AUTH_API_SECRET=SECRET
+#
+#  bewoningen-mock:
+#    container_name: valtimo-plugins-local-bewoningen-mock-2
+#    image: ghcr.io/brp-api/bewoning-service-mock:2.0.1-latest
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=Release
+#      - ASPNETCORE_URLS=http://+:5010
+#    ports:
+#      - "5010:5010"
+#    # volumes:
+#    #   - ./src/config/BewoningService:/app/Data
+#    networks:
+#      - brp-api-network
+#
+#  suwinet-simulator:
+#    container_name: valtimo-plugins-local-suwinet-simulator
+#    image: erikritense/suwinet-simulator:1.0.0
+#    environment:
+#      - SUWINET_USER=user
+#      - SUWINET_PASSWORD=pwd
+#    ports:
+#      - "8090:8090"
+#
+#networks:
+#  brp-api-network:
+#    name: brp-api-network
+#
+#volumes:
+#  openzaak-private-media:

@@ -19,6 +19,7 @@ include(
     "backend:suwinet",
     "backend:xential",
     "backend:valtimo-llm",
+    "backend:valtimo-a2t",
     "backend:kvk-handelsregister",
     "backend:value-mapper",
     "backend:document-search",

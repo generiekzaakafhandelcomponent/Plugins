@@ -1,0 +1,37 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "file",
+      "type": "file",
+      "input": true,
+      "label": "Upload an audio file to extract text",
+      "webcam": false,
+      "storage": "base64",
+      "fileTypes": [
+        {
+          "label": "",
+          "value": ""
+        }
+      ],
+      "tableView": false,
+      "attributes": {
+        "data-testid": "A2T-SaveFile-file"
+      },
+      "properties": {
+        "targetKey": "pv:/file"
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "block": true,
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "saveOnEnter": false,
+      "showValidations": false,
+      "disableOnInvalid": true
+    }
+  ]
+}
