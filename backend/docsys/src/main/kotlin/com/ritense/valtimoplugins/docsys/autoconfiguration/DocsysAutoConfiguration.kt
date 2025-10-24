@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.Docsys.autoconfiguration
+package com.ritense.valtimoplugins.docsys.autoconfiguration
 
 import com.ritense.plugin.service.PluginService
 import com.ritense.resource.service.TemporaryResourceStorageService

@@ -27,7 +27,6 @@ import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimo.contract.json.MapperSingleton
-import com.ritense.valtimoplugins.slack.BaseIntegrationTest
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -73,12 +72,17 @@ class DocsysPluginIT : BaseIntegrationTest() {
     }
 
     @Test
-    fun `should post message`() {
+    fun `should generate  document`() {
         createProcessLink(
-            "post-message", """
+            "generate-document", """
             {
-                "channel": "AAAAA1111",
-                "message": "Hello world!"
+                "modelId": "modelAB",
+                "params": {
+                    "firstName": "Jan",
+                    "male": true,
+                    "age": 19
+                    }
+                    
             }"""
         )
 
@@ -86,70 +90,28 @@ class DocsysPluginIT : BaseIntegrationTest() {
         createDocumentAndStartProcess()
 
         // then
-        val requestBody = getRequest(HttpMethod.POST, "/api/chat.postMessage").body.readUtf8()
+        val requestBody = getRequest(HttpMethod.POST, "/modelAB").body.readUtf8()
         assertThat(requestBody).contains("AAAAA1111")
         assertThat(requestBody).contains("Hello world!")
     }
 
-    @Test
-    fun `should post message with process variable`() {
-        createProcessLink(
-            "post-message", """
-            {
-                "channel": "AAAAA1111",
-                "message": "pv:myProcessVariable"
-            }"""
-        )
-        val processVars = mapOf("myProcessVariable" to "Hello resolved world!")
-
-        // when
-        createDocumentAndStartProcess(processVars)
-
-        // then
-        val requestBody = getRequest(HttpMethod.POST, "/api/chat.postMessage").body.readUtf8()
-        assertThat(requestBody).contains("Hello resolved world!")
-    }
-
-    @Test
-    fun `should post message with file`() {
-        createProcessLink(
-            "post-message-with-file", """
-            {
-                "channels": "AAAAA1111",
-                "message": "Hello world!",
-                "fileName": "tree.png"
-            }"""
-        )
-        val resourceId = temporaryResourceStorageService.store("-tree-png-bytes-".byteInputStream())
-        val processVars = mapOf("resourceId" to resourceId)
-
-        // when
-        createDocumentAndStartProcess(processVars)
-
-        // then
-        val requestBody = getRequest(HttpMethod.POST, "/api/files.upload").body.readUtf8()
-        assertThat(requestBody).contains("AAAAA1111")
-        assertThat(requestBody).contains("Hello world!")
-        assertThat(requestBody).contains("tree.png")
-        assertThat(requestBody).contains("-tree-png-bytes-")
-    }
 
     fun startMockServer() {
         executedRequests = mutableListOf()
-        val dispatcher: Dispatcher = object : Dispatcher() {
-            @Throws(InterruptedException::class)
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                executedRequests.add(request)
-                val response = when (request.method + " " + request.path?.substringBefore('?')) {
-                    "POST /api/chat.postMessage" -> mockResponseFromFile("/data/chat-post-message-response.json")
-                    "POST /api/files.upload" -> mockResponseFromFile("/data/files-upload-response.json")
-                    else -> MockResponse().setResponseCode(404)
-                }
-                return response
-            }
-        }
+//        val dispatcher: Dispatcher = object : Dispatcher() {
+//            @Throws(InterruptedException::class)
+//            override fun dispatch(request: RecordedRequest): MockResponse {
+//                executedRequests.add(request)
+//                val response = when (request.method + " " + request.path?.substringBefore('?')) {
+//                    "POST /api/chat.postMessage" -> mockResponseFromFile("/data/chat-post-message-response.json")
+//                    "POST /api/files.upload" -> mockResponseFromFile("/data/files-upload-response.json")
+//                    else -> MockResponse().setResponseCode(404)
+//                }
+//                return response
+//            }
+//        }
         server = MockWebServer()
-        server.dispatcher = dispatcher
+ //       server.dispatcher = dispatcher
         server.start()
     }
 

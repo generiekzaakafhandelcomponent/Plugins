@@ -31,7 +31,7 @@ import org.springframework.web.client.body
 @Component
 @SkipComponentScan
 class DocsysClient(
-    private val restClientBuilder: RestClient.Builder,
+    val restClientBuilder: RestClient.Builder,
     var baseUri: URI?,
     var token: String?,
 ) {
