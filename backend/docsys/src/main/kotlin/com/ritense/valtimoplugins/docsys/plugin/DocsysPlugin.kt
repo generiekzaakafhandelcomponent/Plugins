@@ -21,7 +21,6 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.docsys.client.DocsysClient
 import java.net.URI
@@ -44,50 +43,24 @@ open class DocsysPlugin(
     lateinit var token: String
 
     @PluginAction(
-        key = "post-message",
-        title = "Post message",
-        description = "Sends a message to a Docsys channel",
+        key = "generate-document",
+        title = "Generate document",
+        description = "Generate document using Docsys",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-    open fun postMessage(
+    open fun generateDocument(
         execution: DelegateExecution,
-        @PluginActionProperty channel: String,
-        @PluginActionProperty message: String
+        @PluginActionProperty modelId: String,
+        @PluginActionProperty params: Map<String, Any>
     ) {
         DocsysClient.baseUri = url
         DocsysClient.token = token
-        DocsysClient.chatPostMessage(
-            channel = channel,
-            message = message,
+        DocsysClient.generateDraftDocument(
+            modelId = modelId,
+            params = params,
         )
     }
 
-    @PluginAction(
-        key = "post-message-with-file",
-        title = "Post message with file",
-        description = "Sends a message to a channel with a file",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
-    )
-    open fun postMessageWithFile(
-        execution: DelegateExecution,
-        @PluginActionProperty channels: String,
-        @PluginActionProperty message: String?,
-        @PluginActionProperty fileName: String?,
-    ) {
-        val resourceId = execution.getVariable(RESOURCE_ID_PROCESS_VAR) as String?
-            ?: throw IllegalStateException("Failed to post Docsys message. No process variable '$RESOURCE_ID_PROCESS_VAR' found.")
-        val contentAsInputStream = storageService.getResourceContentAsInputStream(resourceId)
-        val metadata = storageService.getResourceMetadata(resourceId)
-
-        DocsysClient.baseUri = url
-        DocsysClient.token = token
-        DocsysClient.filesUpload(
-            channels = channels,
-            message = message,
-            fileName = fileName ?: metadata[MetadataType.FILE_NAME.key] as String,
-            file = contentAsInputStream
-        )
-    }
 
     companion object {
         const val RESOURCE_ID_PROCESS_VAR = "resourceId"

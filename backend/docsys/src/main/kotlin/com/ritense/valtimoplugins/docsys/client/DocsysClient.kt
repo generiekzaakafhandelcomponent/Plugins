@@ -39,40 +39,17 @@ class DocsysClient(
     /**
      * https://api.Docsys.com/methods/chat.postMessage
      */
-    fun chatPostMessage(channel: String, message: String) {
-        logger.debug { "Post message in Docsys ('$message')" }
+    fun generateDraftDocument(modelId: String, params: Map<String, Any>) {
+        logger.debug { "Generearte draft doument in  Docsys using model '$modelId'" }
 
-        val multipartFormData = mutableMapOf(
-            "channel" to channel,
-            "text" to message,
-        )
-
-        post("/api/chat.postMessage", multipartFormData)
+        post(modelId, params )
     }
 
-    /**
-     * https://api.Docsys.com/methods/files.upload
-     */
-    fun filesUpload(channels: String, message: String?, fileName: String, file: InputStream) {
-        logger.debug { "Post message with file in Docsys ('$message', '$fileName')" }
-        val fileNameParts = fileName.split('.')
 
-        val multipartFormData = mutableMapOf(
-            "channels" to channels,
-            "filename" to fileName,
-            "title" to fileNameParts[0],
-            "filetype" to fileNameParts[1],
-            "content" to InputStreamResource(file)
-        )
 
-        message?.let { multipartFormData["initial_message"] = it }
-
-        post("/api/files.upload", multipartFormData)
-    }
-
-    private fun post(path: String, multipartFormData: Map<String, Any>) {
+    private fun post(path: String, params: Map<String, Any>) {
         val body = LinkedMultiValueMap<String, Any>()
-        multipartFormData.forEach { body.add(it.key, it.value) }
+        params.forEach { body.add(it.key, it.value) }
 
         val response = restClientBuilder
             .clone()
@@ -87,7 +64,7 @@ class DocsysClient(
                     .build()
             }
             .headers {
-                it.contentType = MULTIPART_FORM_DATA
+                it.contentType = MediaType.APPLICATION_JSON
                 it.setBearerAuth(token!!)
             }
             .accept(MediaType.APPLICATION_JSON)

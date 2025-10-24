@@ -1,0 +1,279 @@
+openapi: 3.0.4
+info:
+  title: DocSys API Manager
+  version: v1
+servers:
+  - url: https://documentgenerator-intern.acc.utrecht.nl/DAM
+paths:
+  /test:
+    post:
+      tags:
+        - test
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rootDataType2'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/rootDataType2'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/rootDataType2'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/InfoObject2'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoObject2'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/InfoObject2'
+components:
+  schemas:
+    InfoObject2:
+      type: object
+      properties:
+        draftId:
+          type: string
+          nullable: true
+        draftUrl:
+          type: string
+          nullable: true
+      additionalProperties: false
+    briefDataType2:
+      type: object
+      properties:
+        eigenNaam:
+          type: string
+          nullable: true
+        organisatieGegevens:
+          type: string
+          nullable: true
+        organisatieOnderdeel:
+          type: string
+          nullable: true
+        afdelingBehandelaar:
+          type: string
+          nullable: true
+        organisatieOnderdeelPortefeuillehouder:
+          type: string
+          nullable: true
+        afdelingBehandelaarPortefeuillehouder:
+          type: string
+          nullable: true
+        emailOrganisatieOnderdeel:
+          type: string
+          nullable: true
+        postadresOrganisatieOnderdeel:
+          type: string
+          nullable: true
+        urlAanvullen:
+          type: boolean
+        urlAanvulling:
+          type: string
+          nullable: true
+        persoonBedrijf:
+          type: string
+          nullable: true
+        bedrijfsnaam:
+          type: string
+          nullable: true
+        voorletters_contactpersoon:
+          type: string
+          nullable: true
+        achternaam_contactpersoon:
+          type: string
+          nullable: true
+        voorletters:
+          type: string
+          nullable: true
+        achternaam:
+          type: string
+          nullable: true
+        adres:
+          type: string
+          nullable: true
+        postcode:
+          type: string
+          nullable: true
+        plaats:
+          type: string
+          nullable: true
+        landToevoegen:
+          type: boolean
+        land:
+          type: string
+          nullable: true
+        checkAangetekendVersturen:
+          type: boolean
+        geadresseerde:
+          type: string
+          nullable: true
+        bijeenkomst:
+          type: string
+          nullable: true
+        datumVergadering:
+          type: string
+          format: date-time
+        tijdstip:
+          type: string
+          nullable: true
+        plaatsAgenda:
+          type: string
+          nullable: true
+        behandeldDoor:
+          type: string
+          nullable: true
+        telefoonnummer:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        typeBrief:
+          type: string
+          nullable: true
+        bijlage:
+          type: string
+          nullable: true
+        datumVervolgToevoegen:
+          type: boolean
+        datumVervolg:
+          type: string
+          format: date-time
+        opgesteldDoor:
+          type: string
+          nullable: true
+        uwKenmerk:
+          type: string
+          nullable: true
+        kenmerk:
+          type: string
+          nullable: true
+        datumbriefvanToevoegen:
+          type: boolean
+        datumBriefVan:
+          type: string
+          format: date-time
+        datum:
+          type: string
+          format: date-time
+        bsnToevoegen:
+          type: boolean
+        bsn:
+          type: string
+          nullable: true
+        keuzeKenmerkZaaknummer:
+          type: string
+          nullable: true
+        onsKenmerk:
+          type: string
+          nullable: true
+        zaaknummer:
+          type: string
+          nullable: true
+        onderwerp:
+          type: string
+          nullable: true
+        projectnummerToevoegen:
+          type: boolean
+        projectnummer:
+          type: string
+          nullable: true
+        kopie:
+          type: string
+          nullable: true
+        datumVerzonden:
+          type: string
+          format: date-time
+        datumVerslagToevoegen:
+          type: boolean
+        datumVerslag:
+          type: string
+          format: date-time
+        verzondenAan:
+          type: string
+          nullable: true
+        beleidsveld:
+          type: string
+          nullable: true
+        portefeuillehouder:
+          type: string
+          nullable: true
+        organisatieOnderdeelBenW:
+          type: string
+          nullable: true
+        geheim:
+          type: string
+          nullable: true
+        formaliteit:
+          type: string
+          nullable: true
+        aanhef:
+          type: string
+          nullable: true
+        typeOndertekening:
+          type: string
+          nullable: true
+        groetregel:
+          type: string
+          nullable: true
+        naamOndertekenaar:
+          type: string
+          nullable: true
+        naamAfdeling:
+          type: string
+          nullable: true
+        functienaamToevoegen:
+          type: boolean
+        functienaam:
+          type: string
+          nullable: true
+        hoeOndertekenen:
+          type: string
+          nullable: true
+        naamMandaathouder:
+          type: string
+          nullable: true
+        functieMandaathouder:
+          type: string
+          nullable: true
+        naamWethouder:
+          type: string
+          nullable: true
+        naamBenW:
+          type: string
+          nullable: true
+        logoControl:
+          type: string
+          nullable: true
+      additionalProperties: false
+    inhoudDataType2:
+      type: object
+      properties:
+        inhoud:
+          type: string
+          nullable: true
+      additionalProperties: false
+    rootDataType2:
+      type: object
+      properties:
+        brief:
+          $ref: '#/components/schemas/briefDataType2'
+        inhoud:
+          $ref: '#/components/schemas/inhoudDataType2'
+      additionalProperties: false
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/d6cad27a-404b-4699-ab13-a9d618300087/oauth2/v2.0/token
+          scopes: {}
+security:
+  - oauth2: []
