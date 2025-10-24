@@ -18,11 +18,11 @@
 package com.ritense.valtimoplugins.haalcentraal.shared.autoconfigure
 
 import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.RestClient
 
-@Configuration
+@AutoConfiguration
 class HaalCentraalAutoConfiguration {
 
     @Bean

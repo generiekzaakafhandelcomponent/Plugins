@@ -1,0 +1,17 @@
+[
+  {
+    "processDefinitionKey": "Mistral-pingpong",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "Mistral-summary",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "Mistral-chat",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]
