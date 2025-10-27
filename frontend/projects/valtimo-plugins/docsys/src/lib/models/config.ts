@@ -17,19 +17,16 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface DocsysConfig extends PluginConfigurationData {
-  url: string;
-  token: string;
+    apiUrl: string;
+    tokenEndpoint: string;
+    clientId: string;
+    clientSecret: string;
 }
 
-interface Generate {
-  channel: string;
-  message: string;
+interface GenerateDocument {
+    modelId: string;
+    params: object;
 }
 
-interface PostMessageWithFileConfig {
-  channels: string;
-  message?: string;
-  fileName?: string;
-}
 
-export {DocsysConfig, PostMessageConfig, PostMessageWithFileConfig};
+export {DocsysConfig, };

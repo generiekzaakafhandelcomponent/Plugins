@@ -28,6 +28,7 @@ import com.nimbusds.oauth2.sdk.auth.ClientSecretBasic
 import com.nimbusds.oauth2.sdk.auth.Secret
 import com.nimbusds.oauth2.sdk.id.ClientID
 import com.nimbusds.oauth2.sdk.token.AccessToken
+import com.nimbusds.oauth2.sdk.token.BearerAccessToken
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.MediaType
@@ -41,11 +42,14 @@ import java.net.URI
 @SkipComponentScan
 class DocsysClient(
     val restClientBuilder: RestClient.Builder,
-    var baseUri: URI?,
-    var tokenEndpoint: URI?,
-    var clientId: String?,
-    var clientSecret: String?
 ) {
+    lateinit var baseUri: URI
+    lateinit var tokenEndpoint: URI
+    lateinit var clientId: String
+    lateinit var clientSecret: String
+
+          // token for authentication Docsys API
+     var token: AccesTokenDecorator? = null;
 
     /**
      * https://api.Docsys.com/methods/chat.postMessage
@@ -53,11 +57,6 @@ class DocsysClient(
     fun generateDraftDocument(modelId: String, params: Map<String, Any>) {
         logger.debug { "Generearte draft doument in  Docsys using model '$modelId'" }
 
-        post(modelId, params )
-    }
-
-
-    private fun post(path: String, params: Map<String, Any>) {
         val body = LinkedMultiValueMap<String, Any>()
         params.forEach { body.add(it.key, it.value) }
 
@@ -69,13 +68,13 @@ class DocsysClient(
                 it.scheme(baseUri!!.scheme)
                     .host(baseUri!!.host)
                     .path(baseUri!!.path)
-                    .path(path)
+                    .path(modelId)
                     .port(baseUri!!.port)
                     .build()
             }
             .headers {
                 it.contentType = MediaType.APPLICATION_JSON
-                it.setBearerAuth(getToken())
+                it.setBearerAuth(getToken().accesToken.value)
             }
             .accept(MediaType.APPLICATION_JSON)
             .body(body)
@@ -87,33 +86,39 @@ class DocsysClient(
         }
     }
 
-    private fun getToken(): String {
 
-        val clientGrant: AuthorizationGrant = ClientCredentialsGrant()
+    private fun getToken(): AccesTokenDecorator {
 
-        val clientID: ClientID = ClientID(clientId)
-        val clientSecret: Secret = Secret(clientSecret)
-        val clientAuth: ClientAuthentication = ClientSecretBasic(clientID, clientSecret)
+        if (token == null || token!!.isExpired()) {
+            val clientGrant: AuthorizationGrant = ClientCredentialsGrant()
 
-        // Make the token request
-        val request: TokenRequest = TokenRequest(tokenEndpoint, clientAuth, clientGrant, Scope())
+            val clientID: ClientID = ClientID(clientId)
+            val clientSecret: Secret = Secret(clientSecret)
+            val clientAuth: ClientAuthentication = ClientSecretBasic(clientID, clientSecret)
 
-        val response: TokenResponse = TokenResponse.parse(request.toHTTPRequest().send())
+            // Make the token request
+            val request: TokenRequest = TokenRequest(tokenEndpoint, clientAuth, clientGrant, Scope())
 
-        if (!response.indicatesSuccess()) {
-            // We got an error response...
-            val errorResponse: TokenErrorResponse? = response.toErrorResponse()
+            val response: TokenResponse = TokenResponse.parse(request.toHTTPRequest().send())
+
+            if (!response.indicatesSuccess()) {
+                // We got an error response...
+                val errorResponse: TokenErrorResponse? = response.toErrorResponse()
+            }
+
+            val successResponse: AccessTokenResponse = response.toSuccessResponse()
+
+
+            // Get the access token
+            val accessToken: BearerAccessToken? = successResponse.getTokens().bearerAccessToken
+            if(accessToken == null) {
+                throw IllegalStateException("Access token not found")
+            }
+
+            token = AccesTokenDecorator(accessToken)
         }
 
-        val successResponse: AccessTokenResponse = response.toSuccessResponse()
-
-        // Get the access token
-        val accessToken: AccessToken? = successResponse.getTokens().accessToken
-        if(accessToken == null) {
-            throw IllegalStateException("Access token not found")
-        }
-
-        return accessToken.value
+        return token!!
     }
 
     companion object {

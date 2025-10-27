@@ -20,6 +20,7 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.docsys.client.DocsysClient
 import com.ritense.valtimoplugins.docsys.plugin.DocsysPluginFactory
+import com.ritense.valueresolver.ValueResolverService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
@@ -33,7 +34,7 @@ class DocsysAutoConfiguration {
     fun DocsysClient(
         restClientBuilder: RestClient.Builder,
     ): DocsysClient {
-        return DocsysClient(restClientBuilder, null, null)
+        return DocsysClient(restClientBuilder)
     }
 
     @Bean
@@ -41,9 +42,10 @@ class DocsysAutoConfiguration {
     fun DocsysPluginFactory(
         pluginService: PluginService,
         DocsysClient: DocsysClient,
+        valueResolver: ValueResolverService,
         storageService: TemporaryResourceStorageService,
     ): DocsysPluginFactory {
-        return DocsysPluginFactory(pluginService, DocsysClient, storageService)
+        return DocsysPluginFactory(pluginService, DocsysClient, valueResolver, storageService)
     }
 
 }

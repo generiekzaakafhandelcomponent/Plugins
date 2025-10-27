@@ -19,10 +19,14 @@ package com.ritense.valtimoplugins.docsys.plugin
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
+import com.ritense.plugin.annotation.PluginEvent
 import com.ritense.plugin.annotation.PluginProperty
+import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.docsys.client.DocsysClient
+import com.ritense.valueresolver.ValueResolverService
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.net.URI
 import org.camunda.bpm.engine.delegate.DelegateExecution
 
@@ -33,6 +37,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 open class DocsysPlugin(
     private val DocsysClient: DocsysClient,
+    private val valueResolverService: ValueResolverService,
     private val storageService: TemporaryResourceStorageService,
 ) {
 
@@ -48,6 +53,15 @@ open class DocsysPlugin(
     @PluginProperty(key = "tokenEndpoint", secret = false)
     lateinit var tokenEndpoint: URI
 
+    @PluginEvent(invokedOn = [EventType.CREATE, EventType.UPDATE])
+    fun setDocsysClientParams() {
+        logger.debug { "set docsys client params" }
+        DocsysClient.baseUri = url
+        DocsysClient.tokenEndpoint = tokenEndpoint
+        DocsysClient.clientId = clientId
+        DocsysClient.clientSecret = clientSecret
+    }
+
     @PluginAction(
         key = "generate-document",
         title = "Generate document",
@@ -57,19 +71,32 @@ open class DocsysPlugin(
     open fun generateDocument(
         execution: DelegateExecution,
         @PluginActionProperty modelId: String,
-        @PluginActionProperty params: Map<String, Any>
+        @PluginActionProperty params: List<TemplateProperty>?,
     ) {
-        DocsysClient.baseUri = url
-        DocsysClient.tokenEndpoint = tokenEndpoint
-        DocsysClient.clientId = clientId
-        DocsysClient.clientSecret = clientSecret
         DocsysClient.generateDraftDocument(
             modelId = modelId,
-            params = params,
+            params = (params?.associate { it.key to it.value }) as Map<String, Any>,
         )
+    }
+
+    private fun resolveValue(execution: DelegateExecution, keyValueList: List<TemplateProperty>?): List<TemplateProperty>? {
+        return if (keyValueList == null) {
+            null
+        } else {
+            keyValueList.filter { it.value is String }.map {
+                var resolvedValues = valueResolverService.resolveValues(
+                    execution.processInstanceId,
+                    execution,
+                    listOf(it.value as String)
+                )
+                var resolvedValue = resolvedValues[it.value]
+                TemplateProperty(it.key, resolvedValue)
+            }
+        }
     }
 
     companion object {
         const val RESOURCE_ID_PROCESS_VAR = "resourceId"
+        private val logger = KotlinLogging.logger {}
     }
 }
