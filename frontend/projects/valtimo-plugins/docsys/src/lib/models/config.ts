@@ -25,7 +25,7 @@ interface DocsysConfig extends PluginConfigurationData {
 
 interface GenerateDocument {
     modelId: string;
-    params: object;
+    params: Array<{key: string; value: string}>;
 }
 
 

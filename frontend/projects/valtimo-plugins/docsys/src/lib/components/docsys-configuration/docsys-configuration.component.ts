@@ -75,7 +75,11 @@ export class DocsysConfigurationComponent
   }
 
   private handleValid(formValue: DocsysConfig): void {
-    const valid = !!(formValue.configurationTitle && formValue.url && formValue.token);
+    const valid = !!(formValue.configurationTitle && formValue.apiUrl
+        && formValue.clientId
+        && formValue.clientSecret
+        && formValue.tokenEndpoint
+    );
 
     this.valid$.next(valid);
     this.valid.emit(valid);

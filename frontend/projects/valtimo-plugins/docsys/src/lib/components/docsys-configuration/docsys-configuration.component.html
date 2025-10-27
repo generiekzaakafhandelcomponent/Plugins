@@ -39,12 +39,24 @@
     [fullWidth]="true"
     [margin]="true"
     [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.url"
+    [defaultValue]="obs.prefill?.apiUrl"
     [required]="true"
     [tooltip]="'urlTooltip' | pluginTranslate: pluginId | async"
-    placeholder="https://www.Docsys.com/"
+    placeholder="https://api.docsys.com/"
   >
   </v-input>
+    <v-input
+            name="token"
+            type="password"
+            [title]="'token' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.clientId"
+            [required]="true"
+            [fullWidth]="true"
+            [tooltip]="'tokenTooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-input>
   <v-input
     name="token"
     type="password"
@@ -57,4 +69,16 @@
     [tooltip]="'tokenTooltip' | pluginTranslate: pluginId | async"
   >
   </v-input>
+    <v-input
+            name="url"
+            [title]="'url' | pluginTranslate: pluginId | async"
+            [fullWidth]="true"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.tokenEndpoint"
+            [required]="true"
+            [tooltip]="'urlTooltip' | pluginTranslate: pluginId | async"
+            placeholder="https://tokenEndpointUrl/"
+    >
+    </v-input>
 </v-form>
