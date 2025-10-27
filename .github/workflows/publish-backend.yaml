@@ -37,6 +37,7 @@ jobs:
           matrix: 'true'
           files_ignore: |
             backend/README.md
+            valtimo-configurator-metadata.json
             .github/**
             frontend/**
             docker-resources/**
