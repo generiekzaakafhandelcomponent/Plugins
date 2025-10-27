@@ -18,8 +18,7 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface NotifyNlConfig extends PluginConfigurationData {
   url: string;
-  serviceId: string;
-  secretKey: string;
+  apiKey: string;
 }
 
 interface SendSmsConfig {

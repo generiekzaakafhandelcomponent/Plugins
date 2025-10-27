@@ -51,10 +51,8 @@ const notifyNlPluginSpecification: PluginSpecification = {
         'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
       phoneNumber: 'Telefoonnummer',
       phoneNumberTooltip: 'Het telefoonnummer van de ontvanger',
-      serviceId: 'Service ID',
-      serviceIdTooltip: 'De unieke identifier van de Service in NotifyNL',
-      secretKey: 'Secret key',
-      secretKeyTooltip: 'De API secret key van NotifyNL',
+      apiKey: 'API Sleutel',
+      apiKeyTooltip: 'De API sleutel van de Service in NotifyNL',
       templateId: 'Template ID',
       templateIdTooltip: 'De unieke identifier van de template die gebruikt wordt voor dit bericht'
     },
@@ -70,10 +68,8 @@ const notifyNlPluginSpecification: PluginSpecification = {
           'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
       phoneNumber: 'Phone number',
       phoneNumberTooltip: 'The mobile number of the recipient.',
-      serviceId: 'Service ID',
-      serviceIdTooltip: 'The unique ID of the Service in NotifyNL',
-      secretKey: 'Secret key',
-      secretKeyTooltip: 'The secret key of the NotifyNL API',
+      apiKey: 'API Sleutel',
+      apiKeyTooltip: 'De API sleutel van de Service in NotifyNL',
       templateId: 'Template ID',
       templateIdTooltip: 'The unique ID of the template that will be used for this message'
     }
