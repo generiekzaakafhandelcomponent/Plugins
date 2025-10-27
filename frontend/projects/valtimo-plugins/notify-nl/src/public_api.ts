@@ -23,4 +23,8 @@ export * from './lib/notify-nl-plugin-module';
 export * from './lib/notify-nl-plugin.specification';
 export * from './lib/components/send-sms/send-sms-configuration.component';
 export * from './lib/components/send-email/send-email-configuration.component';
+export * from './lib/components/get-message/get-message-configuration.component';
+export * from './lib/components/get-template/get-template-configuration.component';
+export * from './lib/components/send-letter/send-letter-configuration.component';
+export * from './lib/components/get-all-templates/get-all-templates-configuration.component';
 export * from './lib/components/notify-nl-configuration/notify-nl-configuration.component';
