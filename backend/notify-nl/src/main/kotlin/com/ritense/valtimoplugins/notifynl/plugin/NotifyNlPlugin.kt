@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,16 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.notifynl.client.NotifyNlClient
-import com.ritense.valtimoplugins.notifynl.domain.SendSmsRequest
+import com.ritense.valtimoplugins.notifynl.domain.StringWrapper
+import com.ritense.valtimoplugins.notifynl.domain.email.EmailRequest
+import com.ritense.valtimoplugins.notifynl.domain.letter.AddressWrapper
+import com.ritense.valtimoplugins.notifynl.domain.letter.LetterRequest
+import com.ritense.valtimoplugins.notifynl.domain.letter.SimpleAddress
+import com.ritense.valtimoplugins.notifynl.domain.letter.buildPersonalisation
+import com.ritense.valtimoplugins.notifynl.domain.notification.NotificationRequest
+import com.ritense.valtimoplugins.notifynl.domain.notification.SmsRequest
+import com.ritense.valtimoplugins.notifynl.domain.template.AllTemplatesRequest
+import com.ritense.valtimoplugins.notifynl.domain.template.TemplateRequest
 import com.ritense.valtimoplugins.notifynl.service.NotifyNlTokenGenerationService
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
@@ -49,16 +58,117 @@ open class NotifyNlPlugin(
     @PluginAction(
         key = "send-sms",
         title = "Send SMS",
-        description = "Sends an SMS",
+        description = "Sends an SMS to a given phone number.",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-    open fun sendTextMessage(
+    open fun sendSms(
         execution: DelegateExecution,
         @PluginActionProperty phoneNumber: String,
         @PluginActionProperty templateId: String
     ) {
-        val sendSmsRequest = SendSmsRequest(phoneNumber, templateId)
+        val smsRequest = SmsRequest(phoneNumber, templateId)
         val token = tokenGenerationService.generateToken(serviceId, secretKey)
-        notifyNlClient.sendSms(url, sendSmsRequest, token)
+        val smsResponse = notifyNlClient.sendSms(url, smsRequest, token)
+        val formattedResponse = smsResponse.formattedResponse(smsRequest)
+        execution.setVariable("result", StringWrapper(formattedResponse))
+    }
+
+    @PluginAction(
+        key = "send-email",
+        title = "Send E-mail",
+        description = "Sends an E-mail to a given recipient.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun sendEmail(
+        execution: DelegateExecution,
+        @PluginActionProperty email: String,
+        @PluginActionProperty templateId: String
+    ) {
+        val emailRequest = EmailRequest(email, templateId)
+        val token = tokenGenerationService.generateToken(serviceId, secretKey)
+        val emailResponse = notifyNlClient.sendEmail(url, emailRequest, token)
+        val formattedResponse = emailResponse.formattedResponse(emailRequest)
+        execution.setVariable("result", StringWrapper(formattedResponse))
+    }
+
+    @PluginAction(
+        key = "send-letter",
+        title = "Send Letter",
+        description = "Sends a letter to a given recipient.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun sendLetter(
+        execution: DelegateExecution,
+        @PluginActionProperty address: List<AddressWrapper>,
+        @PluginActionProperty templateId: String
+    ) {
+        val addressList = address.mapNotNull { wrapper ->
+            wrapper.address?.address?.let {
+                SimpleAddress(
+                    street = it.road ?: "",
+                    number = it.house_number ?: "",
+                    postalCode = it.postcode ?: "",
+                    city = it.city ?: ""
+                )
+            }
+        }
+
+        val personalisation = buildPersonalisation(addressList)
+        val letterRequest = LetterRequest(templateId, personalisation)
+        val token = tokenGenerationService.generateToken(serviceId, secretKey)
+        val letterResponse = notifyNlClient.sendLetter(url, letterRequest, token)
+        val formattedResponse = letterResponse.formattedResponse(letterRequest)
+        execution.setVariable("result", StringWrapper(formattedResponse))
+    }
+
+    @PluginAction(
+        key = "get-template",
+        title = "Get Template By ID",
+        description = "Retrieves information about a template for a given ID.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun getTemplate(
+        execution: DelegateExecution,
+        @PluginActionProperty templateId: String
+    ) {
+        val templateRequest = TemplateRequest(templateId)
+        val token = tokenGenerationService.generateToken(serviceId, secretKey)
+        val templateResponse = notifyNlClient.getTemplate(url, templateRequest, token)
+        val formattedResponse = templateResponse.formattedResponse(templateRequest)
+        execution.setVariable("result", StringWrapper(formattedResponse))
+    }
+
+    @PluginAction(
+        key = "get-all-templates",
+        title = "Get All Templates",
+        description = "Retrieves all templates.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun getAllTemplates(
+        execution: DelegateExecution,
+        @PluginActionProperty templateType: String
+    ) {
+        val allTemplatesRequest = AllTemplatesRequest(templateType)
+        val token = tokenGenerationService.generateToken(serviceId, secretKey)
+        val allTemplatesResponse = notifyNlClient.getAllTemplates(url, token, templateType)
+        val formattedResponse = allTemplatesResponse.formattedResponse(allTemplatesRequest)
+        execution.setVariable("result", StringWrapper(formattedResponse))
+    }
+
+    @PluginAction(
+        key = "get-message",
+        title = "Get Message By ID",
+        description = "Retrieves information about a message for a given ID.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    open fun getMessage(
+        execution: DelegateExecution,
+        @PluginActionProperty notificationId: String
+    ) {
+        val notificationRequest = NotificationRequest(notificationId)
+        val token = tokenGenerationService.generateToken(serviceId, secretKey)
+        val messageResponse = notifyNlClient.getMessage(url, notificationRequest, token)
+        val formattedResponse = messageResponse.formattedResponse(notificationRequest)
+        execution.setVariable("result", StringWrapper(formattedResponse))
     }
 }

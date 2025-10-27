@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,31 @@ import {PluginSpecification} from '@valtimo/plugin';
 import {NOTIFY_NL_PLUGIN_LOGO_BASE64} from './assets';
 import {NotifyNlConfigurationComponent} from "./components/notify-nl-configuration/notify-nl-configuration.component";
 import {SendSmsConfigurationComponent} from "./components/send-sms/send-sms-configuration.component";
+import {SendEmailConfigurationComponent} from "./components/send-email/send-email-configuration.component";
+import {GetMessageConfigurationComponent} from "./components/get-message/get-message-configuration.component";
+import {GetTemplateConfigurationComponent} from "./components/get-template/get-template-configuration.component";
+import {
+    GetAllTemplatesConfigurationComponent
+} from "./components/get-all-templates/get-all-templates-configuration.component";
+import {SendLetterConfigurationComponent} from "./components/send-letter/send-letter-configuration.component";
 
 const notifyNlPluginSpecification: PluginSpecification = {
   pluginId: 'notify-nl',
   pluginConfigurationComponent: NotifyNlConfigurationComponent,
   pluginLogoBase64: NOTIFY_NL_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
-    'send-sms': SendSmsConfigurationComponent
+    'send-sms': SendSmsConfigurationComponent,
+    'send-email': SendEmailConfigurationComponent,
+    'send-letter': SendLetterConfigurationComponent,
+    'get-template': GetMessageConfigurationComponent,
+    'get-all-templates': GetAllTemplatesConfigurationComponent,
+    'get-message': GetTemplateConfigurationComponent
   },
   pluginTranslations: {
     nl: {
       title: 'NotifyNL',
       'send-sms': 'Stuur SMS',
+      'send-email': 'Stuur een E-mail',
       url: 'NotifyNL API URL',
       urlTooltip: 'Een URL naar de REST API van NotifyNL.',
       description: 'Verstuur SMS en E-mail met de NotifyNL service.',
@@ -48,6 +61,7 @@ const notifyNlPluginSpecification: PluginSpecification = {
     en: {
       title: 'NotifyNL',
       'send-sms': 'Send SMS',
+      'send-email': 'Send E-mail',
       url: 'NotifyNL API URL',
       urlTooltip: 'The URL of the NotifyNL REST API.',
       description: 'Send SMS and E-mail with the NotifyNL service.',

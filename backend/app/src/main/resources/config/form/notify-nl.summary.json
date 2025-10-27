@@ -1,0 +1,29 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "type": "hidden",
+      "key": "result",
+      "label": "Result",
+      "properties": {
+        "sourceKey": "doc:result"
+      }
+    },
+    {
+      "key": "html",
+      "tag": "div",
+      "type": "htmlelement",
+      "attrs": [
+        {
+          "attr": "",
+          "value": ""
+        }
+      ],
+      "input": false,
+      "label": "HTML",
+      "content": "<section>\n  <h3>NotifyNL Plugin</h3>\n    {{ data ? `\n    <h4>Result</h4>\n    <dl class=\"row mb-5\">\n      <dt class=\"col-12\"><pre>${data.result.value}</pre></dt>\n    </dl>` : '' }}\n\n</section>\n\n<style>\n  pre{\n    padding: 10px;\n    overflow: auto;\n    white-space: pre-wrap;\n    min-height: 100px;\n    resize: both;\n  }\n</style>\n",
+      "tableView": false,
+      "refreshOnChange": false
+    }
+  ]
+}

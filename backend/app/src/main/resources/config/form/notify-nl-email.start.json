@@ -1,0 +1,25 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Recipient E-mail",
+      "applyMaskOn": "change",
+      "autoExpand": true,
+      "tableView": true,
+      "key": "recipientEmail",
+      "properties": {
+        "targetKey": "doc:/email"
+      },
+      "type": "textarea",
+      "input": true
+    },
+    {
+      "type": "button",
+      "label": "Submit",
+      "key": "submit",
+      "disableOnInvalid": true,
+      "input": true,
+      "tableView": false
+    }
+  ]
+}

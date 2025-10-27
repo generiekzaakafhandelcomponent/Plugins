@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,4 +22,5 @@ export * from './lib/models';
 export * from './lib/notify-nl-plugin-module';
 export * from './lib/notify-nl-plugin.specification';
 export * from './lib/components/send-sms/send-sms-configuration.component';
+export * from './lib/components/send-email/send-email-configuration.component';
 export * from './lib/components/notify-nl-configuration/notify-nl-configuration.component';

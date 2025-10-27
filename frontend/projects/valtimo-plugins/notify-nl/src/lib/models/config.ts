@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,34 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 interface NotifyNlConfig extends PluginConfigurationData {
   url: string;
   serviceId: string;
-
   secretKey: string;
 }
 
 interface SendSmsConfig {
   phoneNumber: string;
-
   templateId: string;
 }
 
-export {NotifyNlConfig, SendSmsConfig};
+interface SendEmailConfig {
+  email: string;
+  templateId: string;
+}
+
+interface SendLetterConfig {
+    templateId: string;
+    address: string;
+}
+
+interface GetMessageConfig {
+    notificationId: string;
+}
+
+interface GetTemplateConfig {
+    templateId: string;
+}
+
+interface GetAllTemplatesConfig {
+    templateType: string;
+}
+
+export {NotifyNlConfig, SendSmsConfig, SendEmailConfig, GetMessageConfig, GetTemplateConfig, GetAllTemplatesConfig, SendLetterConfig};
