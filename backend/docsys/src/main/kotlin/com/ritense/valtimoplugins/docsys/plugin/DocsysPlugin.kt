@@ -60,8 +60,8 @@ open class DocsysPlugin(
         @PluginActionProperty params: Map<String, Any>
     ) {
         DocsysClient.baseUri = url
-        DocsysClient.tokenEndpoint = tokenEndpoint,
-        DocsysClient.clientId = clientId,
+        DocsysClient.tokenEndpoint = tokenEndpoint
+        DocsysClient.clientId = clientId
         DocsysClient.clientSecret = clientSecret
         DocsysClient.generateDraftDocument(
             modelId = modelId,
