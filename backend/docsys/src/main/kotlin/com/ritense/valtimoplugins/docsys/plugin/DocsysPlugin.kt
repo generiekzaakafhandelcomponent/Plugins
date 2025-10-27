@@ -36,11 +36,17 @@ open class DocsysPlugin(
     private val storageService: TemporaryResourceStorageService,
 ) {
 
-    @PluginProperty(key = "url", secret = false)
+    @PluginProperty(key = "apiUrl", secret = false)
     lateinit var url: URI
 
-    @PluginProperty(key = "token", secret = true)
-    lateinit var token: String
+    @PluginProperty(key = "clientId", secret = true)
+    lateinit var clientId: String
+
+    @PluginProperty(key = "clientSecret", secret = true)
+    lateinit var clientSecret: String
+
+    @PluginProperty(key = "tokenEndpoint", secret = false)
+    lateinit var tokenEndpoint: URI
 
     @PluginAction(
         key = "generate-document",
@@ -54,13 +60,14 @@ open class DocsysPlugin(
         @PluginActionProperty params: Map<String, Any>
     ) {
         DocsysClient.baseUri = url
-        DocsysClient.token = token
+        DocsysClient.tokenEndpoint = tokenEndpoint,
+        DocsysClient.clientId = clientId,
+        DocsysClient.clientSecret = clientSecret
         DocsysClient.generateDraftDocument(
             modelId = modelId,
             params = params,
         )
     }
-
 
     companion object {
         const val RESOURCE_ID_PROCESS_VAR = "resourceId"

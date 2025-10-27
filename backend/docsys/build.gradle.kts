@@ -33,6 +33,8 @@ dependencies {
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
+    implementation("com.nimbusds:oauth2-oidc-sdk:11.30")
+
     // Testing
     testImplementation("com.ritense.valtimo:document")
     testImplementation("com.ritense.valtimo:local-resource")

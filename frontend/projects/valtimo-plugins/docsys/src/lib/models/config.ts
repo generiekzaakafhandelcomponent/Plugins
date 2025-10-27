@@ -21,7 +21,7 @@ interface DocsysConfig extends PluginConfigurationData {
   token: string;
 }
 
-interface PostMessageConfig {
+interface Generate {
   channel: string;
   message: string;
 }

@@ -16,24 +16,35 @@
 
 package com.ritense.valtimoplugins.docsys.client
 
+import com.nimbusds.oauth2.sdk.AccessTokenResponse
+import com.nimbusds.oauth2.sdk.AuthorizationGrant
+import com.nimbusds.oauth2.sdk.ClientCredentialsGrant
+import com.nimbusds.oauth2.sdk.Scope
+import com.nimbusds.oauth2.sdk.TokenErrorResponse
+import com.nimbusds.oauth2.sdk.TokenRequest
+import com.nimbusds.oauth2.sdk.TokenResponse
+import com.nimbusds.oauth2.sdk.auth.ClientAuthentication
+import com.nimbusds.oauth2.sdk.auth.ClientSecretBasic
+import com.nimbusds.oauth2.sdk.auth.Secret
+import com.nimbusds.oauth2.sdk.id.ClientID
+import com.nimbusds.oauth2.sdk.token.AccessToken
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import java.io.InputStream
-import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType
-import org.springframework.http.MediaType.MULTIPART_FORM_DATA
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
+import java.net.URI
 
 @Component
 @SkipComponentScan
 class DocsysClient(
     val restClientBuilder: RestClient.Builder,
     var baseUri: URI?,
-    var token: String?,
+    var tokenEndpoint: URI?,
+    var clientId: String?,
+    var clientSecret: String?
 ) {
 
     /**
@@ -44,7 +55,6 @@ class DocsysClient(
 
         post(modelId, params )
     }
-
 
 
     private fun post(path: String, params: Map<String, Any>) {
@@ -65,7 +75,7 @@ class DocsysClient(
             }
             .headers {
                 it.contentType = MediaType.APPLICATION_JSON
-                it.setBearerAuth(token!!)
+                it.setBearerAuth(getToken())
             }
             .accept(MediaType.APPLICATION_JSON)
             .body(body)
@@ -75,6 +85,35 @@ class DocsysClient(
         if (response?.ok != true) {
             throw DocsysException(response?.error)
         }
+    }
+
+    private fun getToken(): String {
+
+        val clientGrant: AuthorizationGrant = ClientCredentialsGrant()
+
+        val clientID: ClientID = ClientID(clientId)
+        val clientSecret: Secret = Secret(clientSecret)
+        val clientAuth: ClientAuthentication = ClientSecretBasic(clientID, clientSecret)
+
+        // Make the token request
+        val request: TokenRequest = TokenRequest(tokenEndpoint, clientAuth, clientGrant, Scope())
+
+        val response: TokenResponse = TokenResponse.parse(request.toHTTPRequest().send())
+
+        if (!response.indicatesSuccess()) {
+            // We got an error response...
+            val errorResponse: TokenErrorResponse? = response.toErrorResponse()
+        }
+
+        val successResponse: AccessTokenResponse = response.toSuccessResponse()
+
+        // Get the access token
+        val accessToken: AccessToken? = successResponse.getTokens().accessToken
+        if(accessToken == null) {
+            throw IllegalStateException("Access token not found")
+        }
+
+        return accessToken.value
     }
 
     companion object {
