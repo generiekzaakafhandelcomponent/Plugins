@@ -32,8 +32,8 @@ interface SendEmailConfig {
 }
 
 interface SendLetterConfig {
-    templateId: string;
     address: string;
+    templateId: string;
 }
 
 interface GetMessageConfig {

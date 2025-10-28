@@ -7,7 +7,7 @@
     "processLinkType": "plugin",
     "actionProperties": {
       "email": "doc:/email",
-      "templateId": "7c3e5ca6-7c26-4089-a27a-b81e097ae766"
+      "templateId": "doc:/templateId"
     }
   },
   {

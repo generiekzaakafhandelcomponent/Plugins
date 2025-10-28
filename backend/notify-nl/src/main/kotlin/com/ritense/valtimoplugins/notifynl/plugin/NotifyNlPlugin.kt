@@ -64,7 +64,7 @@ open class NotifyNlPlugin(
         @PluginActionProperty phoneNumber: String,
         @PluginActionProperty templateId: String
     ) {
-        val smsRequest = SmsRequest(phoneNumber, templateId)
+        val smsRequest = SmsRequest(phoneNumber = phoneNumber, templateId = templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val smsResponse = notifyNlClient.sendSms(baseUri = url, body = smsRequest, token = token)
         val formattedResponse = smsResponse.formattedResponse(request = smsRequest)
@@ -82,7 +82,7 @@ open class NotifyNlPlugin(
         @PluginActionProperty email: String,
         @PluginActionProperty templateId: String
     ) {
-        val emailRequest = EmailRequest(email, templateId)
+        val emailRequest = EmailRequest(email = email, templateId = templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val emailResponse = notifyNlClient.sendEmail(baseUri = url, body = emailRequest, token = token)
         val formattedResponse = emailResponse.formattedResponse(request = emailRequest)
@@ -119,7 +119,7 @@ open class NotifyNlPlugin(
         execution: DelegateExecution,
         @PluginActionProperty templateId: String
     ) {
-        val templateRequest = TemplateRequest(templateId)
+        val templateRequest = TemplateRequest(templateId = templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val templateResponse = notifyNlClient.getTemplate(baseUri = url, body = templateRequest, token = token)
         val formattedResponse = templateResponse.formattedResponse(request = templateRequest)

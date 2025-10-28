@@ -2,6 +2,18 @@
   "display": "form",
   "components": [
     {
+      "label": "Template ID",
+      "applyMaskOn": "change",
+      "autoExpand": true,
+      "tableView": true,
+      "key": "templateId",
+      "properties": {
+        "targetKey": "doc:/templateId"
+      },
+      "type": "textarea",
+      "input": true
+    },
+    {
       "label": "Recipient Phonenumber",
       "applyMaskOn": "change",
       "autoExpand": true,

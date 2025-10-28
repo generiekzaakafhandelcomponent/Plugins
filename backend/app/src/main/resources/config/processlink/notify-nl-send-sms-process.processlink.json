@@ -7,7 +7,7 @@
     "processLinkType": "plugin",
     "actionProperties": {
       "phoneNumber": "doc:/phoneNumber",
-      "templateId": "89f64d87-a146-42c5-a6a2-b26b8c9804a9"
+      "templateId": "doc:/templateId"
     }
   },
   {
