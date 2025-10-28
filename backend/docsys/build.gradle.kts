@@ -27,6 +27,7 @@ dependencies {
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:temporary-resource-storage")
+    implementation("com.ritense.valtimo:documenten-api")
     implementation("com.ritense.valtimo:value-resolver")
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")

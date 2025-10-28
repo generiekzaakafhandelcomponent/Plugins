@@ -29,4 +29,4 @@ interface GenerateDocument {
 }
 
 
-export {DocsysConfig, };
+export {DocsysConfig, GenerateDocument};

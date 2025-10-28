@@ -16,7 +16,7 @@
 
 package com.ritense.valtimoplugins.docsys.client
 
-data class DocsysResponse(
-    val ok: Boolean,
-    val error: String? = null
+data class DamDraftResponse(
+    val draftId: String,
+    val draftUrl: String
 )

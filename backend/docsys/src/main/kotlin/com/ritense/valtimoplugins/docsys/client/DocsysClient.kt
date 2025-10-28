@@ -27,10 +27,11 @@ import com.nimbusds.oauth2.sdk.auth.ClientAuthentication
 import com.nimbusds.oauth2.sdk.auth.ClientSecretBasic
 import com.nimbusds.oauth2.sdk.auth.Secret
 import com.nimbusds.oauth2.sdk.id.ClientID
-import com.nimbusds.oauth2.sdk.token.AccessToken
 import com.nimbusds.oauth2.sdk.token.BearerAccessToken
+import com.ritense.resource.domain.MetadataType
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
@@ -43,7 +44,8 @@ import java.net.URI
 class DocsysClient(
     val restClientBuilder: RestClient.Builder,
 ) {
-    lateinit var baseUri: URI
+    lateinit var damBaseUri: URI
+    lateinit var docsysBaseUri: URI
     lateinit var tokenEndpoint: URI
     lateinit var clientId: String
     lateinit var clientSecret: String
@@ -51,12 +53,52 @@ class DocsysClient(
           // token for authentication Docsys API
      var token: AccesTokenDecorator? = null;
 
-    /**
-     * https://api.Docsys.com/methods/chat.postMessage
-     */
-    fun generateDraftDocument(modelId: String, params: Map<String, Any>) {
+    fun generateDocument(modelId: String, params: Map<String, Any>): DownloadResponse {
         logger.debug { "Generearte draft doument in  Docsys using model '$modelId'" }
 
+        val draft = generateDraft(params, modelId)
+        val fileResponse = downloadDocument(draft)
+
+        return fileResponse
+    }
+
+    private fun downloadDocument(draft: DamDraftResponse): DownloadResponse {
+        val requestBody = DownloadRequest(
+            Id = draft.draftId,
+            format = ExportFormat.PDF.name,
+        )
+
+        val response = restClientBuilder
+            .clone()
+            .build()
+            .post()
+            .uri {
+                it.scheme(docsysBaseUri!!.scheme)
+                    .host(docsysBaseUri!!.host)
+                    .path(docsysBaseUri!!.path)
+                    .port(docsysBaseUri!!.port)
+                    .build()
+            }
+            .headers {
+                it.contentType = MediaType.APPLICATION_JSON
+                it.setBearerAuth(getToken().accesToken.value)
+            }
+            .accept(MediaType.APPLICATION_JSON)
+            .body(requestBody)
+            .retrieve()
+            .body<DownloadResponse>()
+
+        if(response == null) {
+            throw IllegalStateException("Document could not be downloaded.")
+        }
+
+        return response
+    }
+
+    private fun generateDraft(
+        params: Map<String, Any>,
+        modelId: String
+    ): DamDraftResponse {
         val body = LinkedMultiValueMap<String, Any>()
         params.forEach { body.add(it.key, it.value) }
 
@@ -65,11 +107,11 @@ class DocsysClient(
             .build()
             .post()
             .uri {
-                it.scheme(baseUri!!.scheme)
-                    .host(baseUri!!.host)
-                    .path(baseUri!!.path)
+                it.scheme(damBaseUri!!.scheme)
+                    .host(damBaseUri!!.host)
+                    .path(damBaseUri!!.path)
                     .path(modelId)
-                    .port(baseUri!!.port)
+                    .port(damBaseUri!!.port)
                     .build()
             }
             .headers {
@@ -79,11 +121,13 @@ class DocsysClient(
             .accept(MediaType.APPLICATION_JSON)
             .body(body)
             .retrieve()
-            .body<DocsysResponse>()
+            .body<DamDraftResponse>()
 
-        if (response?.ok != true) {
-            throw DocsysException(response?.error)
+        if(response == null) {
+            throw IllegalStateException("Draft could not be generated")
         }
+
+        return response
     }
 
 
@@ -119,6 +163,10 @@ class DocsysClient(
         }
 
         return token!!
+    }
+
+    enum class ExportFormat(val format: String) {
+        PDF("pdf")
     }
 
     companion object {

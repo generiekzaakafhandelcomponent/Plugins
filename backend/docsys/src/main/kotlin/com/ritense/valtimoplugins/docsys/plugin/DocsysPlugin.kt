@@ -23,12 +23,16 @@ import com.ritense.plugin.annotation.PluginEvent
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.resource.domain.MetadataType
+import com.ritense.documentenapi.client.DocumentStatusType
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.docsys.client.DocsysClient
+import com.ritense.valtimoplugins.docsys.client.DownloadResponse
 import com.ritense.valueresolver.ValueResolverService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.net.URI
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import java.util.Base64
 
 @Plugin(
     key = "Docsys",
@@ -41,8 +45,15 @@ open class DocsysPlugin(
     private val storageService: TemporaryResourceStorageService,
 ) {
 
-    @PluginProperty(key = "apiUrl", secret = false)
-    lateinit var url: URI
+    /**
+     *  DAM  API is a specialized API for a particular client decreasing the complexity
+     *  of using parameters in templates
+     */
+    @PluginProperty(key = "damApiUrl", secret = false)
+    lateinit var damApiUrl: URI
+
+    @PluginProperty(key = "docsysApiUrl", secret = false)
+    lateinit var docsysApiUrl: URI
 
     @PluginProperty(key = "clientId", secret = true)
     lateinit var clientId: String
@@ -56,7 +67,8 @@ open class DocsysPlugin(
     @PluginEvent(invokedOn = [EventType.CREATE, EventType.UPDATE])
     fun setDocsysClientParams() {
         logger.debug { "set docsys client params" }
-        DocsysClient.baseUri = url
+        DocsysClient.damBaseUri = damApiUrl
+        DocsysClient.docsysBaseUri = docsysApiUrl
         DocsysClient.tokenEndpoint = tokenEndpoint
         DocsysClient.clientId = clientId
         DocsysClient.clientSecret = clientSecret
@@ -72,11 +84,56 @@ open class DocsysPlugin(
         execution: DelegateExecution,
         @PluginActionProperty modelId: String,
         @PluginActionProperty params: List<TemplateProperty>?,
+        @PluginActionProperty format: String,
+        @PluginActionProperty naam: String,
+        @PluginActionProperty taal: String,
+        @PluginActionProperty beschrijving: String,
+        @PluginActionProperty informatieObjectType: String,
+        @PluginActionProperty processVariableName: String
     ) {
-        DocsysClient.generateDraftDocument(
+        var resolvedParams = resolveValue(execution, params)
+
+        // step 1
+        val fileResponse = DocsysClient.generateDocument(
             modelId = modelId,
-            params = (params?.associate { it.key to it.value }) as Map<String, Any>,
+            params = (resolvedParams?.associate { it.key to it.value }) as Map<String, Any>,
         )
+
+        val resourceId = storeDocument(fileResponse,
+            naam,
+            format,
+            beschrijving, taal, informatieObjectType,
+            execution
+        )
+        execution.setVariable(processVariableName, resourceId)
+    }
+
+    private fun storeDocument(fileResponse: DownloadResponse,
+                              naam: String,
+                              format: String,
+                              beschrijving: String,
+                              taal: String,
+                              informatieObjectType: String,
+                              execution: DelegateExecution): String {
+        val content = Base64.getDecoder().decode(fileResponse.Content)
+
+        val mutableMetaData = mutableMapOf<String, Any>()
+        mutableMetaData.put(MetadataType.DOCUMENT_ID.key, execution.processBusinessKey)
+        mutableMetaData.put(MetadataType.FILE_NAME.key, naam)
+        mutableMetaData.put(MetadataType.CONTENT_TYPE.key, format)
+        mutableMetaData.put("title", naam)
+        mutableMetaData.put("status", DocumentStatusType.DEFINITIEF.name)
+        mutableMetaData.put("bestandsomvang", content.size)
+        mutableMetaData.put("description", beschrijving)
+        mutableMetaData.put("confidentialityLevel", "zaakvertrouwelijk")
+        mutableMetaData.put("language", taal)
+        mutableMetaData.put("informatieobjecttype", informatieObjectType)
+        mutableMetaData.put("author", "Gegenereerd door Docsys")
+
+        val resourceId = storageService.store( content.inputStream(),  mutableMetaData)
+
+        return resourceId;
+
     }
 
     private fun resolveValue(execution: DelegateExecution, keyValueList: List<TemplateProperty>?): List<TemplateProperty>? {
@@ -96,7 +153,6 @@ open class DocsysPlugin(
     }
 
     companion object {
-        const val RESOURCE_ID_PROCESS_VAR = "resourceId"
         private val logger = KotlinLogging.logger {}
     }
 }
