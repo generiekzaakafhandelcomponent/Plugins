@@ -35,9 +35,13 @@ data class LetterResponse(
         URI: $uri
 
         Recipient:
-          Address Line 1: ${request.personalisation.address_line_1}
-          Address Line 2: ${request.personalisation.address_line_2}
-          Address Line 3: ${request.personalisation.address_line_3}
+          Address Line 1: ${request.personalisation.addressLine1 ?: "n/a"}
+          Address Line 2: ${request.personalisation.addressLine2 ?: "n/a"}
+          Address Line 3: ${request.personalisation.addressLine3 ?: "n/a"}
+          Address Line 4: ${request.personalisation.addressLine4 ?: "n/a"}
+          Address Line 5: ${request.personalisation.addressLine5 ?: "n/a"}
+          Address Line 6: ${request.personalisation.addressLine6 ?: "n/a"}
+          Address Line 7: ${request.personalisation.addressLine7 ?: "n/a"}
 
         Content:
           Subject: ${content.subject}

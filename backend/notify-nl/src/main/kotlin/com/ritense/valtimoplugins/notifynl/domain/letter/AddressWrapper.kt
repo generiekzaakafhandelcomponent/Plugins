@@ -16,12 +16,15 @@
 
 package com.ritense.valtimoplugins.notifynl.domain.letter
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class AddressWrapper(
     val address: NominatimAddress
 )
 
 data class NominatimAddress(
-    val display_name: String?,
+    @JsonProperty("display_name")
+    val displayName: String?,
     val lat: String?,
     val lon: String?,
     val address: AddressDetails?
@@ -29,7 +32,8 @@ data class NominatimAddress(
 
 data class AddressDetails(
     val road: String?,
-    val house_number: String?,
+    @JsonProperty("house_number")
+    val houseNumber: String?,
     val postcode: String?,
     val city: String?,
     val town: String?,
@@ -55,3 +59,15 @@ fun buildPersonalisation(addresses: List<SimpleAddress>): Personalisation {
         padded[4], padded[5], padded[6]
     )
 }
+
+fun List<AddressWrapper>.toSimpleAddresses(): List<SimpleAddress> =
+    this.mapNotNull { wrapper ->
+        wrapper.address?.address?.let {
+            SimpleAddress(
+                street = it.road ?: "",
+                number = it.houseNumber ?: "",
+                postalCode = it.postcode ?: "",
+                city = it.city ?: it.town ?: it.village ?: ""
+            )
+        }
+    }

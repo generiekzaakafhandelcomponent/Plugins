@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,19 +32,6 @@ dependencies {
     implementation("com.ritense.valtimo:value-resolver")
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
-
-    // Testing
-    testImplementation("com.ritense.valtimo:local-resource")
-    testImplementation("com.ritense.valtimo:test-utils-common")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
-    testImplementation("org.mockito:mockito-core")
-    testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
-
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
 apply(from = "gradle/publishing.gradle")

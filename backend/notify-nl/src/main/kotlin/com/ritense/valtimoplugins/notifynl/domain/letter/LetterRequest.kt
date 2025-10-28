@@ -25,11 +25,18 @@ data class LetterRequest(
 )
 
 data class Personalisation(
-    val address_line_1: String?,
-    val address_line_2: String?,
-    val address_line_3: String?,
-    val address_line_4: String?,
-    val address_line_5: String?,
-    val address_line_6: String?,
-    val address_line_7: String?
+    @JsonProperty("address_line_1")
+    val addressLine1: String?,
+    @JsonProperty("address_line_2")
+    val addressLine2: String?,
+    @JsonProperty("address_line_3")
+    val addressLine3: String?,
+    @JsonProperty("address_line_4")
+    val addressLine4: String?,
+    @JsonProperty("address_line_5")
+    val addressLine5: String?,
+    @JsonProperty("address_line_6")
+    val addressLine6: String?,
+    @JsonProperty("address_line_7")
+    val addressLine7: String?
 )

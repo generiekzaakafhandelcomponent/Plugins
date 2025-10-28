@@ -28,6 +28,7 @@ import com.ritense.valtimoplugins.notifynl.domain.letter.AddressWrapper
 import com.ritense.valtimoplugins.notifynl.domain.letter.LetterRequest
 import com.ritense.valtimoplugins.notifynl.domain.letter.SimpleAddress
 import com.ritense.valtimoplugins.notifynl.domain.letter.buildPersonalisation
+import com.ritense.valtimoplugins.notifynl.domain.letter.toSimpleAddresses
 import com.ritense.valtimoplugins.notifynl.domain.notification.NotificationRequest
 import com.ritense.valtimoplugins.notifynl.domain.notification.SmsRequest
 import com.ritense.valtimoplugins.notifynl.domain.template.AllTemplatesRequest
@@ -65,9 +66,9 @@ open class NotifyNlPlugin(
     ) {
         val smsRequest = SmsRequest(phoneNumber, templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
-        val smsResponse = notifyNlClient.sendSms(url, smsRequest, token)
-        val formattedResponse = smsResponse.formattedResponse(smsRequest)
-        execution.setVariable("result", StringWrapper(formattedResponse))
+        val smsResponse = notifyNlClient.sendSms(baseUri = url, body = smsRequest, token = token)
+        val formattedResponse = smsResponse.formattedResponse(request = smsRequest)
+        execution.setVariable("result", StringWrapper(value = formattedResponse))
     }
 
     @PluginAction(
@@ -83,9 +84,9 @@ open class NotifyNlPlugin(
     ) {
         val emailRequest = EmailRequest(email, templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
-        val emailResponse = notifyNlClient.sendEmail(url, emailRequest, token)
-        val formattedResponse = emailResponse.formattedResponse(emailRequest)
-        execution.setVariable("result", StringWrapper(formattedResponse))
+        val emailResponse = notifyNlClient.sendEmail(baseUri = url, body = emailRequest, token = token)
+        val formattedResponse = emailResponse.formattedResponse(request = emailRequest)
+        execution.setVariable("result", StringWrapper(value = formattedResponse))
     }
 
     @PluginAction(
@@ -99,23 +100,13 @@ open class NotifyNlPlugin(
         @PluginActionProperty address: List<AddressWrapper>,
         @PluginActionProperty templateId: String
     ) {
-        val addressList = address.mapNotNull { wrapper ->
-            wrapper.address?.address?.let {
-                SimpleAddress(
-                    street = it.road ?: "",
-                    number = it.house_number ?: "",
-                    postalCode = it.postcode ?: "",
-                    city = it.city ?: ""
-                )
-            }
-        }
-
-        val personalisation = buildPersonalisation(addressList)
-        val letterRequest = LetterRequest(templateId, personalisation)
+        val addressList = address.toSimpleAddresses();
+        val personalisation = buildPersonalisation(addresses = addressList)
+        val letterRequest = LetterRequest(templateId = templateId, personalisation = personalisation)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
-        val letterResponse = notifyNlClient.sendLetter(url, letterRequest, token)
-        val formattedResponse = letterResponse.formattedResponse(letterRequest)
-        execution.setVariable("result", StringWrapper(formattedResponse))
+        val letterResponse = notifyNlClient.sendLetter(baseUri = url, body = letterRequest, token = token)
+        val formattedResponse = letterResponse.formattedResponse(request = letterRequest)
+        execution.setVariable("result", StringWrapper(value = formattedResponse))
     }
 
     @PluginAction(
@@ -130,9 +121,9 @@ open class NotifyNlPlugin(
     ) {
         val templateRequest = TemplateRequest(templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
-        val templateResponse = notifyNlClient.getTemplate(url, templateRequest, token)
-        val formattedResponse = templateResponse.formattedResponse(templateRequest)
-        execution.setVariable("result", StringWrapper(formattedResponse))
+        val templateResponse = notifyNlClient.getTemplate(baseUri = url, body = templateRequest, token = token)
+        val formattedResponse = templateResponse.formattedResponse(request = templateRequest)
+        execution.setVariable("result", StringWrapper(value = formattedResponse))
     }
 
     @PluginAction(
@@ -145,11 +136,11 @@ open class NotifyNlPlugin(
         execution: DelegateExecution,
         @PluginActionProperty templateType: String
     ) {
-        val allTemplatesRequest = AllTemplatesRequest(templateType)
+        val allTemplatesRequest = AllTemplatesRequest(templateType = templateType)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
-        val allTemplatesResponse = notifyNlClient.getAllTemplates(url, token, templateType)
-        val formattedResponse = allTemplatesResponse.formattedResponse(allTemplatesRequest)
-        execution.setVariable("result", StringWrapper(formattedResponse))
+        val allTemplatesResponse = notifyNlClient.getAllTemplates(baseUri = url, token = token, templateType = templateType)
+        val formattedResponse = allTemplatesResponse.formattedResponse(request = allTemplatesRequest)
+        execution.setVariable("result", StringWrapper(value = formattedResponse))
     }
 
     @PluginAction(
@@ -162,10 +153,10 @@ open class NotifyNlPlugin(
         execution: DelegateExecution,
         @PluginActionProperty notificationId: String
     ) {
-        val notificationRequest = NotificationRequest(notificationId)
+        val notificationRequest = NotificationRequest(notificationId = notificationId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
-        val messageResponse = notifyNlClient.getMessage(url, notificationRequest, token)
-        val formattedResponse = messageResponse.formattedResponse(notificationRequest)
-        execution.setVariable("result", StringWrapper(formattedResponse))
+        val messageResponse = notifyNlClient.getMessage(baseUri = url, body = notificationRequest, token = token)
+        val formattedResponse = messageResponse.formattedResponse(request = notificationRequest)
+        execution.setVariable("result", StringWrapper(value = formattedResponse))
     }
 }

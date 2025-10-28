@@ -43,35 +43,41 @@ const notifyNlPluginSpecification: PluginSpecification = {
       title: 'NotifyNL',
       'send-sms': 'Stuur SMS',
       'send-email': 'Stuur een E-mail',
+      'send-letter': 'Stuur een Brief',
+      'get-template': 'Verkrijg template via ID',
+      'get-all-templates': 'Verkrijg alle templates',
+      'get-message': 'Verkrijg bericht via ID',
       url: 'NotifyNL API URL',
       urlTooltip: 'Een URL naar de REST API van NotifyNL.',
-      description: 'Verstuur SMS en E-mail met de NotifyNL service.',
+      description: 'Verstuur SMS, E-mail of Brieven met de NotifyNL plugin.',
       configurationTitle: 'Configuratienaam',
-      configurationTitleTooltip:
-        'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
+      configurationTitleTooltip: 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
       phoneNumber: 'Telefoonnummer',
       phoneNumberTooltip: 'Het telefoonnummer van de ontvanger',
       apiKey: 'API Sleutel',
-      apiKeyTooltip: 'De API sleutel van de Service in NotifyNL',
+      apiKeyTooltip: 'De API sleutel van de Service in NotifyNL, deze kun je vinden in het NotifyNL administratiepaneel.',
       templateId: 'Template ID',
-      templateIdTooltip: 'De unieke identifier van de template die gebruikt wordt voor dit bericht'
+      templateIdTooltip: 'De unieke identifier van de template die gebruikt wordt voor dit bericht, deze kun je vinden in het NotifyNL administratiepaneel.'
     },
     en: {
       title: 'NotifyNL',
       'send-sms': 'Send SMS',
       'send-email': 'Send E-mail',
+      'send-letter': 'Send Letter',
+      'get-template': 'Get template via ID',
+      'get-all-templates': 'Get all templates',
+      'get-message': 'Get message via ID',
       url: 'NotifyNL API URL',
       urlTooltip: 'The URL of the NotifyNL REST API.',
-      description: 'Send SMS and E-mail with the NotifyNL service.',
+      description: 'Send SMS, E-mail or a Letter with the NotifyNL plugin.',
       configurationTitle: 'Configuration name',
-      configurationTitleTooltip:
-          'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
+      configurationTitleTooltip: 'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
       phoneNumber: 'Phone number',
-      phoneNumberTooltip: 'The mobile number of the recipient.',
-      apiKey: 'API Sleutel',
-      apiKeyTooltip: 'De API sleutel van de Service in NotifyNL',
+      phoneNumberTooltip: 'The phone number of the recipient.',
+      apiKey: 'API Key',
+      apiKeyTooltip: 'The API key of the service in NotifyNL, this can be found in the NotifyNL admin panel.',
       templateId: 'Template ID',
-      templateIdTooltip: 'The unique ID of the template that will be used for this message'
+      templateIdTooltip: 'The unique ID of the template that will be used for this message, this can be found in the NotifyNL admin panel.'
     }
   },
 };
