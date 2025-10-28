@@ -34,6 +34,7 @@
     "libs:build:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm",
     "libs:build:value-mapper": "ng build @valtimo-plugins/value-mapper",
     "libs:build:document-search": "ng build @valtimo-plugins/document-search",
+    "libs:build:docsys": "ng build @valtimo-plugins/docsys",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "libs:watch:mtls-sslcontext": "ng build @valtimo-plugins/mtls-sslcontext --watch",
@@ -53,7 +54,8 @@
     "libs:watch:value-mapper": "ng build @valtimo-plugins/value-mapper --watch",
     "libs:watch:xential": "ng build @valtimo-plugins/xential --watch",
     "libs:watch:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm --watch",
-    "libs:watch:document-search": "ng build @valtimo-plugins/document-search --watch"
+    "libs:watch:document-search": "ng build @valtimo-plugins/document-search --watch",
+    "libs:watch:docsys": "ng build @valtimo-plugins/docsys --watch"
   },
   "private": true,
   "dependencies": {
@@ -139,6 +141,7 @@
     "@types/jasmine": "5.1.4",
     "@types/jasminewd2": "2.0.13",
     "@types/node": "22.1.0",
+    "@valtimo-plugins/docsys": "file:dist/valtimo-plugins/docsys",
     "@valtimo-plugins/document-search": "file:dist/valtimo-plugins/document-search",
     "@valtimo-plugins/externe-klanttaak": "file:dist/valtimo-plugins/externe-klanttaak",
     "@valtimo-plugins/freemarker": "file:dist/valtimo-plugins/freemarker",

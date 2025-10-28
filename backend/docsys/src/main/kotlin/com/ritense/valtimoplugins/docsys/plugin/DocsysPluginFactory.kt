@@ -21,6 +21,7 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.docsys.client.DocsysClient
+import com.ritense.valueresolver.ValueResolverService
 import org.springframework.stereotype.Component
 
 @Component
@@ -28,10 +29,11 @@ import org.springframework.stereotype.Component
 class DocsysPluginFactory(
     pluginService: PluginService,
     val client: DocsysClient,
+    val valueResolverService: ValueResolverService,
     val storageService: TemporaryResourceStorageService,
 ) : PluginFactory<DocsysPlugin>(pluginService) {
 
     override fun create(): DocsysPlugin {
-        return DocsysPlugin(client, storageService)
+        return DocsysPlugin(client, valueResolverService, storageService)
     }
 }

@@ -18,16 +18,20 @@ import {NgModule} from '@angular/core';
 import {DocsysConfigurationComponent} from './components/docsys-configuration/docsys-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
+import {CarbonMultiInputModule, FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
+import {GenerateDocumentComponent} from "./components/generate-document/generate-document.component";
 
 
 @NgModule({
-  declarations: [
-    DocsysConfigurationComponent,
-  ],
-  imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
-  exports: [
-    DocsysConfigurationComponent,
-  ],
+    declarations: [
+        DocsysConfigurationComponent,
+        GenerateDocumentComponent,
+    ],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, CarbonMultiInputModule, SelectModule,],
+    exports: [
+        DocsysConfigurationComponent,
+        GenerateDocumentComponent
+    ],
 })
-export class DocsysPluginModule {}
+export class DocsysPluginModule {
+}

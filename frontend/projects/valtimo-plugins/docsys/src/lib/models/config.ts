@@ -17,7 +17,8 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface DocsysConfig extends PluginConfigurationData {
-    apiUrl: string;
+    damApiUrl: string;
+    docsysApiUrl: string
     tokenEndpoint: string;
     clientId: string;
     clientSecret: string;
@@ -26,6 +27,11 @@ interface DocsysConfig extends PluginConfigurationData {
 interface GenerateDocument {
     modelId: string;
     params: Array<{key: string; value: string}>;
+    taal: string;
+    naam: string;
+    beschrijving: string;
+    format: string;
+    processVariableName: string;
 }
 
 

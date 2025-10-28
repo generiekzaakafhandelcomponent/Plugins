@@ -37,7 +37,7 @@ import java.util.Base64
 @Plugin(
     key = "Docsys",
     title = "Docsys Plugin",
-    description = "Post message with the Docsys plugin"
+    description = "Generate documents with the Docsys plugin"
 )
 open class DocsysPlugin(
     private val DocsysClient: DocsysClient,
@@ -96,7 +96,7 @@ open class DocsysPlugin(
         // step 1
         val fileResponse = DocsysClient.generateDocument(
             modelId = modelId,
-            params = (resolvedParams?.associate { it.key to it.value }) as Map<String, Any>,
+            params = (resolvedParams?.associate { it.key to it.value as Any }) as Map<String, Any>,
         )
 
         val resourceId = storeDocument(fileResponse,

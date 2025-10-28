@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":backend:xential"))
     implementation(project(":backend:valtimo-llm"))
     implementation(project(":backend:document-search"))
+    implementation(project(":backend:docsys"))
     implementation(project(":backend:value-mapper"))
 }
 

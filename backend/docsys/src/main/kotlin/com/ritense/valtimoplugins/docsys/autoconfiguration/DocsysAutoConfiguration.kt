@@ -31,7 +31,7 @@ class DocsysAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(DocsysClient::class)
-    fun DocsysClient(
+    fun createDocsysClient(
         restClientBuilder: RestClient.Builder,
     ): DocsysClient {
         return DocsysClient(restClientBuilder)
@@ -39,7 +39,7 @@ class DocsysAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(DocsysPluginFactory::class)
-    fun DocsysPluginFactory(
+    fun createDocsysPluginFactory(
         pluginService: PluginService,
         DocsysClient: DocsysClient,
         valueResolver: ValueResolverService,

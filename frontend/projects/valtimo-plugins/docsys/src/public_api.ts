@@ -19,7 +19,9 @@
  */
 
 export * from './lib/models';
-export * from './lib/docsys-plugin-module';
+export * from './lib/docsys-plugin.module';
 export * from './lib/docsys-plugin.specification';
 export * from './lib/components/docsys-configuration/docsys-configuration.component';
+export * from './lib/components/generate-document/generate-document.component';
+
 

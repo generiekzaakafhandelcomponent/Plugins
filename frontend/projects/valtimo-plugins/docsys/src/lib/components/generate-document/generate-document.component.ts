@@ -18,14 +18,16 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from "rxjs";
+import {BehaviorSubject, combineLatest, map, Observable, of, Subscription, take} from "rxjs";
 import {GenerateDocument} from "../../models";
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
+import {TranslateService} from "@ngx-translate/core";
+import {OpenZaakService} from "@valtimo/resource";
+import {SelectItem} from "@valtimo/components";
+import {DocumentLanguage} from "@valtimo/zgw";
 
 @Component({
   selector: 'app-generate-document',
-  standalone: true,
-  imports: [],
   templateUrl: './generate-document.component.html',
   styleUrl: './generate-document.component.scss'
 })
@@ -42,6 +44,35 @@ export class GenerateDocumentComponent implements FunctionConfigurationComponent
     private saveSubscription!: Subscription;
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    readonly LANGUAGES: Array<DocumentLanguage> = ['nld', 'eng', 'deu'];
+    readonly languageItems$: Observable<Array<SelectItem>> = this.translateService.stream('key').pipe(
+        map(() =>
+            this.LANGUAGES.map(language => ({
+                id: language,
+                text: this.translateService.instant(`document.${language}`),
+            }))
+        )
+    );
+
+    readonly formatItems$: Observable<Array<SelectItem>> = of(['pdf']).pipe(
+        map(format => (
+                format.map(value => ({
+                    id: value,
+                    text: value,
+                }))
+            )
+        ));
+
+    readonly informatieObjectTypes$: Observable<Array<SelectItem>> = this.openzaakService.getInformatieObjectTypes().pipe(
+        map(types => types.map(type => ({id: type.url, text: type.omschrijving})))
+    );
+
+    constructor(
+        private readonly translateService: TranslateService,
+        private readonly openzaakService: OpenZaakService,
+    ) {
+    }
+
     public ngOnInit(): void {
         this.openSaveSubscription();
     }
@@ -56,7 +87,11 @@ export class GenerateDocumentComponent implements FunctionConfigurationComponent
     }
 
     private handleValid(formValue: GenerateDocument): void {
-        const valid = !!(formValue.modelId);
+        const valid = !!(formValue.modelId)
+            && !!(formValue.taal)
+            && !!(formValue.naam)
+            && !!(formValue.format)
+            && !!(formValue.processVariableName);
 
         this.valid$.next(valid);
         this.valid.emit(valid);

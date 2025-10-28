@@ -81,7 +81,7 @@ class DocsysClient(
             }
             .headers {
                 it.contentType = MediaType.APPLICATION_JSON
-                it.setBearerAuth(getToken().accesToken.value)
+                it.setBearerAuth(getAccessToken().accesToken.value)
             }
             .accept(MediaType.APPLICATION_JSON)
             .body(requestBody)
@@ -116,7 +116,7 @@ class DocsysClient(
             }
             .headers {
                 it.contentType = MediaType.APPLICATION_JSON
-                it.setBearerAuth(getToken().accesToken.value)
+                it.setBearerAuth(getAccessToken().accesToken.value)
             }
             .accept(MediaType.APPLICATION_JSON)
             .body(body)
@@ -131,7 +131,7 @@ class DocsysClient(
     }
 
 
-    private fun getToken(): AccesTokenDecorator {
+    private fun getAccessToken(): AccesTokenDecorator {
 
         if (token == null || token!!.isExpired()) {
             val clientGrant: AuthorizationGrant = ClientCredentialsGrant()
