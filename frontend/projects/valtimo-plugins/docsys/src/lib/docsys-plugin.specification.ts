@@ -17,13 +17,16 @@
 import {PluginSpecification} from '@valtimo/plugin';
 import {DocsysConfigurationComponent} from './components/docsys-configuration/docsys-configuration.component';
 import {DOCSYS_PLUGIN_LOGO_BASE64} from './assets';
+import {GenerateDocumentComponent} from "./components/generate-document/generate-document.component";
 
 
 const docsysPluginSpecification: PluginSpecification = {
     pluginId: 'Docsys',
     pluginConfigurationComponent: DocsysConfigurationComponent,
     pluginLogoBase64: DOCSYS_PLUGIN_LOGO_BASE64,
-    functionConfigurationComponents: {},
+    functionConfigurationComponents: {
+        'generate-document': GenerateDocumentComponent
+    },
     pluginTranslations: {
         nl: {
             title: 'Docsys',
@@ -41,6 +44,7 @@ const docsysPluginSpecification: PluginSpecification = {
             configurationTitle: 'Configuratienaam',
             configurationTitleTooltip:
                 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
+            'generate-document': 'Genereer document',
             modelId: 'Model ID',
             modelIdTooltip: 'Vul het Berkely Bridge model ID in',
             naam: 'Naam',
@@ -77,6 +81,7 @@ const docsysPluginSpecification: PluginSpecification = {
             configurationTitle: 'Configuration name',
             configurationTitleTooltip:
                 'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
+            'generate-document': 'Generate document',
             modelId: 'Model ID',
             modelIdTooltip: 'Enter the Berkely Bridge model ID',
             templateId: 'Template ID',
