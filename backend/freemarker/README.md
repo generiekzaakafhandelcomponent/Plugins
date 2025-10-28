@@ -43,7 +43,7 @@ The following dependency can be added to your `package.json` file:
 ```json
 {
   "dependencies": {
-    "@valtimo-plugins/freemarker": "8.0.0"
+    "@valtimo-plugins/freemarker": "8.1.0"
   }
 }
 ```
