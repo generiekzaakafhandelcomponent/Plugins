@@ -1,15 +1,15 @@
-package com.ritense.valtimo.openklant.plugin
+package com.ritense.valtimoplugins.openklant.plugin
 
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimo.openklant.model.ContactInformation
-import com.ritense.valtimo.openklant.model.KlantContactOptions
-import com.ritense.valtimo.openklant.model.OpenKlantProperties
-import com.ritense.valtimo.openklant.service.OpenKlantService
-import com.ritense.valtimo.openklant.util.ReflectionUtil
+import com.ritense.valtimoplugins.openklant.model.ContactInformation
+import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.service.OpenKlantService
+import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution

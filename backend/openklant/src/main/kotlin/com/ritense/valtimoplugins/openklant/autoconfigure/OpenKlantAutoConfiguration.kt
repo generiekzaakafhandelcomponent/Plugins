@@ -1,14 +1,14 @@
-package com.ritense.valtimo.openklant.autoconfigure
+package com.ritense.valtimoplugins.openklant.autoconfigure
 
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
-import com.ritense.valtimo.openklant.client.OpenKlantClient
-import com.ritense.valtimo.openklant.plugin.OpenKlantPluginFactory
-import com.ritense.valtimo.openklant.resolver.OpenKlantValueResolverFactory
-import com.ritense.valtimo.openklant.service.DefaultOpenKlantService
-import com.ritense.valtimo.openklant.service.OpenKlantService
-import com.ritense.valtimo.openklant.service.PartijFactory
-import com.ritense.valtimo.openklant.util.ReflectionUtil
+import com.ritense.valtimoplugins.openklant.client.OpenKlantClient
+import com.ritense.valtimoplugins.openklant.plugin.OpenKlantPluginFactory
+import com.ritense.valtimoplugins.openklant.resolver.OpenKlantValueResolverFactory
+import com.ritense.valtimoplugins.openklant.service.DefaultOpenKlantService
+import com.ritense.valtimoplugins.openklant.service.OpenKlantService
+import com.ritense.valtimoplugins.openklant.service.PartijFactory
+import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.zakenapi.service.ZaakDocumentService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean

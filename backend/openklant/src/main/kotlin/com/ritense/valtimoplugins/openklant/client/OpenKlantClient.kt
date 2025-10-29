@@ -1,12 +1,12 @@
-package com.ritense.valtimo.openklant.client
+package com.ritense.valtimoplugins.openklant.client
 
-import com.ritense.valtimo.openklant.dto.CreateDigitaalAdresRequest
-import com.ritense.valtimo.openklant.dto.CreatePartijRequest
-import com.ritense.valtimo.openklant.dto.DigitaalAdres
-import com.ritense.valtimo.openklant.dto.KlantContact
-import com.ritense.valtimo.openklant.dto.Partij
-import com.ritense.valtimo.openklant.model.KlantContactOptions
-import com.ritense.valtimo.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
+import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
+import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
+import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Partij
+import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimo.util.Page
 import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory

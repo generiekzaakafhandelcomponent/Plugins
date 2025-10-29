@@ -1,10 +1,10 @@
-package com.ritense.valtimo.openklant.resolver
+package com.ritense.valtimoplugins.openklant.resolver
 
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
-import com.ritense.valtimo.openklant.model.KlantContactOptions
-import com.ritense.valtimo.openklant.service.OpenKlantService
-import com.ritense.valtimo.openklant.util.ReflectionUtil
+import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.service.OpenKlantService
+import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.valueresolver.ValueResolverFactory
 import com.ritense.zakenapi.service.ZaakDocumentService
 import kotlinx.coroutines.runBlocking

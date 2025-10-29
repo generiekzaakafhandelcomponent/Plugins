@@ -1,10 +1,10 @@
-package com.ritense.valtimo.openklant.service
+package com.ritense.valtimoplugins.openklant.service
 
-import com.ritense.valtimo.openklant.dto.Contactnaam
-import com.ritense.valtimo.openklant.dto.CreatePartijRequest
-import com.ritense.valtimo.openklant.dto.Identificator
-import com.ritense.valtimo.openklant.dto.Partij
-import com.ritense.valtimo.openklant.model.ContactInformation
+import com.ritense.valtimoplugins.openklant.dto.Contactnaam
+import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
+import com.ritense.valtimoplugins.openklant.dto.Identificator
+import com.ritense.valtimoplugins.openklant.dto.Partij
+import com.ritense.valtimoplugins.openklant.model.ContactInformation
 
 class PartijFactory {
     fun createFromBsn(contactInformation: ContactInformation): CreatePartijRequest =

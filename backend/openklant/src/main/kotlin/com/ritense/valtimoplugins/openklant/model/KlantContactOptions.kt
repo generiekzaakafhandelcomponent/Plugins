@@ -1,4 +1,4 @@
-package com.ritense.valtimo.openklant.model
+package com.ritense.valtimoplugins.openklant.model
 
 import java.net.URI
 

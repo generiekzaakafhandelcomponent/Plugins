@@ -1,14 +1,14 @@
-package com.ritense.valtimo.openklant.service
+package com.ritense.valtimoplugins.openklant.service
 
-import com.ritense.valtimo.openklant.client.OpenKlantClient
-import com.ritense.valtimo.openklant.dto.CreateDigitaalAdresRequest
-import com.ritense.valtimo.openklant.dto.DigitaalAdres
-import com.ritense.valtimo.openklant.dto.KlantContact
-import com.ritense.valtimo.openklant.dto.Partij
-import com.ritense.valtimo.openklant.dto.SoortDigitaalAdres
-import com.ritense.valtimo.openklant.model.ContactInformation
-import com.ritense.valtimo.openklant.model.KlantContactOptions
-import com.ritense.valtimo.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.client.OpenKlantClient
+import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
+import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
+import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Partij
+import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
+import com.ritense.valtimoplugins.openklant.model.ContactInformation
+import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 
 class DefaultOpenKlantService(
     private val openKlantClient: OpenKlantClient,

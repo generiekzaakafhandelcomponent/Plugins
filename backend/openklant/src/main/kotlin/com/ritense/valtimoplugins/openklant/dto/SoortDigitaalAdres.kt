@@ -1,4 +1,4 @@
-package com.ritense.valtimo.openklant.dto
+package com.ritense.valtimoplugins.openklant.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

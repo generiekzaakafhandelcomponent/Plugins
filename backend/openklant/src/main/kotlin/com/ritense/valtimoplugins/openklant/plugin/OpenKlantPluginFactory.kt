@@ -1,9 +1,9 @@
-package com.ritense.valtimo.openklant.plugin
+package com.ritense.valtimoplugins.openklant.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimo.openklant.service.OpenKlantService
-import com.ritense.valtimo.openklant.util.ReflectionUtil
+import com.ritense.valtimoplugins.openklant.service.OpenKlantService
+import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 
 class OpenKlantPluginFactory(
     pluginService: PluginService,
