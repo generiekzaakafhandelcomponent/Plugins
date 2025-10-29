@@ -1,0 +1,34 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "speechToTranscriptionResult",
+      "type": "hidden",
+      "input": true,
+      "label": "Speech To Transcription Result",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "S2T.summary-speechToTranscriptionResult"
+      },
+      "properties": {
+        "sourceKey": "doc:speechToTranscriptionResult"
+      }
+    },
+    {
+      "key": "html",
+      "tag": "div",
+      "type": "htmlelement",
+      "attrs": [
+        {
+          "attr": "",
+          "value": ""
+        }
+      ],
+      "input": false,
+      "label": "HTML",
+      "content": "<section>\r\n  <h3>Speech Transcription Plugin</h3>\r\n    {{ data.speechToTranscriptionResult ? `\r\n    <h4>Speech to Transcription Result</h4>\r\n    <dl class=\"row mb-5\">\r\n      <dt class=\"col-12\"><pre>${data.speechToTranscriptionResult.text}</pre></dt>\r\n    </dl>` : '' }}\r\n\r\n</section>\r\n\r\n<style>\r\n  pre{\r\n    padding: 10px;\r\n    overflow: auto;\r\n    white-space: pre-wrap;\r\n    min-height: 100px;\r\n    resize: both;\r\n  }\r\n</style>\r\n",
+      "tableView": false,
+      "refreshOnChange": false
+    }
+  ]
+}

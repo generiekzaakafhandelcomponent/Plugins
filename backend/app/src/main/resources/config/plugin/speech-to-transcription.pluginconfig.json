@@ -1,0 +1,11 @@
+[
+  {
+    "id": "769c69de-eb8e-4ee6-8fc8-d3210f8190f4",
+    "title": "Valtimo Speech Transcription (Autodeployed)",
+    "pluginDefinitionKey": "valtimo-s2t",
+    "properties": {
+      "url": "https://api.mistral.ai/",
+      "token": "YOUR_MISTRAL_API_KEY_HERE"
+    }
+  }
+]

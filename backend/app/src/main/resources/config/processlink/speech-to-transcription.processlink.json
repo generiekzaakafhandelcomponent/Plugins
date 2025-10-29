@@ -1,0 +1,23 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "S2T-SaveFile",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "Activity_0xhu8q5",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "769c69de-eb8e-4ee6-8fc8-d3210f8190f4",
+    "pluginActionDefinitionKey": "speech-to-transcription",
+    "actionProperties": {
+      "filePV": "file",
+      "resultPV": "result"
+    },
+    "processLinkType": "plugin"
+  }
+]
