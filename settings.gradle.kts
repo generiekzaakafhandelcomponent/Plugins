@@ -18,7 +18,7 @@ include(
     "backend:spotler",
     "backend:suwinet",
     "backend:xential",
-    "backend:mistral",
+    "backend:valtimo-llm",
     "backend:kvk-handelsregister",
     "backend:value-mapper",
     "backend:document-search",

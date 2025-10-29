@@ -1,0 +1,22 @@
+{
+    "name": "haal-centraal",
+    "version": 1,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins:haal-centraal"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/haal-centraal",
+        "codeAdditions": [
+            {
+                "spec": "haalCentraalBrpPluginSpecification",
+                "module": "HaalCentraalBrpPluginModule"
+            },
+            {
+                "spec": "haalCentraalBagPluginSpecification",
+                "module": "HaalCentraalBagPluginModule"
+            }
+        ]
+    }
+}

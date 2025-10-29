@@ -1,0 +1,18 @@
+{
+    "name": "object-management",
+    "version": 1,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins:object-management"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/object-management",
+        "codeAdditions": [
+            {
+                "spec": "objectManagementPluginSpecification",
+                "module": "ObjectManagementPluginModule"
+            }
+        ]
+    }
+}
