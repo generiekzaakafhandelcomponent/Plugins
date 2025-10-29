@@ -87,18 +87,27 @@
             [widthInPx]="200"
             name="taal"
     ></v-select>
-    <v-select
-            *ngIf="informatieObjectTypes$ | async as informatieTypeItems"
-            [defaultSelectionId]="informatieTypeItems[0]?.id"
-            [items]="informatieTypeItems"
-            [disabled]="obs.disabled"
+    <v-input
+            name="informatieObjectType"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.informatieObjectType"
             [margin]="true"
-            [required]="true"
             [title]="'informatieobjecttype' | pluginTranslate: pluginId | async"
             [tooltip]="'informatieobjecttypeTooltip' | pluginTranslate: pluginId | async"
-            [widthInPx]="200"
-            name="informatieObjectType"
-    ></v-select>
+            [required]="true"
+    ></v-input>
+<!--    <v-select-->
+<!--            *ngIf="informatieObjectTypes$ | async as informatieTypeItems"-->
+<!--            [defaultSelectionId]="informatieTypeItems[0]?.id"-->
+<!--            [items]="informatieTypeItems"-->
+<!--            [disabled]="obs.disabled"-->
+<!--            [margin]="true"-->
+<!--            [required]="true"-->
+<!--            [title]="'informatieobjecttype' | pluginTranslate: pluginId | async"-->
+<!--            [tooltip]="'informatieobjecttypeTooltip' | pluginTranslate: pluginId | async"-->
+<!--            [widthInPx]="200"-->
+<!--            name="informatieObjectType"-->
+<!--    ></v-select>-->
     <valtimo-carbon-multi-input
             name="params"
             [title]="'parameters' | pluginTranslate: pluginId | async"

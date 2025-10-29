@@ -31,6 +31,7 @@ interface GenerateDocument {
     naam: string;
     beschrijving: string;
     format: string;
+    informatieObjectType: string;
     processVariableName: string;
 }
 

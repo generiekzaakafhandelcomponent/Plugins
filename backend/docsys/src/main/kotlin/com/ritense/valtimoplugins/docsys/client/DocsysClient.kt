@@ -110,6 +110,7 @@ class DocsysClient(
                 it.scheme(damBaseUri!!.scheme)
                     .host(damBaseUri!!.host)
                     .path(damBaseUri!!.path)
+                    .path("/")
                     .path(modelId)
                     .port(damBaseUri!!.port)
                     .build()

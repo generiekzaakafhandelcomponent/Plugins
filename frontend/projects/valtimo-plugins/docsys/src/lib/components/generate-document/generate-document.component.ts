@@ -63,9 +63,9 @@ export class GenerateDocumentComponent implements FunctionConfigurationComponent
             )
         ));
 
-    readonly informatieObjectTypes$: Observable<Array<SelectItem>> = this.openzaakService.getInformatieObjectTypes().pipe(
-        map(types => types.map(type => ({id: type.url, text: type.omschrijving})))
-    );
+    // readonly informatieObjectTypes$: Observable<Array<SelectItem>> = this.openzaakService.getInformatieObjectTypes().pipe(
+    //     map(types => types.map(type => ({id: type.url, text: type.omschrijving})))
+    // );
 
     constructor(
         private readonly translateService: TranslateService,
@@ -91,6 +91,7 @@ export class GenerateDocumentComponent implements FunctionConfigurationComponent
             && !!(formValue.taal)
             && !!(formValue.naam)
             && !!(formValue.format)
+            && !!(formValue.informatieObjectType)
             && !!(formValue.processVariableName);
 
         this.valid$.next(valid);

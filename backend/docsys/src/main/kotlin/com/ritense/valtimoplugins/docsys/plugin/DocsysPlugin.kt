@@ -91,6 +91,7 @@ open class DocsysPlugin(
         @PluginActionProperty informatieObjectType: String,
         @PluginActionProperty processVariableName: String
     ) {
+        setDocsysClientParams()
         var resolvedParams = resolveValue(execution, params)
 
         // step 1
