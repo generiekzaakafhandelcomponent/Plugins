@@ -32,7 +32,7 @@ dependencies {
     implementation(project(":backend:suwinet"))
     implementation(project(":backend:xential"))
     implementation(project(":backend:valtimo-llm"))
-    implementation(project(":backend:valtimo-a2t"))
+    implementation(project(":backend:valtimo-s2t"))
     implementation(project(":backend:document-search"))
     implementation(project(":backend:value-mapper"))
 }

@@ -132,10 +132,10 @@ import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr
 import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
-import {ValtimoA2tPluginModule} from "../../projects/valtimo-plugins/valtimo-a2t/src/lib/valtimo-a2t-plugin-module";
+import {ValtimoS2tPluginModule} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin-module";
 import {
-    valtimoA2tPluginSpecification
-} from "../../projects/valtimo-plugins/valtimo-a2t/src/lib/valtimo-a2t-plugin.specification";
+    valtimoS2tPluginSpecification
+} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
 import {DocumentSearchPluginModule, documentSearchPluginSpecification} from "@valtimo-plugins/document-search";
 import {SamplePluginModule} from "../../projects/valtimo-plugins/sample-plugin/src/lib/sample-plugin.module";
 import {
@@ -167,7 +167,7 @@ export function tabsFactory() {
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
         ValtimoOcrPluginModule,
-        ValtimoA2tPluginModule,
+        ValtimoS2tPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
         ValtimoLlmPluginModule,
@@ -248,7 +248,7 @@ export function tabsFactory() {
         provide: PLUGINS_TOKEN,
         useValue: [
             valtimoOcrPluginSpecification,
-            valtimoA2tPluginSpecification,
+            valtimoS2tPluginSpecification,
             externeKlanttaakPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,

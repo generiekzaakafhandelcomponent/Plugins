@@ -1,7 +1,0 @@
-[
-  {
-    "processDefinitionKey": "audio-to-transcription",
-    "canInitializeDocument": true,
-    "startableByUser": false
-  }
-]

@@ -1,0 +1,12 @@
+{
+  "$id": "valtimo-s2t.schema",
+  "type": "object",
+  "title": "Valtimo S2T Plugin",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "speechToTranscriptionResult": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}
