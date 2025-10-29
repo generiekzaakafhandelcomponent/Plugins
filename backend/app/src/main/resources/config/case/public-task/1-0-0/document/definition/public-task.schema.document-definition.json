@@ -1,0 +1,12 @@
+{
+  "$id" : "public-task.schema",
+  "type" : "object",
+  "title" : "Public task",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "properties" : {
+    "publicTaskAssignee" : {
+      "type" : "string"
+    },
+    "additionalProperties" : true
+  }
+}

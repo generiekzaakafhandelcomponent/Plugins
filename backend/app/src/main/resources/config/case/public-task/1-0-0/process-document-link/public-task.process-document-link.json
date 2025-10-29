@@ -1,0 +1,12 @@
+[
+  {
+    "processDefinitionKey" : "public-task",
+    "canInitializeDocument" : true,
+    "startableByUser" : true
+  },
+  {
+    "processDefinitionKey" : "create-public-task-url",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  }
+]

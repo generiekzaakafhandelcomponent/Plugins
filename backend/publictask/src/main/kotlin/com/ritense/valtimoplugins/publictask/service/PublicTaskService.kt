@@ -34,6 +34,7 @@ import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.operaton.bpm.engine.delegate.DelegateTask
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import java.net.URI
 
 class PublicTaskService(
     private val publicTaskRepository: PublicTaskRepository,
@@ -56,7 +57,7 @@ class PublicTaskService(
         execution: DelegateExecution,
         publicTaskData: PublicTaskData
     ) {
-        val publicTaskUrl = "$baseUrl/$PUBLIC_TASK_URL?publicTaskId=${publicTaskData.publicTaskId}"
+        val publicTaskUrl = publicTaskUrl(publicTaskData.publicTaskId)
 
         execution.setVariable("assigneeCandidateContactData", publicTaskData.assigneeCandidateContactData)
         execution.setVariable("url", publicTaskUrl)
@@ -64,9 +65,9 @@ class PublicTaskService(
         savePublicTaskEntity(publicTaskData)
     }
 
-    fun createPublicTaskHtml(publicTaskId: String): ResponseEntity<String> {
+    fun createPublicTaskHtml(publicTaskId: UUID): ResponseEntity<String> {
         val formHtml = try {
-            val userTaskId = publicTaskRepository.getReferenceById(UUID.fromString(publicTaskId)).userTaskId
+            val userTaskId = publicTaskRepository.getReferenceById(publicTaskId).userTaskId
             val operatonTaskData = runWithoutAuthorization {
                 processLinkActivityService.openTask(userTaskId).properties as FormTaskOpenResultProperties
             }
@@ -74,7 +75,7 @@ class PublicTaskService(
                 fileName = PUBLIC_TASK_FILE_NAME,
                 variables = mapOf(
                     "form_io_form" to operatonTaskData.prefilledForm.toPrettyString(),
-                    "public_task_url" to "$baseUrl$PUBLIC_TASK_URL?publicTaskId=$publicTaskId"
+                    "public_task_url" to publicTaskUrl(publicTaskId)
                 )
             )
         } catch (e: Exception) {
@@ -88,12 +89,11 @@ class PublicTaskService(
         publicTaskId: String,
         submission: JsonNode
     ): ResponseEntity<String> {
-
         val publicTaskEntity = publicTaskRepository.getReferenceById(UUID.fromString(publicTaskId))
 
-        if (LocalDate.parse(publicTaskEntity.taskExpirationDate)
-                .isBefore(LocalDate.now())
-        ) return TASK_NOT_AVAILABLE_ERROR
+        if (LocalDate.parse(publicTaskEntity.taskExpirationDate).isBefore(LocalDate.now())) {
+            return TASK_NOT_AVAILABLE_ERROR
+        }
 
         val operatonTask = try {
             runWithoutAuthorization {
@@ -102,8 +102,6 @@ class PublicTaskService(
         } catch (e: Exception) {
             return taskNotAvailableResponse(e)
         }
-
-        publicTaskRepository.save(publicTaskEntity.copy(isCompletedByPublicTask = true))
 
         val formSubmissionResult = runWithoutAuthorization {
             defaultFormSubmissionService.handleSubmission(
@@ -115,13 +113,19 @@ class PublicTaskService(
             )
         }
 
+        publicTaskRepository.save(publicTaskEntity.copy(
+            isCompletedByPublicTask = formSubmissionResult.errors().isEmpty()
+        ))
+
         if (formSubmissionResult.errors().isNotEmpty()) {
-            publicTaskRepository.save(publicTaskEntity.copy(isCompletedByPublicTask = false))
             return SERVER_SIDE_ERROR
         }
 
         return ResponseEntity("Your response has been submitted", HttpStatus.OK)
     }
+
+    private fun publicTaskUrl(publicTaskId: UUID): String =
+        URI("${baseUrl.removeSuffix("/")}${PUBLIC_TASK_URL}?publicTaskId=${publicTaskId}").toString()
 
     private fun savePublicTaskEntity(publicTaskData: PublicTaskData) {
         publicTaskRepository.save(
@@ -133,7 +137,9 @@ class PublicTaskService(
                 taskExpirationDate = publicTaskData.taskExpirationDate,
                 isCompletedByPublicTask = publicTaskData.isCompletedByPublicTask
             )
-        )
+        ).also {
+            logger.debug { "Saved public task entity $it" }
+        }
     }
 
     private fun taskNotAvailableResponse(e: Exception): ResponseEntity<String> = when (e) {

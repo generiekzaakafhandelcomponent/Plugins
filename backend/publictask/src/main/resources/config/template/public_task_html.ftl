@@ -5,12 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"></script>
-    <title>Form.io Form Submission Example</title>
+    <title>Public Task - Form Submission Example</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,31 +48,43 @@
     </style>
 </head>
 <body>
-<div id="formio"></div>
+<div id="form" class="d-block"></div>
+<div id="result" class="d-none"></div>
 <script src="https://cdn.form.io/formiojs/formio.full.min.js"></script>
 <script>
+    const formContainer = document.getElementById('form');
+    const resultContainer = document.getElementById('result');
     const formJson = ${form_io_form};
 
-    Formio.createForm(document.getElementById('formio'), formJson).then(function (form) {
+    Formio.createForm(formContainer, formJson).then(function (form) {
         form.on('submit', function (submission) {
-            console.log('Form submitted', submission);
-
+            console.debug('Form submitted', submission);
             fetch('${public_task_url}', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(submission.data)
             })
-                .then(response => {
+                .then(async response => {
+                    console.debug('Response', response);
+                    // get response body
+                    const data = await response.text();
+                    // check for error response
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        // get error message from body or default to response status
+                        const error = data || response.status;
+                        return Promise.reject(error);
                     }
-                    return response.json();
+                    // hide form
+                    formContainer.classList.remove('d-block');
+                    formContainer.classList.add('d-none');
+                    // show submission result
+                    resultContainer.innerHTML = data;
+                    resultContainer.classList.remove('d-none');
+                    resultContainer.classList.add('d-block');
                 })
-                .then(data => console.log('Success:', data))
-                .catch((error) => console.error('Error:', error));
-
+                .catch(error => {
+                    console.error('Error:', error)
+                });
             // Prevent the default form submission behavior
             return false;
         });

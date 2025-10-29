@@ -1,0 +1,22 @@
+[
+  {
+    "activityId" : "StartEvent_1",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "start-form-public-task",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : null,
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "ut-public-task",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "publick-task",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "panel",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

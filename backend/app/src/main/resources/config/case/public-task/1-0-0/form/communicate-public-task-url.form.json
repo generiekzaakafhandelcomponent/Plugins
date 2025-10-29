@@ -1,0 +1,32 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "publicTaskUrl",
+      "type": "textfield",
+      "input": true,
+      "label": "Public task URL",
+      "disabled": true,
+      "persistent": "client-only",
+      "properties": {
+        "sourceKey": "pv:url"
+      }
+    },
+    {
+      "key": "publicTaskUrlCommunicated",
+      "type": "checkbox",
+      "input": true,
+      "label": "I confirm that I have communicated the URL of the public task to the assignee candidate",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "disableOnInvalid": true
+    }
+  ]
+}

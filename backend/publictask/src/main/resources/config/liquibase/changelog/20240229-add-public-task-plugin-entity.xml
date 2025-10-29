@@ -41,4 +41,11 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="Ritense">
+        <modifyDataType tableName="public_task_plugin_entity"
+                        columnName="process_business_key"
+                        newDataType="VARCHAR(255)"/>
+    </changeSet>
+
 </databaseChangeLog>

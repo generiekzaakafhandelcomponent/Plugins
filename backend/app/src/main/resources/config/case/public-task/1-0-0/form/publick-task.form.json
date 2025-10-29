@@ -1,0 +1,22 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "naam",
+      "type" : "textfield",
+      "input" : true,
+      "label" : "Naam",
+      "validate" : {
+        "required" : true
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Submit",
+      "tableView" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}
