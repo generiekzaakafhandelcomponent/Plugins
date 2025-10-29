@@ -7,7 +7,7 @@ import com.ritense.valtimoplugins.openklant.dto.KlantContact
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
-import com.ritense.valtimo.util.Page
+import com.ritense.zgw.Page
 import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory
 import io.netty.resolver.DefaultAddressResolverGroup
