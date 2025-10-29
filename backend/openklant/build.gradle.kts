@@ -16,7 +16,8 @@ dependencies {
     implementation("io.projectreactor.netty:reactor-netty-http:1.1.20")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("io.github.microutils:kotlin-logging")
-
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.mockk:mockk:1.13.9")
 }
 
 apply(from = "gradle/publishing.gradle")
