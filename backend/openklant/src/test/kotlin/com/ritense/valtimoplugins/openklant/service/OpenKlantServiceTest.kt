@@ -179,8 +179,8 @@ class OpenKlantServiceTest {
             coVerify {
                 client.patchPartij(
                     defaultPartij.uuid,
-                    match<Map<String, Any>> {
-                        val digitaleAdressen = it["digitaleAdressen"] as List<UuidReference>
+                    match<Map<String, Any>> { partij ->
+                        val digitaleAdressen = partij["digitaleAdressen"] as List<UuidReference>
                         digitaleAdressen.any { it.uuid == newDigitaalAdres.uuid }
                     },
                     testProperties,
@@ -232,8 +232,8 @@ class OpenKlantServiceTest {
             coVerify {
                 client.patchPartij(
                     newPartij.uuid,
-                    match<Map<String, Any>> {
-                        val digitaleAdressen = it["digitaleAdressen"] as List<UuidReference>
+                    match<Map<String, Any>> { partij ->
+                        val digitaleAdressen = partij["digitaleAdressen"] as List<UuidReference>
                         digitaleAdressen.any { it.uuid == newDigitaalAdres.uuid }
                     },
                     testProperties,
