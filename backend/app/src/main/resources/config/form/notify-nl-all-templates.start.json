@@ -1,0 +1,44 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Template Type",
+      "widget": "choicesjs",
+      "tableView": true,
+      "data": {
+        "values": [
+          {
+            "label": "",
+            "value": ""
+          },
+          {
+            "label": "E-mail",
+            "value": "email"
+          },
+          {
+            "label": "SMS",
+            "value": "sms"
+          },
+          {
+            "label": "Letter",
+            "value": "letter"
+          }
+        ]
+      },
+      "key": "templateType",
+      "properties": {
+        "targetKey": "doc:/templateType"
+      },
+      "type": "select",
+      "input": true
+    },
+    {
+      "type": "button",
+      "label": "Submit",
+      "key": "submit",
+      "disableOnInvalid": true,
+      "input": true,
+      "tableView": false
+    }
+  ]
+}

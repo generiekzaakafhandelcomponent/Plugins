@@ -1,0 +1,121 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Template ID",
+      "applyMaskOn": "change",
+      "autoExpand": true,
+      "tableView": true,
+      "key": "templateId",
+      "properties": {
+        "targetKey": "doc:/templateId"
+      },
+      "type": "textarea",
+      "input": true
+    },
+    {
+      "label": "Recipient Addresses",
+      "reorder": false,
+      "addAnotherPosition": "bottom",
+      "layoutFixed": false,
+      "enableRowGroups": false,
+      "initEmpty": false,
+      "tableView": false,
+      "defaultValue": [
+        {
+          "address": {}
+        }
+      ],
+      "key": "dataGrid",
+      "properties": {
+        "targetKey": "doc:/address"
+      },
+      "attributes": {
+        "data-testid": "test-plugin.start-dataGrid"
+      },
+      "type": "datagrid",
+      "input": true,
+      "components": [
+        {
+          "key": "address",
+          "type": "address",
+          "input": true,
+          "label": "Address",
+          "provider": "nominatim",
+          "tableView": false,
+          "components": [
+            {
+              "key": "address_line_1",
+              "type": "textfield",
+              "input": true,
+              "label": "Address 1",
+              "tableView": false,
+              "customConditional": "show = _.get(instance, 'parent.manualMode', false);"
+            },
+            {
+              "key": "address_line_2",
+              "type": "textfield",
+              "input": true,
+              "label": "Address 2",
+              "tableView": false,
+              "customConditional": "show = _.get(instance, 'parent.manualMode', false);"
+            },
+            {
+              "key": "address_line_3",
+              "type": "textfield",
+              "input": true,
+              "label": "Address 3",
+              "tableView": false,
+              "customConditional": "show = _.get(instance, 'parent.manualMode', false);"
+            },
+            {
+              "key": "city",
+              "type": "textfield",
+              "input": true,
+              "label": "City",
+              "tableView": false,
+              "customConditional": "show = _.get(instance, 'parent.manualMode', false);"
+            },
+            {
+              "key": "state",
+              "type": "textfield",
+              "input": true,
+              "label": "State",
+              "tableView": false,
+              "customConditional": "show = _.get(instance, 'parent.manualMode', false);"
+            },
+            {
+              "key": "country",
+              "type": "textfield",
+              "input": true,
+              "label": "Country",
+              "tableView": false,
+              "customConditional": "show = _.get(instance, 'parent.manualMode', false);"
+            },
+            {
+              "key": "zip",
+              "type": "textfield",
+              "input": true,
+              "label": "Zip Code",
+              "tableView": false,
+              "customConditional": "show = _.get(instance, 'parent.manualMode', false);"
+            }
+          ],
+          "providerOptions": {
+            "params": {
+              "autocompleteOptions": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "label": "Submit",
+      "key": "submit",
+      "disableOnInvalid": true,
+      "input": true,
+      "tableView": false
+    }
+  ]
+}

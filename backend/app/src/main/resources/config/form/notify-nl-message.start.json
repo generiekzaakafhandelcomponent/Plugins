@@ -1,0 +1,25 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Message ID",
+      "applyMaskOn": "change",
+      "autoExpand": true,
+      "tableView": true,
+      "key": "notificationId",
+      "properties": {
+        "targetKey": "doc:/notificationId"
+      },
+      "type": "textarea",
+      "input": true
+    },
+    {
+      "type": "button",
+      "label": "Submit",
+      "key": "submit",
+      "disableOnInvalid": true,
+      "input": true,
+      "tableView": false
+    }
+  ]
+}

@@ -5,8 +5,7 @@
     "pluginDefinitionKey": "notify-nl",
     "properties": {
       "url": "${NOTIFY_NL_API_URL}",
-      "serviceId": "${NOTIFY_NL_API_SERVICE_ID}",
-      "secretKey": "${NOTIFY_NL_API_SECRET_KEY}"
+      "apiKey": "${NOTIFY_NL_API_KEY}"
     }
   }
 ]

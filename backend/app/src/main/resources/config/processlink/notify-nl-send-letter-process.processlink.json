@@ -1,0 +1,23 @@
+[
+  {
+    "activityId": "SendLetter",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "c086e155-d592-47b9-aafe-868991f2fb88",
+    "pluginActionDefinitionKey": "send-letter",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "address": "doc:/address",
+      "templateId": "doc:/templateId"
+    }
+  },
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "notify-nl-letter.start",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": null,
+    "processLinkType": "form"
+  }
+]
