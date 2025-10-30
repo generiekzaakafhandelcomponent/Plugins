@@ -1,5 +1,5 @@
 dockerCompose {
-    setProjectName("sample-plugin")
+    setProjectName("openklant")
     isRequiredBy(project.tasks.integrationTesting)
 
     tasks.integrationTesting {
