@@ -89,10 +89,6 @@ open class DocsysPlugin(
         @PluginActionProperty modelId: String,
         @PluginActionProperty params: List<TemplateProperty>?,
         @PluginActionProperty format: String,
-        @PluginActionProperty naam: String,
-        @PluginActionProperty taal: String,
-        @PluginActionProperty beschrijving: String,
-        @PluginActionProperty informatieObjectType: String,
         @PluginActionProperty processVariableName: String
     ) {
         setDocsysClientParams()
@@ -104,41 +100,20 @@ open class DocsysPlugin(
             params = (resolvedParams?.associate { it.key to it.value as Any }) as Map<String, Any>,
         )
 
-        val resourceId = storeDocument(fileResponse,
-            naam,
-            format,
-            beschrijving, taal, informatieObjectType,
-            execution
-        )
+        val resourceId = storeDocument(fileResponse, format)
         execution.setVariable(processVariableName, resourceId)
     }
 
-    private fun storeDocument(fileResponse: DownloadResponse,
-                              naam: String,
-                              format: String,
-                              beschrijving: String,
-                              taal: String,
-                              informatieObjectType: String,
-                              execution: DelegateExecution): String {
+    private fun storeDocument(fileResponse: DownloadResponse, format: String): String {
         val content = Base64.getDecoder().decode(fileResponse.Content)
-
         val mutableMetaData = mutableMapOf<String, Any>()
-        mutableMetaData.put(MetadataType.DOCUMENT_ID.key, execution.processBusinessKey)
-        mutableMetaData.put(MetadataType.FILE_NAME.key, naam)
-        mutableMetaData.put(MetadataType.CONTENT_TYPE.key, format)
-        mutableMetaData.put("title", naam)
-        mutableMetaData.put("status", DocumentStatusType.DEFINITIEF.name)
         mutableMetaData.put("bestandsomvang", content.size)
-        mutableMetaData.put("description", beschrijving)
-        mutableMetaData.put("confidentialityLevel", "zaakvertrouwelijk")
-        mutableMetaData.put("language", taal)
-        mutableMetaData.put("informatieobjecttype", informatieObjectType)
+        mutableMetaData.put(MetadataType.CONTENT_TYPE.key, format)
         mutableMetaData.put("author", "Gegenereerd door Docsys")
 
-        val resourceId = storageService.store( content.inputStream(),  mutableMetaData)
+        val resourceId = storageService.store( content.inputStream(), mutableMetaData)
 
         return resourceId;
-
     }
 
     private fun resolveValue(execution: DelegateExecution, keyValueList: List<TemplateProperty>?): List<TemplateProperty>? {

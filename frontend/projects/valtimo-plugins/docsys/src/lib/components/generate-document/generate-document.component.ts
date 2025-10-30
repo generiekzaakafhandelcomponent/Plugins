@@ -44,16 +44,6 @@ export class GenerateDocumentComponent implements FunctionConfigurationComponent
     private saveSubscription!: Subscription;
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
-    readonly LANGUAGES: Array<DocumentLanguage> = ['nld', 'eng', 'deu'];
-    readonly languageItems$: Observable<Array<SelectItem>> = this.translateService.stream('key').pipe(
-        map(() =>
-            this.LANGUAGES.map(language => ({
-                id: language,
-                text: this.translateService.instant(`document.${language}`),
-            }))
-        )
-    );
-
     readonly formatItems$: Observable<Array<SelectItem>> = of(['pdf']).pipe(
         map(format => (
                 format.map(value => ({
@@ -62,10 +52,6 @@ export class GenerateDocumentComponent implements FunctionConfigurationComponent
                 }))
             )
         ));
-
-    // readonly informatieObjectTypes$: Observable<Array<SelectItem>> = this.openzaakService.getInformatieObjectTypes().pipe(
-    //     map(types => types.map(type => ({id: type.url, text: type.omschrijving})))
-    // );
 
     constructor(
         private readonly translateService: TranslateService,
@@ -88,10 +74,7 @@ export class GenerateDocumentComponent implements FunctionConfigurationComponent
 
     private handleValid(formValue: GenerateDocument): void {
         const valid = !!(formValue.modelId)
-            && !!(formValue.taal)
-            && !!(formValue.naam)
             && !!(formValue.format)
-            && !!(formValue.informatieObjectType)
             && !!(formValue.processVariableName);
 
         this.valid$.next(valid);

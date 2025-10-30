@@ -34,25 +34,6 @@
             [required]="true"
     >
     </v-input>
-    <v-input
-            name="naam"
-            [title]="'naam' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.naam"
-            [disabled]="obs.disabled"
-            [tooltip]="'nameTooltip' | pluginTranslate: pluginId | async"
-            [required]="true"
-    >
-    </v-input>
-    <v-input
-            name="beschrijving"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.beschrijving"
-            [margin]="true"
-            [title]="'inputDescription' | pluginTranslate: pluginId | async"
-            [tooltip]="'inputDescriptionTooltip' | pluginTranslate: pluginId | async"
-            [required]="true"
-    ></v-input>
     <v-select
             *ngIf="formatItems$ | async as items"
             [defaultSelectionId]="items[0].id"
@@ -75,39 +56,6 @@
             [required]="true"
     >
     </v-input>
-    <v-select
-            *ngIf="languageItems$ | async as languageItems"
-            [defaultSelectionId]="languageItems[0].id"
-            [disabled]="obs.disabled"
-            [items]="languageItems"
-            [margin]="true"
-            [required]="true"
-            [title]="'language' | pluginTranslate: pluginId | async"
-            [tooltip]="'languageTooltip' | pluginTranslate: pluginId | async"
-            [widthInPx]="200"
-            name="taal"
-    ></v-select>
-    <v-input
-            name="informatieObjectType"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.informatieObjectType"
-            [margin]="true"
-            [title]="'informatieobjecttype' | pluginTranslate: pluginId | async"
-            [tooltip]="'informatieobjecttypeTooltip' | pluginTranslate: pluginId | async"
-            [required]="true"
-    ></v-input>
-<!--    <v-select-->
-<!--            *ngIf="informatieObjectTypes$ | async as informatieTypeItems"-->
-<!--            [defaultSelectionId]="informatieTypeItems[0]?.id"-->
-<!--            [items]="informatieTypeItems"-->
-<!--            [disabled]="obs.disabled"-->
-<!--            [margin]="true"-->
-<!--            [required]="true"-->
-<!--            [title]="'informatieobjecttype' | pluginTranslate: pluginId | async"-->
-<!--            [tooltip]="'informatieobjecttypeTooltip' | pluginTranslate: pluginId | async"-->
-<!--            [widthInPx]="200"-->
-<!--            name="informatieObjectType"-->
-<!--    ></v-select>-->
     <valtimo-carbon-multi-input
             name="params"
             [title]="'parameters' | pluginTranslate: pluginId | async"

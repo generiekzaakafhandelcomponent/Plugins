@@ -28,11 +28,7 @@ interface DocsysConfig extends PluginConfigurationData {
 interface GenerateDocument {
     modelId: string;
     params: Array<{key: string; value: string}>;
-    taal: string;
-    naam: string;
-    beschrijving: string;
     format: string;
-    informatieObjectType: string;
     processVariableName: string;
 }
 
