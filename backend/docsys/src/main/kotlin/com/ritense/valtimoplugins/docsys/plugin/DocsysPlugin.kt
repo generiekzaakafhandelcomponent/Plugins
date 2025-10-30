@@ -64,6 +64,9 @@ open class DocsysPlugin(
     @PluginProperty(key = "tokenEndpoint", secret = false)
     lateinit var tokenEndpoint: URI
 
+    @PluginProperty(key = "scope", secret = false)
+    var scope: String = ""
+
     @PluginEvent(invokedOn = [EventType.CREATE, EventType.UPDATE])
     fun setDocsysClientParams() {
         logger.debug { "set docsys client params" }
@@ -72,6 +75,7 @@ open class DocsysPlugin(
         DocsysClient.tokenEndpoint = tokenEndpoint
         DocsysClient.clientId = clientId
         DocsysClient.clientSecret = clientSecret
+        DocsysClient.scope = scope
     }
 
     @PluginAction(

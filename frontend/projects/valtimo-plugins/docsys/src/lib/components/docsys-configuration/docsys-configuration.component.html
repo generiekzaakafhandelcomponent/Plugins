@@ -92,4 +92,16 @@
         placeholder="https://tokenEndpointUrl/"
     >
     </v-input>
+    <v-input
+            name="scope"
+            [title]="'scope' | pluginTranslate: pluginId | async"
+            [fullWidth]="true"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.scope"
+            [required]="false"
+            [tooltip]="'scopeTooltip' | pluginTranslate: pluginId | async"
+            placeholder="scope"
+    >
+    </v-input>
 </v-form>

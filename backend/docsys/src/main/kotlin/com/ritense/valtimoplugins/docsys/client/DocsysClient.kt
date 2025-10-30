@@ -49,6 +49,7 @@ class DocsysClient(
     lateinit var tokenEndpoint: URI
     lateinit var clientId: String
     lateinit var clientSecret: String
+    lateinit var scope: String
 
           // token for authentication Docsys API
      var token: AccesTokenDecorator? = null;
@@ -142,9 +143,9 @@ class DocsysClient(
             val clientAuth: ClientAuthentication = ClientSecretBasic(clientID, clientSecret)
 
             // Make the token request
-            val scope = Scope()
-            scope.add("api://281ce580-79db-4d6e-897f-15f84951fe03/.default")
-            val request = TokenRequest(tokenEndpoint, clientAuth, clientGrant, scope)
+            val tokenScope = Scope()
+            tokenScope.add(scope)
+            val request = TokenRequest(tokenEndpoint, clientAuth, clientGrant, tokenScope)
 
             val response: TokenResponse = TokenResponse.parse(request.toHTTPRequest().send())
 

@@ -41,6 +41,8 @@ const docsysPluginSpecification: PluginSpecification = {
             clientSecretTooltip: "Vul het client secret in",
             tokenEndpoint: 'Token endpoint',
             tokenEndpointTooltip: 'Vul het token endpoint in',
+            scope: 'Scope',
+            scopeTooltip: 'Vul de scope van het token in',
             configurationTitle: 'Configuratienaam',
             configurationTitleTooltip:
                 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
@@ -78,6 +80,8 @@ const docsysPluginSpecification: PluginSpecification = {
             clientSecretTooltip: "Give the client secret",
             tokenEndpoint: 'Token endpoint',
             tokenEndpointTooltip: 'Give the token endpoint',
+            scope: 'Scope',
+            scopeTooltip: 'Give the scope of the token',
             configurationTitle: 'Configuration name',
             configurationTitleTooltip:
                 'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
@@ -115,6 +119,8 @@ const docsysPluginSpecification: PluginSpecification = {
             clientSecretTooltip: "Vul het client secret in",
             tokenEndpoint: 'Token endpoint',
             tokenEndpointTooltip: 'Vul het token endpoint in',
+            scope: 'Scope',
+            scopeTooltip: 'Vul de scope van het token in',
             configurationTitle: 'Konfigurationsname',
             configurationTitleTooltip:
                 'Der Name der aktuellen Plugin-Konfiguration. Unter diesem Namen ist die Konfiguration im Rest der Anwendung zu finden.',

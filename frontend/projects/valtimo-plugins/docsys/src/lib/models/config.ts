@@ -20,6 +20,7 @@ interface DocsysConfig extends PluginConfigurationData {
     damApiUrl: string;
     docsysApiUrl: string
     tokenEndpoint: string;
+    scope: string;
     clientId: string;
     clientSecret: string;
 }
