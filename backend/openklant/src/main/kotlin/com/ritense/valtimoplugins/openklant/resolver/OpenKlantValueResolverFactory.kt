@@ -3,13 +3,13 @@ package com.ritense.valtimoplugins.openklant.resolver
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.valueresolver.ValueResolverFactory
 import com.ritense.zakenapi.service.ZaakDocumentService
 import kotlinx.coroutines.runBlocking
 import org.camunda.bpm.engine.delegate.VariableScope
-import java.net.URI
 import java.util.UUID
 import java.util.function.Function
 
@@ -18,6 +18,7 @@ class OpenKlantValueResolverFactory(
     private val zaakDocumentService: ZaakDocumentService,
     private val openKlantService: OpenKlantService,
     private val reflectionUtil: ReflectionUtil,
+    private val properties: OpenKlantProperties,
 ) : ValueResolverFactory {
     override fun supportedPrefix(): String = "klant"
 
@@ -60,17 +61,13 @@ class OpenKlantValueResolverFactory(
 
     private fun createKlantContactOptions(zaakUuid: UUID): KlantContactOptions =
         KlantContactOptions(
-            klantinteractiesUrl = URI.create(klantinteractiesUrl),
-            token = openKlantToken,
+            klantinteractiesUrl = properties.klantinteractiesUrl,
+            token = properties.token,
             objectTypeId = OBJECT_TYPE_ID,
             objectUuid = zaakUuid.toString(),
         )
 
     companion object {
         private const val OBJECT_TYPE_ID = "zaak"
-        private val klantinteractiesUrl: String =
-            System.getenv("AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL") ?: "No Url"
-        private val openKlantToken: String =
-            System.getenv("AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN") ?: "No Token"
     }
 }
