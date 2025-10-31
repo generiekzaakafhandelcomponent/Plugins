@@ -17,7 +17,7 @@ import {CarbonListModule, TimelineModule} from '@valtimo/components';
 export class KlantcontactTabComponent implements OnInit {
     documentId: string;
     documentObserver: Observable<Document>;
-    klantcontacts: Klantcontact[];
+    klantcontacts: Klantcontact[] | null;
 
     constructor(
         private route: ActivatedRoute,
@@ -32,7 +32,7 @@ export class KlantcontactTabComponent implements OnInit {
         this.documentObserver = this.documentService.getDocument(this.documentId);
         this.documentObserver.subscribe(document => {
             const documentContent = document.content as DocumentContent;
-            this.klantcontacts = documentContent.klantcontacten.reverse();
+            this.klantcontacts = documentContent.klantcontacten?.reverse() ?? null;
         });
     }
 
