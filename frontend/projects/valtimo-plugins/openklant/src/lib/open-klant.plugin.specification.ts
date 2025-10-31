@@ -26,7 +26,16 @@ const openKlantPluginSpecification: PluginSpecification = {
             description: 'Met deze plugin kan GZAC OpenKlant gegevens ophalen en versturen.',
             objectTypeId: "Type van het object, bijvoorbeeld: 'zaak'.",
             objectUuid: 'Zaak UUID',
-            resultPvName: 'Resultaat procesvariabele naam'
+            resultPvName: 'Resultaat procesvariabele naam',
+            'get-contact-moments-by-case': 'Haal contactmomenten op o.b.v. Zaak',
+            'store-contactinfo': 'Sla contactinformatie op',
+            bsn: 'Bsn',
+            firstName: 'Voornaam',
+            inFix: 'Tussenvoegsel',
+            lastName: 'Achternaam',
+            emailAddress: 'E-mailadres ',
+            caseNumber: 'Zaaknummer',
+
         },
         en: {
             configurationTitle: 'Configuration name',
@@ -35,7 +44,15 @@ const openKlantPluginSpecification: PluginSpecification = {
             description: 'With this plugin GZAC can send and receive OpenKlant data',
             objectTypeId: "Type of the object. Example: 'zaak'",
             objectUuid: 'Case UUID',
-            resultPvName: 'Result process variabel name'
+            resultPvName: 'Result process variabel name',
+            'get-contact-moments-by-case': 'Get contact moments by case',
+            'store-contactinfo': 'Store contactinfo',
+            bsn: 'Bsn',
+            firstName: 'First Name',
+            inFix: 'Infix',
+            lastName: 'Last Name',
+            emailAddress: 'E-mail Address ',
+            caseNumber: 'Case Number',
         }
     }
 };
