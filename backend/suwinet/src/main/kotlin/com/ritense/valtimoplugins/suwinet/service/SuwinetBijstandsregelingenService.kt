@@ -18,6 +18,7 @@ import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.BronDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.PartnerBijstandDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SpecifiekeGegevensBijzBijstandDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SzWetDto
+import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.VorderingDto
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.time.LocalDate
@@ -74,7 +75,8 @@ class SuwinetBijstandsregelingenService (
                 return BijstandsRegelingenDto(
                     burgerservicenr = bijstandsRegelingenInfo.burgerservicenr,
                     aanvraagUitkeringen = getAanvraagUitkeringen(bijstandsRegelingenInfo.aanvraagUitkering),
-                    specifiekeGegevensBijzBijstandList = getSpeciekeGegevensBijzBijstand(bijstandsRegelingenInfo.specifiekeGegevensBijzBijstand)
+                    specifiekeGegevensBijzBijstandList = getSpeciekeGegevensBijzBijstand(bijstandsRegelingenInfo.specifiekeGegevensBijzBijstand),
+                    vorderingen = getVorderingen(bijstandsRegelingenInfo.vordering)
                 )
             }
 
@@ -92,6 +94,10 @@ class SuwinetBijstandsregelingenService (
                 }
             }
         }
+    }
+
+    private fun getVorderingen(vordering: MutableList<ClientSuwi.Vordering>): List<VorderingDto> {
+
     }
 
     private fun getSpeciekeGegevensBijzBijstand(specifiekeGegevensBijzBijstand: MutableList<ClientSuwi.SpecifiekeGegevensBijzBijstand>): kotlin.collections.List<com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SpecifiekeGegevensBijzBijstandDto> =

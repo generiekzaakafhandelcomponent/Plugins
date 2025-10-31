@@ -7,6 +7,8 @@ data class BijstandsRegelingenDto(
 
     val specifiekeGegevensBijzBijstandList: List<SpecifiekeGegevensBijzBijstandDto>,
 
+    val vorderingen: List<VorderingDto>,
+
     val burgerservicenr: String?,
 
 )
