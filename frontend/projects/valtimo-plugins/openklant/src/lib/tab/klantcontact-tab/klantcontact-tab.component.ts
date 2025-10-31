@@ -8,13 +8,13 @@ import {DocumentContent} from './model/document.content';
 import {CarbonListModule, TimelineModule} from '@valtimo/components';
 
 @Component({
-    selector: 'app-wmv-klantcontact-tab',
+    selector: 'app-klantcontact-tab',
     standalone: true,
-    templateUrl: './wmv-klantcontact-tab.component.html',
+    templateUrl: './klantcontact-tab.component.html',
     imports: [NgForOf, TimelineModule, NgClass, NgIf, CarbonListModule],
-    styleUrl: './wmv-klantcontact-tab.component.scss'
+    styleUrl: './klantcontact-tab.component.scss'
 })
-export class WmvKlantcontactTabComponent implements OnInit {
+export class KlantcontactTabComponent implements OnInit {
     documentId: string;
     documentObserver: Observable<Document>;
     klantcontacts: Klantcontact[];
