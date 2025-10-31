@@ -41,6 +41,11 @@ export interface BrpPartnerInfoConfig {
     resultProcessVariableName: string;
 }
 
+export interface BijstandsRegelingenInfoConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
 export interface BrpKinderenInfoConfig {
     kinderenBsns: string;
     resultProcessVariableName: string;

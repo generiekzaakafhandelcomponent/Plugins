@@ -20,7 +20,7 @@
 import {PluginSpecification} from '@valtimo/plugin';
 import {SUWINET_PLUGIN_LOGO_BASE64} from './assets';
 import {
-  SuwinetPluginConfigurationComponent
+    SuwinetPluginConfigurationComponent
 } from "./components/plugin-configuration/suwinet-plugin-configuration.component";
 
 import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon-info.component';
@@ -32,101 +32,108 @@ import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-perso
 import {DuoStudiefinancieringComponent} from "./components/duo-studiefinanciering/duo-studiefinanciering.component";
 import {UwvInkomstenInfoComponent} from "./components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component";
 import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastrale-objecten.component";
+import {
+    BijstandsregelingenInfoComponent
+} from "./components/bijstandsregelingen-info/bijstandsregelingen-info.component";
 
 const suwinetPluginSpecification: PluginSpecification = {
-  pluginId: 'suwinet',
-  pluginConfigurationComponent: SuwinetPluginConfigurationComponent,
-  pluginLogoBase64: SUWINET_PLUGIN_LOGO_BASE64,
-  functionConfigurationComponents: {
-    'get-brp-persoonsgegevens': BrpPersoonInfoComponent,
-    'get-brp-partner-persoonsgegevens': BrpPartnerInfoComponent,
-    'get-brp-kinderen-persoonsgegevens': BrpKinderenInfoComponent,
-    'get-kadastrale-objecten': KadastraleObjectenComponent,
-    'get-rdw-voertuigen': RdwVoertuigenComponent,
-    'get-duo-persoonsinfo': DuoPersoonsInfoComponent,
-    'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
-    'get-svb-persoonsinfo': SvbPersoonsInfoComponent,
-    'get-uwv-inkomsten-info': UwvInkomstenInfoComponent
-  },
-  pluginTranslations: {
-    nl: {
-      configurationTitle: 'Configuratienaam',
-      configurationTitleTooltip:
-          'Hier kunt je een eigen naam verzinnen. Onder deze naam zal de plugin te herkennen zijn in de rest van de applicatie',
-      title: 'SuwiNet',
-      description: 'Plugin om data uit Suwinet op te halen',
-      url: 'URL',
-      bsn: 'Burgerservicenummer',
-      kenteken: 'Kenteken',
-      bsnTooltip: 'De burgerservice nummer waarop een zoek gedaan wordt',
-      pluginActionWarning: 'Fill in the required fields for this plugin action',
-      resultProcessVariableName: 'Naam van de proces variabele voor het opslaan van de respons',
-      resultProcessVariableNameTooltip:
-          'De naam van de proces variabele waar het resultaat in opgeslagen wordt. Zodoende kan deze variabele worden gebruikt in andere BPMN taken.',
-      keystorePath: 'Keystore certificate path',
-      keystoreSecret: 'Keystore certificate key',
-      truststorePath: 'Truststore certificate path',
-      truststoreSecret: 'Truststore certificate key',
-      basicAuthName: 'Basic Authorization name',
-      basicAuthSecret: 'Basic Authorization password',
-      baseUrl: 'Base URL',
-      connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
-      receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
-      'get-brp-persoonsgegevens': 'Ophalen BRP Persoonsgegevens',
-      'get-brp-partner-persoonsgegevens': 'Ophalen BRP Partner info',
-      'get-brp-kinderen-persoonsgegevens': 'Ophalen BRP Kinderen info'
+    pluginId: 'suwinet',
+    pluginConfigurationComponent: SuwinetPluginConfigurationComponent,
+    pluginLogoBase64: SUWINET_PLUGIN_LOGO_BASE64,
+    functionConfigurationComponents: {
+        'get-brp-persoonsgegevens': BrpPersoonInfoComponent,
+        'get-brp-partner-persoonsgegevens': BrpPartnerInfoComponent,
+        'get-brp-kinderen-persoonsgegevens': BrpKinderenInfoComponent,
+        'get-kadastrale-objecten': KadastraleObjectenComponent,
+        'get-rdw-voertuigen': RdwVoertuigenComponent,
+        'get-duo-persoonsinfo': DuoPersoonsInfoComponent,
+        'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
+        'get-svb-persoonsinfo': SvbPersoonsInfoComponent,
+        'get-uwv-inkomsten-info': UwvInkomstenInfoComponent,
+        'ophalen-bijstandsregelingen': BijstandsregelingenInfoComponent
     },
-    en: {
-      configurationTitle: 'Configuration name',
-      configurationTitleTooltip:
-          'Here you can enter a name for the plugin. This name will be used to recognize the plugin throughout the rest of the application',
-      title: 'SuwiNet',
-      description: 'This plugin makes it possible to communicate with SuwiNet.',
-      url: 'URL',
-      bsn: 'BSN',
-      bsnTooltip: 'The burgerservicenummer for which the request should be made',
-      resultProcessVariableName: 'Process variable name for storing the response',
-      resultProcessVariableNameTooltip:
-          'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
-      keystorePath: 'Keystore certificate path',
-      keystoreSecret: 'Keystore certificate key',
-      truststorePath: 'Truststore certificate path',
-      truststoreSecret: 'Truststore certificate key',
-      basicAuthName: 'Basic Authorization name',
-      basicAuthSecret: 'Basic Authorization password',
-      baseUrl: 'Base URL',
-      connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
-      receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
-      'get-brp-persoonsgegevens': 'Retrieve BRP Personal info',
-      'get-brp-partner-persoonsgegevens': 'Retrieve BRP Partner info',
-      'get-brp-kinderen-persoonsgegevens': 'Retrieve BRP children info'
+    pluginTranslations: {
+        nl: {
+            configurationTitle: 'Configuratienaam',
+            configurationTitleTooltip:
+                'Hier kunt je een eigen naam verzinnen. Onder deze naam zal de plugin te herkennen zijn in de rest van de applicatie',
+            title: 'SuwiNet',
+            description: 'Plugin om data uit Suwinet op te halen',
+            url: 'URL',
+            bsn: 'Burgerservicenummer',
+            kenteken: 'Kenteken',
+            bsnTooltip: 'De burgerservice nummer waarop een zoek gedaan wordt',
+            pluginActionWarning: 'Fill in the required fields for this plugin action',
+            resultProcessVariableName: 'Naam van de proces variabele voor het opslaan van de respons',
+            resultProcessVariableNameTooltip:
+                'De naam van de proces variabele waar het resultaat in opgeslagen wordt. Zodoende kan deze variabele worden gebruikt in andere BPMN taken.',
+            keystorePath: 'Keystore certificate path',
+            keystoreSecret: 'Keystore certificate key',
+            truststorePath: 'Truststore certificate path',
+            truststoreSecret: 'Truststore certificate key',
+            basicAuthName: 'Basic Authorization name',
+            basicAuthSecret: 'Basic Authorization password',
+            baseUrl: 'Base URL',
+            connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
+            receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
+            'get-brp-persoonsgegevens': 'Ophalen BRP Persoonsgegevens',
+            'get-brp-partner-persoonsgegevens': 'Ophalen BRP Partner info',
+            'get-brp-kinderen-persoonsgegevens': 'Ophalen BRP Kinderen info',
+            'ophalen-bijstandsregelingen': 'Ophalen bijstandsregelingen'
+        },
+        en: {
+            configurationTitle: 'Configuration name',
+            configurationTitleTooltip:
+                'Here you can enter a name for the plugin. This name will be used to recognize the plugin throughout the rest of the application',
+            title: 'SuwiNet',
+            description: 'This plugin makes it possible to communicate with SuwiNet.',
+            url: 'URL',
+            bsn: 'BSN',
+            bsnTooltip: 'The burgerservicenummer for which the request should be made',
+            resultProcessVariableName: 'Process variable name for storing the response',
+            resultProcessVariableNameTooltip:
+                'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
+            keystorePath: 'Keystore certificate path',
+            keystoreSecret: 'Keystore certificate key',
+            truststorePath: 'Truststore certificate path',
+            truststoreSecret: 'Truststore certificate key',
+            basicAuthName: 'Basic Authorization name',
+            basicAuthSecret: 'Basic Authorization password',
+            baseUrl: 'Base URL',
+            connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
+            receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
+            'get-brp-persoonsgegevens': 'Retrieve BRP Personal info',
+            'get-brp-partner-persoonsgegevens': 'Retrieve BRP Partner info',
+            'get-brp-kinderen-persoonsgegevens': 'Retrieve BRP children info',
+            'ophalen-bijstandsregelingen': 'Retrieve welfare schemes'
+        },
+        de: {
+            configurationTitle: 'Configuration name',
+            configurationTitleTooltip:
+                'Here you can enter a name for the plugin. This name will be used to recognize the plugin throughout the rest of the application',
+            title: 'SuwiNet',
+            description: 'This plugin makes it possible to communicate with SuwiNet.',
+            url: 'URL',
+            bsn: 'BSN',
+            bsnTooltip: 'The burgerservicenummer for which the request should be made',
+            resultProcessVariableName: 'Process variable name for storing the response',
+            resultProcessVariableNameTooltip:
+                'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
+            keystorePath: 'Keystore certificate path',
+            keystoreSecret: 'Keystore certificate key',
+            truststorePath: 'Truststore certificate path',
+            truststoreSecret: 'Truststore certificate key',
+            basicAuthName: 'Basic Authorization name',
+            basicAuthSecret: 'Basic Authorization password',
+            baseUrl: 'Base URL',
+            connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
+            receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
+            'get-brp-persoonsgegevens': 'Abrufen BRP Personal info',
+            'get-brp-partner-persoonsgegevens': 'Abrufen BRP Partner info',
+            'get-brp-kinderen-persoonsgegevens': 'Abrufen BRP kinder info',
+            'ophalen-bijstandsregelingen': 'Abrufen Wohlfahrtssysteme'
+        },
     },
-    de: {
-      configurationTitle: 'Configuration name',
-      configurationTitleTooltip:
-          'Here you can enter a name for the plugin. This name will be used to recognize the plugin throughout the rest of the application',
-      title: 'SuwiNet',
-      description: 'This plugin makes it possible to communicate with SuwiNet.',
-      url: 'URL',
-      bsn: 'BSN',
-      bsnTooltip: 'The burgerservicenummer for which the request should be made',
-      resultProcessVariableName: 'Process variable name for storing the response',
-      resultProcessVariableNameTooltip:
-          'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
-      keystorePath: 'Keystore certificate path',
-      keystoreSecret: 'Keystore certificate key',
-      truststorePath: 'Truststore certificate path',
-      truststoreSecret: 'Truststore certificate key',
-      basicAuthName: 'Basic Authorization name',
-      basicAuthSecret: 'Basic Authorization password',
-      baseUrl: 'Base URL',
-      connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
-      receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
-      'get-brp-persoonsgegevens': 'Retrieve BRP Personal info',
-      'get-brp-partner-persoonsgegevens': 'Retrieve BRP Partner info',
-      'get-brp-kinderen-persoonsgegevens': 'Retrieve BRP children info'
-    },
-  },
 };
 
 export {suwinetPluginSpecification};

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_07cpgfd" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:collaboration id="Collaboration_1wka7ch">
+    <bpmn:participant id="Participant_bijstandsregelingen" name="Suwinet: Ophalen Bijstandsregelingen Info" processRef="ophalen-bijstandsregelingen-info" />
+  </bpmn:collaboration>
+  <bpmn:process id="ophalen-bijstandsregelingen-info" name="Suwinet: Ophalen Bijstandsregelingen Info" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_bijstandsregelingen" name="start bijstandsregelingen">
+      <bpmn:outgoing>Flow_1pegrc5</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="End_Event_bijstandsregelingen" name="end_bijstandsregelingen">
+      <bpmn:incoming>Flow_0t2nnmv</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="SuwinetOphalenBijstandsregelingenInfo" name="Suwinet: Ophalen Bijstandsregelingen Info" camunda:expression="${true}">
+      <bpmn:incoming>Flow_1pegrc5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1eprbn3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_pv-to_doc_bijstandsregelingen" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/bijstandsregelingenInfo&#34;, bijstandsregelingenInfo)}">
+      <bpmn:incoming>Flow_1eprbn3</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t2nnmv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1pegrc5" sourceRef="StartEvent_bijstandsregelingen" targetRef="SuwinetOphalenBijstandsregelingenInfo" />
+    <bpmn:sequenceFlow id="Flow_0t2nnmv" sourceRef="Activity_pv-to_doc_bijstandsregelingen" targetRef="End_Event_bijstandsregelingen" />
+    <bpmn:sequenceFlow id="Flow_1eprbn3" sourceRef="SuwinetOphalenBijstandsregelingenInfo" targetRef="Activity_pv-to_doc_bijstandsregelingen" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1wka7ch">
+      <bpmndi:BPMNShape id="Participant_1q34tue_di" bpmnElement="Participant_bijstandsregelingen" isHorizontal="true">
+        <dc:Bounds x="180" y="80" width="718" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_15be5x9" bpmnElement="StartEvent_bijstandsregelingen">
+        <dc:Bounds x="270" y="180" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="247" y="223" width="83" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1940m36_di" bpmnElement="End_Event_bijstandsregelingen">
+        <dc:Bounds x="730" y="180" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="707" y="223" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cn4olx_di" bpmnElement="SuwinetOphalenBijstandsregelingenInfo">
+        <dc:Bounds x="378" y="158" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03rxpdx_di" bpmnElement="Activity_pv-to_doc_bijstandsregelingen">
+        <dc:Bounds x="558" y="158" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1pegrc5_di" bpmnElement="Flow_1pegrc5">
+        <di:waypoint x="306" y="198" />
+        <di:waypoint x="378" y="198" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t2nnmv_di" bpmnElement="Flow_0t2nnmv">
+        <di:waypoint x="658" y="198" />
+        <di:waypoint x="730" y="198" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1eprbn3_di" bpmnElement="Flow_1eprbn3">
+        <di:waypoint x="478" y="198" />
+        <di:waypoint x="558" y="198" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

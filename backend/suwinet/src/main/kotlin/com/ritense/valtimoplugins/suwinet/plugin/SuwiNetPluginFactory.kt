@@ -2,6 +2,7 @@ package com.ritense.valtimoplugins.suwinet.plugin
 
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetBijstandsregelingenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
@@ -18,7 +19,8 @@ class SuwiNetPluginFactory(
     private val suwinetKadasterInfoService: SuwinetKadasterInfoService,
     private val suwinetRdwService: SuwinetRdwService,
     private val suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService,
-    private val suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService
+    private val suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService,
+    private val suwinetBijstandsregelingenService: SuwinetBijstandsregelingenService
 ) : PluginFactory<SuwiNetPlugin>(pluginService) {
 
     override fun create(): SuwiNetPlugin {
@@ -29,7 +31,8 @@ class SuwiNetPluginFactory(
             suwinetKadasterInfoService,
             suwinetRdwService,
             suwinetSvbPersoonsInfoService,
-            suwinetUwvPersoonsIkvService
+            suwinetUwvPersoonsIkvService,
+            suwinetBijstandsregelingenService
         )
     }
 }

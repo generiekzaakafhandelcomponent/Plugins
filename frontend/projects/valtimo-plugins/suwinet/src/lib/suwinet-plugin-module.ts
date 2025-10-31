@@ -33,6 +33,9 @@ import {DuoStudiefinancieringComponent} from "./components/duo-studiefinancierin
 import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
 import {UwvInkomstenInfoComponent} from "./components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component";
 import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastrale-objecten.component";
+import {
+    BijstandsregelingenInfoComponent
+} from "./components/bijstandsregelingen-info/bijstandsregelingen-info.component";
 
 @NgModule({
     declarations: [
@@ -45,7 +48,8 @@ import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastr
         KadastraleObjectenComponent,
         RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
-        UwvInkomstenInfoComponent
+        UwvInkomstenInfoComponent,
+        BijstandsregelingenInfoComponent
     ],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule],
     exports: [
@@ -58,7 +62,8 @@ import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastr
         KadastraleObjectenComponent,
         RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
-        UwvInkomstenInfoComponent
+        UwvInkomstenInfoComponent,
+        BijstandsregelingenInfoComponent
     ],
 })
 export class SuwinetPluginModule {

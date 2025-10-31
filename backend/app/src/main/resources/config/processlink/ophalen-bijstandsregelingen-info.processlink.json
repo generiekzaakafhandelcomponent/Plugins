@@ -1,0 +1,23 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "brongegevens.start",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
+  },
+  {
+    "actionProperties": {
+      "bsn": "pv:bsn",
+      "resultProcessVariableName": "bijstandsregelingenInfo"
+    },
+    "activityId": "SuwinetOphalenBijstandsregelingenInfo",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "0ca7c957-8fef-4f4c-b487-6913b79a2a61",
+    "pluginActionDefinitionKey": "ophalen-bijstandsregelingen",
+    "processLinkType": "plugin"
+  }
+]
