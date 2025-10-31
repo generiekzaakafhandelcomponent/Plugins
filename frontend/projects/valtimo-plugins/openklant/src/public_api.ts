@@ -4,4 +4,4 @@ export * from './lib/open-klant.plugin.specification';
 export * from './lib/components/open-klant-plugin-configuration/open-klant-plugin-configuration.component';
 export *
     from './lib/components/open-klant-get-contact-moments-by-case-uuid/open-klant-get-contact-moments-by-case-uuid.component'
-export * from './lib/components/store-contactinfo/store-contactinfo.component';
+export * from './lib/components/open-klant-store-contactinfo/open-klant-store-contactinfo.component';

@@ -1,6 +1,6 @@
 import {FunctionConfigurationData} from '@valtimo/plugin';
 
-export interface StoreContactInfoConfig {
+export interface OpenKlantStoreContactinfoConfig {
     bsn: string;
     firstName: String;
     inFix: String;

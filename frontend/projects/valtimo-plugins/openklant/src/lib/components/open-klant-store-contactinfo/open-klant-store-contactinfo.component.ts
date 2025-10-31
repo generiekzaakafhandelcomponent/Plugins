@@ -1,25 +1,25 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {Observable, BehaviorSubject, Subscription, combineLatest, take} from 'rxjs';
-import {StoreContactInfoConfig} from '../../models/store-contactinfo-config';
+import {OpenKlantStoreContactinfoConfig} from '../../models/open-klant-store-contactinfo-config';
 
 
 @Component({
   selector: 'app-store-contact-info',
-  templateUrl: './store-contactinfo.component.html',
-  styleUrls: ['./store-contactinfo.component.scss']
+  templateUrl: './open-klant-store-contactinfo.component.html',
+  styleUrls: ['./open-klant-store-contactinfo.component.scss']
 })
-export class StoreContactInfoComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
+export class OpenKlantStoreContactinfoComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
 
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
-  @Input() prefillConfiguration$: Observable<StoreContactInfoConfig>;
+  @Input() prefillConfiguration$: Observable<OpenKlantStoreContactinfoConfig>;
 
   @Output() valid = new EventEmitter<boolean>();
   @Output() configuration = new EventEmitter<FunctionConfigurationData>();
 
-  private readonly formValue$ = new BehaviorSubject<StoreContactInfoConfig | null>(null);
+  private readonly formValue$ = new BehaviorSubject<OpenKlantStoreContactinfoConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
   private saveSubscription: Subscription;
 
@@ -31,12 +31,12 @@ export class StoreContactInfoComponent implements FunctionConfigurationComponent
     this.saveSubscription?.unsubscribe();
   }
 
-  formValueChange(formValue: StoreContactInfoConfig): void {
+  formValueChange(formValue: OpenKlantStoreContactinfoConfig): void {
     this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: StoreContactInfoConfig): void {
+  private handleValid(formValue: OpenKlantStoreContactinfoConfig): void {
     const valid =
       !!formValue.bsn &&
       !!formValue.firstName &&

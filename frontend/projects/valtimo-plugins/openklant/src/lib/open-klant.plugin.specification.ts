@@ -2,7 +2,9 @@ import {PluginSpecification} from '@valtimo/plugin';
 import {
     OpenKlantPluginConfigurationComponent
 } from './components/open-klant-plugin-configuration/open-klant-plugin-configuration.component';
-import {StoreContactInfoComponent} from './components/store-contactinfo/store-contactinfo.component';
+import {
+    OpenKlantStoreContactinfoComponent
+} from './components/open-klant-store-contactinfo/open-klant-store-contactinfo.component';
 import {OPEN_KLANT_PLUGIN_LOGO_BASE64} from './assets/open-klant-plugin-logo';
 import {
     OpenKlantGetContactMomentsByCaseUuidComponent
@@ -14,7 +16,7 @@ const openKlantPluginSpecification: PluginSpecification = {
     pluginLogoBase64: OPEN_KLANT_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
         'get-contact-moments-by-case': OpenKlantGetContactMomentsByCaseUuidComponent,
-        'store-contactinfo': StoreContactInfoComponent
+        'store-contactinfo': OpenKlantStoreContactinfoComponent
     },
     pluginTranslations: {
         nl: {
