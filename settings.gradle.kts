@@ -3,6 +3,7 @@ include(
     "backend",
     "backend:app",
     "backend:valtimo-ocr",
+    "backend:docsys",
     "backend:externe-klanttaak",
     "backend:freemarker",
     "backend:haal-centraal",

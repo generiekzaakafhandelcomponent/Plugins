@@ -142,6 +142,8 @@ import {ValueMapperPluginModule} from "../../projects/valtimo-plugins/value-mapp
 import {
     valueMapperPluginSpecification
 } from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin.specification";
+import {DocsysPluginModule} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.module";
+import {docsysPluginSpecification} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.specification";
 import {
     openKlantPluginSpecification
 } from "../../projects/valtimo-plugins/openklant/src/lib/open-klant.plugin.specification";
@@ -245,6 +247,7 @@ export function tabsFactory() {
         DocumentSearchPluginModule,
         ZgwModule,
         ValueMapperPluginModule,
+        DocsysPluginModule,
         OpenKlantPluginModule,
     ],
     providers: [{
@@ -275,6 +278,7 @@ export function tabsFactory() {
             kvkPluginSpecification,
             documentSearchPluginSpecification,
             valueMapperPluginSpecification,
+            docsysPluginSpecification,
             catalogiApiPluginSpecification,
             documentenApiPluginSpecification,
             openZaakPluginSpecification,

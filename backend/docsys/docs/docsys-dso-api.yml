@@ -1,0 +1,601 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: DocSys Online API v1
+  termsOfService: See your service-level agreement (SLA) for terms of service.
+  contact:
+    name: B-ware Business Software
+host: documentgenerator-intern.acc.utrecht.nl
+schemes:
+  - https
+paths:
+  /api/v1/documents:
+    get:
+      tags:
+        - Documents
+      summary: Get summaries for the all finished documents that belong to the current user.
+      operationId: Api.v1.Documents.Get
+      consumes: [ ]
+      produces:
+        - application/json
+      parameters:
+        - name: showFromAllUsers
+          in: query
+          description: Query parameter indicating if drafts from other users should be included in the result.
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CreatedDocumentSummary'
+    post:
+      tags:
+        - Documents
+      summary: "Export the given document or draft with given export method and metadata. See the information\r\n{DocSysOnline.Models.Api.DownloadCommand} page for more details."
+      operationId: Api.v1.Documents.Post.Command
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: command
+          in: body
+          description: The id of the draft or document to export and download.
+          required: true
+          schema:
+            $ref: '#/definitions/DownloadCommand'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/DownloadedDocument'
+  /api/v1/documents/{id}:
+    get:
+      tags:
+        - Documents
+      summary: Get a {DocSysOnline.Models.Api.CreatedDocumentSummary} of a finished document with a specified id.
+      operationId: Api.v1.Documents.Get.Id
+      consumes: [ ]
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the finished document to get the {DocSysOnline.Models.Api.CreatedDocumentSummary} for.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CreatedDocumentSummary'
+    delete:
+      tags:
+        - Documents
+      summary: Delete a finished document.
+      operationId: Api.v1.Documents.Delete.Id
+      consumes: [ ]
+      produces: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: The id of the finished document to delete.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '204':
+          description: No Content
+  /api/v1/documents/{id}/{exportId}:
+    get:
+      tags:
+        - Documents
+      summary: Get the document with the given id.
+      operationId: Api.v1.Documents.Get.Id.ExportId
+      consumes: [ ]
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the document to get.
+          required: true
+          type: integer
+          format: int32
+        - name: exportId
+          in: path
+          description: The export id to get.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/DownloadedDocument'
+  /api/v1/drafts:
+    get:
+      tags:
+        - Drafts
+      summary: Get all drafts that belong to the current user.
+      operationId: Api.v1.Drafts.Get
+      consumes: [ ]
+      produces:
+        - application/json
+      parameters:
+        - name: showFromAllUsers
+          in: query
+          description: Query parameter indicating if drafts from other users should be included in the result.
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CreatedDocumentSummary'
+    post:
+      tags:
+        - Drafts
+      summary: Create a new draft for the current user.
+      operationId: Api.v1.Drafts.Post.NewDraftData
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: newDraftData
+          in: body
+          description: "The data that should be added to the new draft. The 'Id' property of\r\n{DocSysOnline.Models.Database.CreatedDocument} will be ignored."
+          required: true
+          schema:
+            $ref: '#/definitions/NewDraft'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CreatedDocument'
+  /api/v1/drafts/{id}:
+    get:
+      tags:
+        - Drafts
+      summary: Get the draft with the given id.
+      operationId: Api.v1.Drafts.Get.Id
+      consumes: [ ]
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the draft to get.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CreatedDocument'
+    delete:
+      tags:
+        - Drafts
+      summary: Delete a draft owned by the current user.
+      operationId: Api.v1.Drafts.Delete.Id
+      consumes: [ ]
+      produces: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: The id of the draft to delete.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '204':
+          description: No Content
+    patch:
+      tags:
+        - Drafts
+      summary: Update an existing draft with new data.
+      operationId: Api.v1.Drafts.Patch.Id.Request
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the draft to update.
+          required: true
+          type: integer
+          format: int32
+        - name: request
+          in: body
+          description: An object with new data for the draft, any properties which are not set are not changed.
+          required: true
+          schema:
+            $ref: '#/definitions/DraftPatchRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CreatedDocument'
+        '409':
+          description: If the draft could not be Listed from an unlisted state.
+  /api/v1/drafts/{draftId}/Validate:
+    post:
+      tags:
+        - Drafts
+      summary: Validates all fields that are visible in a draft owned by the current user.
+      operationId: Api.v1.Drafts.Validate.Id
+      consumes: [ ]
+      produces:
+        - application/json
+      parameters:
+        - name: draftId
+          in: path
+          description: The id of the draft to validate.
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/DraftValidationSummary'
+definitions:
+  NewDraft:
+    description: A model for the data that can be posted to the API to create a new draft.
+    type: object
+    properties:
+      Path:
+        description: The path to the model to base the new draft on.
+        type: string
+      Title:
+        description: The title that should be used for the new draft.
+        type: string
+      Data:
+        description: The data to add to the draft.
+        type: object
+        additionalProperties:
+          $ref: '#/definitions/Datum'
+      MetaData:
+        description: The metadata to add to the new draft. Adding metadata to a draft is optional.
+        type: object
+        additionalProperties:
+          type: string
+      TextblockData:
+        description: A list of all textblock data in the document. Adding textblock data to a draft is optional.
+        type: array
+        items:
+          $ref: '#/definitions/TextblockDatum'
+  Datum:
+    description: Representation of DocumentData for the Api.
+    required:
+      - ModifyOrder
+    type: object
+    properties:
+      Value:
+        description: The value of the datum.
+        type: string
+      FormattedValue:
+        description: The formatted value of the datum.
+        type: string
+      ModifyOrder:
+        format: int32
+        description: The modify order of the datum.
+        type: integer
+  TextblockDatum:
+    description: A representation of a Textblock Datum in the API.
+    required:
+      - Row
+      - ModifyOrder
+    type: object
+    properties:
+      DataStore:
+        description: The name of the datastore.
+        type: string
+      Row:
+        format: int32
+        description: The id of the row, which is 0 outside of repeater contexts.
+        type: integer
+      Name:
+        description: The name of the datum within the datastore.
+        type: string
+      Value:
+        description: The value represented in the datum.
+        type: string
+      ModifyOrder:
+        format: int32
+        description: The modify-order of the datum.
+        type: integer
+  CreatedDocumentSummary:
+    description: This class is intended to summarize some data about a created document. Used when listing all drafts/documents.
+    required:
+      - Id
+      - IsListed
+    type: object
+    properties:
+      Id:
+        format: int32
+        description: The unique id of the document.
+        type: integer
+      Url:
+        description: The url for API interaction.
+        type: string
+      UserUrl:
+        description: The url which users can use to open the document.
+        type: string
+      Title:
+        description: The title of the document.
+        type: string
+      ExportIds:
+        description: A list of export ids for the document.
+        type: array
+        items:
+          format: int32
+          type: integer
+      CurrentOwner:
+        description: The current owner of the document.
+        type: string
+      IsListed:
+        description: Whether the document is listed in the overviews for the user.
+        type: boolean
+  DownloadCommand:
+    description: A command to export a draft.
+    required:
+      - Id
+      - IsStatic
+    type: object
+    properties:
+      Id:
+        format: int32
+        description: The id of the draft to export.
+        type: integer
+      Format:
+        description: The name of the format to export to.
+        type: string
+      IsStatic:
+        description: A value indicating whether or not this is a static export.
+        type: boolean
+      ExportPluginName:
+        description: Name of the export plugin that invoked the finishing of this document.
+        type: string
+  DownloadedDocument:
+    description: A finished document that has the content of and information about a resulting output file.
+    required:
+      - ExportId
+      - Id
+      - LastChanged
+      - DateStarted
+      - IsListed
+      - IsFinished
+    type: object
+    properties:
+      ExportId:
+        format: int32
+        description: ExportId for this DownloadedDocument.
+        type: integer
+      DownloadUrl:
+        description: DownloadUrl for this document.
+        type: string
+      Content:
+        description: The Base64 encoded content of the file.
+        type: string
+      FileName:
+        description: FileName for this DownloadedDocument.
+        type: string
+      PageCount:
+        format: int32
+        description: "The number of pages in this document, if available.\r\nThis property will not be available in cases where the output format is not paginated, e.g. HTML output."
+        type: integer
+      MetaData:
+        description: A dictionary containing the MetaData associated with this DownloadedDocument.
+        type: object
+        additionalProperties:
+          type: string
+      Id:
+        format: int32
+        description: The unique id of the document.
+        type: integer
+      Path:
+        description: The absolute path to the model for the document.
+        type: string
+      LastChanged:
+        format: date-time
+        description: The date and time of the last edit of the document.
+        type: string
+      DateStarted:
+        format: date-time
+        description: The date and time when the document was originally created.
+        type: string
+      Title:
+        description: The title of the document.
+        type: string
+      FileType:
+        description: A string containing the filetype of the model used to create the document.
+        type: string
+      Url:
+        description: The API endpoint URL to edit the document.
+        type: string
+      UserUrl:
+        description: The url that can be used by users to edit the document.
+        type: string
+      Data:
+        description: A dictionary containing all the data in the document.
+        type: object
+        additionalProperties:
+          $ref: '#/definitions/Datum'
+      TextblockData:
+        description: A list of all textblock data in the document.
+        type: array
+        items:
+          $ref: '#/definitions/TextblockDatum'
+      IsListed:
+        description: Whether the document is listed in the overviews for the user.
+        type: boolean
+      ModelName:
+        description: The absolute path to the model for the document.
+        type: string
+      IsFinished:
+        description: A value indicating whether this instance represents a finished document.
+        type: boolean
+      CurrentOwner:
+        description: The current owner of the document.
+        type: string
+  UpdateMetadataCommand:
+    description: A command to update the metadata.
+    required:
+      - Id
+      - ExportId
+      - IsStatic
+    type: object
+    properties:
+      Id:
+        format: int32
+        description: Gets or sets the Id of the document for which to update the Metadata.
+        type: integer
+      ExportId:
+        format: int32
+        description: Gets or sets the ExportId for which to update the MetaData.
+        type: integer
+      IsStatic:
+        description: Gets or sets a value indicating whether or not the ID is for a Static Document.
+        type: boolean
+      Metadata:
+        description: Gets or sets the metadata to update.
+        type: object
+        additionalProperties:
+          type: string
+  CreatedDocument:
+    description: A class for use in the api that corresponds to a CreatedDocument in the database.
+    required:
+      - Id
+      - LastChanged
+      - DateStarted
+      - IsListed
+      - IsFinished
+    type: object
+    properties:
+      Id:
+        format: int32
+        description: The unique id of the document.
+        type: integer
+      Path:
+        description: The absolute path to the model for the document.
+        type: string
+      LastChanged:
+        format: date-time
+        description: The date and time of the last edit of the document.
+        type: string
+      DateStarted:
+        format: date-time
+        description: The date and time when the document was originally created.
+        type: string
+      Title:
+        description: The title of the document.
+        type: string
+      FileType:
+        description: A string containing the filetype of the model used to create the document.
+        type: string
+      Url:
+        description: The API endpoint URL to edit the document.
+        type: string
+      UserUrl:
+        description: The url that can be used by users to edit the document.
+        type: string
+      Data:
+        description: A dictionary containing all the data in the document.
+        type: object
+        additionalProperties:
+          $ref: '#/definitions/Datum'
+      TextblockData:
+        description: A list of all textblock data in the document.
+        type: array
+        items:
+          $ref: '#/definitions/TextblockDatum'
+      IsListed:
+        description: Whether the document is listed in the overviews for the user.
+        type: boolean
+      ModelName:
+        description: The absolute path to the model for the document.
+        type: string
+      IsFinished:
+        description: A value indicating whether this instance represents a finished document.
+        type: boolean
+      CurrentOwner:
+        description: The current owner of the document.
+        type: string
+  DraftPatchRequest:
+    description: A model for the data that can be posted to the api to create a new draft.
+    type: object
+    properties:
+      Title:
+        description: The title that should be used for the draft, if set.
+        type: string
+      Data:
+        description: The new data for the draft, if set.
+        type: object
+        additionalProperties:
+          $ref: '#/definitions/Datum'
+      TextblockData:
+        description: The new textblock data for the draft, if set.
+        type: array
+        items:
+          $ref: '#/definitions/TextblockDatum'
+      HideFromUser:
+        description: If set, whether the document should be hidden from being listed for the user.
+        type: boolean
+  DraftValidationSummary:
+    description: A list of validation results.
+    type: object
+    properties:
+      modelErrors:
+        description: Gets or sets a list of model validation errors.
+        type: array
+        items:
+          $ref: '#/definitions/DraftModelValidationError'
+      textblockErrors:
+        description: Gets or sets a list of textblock validation errors.
+        type: array
+        items:
+          $ref: '#/definitions/DraftTextblockValidationError'
+  DraftModelValidationError:
+    description: Describes a validation error on a model control.
+    type: object
+    properties:
+      control:
+        description: Gets or sets the name of the control that fails the validation.
+        type: string
+      messages:
+        description: Gets or sets the validation error message.
+        type: array
+        items:
+          type: string
+  DraftTextblockValidationError:
+    description: Describes a validation error on a textblock control.
+    type: object
+    properties:
+      control:
+        description: Gets or sets the name of the control that fails the validation.
+        type: string
+      name:
+        description: Gets or sets the name of the value that fails the validation.
+        type: string
+      dataStore:
+        description: Gets or sets the datastore of the control that fails the validation.
+        type: string
+      row:
+        format: int32
+        description: Gets or sets the row of the control that fails the validation.
+        type: integer
+      messages:
+        description: Gets or sets the validation error messages.
+        type: array
+        items:
+          type: string
