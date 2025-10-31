@@ -6,6 +6,8 @@ import {
 import {StoreContactInfoComponent} from './components/store-contactinfo/store-contactinfo.component';
 import {FormModule, InputModule} from '@valtimo/components';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import {CASE_TAB_TOKEN} from "@valtimo/dossier";
+import {KlantcontactTabComponent} from "./tab/klantcontact-tab/klantcontact-tab.component";
 
 @NgModule({
     declarations: [
@@ -16,6 +18,14 @@ import {PluginTranslatePipeModule} from '@valtimo/plugin';
     exports: [
         OpenKlantPluginConfigurationComponent,
         StoreContactInfoComponent
+    ],
+    providers: [
+        {
+            provide: CASE_TAB_TOKEN,
+            useValue: {
+                'klantcontact-tab': KlantcontactTabComponent,
+            }
+        },
     ]
 })
 export class OpenKlantPluginModule {
