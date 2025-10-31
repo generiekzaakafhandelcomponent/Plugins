@@ -21,14 +21,6 @@ import {KlantcontactTabComponent} from "./tab/klantcontact-tab/klantcontact-tab.
         OpenKlantPluginConfigurationComponent,
         OpenKlantStoreContactinfoComponent
     ],
-    providers: [
-        {
-            provide: CASE_TAB_TOKEN,
-            useValue: {
-                'klantcontact-tab': KlantcontactTabComponent,
-            }
-        },
-    ]
 })
 export class OpenKlantPluginModule {
 }
