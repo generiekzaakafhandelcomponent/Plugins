@@ -1,0 +1,35 @@
+<section class="valtimo-timeline ng-star-inserted"
+         *ngIf="klantcontacts.length > 0">
+    <ul class="timeline mb-0 py-5">
+        <li *ngFor="let klantcontact of klantcontacts"
+            class="timeline-item"
+            [ngClass]="{'failed': klantcontact.indicatieContactGelukt != 'true'}">
+
+            <div class="timeline-date">
+                <p>{{ formatDate(klantcontact.plaatsgevondenOp) }}</p>
+                <p>{{ formatTime(klantcontact.plaatsgevondenOp) }}</p>
+            </div>
+
+            <div class="timeline-content">
+                <p class="timeline-autor">
+                    <em class="klantcontact-nummer">{{ klantcontact.nummer }}:</em>
+                    {{ klantcontact.kanaal }} -
+                    {{ (klantcontact.indicatieContactGelukt == "true" ? "success" : "gefaald") }}
+                </p>
+
+                <details>
+                    <summary>{{ klantcontact.onderwerp }}</summary>
+                    <p>{{ klantcontact.inhoud }}</p>
+                </details>
+            </div>
+
+        </li>
+    </ul>
+</section>
+
+<valtimo-no-results
+        *ngIf="klantcontacts.length === 0"
+        [description]="'Er zijn geen klantcontacten voor dit dossier aangemaakt.'"
+        [title]="'Geen klantcontacten'"
+        illustration="valtimo-layout/img/emptystate-no-result.svg"
+></valtimo-no-results>
