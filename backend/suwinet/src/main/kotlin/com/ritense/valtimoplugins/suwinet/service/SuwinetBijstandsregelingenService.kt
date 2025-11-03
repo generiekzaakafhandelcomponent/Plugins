@@ -16,6 +16,7 @@ import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.BeslissingOp
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.BijstandsRegelingenDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.BronDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.PartnerBijstandDto
+import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.PartnerDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SpecifiekeGegevensBijzBijstandDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SzWetDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.VorderingDto
@@ -96,11 +97,25 @@ class SuwinetBijstandsregelingenService (
         }
     }
 
-    private fun getVorderingen(vordering: MutableList<ClientSuwi.Vordering>): List<VorderingDto> {
-
+    private fun getVorderingen(vorderingen: MutableList<ClientSuwi.Vordering>): List<VorderingDto> =
+      vorderingen.map {
+          vordering ->
+          VorderingDto(
+              bron = BronDto( cdKolomSuwi = vordering.bron.cdKolomSuwi, cdVestigingSuwi = vordering.bron.cdVestigingSuwi, cdPartijSuwi = vordering.bron.cdPartijSuwi),
+              cdRedenVordering = vordering.cdRedenVordering,
+              datBesluitVordering = vordering.datBesluitVordering,
+              identificatienrVordering = vordering.identificatienrVordering,
+              partnersVordering = getPartners(vordering.partnerVordering),
+              szWet = SzWetDto( cdSzWet = vordering.szWet.cdSzWet)
+          )
     }
 
-    private fun getSpeciekeGegevensBijzBijstand(specifiekeGegevensBijzBijstand: MutableList<ClientSuwi.SpecifiekeGegevensBijzBijstand>): kotlin.collections.List<com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SpecifiekeGegevensBijzBijstandDto> =
+    private fun getPartners(partnerVordering: MutableList<ClientSuwi.Vordering.PartnerVordering>): MutableList<PartnerDto> =
+        partnerVordering.map {
+                partnerVordering -> PartnerDto( burgerservicenr = partnerVordering.burgerservicenr)
+        } as MutableList<PartnerDto>
+
+    private fun getSpeciekeGegevensBijzBijstand(specifiekeGegevensBijzBijstand: MutableList<ClientSuwi.SpecifiekeGegevensBijzBijstand>): List<SpecifiekeGegevensBijzBijstandDto> =
        specifiekeGegevensBijzBijstand.map {
            specifiekeGegevensBijzBijstandItem -> SpecifiekeGegevensBijzBijstandDto(
                cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand,

@@ -203,6 +203,7 @@ tasks.register<Wsdl2Java>("genBijstandsregelingen") {
 
 tasks.named("compileKotlin") {
     dependsOn(
+        "genBijstandsregelingen",
         "genBRPDossierPersoonGSD",
         "genDUODossierPersoonGSD",
         "genDUODossierStudiefinancieringGSD",
