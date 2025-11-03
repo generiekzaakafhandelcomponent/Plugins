@@ -48,18 +48,19 @@ class SuwinetBijstandsregelingenService (
     }
 
     fun getBijstandsregelingenByBsn(
-        bsn: String
+        bsn: String,
+        infoService: BijstandsregelingenInfo
     ): BijstandsRegelingenDto? {
         logger.info { "Getting Bijstandsregelingen from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
 
-        /* retrieve duo studiefinanciering info by bsn */
+        /* retrieve Bijstandsregeling info by bsn */
         val result = runCatching {
 
             val bijstandsregelingenInfoRequest = ObjectFactory().createBijstandsregelingenInfo_Type()
                 .apply {
                     burgerservicenr = bsn
                 }
-            val response = createBijstandsregelingenService().bijstandsregelingenInfo(bijstandsregelingenInfoRequest)
+            val response = infoService.bijstandsregelingenInfo(bijstandsregelingenInfoRequest)
             response.unwrapResponse()
         }
 

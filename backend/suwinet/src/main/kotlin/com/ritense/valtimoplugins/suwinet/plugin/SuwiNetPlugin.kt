@@ -384,7 +384,8 @@ class SuwiNetPlugin(
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
         try {
-            suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(bsn)
+            suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(bsn,
+                suwinetBijstandsregelingenService.createBijstandsregelingenService())
                 ?.let {
                     execution.processInstance.setVariable(
                         resultProcessVariableName, objectMapper.convertValue(it)
