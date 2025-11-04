@@ -12,6 +12,6 @@ data class DownloadResponse (
     val FileType: String,
     val ModelName: String,
     val CurrentOwner: String,
-    val LastChanges: LocalDateTime,
+    val LastChanges: LocalDateTime?,
     val DateStarted: LocalDateTime,
     )
