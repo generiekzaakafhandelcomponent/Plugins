@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.notifynl.domain.notification
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
 data class SendSmsResponse(
     val content: SmsContent,
@@ -26,33 +27,19 @@ data class SendSmsResponse(
     val scheduledFor: String?,
     val template: SmsTemplate,
     val uri: String
-) {
-    fun formattedResponse(request: SmsRequest): String = """
-        Recipient:
-        Recipient Phone number: ${request.phoneNumber}
-        Message: ${content.body}
-        
-        Sender:
-        Sender Phone number: ${content.fromNumber}
-        Scheduled for: ${scheduledFor ?: "n/a"}
-        Reference: ${reference ?: "n/a"}
-        URI: $uri
-        Message ID: $id
-        NotifyNL Template ID: ${request.templateId}
-    """.trimIndent()
-}
+) : Serializable
 
 data class SmsContent(
     val body: String,
     @JsonProperty("from_number")
     val fromNumber: String
-)
+) : Serializable
 
 data class SmsTemplate(
     val id: String,
     val uri: String,
     val version: Int
-)
+) : Serializable
 
 data class GetMessageResponse(
     val id: String,
@@ -99,47 +86,13 @@ data class GetMessageResponse(
     val costInPounds: Double?,
     @JsonProperty("cost_details")
     val costDetails: CostDetails?
-) {
-    fun formattedResponse(request: NotificationRequest): String = """
-        Notification Details:
-        ID: $id
-        Type: $type
-        Status: $status
-        Reference: ${reference ?: "n/a"}
-        Created at: $createdAt
-        Created by: ${createdByName ?: "n/a"}
-        Sent at: ${sentAt ?: "n/a"}
-        Completed at: ${completedAt ?: "n/a"}
-        Scheduled for: ${scheduledFor ?: "n/a"}
-        Email: ${emailAddress ?: "n/a"}
-        Phone: ${phoneNumber ?: "n/a"}
-    
-        Template:
-          ID: ${template.id}
-          Version: ${template.version}
-          URI: ${template.uri}
-    
-        Body:
-        $body
-    
-        Subject: ${subject ?: "n/a"}
-        Unsubscribe: ${oneClickUnsubscribe ?: "n/a"}
-    
-        Cost:
-          Ready: $isCostDataReady
-          Pounds: ${costInPounds ?: "n/a"}
-          SMS Fragments: ${costDetails?.billableSmsFragments ?: "n/a"}
-          SMS Rate: ${costDetails?.smsRate ?: "n/a"}
-          Sheets: ${costDetails?.billableSheetsOfPaper ?: "n/a"}
-          Postage: ${costDetails?.postage ?: "n/a"}
-    """.trimIndent()
-}
+) : Serializable
 
 data class NotificationTemplate(
     val id: String,
     val uri: String,
     val version: Int
-)
+) : Serializable
 
 data class CostDetails(
     @JsonProperty("billable_sms_fragments")
@@ -151,4 +104,4 @@ data class CostDetails(
     @JsonProperty("billable_sheets_of_paper")
     val billableSheetsOfPaper: Int?,
     val postage: String?
-)
+) : Serializable

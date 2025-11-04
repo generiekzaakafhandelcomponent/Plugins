@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.notifynl.domain.email
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
 data class SendEmailResponse (
     val content: EmailContent,
@@ -26,31 +27,17 @@ data class SendEmailResponse (
     val scheduledFor: String?,
     val template: EmailTemplate,
     val uri: String
-) {
-    fun formattedResponse(request: EmailRequest): String = """
-        Recipient:
-        Recipient E-mail: ${request.email}
-        Message: ${content.body}
-        
-        Sender:
-        Sender E-mail: ${content.fromEmail}
-        Scheduled for: ${scheduledFor ?: "n/a"}
-        Reference: ${reference ?: "n/a"}
-        URI: $uri
-        Message ID: $id
-        NotifyNL Template ID: ${request.templateId}
-    """.trimIndent()
-}
+) : Serializable
 
 data class EmailContent(
     val body: String,
     @JsonProperty("from_email")
-    val fromEmail: String,
+    val fromEmailAddress: String,
     val subject: String
-)
+) : Serializable
 
 data class EmailTemplate(
     val id: String,
     val uri: String,
     val version: Int
-)
+) : Serializable

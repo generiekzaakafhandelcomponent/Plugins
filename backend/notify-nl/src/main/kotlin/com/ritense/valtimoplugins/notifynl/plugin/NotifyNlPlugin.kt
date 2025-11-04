@@ -16,27 +16,24 @@
 
 package com.ritense.valtimoplugins.notifynl.plugin
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.notifynl.client.NotifyNlClient
-import com.ritense.valtimoplugins.notifynl.domain.StringWrapper
 import com.ritense.valtimoplugins.notifynl.domain.email.EmailRequest
 import com.ritense.valtimoplugins.notifynl.domain.letter.AddressWrapper
 import com.ritense.valtimoplugins.notifynl.domain.letter.LetterRequest
-import com.ritense.valtimoplugins.notifynl.domain.letter.SimpleAddress
 import com.ritense.valtimoplugins.notifynl.domain.letter.buildPersonalisation
 import com.ritense.valtimoplugins.notifynl.domain.letter.toSimpleAddresses
 import com.ritense.valtimoplugins.notifynl.domain.notification.NotificationRequest
 import com.ritense.valtimoplugins.notifynl.domain.notification.SmsRequest
-import com.ritense.valtimoplugins.notifynl.domain.template.AllTemplatesRequest
 import com.ritense.valtimoplugins.notifynl.domain.template.TemplateRequest
 import com.ritense.valtimoplugins.notifynl.service.NotifyNlTokenGenerationService
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
-import java.util.UUID
 
 @Plugin(
     key = "notify-nl",
@@ -67,8 +64,7 @@ open class NotifyNlPlugin(
         val smsRequest = SmsRequest(phoneNumber = phoneNumber, templateId = templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val smsResponse = notifyNlClient.sendSms(baseUri = url, body = smsRequest, token = token)
-        val formattedResponse = smsResponse.formattedResponse(request = smsRequest)
-        execution.setVariable("result", StringWrapper(value = formattedResponse))
+        execution.setVariable("result",smsResponse)
     }
 
     @PluginAction(
@@ -82,11 +78,10 @@ open class NotifyNlPlugin(
         @PluginActionProperty email: String,
         @PluginActionProperty templateId: String
     ) {
-        val emailRequest = EmailRequest(email = email, templateId = templateId)
+        val emailRequest = EmailRequest(emailAddress = email, templateId = templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val emailResponse = notifyNlClient.sendEmail(baseUri = url, body = emailRequest, token = token)
-        val formattedResponse = emailResponse.formattedResponse(request = emailRequest)
-        execution.setVariable("result", StringWrapper(value = formattedResponse))
+        execution.setVariable("result", emailResponse)
     }
 
     @PluginAction(
@@ -105,8 +100,7 @@ open class NotifyNlPlugin(
         val letterRequest = LetterRequest(templateId = templateId, personalisation = personalisation)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val letterResponse = notifyNlClient.sendLetter(baseUri = url, body = letterRequest, token = token)
-        val formattedResponse = letterResponse.formattedResponse(request = letterRequest)
-        execution.setVariable("result", StringWrapper(value = formattedResponse))
+        execution.setVariable("result",letterResponse)
     }
 
     @PluginAction(
@@ -122,8 +116,7 @@ open class NotifyNlPlugin(
         val templateRequest = TemplateRequest(templateId = templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val templateResponse = notifyNlClient.getTemplate(baseUri = url, body = templateRequest, token = token)
-        val formattedResponse = templateResponse.formattedResponse(request = templateRequest)
-        execution.setVariable("result", StringWrapper(value = formattedResponse))
+        execution.setVariable("result", templateResponse)
     }
 
     @PluginAction(
@@ -136,11 +129,9 @@ open class NotifyNlPlugin(
         execution: DelegateExecution,
         @PluginActionProperty templateType: String
     ) {
-        val allTemplatesRequest = AllTemplatesRequest(templateType = templateType)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val allTemplatesResponse = notifyNlClient.getAllTemplates(baseUri = url, token = token, templateType = templateType)
-        val formattedResponse = allTemplatesResponse.formattedResponse(request = allTemplatesRequest)
-        execution.setVariable("result", StringWrapper(value = formattedResponse))
+        execution.setVariable("allTemplates", jacksonObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(allTemplatesResponse))
     }
 
     @PluginAction(
@@ -156,7 +147,6 @@ open class NotifyNlPlugin(
         val notificationRequest = NotificationRequest(notificationId = notificationId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val messageResponse = notifyNlClient.getMessage(baseUri = url, body = notificationRequest, token = token)
-        val formattedResponse = messageResponse.formattedResponse(request = notificationRequest)
-        execution.setVariable("result", StringWrapper(value = formattedResponse))
+        execution.setVariable("result", messageResponse)
     }
 }

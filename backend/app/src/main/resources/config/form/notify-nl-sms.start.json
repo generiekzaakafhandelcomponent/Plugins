@@ -2,36 +2,42 @@
   "display": "form",
   "components": [
     {
-      "label": "Template ID",
-      "applyMaskOn": "change",
-      "autoExpand": true,
-      "tableView": true,
       "key": "templateId",
+      "type": "textarea",
+      "input": true,
+      "label": "Template ID",
+      "tableView": true,
+      "autoExpand": true,
       "properties": {
         "targetKey": "doc:/templateId"
       },
-      "type": "textarea",
-      "input": true
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-sms.start-templateId"
+      }
     },
     {
-      "label": "Recipient Phonenumber",
-      "applyMaskOn": "change",
-      "autoExpand": true,
-      "tableView": true,
       "key": "recipientPhonenumber",
+      "type": "textarea",
+      "input": true,
+      "label": "Recipient Phonenumber",
+      "tableView": true,
+      "autoExpand": true,
       "properties": {
         "targetKey": "doc:/phoneNumber"
       },
-      "type": "textarea",
-      "input": true
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-sms.start-recipientPhonenumber"
+      }
     },
     {
-      "type": "button",
-      "label": "Submit",
       "key": "submit",
-      "disableOnInvalid": true,
+      "type": "button",
       "input": true,
-      "tableView": false
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
     }
   ]
 }

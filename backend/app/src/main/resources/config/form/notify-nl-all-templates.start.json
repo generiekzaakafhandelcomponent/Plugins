@@ -2,9 +2,7 @@
   "display": "form",
   "components": [
     {
-      "label": "Template Type",
-      "widget": "choicesjs",
-      "tableView": true,
+      "key": "templateType",
       "data": {
         "values": [
           {
@@ -25,20 +23,25 @@
           }
         ]
       },
-      "key": "templateType",
+      "type": "select",
+      "input": true,
+      "label": "Template Type",
+      "widget": "choicesjs",
+      "tableView": true,
       "properties": {
         "targetKey": "doc:/templateType"
       },
-      "type": "select",
-      "input": true
+      "attributes": {
+        "data-testid": "notify-nl-all-templates.start-templateType"
+      }
     },
     {
-      "type": "button",
-      "label": "Submit",
       "key": "submit",
-      "disableOnInvalid": true,
+      "type": "button",
       "input": true,
-      "tableView": false
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
     }
   ]
 }

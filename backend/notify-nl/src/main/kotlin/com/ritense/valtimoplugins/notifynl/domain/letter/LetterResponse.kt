@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.notifynl.domain.letter
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
 data class LetterResponse(
     val id: String,
@@ -26,43 +27,15 @@ data class LetterResponse(
     val template: Template,
     @JsonProperty("scheduled_for")
     val scheduledFor: String?
-) {
-    fun formattedResponse(request: LetterRequest): String = """
-        Letter Details:
-        ID: $id
-        Reference: ${reference ?: "n/a"}
-        Scheduled for: ${scheduledFor ?: "n/a"}
-        URI: $uri
-
-        Recipient:
-          Address Line 1: ${request.personalisation.addressLine1 ?: "n/a"}
-          Address Line 2: ${request.personalisation.addressLine2 ?: "n/a"}
-          Address Line 3: ${request.personalisation.addressLine3 ?: "n/a"}
-          Address Line 4: ${request.personalisation.addressLine4 ?: "n/a"}
-          Address Line 5: ${request.personalisation.addressLine5 ?: "n/a"}
-          Address Line 6: ${request.personalisation.addressLine6 ?: "n/a"}
-          Address Line 7: ${request.personalisation.addressLine7 ?: "n/a"}
-
-        Content:
-          Subject: ${content.subject}
-          
-        Body:
-        ${content.body}
-
-        Template:
-          ID: ${template.id}
-          Version: ${template.version}
-          URI: ${template.uri}
-    """.trimIndent()
-}
+) : Serializable
 
 data class Content(
     val subject: String,
     val body: String
-)
+) : Serializable
 
 data class Template(
     val id: String,
     val version: Int,
     val uri: String
-)
+) : Serializable

@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.notifynl.domain.template
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
 data class GetTemplateResponse(
     val id: String,
@@ -33,52 +34,9 @@ data class GetTemplateResponse(
     val body: String,
     @JsonProperty("letter_contact_block")
     val letterContactBlock: String?
-) {
-    fun formattedResponse(request: TemplateRequest): String = """
-        Template Details:
-        ID: $id
-        Name: $name
-        Type: $type
-        Version: $version
-        Created at: $createdAt
-        Updated at: ${updatedAt ?: "n/a"}
-        Created by: $createdBy
-        Letter Contact Block: ${letterContactBlock ?: "n/a"}
-        
-        Subject: ${subject ?: "n/a"}
-    
-        Body:
-        $body
-    """.trimIndent()
-}
+) : Serializable
 
 data class GetAllTemplatesResponse(
     val templates: List<GetTemplateResponse>
-) {
-    fun formattedResponse(request: AllTemplatesRequest): String = buildString {
-        appendLine("Templates (${templates.size} total):")
-        appendLine("--------------------------------------------------")
-
-        templates.forEach { template ->
-            appendLine(
-                """
-                ID: ${template.id}
-                Name: ${template.name}
-                Type: ${template.type}
-                Version: ${template.version}
-                Created at: ${template.createdAt}
-                Updated at: ${template.updatedAt ?: "n/a"}
-                Created by: ${template.createdBy}
-                Letter Contact Block: ${template.letterContactBlock ?: "n/a"}
-                
-                Subject: ${template.subject ?: "n/a"}
-                
-                Body:
-                ${template.body}
-                --------------------------------------------------
-                """.trimIndent()
-            )
-        }
-    }
-}
+) : Serializable
 

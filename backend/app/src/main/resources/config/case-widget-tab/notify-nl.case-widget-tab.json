@@ -1,0 +1,412 @@
+{
+  "changesetId": "notify-nl.case-widget-tab.1762258806296",
+  "tabs": [
+    {
+      "caseDefinitionName": "notify-nl",
+      "key": "result",
+      "widgets": [
+        {
+          "type": "fields",
+          "key": "summary",
+          "title": "NotifyNL Result",
+          "width": 1,
+          "highContrast": false,
+          "actions": [],
+          "properties": {
+            "columns": [
+              [
+                {
+                  "key": "subject",
+                  "title": "Subject",
+                  "value": "doc:result.content.subject",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "sender-email",
+                  "title": "Sender (Email)",
+                  "value": "doc:result.content.from_email",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "sender-sms-number",
+                  "title": "Sender (SMS Number)",
+                  "value": "doc:result.content.from_number",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "recipient-phone-number",
+                  "title": "Recipient (Phone Number)",
+                  "value": "doc:result.phone_number",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "recipient-email-address",
+                  "title": "Recipient (Email Address)",
+                  "value": "doc:result.email_address",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "notification-type",
+                  "title": "Notification Type",
+                  "value": "doc:result.type",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "status",
+                  "title": "Status",
+                  "value": "doc:result.status",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "body",
+                  "title": "Body",
+                  "value": "doc:result.content.body",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "subject-letter-message",
+                  "title": "Subject (Letter/Message)",
+                  "value": "doc:result.subject",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "body-letter-message",
+                  "title": "Body (Letter/Message)",
+                  "value": "doc:result.body",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "notification-uri",
+                  "title": "Notification URI",
+                  "value": "doc:result.uri",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "reference",
+                  "title": "Reference",
+                  "value": "doc:result.reference",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "scheduled-for",
+                  "title": "Scheduled For",
+                  "value": "doc:result.scheduled_for",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "created-at",
+                  "title": "Created At",
+                  "value": "doc:result.created_at",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "sent-at",
+                  "title": "Sent At",
+                  "value": "doc:result.sent_at",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "completed-at",
+                  "title": "Completed At",
+                  "value": "doc:result.completed_at",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "created-by-name",
+                  "title": "Created By (Name)",
+                  "value": "doc:result.created_by_name",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "created-by-template-author",
+                  "title": "Created By (Template Author)",
+                  "value": "doc:result.created_by",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "updated-at",
+                  "title": "Updated At",
+                  "value": "doc:result.updated_at",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "postage",
+                  "title": "Postage",
+                  "value": "doc:result.postage",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "template-id",
+                  "title": "Template ID",
+                  "value": "doc:result.template.id",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "template-name",
+                  "title": "Template Name",
+                  "value": "doc:result.template.name",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "template-type",
+                  "title": "Template Type",
+                  "value": "doc:result.template.type",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "template-version",
+                  "title": "Template Version",
+                  "value": "doc:result.template.version",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "template-created-at",
+                  "title": "Template Created At",
+                  "value": "doc:result.template.created_at",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "template-updated-at",
+                  "title": "Template Updated At",
+                  "value": "doc:result.template.updated_at",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "template-created-by",
+                  "title": "Template Created By",
+                  "value": "doc:result.template.created_by",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "letter-contact-block",
+                  "title": "Letter Contact Block",
+                  "value": "doc:result.template.letter_contact_block",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "one-click-unsubscribe-url",
+                  "title": "One Click Unsubscribe URL",
+                  "value": "doc:result.one_click_unsubscribe",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "is-cost-data-ready",
+                  "title": "Is Cost Data Ready",
+                  "value": "doc:result.is_cost_data_ready",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "cost-in-pounds",
+                  "title": "Cost in Pounds",
+                  "value": "doc:result.cost_in_pounds",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "billable-sms-fragments",
+                  "title": "Billable SMS Fragments",
+                  "value": "doc:result.cost_details.billable_sms_fragments",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "sms-rate",
+                  "title": "SMS Rate",
+                  "value": "doc:result.cost_details.sms_rate",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "billable-sheets-of-paper",
+                  "title": "Billable Sheets of Paper",
+                  "value": "doc:result.cost_details.billable_sheets_of_paper",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "international-rate-multiplier",
+                  "title": "International Rate Multiplier",
+                  "value": "doc:result.cost_details.international_rate_multiplier",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "address-line-1",
+                  "title": "Address Line 1",
+                  "value": "doc:result.line_1",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "address-line-2",
+                  "title": "Address Line 2",
+                  "value": "doc:result.line_2",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "address-line-3",
+                  "title": "Address Line 3",
+                  "value": "doc:result.line_3",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "address-line-4",
+                  "title": "Address Line 4",
+                  "value": "doc:result.line_4",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "address-line-5",
+                  "title": "Address Line 5",
+                  "value": "doc:result.line_5",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "address-line-6",
+                  "title": "Address Line 6",
+                  "value": "doc:result.line_6",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "address-line-7",
+                  "title": "Address Line 7",
+                  "value": "doc:result.line_7",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "all-templates",
+                  "title": "All Templates",
+                  "value": "doc:allTemplates",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": false
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

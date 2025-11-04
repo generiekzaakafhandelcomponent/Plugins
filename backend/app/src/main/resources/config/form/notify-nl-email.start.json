@@ -2,36 +2,42 @@
   "display": "form",
   "components": [
     {
-      "label": "Template ID",
-      "applyMaskOn": "change",
-      "autoExpand": true,
-      "tableView": true,
       "key": "templateId",
+      "type": "textarea",
+      "input": true,
+      "label": "Template ID",
+      "tableView": true,
+      "autoExpand": true,
       "properties": {
         "targetKey": "doc:/templateId"
       },
-      "type": "textarea",
-      "input": true
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-email.start-templateId"
+      }
     },
     {
-      "label": "Recipient E-mail",
-      "applyMaskOn": "change",
-      "autoExpand": true,
-      "tableView": true,
       "key": "recipientEmail",
+      "type": "textarea",
+      "input": true,
+      "label": "Recipient E-mail",
+      "tableView": true,
+      "autoExpand": true,
       "properties": {
         "targetKey": "doc:/email"
       },
-      "type": "textarea",
-      "input": true
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-email.start-recipientEmail"
+      }
     },
     {
-      "type": "button",
-      "label": "Submit",
       "key": "submit",
-      "disableOnInvalid": true,
+      "type": "button",
       "input": true,
-      "tableView": false
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
     }
   ]
 }

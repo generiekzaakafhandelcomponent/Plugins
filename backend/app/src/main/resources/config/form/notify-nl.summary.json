@@ -2,26 +2,23 @@
   "display": "form",
   "components": [
     {
-      "type": "hidden",
       "key": "result",
+      "type": "hidden",
       "label": "Result",
       "properties": {
         "sourceKey": "doc:result"
+      },
+      "attributes": {
+        "data-testid": "notify-nl.summary-result"
       }
     },
     {
       "key": "html",
       "tag": "div",
       "type": "htmlelement",
-      "attrs": [
-        {
-          "attr": "",
-          "value": ""
-        }
-      ],
       "input": false,
       "label": "HTML",
-      "content": "<section>\n  <h3>NotifyNL Plugin</h3>\n    {{ data ? `\n    <h4>Result</h4>\n    <dl class=\"row mb-5\">\n      <dt class=\"col-12\"><pre>${data.result.value}</pre></dt>\n    </dl>` : '' }}\n\n</section>\n\n<style>\n  pre{\n    padding: 10px;\n    overflow: auto;\n    white-space: pre-wrap;\n    min-height: 100px;\n    resize: both;\n  }\n</style>\n",
+      "content": "<section><h3>NotifyNL Plugin</h3> {{ data ? `<h4>Result</h4><dl class='row mb-5'><dt class='col-12'><pre>JSON.parse(data.result).templates</pre></dt></dl>` : '' }}</section><style>pre{padding: 10px; overflow: auto; white-space: pre-wrap; min-height: 100px; resize: both;} .widget-field__field-value{ white-space: pre;}</style>",
       "tableView": false,
       "refreshOnChange": false
     }

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class EmailRequest(
     @JsonProperty("email_address")
-    val email: String,
+    val emailAddress: String,
     @JsonProperty("template_id")
     val templateId: String
 )
