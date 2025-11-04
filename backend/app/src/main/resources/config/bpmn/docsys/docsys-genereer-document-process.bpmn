@@ -4,28 +4,29 @@
     <bpmn:participant id="Participant_0cvd6on" name="Docsys API" processRef="docsys-genereer-document" />
   </bpmn:collaboration>
   <bpmn:process id="docsys-genereer-document" name="Docsys genereer document" processType="None" isClosed="false" isExecutable="true">
+    <bpmn:startEvent id="StartEvent" name="StartEvent">
+      <bpmn:outgoing>Flow_0m3mpzz</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0m3mpzz" sourceRef="StartEvent" targetRef="genereer-document" />
+    <bpmn:sequenceFlow id="Flow_0ndg7zz" sourceRef="genereer-document" targetRef="opslaan_document" />
+    <bpmn:sequenceFlow id="Flow_1lq3hyj" sourceRef="opslaan_document" targetRef="EndEvent" />
+    <bpmn:endEvent id="EndEvent" name="EndEvent">
+      <bpmn:incoming>Flow_1lq3hyj</bpmn:incoming>
+    </bpmn:endEvent>
     <bpmn:serviceTask id="genereer-document" name="Genereer document" implementation="##WebService" camunda:expression="${null}">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_0m3mpzz</bpmn:incoming>
       <bpmn:outgoing>Flow_0ndg7zz</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="StartEvent" name="StartEvent">
-      <bpmn:outgoing>Flow_0m3mpzz</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:endEvent id="EndEvent" name="EndEvent">
+    <bpmn:serviceTask id="opslaan_document" name="Opslaan Document" camunda:asyncBefore="true" camunda:asyncAfter="true" camunda:expression="${true}">
       <bpmn:incoming>Flow_0ndg7zz</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0m3mpzz" sourceRef="StartEvent" targetRef="genereer-document" />
-    <bpmn:sequenceFlow id="Flow_0ndg7zz" sourceRef="genereer-document" targetRef="EndEvent" />
+      <bpmn:outgoing>Flow_1lq3hyj</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1bdygq4">
       <bpmndi:BPMNShape id="Participant_0cvd6on_di" bpmnElement="Participant_0cvd6on" isHorizontal="true">
-        <dc:Bounds x="170" y="80" width="600" height="250" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1mbi16r_di" bpmnElement="genereer-document">
-        <dc:Bounds x="390" y="147" width="100" height="80" />
+        <dc:Bounds x="170" y="80" width="660" height="250" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent">
@@ -35,18 +36,29 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1i2t034_di" bpmnElement="EndEvent">
-        <dc:Bounds x="572" y="169" width="36" height="36" />
+        <dc:Bounds x="752" y="169" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="566" y="212" width="48" height="14" />
+          <dc:Bounds x="746" y="212" width="48" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0ndg7zz_di" bpmnElement="Flow_0ndg7zz">
-        <di:waypoint x="490" y="187" />
-        <di:waypoint x="572" y="187" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1mbi16r_di" bpmnElement="genereer-document">
+        <dc:Bounds x="380" y="147" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_063m07p_di" bpmnElement="opslaan_document">
+        <dc:Bounds x="540" y="147" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0m3mpzz_di" bpmnElement="Flow_0m3mpzz">
         <di:waypoint x="318" y="187" />
-        <di:waypoint x="390" y="187" />
+        <di:waypoint x="380" y="187" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ndg7zz_di" bpmnElement="Flow_0ndg7zz">
+        <di:waypoint x="480" y="187" />
+        <di:waypoint x="540" y="187" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lq3hyj_di" bpmnElement="Flow_1lq3hyj">
+        <di:waypoint x="640" y="187" />
+        <di:waypoint x="752" y="187" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
