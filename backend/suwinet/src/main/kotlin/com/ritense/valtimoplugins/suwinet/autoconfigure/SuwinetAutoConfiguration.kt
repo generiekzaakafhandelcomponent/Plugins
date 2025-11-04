@@ -11,6 +11,7 @@ import com.ritense.valtimoplugins.suwinet.service.CodesUitkeringsperiodeService
 import com.ritense.valtimoplugins.suwinet.service.DateTimeService
 import com.ritense.valtimoplugins.suwinet.service.DocumentWriterService
 import com.ritense.valtimoplugins.suwinet.service.NationaliteitenService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetBijstandsregelingenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpStoreToDocService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
@@ -159,6 +160,16 @@ class SuwinetAutoConfiguration {
     }
 
     @Bean
+    @ProcessBean
+    fun suwinetBijstandsRegelingenInfoService(
+        suwinetSOAPClient: SuwinetSOAPClient,
+    ): SuwinetBijstandsregelingenService {
+        return SuwinetBijstandsregelingenService(
+            suwinetSOAPClient
+        )
+    }
+
+    @Bean
     fun suwiNetPluginFactory(
         pluginService: PluginService,
         suwinetBrpInfoService: SuwinetBrpInfoService,
@@ -167,7 +178,8 @@ class SuwinetAutoConfiguration {
         suwinetDuoStudiefinancieringInfoService: SuwinetDuoStudiefinancieringInfoService,
         suwinetSvbPersoonsInfoService: SuwinetSvbPersoonsInfoService,
         suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService,
-        suwinetKadasterInfoService: SuwinetKadasterInfoService
+        suwinetKadasterInfoService: SuwinetKadasterInfoService,
+        suwinetBijstandsregelingenService: SuwinetBijstandsregelingenService
     ): SuwiNetPluginFactory = SuwiNetPluginFactory(
         pluginService,
         suwinetBrpInfoService,
@@ -176,6 +188,7 @@ class SuwinetAutoConfiguration {
         suwinetKadasterInfoService,
         suwinetRdwService,
         suwinetSvbPersoonsInfoService,
-        suwinetUwvPersoonsIkvService
+        suwinetUwvPersoonsIkvService,
+        suwinetBijstandsregelingenService
     )
 }

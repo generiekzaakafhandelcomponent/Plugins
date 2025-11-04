@@ -35,7 +35,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.util.Base64
 
 @Plugin(
-    key = "Docsys",
+    key = "docsys",
     title = "Docsys Plugin",
     description = "Generate documents with the Docsys plugin"
 )
