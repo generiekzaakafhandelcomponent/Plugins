@@ -61,9 +61,9 @@ class OpenKlantAutoConfiguration {
         zaakDocumentService: ZaakDocumentService,
         openKlantService: OpenKlantService,
         reflectionUtil: ReflectionUtil,
-        @Value("AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL")
+        @Value("${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL}")
         klantinteractieUrl: String,
-        @Value("AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN")
+        @Value("${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN}")
         openKlantToken: String,
     ) = OpenKlantValueResolverFactory(
         processDocumentService,
