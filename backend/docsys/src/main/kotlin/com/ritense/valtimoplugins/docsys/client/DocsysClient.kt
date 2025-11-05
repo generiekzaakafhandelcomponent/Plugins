@@ -39,6 +39,7 @@ import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import java.net.URI
 
+
 @Component
 @SkipComponentScan
 class DocsysClient(
@@ -66,7 +67,7 @@ class DocsysClient(
     private fun downloadDocument(draft: DamDraftResponse): DownloadResponse {
         val requestBody = DownloadRequest(
             Id = draft.draftId,
-            format = ExportFormat.PDF.name,
+            format = ExportFormat.PDF.format,
         )
 
         val response = restClientBuilder
@@ -77,6 +78,7 @@ class DocsysClient(
                 it.scheme(docsysBaseUri!!.scheme)
                     .host(docsysBaseUri!!.host)
                     .path(docsysBaseUri!!.path)
+                    .path(DOCSYS_API_POST_DOCUMENTS)
                     .port(docsysBaseUri!!.port)
                     .build()
             }
@@ -175,5 +177,6 @@ class DocsysClient(
 
     companion object {
         private val logger = KotlinLogging.logger {}
+        const val DOCSYS_API_POST_DOCUMENTS = "/api/v1/documents"
     }
 }

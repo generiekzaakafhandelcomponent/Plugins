@@ -21,7 +21,7 @@ import {GenerateDocumentComponent} from "./components/generate-document/generate
 
 
 const docsysPluginSpecification: PluginSpecification = {
-    pluginId: 'Docsys',
+    pluginId: 'docsys',
     pluginConfigurationComponent: DocsysConfigurationComponent,
     pluginLogoBase64: DOCSYS_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
