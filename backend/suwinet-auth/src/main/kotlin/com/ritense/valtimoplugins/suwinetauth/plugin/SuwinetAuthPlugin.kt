@@ -20,6 +20,13 @@ import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginCategory
 import com.ritense.plugin.annotation.PluginProperty
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.apache.cxf.configuration.jsse.TLSClientParameters
+import org.apache.cxf.configuration.security.AuthorizationPolicy
+import org.apache.cxf.transport.http.HTTPConduit
+import java.io.FileInputStream
+import java.security.KeyStore
+import javax.net.ssl.KeyManagerFactory
+import javax.net.ssl.TrustManagerFactory
 
 @PluginCategory("authentication")
 @Plugin(
@@ -27,9 +34,9 @@ import io.github.oshai.kotlinlogging.KotlinLogging
     title = "Suwinet Auth plugin",
     description = "Plugin delivering authentication for Suwinet plugin"
 )
-open class SuwinetAuthPlugin(
-
-) {
+open class SuwinetAuthPlugin(): SuwinetAuth {
+    @PluginProperty(key = "authType", secret = false, required = true)
+    var authType: String? = null
 
     @PluginProperty(key = "keystorePath", secret = false, required = false)
     var keystorePath: String? = null
@@ -55,7 +62,86 @@ open class SuwinetAuthPlugin(
     @PluginProperty(key = "headerValue", secret = true, required = false)
     var headerValue: String? = null
 
+    private var keystoreManagerFactory: KeyManagerFactory? = null
+    private var trustManagerFactory: TrustManagerFactory? = null
 
+
+    override fun applyAuth(conduit: HTTPConduit): HTTPConduit {
+
+        when(authType) {
+            SuwinetAuth.AuthType.MTLS.authType -> return addMtlsAuth(conduit)
+            SuwinetAuth.AuthType.BASIC.authType -> return addBasicAuth(conduit)
+            else -> {
+                logger.warn { "Unsupported auth type $authType" }
+                return conduit
+            }
+        }
+
+    }
+
+    private fun addBasicAuth(conduit: HTTPConduit): HTTPConduit {
+        conduit.authorization = basicAuthorization()
+        logger.info { "set conduit.authorization type to ${conduit.authorization.authorizationType}" }
+
+        return conduit
+    }
+
+    private fun addMtlsAuth(conduit: HTTPConduit): HTTPConduit {
+        val tlsParameters = TLSClientParameters()
+
+        buildKeyManagerFactory(keystorePath, keystoreSecret)
+        buildTrustManagerFactory(truststorePath, truststoreSecret)
+
+        tlsParameters.keyManagers = keystoreManagerFactory?.keyManagers
+        tlsParameters.trustManagers = trustManagerFactory?.trustManagers
+
+        conduit.tlsClientParameters = tlsParameters
+        return conduit
+    }
+
+    fun basicAuthorization(): AuthorizationPolicy {
+        val authorizationPolicy = AuthorizationPolicy()
+        authorizationPolicy.userName = basicAuthName
+        authorizationPolicy.password = basicAuthSecret
+        authorizationPolicy.authorizationType = "Basic"
+        return authorizationPolicy
+    }
+
+    private fun buildKeyManagerFactory(
+        keystoreCertificate: String? = null,
+        keystoreKey: String? = null
+    ): KeyManagerFactory? {
+
+        return if (keystoreCertificate.isNullOrEmpty() || keystoreKey.isNullOrEmpty()) {
+            logger.info { "Keystore not set" }
+            null
+        } else {
+            logger.info { "wsgKeyManagerFactory certificate: $keystoreCertificate" }
+            val keyStore = KeyStore.getInstance("jks")
+            keyStore.load(FileInputStream(keystoreCertificate), keystoreKey.toCharArray())
+            keystoreManagerFactory = KeyManagerFactory.getInstance("SunX509")
+            keystoreManagerFactory?.init(keyStore, keystoreKey.toCharArray())
+            keystoreManagerFactory
+        }
+    }
+
+    private fun buildTrustManagerFactory(
+        truststoreCertificate: String? = null,
+        truststoreKey: String? = null
+    ): TrustManagerFactory? {
+        return if (truststoreCertificate.isNullOrEmpty() || truststoreKey.isNullOrEmpty()) {
+            logger.info { "Truststore not set." }
+            null
+        } else {
+            val trustStore = KeyStore.getInstance("jks")
+            logger.info { "wsgTrustManagerFactory certificate: $truststoreCertificate" }
+
+            trustStore.load(FileInputStream(truststoreCertificate), truststoreKey.toCharArray())
+            trustManagerFactory = TrustManagerFactory.getInstance("SunX509")
+            trustManagerFactory?.init(trustStore)
+            trustManagerFactory
+        }
+    }
 
     companion object {
         private val logger = KotlinLogging.logger { }

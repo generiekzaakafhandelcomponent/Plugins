@@ -1,6 +1,15 @@
 package com.ritense.valtimoplugins.suwinetauth.plugin
 
+import org.apache.cxf.transport.http.HTTPConduit
+
 interface SuwinetAuth {
 
-    applyAuth(conduit:HttpConduit)
+    fun applyAuth(conduit: HTTPConduit): HTTPConduit
+
+    enum class AuthType(
+        val authType: String,
+    ) {
+        MTLS("MTLS"),
+        BASIC("BASIC"),
+    }
 }
