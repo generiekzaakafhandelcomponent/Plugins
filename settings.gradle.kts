@@ -18,6 +18,7 @@ include(
     "backend:smtpmail",
     "backend:spotler",
     "backend:suwinet",
+    "backend:suwinet-auth",
     "backend:xential",
     "backend:valtimo-llm",
     "backend:kvk-handelsregister",
