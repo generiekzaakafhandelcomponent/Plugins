@@ -111,12 +111,15 @@ open class DocsysPlugin(
         mutableMetaData.put(MetadataType.CONTENT_TYPE.key, format)
         mutableMetaData.put("author", "Gegenereerd door Docsys")
 
-        val resourceId = storageService.store( content.inputStream(), mutableMetaData)
+        val resourceId = storageService.store(content.inputStream(), mutableMetaData)
 
         return resourceId;
     }
 
-    private fun resolveValue(execution: DelegateExecution, keyValueList: List<TemplateProperty>?): List<TemplateProperty>? {
+    private fun resolveValue(
+        execution: DelegateExecution,
+        keyValueList: List<TemplateProperty>?
+    ): List<TemplateProperty>? {
         return if (keyValueList == null) {
             null
         } else {

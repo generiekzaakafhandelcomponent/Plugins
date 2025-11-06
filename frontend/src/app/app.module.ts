@@ -37,6 +37,7 @@ import {
 
 } from '@valtimo/components';
 import {
+    CASE_TAB_TOKEN,
     DefaultTabs,
     DossierDetailTabAuditComponent,
     DossierDetailTabDocumentsComponent,
@@ -143,6 +144,13 @@ import {
 } from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin.specification";
 import {DocsysPluginModule} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.module";
 import {docsysPluginSpecification} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.specification";
+import {
+    openKlantPluginSpecification
+} from "../../projects/valtimo-plugins/openklant/src/lib/open-klant.plugin.specification";
+import {OpenKlantPluginModule} from "../../projects/valtimo-plugins/openklant/src/lib/open-klant-plugin.module";
+import {
+    KlantcontactTabComponent
+} from "../../projects/valtimo-plugins/openklant/src/lib/tab/klantcontact-tab/klantcontact-tab.component";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -240,7 +248,7 @@ export function tabsFactory() {
         ZgwModule,
         ValueMapperPluginModule,
         DocsysPluginModule,
-
+        OpenKlantPluginModule,
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -274,8 +282,14 @@ export function tabsFactory() {
             catalogiApiPluginSpecification,
             documentenApiPluginSpecification,
             openZaakPluginSpecification,
-            zakenApiPluginSpecification
-        ]
+            zakenApiPluginSpecification,
+            openKlantPluginSpecification,
+        ],
+    }, {
+        provide: CASE_TAB_TOKEN,
+        useValue: {
+            'klantcontact-tab': KlantcontactTabComponent,
+        }
     }],
     bootstrap: [AppComponent]
 })
