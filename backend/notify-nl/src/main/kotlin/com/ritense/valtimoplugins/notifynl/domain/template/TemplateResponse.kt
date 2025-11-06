@@ -19,7 +19,7 @@ package com.ritense.valtimoplugins.notifynl.domain.template
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 
-data class GetTemplateResponse(
+data class TemplateResponse(
     val id: String,
     val name: String,
     val type: String,
@@ -36,7 +36,7 @@ data class GetTemplateResponse(
     val letterContactBlock: String?
 ) : Serializable
 
-data class GetAllTemplatesResponse(
-    val templates: List<GetTemplateResponse>
+data class AllTemplatesResponse(
+    val templates: List<TemplateResponse>
 ) : Serializable
 

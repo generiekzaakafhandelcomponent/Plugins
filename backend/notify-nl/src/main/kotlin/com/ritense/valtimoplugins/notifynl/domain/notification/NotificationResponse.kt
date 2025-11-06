@@ -19,7 +19,7 @@ package com.ritense.valtimoplugins.notifynl.domain.notification
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 
-data class SendSmsResponse(
+data class SmsResponse(
     val content: SmsContent,
     val id: String,
     val reference: String?,
@@ -41,7 +41,7 @@ data class SmsTemplate(
     val version: Int
 ) : Serializable
 
-data class GetMessageResponse(
+data class MessageResponse(
     val id: String,
     val reference: String?,
     @JsonProperty("email_address")
@@ -105,3 +105,105 @@ data class CostDetails(
     val billableSheetsOfPaper: Int?,
     val postage: String?
 ) : Serializable
+
+data class SmsResponseFlat(
+    val id: String,
+    val reference: String?,
+    val scheduledFor: String?,
+    val uri: String,
+    val contentBody: String?,
+    val contentFromNumber: String?,
+    val templateId: String?,
+    val templateUri: String?,
+    val templateVersion: Int?
+) : Serializable {
+    companion object {
+        fun from(original: SmsResponse): SmsResponseFlat {
+            return SmsResponseFlat(
+                id = original.id,
+                reference = original.reference,
+                scheduledFor = original.scheduledFor,
+                uri = original.uri,
+                contentBody = original.content.body,
+                contentFromNumber = original.content.fromNumber,
+                templateId = original.template.id,
+                templateUri = original.template.uri,
+                templateVersion = original.template.version
+            )
+        }
+    }
+}
+
+data class MessageResponseFlat(
+    val id: String,
+    val reference: String?,
+    val emailAddress: String?,
+    val phoneNumber: String?,
+    val line1: String?,
+    val line2: String?,
+    val line3: String?,
+    val line4: String?,
+    val line5: String?,
+    val line6: String?,
+    val line7: String?,
+    val postage: String?,
+    val type: String?,
+    val status: String?,
+    val body: String?,
+    val subject: String?,
+    val createdAt: String?,
+    val createdByName: String?,
+    val sentAt: String?,
+    val completedAt: String?,
+    val scheduledFor: String?,
+    val oneClickUnsubscribe: String?,
+    val isCostDataReady: Boolean?,
+    val costInPounds: Double?,
+    val templateId: String?,
+    val templateUri: String?,
+    val templateVersion: Int?,
+    val costDetailsBillableSmsFragments: Int?,
+    val costDetailsInternationalRateMultiplier: Int?,
+    val costDetailsSmsRate: Double?,
+    val costDetailsBillableSheetsOfPaper: Int?,
+    val costDetailsPostage: String?
+) : Serializable {
+    companion object {
+        fun from(original: MessageResponse): MessageResponseFlat {
+            return MessageResponseFlat(
+                id = original.id,
+                reference = original.reference,
+                emailAddress = original.emailAddress,
+                phoneNumber = original.phoneNumber,
+                line1 = original.line1,
+                line2 = original.line2,
+                line3 = original.line3,
+                line4 = original.line4,
+                line5 = original.line5,
+                line6 = original.line6,
+                line7 = original.line7,
+                postage = original.postage,
+                type = original.type,
+                status = original.status,
+                body = original.body,
+                subject = original.subject,
+                createdAt = original.createdAt,
+                createdByName = original.createdByName,
+                sentAt = original.sentAt,
+                completedAt = original.completedAt,
+                scheduledFor = original.scheduledFor,
+                oneClickUnsubscribe = original.oneClickUnsubscribe,
+                isCostDataReady = original.isCostDataReady,
+                costInPounds = original.costInPounds,
+                templateId = original.template.id,
+                templateUri = original.template.uri,
+                templateVersion = original.template.version,
+                costDetailsBillableSmsFragments = original.costDetails?.billableSmsFragments,
+                costDetailsInternationalRateMultiplier = original.costDetails?.internationalRateMultiplier,
+                costDetailsSmsRate = original.costDetails?.smsRate,
+                costDetailsBillableSheetsOfPaper = original.costDetails?.billableSheetsOfPaper,
+                costDetailsPostage = original.costDetails?.postage
+            )
+        }
+    }
+}

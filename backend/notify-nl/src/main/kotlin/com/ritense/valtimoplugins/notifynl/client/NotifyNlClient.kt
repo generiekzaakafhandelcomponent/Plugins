@@ -17,17 +17,17 @@
 package com.ritense.valtimoplugins.notifynl.client
 
 import com.ritense.valtimoplugins.notifynl.domain.email.EmailRequest
-import com.ritense.valtimoplugins.notifynl.domain.email.SendEmailResponse
+import com.ritense.valtimoplugins.notifynl.domain.email.EmailResponse
 import com.ritense.valtimoplugins.notifynl.domain.letter.LetterRequest
 import com.ritense.valtimoplugins.notifynl.domain.letter.LetterResponse
-import com.ritense.valtimoplugins.notifynl.domain.notification.GetMessageResponse
+import com.ritense.valtimoplugins.notifynl.domain.notification.MessageResponse
 import com.ritense.valtimoplugins.notifynl.domain.notification.NotificationRequest
-import com.ritense.valtimoplugins.notifynl.domain.notification.SendSmsResponse
+import com.ritense.valtimoplugins.notifynl.domain.notification.SmsResponse
 import com.ritense.valtimoplugins.notifynl.domain.notification.SmsRequest
-import com.ritense.valtimoplugins.notifynl.domain.template.AllTemplatesRequest
-import com.ritense.valtimoplugins.notifynl.domain.template.GetAllTemplatesResponse
-import com.ritense.valtimoplugins.notifynl.domain.template.GetTemplateResponse
+import com.ritense.valtimoplugins.notifynl.domain.template.AllTemplatesResponse
+import com.ritense.valtimoplugins.notifynl.domain.template.TemplateResponse
 import com.ritense.valtimoplugins.notifynl.domain.template.TemplateRequest
+import com.ritense.valtimoplugins.notifynl.domain.widget.WidgetTabRequest
 import org.springframework.http.MediaType
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
@@ -36,7 +36,7 @@ import java.net.URI
 class NotifyNlClient(
     private val restClientBuilder: RestClient.Builder
 ) {
-    fun sendSms(baseUri: URI, body: SmsRequest, token: String): SendSmsResponse {
+    fun sendSms(baseUri: URI, body: SmsRequest, token: String): SmsResponse {
         return restClientBuilder
             .clone()
             .build()
@@ -56,10 +56,10 @@ class NotifyNlClient(
             .accept(MediaType.APPLICATION_JSON)
             .body(body)
             .retrieve()
-            .body<SendSmsResponse>()!!
+            .body<SmsResponse>()!!
     }
 
-    fun sendEmail(baseUri: URI, body: EmailRequest, token: String): SendEmailResponse {
+    fun sendEmail(baseUri: URI, body: EmailRequest, token: String): EmailResponse {
         return restClientBuilder
             .clone()
             .build()
@@ -79,7 +79,7 @@ class NotifyNlClient(
             .accept(MediaType.APPLICATION_JSON)
             .body(body)
             .retrieve()
-            .body<SendEmailResponse>()!!
+            .body<EmailResponse>()!!
     }
 
     fun sendLetter(baseUri: URI, body: LetterRequest, token: String): LetterResponse {
@@ -105,7 +105,7 @@ class NotifyNlClient(
             .body<LetterResponse>()!!
     }
 
-    fun getTemplate(baseUri: URI, body: TemplateRequest, token: String): GetTemplateResponse {
+    fun getTemplate(baseUri: URI, body: TemplateRequest, token: String): TemplateResponse {
         return restClientBuilder
             .clone()
             .build()
@@ -124,10 +124,10 @@ class NotifyNlClient(
             }
             .accept(MediaType.APPLICATION_JSON)
             .retrieve()
-            .body<GetTemplateResponse>()!!
+            .body<TemplateResponse>()!!
     }
 
-    fun getAllTemplates(baseUri: URI, token: String, templateType: String? = null): GetAllTemplatesResponse {
+    fun getAllTemplates(baseUri: URI, token: String, templateType: String? = null): AllTemplatesResponse {
         return restClientBuilder
             .clone()
             .build()
@@ -150,10 +150,10 @@ class NotifyNlClient(
                 it.setBearerAuth(token)
             }
             .retrieve()
-            .body<GetAllTemplatesResponse>()!!
+            .body<AllTemplatesResponse>()!!
     }
 
-    fun getMessage(baseUri: URI, body: NotificationRequest, token: String): GetMessageResponse {
+    fun getMessage(baseUri: URI, body: NotificationRequest, token: String): MessageResponse {
         return restClientBuilder
             .clone()
             .build()
@@ -172,6 +172,59 @@ class NotifyNlClient(
             }
             .accept(MediaType.APPLICATION_JSON)
             .retrieve()
-            .body<GetMessageResponse>()!!
+            .body<MessageResponse>()!!
+    }
+
+    fun getWidgets(
+        baseUri: URI,
+        caseDefinitionName: String,
+        tabKey: String,
+        token: String
+    ): WidgetTabRequest {
+        return restClientBuilder
+            .clone()
+            .build()
+            .get()
+            .uri {
+                it.scheme(baseUri.scheme)
+                    .host(baseUri.host)
+                    .path(baseUri.path)
+                    .path("/api/management/v1/case-definition/$caseDefinitionName/widget-tab/$tabKey")
+                    .port(baseUri.port)
+                    .build()
+            }
+            .headers {
+                it.accept = listOf(MediaType.APPLICATION_JSON)
+                it.setBearerAuth(token)
+            }
+            .retrieve()
+            .body<WidgetTabRequest>()!!
+    }
+
+    fun writeWidgets(
+        baseUri: URI,
+        body: WidgetTabRequest,
+        token: String
+    ): WidgetTabRequest {
+        return restClientBuilder
+            .clone()
+            .build()
+            .post()
+            .uri {
+                it.scheme(baseUri.scheme)
+                    .host(baseUri.host)
+                    .path(baseUri.path)
+                    .path("/api/management/v1/case-definition/${body.caseDefinitionName}/widget-tab/${body.key}")
+                    .port(baseUri.port)
+                    .build()
+            }
+            .headers {
+                it.contentType = MediaType.APPLICATION_JSON
+                it.setBearerAuth(token)
+            }
+            .accept(MediaType.APPLICATION_JSON)
+            .body(body)
+            .retrieve()
+            .body<WidgetTabRequest>()!!
     }
 }

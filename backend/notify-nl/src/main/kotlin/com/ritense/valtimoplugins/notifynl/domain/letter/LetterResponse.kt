@@ -39,3 +39,31 @@ data class Template(
     val version: Int,
     val uri: String
 ) : Serializable
+
+data class LetterResponseFlat(
+    val id: String,
+    val reference: String?,
+    val uri: String,
+    val scheduledFor: String?,
+    val contentSubject: String?,
+    val contentBody: String?,
+    val templateId: String?,
+    val templateUri: String?,
+    val templateVersion: Int?
+) : Serializable {
+    companion object {
+        fun from(original: LetterResponse): LetterResponseFlat {
+            return LetterResponseFlat(
+                id = original.id,
+                reference = original.reference,
+                uri = original.uri,
+                scheduledFor = original.scheduledFor,
+                contentSubject = original.content.subject,
+                contentBody = original.content.body,
+                templateId = original.template.id,
+                templateUri = original.template.uri,
+                templateVersion = original.template.version
+            )
+        }
+    }
+}

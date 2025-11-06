@@ -4,7 +4,8 @@
     "title": "NotifyNL",
     "pluginDefinitionKey": "notify-nl",
     "properties": {
-      "url": "${NOTIFY_NL_API_URL}",
+      "notifyUrl": "${NOTIFY_NL_API_URL}",
+      "valtimoUrl": "${VALTIMO_BACKEND_BASE_URL}",
       "apiKey": "${NOTIFY_NL_API_KEY}"
     }
   }

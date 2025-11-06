@@ -18,7 +18,7 @@
       "type": "htmlelement",
       "input": false,
       "label": "HTML",
-      "content": "<section><h3>NotifyNL Plugin</h3> {{ data ? `<h4>Result</h4><dl class='row mb-5'><dt class='col-12'><pre>JSON.parse(data.result).templates</pre></dt></dl>` : '' }}</section><style>pre{padding: 10px; overflow: auto; white-space: pre-wrap; min-height: 100px; resize: both;} .widget-field__field-value{ white-space: pre;}</style>",
+      "content": "<section><h3>NotifyNL Plugin</h3> {{ data ? `<h4>Result</h4><dl class='row mb-5'><dt class='col-12'><pre>${data.result} {{ JSON.stringify(data.result, null, 2) }}</pre></dt></dl>` : 'Nothing...' }}</section><style>pre{padding: 10px; overflow: auto; white-space: pre-wrap; min-height: 100px; resize: both;} .widget-field__field-value{ white-space: pre;}</style>",
       "tableView": false,
       "refreshOnChange": false
     }

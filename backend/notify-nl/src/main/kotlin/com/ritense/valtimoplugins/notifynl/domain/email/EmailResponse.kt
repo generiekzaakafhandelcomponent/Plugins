@@ -19,7 +19,7 @@ package com.ritense.valtimoplugins.notifynl.domain.email
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 
-data class SendEmailResponse (
+data class EmailResponse (
     val content: EmailContent,
     val id: String,
     val reference: String?,
@@ -41,3 +41,33 @@ data class EmailTemplate(
     val uri: String,
     val version: Int
 ) : Serializable
+
+data class EmailResponseFlat(
+    val id: String,
+    val reference: String?,
+    val scheduledFor: String?,
+    val uri: String,
+    val contentBody: String?,
+    val contentFromEmailAddress: String?,
+    val contentSubject: String?,
+    val templateId: String?,
+    val templateUri: String?,
+    val templateVersion: Int?
+) : Serializable {
+    companion object {
+        fun from(original: EmailResponse): EmailResponseFlat {
+            return EmailResponseFlat(
+                id = original.id,
+                reference = original.reference,
+                scheduledFor = original.scheduledFor,
+                uri = original.uri,
+                contentBody = original.content.body,
+                contentFromEmailAddress = original.content.fromEmailAddress,
+                contentSubject = original.content.subject,
+                templateId = original.template.id,
+                templateUri = original.template.uri,
+                templateVersion = original.template.version
+            )
+        }
+    }
+}

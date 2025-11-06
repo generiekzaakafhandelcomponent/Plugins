@@ -9,7 +9,7 @@
       <bpmn:incoming>Flow_1y0vehx</bpmn:incoming>
       <bpmn:outgoing>Flow_0qdad6u</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1aqhyjm" name="Show summary" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/allTemplates&#34;, allTemplates)}">
+    <bpmn:serviceTask id="Activity_1aqhyjm" name="Show summary" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/result&#34;, result)}">
       <bpmn:incoming>Flow_0qdad6u</bpmn:incoming>
       <bpmn:outgoing>Flow_0pltdcl</bpmn:outgoing>
     </bpmn:serviceTask>

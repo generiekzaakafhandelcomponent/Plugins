@@ -17,7 +17,8 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface NotifyNlConfig extends PluginConfigurationData {
-  url: string;
+  valtimoUrl: string;
+  notifyUrl: string;
   apiKey: string;
 }
 

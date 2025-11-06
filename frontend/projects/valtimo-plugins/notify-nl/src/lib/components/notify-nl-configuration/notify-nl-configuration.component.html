@@ -34,15 +34,27 @@
   >
   </v-input>
   <v-input
-    name="url"
-    [title]="'url' | pluginTranslate: pluginId | async"
+    name="notifyUrl"
+    [title]="'notifyUrl' | pluginTranslate: pluginId | async"
     [fullWidth]="true"
     [margin]="true"
     [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.url"
+    [defaultValue]="obs.prefill?.notifyUrl"
     [required]="true"
-    [tooltip]="'urlTooltip' | pluginTranslate: pluginId | async"
+    [tooltip]="'notifyUrlTooltip' | pluginTranslate: pluginId | async"
     placeholder="https://api.notifynl.nl"
+  >
+  </v-input>
+  <v-input
+          name="valtimoUrl"
+          [title]="'valtimoUrl' | pluginTranslate: pluginId | async"
+          [fullWidth]="true"
+          [margin]="true"
+          [disabled]="obs.disabled"
+          [defaultValue]="obs.prefill?.valtimoUrl"
+          [required]="true"
+          [tooltip]="'valtimoUrlTooltip' | pluginTranslate: pluginId | async"
+          placeholder="http://localhost:8080"
   >
   </v-input>
   <v-input

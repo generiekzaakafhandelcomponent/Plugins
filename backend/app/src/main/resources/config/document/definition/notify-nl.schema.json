@@ -8,7 +8,7 @@
       "type": "string"
     },
     "result": {
-      "type": "object",
+      "type": "array",
       "required": [],
       "properties": {
         "id": {
@@ -405,7 +405,7 @@
       "type": "string"
     },
     "allTemplates": {
-      "type": "string"
+      "type": "array"
     },
     "templateType": {
       "type": "string"
