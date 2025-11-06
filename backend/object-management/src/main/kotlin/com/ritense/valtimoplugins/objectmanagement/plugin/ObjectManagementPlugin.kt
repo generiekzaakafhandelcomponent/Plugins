@@ -60,7 +60,7 @@ open class ObjectManagementPlugin(
     ) {
         val objectUrl = objectManagementCrudService.createObject(
             objectManagementConfigurationId,
-            getObjectData(objectData, execution.businessKey),
+            getObjectData(objectData, execution),
         )
 
         execution.setVariable(objectUrlProcessVariableName, objectUrl.toString())
@@ -81,7 +81,7 @@ open class ObjectManagementPlugin(
         objectManagementCrudService.updateObject(
             objectManagementConfigurationId,
             objectUrl,
-            getObjectData(objectData, execution.businessKey)
+            getObjectData(objectData, execution)
         )
         logger.info { "Successfully updated object with url: $objectUrl" }
     }
@@ -121,9 +121,11 @@ open class ObjectManagementPlugin(
         logger.info { "Successfully retrieved ${objects.results.size} objects for object management: $objectManagementConfigurationTitle" }
     }
 
-    private fun getObjectData(keyValueMap: List<DataBindingConfig>, documentId: String): JsonNode {
+    private fun getObjectData(keyValueMap: List<DataBindingConfig>, execution: DelegateExecution): JsonNode {
         val resolvedValuesMap = valueResolverService.resolveValues(
-            documentId, keyValueMap.map { it.value }
+            execution.businessKey,
+            execution,
+            keyValueMap.map { it.value }
         )
 
         if (keyValueMap.size != resolvedValuesMap.size) {
@@ -131,7 +133,7 @@ open class ObjectManagementPlugin(
                 .filter { !resolvedValuesMap.containsKey(it.value) }
                 .joinToString(", ") { "'${it.key}' = '${it.value}'" }
             throw IllegalArgumentException(
-                "Error in case: '${documentId}'. Failed to resolve values: $failedValues".trimMargin()
+                "Error in case: '${execution.businessKey}'. Failed to resolve values: $failedValues".trimMargin()
             )
         }
 
