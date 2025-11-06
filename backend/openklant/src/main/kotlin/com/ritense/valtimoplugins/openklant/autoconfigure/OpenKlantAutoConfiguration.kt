@@ -26,9 +26,8 @@ class OpenKlantAutoConfiguration {
     @Bean
     fun openKlantPluginClient(
         openKlantWebClientBuilder: WebClient.Builder,
-        env: Environment,
     ): OpenKlantClient =
-        OpenKlantClient(openKlantWebClientBuilder, isDevProfile = env.acceptsProfiles(Profiles.of("dev")))
+        OpenKlantClient(openKlantWebClientBuilder)
 
     @Bean
     fun partijFactory(): PartijFactory = PartijFactory()

@@ -22,29 +22,7 @@ import reactor.netty.http.client.HttpClient
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
-    isDevProfile: Boolean,
 ) {
-    private val defaultConnector: ReactorClientHttpConnector
-
-    init {
-        val sslContext =
-            SslContextBuilder
-                .forClient()
-                .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                .build()
-
-        val baseClient = HttpClient.create()
-        val clientWithResolver =
-            if (isDevProfile) {
-                baseClient.resolver(DefaultAddressResolverGroup.INSTANCE)
-            } else {
-                baseClient
-            }
-
-        val securedClient = clientWithResolver.secure { it.sslContext(sslContext) }
-        defaultConnector = ReactorClientHttpConnector(securedClient)
-    }
-
     suspend fun getPartijByBsn(
         bsn: String,
         properties: OpenKlantProperties,
@@ -180,7 +158,6 @@ class OpenKlantClient(
 
     private fun webClient(properties: OpenKlantProperties): WebClient =
         openKlantWebClientBuilder
-            .clientConnector(defaultConnector)
             .clone()
             .baseUrl(properties.klantinteractiesUrl.toASCIIString())
             .defaultHeader("Authorization", "Token ${properties.token}")
