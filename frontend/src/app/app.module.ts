@@ -149,6 +149,13 @@ import {
 import {
     tokenAuthenticationPluginSpecification
 } from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.specification";
+import {
+    OpenProductPluginModule
+} from "../../projects/valtimo-plugins/open-product/open-product-plugin.module";
+import {
+    openProductPluginSpecification
+} from "../../projects/valtimo-plugins/open-product/open-product-plugin.specification";
+
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -246,7 +253,8 @@ export function tabsFactory() {
         ZgwModule,
         ValueMapperPluginModule,
         DocsysPluginModule,
-        TokenAuthenticationPluginModule
+        TokenAuthenticationPluginModule,
+        OpenProductPluginModule
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -281,7 +289,8 @@ export function tabsFactory() {
             documentenApiPluginSpecification,
             openZaakPluginSpecification,
             zakenApiPluginSpecification,
-            tokenAuthenticationPluginSpecification
+            tokenAuthenticationPluginSpecification,
+            openProductPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]
