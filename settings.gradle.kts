@@ -11,6 +11,7 @@ include(
     "backend:mTLS-SSLContext",
     "backend:notify-nl",
     "backend:object-management",
+    "backend:open-product",
     "backend:publictask",
     "backend:rotterdam-oracle-ebs",
     "backend:sample-plugin",
