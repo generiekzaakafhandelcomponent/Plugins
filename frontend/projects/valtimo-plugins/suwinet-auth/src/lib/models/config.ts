@@ -24,6 +24,8 @@ interface SuwinetAuthConfig extends PluginConfigurationData {
     truststoreSecret: string;
     basicAuthName: string;
     basicAuthSecret: string;
+    headerName: string;
+    headerValue: string;
 }
 
 export {SuwinetAuthConfig};

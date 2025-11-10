@@ -39,7 +39,9 @@ export class SuwinetAuthConfigurationComponent
 
   readonly mtlsRadio =  {value: 'mtls', title: 'MTLS'};
   readonly basicRadio =  {value: 'basic', title: 'Basic'};
-  readonly authTypeOptions: Array<RadioValue> = [this.mtlsRadio, this.basicRadio]
+  readonly headerRadio =  {value: 'header', title: 'Header'};
+
+    readonly authTypeOptions: Array<RadioValue> = [this.mtlsRadio, this.basicRadio, this.headerRadio]
 
   constructor(
       private readonly pluginManagementService: PluginManagementService,
@@ -83,6 +85,9 @@ export class SuwinetAuthConfigurationComponent
           }
           else if(formValue.authType === this.basicRadio.value) {
               this.selectedAuthType$.next(this.basicRadio)
+          }
+          else if(formValue.authType === this.headerRadio.value) {
+              this.selectedAuthType$.next(this.headerRadio)
           }
 
           console.log(this.selectedAuthType$.value);

@@ -102,7 +102,30 @@
                 [title]="'basicAuthSecret' | pluginTranslate: pluginId | async"
                 [margin]="true"
                 [fullWidth]="true"
-                [defaultValue]="obs.prefill?.truststoreSecret"
+                [defaultValue]="obs.prefill?.basicAuthSecret"
+                [disabled]="obs.disabled"
+                [required]="false"
+        >
+        </v-input>
+    </ng-container>
+    <ng-container *ngIf="(selectedAuthType$|async).value == 'header'">
+        <v-input
+                name="headerName"
+                [title]="'headerName' | pluginTranslate: pluginId | async"
+                [margin]="true"
+                [fullWidth]="true"
+                [defaultValue]="obs.prefill?.headerName"
+                [disabled]="obs.disabled"
+                [required]="false"
+        >
+        </v-input>
+        <v-input
+                name="headerValue"
+                type="password"
+                [title]="'headerValue' | pluginTranslate: pluginId | async"
+                [margin]="true"
+                [fullWidth]="true"
+                [defaultValue]="obs.prefill?.headerValue"
                 [disabled]="obs.disabled"
                 [required]="false"
         >
