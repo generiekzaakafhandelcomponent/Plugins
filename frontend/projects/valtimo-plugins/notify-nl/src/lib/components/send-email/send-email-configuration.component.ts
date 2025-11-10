@@ -53,7 +53,7 @@ export class SendEmailConfigurationComponent
   }
 
   private handleValid(formValue: SendEmailConfig): void {
-    const valid = !!(formValue.email && formValue.templateId);
+    const valid = !!(formValue.email && formValue.templateId && formValue.personalisation);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

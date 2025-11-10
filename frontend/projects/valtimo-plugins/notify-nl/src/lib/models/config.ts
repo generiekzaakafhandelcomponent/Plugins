@@ -30,6 +30,7 @@ interface SendSmsConfig {
 interface SendEmailConfig {
   email: string;
   templateId: string;
+  personalisation: any;
 }
 
 interface SendLetterConfig {

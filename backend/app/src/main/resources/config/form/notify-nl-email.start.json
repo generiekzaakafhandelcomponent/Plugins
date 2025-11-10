@@ -32,6 +32,24 @@
       }
     },
     {
+      "label": "Personalisation parameters",
+      "tableView": false,
+      "key": "dataMap",
+      "type": "datamap",
+      "input": true,
+      "valueComponent": {
+        "type": "textfield",
+        "key": "value",
+        "label": "Value",
+        "properties": {
+          "targetKey": "doc:/personalisation"
+        },
+        "input": true,
+        "hideLabel": true,
+        "tableView": true
+      }
+    },
+    {
       "key": "submit",
       "type": "button",
       "input": true,

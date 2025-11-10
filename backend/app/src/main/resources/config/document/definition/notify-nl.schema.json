@@ -7,6 +7,12 @@
     "email": {
       "type": "string"
     },
+    "dataMap": {
+      "type": "object"
+    },
+    "personalisation": {
+      "type": "object"
+    },
     "result": {
       "type": "array",
       "required": [],

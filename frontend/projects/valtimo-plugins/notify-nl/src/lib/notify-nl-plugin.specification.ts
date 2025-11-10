@@ -56,6 +56,8 @@ const notifyNlPluginSpecification: PluginSpecification = {
       configurationTitleTooltip: 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
       phoneNumber: 'Telefoonnummer',
       phoneNumberTooltip: 'Het telefoonnummer van de ontvanger',
+      personalisation: 'Personalisatie',
+      personalisationTooltip: 'Variabelen om mee te sturen in de template',
       apiKey: 'API Sleutel',
       apiKeyTooltip: 'De API sleutel van de Service in NotifyNL, deze kun je vinden in het NotifyNL administratiepaneel.',
       templateId: 'Template ID',

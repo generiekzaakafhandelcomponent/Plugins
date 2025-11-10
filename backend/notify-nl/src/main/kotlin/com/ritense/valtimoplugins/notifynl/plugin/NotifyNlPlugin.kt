@@ -73,7 +73,6 @@ open class NotifyNlPlugin(
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val smsResponse = notifyNlClient.sendSms(baseUri = notifyUrl, body = smsRequest, token = token)
         val flat = SmsResponseFlat.from(smsResponse)
-        println(flat)
         execution.setVariable("result", listOf(flat))
     }
 
@@ -86,13 +85,16 @@ open class NotifyNlPlugin(
     open fun sendEmail(
         execution: DelegateExecution,
         @PluginActionProperty email: String,
-        @PluginActionProperty templateId: String
+        @PluginActionProperty templateId: String,
+        @PluginActionProperty personalisation: Object?,
     ) {
+        println("PERSONALISATION1: " + personalisation)
+        println("All variables: ${execution.variables}")
+
         val emailRequest = EmailRequest(emailAddress = email, templateId = templateId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val emailResponse = notifyNlClient.sendEmail(baseUri = notifyUrl, body = emailRequest, token = token)
         val flat = EmailResponseFlat.from(emailResponse)
-        println(flat)
         execution.setVariable("result", listOf(flat))
     }
 
@@ -113,7 +115,6 @@ open class NotifyNlPlugin(
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val letterResponse = notifyNlClient.sendLetter(baseUri = notifyUrl, body = letterRequest, token = token)
         val flat = LetterResponseFlat.from(letterResponse)
-        println(flat)
         execution.setVariable("result",listOf(flat))
     }
 
@@ -166,7 +167,6 @@ open class NotifyNlPlugin(
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val messageResponse = notifyNlClient.getMessage(baseUri = notifyUrl, body = notificationRequest, token = token)
         val flat = MessageResponseFlat.from(messageResponse)
-        println(flat)
         execution.setVariable("result", listOf(flat))
     }
 }
