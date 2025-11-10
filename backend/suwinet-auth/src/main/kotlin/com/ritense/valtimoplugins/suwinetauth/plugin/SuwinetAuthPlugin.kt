@@ -30,7 +30,7 @@ import javax.net.ssl.TrustManagerFactory
 
 @PluginCategory("authentication")
 @Plugin(
-    key = "suwnet-auth",
+    key = "suwinet-auth",
     title = "Suwinet Auth plugin",
     description = "Plugin delivering authentication for Suwinet plugin"
 )

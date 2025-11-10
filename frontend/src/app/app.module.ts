@@ -143,6 +143,10 @@ import {
 } from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin.specification";
 import {DocsysPluginModule} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.module";
 import {docsysPluginSpecification} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.specification";
+import {SuwinetAuthPluginModule} from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.module";
+import {
+    suwinetAuthPluginSpecification
+} from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -175,6 +179,7 @@ export function tabsFactory() {
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
+        SuwinetAuthPluginModule,
         XentialPluginModule,
         HttpClientModule,
         CommonModule,
@@ -264,6 +269,7 @@ export function tabsFactory() {
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
+            suwinetAuthPluginSpecification,
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
