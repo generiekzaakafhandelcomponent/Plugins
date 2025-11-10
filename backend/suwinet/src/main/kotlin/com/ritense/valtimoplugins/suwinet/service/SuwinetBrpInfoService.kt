@@ -21,6 +21,7 @@ import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import org.camunda.bpm.engine.exception.NotFoundException
 import java.io.IOException
 
 class SuwinetBrpInfoService(
@@ -102,7 +103,7 @@ class SuwinetBrpInfoService(
                 if (nietsGevonden.name.equals(content[0].name)) {
                     null
                 } else {
-                    throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
+                    throw SuwinetError(NotFoundException("not found"), "SUWINET_BSN_NOT_FOUND")
                 }
             }
         }
