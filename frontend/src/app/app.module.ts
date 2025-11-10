@@ -108,7 +108,7 @@ import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
-import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
+import {ValtimoLlmPluginModule, valtimoLlmPluginSpecification} from '@valtimo-plugins/valtimo-llm';
 import {
     HaalCentraalBrpAuthPluginModule,
     haalCentraalBrpAuthPluginSpecification,
@@ -133,10 +133,22 @@ import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
 import {DocumentSearchPluginModule, documentSearchPluginSpecification} from "@valtimo-plugins/document-search";
+import {SamplePluginModule} from "../../projects/valtimo-plugins/sample-plugin/src/lib/sample-plugin.module";
+import {
+    samplePluginSpecification
+} from "../../projects/valtimo-plugins/sample-plugin/src/lib/sample-plugin.specification";
 import {ValueMapperPluginModule} from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin-module";
 import {
     valueMapperPluginSpecification
 } from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin.specification";
+import {DocsysPluginModule} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.module";
+import {docsysPluginSpecification} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.specification";
+import {
+    TokenAuthenticationPluginModule
+} from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.module";
+import {
+    tokenAuthenticationPluginSpecification
+} from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -161,10 +173,11 @@ export function tabsFactory() {
         ValtimoOcrPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
-        HuggingFacePluginModule,
+        ValtimoLlmPluginModule,
         HaalCentraalBrpPluginModule,
         HaalCentraalBagPluginModule,
         HaalCentraalBrpAuthPluginModule,
+        SamplePluginModule,
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
@@ -232,7 +245,8 @@ export function tabsFactory() {
         DocumentSearchPluginModule,
         ZgwModule,
         ValueMapperPluginModule,
-
+        DocsysPluginModule,
+        TokenAuthenticationPluginModule
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -250,8 +264,9 @@ export function tabsFactory() {
             objecttypenApiPluginSpecification,
             publictaskPluginSpecification,
             rotterdamOracleEbsPluginSpecification,
+            samplePluginSpecification,
             slackPluginSpecification,
-            huggingFacePluginSpecification,
+            valtimoLlmPluginSpecification,
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
@@ -261,10 +276,12 @@ export function tabsFactory() {
             kvkPluginSpecification,
             documentSearchPluginSpecification,
             valueMapperPluginSpecification,
+            docsysPluginSpecification,
             catalogiApiPluginSpecification,
             documentenApiPluginSpecification,
             openZaakPluginSpecification,
-            zakenApiPluginSpecification
+            zakenApiPluginSpecification,
+            tokenAuthenticationPluginSpecification
         ]
     }],
     bootstrap: [AppComponent]

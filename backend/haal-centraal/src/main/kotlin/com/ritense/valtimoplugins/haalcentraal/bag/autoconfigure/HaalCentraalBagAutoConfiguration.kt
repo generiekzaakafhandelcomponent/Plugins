@@ -22,15 +22,29 @@ import com.ritense.valtimoplugins.haalcentraal.bag.client.HaalCentraalBagClient
 import com.ritense.valtimoplugins.haalcentraal.bag.plugin.HaalCentraalBagPluginFactory
 import com.ritense.valtimoplugins.haalcentraal.bag.service.HaalCentraalBagService
 import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
-import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.boot.autoconfigure.AutoConfiguration
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
-@Configuration
-@EnableConfigurationProperties
+@AutoConfiguration
 class HaalCentraalBagAutoConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean(HaalCentraalBagClient::class)
+    fun haalCentraalBagClient(
+        haalCentraalWebClient: HaalCentraalWebClient
+    ): HaalCentraalBagClient = HaalCentraalBagClient(haalCentraalWebClient)
+
+    @Bean
+    @ConditionalOnMissingBean(HaalCentraalBagService::class)
+    fun haalCentraalBagService(
+        haalCentraalBagClient: HaalCentraalBagClient
+    ): HaalCentraalBagService {
+        return HaalCentraalBagService(haalCentraalBagClient)
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(HaalCentraalBagPluginFactory::class)
     fun haalCentraalBagPluginFactory(
         haalCentraalBagService: HaalCentraalBagService,
         pluginService: PluginService
@@ -40,16 +54,4 @@ class HaalCentraalBagAutoConfiguration {
             pluginService
         )
     }
-
-    @Bean
-    fun haalCentraalBagService(
-        haalCentraalBagClient: HaalCentraalBagClient
-    ): HaalCentraalBagService {
-        return HaalCentraalBagService(haalCentraalBagClient)
-    }
-
-    @Bean
-    fun haalCentraalBagClient(
-        haalCentraalWebClient: HaalCentraalWebClient
-    ): HaalCentraalBagClient = HaalCentraalBagClient(haalCentraalWebClient)
 }

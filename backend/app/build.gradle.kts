@@ -25,13 +25,16 @@ dependencies {
     implementation(project(":backend:object-management"))
     implementation(project(":backend:publictask"))
     implementation(project(":backend:rotterdam-oracle-ebs"))
+    implementation(project(":backend:sample-plugin"))
     implementation(project(":backend:slack"))
     implementation(project(":backend:smtpmail"))
     implementation(project(":backend:spotler"))
     implementation(project(":backend:suwinet"))
+    implementation(project(":backend:token-authentication"))
     implementation(project(":backend:xential"))
-    implementation(project(":backend:hugging-face"))
+    implementation(project(":backend:valtimo-llm"))
     implementation(project(":backend:document-search"))
+    implementation(project(":backend:docsys"))
     implementation(project(":backend:value-mapper"))
 }
 
