@@ -89,8 +89,6 @@ export class SuwinetAuthConfigurationComponent
           else if(formValue.authType === this.headerRadio.value) {
               this.selectedAuthType$.next(this.headerRadio)
           }
-
-          console.log(this.selectedAuthType$.value);
       }
   }
 
@@ -105,6 +103,10 @@ export class SuwinetAuthConfigurationComponent
              && formValue.keystorePath
              && formValue.truststorePath
              && formValue.truststoreSecret)
+     }
+     else if(formValue.authType === 'header') {
+         valid = !!(formValue.headerName
+             && formValue.headerValue)
      }
 
     this.valid$.next(valid);

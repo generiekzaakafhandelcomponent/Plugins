@@ -56,8 +56,8 @@ open class SuwinetAuthPlugin(): SuwinetAuth {
     @PluginProperty(key = "basicAuthSecret", secret = true, required = false)
     var basicAuthSecret: String? = null
 
-    @PluginProperty(key = "headerKey", secret = false, required = false)
-    var headerKey: String? = null
+    @PluginProperty(key = "headerName", secret = false, required = false)
+    var headerName: String? = null
 
     @PluginProperty(key = "headerValue", secret = true, required = false)
     var headerValue: String? = null
@@ -71,12 +71,19 @@ open class SuwinetAuthPlugin(): SuwinetAuth {
         when(authType) {
             SuwinetAuth.AuthType.MTLS.authType -> return addMtlsAuth(conduit)
             SuwinetAuth.AuthType.BASIC.authType -> return addBasicAuth(conduit)
+            SuwinetAuth.AuthType.HEADER.authType -> return addHeaderAuth(conduit)
             else -> {
                 logger.warn { "Unsupported auth type $authType" }
                 return conduit
             }
         }
 
+    }
+
+    private fun addHeaderAuth(conduit: HTTPConduit): HTTPConduit {
+
+
+        return conduit
     }
 
     private fun addBasicAuth(conduit: HTTPConduit): HTTPConduit {
