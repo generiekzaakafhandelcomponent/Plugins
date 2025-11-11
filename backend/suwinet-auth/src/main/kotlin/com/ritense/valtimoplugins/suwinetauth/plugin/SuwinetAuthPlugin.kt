@@ -22,6 +22,7 @@ import com.ritense.plugin.annotation.PluginProperty
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.cxf.configuration.jsse.TLSClientParameters
 import org.apache.cxf.configuration.security.AuthorizationPolicy
+import org.apache.cxf.frontend.ClientProxy
 import org.apache.cxf.transport.http.HTTPConduit
 import java.io.FileInputStream
 import java.security.KeyStore
@@ -57,19 +58,19 @@ open class SuwinetAuthPlugin(): SuwinetAuth {
     var basicAuthSecret: String? = null
 
     @PluginProperty(key = "headerName", secret = false, required = false)
-    var headerName: String? = null
+    var headerName: String = ""
 
     @PluginProperty(key = "headerValue", secret = true, required = false)
-    var headerValue: String? = null
+    var headerValue: String = ""
 
     private var keystoreManagerFactory: KeyManagerFactory? = null
     private var trustManagerFactory: TrustManagerFactory? = null
 
 
-    override fun applyAuth(conduit: HTTPConduit): HTTPConduit {
+    override fun applyAuth(client: ClientProxy): ClientProxy {
 
         when(authType) {
-            SuwinetAuth.AuthType.MTLS.authType -> return addMtlsAuth(conduit)
+            SuwinetAuth.AuthType.MTLS.authType -> return addMtlsAuth(client.)
             SuwinetAuth.AuthType.BASIC.authType -> return addBasicAuth(conduit)
             SuwinetAuth.AuthType.HEADER.authType -> return addHeaderAuth(conduit)
             else -> {
@@ -81,20 +82,24 @@ open class SuwinetAuthPlugin(): SuwinetAuth {
     }
 
     private fun addHeaderAuth(conduit: HTTPConduit): HTTPConduit {
+        logger.info { "using authorization type ${authType}" }
 
+        var interceptor = HttpHeaderInterceptor(headerName, headerValue)
+        conduit.
 
-        return conduit
+        return conduit.
     }
 
     private fun addBasicAuth(conduit: HTTPConduit): HTTPConduit {
         conduit.authorization = basicAuthorization()
+        logger.info { "using authorization type ${authType}" }
         logger.info { "set conduit.authorization type to ${conduit.authorization.authorizationType}" }
 
         return conduit
     }
 
     private fun addMtlsAuth(conduit: HTTPConduit): HTTPConduit {
-        val tlsParameters = TLSClientParameters()
+        logger.info { "using authorization type ${authType}" }        val tlsParameters = TLSClientParameters()
 
         buildKeyManagerFactory(keystorePath, keystoreSecret)
         buildTrustManagerFactory(truststorePath, truststoreSecret)

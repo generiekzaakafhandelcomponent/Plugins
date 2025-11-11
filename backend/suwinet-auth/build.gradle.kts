@@ -35,6 +35,7 @@ dependencies {
 
     // Apache CXF and Jakarta dependencies
     implementation("org.apache.cxf:cxf-rt-transports-http:4.0.7")
+    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:4.0.7")
 
     // Testing
     testImplementation("com.ritense.valtimo:test-utils-common")
