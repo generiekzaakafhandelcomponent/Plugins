@@ -55,9 +55,6 @@ open class NotifyNlPlugin(
     @PluginProperty(key = "apiKey", secret = true)
     lateinit var apiKey: String
 
-    @PluginProperty(key = "valtimoUrl", secret = false)
-    lateinit var valtimoUrl: URI
-
     @PluginAction(
         key = "send-sms",
         title = "Send SMS",

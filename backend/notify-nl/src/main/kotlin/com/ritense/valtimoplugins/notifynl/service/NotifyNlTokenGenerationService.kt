@@ -29,12 +29,13 @@ class NotifyNlTokenGenerationService {
     fun generateFullToken(apiKey: String): String {
         logger.debug { "Generating a token for a request to NotifyNL" }
 
-        val regex = Regex(
+        // The given api key consists of two parts, but the API expects them to be separated.
+        val seperateKeyRegex = Regex(
             """^[^-]+-([0-9a-fA-F-]{36})-([0-9a-fA-F-]{36})$""",
             RegexOption.IGNORE_CASE
         )
 
-        val match = regex.matchEntire(apiKey)
+        val match = seperateKeyRegex.matchEntire(apiKey)
             ?: throw IllegalArgumentException("Invalid API key format: $apiKey")
 
         val (serviceIdStr, secretKeyStr) = match.destructured
