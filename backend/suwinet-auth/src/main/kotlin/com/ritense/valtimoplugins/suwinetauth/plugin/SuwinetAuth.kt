@@ -1,11 +1,11 @@
 package com.ritense.valtimoplugins.suwinetauth.plugin
 
-import org.apache.cxf.frontend.ClientProxy
+import org.apache.cxf.endpoint.Client
 
 
 interface SuwinetAuth {
 
-    fun applyAuth(client: ClientProxy): ClientProxy
+    fun applyAuth(client: Client)
 
     enum class AuthType(
         val authType: String,
