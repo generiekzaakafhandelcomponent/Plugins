@@ -4,7 +4,6 @@
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1y0vehx</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1y0vehx" sourceRef="StartEvent_1" targetRef="SendEmail" />
     <bpmn:serviceTask id="SendEmail" name="Send E-mail" camunda:expression="${true}">
       <bpmn:incoming>Flow_1y0vehx</bpmn:incoming>
       <bpmn:outgoing>Flow_0qdad6u</bpmn:outgoing>
@@ -18,6 +17,7 @@
       <bpmn:incoming>Flow_0pltdcl</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0pltdcl" sourceRef="Activity_1aqhyjm" targetRef="Event_0e0hq2a" />
+    <bpmn:sequenceFlow id="Flow_1y0vehx" sourceRef="StartEvent_1" targetRef="SendEmail" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="notify-nl-send-email-process">

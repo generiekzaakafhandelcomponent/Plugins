@@ -25,12 +25,17 @@ interface NotifyNlConfig extends PluginConfigurationData {
 interface SendSmsConfig {
   phoneNumber: string;
   templateId: string;
+  personalisation: object;
+  reference: string;
+  senderId: string;
 }
 
 interface SendEmailConfig {
-  email: string;
+  emailAddress: string;
   templateId: string;
-  personalisation: any;
+  personalisation: object;
+  reference: string;
+  replyToId: string;
 }
 
 interface SendLetterConfig {

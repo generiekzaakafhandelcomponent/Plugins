@@ -5,7 +5,7 @@
       "key": "templateId",
       "type": "textarea",
       "input": true,
-      "label": "Template ID",
+      "label": "Template ID (*)",
       "tableView": true,
       "autoExpand": true,
       "properties": {

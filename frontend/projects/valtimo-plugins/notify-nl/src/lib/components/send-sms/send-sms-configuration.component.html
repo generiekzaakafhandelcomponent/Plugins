@@ -39,4 +39,40 @@
     [required]="true"
     [tooltip]="'templateIdTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
+  <v-input
+    name="personalisation"
+    [title]="'personalisation' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.personalisation"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'personalisationTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+  <v-input
+    name="reference"
+    [title]="'reference' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.reference"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'referenceTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+  <v-input
+    name="reference"
+    [title]="'reference' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.reference"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'referenceTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+  <v-input
+    name="senderId"
+    [title]="'senderId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.senderId"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'senderIdTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
 </v-form>

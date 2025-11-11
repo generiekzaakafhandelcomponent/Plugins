@@ -5,7 +5,7 @@
       "key": "templateId",
       "type": "textarea",
       "input": true,
-      "label": "Template ID",
+      "label": "Template ID (*)",
       "tableView": true,
       "autoExpand": true,
       "properties": {
@@ -20,11 +20,11 @@
       "key": "recipientEmail",
       "type": "textarea",
       "input": true,
-      "label": "Recipient E-mail",
+      "label": "Recipient E-mail (*)",
       "tableView": true,
       "autoExpand": true,
       "properties": {
-        "targetKey": "doc:/email"
+        "targetKey": "doc:/emailAddress"
       },
       "applyMaskOn": "change",
       "attributes": {
@@ -34,19 +34,49 @@
     {
       "label": "Personalisation parameters",
       "tableView": false,
-      "key": "dataMap",
+      "key": "personalisation",
+      "properties": {
+        "targetKey": "doc:/personalisation"
+      },
       "type": "datamap",
       "input": true,
       "valueComponent": {
         "type": "textfield",
         "key": "value",
         "label": "Value",
-        "properties": {
-          "targetKey": "doc:/personalisation"
-        },
         "input": true,
         "hideLabel": true,
         "tableView": true
+      }
+    },
+    {
+      "key": "reference",
+      "type": "textarea",
+      "input": true,
+      "label": "Reference",
+      "tableView": true,
+      "autoExpand": true,
+      "properties": {
+        "targetKey": "doc:/reference"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-email.start-reference"
+      }
+    },
+    {
+      "key": "replyToId",
+      "type": "textarea",
+      "input": true,
+      "label": "Reply-To ID",
+      "tableView": true,
+      "autoExpand": true,
+      "properties": {
+        "targetKey": "doc:/replyToId"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-email.start-replyToId"
       }
     },
     {

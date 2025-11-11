@@ -53,7 +53,7 @@ export class GetAllTemplatesConfigurationComponent
   }
 
   private handleValid(formValue: GetAllTemplatesConfig): void {
-    const valid = !!(formValue.templateType);
+    const valid = true;
 
     this.valid$.next(valid);
     this.valid.emit(valid);

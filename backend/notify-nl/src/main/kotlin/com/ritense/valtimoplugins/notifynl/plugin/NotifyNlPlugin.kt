@@ -67,9 +67,12 @@ open class NotifyNlPlugin(
     open fun sendSms(
         execution: DelegateExecution,
         @PluginActionProperty phoneNumber: String,
-        @PluginActionProperty templateId: String
+        @PluginActionProperty templateId: String,
+        @PluginActionProperty personalisation: Map<String, String>?,
+        @PluginActionProperty reference: String?,
+        @PluginActionProperty senderId: String?
     ) {
-        val smsRequest = SmsRequest(phoneNumber = phoneNumber, templateId = templateId)
+        val smsRequest = SmsRequest(phoneNumber = phoneNumber, templateId = templateId, personalisation = personalisation, reference = reference, senderId = senderId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val smsResponse = notifyNlClient.sendSms(baseUri = notifyUrl, body = smsRequest, token = token)
         val flat = SmsResponseFlat.from(smsResponse)
@@ -84,14 +87,13 @@ open class NotifyNlPlugin(
     )
     open fun sendEmail(
         execution: DelegateExecution,
-        @PluginActionProperty email: String,
+        @PluginActionProperty emailAddress: String,
         @PluginActionProperty templateId: String,
-        @PluginActionProperty personalisation: Object?,
+        @PluginActionProperty personalisation: Map<String, String>?,
+        @PluginActionProperty reference: String?,
+        @PluginActionProperty replyToId: String?
     ) {
-        println("PERSONALISATION1: " + personalisation)
-        println("All variables: ${execution.variables}")
-
-        val emailRequest = EmailRequest(emailAddress = email, templateId = templateId)
+        val emailRequest = EmailRequest(emailAddress = emailAddress, templateId = templateId, personalisation = personalisation, reference = reference, replyToId = replyToId)
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val emailResponse = notifyNlClient.sendEmail(baseUri = notifyUrl, body = emailRequest, token = token)
         val flat = EmailResponseFlat.from(emailResponse)
@@ -144,13 +146,12 @@ open class NotifyNlPlugin(
         execution: DelegateExecution,
         @PluginActionProperty templateType: String
     ) {
-        AuthorizationContext.runWithoutAuthorization {  }
         val token = tokenGenerationService.generateFullToken(apiKey = apiKey)
         val allTemplatesResponse = notifyNlClient.getAllTemplates(baseUri = notifyUrl, token = token, templateType = templateType)
-        val templatesAsMaps = allTemplatesResponse.templates.map { template ->
+        val templatesAsMap = allTemplatesResponse.templates.map { template ->
             jacksonObjectMapper().convertValue(template, Map::class.java)
         }
-        execution.setVariable("result", templatesAsMaps)
+        execution.setVariable("result", templatesAsMap)
     }
 
     @PluginAction(

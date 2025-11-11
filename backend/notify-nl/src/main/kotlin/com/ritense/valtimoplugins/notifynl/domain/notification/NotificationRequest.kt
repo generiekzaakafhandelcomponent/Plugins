@@ -16,13 +16,19 @@
 
 package com.ritense.valtimoplugins.notifynl.domain.notification
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class SmsRequest(
     @JsonProperty("phone_number")
     val phoneNumber: String,
     @JsonProperty("template_id")
-    val templateId: String
+    val templateId: String,
+    val personalisation: Map<String, String>? = null,
+    val reference: String? = null,
+    @JsonProperty("sms_sender_id")
+    val senderId: String? = null
 )
 
 data class NotificationRequest(

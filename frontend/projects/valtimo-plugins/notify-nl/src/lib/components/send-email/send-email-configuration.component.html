@@ -22,13 +22,13 @@
   } as obs"
 >
   <v-input
-    name="email"
-    [title]="'email' | pluginTranslate: pluginId | async"
+    name="emailAddress"
+    [title]="'emailAddress' | pluginTranslate: pluginId | async"
     [margin]="true"
-    [defaultValue]="obs.prefill?.email"
+    [defaultValue]="obs.prefill?.emailAddress"
     [disabled]="obs.disabled"
     [required]="true"
-    [tooltip]="'emailTooltip' | pluginTranslate: pluginId | async"
+    [tooltip]="'emailAddressTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
   <v-input
     name="templateId"
@@ -47,5 +47,32 @@
     [disabled]="obs.disabled"
     [required]="true"
     [tooltip]="'personalisationTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+  <v-input
+    name="reference"
+    [title]="'reference' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.reference"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'referenceTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+  <v-input
+    name="reference"
+    [title]="'reference' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.reference"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'referenceTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+  <v-input
+    name="replyToId"
+    [title]="'replyToId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.replyToId"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'replyToIdTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
 </v-form>

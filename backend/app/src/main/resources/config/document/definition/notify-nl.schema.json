@@ -4,14 +4,20 @@
   "title": "NotifyNL Plugin",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "email": {
+    "emailAddress": {
       "type": "string"
-    },
-    "dataMap": {
-      "type": "object"
     },
     "personalisation": {
       "type": "object"
+    },
+    "reference": {
+      "type": "string"
+    },
+    "replyToId": {
+      "type": "string"
+    },
+    "senderId": {
+      "type": "string"
     },
     "result": {
       "type": "array",

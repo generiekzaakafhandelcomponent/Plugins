@@ -16,11 +16,17 @@
 
 package com.ritense.valtimoplugins.notifynl.domain.email
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class EmailRequest(
     @JsonProperty("email_address")
     val emailAddress: String,
     @JsonProperty("template_id")
-    val templateId: String
+    val templateId: String,
+    val personalisation: Map<String, String>? = null,
+    val reference: String? = null,
+    @JsonProperty("email_reply_to_id")
+    val replyToId: String? = null
 )

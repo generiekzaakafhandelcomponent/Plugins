@@ -6,8 +6,11 @@
     "pluginActionDefinitionKey": "send-email",
     "processLinkType": "plugin",
     "actionProperties": {
-      "email": "doc:/email",
-      "templateId": "doc:/templateId"
+      "emailAddress": "doc:/emailAddress",
+      "templateId": "doc:/templateId",
+      "personalisation": "doc:/personalisation",
+      "reference": "doc:/reference",
+      "replyToId": "doc:/replyToId"
     }
   },
   {
