@@ -33,11 +33,11 @@ class SuwinetRdwService(
 
     fun getRDWService(): RDW {
         val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
-        return suwinetSOAPClient.configureKeystore(soapClientConfig.keystoreCertificatePath, soapClientConfig.keystoreKey)
-            .configureTruststore(soapClientConfig.truststoreCertificatePath, soapClientConfig.truststoreKey)
-            .configureBasicAuth(soapClientConfig.basicAuthName, soapClientConfig.basicAuthSecret)
+        return suwinetSOAPClient
             .getService<RDW>(completeUrl,
-                soapClientConfig.connectionTimeout,soapClientConfig.receiveTimeout)
+                soapClientConfig.connectionTimeout,
+                soapClientConfig.receiveTimeout,
+                soapClientConfig.authConfig)
     }
 
     fun getVoertuigbezitInfoPersoonByBsn(

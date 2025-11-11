@@ -94,19 +94,23 @@ export class SuwinetAuthConfigurationComponent
 
 
   private handleValid(formValue: SuwinetAuthConfig): void {
-    var valid = !!(formValue.configurationTitle)
+    var valid = false
      if(formValue.authType === 'basic') {
-         valid = !!(formValue.basicAuthName && formValue.basicAuthSecret)
+         valid = !!(formValue.basicAuthName
+             && formValue.basicAuthSecret
+             && formValue.configurationTitle)
      }
      else if(formValue.authType === 'mtls') {
          valid = !!(formValue.keystorePath
              && formValue.keystorePath
              && formValue.truststorePath
-             && formValue.truststoreSecret)
+             && formValue.truststoreSecret
+             && formValue.configurationTitle)
      }
      else if(formValue.authType === 'header') {
          valid = !!(formValue.headerName
-             && formValue.headerValue)
+             && formValue.headerValue
+             && formValue.configurationTitle)
      }
 
     this.valid$.next(valid);

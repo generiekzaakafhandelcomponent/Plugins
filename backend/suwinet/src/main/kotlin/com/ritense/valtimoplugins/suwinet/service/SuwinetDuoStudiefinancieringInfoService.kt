@@ -24,14 +24,11 @@ class SuwinetDuoStudiefinancieringInfoService(
 
     fun createDuoStudiefinancieringService(): DUOInfo {
         val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
-        return suwinetSOAPClient.configureKeystore(
-            soapClientConfig.keystoreCertificatePath,
-            soapClientConfig.keystoreKey
-        )
-            .configureTruststore(soapClientConfig.truststoreCertificatePath, soapClientConfig.truststoreKey)
-            .configureBasicAuth(soapClientConfig.basicAuthName, soapClientConfig.basicAuthSecret)
+        return suwinetSOAPClient
             .getService<DUOInfo>(completeUrl,
-                soapClientConfig.connectionTimeout,soapClientConfig.receiveTimeout)
+                soapClientConfig.connectionTimeout,
+                soapClientConfig.receiveTimeout,
+                soapClientConfig.authConfig)
     }
 
     fun getStudiefinancieringInfoByBsn(

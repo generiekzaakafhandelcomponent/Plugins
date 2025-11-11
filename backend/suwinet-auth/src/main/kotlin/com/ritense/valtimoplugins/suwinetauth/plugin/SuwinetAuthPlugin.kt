@@ -32,7 +32,7 @@ import javax.net.ssl.KeyManagerFactory
 import javax.net.ssl.TrustManagerFactory
 import kotlin.contracts.contract
 
-@PluginCategory("authentication")
+@PluginCategory("suwinet-authentication")
 @Plugin(
     key = "suwinet-auth",
     title = "Suwinet Auth plugin",
