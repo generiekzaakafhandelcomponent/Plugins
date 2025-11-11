@@ -7,7 +7,7 @@ import org.apache.cxf.phase.Phase
 class HttpHeaderInterceptor(
     val headerName: String,
     val headerValue: String,
-    val phase: String = Phase.POST_LOGICAL) : AbstractPhaseInterceptor<Message>(phase) {
+    val messagePhase: String = Phase.POST_LOGICAL) : AbstractPhaseInterceptor<Message>(messagePhase) {
 
 
 
