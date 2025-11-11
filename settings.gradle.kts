@@ -19,6 +19,7 @@ include(
     "backend:spotler",
     "backend:suwinet",
     "backend:suwinet-auth",
+    "backend:token-authentication",
     "backend:xential",
     "backend:valtimo-llm",
     "backend:kvk-handelsregister",

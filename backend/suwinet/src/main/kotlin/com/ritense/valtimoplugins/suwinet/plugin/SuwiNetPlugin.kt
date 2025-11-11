@@ -9,6 +9,7 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetException
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBijstandsregelingenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
@@ -22,6 +23,7 @@ import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.camunda.bpm.engine.exception.NotFoundException
 
 @Plugin(
     key = "suwinet", title = "SuwiNet Plugin", description = "Suwinet plugin description"
@@ -76,23 +78,34 @@ class SuwiNetPlugin(
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP info for case ${execution.businessKey}" }
-        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
         try {
+            require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig()
             )
 
             suwinetBrpInfoService.getPersoonsgegevensByBsn(
                 bsn, suwinetBrpInfoService.getBRPInfo()
-            )?.let {
+            )?.also {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
+            } ?: run {
+                throw SuwinetError(NotFoundException("not found"), "SUWINET_BSN_NOT_FOUND")
             }
+
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            when(e) {
+                is SuwinetError -> {
+                    throw BpmnError(e.errorCode)
+                }
+                else -> {
+                    logger.info("Exiting scope due to nested error.", e)
+                    return
+                }
+            }
         }
     }
 
@@ -122,8 +135,15 @@ class SuwiNetPlugin(
                 )
             }
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            when(e) {
+                is SuwinetError -> {
+                    throw BpmnError(e.errorCode)
+                }
+                else -> {
+                    logger.info("Exiting scope due to nested error.", e)
+                    return
+                }
+            }
         }
     }
 
@@ -158,8 +178,15 @@ class SuwiNetPlugin(
                 }
             }
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            when(e) {
+                is SuwinetError -> {
+                    throw BpmnError(e.errorCode)
+                }
+                else -> {
+                    logger.info("Exiting scope due to nested error.", e)
+                    return
+                }
+            }
         }
     }
 

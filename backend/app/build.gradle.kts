@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":backend:spotler"))
     implementation(project(":backend:suwinet"))
     implementation(project(":backend:suwinet-auth"))
+    implementation(project(":backend:token-authentication"))
     implementation(project(":backend:xential"))
     implementation(project(":backend:valtimo-llm"))
     implementation(project(":backend:document-search"))

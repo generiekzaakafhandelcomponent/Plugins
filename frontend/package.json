@@ -23,6 +23,7 @@
     "libs:build:mtls-sslcontext": "ng build @valtimo-plugins/mtls-sslcontext",
     "libs:build:notify-nl": "ng build @valtimo-plugins/notify-nl",
     "libs:build:object-management": "ng build @valtimo-plugins/object-management",
+    "libs:build:token-authentication": "ng build @valtimo-plugins/token-authentication",
     "libs:build:publictask": "ng build @valtimo-plugins/publictask",
     "libs:build:rotterdam-oracle-ebs": "ng build @valtimo-plugins/rotterdam-oracle-ebs",
     "libs:build:sample-plugin": "ng build @valtimo-plugins/sample-plugin",
