@@ -27,16 +27,16 @@ import java.util.Base64
 
 fun buildFormData(
     model: String,
-    audioBase64: String,
+    audioBytes: ByteArray,
     fileName: String? = "audio.mp3"
 ): MultiValueMap<String, Any> {
-    val bytes = Base64.getDecoder().decode(audioBase64.substringAfter(","))
+
     val headers = HttpHeaders().apply {
         contentType = MediaType("audio", "mpeg")
     }
 
     val audioEntity = HttpEntity(
-        object : ByteArrayResource(bytes) {
+        object : ByteArrayResource(audioBytes) {
             override fun getFilename() = fileName ?: "audio.mp3"
         },
         headers

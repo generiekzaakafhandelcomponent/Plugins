@@ -58,21 +58,26 @@ open class ValtimoS2tPlugin(
         mistralVoxtralModel.baseUri = url
         mistralVoxtralModel.token = token
 
-        val file = execution.getVariable(filePV) as? List<*>
-            ?: throw IllegalStateException("No file provided in process variable $filePV to transcribe.")
+        val fileList = execution.getVariable(filePV) as? List<Map<String, Any>>
+            ?: throw IllegalStateException("No file list found for variable '$filePV'.")
 
-        val firstItem = file.firstOrNull().toString()
+        val fileInfo = fileList.firstOrNull()
+            ?: throw IllegalStateException("File list was empty for '$filePV'.")
 
-        val base64Url = Regex(BASE64_PATTERN)
-            .find(firstItem)?.groupValues?.get(1)
-            ?: throw IllegalStateException("Base64 URL not found in: $firstItem")
+        val fileUrl = fileInfo["url"] as? String
+            ?: throw IllegalStateException("File metadata did not contain a 'url' field.")
 
-        val filename = Regex(FILENAME_PATTERN)
-            .find(firstItem)?.groupValues?.get(1)?.plus(".mp3")
+        val fileName = fileInfo["name"] as? String ?: "audio.mp3"
+
+        val audioBytes = try {
+            java.net.URL(fileUrl).readBytes()
+        } catch (ex: Exception) {
+            throw IllegalStateException("Failed to download audio file from '$fileUrl': ${ex.message}", ex)
+        }
 
         val transcription = mistralVoxtralModel.transcribeSpeech(
-            fileBase64 = base64Url,
-            fileName = filename
+            fileBytes = audioBytes,
+            fileName = fileName
         )
 
         execution.setVariable(resultPV, transcription)

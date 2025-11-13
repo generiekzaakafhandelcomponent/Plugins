@@ -37,8 +37,8 @@ class MistralVoxtralModel(
     var baseUri: URI? = null,
     var token: String? = null,
 ) {
-    fun transcribeSpeech(fileBase64: String, fileName: String?): TranscriptionResult {
-        val formData = buildFormData(MODEL, fileBase64, fileName)
+    fun transcribeSpeech(fileBytes: ByteArray, fileName: String?): TranscriptionResult {
+        val formData = buildFormData(MODEL, fileBytes, fileName)
         return post(PATH, formData)
     }
 
