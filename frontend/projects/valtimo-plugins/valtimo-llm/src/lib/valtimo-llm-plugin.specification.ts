@@ -24,7 +24,7 @@ import {ChatConfigurationComponent} from "./components/chat/chat-configuration.c
 import {ChatMemorizeConfigurationComponent} from "./components/chat-memorize/chat-memorize-configuration.component";
 
 const valtimoLlmPluginSpecification: PluginSpecification = {
-        pluginId: 'smart-task-plugin',
+        pluginId: 'valtimo-llm',
         pluginConfigurationComponent: ValtimoLlmConfigurationComponent,
         pluginLogoBase64: VALTIMO_LLM_PLUGIN_LOGO_BASE64,
         functionConfigurationComponents: {

@@ -38,7 +38,7 @@
     import java.util.UUID
 
     @Plugin(
-        key = "smart-task-plugin",
+        key = "valtimo-llm",
         title = "Valtimo LLM Plugin",
         description = "Interact with AI agents"
     )
