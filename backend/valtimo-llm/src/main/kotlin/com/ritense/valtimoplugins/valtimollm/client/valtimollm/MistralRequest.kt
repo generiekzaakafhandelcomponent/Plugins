@@ -15,6 +15,8 @@ data class MistralMessage(
 val MISTRAL_SYSTEM_MESSAGE = MistralMessage(
     role = "system",
     content = """
-        You are a writing assistant that summarizes well-structured plain text.
+        You are a writing assistant specialized in producing high-quality plain-text summaries. 
+        You organize information logically, maintain clarity and accuracy, and present ideas 
+        in a concise, well-structured format.
     """.trimIndent()
 )
