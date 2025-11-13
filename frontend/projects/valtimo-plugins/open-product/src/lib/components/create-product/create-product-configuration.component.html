@@ -6,10 +6,10 @@
     } as obs"
 >
     <v-input
-            name="productNaam"
-            [title]="'productNaam' | pluginTranslate: pluginId | async"
+            name="productName"
+            [title]="'productName' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.productNaam"
+            [defaultValue]="obs.prefill?.productName"
             [disabled]="obs.disabled"
             [required]="true"
     >
@@ -24,41 +24,41 @@
     >
     </v-input>
     <v-input
-            name="eigenaarBSN"
-            [title]="'eigenaarBSN' | pluginTranslate: pluginId | async"
+            name="citizenBSN"
+            [title]="'citizenBSN' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.eigenaarBSN"
+            [defaultValue]="obs.prefill?.citizenBSN"
             [disabled]="obs.disabled"
             [required]="true"
     >
     </v-input>
 
     <valtimo-carbon-multi-input
-            name="eigenaarData"
-            [title]="'eigenaarData' | pluginTranslate: pluginId | async"
+            name="ownerData"
+            [title]="'ownerData' | pluginTranslate: pluginId | async"
             type="keyValue"
             [disabled]="obs.disabled"
             [defaultValues]="[{key: 'uuid', value: '48a84c3d-efd2-4d86-929f-a57ae64718a4'}, {key: 'bsn', value: '12345678'}, {key: 'klantnummer', value: '1'}]"
             [margin]="true"
             [required]="false"
-            [tooltip]="'eigenaarDataTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'ownerDataTooltip' | pluginTranslate: pluginId | async"
             [minimumAmountOfRows]="1"
     ></valtimo-carbon-multi-input>
 
     <v-input
-            name="productPrijs"
-            [title]="'productPrijs' | pluginTranslate: pluginId | async"
+            name="productPrice"
+            [title]="'productPrice' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.productPrijs"
+            [defaultValue]="obs.prefill?.productPrice"
             [disabled]="obs.disabled"
             [required]="true"
     >
     </v-input>
     <v-input
-            name="frequentie"
-            [title]="'frequentie' | pluginTranslate: pluginId | async"
+            name="frequency"
+            [title]="'frequency' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.frequentie"
+            [defaultValue]="obs.prefill?.frequency"
             [disabled]="obs.disabled"
             [required]="true"
     >
@@ -73,19 +73,19 @@
     >
     </v-input>
     <v-input
-            name="gepubliceerd"
-            [title]="'gepubliceerd' | pluginTranslate: pluginId | async"
+            name="published"
+            [title]="'published' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.gepubliceerd.toString()"
+            [defaultValue]="obs.prefill?.published.toString()"
             [disabled]="obs.disabled"
             [required]="true"
     >
     </v-input>
     <v-input
-            name="resultaatPV"
-            [title]="'resultaatPV' | pluginTranslate: pluginId | async"
+            name="resultPV"
+            [title]="'resultPV' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.resultaatPV"
+            [defaultValue]="obs.prefill?.resultPV"
             [disabled]="obs.disabled"
             [required]="true"
     >

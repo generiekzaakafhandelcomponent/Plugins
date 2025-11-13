@@ -1,0 +1,146 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "productNaam",
+      "type": "textfield",
+      "input": true,
+      "label": "Product Name",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-productNaam"
+      },
+      "properties": {
+        "targetKey": "pv:/productNaam"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "productTypeUUID",
+      "type": "textfield",
+      "input": true,
+      "label": "Product Type UUID",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-productTypeUuid"
+      },
+      "properties": {
+        "targetKey": "pv:/productTypeUUID"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "eigenaarBsn",
+      "type": "textfield",
+      "input": true,
+      "label": "Eigenaar BSN",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-eigenaarBsn"
+      },
+      "properties": {
+        "targetKey": "pv:eigenaarBSN"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "ownerData",
+      "type": "datamap",
+      "input": true,
+      "label": "Owner Data",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-ownerData"
+      },
+      "properties": {
+        "targetKey": "pv:/ownerData"
+      },
+      "valueComponent": {
+        "key": "value",
+        "type": "textfield",
+        "input": true,
+        "label": "Value",
+        "hideLabel": true,
+        "tableView": true
+      }
+    },
+    {
+      "key": "productPrijs",
+      "type": "textfield",
+      "input": true,
+      "label": "Product Prijs",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-productPrijs"
+      },
+      "properties": {
+        "targetKey": "pv:/productPrijs"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "frequentie",
+      "type": "textfield",
+      "input": true,
+      "label": "Frequentie",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-frequentie"
+      },
+      "properties": {
+        "targetKey": "pv:/frequentie"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "status",
+      "type": "textfield",
+      "input": true,
+      "label": "Status",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-status"
+      },
+      "properties": {
+        "targetKey": "pv:/status"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "gepubliceerd",
+      "type": "textfield",
+      "input": true,
+      "label": "Gepubliceerd",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-gepubliceerd"
+      },
+      "properties": {
+        "targetKey": "pv:/gepubliceerd"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "resultaatPV",
+      "type": "textfield",
+      "input": true,
+      "label": "Result",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-resultaatPV"
+      },
+      "properties": {
+        "targetKey": "pv:/resultaatPV"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

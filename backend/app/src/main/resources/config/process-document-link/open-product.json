@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "create-product",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

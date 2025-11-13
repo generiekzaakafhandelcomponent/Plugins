@@ -1,0 +1,57 @@
+{
+  "$id": "open-product.schema",
+  "type": "object",
+  "title": "Open Product",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "resultPV": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ownerData": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "citizenBSN": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productPrice": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productTypeUUID": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "paymentFrequency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

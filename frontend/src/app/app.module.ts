@@ -151,11 +151,10 @@ import {
 } from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.specification";
 import {
     OpenProductPluginModule
-} from "../../projects/valtimo-plugins/open-product/open-product-plugin.module";
+} from "../../projects/valtimo-plugins/open-product/src/lib/open-product-plugin.module";
 import {
     openProductPluginSpecification
-} from "../../projects/valtimo-plugins/open-product/open-product-plugin.specification";
-
+} from "../../projects/valtimo-plugins/open-product/src/lib/open-product-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
