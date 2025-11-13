@@ -41,7 +41,7 @@ const valtimoLlmPluginSpecification: PluginSpecification = {
                 url: 'API-URL',
                 urlTooltip: 'URL van de Mistral REST-API',
                 description:
-                    'Interactie met Mistral-modellen: vat tekst samen of stel vragen aan een chatmodel.',
+                    'Deze plugin maakt het mogelijk om opdrachten te laten uitvoeren door een Large Language AI model.',
                 configurationTitle: 'Configuratienaam',
                 configurationTitleTooltip:
                     'Naam waaronder deze pluginconfiguratie binnen de applicatie beschikbaar is.',
@@ -70,7 +70,7 @@ const valtimoLlmPluginSpecification: PluginSpecification = {
                 url: 'API URL',
                 urlTooltip: 'URL of the Mistral REST API',
                 description:
-                    'Interact with Mistral models: summarize text or ask questions to a chat model.',
+                    'This plugin makes it possible to interact with a Large Language AI model..',
                 configurationTitle: 'Configuration name',
                 configurationTitleTooltip:
                     'Name under which this plugin configuration is available in the application.',

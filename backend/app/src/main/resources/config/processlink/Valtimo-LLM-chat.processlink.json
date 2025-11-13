@@ -26,7 +26,7 @@
   {
     "activityId": "StartEvent_1",
     "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "Mistral-Chat",
+    "formDefinitionName": "Valtimo-LLM-Chat",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
@@ -36,7 +36,7 @@
   {
     "activityId": "Activity_0ncxawt",
     "activityType": "bpmn:UserTask:create",
-    "formDefinitionName": "Mistral-Chat",
+    "formDefinitionName": "Valtimo-LLM-Chat",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",

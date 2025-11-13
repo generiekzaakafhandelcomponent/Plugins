@@ -136,7 +136,7 @@
       "refreshOn": "",
       "tableView": true,
       "attributes": {
-        "data-testid": "Mistral-StartMemoryChat-maxQuestionsAndAnswersSaved"
+        "data-testid": "Valtimo-LLM-StartMemoryChat-maxQuestionsAndAnswersSaved"
       },
       "errorLabel": "",
       "persistent": true,

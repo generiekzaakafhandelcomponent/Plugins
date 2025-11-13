@@ -28,7 +28,7 @@
     import com.ritense.processlink.domain.ActivityTypeWithEventName
     import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmSummaryModel
     import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmTextGenerationModel
-    import com.ritense.valtimoplugins.valtimollm.client.mistral.StringWrapper
+    import com.ritense.valtimoplugins.valtimollm.client.valtimollm.StringWrapper
     import freemarker.template.Configuration
     import freemarker.template.Configuration.VERSION_2_3_32
     import freemarker.template.Template
