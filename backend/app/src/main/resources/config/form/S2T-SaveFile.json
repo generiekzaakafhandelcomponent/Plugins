@@ -29,7 +29,7 @@
       "input": true,
       "label": "Submit",
       "tableView": false,
-      "saveOnEnter": false,
+      "saveOnEnter": true,
       "showValidations": false,
       "disableOnInvalid": true
     }

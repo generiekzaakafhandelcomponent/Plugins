@@ -31,7 +31,7 @@ const valtimoS2tPluginSpecification: PluginSpecification = {
     pluginTranslations: {
         nl: {
             title: 'Valtimo S2T Plugin',
-            description: 'Deze plugin maakt het mogelijk om een Speech-to-Text AI-model te gebruiken om uit opgenomen audio automatisch spraak te herkennen en om te zetten naar tekst.',
+            description: 'This plugin allows commands to be executed by a Large Language AI Model.',
             configurationTitle: 'Configuratienaam',
             configurationTitleTooltip:
                 'Onder deze naam zal de plugin te herkennen zijn in de rest van de applicatie',
@@ -43,7 +43,7 @@ const valtimoS2tPluginSpecification: PluginSpecification = {
         },
         en: {
             title: 'Valtimo S2T Plugin',
-            description: 'This plugin enables you to use a Speech-to-Text AI model to automatically recognize recorded audio and convert speech to text.',
+            description: 'This plugin allows you to execute tasks using a Large Language AI Model.',
             configurationTitle: 'Configuration name',
             configurationTitleTooltip:
                 'Under this name, the plugin will be recognizable in the rest of the application',
@@ -55,7 +55,7 @@ const valtimoS2tPluginSpecification: PluginSpecification = {
         },
         de: {
             title: 'Valtimo S2T Plugin',
-            description: 'Dieses Plugin ermöglicht es Ihnen, ein KI-Modell zur Spracherkennung zu verwenden, um aufgezeichnete Audiodateien automatisch zu erkennen und Sprache in Text umzuwandeln.',
+            description: 'Dieses Plugin ermöglicht die Ausführung von Befehlen durch ein KI-Modell mit großer Sprachkompetenz.',
             configurationTitle: 'Konfigurationsname',
             configurationTitleTooltip:
                 'Unter diesem Namen wird das Plugin im Rest der Anwendung erkennbar sein',
