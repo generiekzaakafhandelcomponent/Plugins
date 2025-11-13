@@ -13,7 +13,7 @@
   {
     "activityId": "StartEvent_1",
     "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "Mistral-Summarise",
+    "formDefinitionName": "Valtimo-LLM-Summarise",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",

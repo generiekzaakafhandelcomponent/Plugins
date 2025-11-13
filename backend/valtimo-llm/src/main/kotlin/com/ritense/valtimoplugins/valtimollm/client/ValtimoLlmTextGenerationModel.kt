@@ -18,10 +18,9 @@ package com.ritense.valtimoplugins.valtimollm.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.valtimollm.client.mistral.MISTRAL_SYSTEM_MESSAGE
-import com.ritense.valtimoplugins.valtimollm.client.mistral.MistralMessage
-import com.ritense.valtimoplugins.valtimollm.client.mistral.MistralRequest
-import com.ritense.valtimoplugins.valtimollm.client.mistral.MistralResponse
+import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralMessage
+import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralRequest
+import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralResponse
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -41,13 +40,12 @@ class ValtimoLlmTextGenerationModel(
         val result = post(
             "v1/chat/completions",
             MistralRequest(
-                model = "mistral-medium-2508",
+                model = "open-mistral-nemo-2407",
                 messages = listOf(
                     MistralMessage(
                         role = "user",
                         content = question
-                    ),
-                    MISTRAL_SYSTEM_MESSAGE
+                    )
                 )
             )
         )

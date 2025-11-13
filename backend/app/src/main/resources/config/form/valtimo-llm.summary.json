@@ -8,7 +8,7 @@
       "label": "interpolatedQuestion",
       "tableView": false,
       "attributes": {
-        "data-testid": "Mistral.summary-interpolatedQuestion"
+        "data-testid": "Valtimo-LLM.summary-interpolatedQuestion"
       },
       "properties": {
         "sourceKey": "doc:interpolatedQuestion"
@@ -21,7 +21,7 @@
       "label": "chatResult",
       "tableView": false,
       "attributes": {
-        "data-testid": "Mistral.summary-chatResult"
+        "data-testid": "Valtimo-LLM.summary-chatResult"
       },
       "properties": {
         "sourceKey": "doc:chatResult"
@@ -34,7 +34,7 @@
       "label": "summarise",
       "tableView": false,
       "attributes": {
-        "data-testid": "Mistral.summary-summarise"
+        "data-testid": "Valtimo-LLM.summary-summarise"
       },
       "properties": {
         "sourceKey": "doc:summarise"
@@ -47,7 +47,7 @@
       "label": "summaryResult",
       "tableView": false,
       "attributes": {
-        "data-testid": "Mistral.summary-chatResult"
+        "data-testid": "Valtimo-LLM.summary-chatResult"
       },
       "properties": {
         "sourceKey": "doc:summaryResult"

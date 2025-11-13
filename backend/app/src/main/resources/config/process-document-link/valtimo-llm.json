@@ -1,16 +1,16 @@
 [
   {
-    "processDefinitionKey": "Mistral-pingpong",
+    "processDefinitionKey": "Valtimo-LLM-pingpong",
     "canInitializeDocument": true,
     "startableByUser": false
   },
   {
-    "processDefinitionKey": "Mistral-summary",
+    "processDefinitionKey": "Valtimo-LLM-summary",
     "canInitializeDocument": true,
     "startableByUser": false
   },
   {
-    "processDefinitionKey": "Mistral-chat",
+    "processDefinitionKey": "Valtimo-LLM-chat",
     "canInitializeDocument": true,
     "startableByUser": false
   }

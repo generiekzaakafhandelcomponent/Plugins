@@ -17,9 +17,9 @@
 package com.ritense.valtimoplugins.valtimollm.client
 
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.valtimollm.client.mistral.MISTRAL_SYSTEM_MESSAGE
-import com.ritense.valtimoplugins.valtimollm.client.mistral.MistralMessage
-import com.ritense.valtimoplugins.valtimollm.client.mistral.MistralRequest
+import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MISTRAL_SYSTEM_MESSAGE
+import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralMessage
+import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -37,7 +37,7 @@ class ValtimoLlmSummaryModel(
 
     fun giveSummary(longText: String): String {
         val request = MistralRequest(
-            model = "mistral-medium",
+            model = "open-mistral-nemo-2407",
             messages = listOf(
                 MistralMessage(role = "user", content = longText),
                 MISTRAL_SYSTEM_MESSAGE

@@ -2,7 +2,7 @@
   {
     "activityId": "Activity_1992kya",
     "activityType": "bpmn:UserTask:create",
-    "formDefinitionName": "Mistral-Chat",
+    "formDefinitionName": "Valtimo-LLM-Chat",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
@@ -12,7 +12,7 @@
   {
     "activityId": "Activity_14me3rr",
     "activityType": "bpmn:UserTask:create",
-    "formDefinitionName": "Mistral-Chat",
+    "formDefinitionName": "Valtimo-LLM-Chat",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
@@ -22,7 +22,7 @@
   {
     "activityId": "StartEvent_1",
     "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "Mistral-StartMemoryChat",
+    "formDefinitionName": "Valtimo-LLM-StartMemoryChat",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
@@ -92,7 +92,7 @@
   {
     "activityId": "Activity_0wbq28c",
     "activityType": "bpmn:UserTask:create",
-    "formDefinitionName": "Mistral-Chat",
+    "formDefinitionName": "Valtimo-LLM-Chat",
     "viewModelEnabled": false,
     "formDisplayType": "modal",
     "formSize": "medium",
