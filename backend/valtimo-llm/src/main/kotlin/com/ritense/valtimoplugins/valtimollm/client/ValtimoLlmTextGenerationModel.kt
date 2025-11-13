@@ -18,7 +18,6 @@ package com.ritense.valtimoplugins.valtimollm.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MISTRAL_SYSTEM_MESSAGE
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralMessage
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralRequest
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralResponse
@@ -41,13 +40,12 @@ class ValtimoLlmTextGenerationModel(
         val result = post(
             "v1/chat/completions",
             MistralRequest(
-                model = "mistral-medium-2508",
+                model = "open-mistral-nemo-2407",
                 messages = listOf(
                     MistralMessage(
                         role = "user",
                         content = question
-                    ),
-                    MISTRAL_SYSTEM_MESSAGE
+                    )
                 )
             )
         )

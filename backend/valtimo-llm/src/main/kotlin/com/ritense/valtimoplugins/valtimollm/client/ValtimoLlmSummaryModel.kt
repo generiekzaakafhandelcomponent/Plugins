@@ -37,7 +37,7 @@ class ValtimoLlmSummaryModel(
 
     fun giveSummary(longText: String): String {
         val request = MistralRequest(
-            model = "mistral-medium",
+            model = "open-mistral-nemo-2407",
             messages = listOf(
                 MistralMessage(role = "user", content = longText),
                 MISTRAL_SYSTEM_MESSAGE
