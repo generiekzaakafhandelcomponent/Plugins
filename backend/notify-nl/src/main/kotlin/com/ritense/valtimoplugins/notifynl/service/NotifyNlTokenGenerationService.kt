@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,17 +26,28 @@ import java.util.UUID
 private val logger = KotlinLogging.logger {}
 
 class NotifyNlTokenGenerationService {
-    fun generateToken(serviceId: UUID, secretKey: UUID): String {
+    fun generateFullToken(apiKey: String): String {
         logger.debug { "Generating a token for a request to NotifyNL" }
 
-        val signingKey = Keys.hmacShaKeyFor(secretKey.toString().toByteArray(Charset.forName("UTF-8")))
+        // The given api key consists of two parts, but the API expects them to be separated.
+        val seperateKeyRegex = Regex(
+            """^[^-]+-([0-9a-fA-F-]{36})-([0-9a-fA-F-]{36})$""",
+            RegexOption.IGNORE_CASE
+        )
 
-        val jwtBuilder = Jwts.builder()
-        jwtBuilder
+        val match = seperateKeyRegex.matchEntire(apiKey)
+            ?: throw IllegalArgumentException("Invalid API key format: $apiKey")
+
+        val (serviceIdStr, secretKeyStr) = match.destructured
+
+        val serviceId = UUID.fromString(serviceIdStr)
+        val secretKey = UUID.fromString(secretKeyStr)
+
+        val signingKey = Keys.hmacShaKeyFor(secretKey.toString().toByteArray(Charsets.UTF_8))
+
+        return Jwts.builder()
             .issuer(serviceId.toString())
             .issuedAt(Date())
-
-        return jwtBuilder
             .signWith(signingKey)
             .compact()
     }
