@@ -1,0 +1,40 @@
+{
+  "changesetId": "notify-nl.case-tabs.1762258806214",
+  "case-definitions": [
+    {
+      "key": "notify-nl",
+      "tabs": [
+        {
+          "key": "result",
+          "name": "Summary",
+          "type": "widgets",
+          "contentKey": "-"
+        },
+        {
+          "key": "progress",
+          "name": null,
+          "type": "standard",
+          "contentKey": "progress"
+        },
+        {
+          "key": "audit",
+          "name": null,
+          "type": "standard",
+          "contentKey": "audit"
+        },
+        {
+          "key": "documents",
+          "name": null,
+          "type": "standard",
+          "contentKey": "documents"
+        },
+        {
+          "key": "notes",
+          "name": null,
+          "type": "standard",
+          "contentKey": "notes"
+        }
+      ]
+    }
+  ]
+}
