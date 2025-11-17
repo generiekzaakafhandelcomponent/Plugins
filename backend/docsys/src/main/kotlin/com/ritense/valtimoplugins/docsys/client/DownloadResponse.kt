@@ -2,7 +2,7 @@ package com.ritense.valtimoplugins.docsys.client
 
 import java.time.LocalDateTime
 
-data class DownloadResponse(
+data class DownloadResponse (
     val Id: String,
     val ExportId: String,
     val DownloadUrl: String,
@@ -14,4 +14,4 @@ data class DownloadResponse(
     val CurrentOwner: String,
     val LastChanges: LocalDateTime?,
     val DateStarted: LocalDateTime,
-)
+    )

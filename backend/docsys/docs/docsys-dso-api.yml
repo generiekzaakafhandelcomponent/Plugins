@@ -15,7 +15,7 @@ paths:
         - Documents
       summary: Get summaries for the all finished documents that belong to the current user.
       operationId: Api.v1.Documents.Get
-      consumes: [ ]
+      consumes: []
       produces:
         - application/json
       parameters:
@@ -58,7 +58,7 @@ paths:
         - Documents
       summary: Get a {DocSysOnline.Models.Api.CreatedDocumentSummary} of a finished document with a specified id.
       operationId: Api.v1.Documents.Get.Id
-      consumes: [ ]
+      consumes: []
       produces:
         - application/json
       parameters:
@@ -78,8 +78,8 @@ paths:
         - Documents
       summary: Delete a finished document.
       operationId: Api.v1.Documents.Delete.Id
-      consumes: [ ]
-      produces: [ ]
+      consumes: []
+      produces: []
       parameters:
         - name: id
           in: path
@@ -96,7 +96,7 @@ paths:
         - Documents
       summary: Get the document with the given id.
       operationId: Api.v1.Documents.Get.Id.ExportId
-      consumes: [ ]
+      consumes: []
       produces:
         - application/json
       parameters:
@@ -123,7 +123,7 @@ paths:
         - Drafts
       summary: Get all drafts that belong to the current user.
       operationId: Api.v1.Drafts.Get
-      consumes: [ ]
+      consumes: []
       produces:
         - application/json
       parameters:
@@ -166,7 +166,7 @@ paths:
         - Drafts
       summary: Get the draft with the given id.
       operationId: Api.v1.Drafts.Get.Id
-      consumes: [ ]
+      consumes: []
       produces:
         - application/json
       parameters:
@@ -186,8 +186,8 @@ paths:
         - Drafts
       summary: Delete a draft owned by the current user.
       operationId: Api.v1.Drafts.Delete.Id
-      consumes: [ ]
-      produces: [ ]
+      consumes: []
+      produces: []
       parameters:
         - name: id
           in: path
@@ -233,7 +233,7 @@ paths:
         - Drafts
       summary: Validates all fields that are visible in a draft owned by the current user.
       operationId: Api.v1.Drafts.Validate.Id
-      consumes: [ ]
+      consumes: []
       produces:
         - application/json
       parameters:

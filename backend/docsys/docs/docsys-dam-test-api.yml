@@ -274,6 +274,6 @@ components:
       flows:
         clientCredentials:
           tokenUrl: https://login.microsoftonline.com/d6cad27a-404b-4699-ab13-a9d618300087/oauth2/v2.0/token
-          scopes: { }
+          scopes: {}
 security:
-  - oauth2: [ ]
+  - oauth2: []

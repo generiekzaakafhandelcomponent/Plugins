@@ -7,7 +7,7 @@
     "@angular/core": "^17.2.2"
   },
   "dependencies": {
-    "@angular/forms": "^17.2.2",
+  "@angular/forms": "^17.2.2",
     "ngx-spinner": "17.0.0",
     "ngx-toastr": "19.0.0",
     "tslib": "2.6.3"
