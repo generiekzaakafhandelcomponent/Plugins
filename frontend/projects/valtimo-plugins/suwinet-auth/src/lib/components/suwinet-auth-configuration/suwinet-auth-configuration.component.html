@@ -13,13 +13,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<ng-container *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+    selectedAuthType: selectedAuthType$ | async,
+  } as obs"
+>
 
 <v-form
   (valueChange)="formValueChange($event)"
-  *ngIf="{
-    disabled: disabled$ | async,
-    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
-  } as obs"
 >
   <v-input
     name="configurationTitle"
@@ -39,9 +41,10 @@
             [radioValues]="authTypeOptions"
             [defaultValue]="(selectedAuthType$|async).value"
             [margin]="true"
+            (valueChange)="radioValueChange($event)"
     >
     </v-radio>
-    <ng-container *ngIf="(selectedAuthType$|async).value == 'mtls'">
+    <ng-container *ngIf="(selectedAuthType$|async).value == 'MTLS'">
         <v-input
                 name="keystorePath"
                 [title]="'keystorePath' | pluginTranslate: pluginId | async"
@@ -85,7 +88,7 @@
         >
         </v-input>
     </ng-container>
-    <ng-container *ngIf="(selectedAuthType$|async).value == 'basic'">
+    <ng-container *ngIf="(selectedAuthType$|async).value == 'BASIC'">
         <v-input
                 name="basicAuthName"
                 [title]="'basicAuthName' | pluginTranslate: pluginId | async"
@@ -108,7 +111,7 @@
         >
         </v-input>
     </ng-container>
-    <ng-container *ngIf="(selectedAuthType$|async).value == 'header'">
+    <ng-container *ngIf="(selectedAuthType$|async).value == 'HEADER'">
         <v-input
                 name="headerName"
                 [title]="'headerName' | pluginTranslate: pluginId | async"
@@ -132,3 +135,4 @@
         </v-input>
     </ng-container>
 </v-form>
+</ng-container>

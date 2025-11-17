@@ -6,18 +6,18 @@
     "properties": {
       "basicAuthName":"user",
       "basicAuthSecret":"user",
-      "authType":"basic"}
+      "authType":"BASIC"}
   },
-    {
-        "id": "0ca7c957-8fef-4f4c-b487-6913b79a2a61",
-        "title": "Suwinet lokaal",
-        "pluginDefinitionKey": "suwinet",
-        "properties": {
-            "authenticationPluginConfiguration": "97147661-837b-48e8-a74e-f4461dd13011",
-            "baseUrl": "http://localhost:8090/ws/",
-            "connectionTimeout": 10,
-            "receiveTimeout": 10
-        }
-    }
+  {
+      "id": "0ca7c957-8fef-4f4c-b487-6913b79a2a61",
+      "title": "Suwinet lokaal",
+      "pluginDefinitionKey": "suwinet",
+      "properties": {
+          "authenticationPluginConfiguration": "97147661-837b-48e8-a74e-f4461dd13011",
+          "baseUrl": "http://localhost:8090/ws/",
+          "connectionTimeout": 10,
+          "receiveTimeout": 10
+      }
+  }
 
 ]

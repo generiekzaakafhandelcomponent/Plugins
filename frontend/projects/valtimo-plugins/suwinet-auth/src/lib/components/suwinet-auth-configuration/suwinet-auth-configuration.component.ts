@@ -14,118 +14,117 @@
  * limitations under the License.
  */
 
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {PluginConfigurationComponent, PluginConfigurationData} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+    PluginConfigurationComponent,
+    PluginConfigurationData,
+} from '@valtimo/plugin';
+import {BehaviorSubject, combineLatest, config, map, Observable, Subscription, take, tap} from 'rxjs';
 import {SuwinetAuthConfig} from '../../models';
-import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
-import {TranslateService} from '@ngx-translate/core';
 import {RadioValue} from "@valtimo/components";
 
 @Component({
-  selector: 'valtimo-suwinet-auth-configuration',
-  templateUrl: './suwinet-auth-configuration.component.html',
-  styleUrls: ['./suwinet-auth-configuration.component.scss'],
+    selector: 'valtimo-suwinet-auth-configuration',
+    templateUrl: './suwinet-auth-configuration.component.html',
+    styleUrls: ['./suwinet-auth-configuration.component.scss'],
 })
 export class SuwinetAuthConfigurationComponent
-  implements PluginConfigurationComponent, OnInit, OnDestroy
-{
-  @Input() save$!: Observable<void>;
-  @Input() disabled$!: Observable<boolean>;
-  @Input() pluginId!: string;
-  @Input() prefillConfiguration$!: Observable<SuwinetAuthConfig>;
-  @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
+    implements PluginConfigurationComponent, OnInit, OnDestroy {
+    @Input() save$!: Observable<void>;
+    @Input() disabled$!: Observable<boolean>;
+    @Input() pluginId!: string;
+    @Input() prefillConfiguration$!: Observable<SuwinetAuthConfig>;
+    @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
 
-  readonly mtlsRadio =  {value: 'mtls', title: 'MTLS'};
-  readonly basicRadio =  {value: 'basic', title: 'Basic'};
-  readonly headerRadio =  {value: 'header', title: 'Header'};
+    readonly mtlsRadio = {value: 'MTLS', title: 'MTLS'};
+    readonly basicRadio = {value: 'BASIC', title: 'Basic'};
+    readonly headerRadio = {value: 'HEADER', title: 'Header'};
 
     readonly authTypeOptions: Array<RadioValue> = [this.mtlsRadio, this.basicRadio, this.headerRadio]
 
-  constructor(
-      private readonly pluginManagementService: PluginManagementService,
-      private readonly translateService: TranslateService,
-      private readonly pluginTranslationService: PluginTranslationService
-  ) {}
+    constructor(
+    ) {
+    }
 
-  private saveSubscription!: Subscription;
-  private readonly formValue$ = new BehaviorSubject<SuwinetAuthConfig | null>(null);
-  private readonly valid$ = new BehaviorSubject<boolean>(false);
+    private saveSubscription!: Subscription;
+    private readonly formValue$ = new BehaviorSubject<SuwinetAuthConfig | null>(null);
+    private readonly valid$ = new BehaviorSubject<boolean>(false);
 
-  selectedAuthType$ = new BehaviorSubject({ value: "mtls", title: "MTLS"})
+    selectedAuthType$ = new BehaviorSubject(this.mtlsRadio)
 
 
-  ngOnInit(): void {
-    this.openSaveSubscription();
-    this.prefillConfiguration$.pipe(map(config => {
-        if(config.authType) {
-            if(config.authType === this.mtlsRadio.value){
-                this.selectedAuthType$.next(this.mtlsRadio)
+    ngOnInit(): void {
+        this.prefillConfiguration$.pipe(map(config => {
+            if (config?.authType) {
+                if (config.authType === this.mtlsRadio.value) {
+                    this.selectedAuthType$.next(this.mtlsRadio)
+                } else if (config.authType === this.basicRadio.value) {
+                    this.selectedAuthType$.next(this.basicRadio)
+                } else if (config.authType === this.headerRadio.value) {
+                    this.selectedAuthType$.next(this.headerRadio)
+                }
             }
-            else if(config.authType === this.basicRadio.value){
+        })).subscribe((authConfig) => {
+            console.log(" do prefill")
+        })
+
+        this.openSaveSubscription();
+    }
+
+    ngOnDestroy() {
+        this.saveSubscription?.unsubscribe();
+    }
+
+    formValueChange(formValue: SuwinetAuthConfig): void {
+        this.formValue$.next(formValue);
+        this.handleValid(formValue);
+    }
+
+    radioValueChange(radioValue: string): void {
+        if (radioValue) {
+            console.log(radioValue);
+            if (radioValue === this.mtlsRadio.value) {
+                this.selectedAuthType$.next(this.mtlsRadio)
+            } else if (radioValue === this.basicRadio.value) {
                 this.selectedAuthType$.next(this.basicRadio)
+            } else if (radioValue === this.headerRadio.value) {
+                this.selectedAuthType$.next(this.headerRadio)
             }
         }
-    }))
-  }
-
-  ngOnDestroy() {
-    this.saveSubscription?.unsubscribe();
-  }
-
-  formValueChange(formValue: SuwinetAuthConfig): void {
-    this.formValue$.next(formValue);
-    this.handleValid(formValue);
-
-      if (formValue.authType) {
-          console.log(formValue.authType);
-          if(formValue.authType === this.mtlsRadio.value){
-              this.selectedAuthType$.next(this.mtlsRadio)
-          }
-          else if(formValue.authType === this.basicRadio.value) {
-              this.selectedAuthType$.next(this.basicRadio)
-          }
-          else if(formValue.authType === this.headerRadio.value) {
-              this.selectedAuthType$.next(this.headerRadio)
-          }
-      }
-  }
+    }
 
 
-  private handleValid(formValue: SuwinetAuthConfig): void {
-    var valid = false
-     if(formValue.authType === 'basic') {
-         valid = !!(formValue.basicAuthName
-             && formValue.basicAuthSecret
-             && formValue.configurationTitle)
-     }
-     else if(formValue.authType === 'mtls') {
-         valid = !!(formValue.keystorePath
-             && formValue.keystorePath
-             && formValue.truststorePath
-             && formValue.truststoreSecret
-             && formValue.configurationTitle)
-     }
-     else if(formValue.authType === 'header') {
-         valid = !!(formValue.headerName
-             && formValue.headerValue
-             && formValue.configurationTitle)
-     }
+    private handleValid(formValue: SuwinetAuthConfig): void {
+        let valid = false
+        if (formValue.authType === this.basicRadio.value) {
+            valid = !!(formValue.basicAuthName
+                && formValue.basicAuthSecret
+                && formValue.configurationTitle)
+        } else if (formValue.authType === this.mtlsRadio.value) {
+            valid = !!(formValue.keystorePath
+                && formValue.truststorePath
+                && formValue.truststoreSecret
+                && formValue.configurationTitle)
+        } else if (formValue.authType === this.headerRadio.value) {
+            valid = !!(formValue.headerName
+                && formValue.headerValue
+                && formValue.configurationTitle)
+        }
 
-    this.valid$.next(valid);
-    this.valid.emit(valid);
-  }
+        this.valid$.next(valid);
+        this.valid.emit(valid);
+    }
 
-  private openSaveSubscription(): void {
-    this.saveSubscription = this.save$?.subscribe(save => {
-      combineLatest([this.formValue$, this.valid$])
-        .pipe(take(1))
-        .subscribe(([formValue, valid]) => {
-          if (valid) {
-            this.configuration.emit(formValue!);
-          }
+    private openSaveSubscription(): void {
+        this.saveSubscription = this.save$?.subscribe(save => {
+            combineLatest([this.formValue$, this.valid$])
+                .pipe(take(1))
+                .subscribe(([formValue, valid]) => {
+                    if (valid) {
+                        this.configuration.emit(formValue!);
+                    }
+                });
         });
-    });
-  }
+    }
 }
