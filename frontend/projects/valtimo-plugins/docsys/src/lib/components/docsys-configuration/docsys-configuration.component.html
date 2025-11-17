@@ -15,36 +15,36 @@
   -->
 
 <v-form
-        (valueChange)="formValueChange($event)"
-        *ngIf="{
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
     disabled: disabled$ | async,
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
   } as obs"
 >
-    <v-input
-            name="configurationTitle"
-            [title]="'configurationTitle' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.configurationTitle"
-            [required]="true"
-            [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
-            [widthPx]="350"
-            placeholder="Docsys Plugin"
-    >
-    </v-input>
-    <v-input
-            name="damApiUrl"
-            [title]="'damApiUrl' | pluginTranslate: pluginId | async"
-            [fullWidth]="true"
-            [margin]="true"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.damApiUrl"
-            [required]="true"
-            [tooltip]="'damApiUrlTooltip' | pluginTranslate: pluginId | async"
-            placeholder="https://api.docsys.com/"
-    >
-    </v-input>
+  <v-input
+    name="configurationTitle"
+    [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.configurationTitle"
+    [required]="true"
+    [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
+    [widthPx]="350"
+    placeholder="Docsys Plugin"
+  >
+  </v-input>
+  <v-input
+    name="damApiUrl"
+    [title]="'damApiUrl' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.damApiUrl"
+    [required]="true"
+    [tooltip]="'damApiUrlTooltip' | pluginTranslate: pluginId | async"
+    placeholder="https://api.docsys.com/"
+  >
+  </v-input>
     <v-input
             name="docsysApiUrl"
             [title]="'docsysApiUrl' | pluginTranslate: pluginId | async"
@@ -68,28 +68,28 @@
             [tooltip]="'clientIdTooltip' | pluginTranslate: pluginId | async"
     >
     </v-input>
+  <v-input
+    name="clientSecret"
+    type="password"
+    [title]="'clientSecret' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.clientSecret"
+    [required]="true"
+    [fullWidth]="true"
+    [tooltip]="'clientSecretTooltip' | pluginTranslate: pluginId | async"
+  >
+  </v-input>
     <v-input
-            name="clientSecret"
-            type="password"
-            [title]="'clientSecret' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.clientSecret"
-            [required]="true"
-            [fullWidth]="true"
-            [tooltip]="'clientSecretTooltip' | pluginTranslate: pluginId | async"
-    >
-    </v-input>
-    <v-input
-            name="tokenEndpoint"
-            [title]="'tokenEndpoint' | pluginTranslate: pluginId | async"
-            [fullWidth]="true"
-            [margin]="true"
-            [disabled]="obs.disabled"
-            [defaultValue]="obs.prefill?.tokenEndpoint"
-            [required]="true"
-            [tooltip]="'tokenEndpointTooltip' | pluginTranslate: pluginId | async"
-            placeholder="https://tokenEndpointUrl/"
+        name="tokenEndpoint"
+        [title]="'tokenEndpoint' | pluginTranslate: pluginId | async"
+        [fullWidth]="true"
+        [margin]="true"
+        [disabled]="obs.disabled"
+        [defaultValue]="obs.prefill?.tokenEndpoint"
+        [required]="true"
+        [tooltip]="'tokenEndpointTooltip' | pluginTranslate: pluginId | async"
+        placeholder="https://tokenEndpointUrl/"
     >
     </v-input>
     <v-input
