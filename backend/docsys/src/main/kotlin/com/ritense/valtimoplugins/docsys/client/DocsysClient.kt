@@ -52,7 +52,7 @@ class DocsysClient(
     lateinit var clientSecret: String
     lateinit var scope: String
 
-        // token for authentication Docsys API
+          // token for authentication Docsys API
      var token: AccesTokenDecorator? = null;
 
     fun generateDocument(modelId: String, params: Map<String, Any>): DownloadResponse {
@@ -137,7 +137,7 @@ class DocsysClient(
 
     private fun getAccessToken(): AccesTokenDecorator {
 
-        if(token == null || token!!.isExpired()) {
+        if (token == null || token!!.isExpired()) {
             val clientGrant: AuthorizationGrant = ClientCredentialsGrant()
 
             val clientID: ClientID = ClientID(clientId)
@@ -161,7 +161,7 @@ class DocsysClient(
 
             // Get the access token
             val accessToken: BearerAccessToken? = successResponse.getTokens().bearerAccessToken
-            if (accessToken == null) {
+            if(accessToken == null) {
                 throw IllegalStateException("Access token not found")
             }
 
