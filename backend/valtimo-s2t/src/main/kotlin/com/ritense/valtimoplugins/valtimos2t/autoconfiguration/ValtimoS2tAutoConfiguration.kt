@@ -29,7 +29,7 @@ import com.ritense.valtimoplugins.valtimos2t.plugin.ValtimoS2tPluginFactory
 class ValtimoS2tAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(MistralVoxtralClient::class)
-    fun mistralVoxtralModel(
+    fun mistralVoxtralBean (
         restClientBuilder: RestClient.Builder
     ) = MistralVoxtralClient(
         restClientBuilder
