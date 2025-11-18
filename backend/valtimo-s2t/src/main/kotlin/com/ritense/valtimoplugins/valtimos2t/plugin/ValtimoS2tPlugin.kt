@@ -22,7 +22,7 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimoplugins.valtimos2t.client.MistralVoxtralModel
+import com.ritense.valtimoplugins.valtimos2t.client.MistralVoxtralClient
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
@@ -35,7 +35,7 @@ const val FILENAME_PATTERN = "name=(.+?)-[a-f0-9\\-]{36}\\.(mp3|wav|m4a|ogg)"
     description = "Transcribes audio files using Mistral Voxtral.",
 )
 open class ValtimoS2tPlugin(
-    private val mistralVoxtralModel: MistralVoxtralModel,
+    private val mistralVoxtralClient: MistralVoxtralClient,
 ) {
 
     @PluginProperty(key = "url", secret = false)
@@ -67,7 +67,7 @@ open class ValtimoS2tPlugin(
         val filename: String = Regex(FILENAME_PATTERN)
             .find(firstItem)?.groupValues?.get(1)?.plus(".mp3")!!
 
-        val transcription = mistralVoxtralModel.transcribeSpeech(
+        val transcription = mistralVoxtralClient.transcribeSpeech(
             fileBase64 = base64Url,
             fileName = filename,
             url = url,

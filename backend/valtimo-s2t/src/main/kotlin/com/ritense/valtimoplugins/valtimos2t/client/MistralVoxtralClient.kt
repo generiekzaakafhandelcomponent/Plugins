@@ -32,7 +32,7 @@ const val PATH = "v1/audio/transcriptions"
 
 @Component
 @SkipComponentScan
-class MistralVoxtralModel(
+class MistralVoxtralClient(
     private val restClientBuilder: RestClient.Builder
 ) {
     fun transcribeSpeech(fileBase64: String, fileName: String, url: URI, token: String): TranscriptionResult {

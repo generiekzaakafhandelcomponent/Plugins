@@ -20,17 +20,17 @@ package com.ritense.valtimoplugins.valtimos2t.plugin
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimoplugins.valtimos2t.client.MistralVoxtralModel
+import com.ritense.valtimoplugins.valtimos2t.client.MistralVoxtralClient
 import org.springframework.stereotype.Component
 
 @Component
 @SkipComponentScan
 class ValtimoS2tPluginFactory(
     pluginService: PluginService,
-    val mistralVoxtralModel: MistralVoxtralModel
+    val mistralVoxtralClient: MistralVoxtralClient
 ) : PluginFactory<ValtimoS2tPlugin>(pluginService) {
 
     override fun create() = ValtimoS2tPlugin(
-        mistralVoxtralModel,
+        mistralVoxtralClient,
     )
 }

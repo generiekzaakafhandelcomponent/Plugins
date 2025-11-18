@@ -18,7 +18,7 @@
 package com.ritense.valtimoplugins.valtimos2t.autoconfiguration
 
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimoplugins.valtimos2t.client.MistralVoxtralModel
+import com.ritense.valtimoplugins.valtimos2t.client.MistralVoxtralClient
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
@@ -28,10 +28,10 @@ import com.ritense.valtimoplugins.valtimos2t.plugin.ValtimoS2tPluginFactory
 @AutoConfiguration
 class ValtimoS2tAutoConfiguration {
     @Bean
-    @ConditionalOnMissingBean(MistralVoxtralModel::class)
+    @ConditionalOnMissingBean(MistralVoxtralClient::class)
     fun mistralVoxtralModel(
         restClientBuilder: RestClient.Builder
-    ) = MistralVoxtralModel(
+    ) = MistralVoxtralClient(
         restClientBuilder
     )
 
@@ -40,10 +40,10 @@ class ValtimoS2tAutoConfiguration {
     @ConditionalOnMissingBean(ValtimoS2tPluginFactory::class)
     fun speechToTranscriptionPluginFactory(
         pluginService: PluginService,
-        mistralVoxtralModel: MistralVoxtralModel,
+        mistralVoxtralClient: MistralVoxtralClient,
     ) = ValtimoS2tPluginFactory(
         pluginService,
-        mistralVoxtralModel
+        mistralVoxtralClient
     )
 
 }
