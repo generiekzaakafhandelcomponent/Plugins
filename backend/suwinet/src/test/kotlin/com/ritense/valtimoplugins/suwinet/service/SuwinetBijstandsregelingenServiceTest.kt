@@ -48,12 +48,6 @@ class SuwinetBijstandsregelingenServiceTest: BaseTest() {
         val bsn = "111111110"
 
         // when
-        whenever(suwinetSOAPClient.configureKeystore(any(), any()))
-            .thenReturn(suwinetSOAPClient)
-        whenever(suwinetSOAPClient.configureTruststore(any(), any()))
-            .thenReturn(suwinetSOAPClient)
-        whenever(suwinetSOAPClient.configureBasicAuth(any(), any()))
-            .thenReturn(suwinetSOAPClient)
         whenever(info.bijstandsregelingenInfo(any())).thenReturn(
             testHelper.unmarshal<BijstandsregelingenInfoResponse>(
                 "Bijstandsregelingen_Info_111111110.xml"

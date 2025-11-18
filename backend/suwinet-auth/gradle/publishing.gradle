@@ -25,9 +25,8 @@ pluginManager.withPlugin("maven-publish") {
                 version = pluginProperties.pluginVersion
 
                 pom {
-                    name = "Value Mapper module"
-                    description = "A module for mapping and optionally " +
-                            "transforming values from a source JSON document to a target JSON document"
+                    name = "Suwinet Auth module"
+                    description = "A module for authentication on Suwinet SOAp requests "
                     developers {
                         developer {
                             id = "team-valtimo"
