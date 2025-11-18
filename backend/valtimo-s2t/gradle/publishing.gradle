@@ -24,8 +24,8 @@ pluginManager.withPlugin("maven-publish") {
                 version = pluginProperties.pluginVersion
 
                 pom {
-                    name = "Valtimo Mistral S2T plugin module"
-                    description = "A plugin for transcribing audio files using AI"
+                    name = "Valtimo S2T plugin module"
+                    description = "A plugin for transcribing audio files using AI."
                     developers {
                         developer {
                             id = "team-valtimo"
