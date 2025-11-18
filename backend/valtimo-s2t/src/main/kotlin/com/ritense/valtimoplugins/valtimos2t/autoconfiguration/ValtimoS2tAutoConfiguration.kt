@@ -32,7 +32,7 @@ class ValtimoS2tAutoConfiguration {
     fun mistralVoxtralModel(
         restClientBuilder: RestClient.Builder
     ) = MistralVoxtralModel(
-        restClientBuilder, null, null
+        restClientBuilder
     )
 
 

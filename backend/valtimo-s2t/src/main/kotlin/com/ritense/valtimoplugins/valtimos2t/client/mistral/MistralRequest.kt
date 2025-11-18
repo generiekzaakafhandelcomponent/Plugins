@@ -18,6 +18,7 @@
 package com.ritense.valtimoplugins.valtimos2t.client.mistral
 
 import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -28,19 +29,23 @@ import java.util.Base64
 fun buildFormData(
     model: String,
     audioBase64: String,
-    fileName: String? = "audio.mp3"
+    fileName: String = "audio.mp3"
 ): MultiValueMap<String, Any> {
-    val bytes = Base64.getDecoder().decode(audioBase64.substringAfter(","))
+
+    // Convert base64 to bytes (ignoring the metadata)
+    val bytes = Base64.getDecoder()
+        .decode(audioBase64.substringAfter(','))
+
     val headers = HttpHeaders().apply {
-        contentType = MediaType("audio", "mpeg")
+        contentType = MediaType.parseMediaType("audio/mpeg")
+        contentDisposition = ContentDisposition
+            .builder("form-data")
+            .name("file")
+            .filename(fileName)
+            .build()
     }
 
-    val audioEntity = HttpEntity(
-        object : ByteArrayResource(bytes) {
-            override fun getFilename() = fileName ?: "audio.mp3"
-        },
-        headers
-    )
+    val audioEntity = HttpEntity(ByteArrayResource(bytes), headers)
 
     return LinkedMultiValueMap<String, Any>().apply {
         add("model", model)

@@ -23,14 +23,14 @@ import java.io.Serializable
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class TranscriptionResult(
-    @JsonProperty("text") val text: String,
-    @JsonProperty("segments") val segments: List<TranscriptionSegment>?,
-    @JsonProperty("language") val language: String?
+    val text: String,
+   val segments: List<TranscriptionSegment>?,
+    val language: String?
 ) : Serializable
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class TranscriptionSegment(
-    @JsonProperty("start") val start: Double,
-    @JsonProperty("end") val end: Double,
-    @JsonProperty("text") val text: String
+    val start: Double,
+    val end: Double,
+    val text: String
 ) : Serializable

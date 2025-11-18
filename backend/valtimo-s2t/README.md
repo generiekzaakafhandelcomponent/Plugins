@@ -1,8 +1,6 @@
 # Valtimo S2T Plugin
 
-The **Valtimo S2T** plugin is a Valtimo plugin that allows users to transcribe audio files like mp3 or mpeg using **Mistral**. This functionality is especially useful for applications
-that require automated text extraction from scanned or uploaded documents. The extracted text is returned in **Markdown
-format**, allowing for easy formatting and further processing such as indexing, searching, or automated workflows.
+The **Valtimo S2T** plugin is a Valtimo plugin that allows users to convert the speech from audio files like mp3 or mpeg to text using **Mistral**.
 
 ---
 

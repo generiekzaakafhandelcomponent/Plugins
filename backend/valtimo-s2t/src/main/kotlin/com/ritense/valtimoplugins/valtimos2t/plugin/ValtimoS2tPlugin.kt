@@ -55,9 +55,6 @@ open class ValtimoS2tPlugin(
         @PluginActionProperty filePV: String,
         @PluginActionProperty resultPV: String
     ) {
-        mistralVoxtralModel.baseUri = url
-        mistralVoxtralModel.token = token
-
         val file = execution.getVariable(filePV) as? List<*>
             ?: throw IllegalStateException("No file provided in process variable $filePV to transcribe.")
 
@@ -67,12 +64,14 @@ open class ValtimoS2tPlugin(
             .find(firstItem)?.groupValues?.get(1)
             ?: throw IllegalStateException("Base64 URL not found in: $firstItem")
 
-        val filename = Regex(FILENAME_PATTERN)
-            .find(firstItem)?.groupValues?.get(1)?.plus(".mp3")
+        val filename: String = Regex(FILENAME_PATTERN)
+            .find(firstItem)?.groupValues?.get(1)?.plus(".mp3")!!
 
         val transcription = mistralVoxtralModel.transcribeSpeech(
             fileBase64 = base64Url,
-            fileName = filename
+            fileName = filename,
+            url = url,
+            token = token
         )
 
         execution.setVariable(resultPV, transcription)
