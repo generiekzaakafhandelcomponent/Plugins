@@ -1,13 +1,10 @@
 package com.ritense.valtimoplugins.suwinet.client
 
+import com.ritense.valtimoplugins.suwinetauth.plugin.SuwinetAuth
+
 data class SuwinetSOAPClientConfig(
     val baseUrl: String,
-    val keystoreCertificatePath: String?,
-    val keystoreKey: String?,
-    val truststoreCertificatePath: String?,
-    val truststoreKey: String?,
-    val basicAuthName: String?,
-    val basicAuthSecret: String?,
     val connectionTimeout: Int?,
-    val receiveTimeout: Int?
+    val receiveTimeout: Int?,
+    val authConfig: SuwinetAuth
 )

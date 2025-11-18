@@ -1,0 +1,22 @@
+{
+    "name": "freemarker",
+    "version": 1,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins:freemarker"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/freemarker",
+        "codeAdditions": [
+            {
+                "spec": "mailTemplatePluginSpecification",
+                "module": "MailTemplatePluginModule"
+            },
+            {
+                "spec": "textTemplatePluginSpecification",
+                "module": "TextTemplatePluginModule"
+            }
+        ]
+    }
+}

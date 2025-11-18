@@ -20,13 +20,8 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 export interface SuwinetPluginConfig extends PluginConfigurationData {
+    authenticationPluginConfiguration: string;
     baseUrl: string;
-    keystorePath: string;
-    keystoreSecret: string;
-    truststorePath: string;
-    truststoreSecret: string;
-    basicAuthName: string;
-    basicAuthSecret: string;
     connectionTimeout: number;
     receiveTimeout: number;
 }
@@ -37,6 +32,11 @@ export interface BrpPersoonInfoConfig {
 }
 
 export interface BrpPartnerInfoConfig {
+    bsn: string;
+    resultProcessVariableName: string;
+}
+
+export interface BijstandsRegelingenInfoConfig {
     bsn: string;
     resultProcessVariableName: string;
 }

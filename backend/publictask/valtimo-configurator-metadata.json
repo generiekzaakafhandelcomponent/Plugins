@@ -1,0 +1,18 @@
+{
+    "name": "publictask",
+    "version": 1,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins:publictask"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/publictask",
+        "codeAdditions": [
+            {
+                "spec": "publictaskPluginSpecification",
+                "module": "PublictaskPluginModule"
+            }
+        ]
+    }
+}

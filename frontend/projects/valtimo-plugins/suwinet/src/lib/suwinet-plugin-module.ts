@@ -22,7 +22,7 @@ import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from '@angular/forms';
-import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
+import {FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
 import {SuwinetPluginConfigurationComponent} from './components/plugin-configuration/suwinet-plugin-configuration.component';
 import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon-info.component';
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
@@ -33,6 +33,9 @@ import {DuoStudiefinancieringComponent} from "./components/duo-studiefinancierin
 import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
 import {UwvInkomstenInfoComponent} from "./components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component";
 import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastrale-objecten.component";
+import {
+    BijstandsregelingenInfoComponent
+} from "./components/bijstandsregelingen-info/bijstandsregelingen-info.component";
 
 @NgModule({
     declarations: [
@@ -45,9 +48,10 @@ import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastr
         KadastraleObjectenComponent,
         RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
-        UwvInkomstenInfoComponent
+        UwvInkomstenInfoComponent,
+        BijstandsregelingenInfoComponent
     ],
-    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule, SelectModule],
     exports: [
         SuwinetPluginConfigurationComponent,
         BrpPersoonInfoComponent,
@@ -58,7 +62,8 @@ import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastr
         KadastraleObjectenComponent,
         RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
-        UwvInkomstenInfoComponent
+        UwvInkomstenInfoComponent,
+        BijstandsregelingenInfoComponent
     ],
 })
 export class SuwinetPluginModule {

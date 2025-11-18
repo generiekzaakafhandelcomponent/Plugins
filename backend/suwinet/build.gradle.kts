@@ -32,6 +32,8 @@ dockerCompose {
 }
 
 dependencies {
+    implementation(project(":backend:suwinet-auth"))
+
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")
@@ -187,8 +189,23 @@ tasks.register<Wsdl2Java>("genUWVDossierInkomstenGSD") {
     }
 }
 
+tasks.register<Wsdl2Java>("genBijstandsregelingen") {
+    toolOptions {
+        wsdl = "src/main/resources/soap/suwinet/Diensten/Bijstandsregelingen/v0500-b04/Impl/BKWI.wsdl"
+        outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genBijstandsregelingen").get().asFile)
+        markGenerated.set(true)
+        packageNames.set(listOf("com.ritense.valtimoplugins.dkd.Bijstandsregelingen"))
+        extendedSoapHeaders.set(true)
+    }
+    allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
+    doFirst {
+        classpath = configurations["runtimeClasspath"]
+    }
+}
+
 tasks.named("compileKotlin") {
     dependsOn(
+        "genBijstandsregelingen",
         "genBRPDossierPersoonGSD",
         "genDUODossierPersoonGSD",
         "genDUODossierStudiefinancieringGSD",

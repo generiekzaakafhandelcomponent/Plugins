@@ -1,0 +1,18 @@
+{
+    "name": "mTLS-SSLContext",
+    "version": 1,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins:mTLS-SSLContext"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/mtls-sslcontext",
+        "codeAdditions": [
+            {
+                "spec": "MtlsSslcontextPluginSpecification",
+                "module": "MtlsSslcontextPluginModule"
+            }
+        ]
+    }
+}
