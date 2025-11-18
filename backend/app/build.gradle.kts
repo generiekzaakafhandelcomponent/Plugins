@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":backend:token-authentication"))
     implementation(project(":backend:xential"))
     implementation(project(":backend:valtimo-llm"))
+    implementation(project(":backend:valtimo-s2t"))
     implementation(project(":backend:document-search"))
     implementation(project(":backend:docsys"))
     implementation(project(":backend:value-mapper"))

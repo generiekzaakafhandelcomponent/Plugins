@@ -22,6 +22,7 @@ include(
     "backend:token-authentication",
     "backend:xential",
     "backend:valtimo-llm",
+    "backend:valtimo-s2t",
     "backend:kvk-handelsregister",
     "backend:value-mapper",
     "backend:document-search",
