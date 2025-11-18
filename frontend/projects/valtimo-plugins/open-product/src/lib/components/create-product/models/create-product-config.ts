@@ -1,13 +1,13 @@
 interface CreateProductConfig {
-    productName: string;
+    productNaam: string;
     productTypeUUID: string;
-    citizenBSN: string;
-    ownerData: Array<{ key: string; value: string }>;
-    published: boolean;
-    productPrice: string;
-    frequency: string;
+    burgerBSN: string;
+    eigenaarData: Array<{ key: string; value: string }>;
+    gepubliceerd: boolean;
+    productPrijs: string;
+    frequentie: string;
     status: string;
-    resultPV: string;
+    resultaatPV: string;
 }
 
 export {CreateProductConfig};

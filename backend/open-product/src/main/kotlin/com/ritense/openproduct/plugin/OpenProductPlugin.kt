@@ -60,15 +60,14 @@ class OpenProductPlugin(
         execution: DelegateExecution,
         @PluginActionProperty productNaam: String,
         @PluginActionProperty productTypeUUID: String,
-        @PluginActionProperty eigenaarBSN: String,
+        @PluginActionProperty burgerBSN: String,
         @PluginActionProperty eigenaarData: List<DataBindingConfig>?,
-        @PluginActionProperty gepubliceerd: Boolean,
+        @PluginActionProperty gepubliceerd: java.lang.Boolean?,
         @PluginActionProperty productPrijs: String,
         @PluginActionProperty frequentie: String,
         @PluginActionProperty status: String,
         @PluginActionProperty resultaatPV: String,
     ) {
-
         val freqenum = toFreqEnum(frequentie)
         val statusEnum = toStatusEnum(status)
 
@@ -80,10 +79,10 @@ class OpenProductPlugin(
                 producttypeUuid = productTypeUUID,
                 eigenaren = listOf(
                     EigenaarRequest(
-                        bsn = eigenaarBSN
+                        bsn = burgerBSN
                     )
                 ),
-                gepubliceerd = gepubliceerd,
+                gepubliceerd = gepubliceerd as Boolean?,
                 prijs = productPrijs,
                 frequentie = freqenum,
                 status = statusEnum,

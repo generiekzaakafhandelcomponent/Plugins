@@ -4,31 +4,31 @@
   "title": "Open Product",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "resultPV": {
+    "resultaatPV": {
       "type": [
         "string",
         "null"
       ]
     },
-    "ownerData": {
+    "eigenaarData": {
       "type": [
         "string",
         "null"
       ]
     },
-    "citizenBSN": {
+    "burgerBSN": {
       "type": [
         "string",
         "null"
       ]
     },
-    "productName": {
+    "productNaam": {
       "type": [
         "string",
         "null"
       ]
     },
-    "productPrice": {
+    "productPrijs": {
       "type": [
         "string",
         "null"
@@ -46,7 +46,7 @@
         "null"
       ]
     },
-    "paymentFrequency": {
+    "frequentie": {
       "type": [
         "string",
         "null"
