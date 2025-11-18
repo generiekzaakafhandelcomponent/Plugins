@@ -22,7 +22,7 @@ import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from '@angular/forms';
-import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
+import {FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
 import {SuwinetPluginConfigurationComponent} from './components/plugin-configuration/suwinet-plugin-configuration.component';
 import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon-info.component';
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
@@ -51,7 +51,7 @@ import {
         UwvInkomstenInfoComponent,
         BijstandsregelingenInfoComponent
     ],
-    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule, SelectModule],
     exports: [
         SuwinetPluginConfigurationComponent,
         BrpPersoonInfoComponent,

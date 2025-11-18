@@ -149,6 +149,10 @@ import {
 import {
     tokenAuthenticationPluginSpecification
 } from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.specification";
+import {SuwinetAuthPluginModule} from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.module";
+import {
+    suwinetAuthPluginSpecification
+} from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -181,6 +185,7 @@ export function tabsFactory() {
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
+        SuwinetAuthPluginModule,
         XentialPluginModule,
         HttpClientModule,
         CommonModule,
@@ -270,6 +275,7 @@ export function tabsFactory() {
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
+            suwinetAuthPluginSpecification,
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,

@@ -18,9 +18,10 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {PluginConfigurationComponent} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
+import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {SuwinetPluginConfig} from "../../models";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'suwinet-plugin-configuration',
@@ -28,20 +29,42 @@ import {SuwinetPluginConfig} from "../../models";
   styleUrls: ['./suwinet-plugin-configuration.component.scss'],
 })
 export class SuwinetPluginConfigurationComponent
-  implements SuwinetPluginConfigurationComponent, OnInit, OnDestroy
-{
-  @Input() save$: Observable<void>;
-  @Input() disabled$: Observable<boolean>;
-  @Input() pluginId: string;
-  @Input() prefillConfiguration$: Observable<SuwinetPluginConfig>;
-  @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() configuration: EventEmitter<SuwinetPluginConfig> =
-      new EventEmitter<SuwinetPluginConfig>();
+  implements SuwinetPluginConfigurationComponent, OnInit, OnDestroy {
+    @Input() save$: Observable<void>;
+    @Input() disabled$: Observable<boolean>;
+    @Input() pluginId: string;
+    @Input() prefillConfiguration$: Observable<SuwinetPluginConfig>;
+    @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() configuration: EventEmitter<SuwinetPluginConfig> =
+        new EventEmitter<SuwinetPluginConfig>();
 
-  private saveSubscription!: Subscription;
+    private saveSubscription!: Subscription;
 
-  private readonly formValue$ = new BehaviorSubject<SuwinetPluginConfig | null>(null);
-  private readonly valid$ = new BehaviorSubject<boolean>(false);
+    private readonly formValue$ = new BehaviorSubject<SuwinetPluginConfig | null>(null);
+    private readonly valid$ = new BehaviorSubject<boolean>(false);
+
+    readonly authenticationPluginSelectItems$: Observable<Array<{ id: string; text: string }>> =
+        combineLatest([
+            this.pluginManagementService.getPluginConfigurationsByCategory(
+                'suwinet-authentication'
+            ),
+            this.translateService.stream('key'),
+        ]).pipe(
+            map(([configurations]) =>
+                configurations.map(configuration => ({
+                    id: configuration.id,
+                    text: `${configuration.title} - ${this.pluginTranslationService.instant(
+                        'title',
+                        configuration.pluginDefinition.key
+                    )}`,
+                }))
+            )
+        );
+    constructor(
+        private readonly pluginManagementService: PluginManagementService,
+        private readonly pluginTranslationService: PluginTranslationService,
+        private readonly translateService: TranslateService,) {
+    }
 
   ngOnInit(): void {
     this.openSaveSubscription();

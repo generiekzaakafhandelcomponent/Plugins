@@ -19,6 +19,7 @@ import com.ritense.valtimoplugins.suwinet.service.SuwinetKadasterInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetUwvPersoonsIkvService
+import com.ritense.valtimoplugins.suwinetauth.plugin.SuwinetAuth
 import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
@@ -39,26 +40,12 @@ class SuwiNetPlugin(
     private val suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService,
     private val suwinetBijstandsregelingenService: SuwinetBijstandsregelingenService
 ) {
+
+    @PluginProperty(key = "authenticationPluginConfiguration", secret = false)
+    lateinit var authenticationPluginConfiguration: SuwinetAuth
+
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: URI
-
-    @PluginProperty(key = "keystorePath", secret = false, required = false)
-    var keystorePath: String? = null
-
-    @PluginProperty(key = "keystoreSecret", secret = true, required = false)
-    var keystoreSecret: String? = null
-
-    @PluginProperty(key = "truststorePath", secret = false, required = false)
-    var truststorePath: String? = null
-
-    @PluginProperty(key = "truststoreSecret", secret = true, required = false)
-    var truststoreSecret: String? = null
-
-    @PluginProperty(key = "basicAuthName", secret = false, required = false)
-    var basicAuthName: String? = null
-
-    @PluginProperty(key = "basicAuthSecret", secret = true, required = false)
-    var basicAuthSecret: String? = null
 
     @PluginProperty(key = "connectionTimeout", secret = false, required = false)
     var connectionTimeout: Int? = 10
@@ -432,14 +419,9 @@ class SuwiNetPlugin(
     private fun getSuwinetSOAPClientConfig() =
         SuwinetSOAPClientConfig(
             baseUrl = baseUrl.toASCIIString(),
-            keystoreCertificatePath = keystorePath,
-            keystoreKey = keystoreSecret,
-            truststoreCertificatePath = truststorePath,
-            truststoreKey = truststoreSecret,
-            basicAuthName = basicAuthName,
-            basicAuthSecret = basicAuthSecret,
             connectionTimeout = connectionTimeout,
-            receiveTimeout = receiveTimeout
+            receiveTimeout = receiveTimeout,
+            authConfig = authenticationPluginConfiguration
         )
 
     private fun String.isValidBsn(): Boolean {

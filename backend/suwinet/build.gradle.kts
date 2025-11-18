@@ -37,6 +37,7 @@ dependencies {
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:value-resolver")
     implementation("com.ritense.valtimo:document")
+    implementation("com.ritense.valtimoplugins:suwinet-auth:1.0.0")
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
