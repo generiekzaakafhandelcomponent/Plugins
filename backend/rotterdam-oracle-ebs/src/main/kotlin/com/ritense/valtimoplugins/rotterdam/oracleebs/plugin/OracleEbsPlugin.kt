@@ -39,7 +39,9 @@ import org.springframework.web.client.RestClientResponseException
 import java.math.BigDecimal
 import java.net.URI
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.LinkedHashMap
 import kotlin.String
 
@@ -125,8 +127,7 @@ class OracleEbsPlugin(
             )
         ).let { request ->
             logger.info { "Trying to send OpvoerenJournaalpostVraag" }
-            // TODO: change to debug after testing
-            logger.info {
+            logger.debug {
                 "OpvoerenJournaalpostVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
             try {
@@ -291,8 +292,7 @@ class OracleEbsPlugin(
             bijlage = null
         ).let { request ->
             logger.info { "Trying to send OpvoerenVerkoopfactuurVraag" }
-            // TODO: change to debug after testing
-            logger.info {
+            logger.debug {
                 "OpvoerenVerkoopfactuurVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
             try {
@@ -600,6 +600,8 @@ class OracleEbsPlugin(
     private fun doubleFrom(value: Any): Double =
         when (value) {
             is Double -> value
+            is Float -> value.toDouble()
+            is Int -> value.toDouble()
             is String -> replaceCommaWithDotAsDecimalSeparator(value.trim()).toDouble()
             else -> 0.0
         }
@@ -607,6 +609,9 @@ class OracleEbsPlugin(
     private fun valueAsBigDecimal(value: Any): BigDecimal =
         when (value) {
             is BigDecimal -> value
+            is Double -> value.toBigDecimal()
+            is Float -> value.toBigDecimal()
+            is Int -> value.toBigDecimal()
             is String -> replaceCommaWithDotAsDecimalSeparator(value.trim()).toBigDecimal()
             else -> BigDecimal.ZERO
         }
