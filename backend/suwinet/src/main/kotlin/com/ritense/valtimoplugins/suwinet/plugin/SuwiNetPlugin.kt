@@ -397,6 +397,10 @@ class SuwiNetPlugin(
 
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
+        suwinetBijstandsregelingenService.setConfig(
+            getSuwinetSOAPClientConfig()
+        )
+
         try {
             suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(bsn,
                 suwinetBijstandsregelingenService.createBijstandsregelingenService())
