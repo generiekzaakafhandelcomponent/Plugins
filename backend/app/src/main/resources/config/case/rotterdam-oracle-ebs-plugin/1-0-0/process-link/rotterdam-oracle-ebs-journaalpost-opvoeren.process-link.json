@@ -15,7 +15,7 @@
     "activityId": "ideal-betaling",
     "activityType": "bpmn:UserTask:create",
     "processLinkType": "form",
-    "formDefinitionName": "rotterdam-oracle-ebs_ideal-betaling-simulatie"
+    "formDefinitionName": "rotterdam-oracle-ebs_ideal-betaling-simulatie-2"
   },
   {
     "activityId": "journaalpost-opvoeren",
@@ -25,23 +25,23 @@
     "pluginActionDefinitionKey": "journaalpost-opvoeren",
     "actionProperties": {
       "pvResultVariable": "verwerkingsstatus",
-      "procesCode": "pv:procescode",
-      "referentieNummer": "pv:referentienummer",
-      "sleutel": "pv:sleutel",
-      "boekdatumTijd": "pv:boekdatum",
-      "categorie": "pv:categorie",
-      "saldoSoort": "pv:saldoSoort",
-      "omschrijving": "pv:omschrijving",
-      "grootboek": "pv:grootboek",
-      "boekjaar": "pv:boekjaar",
-      "boekperiode": "pv:boekperiode",
+      "procesCode": "doc:procesCode",
+      "referentieNummer": "doc:referentieNummer",
+      "sleutel": "doc:sleutel",
+      "boekdatumTijd": "doc:boekdatum",
+      "categorie": "doc:categorie",
+      "saldoSoort": "doc:saldoSoort",
+      "omschrijving": "doc:omschrijving",
+      "grootboek": "doc:grootboek",
+      "boekjaar": "doc:boekjaar",
+      "boekperiode": "doc:boekperiode",
       "regels": [
         {
-          "grootboekSleutel": "pv:regelGrootboeksleutel",
-          "bronSleutel": "pv:regelBronsleutel",
-          "boekingType": "pv:regelBoekingType",
-          "bedrag": "pv:regelBedrag",
-          "omschrijving": "pv:regelOmschrijving"
+          "grootboekSleutel": "doc:journaalpostRegels[0].grootboekSleutel",
+          "bronSleutel": "doc:journaalpostRegels[0].bronSleutel",
+          "boekingType": "doc:journaalpostRegels[0].boekingType",
+          "bedrag": "doc:journaalpostRegels[0].bedrag",
+          "omschrijving": "doc:journaalpostRegels[0].omschrijving"
         }
       ]
     }
