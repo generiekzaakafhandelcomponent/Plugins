@@ -1,6 +1,6 @@
 package com.ritense.valtimoplugins.openklant.resolver
 
-import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
+import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
@@ -9,7 +9,7 @@ import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.valueresolver.ValueResolverFactory
 import com.ritense.zakenapi.service.ZaakDocumentService
 import kotlinx.coroutines.runBlocking
-import org.camunda.bpm.engine.delegate.VariableScope
+import org.operaton.bpm.engine.delegate.VariableScope
 import java.util.UUID
 import java.util.function.Function
 
@@ -39,8 +39,7 @@ class OpenKlantValueResolverFactory(
         processInstanceId: String,
         variableScope: VariableScope,
     ): Function<String, Any?> {
-        // TODO CamundaProcessInstanceId CHANGES TO OperatonProcessInstanceId in v13
-        val document = processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope)
+        val document = processDocumentService.getDocument(OperatonProcessInstanceId(processInstanceId), variableScope)
         return createResolver(document.id().toString())
     }
 

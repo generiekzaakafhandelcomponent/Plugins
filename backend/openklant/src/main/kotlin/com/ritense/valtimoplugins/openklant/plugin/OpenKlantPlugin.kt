@@ -12,7 +12,7 @@ import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(
