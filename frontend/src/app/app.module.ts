@@ -134,6 +134,13 @@ import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr
 import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
+import {
+    openKlantPluginSpecification
+} from "../../projects/valtimo-plugins/openklant/src/lib/open-klant.plugin.specification";
+import {OpenKlantPluginModule} from "../../projects/valtimo-plugins/openklant/src/lib/open-klant-plugin.module";
+import {
+    KlantcontactTabComponent
+} from "../../projects/valtimo-plugins/openklant/src/lib/tab/klantcontact-tab/klantcontact-tab.component";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -195,6 +202,7 @@ export function tabsFactory() {
         ObjectModule,
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
+        OpenKlantModule,
         OpenZaakPluginModule,
         PluginManagementModule,
         ProcessLinkModule,
@@ -249,6 +257,7 @@ export function tabsFactory() {
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
+            openKlantPluginSpecification,
             openZaakPluginSpecification,
             publictaskPluginSpecification,
             rotterdamOracleEbsPluginSpecification,
@@ -259,7 +268,12 @@ export function tabsFactory() {
             textTemplatePluginSpecification,
             valtimoOcrPluginSpecification,
             zakenApiPluginSpecification
-        ]
+        ],
+    }, {
+        provide: CASE_TAB_TOKEN,
+        useValue: {
+            'klantcontact-tab': KlantcontactTabComponent,
+        }
     }],
     bootstrap: [AppComponent]
 })
