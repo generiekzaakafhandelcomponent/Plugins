@@ -6,6 +6,7 @@ import {OpenKlantStoreContactinfoConfig} from '../../models/open-klant-store-con
 
 @Component({
   selector: 'app-store-contact-info',
+  standalone: false,
   templateUrl: './open-klant-store-contactinfo.component.html',
   styleUrls: ['./open-klant-store-contactinfo.component.scss']
 })
