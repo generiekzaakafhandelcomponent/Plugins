@@ -115,6 +115,7 @@ valtimo:
   annotation-scan:
     accepted-packages:
       - com.ritense
+  includeDocumentContentInResponse: true
 
 spring-actuator:
   username: admin
