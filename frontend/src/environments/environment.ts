@@ -18,7 +18,15 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 import {NgxLoggerLevel} from 'ngx-logger';
-import {ROLE_ADMIN, ROLE_USER, ValtimoConfig, UploadProvider, IncludeFunction, DefinitionColumn} from '@valtimo/shared';
+import {
+    ROLE_ADMIN,
+    ROLE_USER,
+    ValtimoConfig,
+    UploadProvider,
+    IncludeFunction,
+    DefinitionColumn,
+    ROLE_DEVELOPER
+} from '@valtimo/shared';
 import {authenticationKeycloak} from './auth/keycloak-config.dev';
 import {DARK_MODE_LOGO_BASE_64, LOGO_BASE_64} from './logo';
 
@@ -73,7 +81,7 @@ export const environment: ValtimoConfig = {
                 title: 'Objects',
                 iconClass: 'icon mdi mdi-archive',
                 sequence: 2,
-                includeFunction: IncludeFunction.ObjectManagementEnabled,
+                includeFunction: IncludeFunction.ObjectManagementEnabled
             },
             {roles: [ROLE_USER], link: ['/tasks'], title: 'Tasks', iconClass: 'icon mdi mdi-check-all', sequence: 3},
             {
@@ -85,26 +93,31 @@ export const environment: ValtimoConfig = {
             },
             {
                 roles: [ROLE_ADMIN], title: 'Admin', iconClass: 'icon mdi mdi-tune', sequence: 5, children: [
-                    {title: 'Basics', textClass: 'text-dark font-weight-bold c-default', sequence: 1},
-                    {link: ['/processes'], title: 'Processes', sequence: 2},
-                    {link: ['/form-management'], title: 'Forms', sequence: 3},
-                    {link: ['/form-flow-management'], title: 'Form flows', sequence: 4},
-                    {link: ['/decision-tables'], title: 'Decision tables', sequence: 5},
-                    {link: ['/case-management'], title: 'Cases', sequence: 6},
-                    {link: ['/task-management'], title: 'Tasks', sequence: 7},
-                    {
-                        link: ['/object-management'],
-                        title: 'Objects',
-                        sequence: 8,
-                        includeFunction: IncludeFunction.ObjectManagementEnabled,
-                    },
-                    {link: ['/plugins'], title: 'Plugins', sequence: 9},
-                    {link: ['/dashboard-management'], title: 'Dashboard', sequence: 11},
-                    {link: ['/access-control'], title: 'Access Control', sequence: 12},
-                    {link: ['/logging'], title: 'Logs', sequence: 13},
+                    {title: 'Configuration', textClass: 'text-dark font-weight-bold c-default', sequence: 1},
+                    {link: ['/case-management'], title: 'Cases', sequence: 2},
+                    {link: ['/plugins'], title: 'Plugins', sequence: 3},
+                    {link: ['/dashboard-management'], title: 'Dashboard', sequence: 4},
+                    {link: ['/access-control'], title: 'Access Control', sequence: 5},
+                    {link: ['/translation-management'], title: 'Translations', sequence: 6},
+                    {link: ['/choice-fields'], title: 'Choice fields', sequence: 7},
+
+                    {title: 'Object management', textClass: 'text-dark font-weight-bold c-default', sequence: 8},
+                    {link: ['/object-management'], title: 'Objects', sequence: 9},
+                    {link: ['/form-management'], title: 'Forms', sequence: 10},
+
+                    {title: 'System processes', textClass: 'text-dark font-weight-bold c-default', sequence: 11},
+                    {link: ['/processes'], title: 'Processes', sequence: 12},
+                    {link: ['/decision-tables'], title: 'Decision tables', sequence: 13},
+
                     {title: 'Other', textClass: 'text-dark font-weight-bold c-default', sequence: 14},
-                    {link: ['/process-migration'], title: 'Process migration', sequence: 15},
-                    {link: ['/choice-fields'], title: 'Choice fields', sequence: 16},
+                    {link: ['/logging'], title: 'Logs', sequence: 15},
+                    {link: ['/case-migration'], title: 'Case migration (beta)', sequence: 16},
+                    {link: ['/process-migration'], title: 'Process migration', sequence: 17},
+                ]
+            },
+            {
+                roles: [ROLE_DEVELOPER], title: 'Development', iconClass: 'icon mdi mdi-code', sequence: 6, children: [
+                    {link: ['/swagger'], title: 'Swagger', iconClass: 'icon mdi mdi-dot-circle', sequence: 1}
                 ]
             }
         ]

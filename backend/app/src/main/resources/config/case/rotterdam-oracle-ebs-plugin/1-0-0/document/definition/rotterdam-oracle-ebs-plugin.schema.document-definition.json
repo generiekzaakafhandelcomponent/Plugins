@@ -5,6 +5,36 @@
   "type": "object",
   "properties": {
     "additionalProperties": false,
+    "procesCode": {
+      "type": "string"
+    },
+    "referentieNummer": {
+      "type": "string"
+    },
+    "sleutel": {
+      "type": "string"
+    },
+    "boekdatumTijd": {
+      "type": "string"
+    },
+    "categorie": {
+      "type": "string"
+    },
+    "saldoSoort": {
+      "type": "string"
+    },
+    "omschrijving": {
+      "type": "string"
+    },
+    "grootboek": {
+      "type": "string"
+    },
+    "boekjaar": {
+      "type": "integer"
+    },
+    "boekperiode": {
+      "type": "integer"
+    },
     "journaalpostRegels": {
       "additionalProperties": false,
       "type": "array",
@@ -18,13 +48,18 @@
             "type": "string"
           },
           "bedrag": {
-            "type": "string"
+            "type": "number"
           },
           "omschrijving": {
             "type": "string"
           }
         },
-        "required": ["grootboekSleutel", "boekingType", "bedrag", "omschrijving"]
+        "required": [
+          "grootboekSleutel",
+          "boekingType",
+          "bedrag",
+          "omschrijving"
+        ]
       }
     },
     "verkoopfactuurRegels": {
@@ -52,7 +87,11 @@
             "type": "string"
           }
         },
-        "required": ["hoeveelheid", "tarief", "btwPercentage"]
+        "required": [
+          "hoeveelheid",
+          "tarief",
+          "btwPercentage"
+        ]
       }
     }
   }

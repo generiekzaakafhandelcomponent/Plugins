@@ -1,0 +1,216 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Bedrag",
+      "key": "pv:idealBedrag",
+      "mask": false,
+      "type": "currency",
+      "input": true,
+      "currency": "EUR",
+      "validate": {
+        "required": true
+      },
+      "delimiter": true,
+      "spellcheck": true,
+      "applyMaskOn": "change",
+      "inputFormat": "plain",
+      "truncateMultipleSpaces": false,
+      "defaultValue": "75.00"
+    },
+    {
+      "label": "Datum / Tijd",
+      "key": "pv:idealDatumTijd",
+      "displayInTimezone": "location",
+      "format": "yyyy-MM-dd HH:mm",
+      "datePicker": {
+        "disableWeekends": false,
+        "disableWeekdays": false
+      },
+      "timePicker": {
+        "showMeridian": false
+      },
+      "validate": {
+        "required": true
+      },
+      "enableMinDateInput": false,
+      "enableMaxDateInput": false,
+      "validateWhenHidden": false,
+      "type": "datetime",
+      "timezone": "Europe/Amsterdam",
+      "input": true,
+      "widget": {
+        "type": "calendar",
+        "timezone": "Europe/Amsterdam",
+        "displayInTimezone": "location",
+        "locale": "en",
+        "useLocaleSettings": false,
+        "allowInput": true,
+        "mode": "single",
+        "enableTime": true,
+        "noCalendar": false,
+        "format": "yyyy-MM-dd HH:mm",
+        "hourIncrement": 1,
+        "minuteIncrement": 1,
+        "time_24hr": true,
+        "minDate": null,
+        "disableWeekends": false,
+        "disableWeekdays": false,
+        "maxDate": null
+      },
+      "customDefaultValue": "value = moment().format('YYYY-MM-DDTHH:mm:ssZ')"
+    },
+    {
+      "legend": "Journaalpost opvoeren details",
+      "key": "fieldSet",
+      "type": "fieldset",
+      "label": "Field Set",
+      "input": false,
+      "components": [
+        {
+          "label": "Proces code",
+          "key": "doc:procesCode",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "BAC-23123"
+        },
+        {
+          "label": "Referentienummer",
+          "key": "doc:referentieNummer",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "84380234890"
+        },
+        {
+          "label": "Sleutel",
+          "key": "doc:sleutel",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "989878979"
+        },
+        {
+          "label": "Boekdatum",
+          "key": "doc:boekdatum",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "customDefaultValue": "value = moment().format('YYYY-MM-DDTHH:mm:ssZ')"
+        },
+        {
+          "label": "Categorie",
+          "key": "doc:categorie",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "Leges"
+        },
+        {
+          "label": "Saldo soort",
+          "key": "doc:saldoSoort",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "Werkelijk"
+        },
+        {
+          "label": "Omschrijving",
+          "key": "doc:omschrijving",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "Leges voor vergunning"
+        },
+        {
+          "label": "Grootboek",
+          "key": "doc:grootboek",
+          "type": "textfield",
+          "input": true,
+          "tableView": false,
+          "defaultValue": "100"
+        },
+        {
+          "label": "Boekjaar",
+          "key": "doc:boekjaar",
+          "type": "number",
+          "input": true,
+          "tableView": false,
+          "defaultValue": 2025
+        },
+        {
+          "label": "Boekperiode",
+          "key": "doc:boekperiode",
+          "type": "number",
+          "input": true,
+          "tableView": false,
+          "defaultValue": 4
+        },
+        {
+          "label": "Regels",
+          "key": "doc:journaalpostRegels",
+          "type": "datagrid",
+          "input": true,
+          "disableAddingRemovingRows": true,
+          "layoutFixed": false,
+          "enableRowGroups": false,
+          "initEmpty": false,
+          "readonly": true,
+          "validate": {
+            "required": true
+          },
+          "defaultValue": [
+            {
+              "bedrag": "75.00",
+              "grootboekSleutel": "100.ABC123.DEF456.GH78IJKL.MNOPQR.000.000000",
+              "bronSleutel": "12345",
+              "boekingType": "Debet",
+              "omschrijving": "De omschrijving van de regel"
+            }
+          ],
+          "calculateValue": "value = {\n  \"bedrag\": Number(data['pv:idealBedrag']),\n  \"grootboekSleutel\": \"100.ABC123.DEF456.GH78IJKL.MNOPQR.000.000000\",\n  \"bronSleutel\": \"12345\",\n  \"boekingType\": \"Debet\",\n  \"omschrijving\": \"De omschrijving van de regel\"\n}",
+          "components": [
+            {
+              "label": "Bedrag",
+              "key": "bedrag",
+              "type": "number",
+              "input": true
+            },
+            {
+              "label": "Grootboeksleutel",
+              "key": "grootboekSleutel",
+              "type": "textfield",
+              "input": true
+            },
+            {
+              "label": "Bronsleutel",
+              "key": "bronSleutel",
+              "type": "textfield",
+              "input": true
+            },
+            {
+              "label": "Boeking type",
+              "key": "boekingType",
+              "type": "textfield",
+              "input": true
+            },
+            {
+              "label": "Omschrijving",
+              "key": "omschrijving",
+              "type": "textfield",
+              "input": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "disableOnInvalid": true
+    }
+  ]
+}
