@@ -15,7 +15,7 @@ dependencies {
     implementation("io.projectreactor.netty:reactor-netty-core:1.1.20")
     implementation("io.projectreactor.netty:reactor-netty-http:1.1.20")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-    implementation("io.github.microutils:kotlin-logging")
+    implementation("io.github.microutils:kotlin-logging:3.0.5")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.13.9")
 }
