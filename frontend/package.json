@@ -59,9 +59,9 @@
     "libs:watch:xential": "ng build @valtimo-plugins/xential --watch",
     "libs:watch:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm --watch",
     "libs:watch:valtimo-s2t": "ng build @valtimo-plugins/valtimo-s2t --watch",
-    "libs:watch:document-search": "ng build @valtimo-plugins/document-search --watch"
     "libs:watch:document-search": "ng build @valtimo-plugins/document-search --watch",
     "libs:watch:docsys": "ng build @valtimo-plugins/docsys --watch"
+  },
   "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "^17.2.2",
