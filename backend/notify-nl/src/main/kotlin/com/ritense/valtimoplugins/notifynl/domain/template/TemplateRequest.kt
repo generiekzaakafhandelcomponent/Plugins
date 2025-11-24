@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.notifynl.domain
+package com.ritense.valtimoplugins.notifynl.domain.template
 
-class SendSmsResponse {
-}
+import com.fasterxml.jackson.annotation.JsonProperty
+
+data class TemplateRequest(
+    @JsonProperty("template_id")
+    val templateId: String,
+)
+
+data class AllTemplatesRequest(
+    @JsonProperty("template_type")
+    val templateType: String,
+)
+
