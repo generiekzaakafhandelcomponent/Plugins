@@ -13,11 +13,11 @@ data class TypeTransformation(
 
     override fun canTransform(node: JsonNode): Boolean = whenType == node.nodeType
 
-    override fun transform(value: Any): Any {
+    override fun transform(value: Any): Pair<Boolean, Any> {
         logger.debug {
             "Attempting to convert $whenType value to ${thenClazz.simpleName}"
         }
-        return mapper.convertValue(value, thenClazz)
+        return false to mapper.convertValue(value, thenClazz)
     }
 
     companion object {
