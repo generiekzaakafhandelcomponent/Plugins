@@ -17,7 +17,7 @@ include(
     "backend:spotler",
     "backend:suwinet",
     "backend:xential",
-    "backend:hugging-face",
+    "backend:valtimo-llm",
     "backend:kvk-handelsregister",
     "frontend",
 )
