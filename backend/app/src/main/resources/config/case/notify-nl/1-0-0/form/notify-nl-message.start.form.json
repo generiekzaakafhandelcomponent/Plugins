@@ -1,0 +1,28 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "notificationId",
+      "type": "textarea",
+      "input": true,
+      "label": "Message ID (*)",
+      "tableView": true,
+      "autoExpand": true,
+      "properties": {
+        "targetKey": "doc:/notificationId"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-message.start-notificationId"
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}
