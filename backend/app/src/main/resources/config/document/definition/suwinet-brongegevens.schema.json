@@ -3,6 +3,11 @@
   "type" : "object",
   "title" : "Suwinet brongegevens",
   "$schema" : "http://json-schema.org/draft-07/schema#",
-  "properties" : {},
+  "properties" : {
+    "bijstandsregelingenInfo": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
   "additionalProperties" : true
 }
