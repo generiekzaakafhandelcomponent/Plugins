@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {ValtimoOcrConfig} from '../../models';
 
 @Component({
+    standalone: false,
     selector: 'valtimo-ocr-configuration',
     templateUrl: './valtimo-ocr-configuration.component.html',
 })

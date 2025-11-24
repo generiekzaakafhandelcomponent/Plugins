@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {FileToTextConfig} from "../../models";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-file-to-text-configuration',
     templateUrl: './file-to-text-configuration.component.html',
 })
