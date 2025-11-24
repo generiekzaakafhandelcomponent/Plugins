@@ -51,7 +51,7 @@ The ValueMapper plugin copies values from a source JSON to a target JSON, with o
           "type": "CopyTransformation",
           "when": "active",
           "then": "enabled",
-          "skipCondition": "${it == null}"
+          "skipCondition": "it == null"
         }
       ]
     }
@@ -83,7 +83,7 @@ The ValueMapper plugin copies values from a source JSON to a target JSON, with o
 ### SpEL `skipCondition`
 - Template syntax: `${ ... }`.
 - Variable `it` contains the current source value.
-- Examples: `${it == null}`, `${it > 100}`.
+- Examples: `it == null`, `it > 100`.
 
 ### Error handling (short)
 - `targetPointer == "/"` → error (root cannot be overwritten).
