@@ -1,0 +1,417 @@
+[
+  {
+    "caseDefinitionKey" : "notify-nl",
+    "caseDefinitionVersionTag" : "1.0.0",
+    "key" : "result",
+    "widgets" : [
+      {
+        "type" : "collection",
+        "key" : "allTemplatesWidget",
+        "title" : "Result",
+        "width" : 3,
+        "highContrast" : false,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "collection" : "doc:result",
+          "defaultPageSize" : 5,
+          "title" : {
+            "value" : "Result"
+          },
+          "fields" : [
+            {
+              "key" : "id",
+              "title" : "ID",
+              "value" : "id",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "uri",
+              "title" : "URI",
+              "value" : "uri",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "name",
+              "title" : "Name",
+              "value" : "name",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "reference",
+              "title" : "Reference",
+              "value" : "reference",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "email-address",
+              "title" : "Email Address",
+              "value" : "emailAddress",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "phone-number",
+              "title" : "Phone Number",
+              "value" : "phoneNumber",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "type",
+              "title" : "Type",
+              "value" : "type",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "status",
+              "title" : "Status",
+              "value" : "status",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "subject",
+              "title" : "Subject",
+              "value" : "subject",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "body",
+              "title" : "Body",
+              "value" : "body",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "created-at",
+              "title" : "Created At",
+              "value" : "createdAt",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "updated-at",
+              "title" : "Updated At",
+              "value" : "updatedAt",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "created-by-name",
+              "title" : "Created By (Name)",
+              "value" : "createdBy",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "sent-at",
+              "title" : "Sent At",
+              "value" : "sentAt",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "completed-at",
+              "title" : "Completed At",
+              "value" : "completedAt",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "scheduled-for",
+              "title" : "Scheduled For",
+              "value" : "scheduledFor",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "one-click-unsubscribe-url",
+              "title" : "One Click Unsubscribe URL",
+              "value" : "oneClickUnsubscribe",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "content-subject",
+              "title" : "Subject",
+              "value" : "contentSubject",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "content-from-number",
+              "title" : "From number",
+              "value" : "contentFromNumber",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "content-from-email-address",
+              "title" : "From email",
+              "value" : "contentFromEmailAddress",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "content-body",
+              "title" : "Body",
+              "value" : "contentBody",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "is-cost-data-ready",
+              "title" : "Is Cost Data Ready",
+              "value" : "isCostDataReady",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "cost-in-pounds",
+              "title" : "Cost in Pounds",
+              "value" : "costInPounds",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "billable-sms-fragments",
+              "title" : "Billable SMS Fragments",
+              "value" : "costDetailsBillableSmsFragments",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "sms-rate",
+              "title" : "SMS Rate",
+              "value" : "costDetailsSmsRate",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "billable-sheets-of-paper",
+              "title" : "Billable Sheets of Paper",
+              "value" : "costDetailsBillableSheetsOfPaper",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "international-rate-multiplier",
+              "title" : "International Rate Multiplier",
+              "value" : "costDetailsInternationalRateMultiplier",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "cost-details-postage",
+              "title" : "Cost Details Postage",
+              "value" : "costDetailsPostage",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "postage",
+              "title" : "Postage",
+              "value" : "postage",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "template-id",
+              "title" : "Template ID",
+              "value" : "templateId",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "template-uri",
+              "title" : "Template URI",
+              "value" : "templateUri",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "template-version",
+              "title" : "Template Version",
+              "value" : "templateVersion",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "address-line-1",
+              "title" : "Address Line 1",
+              "value" : "line1",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "address-line-2",
+              "title" : "Address Line 2",
+              "value" : "line2",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "address-line-3",
+              "title" : "Address Line 3",
+              "value" : "line3",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "address-line-4",
+              "title" : "Address Line 4",
+              "value" : "line4",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "address-line-5",
+              "title" : "Address Line 5",
+              "value" : "line5",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "address-line-6",
+              "title" : "Address Line 6",
+              "value" : "line6",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            },
+            {
+              "key" : "address-line-7",
+              "title" : "Address Line 7",
+              "value" : "line7",
+              "width" : "full",
+              "displayProperties" : {
+                "type" : "text",
+                "hideWhenEmpty" : true
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

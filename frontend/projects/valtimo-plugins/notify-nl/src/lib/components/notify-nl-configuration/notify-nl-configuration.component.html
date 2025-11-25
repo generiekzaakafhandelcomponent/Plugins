@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2015-2022 Ritense BV, the Netherlands.
+  ~ Copyright 2015-2025 Ritense BV, the Netherlands.
   ~
   ~ Licensed under EUPL, Version 1.2 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -34,39 +34,27 @@
   >
   </v-input>
   <v-input
-    name="url"
-    [title]="'url' | pluginTranslate: pluginId | async"
+    name="notifyUrl"
+    [title]="'notifyUrl' | pluginTranslate: pluginId | async"
     [fullWidth]="true"
     [margin]="true"
     [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.url"
+    [defaultValue]="obs.prefill?.notifyUrl"
     [required]="true"
-    [tooltip]="'urlTooltip' | pluginTranslate: pluginId | async"
+    [tooltip]="'notifyUrlTooltip' | pluginTranslate: pluginId | async"
     placeholder="https://api.notifynl.nl"
   >
   </v-input>
   <v-input
-    name="serviceId"
-    type="password"
-    [title]="'serviceId' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.serviceId"
-    [required]="true"
-    [fullWidth]="true"
-    [tooltip]="'serviceIdTooltip' | pluginTranslate: pluginId | async"
-  >
-  </v-input>
-  <v-input
-          name="secretKey"
+          name="apiKey"
           type="password"
-          [title]="'secretKey' | pluginTranslate: pluginId | async"
+          [title]="'apiKey' | pluginTranslate: pluginId | async"
           [margin]="true"
           [disabled]="obs.disabled"
-          [defaultValue]="obs.prefill?.secretKey"
+          [defaultValue]="obs.prefill?.apiKey"
           [required]="true"
           [fullWidth]="true"
-          [tooltip]="'secretKeyTooltip' | pluginTranslate: pluginId | async"
+          [tooltip]="'apiKeyTooltip' | pluginTranslate: pluginId | async"
   >
   </v-input>
 </v-form>

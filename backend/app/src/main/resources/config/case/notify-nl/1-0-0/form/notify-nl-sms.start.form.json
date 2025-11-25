@@ -1,0 +1,91 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "templateId",
+      "type": "textarea",
+      "input": true,
+      "label": "Template ID (*)",
+      "tableView": true,
+      "autoExpand": true,
+      "properties": {
+        "targetKey": "doc:/templateId"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-sms.start-templateId"
+      }
+    },
+    {
+      "key": "recipientPhonenumber",
+      "type": "textarea",
+      "input": true,
+      "label": "Recipient Phonenumber (*)",
+      "tableView": true,
+      "autoExpand": true,
+      "properties": {
+        "targetKey": "doc:/phoneNumber"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-sms.start-recipientPhonenumber"
+      }
+    },
+    {
+      "label": "Personalisation parameters",
+      "tableView": false,
+      "key": "personalisation",
+      "properties": {
+        "targetKey": "doc:/personalisation"
+      },
+      "type": "datamap",
+      "input": true,
+      "valueComponent": {
+        "type": "textfield",
+        "key": "value",
+        "label": "Value",
+        "input": true,
+        "hideLabel": true,
+        "tableView": true
+      }
+    },
+    {
+      "key": "reference",
+      "type": "textarea",
+      "input": true,
+      "label": "Reference",
+      "tableView": true,
+      "autoExpand": true,
+      "properties": {
+        "targetKey": "doc:/reference"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-sms.start-reference"
+      }
+    },
+    {
+      "key": "senderId",
+      "type": "textarea",
+      "input": true,
+      "label": "Sender ID",
+      "tableView": true,
+      "autoExpand": true,
+      "properties": {
+        "targetKey": "doc:/senderId"
+      },
+      "applyMaskOn": "change",
+      "attributes": {
+        "data-testid": "notify-nl-sms.start-senderId"
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

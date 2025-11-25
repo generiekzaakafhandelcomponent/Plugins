@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,26 @@
  * limitations under the License.
  */
 
+dockerCompose {
+    setProjectName("NotifyNl")
+    isRequiredBy(project.tasks.integrationTesting)
+
+    tasks.integrationTesting {
+        useComposeFiles.addAll("$rootDir/docker-resources/docker-compose-base-test.yml", "docker-compose-override.yml")
+    }
+}
+
 val kotlinLoggingVersion: String by project
-val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
 
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
     implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
-
-    // Testing
-    testImplementation("com.ritense.valtimo:local-resource")
-    testImplementation("com.ritense.valtimo:test-utils-common")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
-    testImplementation("org.mockito:mockito-core")
-    testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
-
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
 apply(from = "gradle/publishing.gradle")

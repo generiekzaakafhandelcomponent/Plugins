@@ -34,7 +34,7 @@ dependencies {
     implementation(project(":backend:suwinet"))
     implementation(project(":backend:valtimo-s2t"))
     implementation(project(":backend:xential"))
-    implementation(project(":backend:hugging-face"))
+    implementation(project(":backend:valtimo-llm"))
 }
 
 tasks.jar {

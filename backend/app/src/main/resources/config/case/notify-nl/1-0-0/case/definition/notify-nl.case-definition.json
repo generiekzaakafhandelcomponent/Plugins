@@ -1,8 +1,12 @@
 {
-    "key": "notify-nl",
-    "name": "Notify NL",
-    "versionTag": "1.0.0",
-    "final": false,
-    "canHaveAssignee": false,
-    "autoAssignTasks": false
+  "key" : "notify-nl",
+  "versionTag" : "1.0.0",
+  "name" : "Notify NL",
+  "description" : null,
+  "createdBy" : null,
+  "createdDate" : null,
+  "basedOnVersionTag" : null,
+  "final" : false,
+  "canHaveAssignee" : false,
+  "autoAssignTasks" : false
 }

@@ -1,0 +1,44 @@
+[
+  {
+    "key" : "result",
+    "name" : "Summary",
+    "type" : "widgets",
+    "contentKey" : "-",
+    "showTasks" : false
+  },
+  {
+    "key" : "test",
+    "name" : "Summary Form-IO",
+    "type" : "formio",
+    "contentKey" : "notify-nl.summary",
+    "showTasks" : false
+  },
+  {
+    "key" : "progress",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "progress",
+    "showTasks" : false
+  },
+  {
+    "key" : "audit",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "audit",
+    "showTasks" : false
+  },
+  {
+    "key" : "documents",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "documents",
+    "showTasks" : false
+  },
+  {
+    "key" : "notes",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "notes",
+    "showTasks" : false
+  }
+]

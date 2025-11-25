@@ -109,7 +109,8 @@ import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
-import {HuggingFacePluginModule, huggingFacePluginSpecification} from "@valtimo-plugins/hugging-face";
+import {ValtimoLlmPluginModule} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module"
+import {valtimoLlmPluginSpecification} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification"
 import {
     HaalCentraalBrpAuthPluginModule,
     haalCentraalBrpAuthPluginSpecification,
@@ -181,7 +182,6 @@ export function tabsFactory() {
         HaalCentraalBrpAuthPluginModule,
         HaalCentraalBrpPluginModule,
         HttpClientModule,
-        HuggingFacePluginModule,
         KvkPluginModule,
         LayoutModule,
         LoggerModule.forRoot(environment.logger),
@@ -226,12 +226,13 @@ export function tabsFactory() {
         TranslationManagementModule,
         ValtimoOcrPluginModule,
         ValtimoS2tPluginModule,
+        ValtimoLlmPluginModule,
         ValuePathSelectorComponent,
         WidgetModule,
         XentialPluginModule,
         ZakenApiPluginModule,
         ZgwModule,
-        ZgwModule,
+        ZgwModule
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -244,7 +245,6 @@ export function tabsFactory() {
             haalCentraalBagPluginSpecification,
             haalCentraalBrpAuthPluginSpecification,
             haalCentraalBrpPluginSpecification,
-            huggingFacePluginSpecification,
             kvkPluginSpecification,
             mTlsSslcontextPluginSpecification,
             mailTemplatePluginSpecification,
@@ -263,6 +263,7 @@ export function tabsFactory() {
             textTemplatePluginSpecification,
             valtimoOcrPluginSpecification,
             valtimoS2tPluginSpecification,
+            valtimoLlmPluginSpecification,
             zakenApiPluginSpecification
         ]
     }],
