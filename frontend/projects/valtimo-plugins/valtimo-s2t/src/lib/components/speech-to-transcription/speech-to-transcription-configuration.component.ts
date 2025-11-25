@@ -15,12 +15,12 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {FunctionConfigurationData} from "@valtimo/plugin/lib/models/plugin";
 import {SpeechToTranscriptionConfig} from "../../models";
 
 @Component({
+    standalone: false,
     selector: 'valtimo-speech-to-transcription-configuration',
     templateUrl: './speech-to-transcription-configuration.component.html',
 })

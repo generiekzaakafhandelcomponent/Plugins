@@ -20,6 +20,7 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 import {ValtimoS2tConfig} from '../../models';
 
 @Component({
+    standalone: false,
     selector: 'valtimo-s2t-configuration',
     templateUrl: './valtimo-s2t-configuration.component.html',
 })
