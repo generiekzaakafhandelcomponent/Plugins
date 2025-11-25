@@ -135,6 +135,9 @@ import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr
 import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
+import {ValtimoS2tPluginModule} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin-module";
+import {valtimoS2tPluginSpecification} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
+
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -222,6 +225,7 @@ export function tabsFactory() {
         }),
         TranslationManagementModule,
         ValtimoOcrPluginModule,
+        ValtimoS2tPluginModule,
         ValtimoLlmPluginModule,
         ValuePathSelectorComponent,
         WidgetModule,
@@ -258,6 +262,7 @@ export function tabsFactory() {
             suwinetPluginSpecification,
             textTemplatePluginSpecification,
             valtimoOcrPluginSpecification,
+            valtimoS2tPluginSpecification,
             valtimoLlmPluginSpecification,
             zakenApiPluginSpecification
         ]
