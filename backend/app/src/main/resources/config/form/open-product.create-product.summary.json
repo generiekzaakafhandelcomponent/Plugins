@@ -1,0 +1,34 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "type",
+      "type": "hidden",
+      "input": true,
+      "label": "type",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "open-product.resultaatPV"
+      },
+      "properties": {
+        "sourceKey": "pv:resultaatPV"
+      }
+    },
+    {
+      "key": "html",
+      "tag": "div",
+      "type": "htmlelement",
+      "attrs": [
+        {
+          "attr": "",
+          "value": ""
+        }
+      ],
+      "input": false,
+      "label": "HTML",
+      "content": "<h4>Create Product</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Type</dd>\n        <dt class=\"col-6\">{{{ data || '-'}}}</dt>\n    </dl>\n </section>",
+      "tableView": false,
+      "refreshOnChange": false
+    }
+  ]
+}

@@ -39,7 +39,7 @@ export class CreateProductConfigurationComponent
     }
 
     private handleValid(formValue: CreateProductConfig): void {
-        const valid = !!(formValue.productTypeUUID && formValue.burgerBSN && formValue.productPrijs && formValue.frequentie && formValue.resultaatPV);
+        const valid = !!(formValue.productTypeUUID && formValue.burgerBSN && formValue.productPrijs && formValue.frequentie);
 
         this.valid$.next(valid);
         this.valid.emit(valid);

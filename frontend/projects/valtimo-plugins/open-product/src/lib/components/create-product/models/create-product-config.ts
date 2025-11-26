@@ -7,7 +7,6 @@ interface CreateProductConfig {
     productPrijs: string;
     frequentie: string;
     status: string;
-    resultaatPV: string;
 }
 
 export {CreateProductConfig};
