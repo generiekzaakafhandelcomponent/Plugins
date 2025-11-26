@@ -24,15 +24,15 @@ import com.ritense.valtimoplugins.freemarker.plugin.documentgenerator.DocumentGe
 import com.ritense.valtimoplugins.freemarker.plugin.web.rest.dto.TemplatePreviewRequest
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import java.net.URLConnection
-import org.springframework.core.io.InputStreamResource
-import org.springframework.http.MediaType.APPLICATION_PDF
-import org.springframework.http.MediaType.APPLICATION_OCTET_STREAM
 import org.springframework.http.MediaType
+import org.springframework.http.MediaType.APPLICATION_OCTET_STREAM
+import org.springframework.http.MediaType.APPLICATION_PDF
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 
 @RestController
 @SkipComponentScan
@@ -45,9 +45,10 @@ class DocumentGeneratorResource(
     @PostMapping("/v1/template/preview")
     fun getTemplatePreview(
         @RequestBody request: TemplatePreviewRequest,
-    ): ResponseEntity<Any> {
+    ): ResponseEntity<StreamingResponseBody> {
 
-        val documentGeneratorPlugin = pluginService.createInstance(DocumentGeneratorPlugin::class.java) { true }!!
+        val documentGeneratorPlugin = pluginService.createInstance(DocumentGeneratorPlugin::class.java) { true }
+            ?: throw RuntimeException("ERROR: Missing plugin configuration: 'Document generator'.")
 
         val preview = templateService.generate(
             templateName = request.fileName,
@@ -61,16 +62,19 @@ class DocumentGeneratorResource(
             APPLICATION_OCTET_STREAM
         }
 
-        val response = ResponseEntity.ok()
+        val stream = StreamingResponseBody { out ->
+            if (fileMediaType == APPLICATION_PDF) {
+                documentGeneratorPlugin.generatePdf(preview, out)
+            } else if (fileMediaType.subtype == "csv") {
+                documentGeneratorPlugin.generateCsv(preview, out)
+            } else {
+                out.use { it.write(preview.toByteArray()) }
+            }
+        }
+
+        return ResponseEntity.ok()
             .header("Content-Disposition", "attachment;filename=${request.fileName}")
             .contentType(fileMediaType)
-
-        return if (fileMediaType == APPLICATION_PDF) {
-            response.body(InputStreamResource(documentGeneratorPlugin.generatePdf(preview)))
-        } else if (fileMediaType.subtype == "csv") {
-            response.body(InputStreamResource(documentGeneratorPlugin.generateCsv(preview)))
-        } else {
-            response.body(preview.toByteArray())
-        }
+            .body(stream)
     }
 }
