@@ -3,6 +3,7 @@ interface CreateProductConfig {
     productTypeUUID: string;
     burgerBSN: string;
     eigenaarData: Array<{ key: string; value: string }>;
+    aanvraagZaakUrn: string;
     gepubliceerd: boolean;
     productPrijs: string;
     frequentie: string;

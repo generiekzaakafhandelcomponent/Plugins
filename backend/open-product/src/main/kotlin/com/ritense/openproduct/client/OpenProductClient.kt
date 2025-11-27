@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
+import org.springframework.web.client.toEntity
 
 @Component
 class OpenProductClient() {
@@ -52,8 +53,8 @@ class OpenProductClient() {
         val requestJson = objectMapper.writeValueAsString(request)
 
         val response = restClient.post()
-            .uri("/producten")
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .uri("/producten/api/v1/producten")
+            .contentType(MediaType.APPLICATION_JSON)
             .body(requestJson)
             .retrieve()
 
@@ -109,6 +110,4 @@ class OpenProductClient() {
             .baseUrl(baseUrl)
             .build()
     }
-
-
 }

@@ -44,7 +44,15 @@
             [tooltip]="'eigenaarDataTooltip' | pluginTranslate: pluginId | async"
             [minimumAmountOfRows]="1"
     ></valtimo-carbon-multi-input>
-
+    <v-input
+            name="aanvraagZaakUrn"
+            [title]="'aanvraagZaakUrn' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.aanvraagZaakUrn"
+            [disabled]="obs.disabled"
+            [required]="true"
+    >
+    </v-input>
     <v-input
             name="productPrijs"
             [title]="'productPrijs' | pluginTranslate: pluginId | async"

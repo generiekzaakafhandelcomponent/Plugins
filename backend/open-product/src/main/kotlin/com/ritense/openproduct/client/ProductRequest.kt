@@ -23,6 +23,8 @@ data class ProductRequest(
     val documenten: List<DocumentRequest>? = null,
     @JsonProperty("status")
     val status: StatusEnum? = null,
+    @JsonProperty("aanvraag_zaak_urn")
+    val aanvraagZaakUrn: String,
     @JsonProperty("prijs")
     val prijs: String,
     @JsonProperty("frequentie")
@@ -85,7 +87,7 @@ data class Product(
     @JsonProperty("verbruiksobject")
     val verbruiksobject: Map<String, Any>?,
     @JsonProperty("dataobject")
-    val dataobject: Map<String, Any>?
+    val dataobject: Map<String, Any>?,
 )
 
 data class ProductType(

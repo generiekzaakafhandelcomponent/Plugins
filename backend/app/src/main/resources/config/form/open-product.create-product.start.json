@@ -65,6 +65,20 @@
       }
     },
     {
+      "key": "aanvraagZaakUrn",
+      "type": "textfield",
+      "input": true,
+      "label": "Aanvraag Zaak URN",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-aanvraagZaakUrn"
+      },
+      "properties": {
+        "targetKey": "pv:/aanvraagZaakUrn"
+      },
+      "applyMaskOn": "change"
+    },
+    {
       "key": "productPrijs",
       "type": "textfield",
       "input": true,
@@ -79,43 +93,87 @@
       "applyMaskOn": "change"
     },
     {
-      "key": "frequentie",
-      "type": "textfield",
-      "input": true,
-      "label": "Frequentie",
+      "label": "Status",
       "tableView": true,
-      "attributes": {
-        "data-testid": "open-product.create-product.start-frequentie"
+      "data": {
+        "values": [
+          {
+            "label": "Initieel",
+            "value": "initieel"
+          },
+          {
+            "label": "In_aanvraag",
+            "value": "inAanvraag"
+          },
+          {
+            "label": "Gereed",
+            "value": "gereed"
+          },
+          {
+            "label": "Actief",
+            "value": "actief"
+          },
+          {
+            "label": "Ingetrokken",
+            "value": "ingetrokken"
+          },
+          {
+            "label": "Geweigerd",
+            "value": "geweigerd"
+          },
+          {
+            "label": "Verlopen",
+            "value": "verlopen"
+          }
+        ]
       },
+      "key": "select",
+      "properties": {
+        "targetKey": "pv:/status"
+      },
+      "type": "select",
+      "input": true
+    },
+    {
+      "label": "Frequentie",
+      "widget": "choicesjs",
+      "tableView": true,
+      "data": {
+        "values": [
+          {
+            "label": "Eenmalig",
+            "value": "eenmalig"
+          },
+          {
+            "label": "Maandelijks",
+            "value": "maandelijks"
+          },
+          {
+            "label": "Jaarlijks",
+            "value": "jaarlijks"
+          }
+        ]
+      },
+      "key": "frequentie",
       "properties": {
         "targetKey": "pv:/frequentie"
       },
-      "applyMaskOn": "change"
+      "type": "select",
+      "input": true
     },
     {
-      "key": "status",
-      "type": "textfield",
+      "key": "gepubliceerd",
+      "type": "checkbox",
       "input": true,
-      "label": "Status",
-      "tableView": true,
-      "attributes": {
-        "data-testid": "open-product.create-product.start-status"
-      },
-      "properties": {
-          "targetKey": "pv:/status"
-      },
-      "applyMaskOn": "change"
-    },
-    {
       "label": "Gepubliceerd",
       "tableView": false,
-      "key": "gepubliceerd",
       "properties": {
         "targetKey": "pv:/gepubliceerd"
       },
-      "type": "checkbox",
-      "input": true,
-      "defaultValue": false
+      "defaultValue": false,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-gepubliceerd"
+      }
     },
     {
       "key": "submit",

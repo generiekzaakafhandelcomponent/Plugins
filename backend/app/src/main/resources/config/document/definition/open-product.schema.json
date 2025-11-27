@@ -13,6 +13,9 @@
         "null"
       ]
     },
+    "aanvraagZaakUrn": {
+      "type": "string"
+    },
     "burgerBSN": {
       "type": [
         "string",

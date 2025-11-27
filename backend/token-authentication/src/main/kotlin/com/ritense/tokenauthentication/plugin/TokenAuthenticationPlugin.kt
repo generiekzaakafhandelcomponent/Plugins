@@ -34,8 +34,8 @@ class TokenAuthenticationPlugin: TokenAuthentication {
     lateinit var token: String
 
     override fun applyAuth(builder: RestClient.Builder): RestClient.Builder {
-        return builder.defaultHeaders { headers ->
-            headers.set(HttpHeaders.AUTHORIZATION, "Token $token")
+        return builder.defaultHeaders {
+            it.set(HttpHeaders.AUTHORIZATION, "Token $token")
         }
     }
 
