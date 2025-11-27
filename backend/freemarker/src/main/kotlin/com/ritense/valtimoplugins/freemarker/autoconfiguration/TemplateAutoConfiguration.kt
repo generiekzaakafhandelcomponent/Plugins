@@ -17,11 +17,9 @@
 package com.ritense.valtimoplugins.freemarker.autoconfiguration
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.ritense.valtimo.contract.case_.CaseDefinitionChecker
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
 import com.ritense.valtimoplugins.freemarker.config.TemplateHttpSecurityConfigurer
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
-import com.ritense.valtimoplugins.freemarker.listener.TemplateCaseEventListener
 import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
 import com.ritense.valtimoplugins.freemarker.service.TemplateExporter
@@ -30,7 +28,6 @@ import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valtimoplugins.freemarker.web.rest.TemplateManagementResource
 import com.ritense.valueresolver.ValueResolverService
 import freemarker.template.Configuration
-import freemarker.template.Configuration.VERSION_2_3_34
 import freemarker.template.DefaultObjectWrapperBuilder
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -48,7 +45,7 @@ class TemplateAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(Configuration::class)
     fun freemarkerConfiguration(): Configuration {
-        val configuration = Configuration(VERSION_2_3_34)
+        val configuration = Configuration(klaasVERSION_2_3_34)
         configuration.logTemplateExceptions = false
 
         val objectWrapper = DefaultObjectWrapperBuilder(configuration.incompatibleImprovements).apply {
@@ -66,7 +63,6 @@ class TemplateAutoConfiguration {
         objectMapper: ObjectMapper,
         valueResolverService: ValueResolverService,
         freemarkerConfiguration: Configuration,
-        caseDefinitionChecker: CaseDefinitionChecker,
         jsonSchemaDocumentRepositoryStreaming: JsonSchemaDocumentRepositoryStreaming,
     ): TemplateService {
         return TemplateService(
@@ -74,7 +70,6 @@ class TemplateAutoConfiguration {
             objectMapper,
             valueResolverService,
             freemarkerConfiguration,
-            caseDefinitionChecker,
             jsonSchemaDocumentRepositoryStreaming,
         )
     }
@@ -91,29 +86,27 @@ class TemplateAutoConfiguration {
         )
     }
 
-    @Bean
-    @ConditionalOnMissingBean(TemplateImporter::class)
-    fun templateImporter(
-        templateService: TemplateService,
-        objectMapper: ObjectMapper,
-    ): TemplateImporter {
-        return TemplateImporter(
-            templateService,
-            objectMapper,
-        )
-    }
+//    @Bean
+//    @ConditionalOnMissingBean(TemplateImporter::class)
+//    fun templateImporter(
+//        templateService: TemplateService,
+//    ): TemplateImporter {
+//        return TemplateImporter(
+//            templateService
+//        )
+//    }
 
-    @Bean
-    @ConditionalOnMissingBean(TemplateCaseEventListener::class)
-    fun templateCaseEventListener(
-        templateService: TemplateService,
-        templateRepository: TemplateRepository,
-    ): TemplateCaseEventListener {
-        return TemplateCaseEventListener(
-            templateService,
-            templateRepository,
-        )
-    }
+//    @Bean
+//    @ConditionalOnMissingBean(TemplateCaseEventListener::class)
+//    fun templateCaseEventListener(
+//        templateService: TemplateService,
+//        templateRepository: TemplateRepository,
+//    ): TemplateCaseEventListener {
+//        return TemplateCaseEventListener(
+//            templateService,
+//            templateRepository,
+//        )
+//    }
 
     @Bean
     @ConditionalOnMissingBean(TemplateManagementResource::class)

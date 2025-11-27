@@ -26,7 +26,7 @@ import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_CSV
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_PDF
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
-import java.io.InputStream
+import java.io.OutputStream
 import java.io.OutputStreamWriter
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
@@ -36,7 +36,6 @@ import org.apache.commons.csv.CSVParser
 import org.apache.commons.csv.CSVPrinter
 import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.xhtmlrenderer.pdf.ITextRenderer
-import kotlin.concurrent.thread
 
 @Plugin(
     key = "document-generator",
@@ -61,7 +60,8 @@ open class DocumentGeneratorPlugin(
         @PluginActionProperty processVariableName: String
     ) {
         val htmlString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_PDF)
-        val pdfInputStream = generatePdf(htmlString)
+        val pdfInputStream = PipedInputStream()
+        generatePdf(htmlString, PipedOutputStream(pdfInputStream))
         val resourceId = storageService.store(pdfInputStream)
         execution.setVariable(processVariableName, resourceId)
     }
@@ -78,72 +78,46 @@ open class DocumentGeneratorPlugin(
         @PluginActionProperty processVariableName: String
     ) {
         val csvString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_CSV)
-        val csvInputStream = generateCsv(csvString)
+        val csvInputStream = PipedInputStream()
+        generateCsv(csvString, PipedOutputStream(csvInputStream))
         val resourceId = storageService.store(csvInputStream)
         execution.setVariable(processVariableName, resourceId)
     }
 
-    fun generatePdf(htmlString: String): InputStream {
-        val pdfInputStream = PipedInputStream()
-        val pdfOutputStream = PipedOutputStream(pdfInputStream)
+    fun generatePdf(htmlString: String, out: OutputStream) {
         val renderer = ITextRenderer()
-
-        thread {
-            try {
-                pdfOutputStream.use {
-                    with(renderer) {
-                        sharedContext.apply {
-                            isPrint = true
-                            isInteractive = false
-                        }
-                        setDocumentFromString(htmlString)
-                        layout()
-                        createPDF(pdfOutputStream)
-                    }
-                }
-            } catch (e: Exception) {
-                throw IllegalStateException("Failed to generate PDF", e)
-            }
+        with(renderer) {
+            sharedContext.isPrint = true
+            sharedContext.isInteractive = false
+            setDocumentFromString(htmlString)
+            layout()
+            createPDF(out)
         }
-        return pdfInputStream
     }
 
-    fun generateCsv(csvString: String): InputStream {
-        val inputStream = PipedInputStream()
-        val outputStream = PipedOutputStream(inputStream)
+    fun generateCsv(csvString: String, out: OutputStream) {
+        val writer = OutputStreamWriter(out)
+        val reader = StringReader(csvString)
 
-        thread {
-            try {
-                outputStream.use { os ->
-                    val writer = OutputStreamWriter(os)
-                    val reader = StringReader(csvString)
+        val parser = CSVParser.builder()
+            .setReader(reader)
+            .setFormat(
+                CSVFormat.TDF.builder().setHeader()
+                    .setSkipHeaderRecord(true).get()
+            )
+            .get()
+        val headers = parser.headerNames
 
-                    val parser = CSVParser.builder()
-                        .setReader(reader)
-                        .setFormat(
-                            CSVFormat.TDF.builder().setHeader()
-                                .setSkipHeaderRecord(true).get()
-                        )
-                        .get()
-                    val headers = parser.headerNames
-
-                    val printer = CSVPrinter(
-                        writer,
-                        CSVFormat.TDF.builder()
-                            .setHeader(*headers.toTypedArray())
-                            .get()
-                    )
-                    parser.forEach { record ->
-                        printer.printRecord(headers.map { record[it] })
-                    }
-                    printer.flush()
-                }
-            } catch (e: Exception) {
-                throw IllegalStateException("Failed to generate CSV", e)
-            }
+        val printer = CSVPrinter(
+            writer,
+            CSVFormat.TDF.builder()
+                .setHeader(*headers.toTypedArray())
+                .get()
+        )
+        parser.forEach { record ->
+            printer.printRecord(headers.map { record[it] })
         }
-
-        return inputStream
+        printer.flush()
     }
 
     private fun generateDocumentContent(

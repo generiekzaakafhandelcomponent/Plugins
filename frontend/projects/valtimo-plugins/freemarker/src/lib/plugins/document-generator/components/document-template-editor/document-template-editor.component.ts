@@ -227,6 +227,7 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         setTimeout(() => {
             const preview = document.getElementById('preview-iframe') as HTMLIFrameElement;
             if (preview) {
+                preview.src = window.URL.createObjectURL(new Blob([""], { type: "text/plain" }));
                 combineLatest([this.updatedModelValue$, this.template$]).pipe(
                     take(1),
                     switchMap(([updatedModelValue, template]) =>
@@ -237,9 +238,19 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
                             }
                         ), of(`${template.key}.${template.type}`)])
                     )
-                ).subscribe(([blob, filename]) => {
-                    console.log(filename);
-                    preview.src = window.URL.createObjectURL(blob);
+                ).subscribe({
+                    next: ([blob, filename]) => {
+                        preview.src = URL.createObjectURL(blob);
+                    },
+                    error: (err) => {
+                        console.error("Preview failed:", err);
+
+                        const errorBlob = new Blob(
+                            [`<html><body><h2>Error loading preview</h2><p>See logs for more information</p></body></html>`],
+                            { type: 'text/html' }
+                        );
+                        preview.src = URL.createObjectURL(errorBlob);
+                    }
                 });
             }
         }, 100);
