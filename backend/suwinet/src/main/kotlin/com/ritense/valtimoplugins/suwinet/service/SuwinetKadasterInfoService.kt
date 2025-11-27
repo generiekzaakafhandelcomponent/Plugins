@@ -14,10 +14,12 @@ import com.ritense.valtimo.implementation.dkd.KadasterInfo.PubliekrechtelijkeBep
 import com.ritense.valtimo.implementation.dkd.KadasterInfo.ZakelijkRecht
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.KadastraleObjectenDto
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.WebServiceException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -48,16 +50,27 @@ class SuwinetKadasterInfoService(
     ): KadastraleObjectenDto {
         logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
 
-        val result = runCatching {
+        try {
             this.kadasterService = kadasterService
 
-            /* retrieve kadasterInfo by bsn */
             val kadastraleAanduidingen = retrieveKadasterPersoonsInfo(bsn)
 
-            /* retrieve and enrich kadaster objects from kadasterObjects list */
-            getKadastraleObjects(kadastraleAanduidingen)
+            return getKadastraleObjects(kadastraleAanduidingen)
+
+        } catch (e: WebServiceException) {
+             when (e.cause) {
+                is java.io.IOException -> {
+                    logger.error(e) {
+                        "Error connecting to Suwinet while retrieving Kadaster info for BSN $bsn"
+                    }
+                    throw SuwinetError(
+                        e,
+                        "SUWINET_CONNECT_ERROR"
+                    )
+                }
+                else -> throw e
+            }
         }
-        return result.getOrThrow()
     }
 
     private fun getKadastraleObjects(kadastraleAanduidingen: List<KadastraleAanduiding>) =

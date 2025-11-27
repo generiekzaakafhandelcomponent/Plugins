@@ -9,8 +9,11 @@ import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfoR
 import com.ritense.valtimo.suwinet.model.UwvPersoonsIkvDto
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.WebServiceException
+import java.io.IOException
 import java.math.BigDecimal
 import kotlin.properties.Delegates
 
@@ -45,19 +48,27 @@ class SuwinetUwvPersoonsIkvService(
     ): UwvPersoonsIkvDto? {
         logger.info { "Getting UWV inkomsten info from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
         this.maxPeriods = maxPeriods
-        val result = runCatching {
-
+        try {
             val uwvPersoonsIkvInfo: UWVPersoonsIkvInfo = objectFactory
                 .createUWVPersoonsIkvInfo()
                 .apply {
                     burgerservicenr = bsn
                 }
 
-            val uwvPersoonsIkvInfoResponse: UWVPersoonsIkvInfoResponse =
-                uwvIkvInfoService.uwvPersoonsIkvInfo(uwvPersoonsIkvInfo)
-            uwvPersoonsIkvInfoResponse.unwrapResponse()
+            val uwvPersoonsIkvInfoResponse: UWVPersoonsIkvInfoResponse = uwvIkvInfoService.uwvPersoonsIkvInfo(uwvPersoonsIkvInfo)
+            return uwvPersoonsIkvInfoResponse.unwrapResponse()
+
+        } catch (e: WebServiceException) {
+            when (e.cause) {
+                is IOException -> {
+                    logger.error(e) {
+                        "Error connecting to Suwinet while getting UWV inkomsten info for BSN $bsn"
+                    }
+                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+                }
+                else -> throw e
+            }
         }
-        return result.getOrThrow()
     }
 
     private fun UWVPersoonsIkvInfoResponse.unwrapResponse(): UwvPersoonsIkvDto? {

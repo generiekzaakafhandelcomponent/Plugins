@@ -6,10 +6,13 @@ import com.ritense.valtimoplugins.dkd.svbdossierpersoongsd.SVBInfo
 import com.ritense.valtimoplugins.dkd.svbdossierpersoongsd.SVBPersoonsInfoResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.UitkeringenDto
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.WebServiceException
+import java.io.IOException
 
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -46,17 +49,27 @@ class SuwinetSvbPersoonsInfoService(
 
         logger.info { "Getting SVB PersoonsInfo from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
 
-        val result = runCatching {
+        try {
             val svbInfoRequest = objectFactory
                 .createSVBPersoonsInfo()
                 .apply {
                     burgerservicenr = bsn
                 }
             val response = svbInfo.svbPersoonsInfo(svbInfoRequest)
-            response.unwrapResponse()
+            // retrieve svb info by bsn
+            return response.unwrapResponse()
+
+        } catch (e: WebServiceException) {
+            when (e.cause) {
+                is IOException -> {
+                    logger.error(e) {
+                        "Error connecting to Suwinet while getting SVB PersoonsInfo for BSN $bsn"
+                    }
+                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+                }
+                else -> throw e
+            }
         }
-        /* retrieve svb info by bsn */
-        return result.getOrThrow()
     }
 
     private fun SVBPersoonsInfoResponse.unwrapResponse(): UitkeringenDto? {

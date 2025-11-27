@@ -6,10 +6,13 @@ import com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd.FW
 import com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd.ObjectFactory
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.DuoStudiefinancieringInfoDto
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.WebServiceException
+import java.io.IOException
 
 
 class SuwinetDuoStudiefinancieringInfoService(
@@ -38,18 +41,27 @@ class SuwinetDuoStudiefinancieringInfoService(
         logger.info { "Getting DUO studiefinanciering from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
 
         /* retrieve duo studiefinanciering info by bsn */
-        val result = runCatching {
-
-            val studiefinancieringInfoRequest = objectFactory
+        try {
+            val studiefinancieringInfoRequest =objectFactory
                 .createDUOStudiefinancieringInfo()
                 .apply {
                     burgerservicenr = bsn
                 }
-            val response = duoStudiefinancieringInfo.duoStudiefinancieringInfo(studiefinancieringInfoRequest)
-            response.unwrapResponse(bsn)
-        }
 
-        return result.getOrThrow()
+            val response: DUOStudiefinancieringInfoResponse = duoStudiefinancieringInfo.duoStudiefinancieringInfo(studiefinancieringInfoRequest)
+            return response.unwrapResponse(bsn)
+
+        } catch (e: WebServiceException) {
+            when (e.cause) {
+                is IOException -> {
+                    logger.error(e) {
+                        "Error connecting to Suwinet while getting DUO studiefinanciering info for BSN $bsn"
+                    }
+                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+                }
+                else -> throw e
+            }
+        }
     }
 
     private fun DUOStudiefinancieringInfoResponse.unwrapResponse(bsn: String): DuoStudiefinancieringInfoDto {
