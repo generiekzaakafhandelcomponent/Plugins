@@ -9,10 +9,13 @@ import com.ritense.valtimoplugins.dkd.rdwdossier.RDW
 import com.ritense.valtimoplugins.dkd.rdwdossier.VoertuigbezitInfoPersoonResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.model.MotorvoertuigDto
 import com.ritense.valtimoplugins.suwinet.model.SoortVoertuig
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.WebServiceException
+import java.io.IOException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -50,15 +53,24 @@ class SuwinetRdwService(
 
         logger.info { "retrieving RDW Voertuigen info from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
 
-        val result = runCatching {
-            /* retrieve voertuigen bezit by bsn */
+        return try {
+            // retrieve voertuigen bezit by bsn
             val kentekens = retrieveVoertuigenBezitInfo(bsn)
 
-            /* retrieve voertuigen details from kenteken list */
+            // retrieve voertuigen details from kenteken list
             getVoertuigenDetails(kentekens)
-        }
 
-        return result.getOrThrow()
+        } catch (e: WebServiceException) {
+            when (e.cause) {
+                is IOException -> {
+                    logger.error(e) {
+                        "Error connecting to Suwinet while getting RDW voertuigen info for BSN $bsn"
+                    }
+                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+                }
+                else -> throw e
+            }
+        }
     }
 
     private fun retrieveVoertuigenBezitInfo(bsn: String): List<String> {

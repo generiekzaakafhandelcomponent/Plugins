@@ -38,6 +38,7 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
     @Mock
     lateinit var suwinetSOAPClientConfig: SuwinetSOAPClientConfig
 
+    @Mock
     lateinit var nationaliteitenService: NationaliteitenService
 
     private lateinit var suwinetBrpInfoService: SuwinetBrpInfoService
@@ -51,7 +52,7 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
         testHelper = TestHelper
         dateTimeService = DateTimeService()
         suwinetSOAPClient = Mockito.mock()
-        nationaliteitenService = NationaliteitenService()
+      //  nationaliteitenService = NationaliteitenService()
         suwinetBrpInfoService = SuwinetBrpInfoService(suwinetSOAPClient, nationaliteitenService, dateTimeService)
         suwinetBrpInfoService.setConfig(suwinetSOAPClientConfig)
     }
@@ -103,6 +104,10 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
     fun `retrieving BRP Aanvraag should return brp clientsuwi 241001420 with 1 nationality`() {
         // given
         val bsn = "241001420"
+        val cdNationaliteit1 = "0001".trimStart('0')
+        val nationaliteitDto1 = NationaliteitDto(cdNationaliteit1, "Nederland")
+        whenever(nationaliteitenService.getNationaliteit(cdNationaliteit1)).thenReturn(nationaliteitDto1)
+
 
         // when
         val paramBrpInfo = ArgumentCaptor.forClass(Request::class.java)
