@@ -15,7 +15,6 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
-import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
@@ -116,12 +115,16 @@ class SuwinetBrpInfoService(
 
 
     private fun getNationaliteiten(nationaliteiten: List<Nationaliteit>) = nationaliteiten.mapNotNull {
-        nationaliteit ->
-        val code = nationaliteit.cdNationaliteit?.trimStart('0')?.takeIf { it.isNotBlank() }
-        code?.let {
-            nationaliteitenService.getNationaliteit(it)?.let { found ->
-                NationaliteitDto(found.code, found.name)
-            }
+        nationaliteitenService.getNationaliteit(
+            it.cdNationaliteit?.trimStart('0')
+        )?.let { nationaliteit ->
+            NationaliteitDto(
+                nationaliteit.code, nationaliteit.name
+            )
+        } ?: it.cdNationaliteit?.let { code ->
+            NationaliteitDto(
+                "0", "Onbekend"
+            )
         }
     }
 

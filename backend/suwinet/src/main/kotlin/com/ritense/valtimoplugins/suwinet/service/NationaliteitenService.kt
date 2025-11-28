@@ -14,7 +14,7 @@ class NationaliteitenService {
         this.nationaliteiten = objectMapper.readValue(nationaliteitenTable.inputStream)
     }
 
-    fun getNationaliteit(code: String): NationaliteitDto? {
+    fun getNationaliteit(code: String?): NationaliteitDto? {
         return nationaliteiten.firstOrNull { it.code == code }
     }
 

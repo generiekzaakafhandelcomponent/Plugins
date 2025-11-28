@@ -6,11 +6,13 @@ import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.StandaardBedr
 import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVIkvInfo
 import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfo
 import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfoResponse
-import com.ritense.valtimo.suwinet.model.UwvPersoonsIkvDto
+import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.Straatadres
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
+import com.ritense.valtimoplugins.suwinet.model.AdresDto
+import com.ritense.valtimoplugins.suwinet.model.UwvPersoonsIkvDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import java.io.IOException
@@ -38,7 +40,8 @@ class SuwinetUwvPersoonsIkvService(
                 completeUrl,
                 soapClientConfig.connectionTimeout,
                 soapClientConfig.receiveTimeout,
-                soapClientConfig.authConfig)
+                soapClientConfig.authConfig
+            )
     }
 
     fun getUWVInkomstenInfoByBsn(
@@ -55,7 +58,8 @@ class SuwinetUwvPersoonsIkvService(
                     burgerservicenr = bsn
                 }
 
-            val uwvPersoonsIkvInfoResponse: UWVPersoonsIkvInfoResponse = uwvIkvInfoService.uwvPersoonsIkvInfo(uwvPersoonsIkvInfo)
+            val uwvPersoonsIkvInfoResponse: UWVPersoonsIkvInfoResponse =
+                uwvIkvInfoService.uwvPersoonsIkvInfo(uwvPersoonsIkvInfo)
             return uwvPersoonsIkvInfoResponse.unwrapResponse()
 
         } catch (e: WebServiceException) {
@@ -66,6 +70,7 @@ class SuwinetUwvPersoonsIkvService(
                     }
                     throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
                 }
+
                 else -> throw e
             }
         }
@@ -103,6 +108,9 @@ class SuwinetUwvPersoonsIkvService(
         inkomstenverhouding.map {
             UwvPersoonsIkvDto.Inkomsten(
                 naamRechtspersoon = it.administratieveEenheid?.rechtspersoonAdministratieveEenh?.naamRechtspersoon,
+                loonheffingennummer = it.administratieveEenheid?.loonheffingennr,
+                straatadres = getAdres(it.administratieveEenheid?.feitelijkAdresAeh?.firstOrNull()?.straatadres),
+                cdSector = it.sectorRisicogroepIkv.firstOrNull()?.sectorBeroepsEnBedrijfsleven?.cdSector,
                 opgaven = getInkomstenOpgaven(
                     it.inkomstenopgave,
                     getInkomstenPeriodes(it.inkomstenperiode),
@@ -119,7 +127,10 @@ class SuwinetUwvPersoonsIkvService(
                 codeSoortIkv = it.cdSrtIkv,
                 codeSoortArbeidscontract = it.cdTypeArbeidscontract ?: "-1",
                 codeAardIkv = it.cdAardIkv ?: "-1",
-                indLoonheffingskortingToegepast = it.indLoonheffingskortingToegepast ?: "-1"
+                indLoonheffingskortingToegepast = it.indLoonheffingskortingToegepast ?: "-1",
+                indRegelmatigArbeidspatroon = it.indRegelmatigArbeidspatroon ?: "-1",
+                indLoonIsMedeAowAlleenstaande = it.indLoonIsMedeAowAlleenstaande ?: "-1",
+                indLoonInclusiefWajongUitkering = it.indLoonInclusiefWajongUitkering ?: "-1"
             )
         }
 
@@ -137,7 +148,7 @@ class SuwinetUwvPersoonsIkvService(
         val end = dateTimeService.toLocalDate(datEIko, DATEIN_PATTERN)
         return inkomstenPeriodes.firstOrNull {
             it.datumAanvangPeriode.isBefore(start) || it.datumAanvangPeriode.isEqual(start)
-                && it.datumEindPeriode.isAfter(end) || it.datumEindPeriode.isEqual(end)
+                    && it.datumEindPeriode.isAfter(end) || it.datumEindPeriode.isEqual(end)
         }
     }
 
@@ -169,6 +180,7 @@ class SuwinetUwvPersoonsIkvService(
                     datumAanvangOpgave = dateTimeService.fromSuwinetToDateString(it.datBIko),
                     datumEindOpgave = dateTimeService.fromSuwinetToDateString(it.datEIko),
                     aantalVerloondeUren = it.aantVerloondeUrenIko?.toInt() ?: -1,
+                    aantalSvDagen = it.aantSvDagenIko ?: -1,
                     naamRechtspersoon = naamRechtspersoon,
                 )
                 getMatchingPeriod(
@@ -182,11 +194,26 @@ class SuwinetUwvPersoonsIkvService(
                         uwvCodeService.getTypeArbeidscontract(period.codeSoortArbeidscontract)
                     opgave.indLoonheffingskortingToegepast =
                         uwvCodeService.getCodeJaNee(period.indLoonheffingskortingToegepast)
+                    opgave.indRegelmatigArbeidspatroon =
+                        uwvCodeService.getCodeJaNee(period.indRegelmatigArbeidspatroon)
+                    opgave.indLoonIsMedeAowAlleenstaande =
+                        uwvCodeService.getCodeJaNee(period.indLoonIsMedeAowAlleenstaande)
+                    opgave.indLoonInclusiefWajongUitkering =
+                        uwvCodeService.getCodeJaNee(period.indLoonInclusiefWajongUitkering)
                 }
                 opgave
             }
 
         )
+
+    private fun getAdres(adres: Straatadres?) = AdresDto(
+        straatnaam = adres?.straatnaam ?: "",
+        huisnummer = adres?.huisnr?.toInt() ?: 0,
+        huisnummertoevoeging = adres?.huisnrtoevoeging ?: "",
+        postcode = adres?.postcd ?: "",
+        woonplaatsnaam = adres?.woonplaatsnaam ?: "",
+        locatieomschrijving = adres?.locatieoms ?: ""
+    )
 
     companion object {
         const val SERVICE_PATH = "UWVDossierInkomstenGSD-v0200/v1"

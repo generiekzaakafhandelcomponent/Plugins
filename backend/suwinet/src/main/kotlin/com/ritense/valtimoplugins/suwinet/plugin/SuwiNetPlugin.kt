@@ -376,8 +376,19 @@ class SuwiNetPlugin(
             }
 
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            handleSuwinetException(e)
+        }
+    }
+
+    private fun handleSuwinetException(e: Exception): Nothing {
+        return when (e) {
+            is SuwinetError -> {
+                throw BpmnError(e.errorCode)
+            }
+            else -> {
+                logger.error(e) { "Unexpected Suwinet error in SuwiNetPlugin" }
+                throw e
+            }
         }
     }
 
