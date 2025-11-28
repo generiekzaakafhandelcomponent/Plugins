@@ -2,7 +2,7 @@ package com.ritense.valtimoplugins.suwinet.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.ritense.valtimo.suwinet.model.UwvSoortIkvDto
+import com.ritense.valtimoplugins.suwinet.model.UwvSoortIkvDto
 import org.springframework.core.io.ClassPathResource
 
 class UwvSoortIkvService {

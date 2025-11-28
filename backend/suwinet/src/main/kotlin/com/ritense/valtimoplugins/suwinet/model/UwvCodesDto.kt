@@ -1,4 +1,4 @@
-package com.ritense.valtimo.suwinet.model
+package com.ritense.valtimoplugins.suwinet.model
 
 data class UwvCodesDto(
     val code: String = "",
