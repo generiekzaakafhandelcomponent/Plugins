@@ -1,9 +1,9 @@
 package com.ritense.valtimoplugins.suwinet.service
 
-import com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd.DUOInfo
-import com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd.DUOStudiefinancieringInfoResponse
-import com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd.FWI
-import com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd.ObjectFactory
+import com.ritense.valtimoplugins.dkd.duodossierstudiefinancieringgsd.DUOInfo
+import com.ritense.valtimoplugins.dkd.duodossierstudiefinancieringgsd.DUOStudiefinancieringInfoResponse
+import com.ritense.valtimoplugins.dkd.duodossierstudiefinancieringgsd.FWI
+import com.ritense.valtimoplugins.dkd.duodossierstudiefinancieringgsd.ObjectFactory
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
