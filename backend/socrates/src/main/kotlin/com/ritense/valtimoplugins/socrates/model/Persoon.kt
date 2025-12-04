@@ -28,7 +28,17 @@ data class Persoon(
      */
     val naamgebruik: Int,
     val geslachtsnaamPartner: String,
-    val codeBrpGegevensGeheim: String,
+
+    /**
+     * 0 = geen beperking, 1 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift,
+     * 2 = niet aan kerken,
+     * 3 = niet aan vrije derden,
+     * 4 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift en niet aan kerken,
+     * 5 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift en niet aan vrije derden,
+     * 6 = niet aan kerken en niet aan vrije derden,
+     * 7 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift en niet aan vrije derden en niet aan kerken
+     */
+    val codeBrpGegevensGeheim: Int,
 
     /**
      * 0 = Onbekend, 1 = Nederlandse, 2 = BehandeldalsNederlander,
