@@ -25,23 +25,23 @@ import {TaskModule} from '@valtimo/task';
 import {environment} from '../environments/environment';
 import {SecurityModule} from '@valtimo/security';
 import {
-  BpmnJsDiagramModule,
-  enableCustomFormioComponents,
-  MenuModule,
-  registerFormioFileSelectorComponent,
-  registerFormioUploadComponent,
-  registerFormioValueResolverSelectorComponent,
-  WidgetModule,
+    BpmnJsDiagramModule,
+    enableCustomFormioComponents,
+    MenuModule,
+    registerFormioFileSelectorComponent,
+    registerFormioUploadComponent,
+    registerFormioValueResolverSelectorComponent,
+    WidgetModule,
     ValuePathSelectorComponent
 
 } from '@valtimo/components';
 import {
-  DefaultTabs,
-  CaseDetailTabAuditComponent,
-  CaseDetailTabDocumentsComponent,
-  CaseDetailTabProgressComponent,
-  CaseDetailTabSummaryComponent,
-  CaseModule,
+    DefaultTabs,
+    CaseDetailTabAuditComponent,
+    CaseDetailTabDocumentsComponent,
+    CaseDetailTabProgressComponent,
+    CaseDetailTabSummaryComponent,
+    CaseModule, CASE_TAB_TOKEN,
 } from '@valtimo/Case';
 import {CaseMigrationModule} from "@valtimo/case-migration";
 import {ProcessModule} from '@valtimo/process';
@@ -143,12 +143,12 @@ import {
 } from "../../projects/valtimo-plugins/openklant/src/lib/tab/klantcontact-tab/klantcontact-tab.component";
 
 export function tabsFactory() {
-  return new Map<string, object>([
-    [DefaultTabs.summary, CaseDetailTabSummaryComponent],
-    [DefaultTabs.progress, CaseDetailTabProgressComponent],
-    [DefaultTabs.audit, CaseDetailTabAuditComponent],
-    [DefaultTabs.documents, CaseDetailTabDocumentsComponent],
-  ]);
+    return new Map<string, object>([
+        [DefaultTabs.summary, CaseDetailTabSummaryComponent],
+        [DefaultTabs.progress, CaseDetailTabProgressComponent],
+        [DefaultTabs.audit, CaseDetailTabAuditComponent],
+        [DefaultTabs.documents, CaseDetailTabDocumentsComponent],
+    ]);
 }
 
 @NgModule({
@@ -202,7 +202,7 @@ export function tabsFactory() {
         ObjectModule,
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
-        OpenKlantModule,
+        OpenKlantPluginModule,
         OpenZaakPluginModule,
         PluginManagementModule,
         ProcessLinkModule,
@@ -277,6 +277,7 @@ export function tabsFactory() {
     }],
     bootstrap: [AppComponent]
 })
+
 export class AppModule {
     constructor(injector: Injector) {
         enableCustomFormioComponents(injector);
