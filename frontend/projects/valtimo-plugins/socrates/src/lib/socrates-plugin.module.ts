@@ -15,7 +15,7 @@
  */
 
 import {NgModule} from '@angular/core';
-import {DocsysConfigurationComponent} from './components/docsys-configuration/docsys-configuration.component';
+import {DocsysConfigurationComponent} from './components/socrates-configuration/docsys-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {CarbonMultiInputModule, FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
@@ -33,5 +33,5 @@ import {GenerateDocumentComponent} from "./components/generate-document/generate
         GenerateDocumentComponent
     ],
 })
-export class DocsysPluginModule {
+export class SocratesPluginModule {
 }

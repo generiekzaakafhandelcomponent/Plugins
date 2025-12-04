@@ -15,12 +15,12 @@
  */
 
 import {PluginSpecification} from '@valtimo/plugin';
-import {DocsysConfigurationComponent} from './components/docsys-configuration/docsys-configuration.component';
+import {DocsysConfigurationComponent} from './components/socrates-configuration/docsys-configuration.component';
 import {DOCSYS_PLUGIN_LOGO_BASE64} from './assets';
 import {GenerateDocumentComponent} from "./components/generate-document/generate-document.component";
 
 
-const docsysPluginSpecification: PluginSpecification = {
+const socratesPluginSpecification: PluginSpecification = {
     pluginId: 'docsys',
     pluginConfigurationComponent: DocsysConfigurationComponent,
     pluginLogoBase64: DOCSYS_PLUGIN_LOGO_BASE64,
@@ -119,4 +119,4 @@ const docsysPluginSpecification: PluginSpecification = {
     },
 };
 
-export {docsysPluginSpecification};
+export {socratesPluginSpecification};

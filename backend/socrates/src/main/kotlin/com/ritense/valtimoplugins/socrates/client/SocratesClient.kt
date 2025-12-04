@@ -16,26 +16,11 @@
 
 package com.ritense.valtimoplugins.socrates.client
 
-import com.nimbusds.oauth2.sdk.AccessTokenResponse
-import com.nimbusds.oauth2.sdk.AuthorizationGrant
-import com.nimbusds.oauth2.sdk.ClientCredentialsGrant
-import com.nimbusds.oauth2.sdk.Scope
-import com.nimbusds.oauth2.sdk.TokenErrorResponse
-import com.nimbusds.oauth2.sdk.TokenRequest
-import com.nimbusds.oauth2.sdk.TokenResponse
-import com.nimbusds.oauth2.sdk.auth.ClientAuthentication
-import com.nimbusds.oauth2.sdk.auth.ClientSecretBasic
-import com.nimbusds.oauth2.sdk.auth.Secret
-import com.nimbusds.oauth2.sdk.id.ClientID
-import com.nimbusds.oauth2.sdk.token.BearerAccessToken
-import com.ritense.resource.domain.MetadataType
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
-import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import java.net.URI

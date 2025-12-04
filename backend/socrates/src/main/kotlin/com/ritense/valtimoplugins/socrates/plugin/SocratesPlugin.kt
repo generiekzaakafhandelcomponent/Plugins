@@ -23,6 +23,7 @@ import com.ritense.plugin.annotation.PluginEvent
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.socrates.client.LOBehandeldRequest
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
 
 import com.ritense.valueresolver.ValueResolverService
@@ -61,6 +62,8 @@ open class SocratesPlugin(
         @PluginActionProperty processVariableName: String
     ) {
         setsocratesClientParams()
+
+
 
 
        // execution.setVariable(processVariableName, resourceId)
