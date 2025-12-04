@@ -60,8 +60,9 @@ dependencies {
     cxfCodegen("jakarta.jws:jakarta.jws-api:3.0.0")
 
     // Apache CXF and Jakarta dependencies
-    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:4.0.7")
-    implementation("org.apache.cxf:cxf-rt-transports-http:4.0.7")
+    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:4.1.4")
+    implementation("org.apache.cxf:cxf-rt-transports-http:4.1.4")
+    implementation("org.apache.cxf:cxf-rt-features-logging:4.1.4")
     implementation("com.sun.xml.ws:jaxws-ri:4.0.3")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
 
@@ -124,7 +125,7 @@ tasks.register<Wsdl2Java>("genDUODossierStudiefinancieringGSD") {
         wsdl = "src/main/resources/soap/suwinet/Diensten/DUODossierStudiefinancieringGSD/v0200-b01/Impl/BKWI.wsdl"
         outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/DUODossierStudiefinancieringGSD").get().asFile)
         markGenerated.set(true)
-        packageNames.set(listOf("com.ritense.valtimo.implementation.dkd.duodossierstudiefinancieringgsd"))
+        packageNames.set(listOf("com.ritense.valtimoplugins.dkd.duodossierstudiefinancieringgsd"))
         extendedSoapHeaders.set(true)
     }
     allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
