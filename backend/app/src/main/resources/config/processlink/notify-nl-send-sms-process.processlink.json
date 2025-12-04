@@ -6,8 +6,21 @@
     "pluginActionDefinitionKey": "send-sms",
     "processLinkType": "plugin",
     "actionProperties": {
-      "phoneNumber": "pv:phoneNumber",
-      "templateId": "e39e6d27-eed5-4a93-a4a5-da6e80299b8a"
+      "phoneNumber": "doc:/phoneNumber",
+      "templateId": "doc:/templateId",
+      "personalisation": "doc:/personalisation",
+      "reference": "doc:/reference",
+      "senderId": "doc:/senderId"
     }
+  },
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "notify-nl-sms.start",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": null,
+    "processLinkType": "form"
   }
 ]

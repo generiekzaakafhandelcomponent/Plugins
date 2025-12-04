@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "speech-to-transcription",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

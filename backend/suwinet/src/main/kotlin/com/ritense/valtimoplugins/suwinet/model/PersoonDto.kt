@@ -15,7 +15,7 @@ data class PersoonDto(
     @JsonInclude(JsonInclude.Include.NON_NULL) val kinderenBsns: List<String>?,
     val partnerBsn: String? = "",
     val datumOverlijden: String? = ""
-) {
+    ){
     data class Verblijfstitel(
         val codeVerblijfstitel: CodeVerblijfstitel,
         val datumAanvangVerblijfstitel: String,

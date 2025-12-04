@@ -133,6 +133,10 @@ import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr
 import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
+import {ValtimoS2tPluginModule} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin-module";
+import {
+    valtimoS2tPluginSpecification
+} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
 import {DocumentSearchPluginModule, documentSearchPluginSpecification} from "@valtimo-plugins/document-search";
 import {SamplePluginModule} from "../../projects/valtimo-plugins/sample-plugin/src/lib/sample-plugin.module";
 import {
@@ -144,6 +148,16 @@ import {
 } from "../../projects/valtimo-plugins/value-mapper/src/lib/value-mapper-plugin.specification";
 import {DocsysPluginModule} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.module";
 import {docsysPluginSpecification} from "../../projects/valtimo-plugins/docsys/src/lib/docsys-plugin.specification";
+import {
+    TokenAuthenticationPluginModule
+} from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.module";
+import {
+    tokenAuthenticationPluginSpecification
+} from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.specification";
+import {SuwinetAuthPluginModule} from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.module";
+import {
+    suwinetAuthPluginSpecification
+} from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.specification";
 import {
     openKlantPluginSpecification
 } from "../../projects/valtimo-plugins/openklant/src/lib/open-klant.plugin.specification";
@@ -173,6 +187,7 @@ export function tabsFactory() {
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
         ValtimoOcrPluginModule,
+        ValtimoS2tPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
         ValtimoLlmPluginModule,
@@ -183,6 +198,7 @@ export function tabsFactory() {
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
+        SuwinetAuthPluginModule,
         XentialPluginModule,
         HttpClientModule,
         CommonModule,
@@ -248,12 +264,14 @@ export function tabsFactory() {
         ZgwModule,
         ValueMapperPluginModule,
         DocsysPluginModule,
+        TokenAuthenticationPluginModule,
         OpenKlantPluginModule,
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
         useValue: [
             valtimoOcrPluginSpecification,
+            valtimoS2tPluginSpecification,
             externeKlanttaakPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
@@ -272,6 +290,7 @@ export function tabsFactory() {
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
+            suwinetAuthPluginSpecification,
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
@@ -282,6 +301,8 @@ export function tabsFactory() {
             catalogiApiPluginSpecification,
             documentenApiPluginSpecification,
             openZaakPluginSpecification,
+            zakenApiPluginSpecification,
+            tokenAuthenticationPluginSpecification,
             zakenApiPluginSpecification,
             openKlantPluginSpecification,
         ],

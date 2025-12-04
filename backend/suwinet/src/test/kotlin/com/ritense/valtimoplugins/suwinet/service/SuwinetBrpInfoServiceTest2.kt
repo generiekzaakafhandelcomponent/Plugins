@@ -1,8 +1,5 @@
 package com.ritense.valtimoplugins.suwinet.service
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.valtimo.TestHelper
 import com.ritense.valtimoplugins.BaseTest
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.AanvraagPersoonResponse
@@ -11,14 +8,12 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Request
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
-import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.any
 import org.mockito.junit.jupiter.MockitoSettings
 import org.mockito.kotlin.whenever
 import org.mockito.quality.Strictness
@@ -38,6 +33,7 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
     @Mock
     lateinit var suwinetSOAPClientConfig: SuwinetSOAPClientConfig
 
+    @Mock
     lateinit var nationaliteitenService: NationaliteitenService
 
     private lateinit var suwinetBrpInfoService: SuwinetBrpInfoService
@@ -51,7 +47,7 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
         testHelper = TestHelper
         dateTimeService = DateTimeService()
         suwinetSOAPClient = Mockito.mock()
-        nationaliteitenService = NationaliteitenService()
+      //  nationaliteitenService = NationaliteitenService()
         suwinetBrpInfoService = SuwinetBrpInfoService(suwinetSOAPClient, nationaliteitenService, dateTimeService)
         suwinetBrpInfoService.setConfig(suwinetSOAPClientConfig)
     }
@@ -103,6 +99,10 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
     fun `retrieving BRP Aanvraag should return brp clientsuwi 241001420 with 1 nationality`() {
         // given
         val bsn = "241001420"
+        val cdNationaliteit1 = "0001".trimStart('0')
+        val nationaliteitDto1 = NationaliteitDto(cdNationaliteit1, "Nederland")
+        whenever(nationaliteitenService.getNationaliteit(cdNationaliteit1)).thenReturn(nationaliteitDto1)
+
 
         // when
         val paramBrpInfo = ArgumentCaptor.forClass(Request::class.java)

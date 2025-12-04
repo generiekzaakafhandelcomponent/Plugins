@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ export class NotifyNlConfigurationComponent
   }
 
   private handleValid(formValue: NotifyNlConfig): void {
-    const valid = !!(formValue.configurationTitle && formValue.url && formValue.serviceId && formValue.secretKey);
+    const valid = !!(formValue.configurationTitle && formValue.notifyUrl && formValue.apiKey);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

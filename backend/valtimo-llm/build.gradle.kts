@@ -15,7 +15,7 @@
  */
 
 dockerCompose {
-    setProjectName("mistral")
+    setProjectName("valtimo-llm")
     isRequiredBy(project.tasks.integrationTesting)
 
     tasks.integrationTesting {
