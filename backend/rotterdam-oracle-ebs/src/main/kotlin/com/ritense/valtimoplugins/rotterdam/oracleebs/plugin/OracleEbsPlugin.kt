@@ -23,6 +23,7 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.NietNatuurlijkPerso
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.RelatieType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
+import com.ritense.valtimoplugins.rotterdam.oracleebs.util.ValueConverter
 import com.ritense.valueresolver.ValueResolverService
 import com.rotterdam.esb.opvoeren.models.Factuurregel
 import com.rotterdam.esb.opvoeren.models.Grootboekrekening
@@ -36,10 +37,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestClientResponseException
-import java.math.BigDecimal
 import java.net.URI
-import java.time.LocalDate
-import java.time.OffsetDateTime
 import java.util.LinkedHashMap
 import kotlin.String
 
@@ -110,7 +108,7 @@ class OracleEbsPlugin(
             referentieNummer = referentieNummer,
             journaalpost = Journaalpost(
                 journaalpostsleutel = sleutel,
-                journaalpostboekdatumTijd = offsetDateTimeFrom(boekdatumTijd),
+                journaalpostboekdatumTijd = ValueConverter.offsetDateTimeFrom(boekdatumTijd),
                 journaalpostcategorie = categorie,
                 journaalpostsaldosoort = saldoSoortFrom(saldoSoort),
                 valutacode = Journaalpost.Valutacode.EUR,
@@ -120,13 +118,12 @@ class OracleEbsPlugin(
                 ),
                 journaalpostomschrijving = omschrijving,
                 grootboek = if (grootboek.isNullOrBlank()) { null } else { grootboekFrom(grootboek) },
-                boekjaar = integerOrNullFrom(boekjaar),
-                boekperiode = integerOrNullFrom(boekperiode)
+                boekjaar = ValueConverter.integerOrNullFrom(boekjaar),
+                boekperiode = ValueConverter.integerOrNullFrom(boekperiode)
             )
         ).let { request ->
             logger.info { "Trying to send OpvoerenJournaalpostVraag" }
-            // TODO: change to debug after testing
-            logger.info {
+            logger.debug {
                 "OpvoerenJournaalpostVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
             try {
@@ -187,8 +184,8 @@ class OracleEbsPlugin(
             Journaalpostregel(
                 grootboekrekening = grootboekRekening(resolvedLineValues),
                 journaalpostregelboekingtype = boekingTypeFrom(resolvedLineValues[BOEKING_TYPE_KEY]!!),
-                journaalpostregelbedrag = doubleFrom(resolvedLineValues[BEDRAG_KEY]!!),
-                journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]!!),
+                journaalpostregelbedrag = ValueConverter.doubleFrom(resolvedLineValues[BEDRAG_KEY]!!),
+                journaalpostregelomschrijving = ValueConverter.stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]!!),
                 bronspecifiekewaarden = null
             )
         }
@@ -257,9 +254,9 @@ class OracleEbsPlugin(
             factuur = Verkoopfactuur(
                 factuurtype = Verkoopfactuur.Factuurtype.Verkoopfactuur,
                 factuurklasse= factuurKlasseFrom(factuurKlasse),
-                factuurdatum = localDateFrom(factuurDatum),
+                factuurdatum = ValueConverter.localDateFrom(factuurDatum),
                 factuurvervaldatum =
-                    if (factuurVervaldatum.isNullOrBlank()) { null } else { localDateFrom(factuurVervaldatum) },
+                    if (factuurVervaldatum.isNullOrBlank()) { null } else { ValueConverter.localDateFrom(factuurVervaldatum) },
                 inkooporderreferentie = inkoopOrderReferentie,
                 koper = relatieRotterdamFrom(
                     execution = execution,
@@ -291,8 +288,7 @@ class OracleEbsPlugin(
             bijlage = null
         ).let { request ->
             logger.info { "Trying to send OpvoerenVerkoopfactuurVraag" }
-            // TODO: change to debug after testing
-            logger.info {
+            logger.debug {
                 "OpvoerenVerkoopfactuurVraag: ${objectMapperWithNonAbsentInclusion(objectMapper).writeValueAsString(request)}"
             }
             try {
@@ -352,14 +348,14 @@ class OracleEbsPlugin(
                     logger.debug { "Resolved locatie adres values: $it" }
                 }
                 com.rotterdam.esb.opvoeren.models.LocatieAdres(
-                    naamContactpersoon = stringOrNullFrom(resolvedValues[NAAM_CONTACTPERSOON_KEY]),
-                    vestigingsnummerRotterdam = stringOrNullFrom(resolvedValues[VESTIGINGNUMMER_ROTTERDAM_KEY]),
-                    straatnaam = stringFrom(resolvedValues[STRAATNAAM_KEY]!!),
-                    huisnummer = valueAsBigDecimal(resolvedValues[HUISNUMMER_KEY]!!),
-                    huisnummertoevoeging = stringOrNullFrom(resolvedValues[HUISNUMMER_TOEVOEGING_KEY]),
-                    plaatsnaam = stringFrom(resolvedValues[PLAATSNAAM_KEY]!!),
-                    postcode = stringFrom(resolvedValues[POSTCODE_KEY]!!),
-                    landcode = stringFrom(resolvedValues[LANDCODE_KEY]!!),
+                    naamContactpersoon = ValueConverter.stringOrNullFrom(resolvedValues[NAAM_CONTACTPERSOON_KEY]),
+                    vestigingsnummerRotterdam = ValueConverter.stringOrNullFrom(resolvedValues[VESTIGINGNUMMER_ROTTERDAM_KEY]),
+                    straatnaam = ValueConverter.stringFrom(resolvedValues[STRAATNAAM_KEY]!!),
+                    huisnummer = ValueConverter.bigDecimalFrom(resolvedValues[HUISNUMMER_KEY]!!),
+                    huisnummertoevoeging = ValueConverter.stringOrNullFrom(resolvedValues[HUISNUMMER_TOEVOEGING_KEY]),
+                    plaatsnaam = ValueConverter.stringFrom(resolvedValues[PLAATSNAAM_KEY]!!),
+                    postcode = ValueConverter.stringFrom(resolvedValues[POSTCODE_KEY]!!),
+                    landcode = ValueConverter.stringFrom(resolvedValues[LANDCODE_KEY]!!),
                 )
             } else null,
             postbusadres = if (adresType == AdresType.POSTBUS) {
@@ -375,12 +371,12 @@ class OracleEbsPlugin(
                     logger.debug { "Resolved postbus adres values: $it" }
                 }
                 com.rotterdam.esb.opvoeren.models.PostbusAdres(
-                    naamContactpersoon = stringOrNullFrom(resolvedValues[NAAM_CONTACTPERSOON_KEY]),
-                    vestigingsnummerRotterdam = stringOrNullFrom(resolvedValues[VESTIGINGNUMMER_ROTTERDAM_KEY]),
-                    postbus = valueAsBigDecimal(resolvedValues[POSTBUS_KEY]!!),
-                    plaatsnaam = stringFrom(resolvedValues[PLAATSNAAM_KEY]!!),
-                    postcode = stringFrom(resolvedValues[POSTCODE_KEY]!!),
-                    landcode = stringFrom(resolvedValues[LANDCODE_KEY]!!)
+                    naamContactpersoon = ValueConverter.stringOrNullFrom(resolvedValues[NAAM_CONTACTPERSOON_KEY]),
+                    vestigingsnummerRotterdam = ValueConverter.stringOrNullFrom(resolvedValues[VESTIGINGNUMMER_ROTTERDAM_KEY]),
+                    postbus = ValueConverter.bigDecimalFrom(resolvedValues[POSTBUS_KEY]!!),
+                    plaatsnaam = ValueConverter.stringFrom(resolvedValues[PLAATSNAAM_KEY]!!),
+                    postcode = ValueConverter.stringFrom(resolvedValues[POSTCODE_KEY]!!),
+                    landcode = ValueConverter.stringFrom(resolvedValues[LANDCODE_KEY]!!)
                 )
             } else null
         )
@@ -419,9 +415,9 @@ class OracleEbsPlugin(
                         logger.debug { "Resolved natuurlijk persoon values: $it" }
                     }
                     com.rotterdam.esb.opvoeren.models.NatuurlijkPersoon(
-                        bsn = stringFrom(resolvedValues[BSN_KEY]!!),
-                        achternaam = stringFrom(resolvedValues[ACHTERNAAM_KEY]!!),
-                        voornamen = stringFrom(resolvedValues[VOORNAMEN_KEY]!!),
+                        bsn = ValueConverter.stringFrom(resolvedValues[BSN_KEY]!!),
+                        achternaam = ValueConverter.stringFrom(resolvedValues[ACHTERNAAM_KEY]!!),
+                        voornamen = ValueConverter.stringFrom(resolvedValues[VOORNAMEN_KEY]!!),
                         relatienaam = null,
                         tussenvoegsel = null,
                         titel = null,
@@ -442,9 +438,9 @@ class OracleEbsPlugin(
                         logger.debug { "Resolved niet natuurlijk persoon values: $it" }
                     }
                     com.rotterdam.esb.opvoeren.models.NietNatuurlijkPersoon(
-                        kvknummer = stringFrom(resolvedValues[KVK_NUMMER_KEY]!!),
-                        kvkvestigingsnummer = stringFrom(resolvedValues[KVK_VESTIGINGNUMMER_KEY]!!),
-                        statutaireNaam = stringFrom(resolvedValues[STATUTAIRE_NAAM_KEY]!!),
+                        kvknummer = ValueConverter.stringFrom(resolvedValues[KVK_NUMMER_KEY]!!),
+                        kvkvestigingsnummer = ValueConverter.stringFrom(resolvedValues[KVK_VESTIGINGNUMMER_KEY]!!),
+                        statutaireNaam = ValueConverter.stringFrom(resolvedValues[STATUTAIRE_NAAM_KEY]!!),
                         rsin = null,
                         ion = null,
                         rechtsvorm = null,
@@ -499,11 +495,11 @@ class OracleEbsPlugin(
                 logger.debug { "Resolved line values: $it" }
             }
             Factuurregel(
-                factuurregelFacturatieHoeveelheid = valueAsBigDecimal(resolvedValues[HOEVEELHEID_KEY]!!),
-                factuurregelFacturatieTarief = valueAsBigDecimal(resolvedValues[TARIEF_KEY]!!),
-                btwPercentage = stringFrom(resolvedValues[BTW_PERCENTAGE_KEY]!!),
+                factuurregelFacturatieHoeveelheid = ValueConverter.bigDecimalFrom(resolvedValues[HOEVEELHEID_KEY]!!),
+                factuurregelFacturatieTarief = ValueConverter.bigDecimalFrom(resolvedValues[TARIEF_KEY]!!),
+                btwPercentage = ValueConverter.stringFrom(resolvedValues[BTW_PERCENTAGE_KEY]!!),
                 grootboekrekening = grootboekRekening(resolvedValues),
-                factuurregelomschrijving = stringOrNullFrom(resolvedValues[OMSCHRIJVING_KEY]),
+                factuurregelomschrijving = ValueConverter.stringOrNullFrom(resolvedValues[OMSCHRIJVING_KEY]),
                 factuurregelFacturatieEenheid = null,
                 boekingsregel = null,
                 boekingsregelStartdatum = null,
@@ -518,10 +514,10 @@ class OracleEbsPlugin(
     private fun grootboekRekening(resolvedLineValues: Map<String, Any?>) =
         Grootboekrekening(
             grootboeksleutel = resolvedLineValues[GROOTBOEK_SLEUTEL_KEY]?.let{ grootboekSleutel ->
-                stringFrom(grootboekSleutel).takeIf { it.isNotBlank() }
+                ValueConverter.stringFrom(grootboekSleutel).takeIf { it.isNotBlank() }
             },
             bronsleutel = resolvedLineValues[BRON_SLEUTEL_KEY]?.let{ bronSleutel ->
-                stringFrom(bronSleutel).takeIf { it.isNotBlank() }
+                ValueConverter.stringFrom(bronSleutel).takeIf { it.isNotBlank() }
             }
         )
 
@@ -556,22 +552,22 @@ class OracleEbsPlugin(
     }
 
     private fun saldoSoortFrom(value: Any): Journaalpost.Journaalpostsaldosoort =
-        SaldoSoort.valueOf(stringFrom(value).uppercase()).let {
+        SaldoSoort.valueOf(ValueConverter.stringFrom(value).uppercase()).let {
             Journaalpost.Journaalpostsaldosoort.valueOf(it.title)
         }
 
     private fun grootboekFrom(value: Any): Journaalpost.Grootboek =
-        stringFrom(value).let { grootboek ->
+        ValueConverter.stringFrom(value).let { grootboek ->
             Journaalpost.Grootboek.entries.first { it.value == grootboek.uppercase() }
         }
 
     private fun boekingTypeFrom(value: Any): Journaalpostregel.Journaalpostregelboekingtype =
-        BoekingType.valueOf(stringFrom(value).uppercase()).let {
+        BoekingType.valueOf(ValueConverter.stringFrom(value).uppercase()).let {
             Journaalpostregel.Journaalpostregelboekingtype.valueOf(it.title)
         }
 
     private fun factuurKlasseFrom(value: Any): Verkoopfactuur.Factuurklasse =
-        FactuurKlasse.valueOf(stringFrom(value).uppercase()).let {
+        FactuurKlasse.valueOf(ValueConverter.stringFrom(value).uppercase()).let {
             Verkoopfactuur.Factuurklasse.valueOf(it.title)
         }
 
@@ -582,72 +578,6 @@ class OracleEbsPlugin(
             value.startsWith("doc:") ||
             value.startsWith("pv:")
         )
-
-    private fun localDateFrom(value: Any): LocalDate =
-        when (value) {
-            is LocalDate -> value
-            is String -> LocalDate.parse(value.trim())
-            else -> throw IllegalArgumentException("Unsupported type ${value::class}")
-        }
-
-    private fun offsetDateTimeFrom(value: Any): OffsetDateTime =
-        when (value) {
-            is OffsetDateTime -> value
-            is String -> OffsetDateTime.parse(value.trim())
-            else -> throw IllegalArgumentException("Unsupported type ${value::class}")
-        }
-
-    private fun doubleFrom(value: Any): Double =
-        when (value) {
-            is Double -> value
-            is String -> replaceCommaWithDotAsDecimalSeparator(value.trim()).toDouble()
-            else -> 0.0
-        }
-
-    private fun valueAsBigDecimal(value: Any): BigDecimal =
-        when (value) {
-            is BigDecimal -> value
-            is String -> replaceCommaWithDotAsDecimalSeparator(value.trim()).toBigDecimal()
-            else -> BigDecimal.ZERO
-        }
-
-    private fun integerOrNullFrom(value: Any?): Int? =
-        when (value) {
-            is Int -> value
-            is String -> value.toInt()
-            else -> null
-        }
-
-    private fun stringFrom(value: Any): String =
-        when (value) {
-            is String -> value.trim()
-            else -> ""
-        }
-
-    private fun stringOrNullFrom(value: Any?): String? =
-        when (value) {
-            is String -> value.trim()
-            else -> null
-        }
-
-    private fun replaceCommaWithDotAsDecimalSeparator(value: String): String =
-        when {
-            value.contains(",") && value.contains(".") -> {
-                // Based on the index, determine the decimal separator
-                if (value.indexOf(",") > value.indexOf(".")) {
-                    // Assume comma is the separator ("1.234,56")
-                    value.replace(".", "").replace(",", ".")
-                } else {
-                    // Assume dot is the separator ("1,234.56")
-                    value.replace(",", "")
-                }
-            }
-            value.contains(",") -> {
-                // Assume comma is separator ("1234,56")
-                value.replace(",", ".")
-            }
-            else -> value // Assume dot is separator or no decimal ("1234.56", "1234")
-        }
 
     private fun restClient(): RestClient =
         esbClient.createRestClient(

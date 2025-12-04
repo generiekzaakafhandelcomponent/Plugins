@@ -17,8 +17,9 @@ include(
     "backend:smtpmail",
     "backend:spotler",
     "backend:suwinet",
+    "backend:valtimo-s2t",
     "backend:xential",
-    "backend:hugging-face",
+    "backend:valtimo-llm",
     "backend:kvk-handelsregister",
     "frontend",
 )

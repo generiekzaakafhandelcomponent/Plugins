@@ -72,7 +72,6 @@ valtimo:
     scheme: http
   oauth:
     tokenValidityInSeconds: 3600 # Token is valid 1 hour
-
   hardening:
     removeStacktracesFromReturnedExceptions: true
     allowStacktraceOnIps:
@@ -112,11 +111,11 @@ valtimo:
           - "*"
       paths:
         - "/**"
-
   genericTemplateName: "template-name"
   annotation-scan:
     accepted-packages:
       - com.ritense
+  includeDocumentContentInResponse: true
 
 spring-actuator:
   username: admin
@@ -136,6 +135,7 @@ operaton:
       first-name: Admin account
     generic-properties:
       properties:
+        deploy-changed-only: true
         enforceHistoryTimeToLive: false
 
 implementation:
