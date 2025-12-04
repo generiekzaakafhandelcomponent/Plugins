@@ -2,6 +2,7 @@ package com.ritense.valtimoplugins.suwinet.client
 
 import com.ritense.valtimoplugins.suwinetauth.plugin.SuwinetAuth
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.apache.cxf.ext.logging.LoggingFeature
 
 import org.apache.cxf.frontend.ClientProxy
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean
@@ -18,6 +19,23 @@ class SuwinetSOAPClient {
         val soapService = with(JaxWsProxyFactoryBean()) {
             this.serviceClass = clazz
             address = url
+
+            val loggingFeature: LoggingFeature = LoggingFeature()
+            loggingFeature.setPrettyLogging(true)
+            loggingFeature.addSensitiveElementNames(
+                setOf<String>(
+                    "Burgerservicenr",
+                    "Voornamen",
+                    "SignificantDeelVanDeAchternaam",
+                    "ANr",
+                    "Geboortedat",
+                    "Postcd",
+                    "Straatnaam",
+                    "Huisnr",
+                    "Woonplaatsnaam"
+                )
+            )
+            this.features.add(loggingFeature)
             create() as T
         }
 
