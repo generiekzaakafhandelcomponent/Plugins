@@ -46,29 +46,21 @@ class OpenKlantPlugin(
         @PluginActionProperty emailAddress: String,
         @PluginActionProperty caseNumber: String,
     ) = runBlocking {
-        val result =
-            runCatching {
-                logger.info { "Store Contactinformation in OpenKlant - ${execution.processBusinessKey}" }
+        logger.info { "Store Contactinformation in OpenKlant - ${execution.processBusinessKey}" }
 
-                val contactInformation =
-                    ContactInformation(
-                        bsn = bsn,
-                        firstName = firstName,
-                        inFix = inFix,
-                        lastName = lastName,
-                        emailAddress = emailAddress,
-                        caseNumber = caseNumber,
-                    )
-                val properties = OpenKlantProperties(klantinteractiesUrl, token)
-                val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)
+        val contactInformation =
+            ContactInformation(
+                bsn = bsn,
+                firstName = firstName,
+                inFix = inFix,
+                lastName = lastName,
+                emailAddress = emailAddress,
+                caseNumber = caseNumber,
+            )
+        val properties = OpenKlantProperties(klantinteractiesUrl, token)
+        val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)
 
-                execution.setVariable(OUTPUT_PARTIJ_UUID, partijUuid)
-            }.onFailure {
-                logger.warn { "Failed to store contact information for $firstName with case number $caseNumber" }
-                logger.warn { "Failed with message ${it.message}" }
-                execution.setVariable(OUTPUT_PARTIJ_UUID, "")
-            }
-        execution.setVariable(OUTPUT_FAILED_WITH_EXCEPTION, result.isFailure)
+        execution.setVariable(OUTPUT_PARTIJ_UUID, partijUuid)
     }
 
     @PluginAction(
@@ -99,21 +91,13 @@ class OpenKlantPlugin(
         resultPvName: String,
         pluginProperties: KlantContactOptions,
     ) {
-        val result =
-            runCatching {
-                val klantcontacten = openKlantPluginService.getAllKlantContacten(pluginProperties)
-                val contactenMaps = klantcontacten.map { reflectionUtil.deepReflectedMapOf(it) }
-                execution.setVariable(resultPvName, contactenMaps)
-            }.onFailure {
-                logger.warn { "Failed to get Contactmomenten for klantContactOptions $pluginProperties - ${execution.processBusinessKey}" }
-                logger.warn { "Failed with message: ${it.message}" }
-            }
-        execution.setVariable(OUTPUT_FAILED_WITH_EXCEPTION, result.isFailure)
+        val klantcontacten = openKlantPluginService.getAllKlantContacten(pluginProperties)
+        val contactenMaps = klantcontacten.map { reflectionUtil.deepReflectedMapOf(it) }
+        execution.setVariable(resultPvName, contactenMaps)
     }
 
     companion object {
         private const val OUTPUT_PARTIJ_UUID = "partijUuid"
-        private const val OUTPUT_FAILED_WITH_EXCEPTION = "failedWithException"
         private val logger = KotlinLogging.logger { }
     }
 }
