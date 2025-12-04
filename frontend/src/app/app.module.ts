@@ -98,6 +98,11 @@ import {
 } from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
+import {
+    OpenKlantPluginModule,
+    openKlantPluginSpecification,
+    KlantcontactTabComponent
+} from '@valtimo-plugins/openklant';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {
     RotterdamOracleEbsPluginModule,
@@ -110,7 +115,9 @@ import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {ValtimoLlmPluginModule} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module"
-import {valtimoLlmPluginSpecification} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification"
+import {
+    valtimoLlmPluginSpecification
+} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification"
 import {
     HaalCentraalBrpAuthPluginModule,
     haalCentraalBrpAuthPluginSpecification,
@@ -135,15 +142,10 @@ import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr
 import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
-import {
-    openKlantPluginSpecification
-} from "../../projects/valtimo-plugins/openklant/src/lib/open-klant.plugin.specification";
-import {OpenKlantPluginModule} from "../../projects/valtimo-plugins/openklant/src/lib/open-klant-plugin.module";
-import {
-    KlantcontactTabComponent
-} from "../../projects/valtimo-plugins/openklant/src/lib/tab/klantcontact-tab/klantcontact-tab.component";
 import {ValtimoS2tPluginModule} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin-module";
-import {valtimoS2tPluginSpecification} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
+import {
+    valtimoS2tPluginSpecification
+} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
 
 
 export function tabsFactory() {
