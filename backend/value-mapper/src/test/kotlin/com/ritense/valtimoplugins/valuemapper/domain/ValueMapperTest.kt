@@ -27,6 +27,7 @@ import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperCommandExcept
 import com.ritense.valtimoplugins.valuemapper.plugin.ValueMapper
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperTemplateService
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -91,6 +92,29 @@ class ValueMapperTest {
 
         // then
         assertEquals("Anonymous", mappingResult.at("/persoon/voornaam").textValue())
+    }
+
+    @Test
+    fun `should skip command when skipCondition evaluates to true`() {
+        val def = "test-v1"
+        // given
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
+
+        // when
+        val mappingResult: ObjectNode = mapper.convertValue(
+            valueMapper.applyToObject(
+                def,
+                mapOf(
+                    "persoonsgegevens" to mapOf(
+                        "voornamen" to "Anna",
+                        "contactgegevens" to mapOf("communicatievoorkeur" to "")
+                    )
+                )
+            )
+        )
+
+        // then
+        assertTrue(mappingResult.at("/contacts/communicationChannel").isMissingNode)
     }
 
     @Test
@@ -293,7 +317,7 @@ class ValueMapperTest {
                 mapOf(
                     "some" to mapOf<String, Any>(
                         "thing1" to "a",
-                        "thing1" to "b"
+                        "thing2" to "b"
                     )
                 )
             )
@@ -305,7 +329,7 @@ class ValueMapperTest {
 
     @Test
     fun `should transform values from complex pointer to complex pointer`() {
-        val def ="test-array-complex-v1"
+        val def = "test-array-complex-v1"
 
         // given
         whenever(templateService.getDefinition(def)).thenReturn(testDefinitions[def])
@@ -516,6 +540,10 @@ class ValueMapperTest {
                         "sourcePointer": "/contactgegevens/communicatievoorkeur",
                         "targetPointer": "/contacts/communicationChannel",
                         "transformations": [
+                            {
+                                "when": "",
+                                "skipCondition": "it == ''"
+                            },
                             {
                                 "when": "a",
                                 "then": "EMAIL"

@@ -1,15 +1,19 @@
 package com.ritense.valtimoplugins.suwinet.service
 
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOInfo
+import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOPersoonsInfo
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOPersoonsInfoResponse
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.FWI
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.ObjectFactory
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.DuoPersoonsInfoDto
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.WebServiceException
+import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -25,15 +29,12 @@ class SuwinetDuoPersoonsInfoService(
 
     fun createDuoService(): DUOInfo {
         val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
-        return suwinetSOAPClient.configureKeystore(
-            soapClientConfig.keystoreCertificatePath,
-            soapClientConfig.keystoreKey
-        )
-            .configureTruststore(soapClientConfig.truststoreCertificatePath, soapClientConfig.truststoreKey)
-            .configureBasicAuth(soapClientConfig.basicAuthName, soapClientConfig.basicAuthSecret)
+        return suwinetSOAPClient
             .getService<DUOInfo>(
                 completeUrl,
-                soapClientConfig.connectionTimeout, soapClientConfig.receiveTimeout
+                soapClientConfig.connectionTimeout,
+                soapClientConfig.receiveTimeout,
+                soapClientConfig.authConfig
             )
     }
 
@@ -43,20 +44,24 @@ class SuwinetDuoPersoonsInfoService(
     ): DuoPersoonsInfoDto {
         logger.info { "Getting duo persoons Onderwijsovereenkomst from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
 
-        val result = runCatching {
-
-            /* retrieve duo persoons info by bsn */
+        try {
             val persoonsInfoRequest = objectFactory
                 .createDUOPersoonsInfo()
                 .apply {
                     burgerservicenr = bsn
                 }
             val response = duoInfo.duoPersoonsInfo(persoonsInfoRequest)
-            response.unwrapResponse(bsn)
+            return response.unwrapResponse(bsn)
+
+        } catch (e: WebServiceException) {
+            when(e.cause) {
+                is IOException -> {
+                    logger.error { "Error connecting to Suwinet while getting BRP personal info from $bsn" }
+                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+                }
+                else -> throw e
+            }
         }
-
-        return result.getOrThrow()
-
     }
 
     private fun getOnderwijsOvereenkomsten(onderwijsovereenkomst: List<DUOPersoonsInfoResponse.ClientSuwi.Onderwijsovereenkomst>): List<DuoPersoonsInfoDto.DuoOnderwijsOvereenkomst> {

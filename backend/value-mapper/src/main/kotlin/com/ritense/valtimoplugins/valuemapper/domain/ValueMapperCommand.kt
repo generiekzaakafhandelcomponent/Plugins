@@ -27,7 +27,7 @@ data class ValueMapperCommand(
                 "Exactly one transformation is required when using CONVERT operation"
             }
 
-            COPY -> require(transformations?.all { it is ValueTransformation } ?: true) {
+            COPY -> require(transformations?.all { it is CopyTransformation } ?: true) {
                 "transformations array must only contain ValueTransformations"
             }
         }

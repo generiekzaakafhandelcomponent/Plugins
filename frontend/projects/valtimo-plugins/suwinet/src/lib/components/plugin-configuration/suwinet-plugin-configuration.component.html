@@ -34,6 +34,21 @@
             [required]="true"
     >
     </v-input>
+    <ng-container
+            *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
+    >
+        <v-select
+                [loading]="!authObs.authenticationPluginSelectItems"
+                [items]="authObs.authenticationPluginSelectItems"
+                [margin]="true"
+                name="authenticationPluginConfiguration"
+                [title]="'authenticationPluginConfiguration' | pluginTranslate: pluginId | async"
+                [disabled]="obs.disabled"
+                [defaultSelectionId]="obs.prefill?.authenticationPluginConfiguration"
+                [required]="true"
+                [tooltip]="'authenticationPluginConfigurationTooltip' | pluginTranslate: pluginId | async"
+        ></v-select>
+    </ng-container>
     <v-input
             name="baseUrl"
             [title]="'baseUrl' | pluginTranslate: pluginId | async"
@@ -42,69 +57,6 @@
             [defaultValue]="obs.prefill?.baseUrl"
             [disabled]="obs.disabled"
             [required]="true"
-    >
-    </v-input>
-    <v-input
-            name="keystorePath"
-            [title]="'keystorePath' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.keystorePath"
-            [disabled]="obs.disabled"
-            [required]="false"
-    >
-    </v-input>
-    <v-input
-            name="keystoreSecret"
-            type="password"
-            [title]="'keystoreSecret' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.keystoreSecret"
-            [disabled]="obs.disabled"
-            [required]="false"
-    >
-    </v-input>
-    <v-input
-            name="truststorePath"
-            [title]="'truststorePath' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.truststorePath"
-            [disabled]="obs.disabled"
-            [required]="false"
-    >
-    </v-input>
-    <v-input
-            name="truststoreSecret"
-            type="password"
-            [title]="'truststoreSecret' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.truststoreSecret"
-            [disabled]="obs.disabled"
-            [required]="false"
-    >
-    </v-input>
-    <v-input
-            name="basicAuthName"
-            [title]="'basicAuthName' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.basicAuthName"
-            [disabled]="obs.disabled"
-            [required]="false"
-    >
-    </v-input>
-    <v-input
-            name="basicAuthSecret"
-            type="password"
-            [title]="'basicAuthSecret' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.truststoreSecret"
-            [disabled]="obs.disabled"
-            [required]="false"
     >
     </v-input>
     <v-input
