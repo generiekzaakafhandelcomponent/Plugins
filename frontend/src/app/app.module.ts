@@ -25,23 +25,23 @@ import {TaskModule} from '@valtimo/task';
 import {environment} from '../environments/environment';
 import {SecurityModule} from '@valtimo/security';
 import {
-  BpmnJsDiagramModule,
-  enableCustomFormioComponents,
-  MenuModule,
-  registerFormioFileSelectorComponent,
-  registerFormioUploadComponent,
-  registerFormioValueResolverSelectorComponent,
-  WidgetModule,
+    BpmnJsDiagramModule,
+    enableCustomFormioComponents,
+    MenuModule,
+    registerFormioFileSelectorComponent,
+    registerFormioUploadComponent,
+    registerFormioValueResolverSelectorComponent,
+    WidgetModule,
     ValuePathSelectorComponent
 
 } from '@valtimo/components';
 import {
-  DefaultTabs,
-  CaseDetailTabAuditComponent,
-  CaseDetailTabDocumentsComponent,
-  CaseDetailTabProgressComponent,
-  CaseDetailTabSummaryComponent,
-  CaseModule,
+    DefaultTabs,
+    CaseDetailTabAuditComponent,
+    CaseDetailTabDocumentsComponent,
+    CaseDetailTabProgressComponent,
+    CaseDetailTabSummaryComponent,
+    CaseModule, CASE_TAB_TOKEN,
 } from '@valtimo/Case';
 import {CaseMigrationModule} from "@valtimo/case-migration";
 import {ProcessModule} from '@valtimo/process';
@@ -98,6 +98,11 @@ import {
 } from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
+import {
+    OpenKlantPluginModule,
+    openKlantPluginSpecification,
+    KlantcontactTabComponent
+} from '@valtimo-plugins/openklant';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {
     RotterdamOracleEbsPluginModule,
@@ -110,7 +115,9 @@ import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {ValtimoLlmPluginModule} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module"
-import {valtimoLlmPluginSpecification} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification"
+import {
+    valtimoLlmPluginSpecification
+} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification"
 import {
     HaalCentraalBrpAuthPluginModule,
     haalCentraalBrpAuthPluginSpecification,
@@ -136,16 +143,18 @@ import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
 import {ValtimoS2tPluginModule} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin-module";
-import {valtimoS2tPluginSpecification} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
+import {
+    valtimoS2tPluginSpecification
+} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
 
 
 export function tabsFactory() {
-  return new Map<string, object>([
-    [DefaultTabs.summary, CaseDetailTabSummaryComponent],
-    [DefaultTabs.progress, CaseDetailTabProgressComponent],
-    [DefaultTabs.audit, CaseDetailTabAuditComponent],
-    [DefaultTabs.documents, CaseDetailTabDocumentsComponent],
-  ]);
+    return new Map<string, object>([
+        [DefaultTabs.summary, CaseDetailTabSummaryComponent],
+        [DefaultTabs.progress, CaseDetailTabProgressComponent],
+        [DefaultTabs.audit, CaseDetailTabAuditComponent],
+        [DefaultTabs.documents, CaseDetailTabDocumentsComponent],
+    ]);
 }
 
 @NgModule({
@@ -198,6 +207,7 @@ export function tabsFactory() {
         ObjectModule,
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
+        OpenKlantPluginModule,
         OpenZaakPluginModule,
         PluginManagementModule,
         ProcessLinkModule,
@@ -253,6 +263,7 @@ export function tabsFactory() {
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
+            openKlantPluginSpecification,
             openZaakPluginSpecification,
             publictaskPluginSpecification,
             rotterdamOracleEbsPluginSpecification,
@@ -265,10 +276,16 @@ export function tabsFactory() {
             valtimoS2tPluginSpecification,
             valtimoLlmPluginSpecification,
             zakenApiPluginSpecification
-        ]
+        ],
+    }, {
+        provide: CASE_TAB_TOKEN,
+        useValue: {
+            'klantcontact-tab': KlantcontactTabComponent,
+        }
     }],
     bootstrap: [AppComponent]
 })
+
 export class AppModule {
     constructor(injector: Injector) {
         enableCustomFormioComponents(injector);
