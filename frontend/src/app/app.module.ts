@@ -98,6 +98,11 @@ import {
 } from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
+import {
+    OpenKlantPluginModule,
+    openKlantPluginSpecification,
+    KlantcontactTabComponent
+} from '@valtimo-plugins/openklant';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {
     RotterdamOracleEbsPluginModule,
@@ -158,13 +163,6 @@ import {SuwinetAuthPluginModule} from "../../projects/valtimo-plugins/suwinet-au
 import {
     suwinetAuthPluginSpecification
 } from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.specification";
-import {
-    openKlantPluginSpecification
-} from "../../projects/valtimo-plugins/openklant/src/lib/open-klant.plugin.specification";
-import {OpenKlantPluginModule} from "../../projects/valtimo-plugins/openklant/src/lib/open-klant-plugin.module";
-import {
-    KlantcontactTabComponent
-} from "../../projects/valtimo-plugins/openklant/src/lib/tab/klantcontact-tab/klantcontact-tab.component";
 
 export function tabsFactory() {
     return new Map<string, object>([
