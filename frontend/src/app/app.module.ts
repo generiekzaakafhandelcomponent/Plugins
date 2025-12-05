@@ -37,6 +37,7 @@ import {
 
 } from '@valtimo/components';
 import {
+    CASE_TAB_TOKEN,
     DefaultTabs,
     DossierDetailTabAuditComponent,
     DossierDetailTabDocumentsComponent,
@@ -97,6 +98,11 @@ import {
 } from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
+import {
+    OpenKlantPluginModule,
+    openKlantPluginSpecification,
+    KlantcontactTabComponent
+} from '@valtimo-plugins/openklant';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {
     RotterdamOracleEbsPluginModule,
@@ -256,7 +262,8 @@ export function tabsFactory() {
         ZgwModule,
         ValueMapperPluginModule,
         DocsysPluginModule,
-        TokenAuthenticationPluginModule
+        TokenAuthenticationPluginModule,
+        OpenKlantPluginModule,
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -293,8 +300,15 @@ export function tabsFactory() {
             documentenApiPluginSpecification,
             openZaakPluginSpecification,
             zakenApiPluginSpecification,
-            tokenAuthenticationPluginSpecification
-        ]
+            tokenAuthenticationPluginSpecification,
+            zakenApiPluginSpecification,
+            openKlantPluginSpecification,
+        ],
+    }, {
+        provide: CASE_TAB_TOKEN,
+        useValue: {
+            'klantcontact-tab': KlantcontactTabComponent,
+        }
     }],
     bootstrap: [AppComponent]
 })
