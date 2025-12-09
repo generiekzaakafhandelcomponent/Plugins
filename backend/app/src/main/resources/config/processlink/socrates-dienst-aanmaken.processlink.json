@@ -1,0 +1,20 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "create-melding",
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "dienst-aanmaken-task",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "9961ca7e-9ae7-4688-90be-68c3ca823e11",
+    "pluginActionDefinitionKey": "dienst-aanmaken",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "zaakId": "ZAAK-000123644",
+      "inputProcessVariable": "socratesInput",
+      "processVariableName": "socratesResponse"
+    }
+  }
+]

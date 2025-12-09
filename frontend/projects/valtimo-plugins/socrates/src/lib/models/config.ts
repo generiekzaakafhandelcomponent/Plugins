@@ -16,21 +16,15 @@
 
 import {PluginConfigurationData} from '@valtimo/plugin';
 
-interface DocsysConfig extends PluginConfigurationData {
-    damApiUrl: string;
-    docsysApiUrl: string
-    tokenEndpoint: string;
-    scope: string;
-    clientId: string;
-    clientSecret: string;
+interface SocratesConfig extends PluginConfigurationData {
+    socratesApiUrl: string;
 }
 
-interface GenerateDocument {
-    modelId: string;
-    params: Array<{key: string; value: string}>;
-    format: string;
+interface DienstAanmakenConfig {
+    zaakId: string;
+    inputProcessVariable: string;
     processVariableName: string;
 }
 
 
-export {DocsysConfig, GenerateDocument};
+export {SocratesConfig, DienstAanmakenConfig};

@@ -23,10 +23,9 @@ import com.ritense.plugin.annotation.PluginEvent
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimoplugins.socrates.client.LOBehandeldRequest
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
+import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 
-import com.ritense.valueresolver.ValueResolverService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.net.URI
 import org.camunda.bpm.engine.delegate.DelegateExecution
@@ -34,11 +33,10 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 @Plugin(
     key = "socrates",
     title = "Socrates Plugin",
-    description = "Add tasks to Socrates"
+    description = "Add service to Socrates"
 )
 open class SocratesPlugin(
     private val socratesClient: SocratesClient,
-    private val valueResolverService: ValueResolverService,
 ) {
 
     @PluginProperty(key = "socratesApiUrl", secret = false)
@@ -51,40 +49,24 @@ open class SocratesPlugin(
     }
 
     @PluginAction(
-        key = "create-lobehandeld",
-        title = "Create LOBehandeld in Socrates",
-        description = "Create LOBehandeld service in Socrates",
+        key = "dienst-aanmaken",
+        title = "Dienst aanmaken in Socrates",
+        description = "Dienst aanmaken service in Socrates",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-    open fun createSocratesLOBehandeld(
+    open fun dienstAanmaken(
         execution: DelegateExecution,
-        @PluginActionProperty processVariableRequest: String,
+        @PluginActionProperty zaakId: String,
+        @PluginActionProperty inputProcessVariable: String,
         @PluginActionProperty processVariableName: String
     ) {
         setsocratesClientParams()
 
+        var request = execution.getVariable(inputProcessVariable) as LoBehandeld
+        var respons  = socratesClient.dienstAanmaken(zaakId, request)
 
-
-
-       // execution.setVariable(processVariableName, resourceId)
+       execution.setVariable(processVariableName, respons)
     }
-
-
-//    private fun resolveValue(execution: DelegateExecution, keyValueList: List<TemplateProperty>?): List<TemplateProperty>? {
-//        return if (keyValueList == null) {
-//            null
-//        } else {
-//            keyValueList.filter { it.value is String }.map {
-//                var resolvedValues = valueResolverService.resolveValues(
-//                    execution.processInstanceId,
-//                    execution,
-//                    listOf(it.value as String)
-//                )
-//                var resolvedValue = resolvedValues[it.value]
-//                TemplateProperty(it.key, resolvedValue)
-//            }
-//        }
-//    }
 
     companion object {
         private val logger = KotlinLogging.logger {}

@@ -17,19 +17,15 @@
 package com.ritense.valtimoplugins.socrates.autoconfiguration
 
 import com.ritense.plugin.service.PluginService
-import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
-import com.ritense.valtimoplugins.socrates.client.socratesClient
 import com.ritense.valtimoplugins.socrates.plugin.SocratesPluginFactory
-import com.ritense.valtimoplugins.socrates.plugin.socratesPluginFactory
-import com.ritense.valueresolver.ValueResolverService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.web.client.RestClient
 
 @AutoConfiguration
-class socratesAutoConfiguration {
+class SocratesAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(SocratesClient::class)
@@ -44,9 +40,8 @@ class socratesAutoConfiguration {
     fun createsocratesPluginFactory(
         pluginService: PluginService,
         socratesClient: SocratesClient,
-        valueResolver: ValueResolverService,
     ): SocratesPluginFactory {
-        return SocratesPluginFactory(pluginService, socratesClient, valueResolver)
+        return SocratesPluginFactory(pluginService, socratesClient)
     }
 
 }

@@ -33,9 +33,9 @@ class SocratesClient(
 ) {
     lateinit var socratesBaseUri: URI
 
-    private fun creatLOBehandeld(zaakId: String, loBehandeld: LoBehandeld): LOBehandeldRespons {
+    fun dienstAanmaken(zaakId: String, loBehandeld: LoBehandeld): LOBehandeldRespons {
         val requestBody = LOBehandeldRequest(
-            zaakId= zaakId,
+            zaakId = zaakId,
             loBehandeld = loBehandeld,
         )
 
@@ -59,13 +59,12 @@ class SocratesClient(
             .retrieve()
             .body<LOBehandeldRespons>()
 
-        if(response == null) {
+        if (response == null) {
             throw IllegalStateException("no respons")
         }
 
         return response
     }
-
 
 
     companion object {

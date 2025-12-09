@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export * from './docsys-plugin-logo';
+export * from './socrates-plugin-logo';

@@ -28,10 +28,9 @@ import org.springframework.stereotype.Component
 class SocratesPluginFactory(
     pluginService: PluginService,
     val client: SocratesClient,
-    val valueResolverService: ValueResolverService,
 ) : PluginFactory<SocratesPlugin>(pluginService) {
 
     override fun create(): SocratesPlugin {
-        return SocratesPlugin(client, valueResolverService)
+        return SocratesPlugin(client)
     }
 }

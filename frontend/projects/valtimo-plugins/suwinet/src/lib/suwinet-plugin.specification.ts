@@ -41,6 +41,7 @@ const suwinetPluginSpecification: PluginSpecification = {
     pluginConfigurationComponent: SuwinetPluginConfigurationComponent,
     pluginLogoBase64: SUWINET_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
+        'ophalen-bijstandsregelingen': BijstandsregelingenInfoComponent,
         'get-brp-persoonsgegevens': BrpPersoonInfoComponent,
         'get-brp-partner-persoonsgegevens': BrpPartnerInfoComponent,
         'get-brp-kinderen-persoonsgegevens': BrpKinderenInfoComponent,
@@ -50,7 +51,6 @@ const suwinetPluginSpecification: PluginSpecification = {
         'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
         'get-svb-persoonsinfo': SvbPersoonsInfoComponent,
         'get-uwv-inkomsten-info': UwvInkomstenInfoComponent,
-        'ophalen-bijstandsregelingen': BijstandsregelingenInfoComponent
     },
     pluginTranslations: {
         nl: {

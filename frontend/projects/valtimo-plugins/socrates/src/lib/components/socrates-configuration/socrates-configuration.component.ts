@@ -17,22 +17,22 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {PluginConfigurationComponent, PluginConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
-import {DocsysConfig} from '../../models';
+import {SocratesConfig} from '../../models';
 import {PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-  selector: 'valtimo-Docsys-configuration',
-  templateUrl: './docsys-configuration.component.html',
-  styleUrls: ['./docsys-configuration.component.scss'],
+  selector: 'valtimo-socrates-configuration',
+  templateUrl: './socrates-configuration.component.html',
+  styleUrls: ['./socrates-configuration.component.scss'],
 })
-export class DocsysConfigurationComponent
+export class SocratesConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy
 {
   @Input() save$!: Observable<void>;
   @Input() disabled$!: Observable<boolean>;
   @Input() pluginId!: string;
-  @Input() prefillConfiguration$!: Observable<DocsysConfig>;
+  @Input() prefillConfiguration$!: Observable<SocratesConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() configuration: EventEmitter<PluginConfigurationData> = new EventEmitter<PluginConfigurationData>();
 
@@ -42,23 +42,9 @@ export class DocsysConfigurationComponent
       private readonly pluginTranslationService: PluginTranslationService
   ) {}
 
-  readonly authenticationPluginSelectItems$: Observable<Array<{id?: string; text: string}>> =
-    combineLatest([
-      this.pluginManagementService.getPluginConfigurationsByCategory('Docsys-authentication'),
-      this.translateService.stream('key'),
-    ]).pipe(
-      map(([configurations]) =>
-        configurations.map(configuration => ({
-          id: configuration.id,
-          text: `${configuration.title} - ${this.pluginTranslationService.instant(
-            'title',
-            configuration.pluginDefinition!.key
-          )}`,
-        }))
-      )
-    );
+
   private saveSubscription!: Subscription;
-  private readonly formValue$ = new BehaviorSubject<DocsysConfig | null>(null);
+  private readonly formValue$ = new BehaviorSubject<SocratesConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
@@ -69,18 +55,14 @@ export class DocsysConfigurationComponent
     this.saveSubscription?.unsubscribe();
   }
 
-  formValueChange(formValue: DocsysConfig): void {
+  formValueChange(formValue: SocratesConfig): void {
     this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: DocsysConfig): void {
-    const valid = !!(formValue.configurationTitle
-        && formValue.damApiUrl
-        && formValue.docsysApiUrl
-        && formValue.clientId
-        && formValue.clientSecret
-        && formValue.tokenEndpoint);
+  private handleValid(formValue: SocratesConfig): void {
+    const valid = !!(formValue.configurationTitle)
+        && !!(formValue.socratesApiUrl);
 
     this.valid$.next(valid);
     this.valid.emit(valid);

@@ -15,22 +15,22 @@
  */
 
 import {NgModule} from '@angular/core';
-import {DocsysConfigurationComponent} from './components/socrates-configuration/docsys-configuration.component';
+import {SocratesConfigurationComponent} from './components/socrates-configuration/socrates-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {CarbonMultiInputModule, FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
-import {GenerateDocumentComponent} from "./components/generate-document/generate-document.component";
+import {FormModule, InputModule} from '@valtimo/components';
+import {DienstAanmakenComponent} from "./components/dienst-aanmaken/dienst-aanmaken.component";
 
 
 @NgModule({
     declarations: [
-        DocsysConfigurationComponent,
-        GenerateDocumentComponent,
+        SocratesConfigurationComponent,
+        DienstAanmakenComponent,
     ],
-    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, CarbonMultiInputModule, SelectModule,],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule],
     exports: [
-        DocsysConfigurationComponent,
-        GenerateDocumentComponent
+        SocratesConfigurationComponent,
+        DienstAanmakenComponent
     ],
 })
 export class SocratesPluginModule {
