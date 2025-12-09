@@ -10,12 +10,15 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Kind
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Nationaliteit
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.ObjectFactory
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Straatadres
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.StraatadresHistorisch
+import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.VerblijfplaatsHistorisch
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Verblijfstitel
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
+import com.ritense.valtimoplugins.suwinet.model.AdresType
 import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -37,7 +40,12 @@ class SuwinetBrpInfoService(
     fun getBRPInfo(): BRPInfo {
         val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
         return suwinetSOAPClient
-            .getService<BRPInfo>(completeUrl, soapClientConfig.connectionTimeout, soapClientConfig.receiveTimeout, soapClientConfig.authConfig)
+            .getService<BRPInfo>(
+                completeUrl,
+                soapClientConfig.connectionTimeout,
+                soapClientConfig.receiveTimeout,
+                soapClientConfig.authConfig
+            )
     }
 
     fun getPersoonsgegevensByBsn(
@@ -54,11 +62,12 @@ class SuwinetBrpInfoService(
 
             return person.unwrapResponse()
         } catch (e: WebServiceException) {
-            when(e.cause) {
+            when (e.cause) {
                 is IOException -> {
                     logger.error { "Error connecting to Suwinet while getting BRP personal info from $bsn" }
                     throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
                 }
+
                 else -> throw e
             }
         }
@@ -79,9 +88,10 @@ class SuwinetBrpInfoService(
                     achternaam = persoon.significantDeelVanDeAchternaam ?: "",
                     voorvoegsel = persoon.voorvoegsel ?: "",
                     geboortedatum = dateTimeService.fromSuwinetToDateString(persoon.geboortedat),
-                    adresBrp = getAdres(persoon.domicilieAdres),
-                    postadresBrp = getAdres(persoon.correspondentieadres),
+                    adresBrp = persoon.domicilieAdres?.mapToAdresDto(),
+                    postadresBrp = persoon.correspondentieadres?.mapToAdresDto(),
                     verblijfstitel = getVerblijfstitel(persoon.verblijfstitel),
+                    verblijfplaatsHistorisch = getVerblijfplaatsHistorisch(persoon.verblijfplaatsHistorisch),
                     nationaliteiten = getNationaliteiten(persoon.nationaliteit),
                     kinderenBsns = getKinderen(persoon.kind),
                     partnerBsn = getPartnerBsn(persoon.huwelijk),
@@ -136,15 +146,55 @@ class SuwinetBrpInfoService(
         datumEindeVerblijfstitel = dateTimeService.fromSuwinetToDateString(verblijfstitel?.datEVerblijfstitel)
     )
 
-    private fun getAdres(adres: Straatadres?) = AdresDto(
-        straatnaam = adres?.straatnaam ?: "",
-        huisnummer = adres?.huisnr?.toInt() ?: 0,
-        huisletter = adres?.huisletter ?: "",
-        huisnummertoevoeging = adres?.huisnrtoevoeging ?: "",
-        postcode = adres?.postcd ?: "",
-        woonplaatsnaam = adres?.woonplaatsnaam ?: "",
-        aanduidingBijHuisnummer = adres?.aanduidingBijHuisnr?.toString() ?: "",
-        locatieomschrijving = adres?.locatieoms ?: ""
+    private fun getVerblijfplaatsHistorisch(
+        verblijfplaatsHistorisch: List<VerblijfplaatsHistorisch>?
+    ): List<PersoonDto.VerblijfplaatsHistorisch> =
+        verblijfplaatsHistorisch?.flatMap { it ->
+            val datumBeginAdreshouding =
+                dateTimeService.fromSuwinetToDateString(it.aangifteAdreshoudingBrp?.datBAdreshoudingBrp)
+
+            buildList {
+                it.domicilieAdres?.let { domicilieAdres ->
+                    add(
+                        PersoonDto.VerblijfplaatsHistorisch(
+                            type = AdresType.WOONADRES,
+                            adres = domicilieAdres.mapToAdresDto(),
+                            datumBeginAdreshouding = datumBeginAdreshouding
+                        )
+                    )
+                }
+                it.correspondentieadres?.let { correspondentieadres ->
+                    add(
+                        PersoonDto.VerblijfplaatsHistorisch(
+                            type = AdresType.POSTADRES,
+                            adres = correspondentieadres.mapToAdresDto(),
+                            datumBeginAdreshouding = datumBeginAdreshouding
+                        )
+                    )
+                }
+            }
+        } ?: emptyList()
+
+    private fun Straatadres.mapToAdresDto() = AdresDto(
+        straatnaam = straatnaam.orEmpty(),
+        huisnummer = huisnr?.toInt() ?: 0,
+        huisletter = huisletter.orEmpty(),
+        huisnummertoevoeging = huisnrtoevoeging.orEmpty(),
+        postcode = postcd.orEmpty(),
+        woonplaatsnaam = woonplaatsnaam.orEmpty(),
+        aanduidingBijHuisnummer = aanduidingBijHuisnr.orEmpty(),
+        locatieomschrijving = locatieoms.orEmpty()
+    )
+
+    private fun StraatadresHistorisch.mapToAdresDto() = AdresDto(
+        straatnaam = straatnaam.orEmpty(),
+        huisnummer = huisnr?.toInt() ?: 0,
+        huisletter = huisletter.orEmpty(),
+        huisnummertoevoeging = huisnrtoevoeging.orEmpty(),
+        postcode = postcd.orEmpty(),
+        woonplaatsnaam = woonplaatsnaam.orEmpty(),
+        aanduidingBijHuisnummer = aanduidingBijHuisnr.orEmpty(),
+        locatieomschrijving = locatieoms.orEmpty()
     )
 
     companion object {
