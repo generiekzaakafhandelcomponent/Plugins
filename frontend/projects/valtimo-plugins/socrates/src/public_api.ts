@@ -15,7 +15,7 @@
  */
 
 /*
- * Public API Surface of Docsys
+ * Public API Surface of Socrates plugin
  */
 
 export * from './lib/models';
