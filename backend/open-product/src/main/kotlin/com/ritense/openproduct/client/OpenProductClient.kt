@@ -67,17 +67,14 @@ class OpenProductClient() {
     fun updateProduct(
         baseUrl: String,
         authenticationPlugin: TokenAuthenticationPlugin,
-        request: MutableMap<String, Any>
+        request: ProductRequest
     ): String? {
         val restClient = getRestclient(baseUrl, authenticationPlugin)
         val objectMapper = jacksonObjectMapper()
-
-        val uuid = request["uuid"] as String
-
         val requestJson = objectMapper.writeValueAsString(request)
 
         val response = restClient.patch()
-            .uri("/producten/$uuid")
+            .uri("/producten/" + request)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .body(requestJson)
             .retrieve()

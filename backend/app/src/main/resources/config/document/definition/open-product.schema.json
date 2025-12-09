@@ -4,19 +4,22 @@
   "title": "Open Product",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
-    "resultaatPV": {
-      "type": "string"
-    },
     "eigenaarData": {
       "type": [
         "string",
         "null"
       ]
     },
+    "resultaatPV": {
+      "type": "string"
+    },
     "aanvraagZaakUrn": {
       "type": "string"
     },
-    "burgerBSN": {
+    "aanvraagZaakUrl": {
+      "type": "string"
+    },
+    "eigenaarBSN": {
       "type": [
         "string",
         "null"
@@ -41,6 +44,12 @@
       ]
     },
     "productTypeUUID": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productUUID": {
       "type": [
         "string",
         "null"

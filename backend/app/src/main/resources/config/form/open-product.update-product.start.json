@@ -2,13 +2,27 @@
   "display": "form",
   "components": [
     {
+      "key": "productUuid",
+      "type": "textfield",
+      "input": true,
+      "label": "Product UUID",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.update-product.start-productUuid"
+      },
+      "properties": {
+        "targetKey": "pv:/productUuid"
+      },
+      "applyMaskOn": "change"
+    },
+    {
       "key": "productNaam",
       "type": "textfield",
       "input": true,
       "label": "Product Name",
       "tableView": true,
       "attributes": {
-        "data-testid": "open-product.create-product.start-productNaam"
+        "data-testid": "open-product.update-product.start-productNaam"
       },
       "properties": {
         "targetKey": "pv:/productNaam"
@@ -16,53 +30,32 @@
       "applyMaskOn": "change"
     },
     {
-      "key": "productTypeUUID",
+      "key": "productTypeUuid",
       "type": "textfield",
       "input": true,
       "label": "Product Type UUID",
       "tableView": true,
       "attributes": {
-        "data-testid": "open-product.create-product.start-productTypeUuid"
+        "data-testid": "open-product.update-product.start-productTypeUuid"
       },
       "properties": {
-        "targetKey": "pv:/productTypeUUID"
+        "targetKey": "pv:/productTypeUuid"
       },
       "applyMaskOn": "change"
     },
     {
-      "key": "eigenaarBSN",
+      "key": "eigenaarBsn",
       "type": "textfield",
       "input": true,
       "label": "Eigenaar BSN",
       "tableView": true,
       "attributes": {
-        "data-testid": "open-product.create-product.start-eigenaarBsn"
+        "data-testid": "open-product.update-product.start-eigenaarBsn"
       },
       "properties": {
-        "targetKey": "pv:/eigenaarBSN"
+        "targetKey": "pv:/eigenaarBsn"
       },
       "applyMaskOn": "change"
-    },
-    {
-      "key": "ownerData",
-      "type": "datamap",
-      "input": true,
-      "label": "Owner Data",
-      "tableView": false,
-      "attributes": {
-        "data-testid": "open-product.create-product.start-ownerData"
-      },
-      "properties": {
-        "targetKey": "pv:/eigenaarData"
-      },
-      "valueComponent": {
-        "key": "value",
-        "type": "textfield",
-        "input": true,
-        "label": "Value",
-        "hideLabel": true,
-        "tableView": true
-      }
     },
     {
       "key": "aanvraagZaakUrn",
@@ -71,7 +64,7 @@
       "label": "Aanvraag Zaak URN",
       "tableView": true,
       "attributes": {
-        "data-testid": "open-product.create-product.start-aanvraagZaakUrn"
+        "data-testid": "open-product.update-product.start-aanvraagZaakUrn"
       },
       "properties": {
         "targetKey": "pv:/aanvraagZaakUrn"
@@ -85,7 +78,7 @@
       "label": "Aanvraag Zaak URL",
       "tableView": true,
       "attributes": {
-        "data-testid": "open-product.create-product.start-aanvraagZaakUrl"
+        "data-testid": "open-product.update-product.start-aanvraagZaakUrl"
       },
       "properties": {
         "targetKey": "pv:/aanvraagZaakUrl"
@@ -99,12 +92,39 @@
       "label": "Product Prijs",
       "tableView": true,
       "attributes": {
-        "data-testid": "open-product.create-product.start-productPrijs"
+        "data-testid": "open-product.update-product.start-productPrijs"
       },
       "properties": {
             "targetKey": "pv:/productPrijs"
       },
       "applyMaskOn": "change"
+    },
+    {
+      "label": "Frequentie",
+      "widget": "choicesjs",
+      "tableView": true,
+      "data": {
+        "values": [
+          {
+            "label": "Eenmalig",
+            "value": "eenmalig"
+          },
+          {
+            "label": "Maandelijks",
+            "value": "maandelijks"
+          },
+          {
+            "label": "Jaarlijks",
+            "value": "jaarlijks"
+          }
+        ]
+      },
+      "key": "frequentie",
+      "properties": {
+        "targetKey": "pv:/frequentie"
+      },
+      "type": "select",
+      "input": true
     },
     {
       "label": "Status",
@@ -149,33 +169,6 @@
       "input": true
     },
     {
-      "label": "Frequentie",
-      "widget": "choicesjs",
-      "tableView": true,
-      "data": {
-        "values": [
-          {
-            "label": "Eenmalig",
-            "value": "eenmalig"
-          },
-          {
-            "label": "Maandelijks",
-            "value": "maandelijks"
-          },
-          {
-            "label": "Jaarlijks",
-            "value": "jaarlijks"
-          }
-        ]
-      },
-      "key": "frequentie",
-      "properties": {
-        "targetKey": "pv:/frequentie"
-      },
-      "type": "select",
-      "input": true
-    },
-    {
       "key": "gepubliceerd",
       "type": "checkbox",
       "input": true,
@@ -186,7 +179,7 @@
       },
       "defaultValue": false,
       "attributes": {
-        "data-testid": "open-product.create-product.start-gepubliceerd"
+        "data-testid": "open-product.update-product.start-gepubliceerd"
       }
     },
     {

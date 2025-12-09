@@ -1,5 +1,6 @@
 package com.ritense.openproduct.client
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
@@ -7,6 +8,8 @@ import java.util.UUID
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ProductRequest(
+    @JsonIgnore
+    val uuid: String? = null,
     @JsonProperty("naam")
     val naam: String? = null,
     @JsonProperty("start_datum")
@@ -24,7 +27,9 @@ data class ProductRequest(
     @JsonProperty("status")
     val status: StatusEnum? = null,
     @JsonProperty("aanvraag_zaak_urn")
-    val aanvraagZaakUrn: String,
+    val aanvraagZaakUrn: String?,
+    @JsonProperty("aanvraag_zaak_url")
+    val aanvraagZaakUrl: String?,
     @JsonProperty("prijs")
     val prijs: String,
     @JsonProperty("frequentie")

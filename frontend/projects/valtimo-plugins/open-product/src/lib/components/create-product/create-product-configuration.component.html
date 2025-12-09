@@ -5,6 +5,14 @@
         prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
     } as obs"
 >
+    <v-input name="resultaatPV"
+             [title]="'resultaatPV' | pluginTranslate: pluginId | async"
+             [margin]="true"
+             [defaultValue]="obs.prefill?.resultaatPV"
+             [disabled]="obs.disabled"
+             [required]="true"
+             [tooltip]="'resultaatPVTooltip' | pluginTranslate: pluginId | async"
+    ></v-input>
     <v-input
             name="productNaam"
             [title]="'productNaam' | pluginTranslate: pluginId | async"
@@ -49,6 +57,15 @@
             [title]="'aanvraagZaakUrn' | pluginTranslate: pluginId | async"
             [margin]="true"
             [defaultValue]="obs.prefill?.aanvraagZaakUrn"
+            [disabled]="obs.disabled"
+            [required]="true"
+    >
+    </v-input>
+    <v-input
+            name="aanvraagZaakUrl"
+            [title]="'aanvraagZaakUrl' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.aanvraagZaakUrl"
             [disabled]="obs.disabled"
             [required]="true"
     >

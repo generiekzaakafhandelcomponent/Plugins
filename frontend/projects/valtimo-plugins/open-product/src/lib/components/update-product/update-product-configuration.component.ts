@@ -37,7 +37,7 @@ export class UpdateProductConfigurationComponent
     }
 
     private handleValid(formValue: UpdateProductConfig): void {
-        const valid = !!(formValue.productUUID);
+        const valid = !!(formValue.productUuid);
 
         this.valid$.next(valid);
         this.valid.emit(valid);

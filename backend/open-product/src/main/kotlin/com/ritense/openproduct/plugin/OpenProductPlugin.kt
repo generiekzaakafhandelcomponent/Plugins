@@ -60,14 +60,15 @@ class OpenProductPlugin(
         execution: DelegateExecution,
         @PluginActionProperty productNaam: String,
         @PluginActionProperty productTypeUUID: String,
-        @PluginActionProperty burgerBSN: String,
+        @PluginActionProperty eigenaarBSN: String,
         @PluginActionProperty eigenaarData: List<DataBindingConfig>?,
-        @PluginActionProperty gepubliceerd: java.lang.Boolean?,
-        @PluginActionProperty aanvraagZaakUrn: String,
+        @PluginActionProperty aanvraagZaakUrn: String?,
+        @PluginActionProperty aanvraagZaakUrl: String?,
         @PluginActionProperty productPrijs: String,
-        @PluginActionProperty frequentie: String,
         @PluginActionProperty status: String,
-        @PluginActionProperty resultaatPV: String?,
+        @PluginActionProperty frequentie: String,
+        @PluginActionProperty gepubliceerd: java.lang.Boolean?,
+        @PluginActionProperty resultaatPV: String
     ) {
         val freqenum = toFreqEnum(frequentie)
         val statusEnum = toStatusEnum(status)
@@ -80,61 +81,71 @@ class OpenProductPlugin(
                 producttypeUuid = productTypeUUID,
                 eigenaren = listOf(
                     EigenaarRequest(
-                        bsn = burgerBSN
+                        bsn = eigenaarBSN
                     )
                 ),
                 gepubliceerd = gepubliceerd as Boolean?,
                 aanvraagZaakUrn = aanvraagZaakUrn,
+                aanvraagZaakUrl = aanvraagZaakUrl,
                 prijs = productPrijs,
                 frequentie = freqenum,
-                status = statusEnum,
+                status = statusEnum
             )
         )
+        println(resultaat.toString())
 
         println("Resultaat van aanmaken product: $resultaat")
-        execution.setVariable(resultaatPV, resultaat)
-        println("Product aangemaakt met de naam: $productNaam, resultaat opgeslagen in de procesvariabele: $resultaatPV")
+        execution.setVariable(resultaatPV, resultaat.toString())
+//        println("Product aangemaakt met de naam: $productNaam, resultaat opgeslagen in de procesvariabele: $resultaatPV")
     }
 
     @PluginAction(
-        key = "update-product",
+        key = "update-productt",
         title = "Update product plugin action",
         description = "Update product plugin action",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun updateProduct(
         execution: DelegateExecution,
-        @PluginActionProperty productUUID: String,
+        @PluginActionProperty productUuid: String,
         @PluginActionProperty productNaam: String,
-        @PluginActionProperty productTypeUUID: String,
+        @PluginActionProperty productTypeUuid: String,
         @PluginActionProperty eigenaarBSN: String,
+        @PluginActionProperty aanvraagZaakUrn: String?,
+        @PluginActionProperty aanvraagZaakUrl: String?,
         @PluginActionProperty gepubliceerd: Boolean,
         @PluginActionProperty productPrijs: String,
         @PluginActionProperty frequentie: String,
         @PluginActionProperty status: String,
         @PluginActionProperty resultaatPV: String
     ) {
-        val requestMap = mutableMapOf<String, Any>()
-
-        requestMap["uuid"] = productUUID
-        if (productNaam.isNotBlank()) requestMap["naam"] = productNaam
-        if (productTypeUUID.isNotBlank()) requestMap["producttypeUuid"] = productTypeUUID
-        if (eigenaarBSN.isNotBlank()) requestMap["eigenaren"] = listOf(mapOf("bsn" to eigenaarBSN))
-        requestMap["gepubliceerd"] = gepubliceerd
-        if (productPrijs.isNotBlank()) requestMap["prijs"] = productPrijs
-        if (frequentie.isNotBlank()) requestMap["frequentie"] = toFreqEnum(frequentie)
-        if (status.isNotBlank()) requestMap["status"] = toStatusEnum(status)
-
-        println(requestMap)
+        println("START")
+        val freqenum = toFreqEnum(frequentie)
+        val statusEnum = toStatusEnum(status)
 
         val result = openProductClient.updateProduct(
             baseUrl,
             authenticationPluginConfiguration,
-            requestMap
+            ProductRequest(
+                uuid = productUuid,
+                naam = productNaam,
+                producttypeUuid = productTypeUuid,
+                eigenaren = listOf(
+                    EigenaarRequest(
+                        bsn = eigenaarBSN
+                    )
+                ),
+                gepubliceerd = gepubliceerd as Boolean?,
+                aanvraagZaakUrn = aanvraagZaakUrn,
+                aanvraagZaakUrl = aanvraagZaakUrl,
+                prijs = productPrijs,
+                frequentie = freqenum,
+                status = statusEnum
+            )
         )
 
         execution.setVariable(resultaatPV, result)
-        println("Product geupdate met UUID: $productUUID, resultaat opgeslagen in de procesvariabele: $resultaatPV")
+        println("Product geupdate met UUID: $productUuid, resultaat opgeslagen in de procesvariabele: $resultaatPV")
     }
 
     @PluginAction(

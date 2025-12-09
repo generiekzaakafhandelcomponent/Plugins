@@ -1,13 +1,13 @@
 interface UpdateProductConfig {
-    productUUID: string;
-    productName: string;
-    productTypeUUID: string;
-    ownerBSN: string;
-    published: boolean;
-    productPrice: number;
+    productUuid: string;
+    productNaam: string;
+    productTypeUuid: string;
+    eigenaarBSN: string;
+    gepubliceerd: boolean;
+    productPrijs: string;
     frequentie: string;
     status: string;
-    resultPV: string;
+    resultaatPV: string;
 }
 
 export {UpdateProductConfig};
