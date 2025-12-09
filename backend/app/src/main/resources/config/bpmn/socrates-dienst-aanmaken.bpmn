@@ -4,41 +4,56 @@
     <bpmn:startEvent id="StartSocrates" name="StartSocrates">
       <bpmn:outgoing>Flow_0cbxu2r</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0cbxu2r" sourceRef="StartSocrates" targetRef="dienst-aanmaken-task" />
+    <bpmn:sequenceFlow id="Flow_0cbxu2r" sourceRef="StartSocrates" targetRef="Activity_1b547gj" />
     <bpmn:endEvent id="End_Event_dienst_aanmaken" name="EndEvent dienst aanmaken">
       <bpmn:incoming>Flow_0qg3hwn</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0qg3hwn" sourceRef="dienst-aanmaken-task" targetRef="End_Event_dienst_aanmaken" />
     <bpmn:serviceTask id="dienst-aanmaken-task" name="Socrates dienst aanmaken" camunda:expression="${true}">
-      <bpmn:incoming>Flow_0cbxu2r</bpmn:incoming>
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_1rs8g3i</bpmn:incoming>
       <bpmn:outgoing>Flow_0qg3hwn</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1rs8g3i" sourceRef="Activity_1b547gj" targetRef="dienst-aanmaken-task" />
+    <bpmn:scriptTask id="Activity_1b547gj" name="zet Socrates input" scriptFormat="javascript" camunda:resultVariable="socratesInput">
+      <bpmn:incoming>Flow_0cbxu2r</bpmn:incoming>
+      <bpmn:outgoing>Flow_1rs8g3i</bpmn:outgoing>
+      <bpmn:script>execution.setVariable("socratesInput", "{\"aanvraagdatum\":\"2025-12-04\",\"aanvraagid\":\"FDadCF1F-9B51-0FCa-6914-B53A8341f35b\",\"codeOntvangendeGemeente\":\"string\",\"huishouding\":{\"aanvrager\":{\"aNummer\":\"string\",\"burgerservicenummer\":\"187441250\",\"geboortedatum\":\"2025-12-04\",\"partner\":{\"partnerRelatietype\":1},\"geslachtsaanduiding\":0,\"geslachtsnaamstam\":\"OLRRf\",\"voorlettersAanschrijving\":\",ve@dZc`JI=FsWvMaFqf# $fkd\/V\",\"voornamen\":\"LaSxGGgNEIXgzHXemUcdkHGDXaFvxHcmrhFrFtKo\",\"voorvoegsel\":\"A\",\"naamgebruik\":1,\"geslachtsnaamPartner\":\"EUVFOpdAKWpeSyl f vbTashyVC\",\"codeBrpGegevensGeheim\":0,\"nationaliteit\":[0]},\"medeaanvrager\":{\"aNummer\":\"string\",\"burgerservicenummer\":\"407863869\",\"geboortedatum\":\"2025-12-04\",\"partner\":{\"partnerRelatietype\":1},\"geslachtsaanduiding\":0,\"geslachtsnaamstam\":\"yNqfVOGqjhhQT\",\"voorlettersAanschrijving\":\"@&amp;sybV,|PC;ChWtZIe[\/sE%]Tj;m+@\\\\XX[Vx?A\\\"rg| xV\\\"+HB\\\\zU?My|VAY[\\\\\\\"+mJ'eZ?EQAjaLL_Xf!Ma\\\"ixR-hs{THCfPE)\",\"voornamen\":\"QgHuqMvVsBNCSk vnIjiWHVmHEnsqDPEfItJEWw\",\"voorvoegsel\":\"iBJgidcP\",\"naamgebruik\":1,\"geslachtsnaamPartner\":\"vkbOJxVBeEBPhrDvCEIJisFElmqZAInuFNnzteWWx\",\"codeBrpGegevensGeheim\":0,\"nationaliteit\":[0]}},\"ingangBijstandsuitkering\":{\"datumMeldingBijGemeente\":\"2025-12-04\",\"gewensteStartdatumUitkering\":\"2025-12-04\"}}");</bpmn:script>
+    </bpmn:scriptTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="socrates-dienst-aanmaken">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartSocrates">
-        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <dc:Bounds x="212" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="164" y="142" width="67" height="14" />
+          <dc:Bounds x="197" y="142" width="67" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0ify93v_di" bpmnElement="End_Event_dienst_aanmaken">
-        <dc:Bounds x="432" y="99" width="36" height="36" />
+        <dc:Bounds x="612" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="411" y="142" width="81" height="27" />
+          <dc:Bounds x="591" y="142" width="81" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0huy8au_di" bpmnElement="dienst-aanmaken-task">
-        <dc:Bounds x="280" y="77" width="100" height="80" />
+        <dc:Bounds x="450" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0p5fdzj_di" bpmnElement="Activity_1b547gj">
+        <dc:Bounds x="310" y="77" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0cbxu2r_di" bpmnElement="Flow_0cbxu2r">
-        <di:waypoint x="215" y="117" />
-        <di:waypoint x="280" y="117" />
+        <di:waypoint x="248" y="117" />
+        <di:waypoint x="310" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0qg3hwn_di" bpmnElement="Flow_0qg3hwn">
-        <di:waypoint x="380" y="117" />
-        <di:waypoint x="432" y="117" />
+        <di:waypoint x="550" y="117" />
+        <di:waypoint x="612" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rs8g3i_di" bpmnElement="Flow_1rs8g3i">
+        <di:waypoint x="410" y="117" />
+        <di:waypoint x="450" y="117" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -16,6 +16,7 @@
 
 package com.ritense.valtimoplugins.socrates.plugin
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
@@ -28,9 +29,10 @@ import org.springframework.stereotype.Component
 class SocratesPluginFactory(
     pluginService: PluginService,
     val client: SocratesClient,
+    val mapper: ObjectMapper
 ) : PluginFactory<SocratesPlugin>(pluginService) {
 
     override fun create(): SocratesPlugin {
-        return SocratesPlugin(client)
+        return SocratesPlugin(client, mapper)
     }
 }

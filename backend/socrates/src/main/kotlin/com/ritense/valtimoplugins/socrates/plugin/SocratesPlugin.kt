@@ -16,6 +16,8 @@
 
 package com.ritense.valtimoplugins.socrates.plugin
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
@@ -37,6 +39,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 open class SocratesPlugin(
     private val socratesClient: SocratesClient,
+    private val mapper: ObjectMapper,
 ) {
 
     @PluginProperty(key = "socratesApiUrl", secret = false)
@@ -62,7 +65,8 @@ open class SocratesPlugin(
     ) {
         setsocratesClientParams()
 
-        var request = execution.getVariable(inputProcessVariable) as LoBehandeld
+        var requestString = execution.getVariable(inputProcessVariable) as String
+        var request = mapper.readValue<LoBehandeld>(requestString)
         var respons  = socratesClient.dienstAanmaken(zaakId, request)
 
        execution.setVariable(processVariableName, respons)
