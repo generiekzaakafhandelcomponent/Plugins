@@ -16,6 +16,7 @@
 
 package com.ritense.valtimoplugins.socrates.autoconfiguration
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
 import com.ritense.valtimoplugins.socrates.plugin.SocratesPluginFactory
@@ -40,8 +41,9 @@ class SocratesAutoConfiguration {
     fun createsocratesPluginFactory(
         pluginService: PluginService,
         socratesClient: SocratesClient,
+        maooer: ObjectMapper
     ): SocratesPluginFactory {
-        return SocratesPluginFactory(pluginService, socratesClient)
+        return SocratesPluginFactory(pluginService, socratesClient, maooer)
     }
 
 }

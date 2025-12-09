@@ -17,12 +17,14 @@
 package com.ritense.valtimoplugins.socrates.client
 
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimoplugins.socrates.error.SocratesError
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
+import java.io.IOException
 import java.net.URI
 
 
@@ -39,25 +41,34 @@ class SocratesClient(
             loBehandeld = loBehandeld,
         )
 
-        val response = restClientBuilder
-            .clone()
-            .build()
-            .post()
-            .uri {
-                it.scheme(socratesBaseUri!!.scheme)
-                    .host(socratesBaseUri!!.host)
-                    .path(socratesBaseUri!!.path)
-                    .path(SOCRATES_API_LOBehandeld)
-                    .port(socratesBaseUri!!.port)
-                    .build()
+        val response = try {
+            restClientBuilder
+                .clone()
+                .build()
+                .post()
+                .uri {
+                    it.scheme(socratesBaseUri!!.scheme)
+                        .host(socratesBaseUri!!.host)
+                        .path(socratesBaseUri!!.path)
+                        .path(SOCRATES_API_LOBehandeld)
+                        .port(socratesBaseUri!!.port)
+                        .build()
+                }
+                .headers {
+                    it.contentType = MediaType.APPLICATION_JSON
+                }
+                .accept(MediaType.APPLICATION_JSON)
+                .body(requestBody)
+                .retrieve()
+                .body<LOBehandeldRespons>()
+        } catch (e: Exception) {
+            if (e.cause is IOException) {
+                throw SocratesError(e, "SOCRATES_CONNECT_ERROR")
             }
-            .headers {
-                it.contentType = MediaType.APPLICATION_JSON
+            else {
+                throw e
             }
-            .accept(MediaType.APPLICATION_JSON)
-            .body(requestBody)
-            .retrieve()
-            .body<LOBehandeldRespons>()
+        }
 
         if (response == null) {
             throw IllegalStateException("no respons")
