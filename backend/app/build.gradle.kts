@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":backend:document-search"))
     implementation(project(":backend:docsys"))
     implementation(project(":backend:value-mapper"))
+    implementation(project(":backend:socrates"))
 }
 
 tasks.jar {
@@ -48,7 +49,7 @@ apply(from = "../../gradle/environment.gradle.kts")
 val configureEnvironment = extra["configureEnvironment"] as (task: ProcessForkOptions) -> Unit
 
 tasks.bootRun {
-    dependsOn("composeUp")
+   // dependsOn("composeUp")
     systemProperty("spring.profiles.include", "dev")
     val t = this
     doFirst {

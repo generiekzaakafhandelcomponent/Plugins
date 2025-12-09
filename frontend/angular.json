@@ -1113,8 +1113,49 @@
           }
         }
       }
+    },
+    "@valtimo-plugins/socrates": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/socrates",
+      "sourceRoot": "projects/valtimo-plugins/socrates/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/socrates/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/socrates/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/socrates/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/socrates/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/socrates/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/socrates/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/socrates/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/socrates/src/**/*.ts",
+              "projects/valtimo-plugins/socrates/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
-  },
+},
   "cli": {
     "analytics": false
   }

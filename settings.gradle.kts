@@ -17,6 +17,7 @@ include(
     "backend:slack",
     "backend:smtpmail",
     "backend:spotler",
+    "backend:socrates",
     "backend:suwinet",
     "backend:suwinet-auth",
     "backend:token-authentication",
