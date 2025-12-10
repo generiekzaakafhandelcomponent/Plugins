@@ -26,9 +26,11 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
+import com.ritense.valtimoplugins.socrates.error.SocratesError
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.camunda.bpm.engine.delegate.BpmnError
 import java.net.URI
 import org.camunda.bpm.engine.delegate.DelegateExecution
 
@@ -64,12 +66,23 @@ open class SocratesPlugin(
         @PluginActionProperty processVariableName: String
     ) {
         setsocratesClientParams()
+        logger.debug { "dienst-aanmaken start" }
 
-        var requestString = execution.getVariable(inputProcessVariable) as String
-        var request = mapper.readValue<LoBehandeld>(requestString)
-        var respons  = socratesClient.dienstAanmaken(zaakId, request)
+        try {
+            var requestString = execution.getVariable(inputProcessVariable) as String
+            var request = mapper.readValue<LoBehandeld>(requestString)
 
-       execution.setVariable(processVariableName, respons)
+            var respons  = socratesClient.dienstAanmaken(zaakId, request)
+
+            execution.setVariable(processVariableName, respons)
+        } catch (e: Exception) {
+            if(e is SocratesError) {
+                throw BpmnError(e.errorCode)
+            }
+            else {
+                throw e
+            }
+        }
     }
 
     companion object {
