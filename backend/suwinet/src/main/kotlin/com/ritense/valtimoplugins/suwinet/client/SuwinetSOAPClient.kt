@@ -35,6 +35,11 @@ class SuwinetSOAPClient {
                     "Woonplaatsnaam"
                 )
             )
+            loggingFeature.addSensitiveProtocolHeaderNames(
+                setOf<String>(
+                    "Authorization"
+                )
+            )
             this.features.add(loggingFeature)
             create() as T
         }
