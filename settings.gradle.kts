@@ -10,6 +10,7 @@ include(
     "backend:mTLS-SSLContext",
     "backend:notify-nl",
     "backend:object-management",
+    "backend:oip-klanttaak",
     "backend:publictask",
     "backend:rotterdam-oracle-ebs",
     "backend:slack",
@@ -56,3 +57,4 @@ pluginManagement {
         id("org.jlleitschuh.gradle.ktlint") version ktlintVersion
     }
 }
+

@@ -28,6 +28,7 @@
       "@valtimo-plugins/mtls-sslcontext": ["dist/valtimo-plugins/mtls-sslcontext"],
       "@valtimo-plugins/notify-nl": ["dist/valtimo-plugins/notify-nl"],
       "@valtimo-plugins/object-management": ["dist/valtimo-plugins/object-management"],
+      "@valtimo-plugins/oip-klanttaak": ["dist/valtimo-plugins/oip-klanttaak"],
       "@valtimo-plugins/publictask": ["dist/valtimo-plugins/publictask"],
       "@valtimo-plugins/rotterdam-oracle-ebs": ["dist/valtimo-plugins/rotterdam-oracle-ebs"],
       "@valtimo-plugins/slack": ["dist/valtimo-plugins/slack"],
@@ -35,7 +36,7 @@
       "@valtimo-plugins/spotler": ["dist/valtimo-plugins/spotler"],
       "@valtimo-plugins/suwinet": ["dist/valtimo-plugins/suwinet"],
       "@valtimo-plugins/valtimo-ocr": ["dist/valtimo-plugins/valtimo-ocr"],
-      "@valtimo-plugins/xential": ["dist/valtimo-plugins/xential"]
+      "@valtimo-plugins/xential": ["dist/valtimo-plugins/xential"],
     }
   },
   "include": [
