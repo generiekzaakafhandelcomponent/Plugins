@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":backend:document-search"))
     implementation(project(":backend:docsys"))
     implementation(project(":backend:value-mapper"))
+    implementation(project(":backend:socrates"))
 }
 
 tasks.jar {

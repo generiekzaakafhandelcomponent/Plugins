@@ -1,0 +1,470 @@
+openapi: 3.1.0
+info:
+  title: LO Behandeld API
+  version: v1
+paths:
+  /api/v{version}/LOBehandeld:
+    post:
+      tags:
+        - LOBehandeld
+      parameters:
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/ZaakLOBehandeld'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZaakLOBehandeld'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ZaakLOBehandeld'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ZaakLOBehandeld'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseLOBehandeld'
+components:
+  schemas:
+    CodeNationaliteit:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 27
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 36
+        - 37
+        - 38
+        - 39
+        - 40
+        - 41
+        - 42
+        - 43
+        - 44
+        - 45
+        - 46
+        - 47
+        - 48
+        - 49
+        - 50
+        - 51
+        - 52
+        - 53
+        - 54
+        - 55
+        - 56
+        - 57
+        - 58
+        - 59
+        - 60
+        - 61
+        - 62
+        - 63
+        - 64
+        - 65
+        - 66
+        - 67
+        - 68
+        - 69
+        - 70
+        - 71
+        - 72
+        - 73
+        - 74
+        - 75
+        - 76
+        - 77
+        - 78
+        - 79
+        - 80
+        - 81
+        - 82
+        - 83
+        - 84
+        - 85
+        - 86
+        - 87
+        - 88
+        - 100
+        - 101
+        - 104
+        - 105
+        - 106
+        - 108
+        - 109
+        - 110
+        - 111
+        - 112
+        - 113
+        - 114
+        - 115
+        - 116
+        - 117
+        - 118
+        - 119
+        - 120
+        - 121
+        - 122
+        - 123
+        - 124
+        - 125
+        - 126
+        - 127
+        - 128
+        - 129
+        - 130
+        - 131
+        - 132
+        - 133
+        - 134
+        - 135
+        - 136
+        - 137
+        - 138
+        - 139
+        - 140
+        - 142
+        - 143
+        - 144
+        - 145
+        - 147
+        - 148
+        - 149
+        - 151
+        - 152
+        - 154
+        - 155
+        - 156
+        - 157
+        - 200
+        - 202
+        - 204
+        - 205
+        - 206
+        - 207
+        - 208
+        - 211
+        - 212
+        - 213
+        - 214
+        - 216
+        - 218
+        - 219
+        - 222
+        - 223
+        - 250
+        - 251
+        - 252
+        - 253
+        - 254
+        - 255
+        - 256
+        - 259
+        - 261
+        - 262
+        - 263
+        - 264
+        - 265
+        - 267
+        - 268
+        - 300
+        - 301
+        - 302
+        - 303
+        - 304
+        - 305
+        - 306
+        - 307
+        - 308
+        - 309
+        - 310
+        - 312
+        - 313
+        - 314
+        - 315
+        - 316
+        - 317
+        - 318
+        - 319
+        - 320
+        - 321
+        - 322
+        - 324
+        - 325
+        - 326
+        - 327
+        - 328
+        - 329
+        - 331
+        - 333
+        - 334
+        - 335
+        - 336
+        - 337
+        - 338
+        - 339
+        - 340
+        - 341
+        - 342
+        - 345
+        - 400
+        - 401
+        - 402
+        - 404
+        - 405
+        - 421
+        - 424
+        - 425
+        - 429
+        - 430
+        - 431
+        - 432
+        - 437
+        - 442
+        - 443
+        - 444
+        - 445
+        - 446
+        - 447
+        - 448
+        - 449
+        - 450
+        - 451
+        - 452
+        - 453
+        - 454
+        - 455
+        - 499
+        - 500
+      type: integer
+      description: 0 = Onbekend, 1 = Nederlandse, 2 = BehandeldalsNederlander, 27 = Slowaakse, 28 = Tsjechische, 29 = BurgervanBosniëHerzegovina, 30 = Georgische, 31 = Turkmeense, 32 = Tadzjiekse, 33 = Oezbeekse, 34 = Oekraïense, 35 = Kirgizische, 36 = Moldavische, 37 = Kazachse, 38 = Belarussische, 39 = Azerbeidzjaanse, 40 = Armeense, 41 = Russische, 42 = Sloveense, 43 = Kroatische, 44 = Letse, 45 = Estische, 46 = Litouwse, 47 = Marshalleilandse, 48 = Myanmarese, 49 = Namibische, 50 = Albanese, 51 = Andorrese, 52 = Belgische, 53 = Bulgaarse, 54 = Deense, 55 = BurgervandeBondsrepubliekDuitsland, 56 = Finse, 57 = Franse, 58 = Jemenitische, 59 = Griekse, 60 = Britsburger, 61 = Hongaarse, 62 = Ierse, 63 = IJslandse, 64 = Italiaanse, 65 = Joegoslavische, 66 = Liechtensteinse, 67 = Luxemburgse, 68 = Maltese, 69 = Monegaskische, 70 = Noorse, 71 = Oostenrijkse, 72 = Poolse, 73 = Portugese, 74 = Roemeense, 75 = BurgervandeSovjetUnie, 76 = SanMarinese, 77 = Spaanse, 78 = TsjechoSlowaakse, 79 = Vaticaanse, 80 = Zweedse, 81 = Zwitserse, 82 = OostDuitse, 83 = Britsonderdaan, 84 = Eritrese, 85 = Britsoverzeesburger, 86 = Macedonische, 87 = Kosovaarse, 88 = BurgervandeRepubliekNoordMacedonië, 100 = Algerijnse, 101 = Angolese, 104 = Burundese, 105 = Botswaanse, 106 = Burkinese, 108 = CentraalAfrikaanse, 109 = Comorese, 110 = BurgervanCongo, 111 = Beninse, 112 = Egyptische, 113 = EquatoriaalGuinese, 114 = Ethiopische, 115 = Djiboutiaanse, 116 = Gabonese, 117 = Gambiaanse, 118 = Ghanese, 119 = Guinese, 120 = Ivoriaanse, 121 = Kaapverdische, 122 = Kameroense, 123 = Kenyaanse, 124 = Zaïrese, 125 = Lesothaanse, 126 = Liberiaanse, 127 = Libische, 128 = Malagassische, 129 = Malawische, 130 = Malinese, 131 = Marokkaanse, 132 = Mauritaanse, 133 = Mauritiaanse, 134 = Mozambikaanse, 135 = Swazische, 136 = Nigerese, 137 = Nigeriaanse, 138 = Ugandese, 139 = GuineeBissause, 140 = ZuidAfrikaanse, 142 = Zimbabwaanse, 143 = Rwandese, 144 = BurgervanSãoToméenPrincipe, 145 = Senegalese, 147 = SierraLeoonse, 148 = Soedanese, 149 = Somalische, 151 = Tanzaniaanse, 152 = Togolese, 154 = Tsjadische, 155 = Tunesische, 156 = Zambiaanse, 157 = ZuidSoedanese, 200 = Bahamaanse, 202 = Belizaanse, 204 = Canadese, 205 = CostaRicaanse, 206 = Cubaanse, 207 = Dominicaanse, 208 = Salvadoraanse, 211 = Guatemalaanse, 212 = Haïtiaanse, 213 = Hondurese, 214 = Jamaicaanse, 216 = Mexicaanse, 218 = Nicaraguaanse, 219 = Panamese, 222 = BurgervanTrinidadenTobago, 223 = Amerikaansburger, 250 = Argentijnse, 251 = Barbadaanse, 252 = Boliviaanse, 253 = Braziliaanse, 254 = Chileense, 255 = Colombiaanse, 256 = Ecuadoraanse, 259 = Guyaanse, 261 = Paraguayaanse, 262 = Peruaanse, 263 = Surinaamse, 264 = Uruguayaanse, 265 = Venezolaanse, 267 = Grenadaanse, 268 = BurgervanSaintKittsenNevis, 300 = Afghaanse, 301 = Bahreinse, 302 = Bhutaanse, 303 = Burmaanse, 304 = Bruneise, 305 = Cambodjaanse, 306 = SriLankaanse, 307 = Chinese, 308 = Cyprische, 309 = Filipijnse, 310 = Taiwanese, 312 = Indiase, 313 = Indonesische, 314 = Iraakse, 315 = Iraanse, 316 = Israëlische, 317 = Japanse, 318 = NoordJemenitische, 319 = Jordaanse, 320 = Koeweitse, 321 = Laotiaanse, 322 = Libanese, 324 = Maldivische, 325 = Maleisische, 326 = Mongolische, 327 = Omaanse, 328 = Nepalese, 329 = NoordKoreaanse, 331 = Pakistaanse, 333 = Qatarese, 334 = SaoediArabische, 335 = Singaporese, 336 = Syrische, 337 = Thaise, 338 = BurgervandeVerenigdeArabischeEmiraten, 339 = Turkse, 340 = ZuidJemenitische, 341 = ZuidKoreaanse, 342 = Vietnamese, 345 = Bengalese, 400 = Australische, 401 = PapoeaNieuwGuinese, 402 = NieuwZeelandse, 404 = WestSamoaanse, 405 = Samoaanse, 421 = BurgervanAntiguaenBarbuda, 424 = Vanuatuaanse, 425 = Fijische, 429 = BurgervanBritseafhankelijkegebieden, 430 = Tongaanse, 431 = Nauruaanse, 432 = Palause, 437 = Amerikaansonderdaan, 442 = Salomonseilandse, 443 = Micronesische, 444 = Seychelse, 445 = Kiribatische, 446 = Tuvaluaanse, 447 = SaintLuciaanse, 448 = BurgervanDominica, 449 = BurgervanSaintVincentendeGrenadines, 450 = BritishNationalOverseas, 451 = BurgervanDemocratischeRepubliekCongo, 452 = BurgervanTimorLeste, 453 = BurgervanServiëenMontenegro, 454 = Servische, 455 = Montenegrijnse, 499 = Staatloos, 500 = VastgesteldnietNederlander
+      format: int32
+    Geheim:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+      type: integer
+      description: 0 = geen beperking, 1 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift, 2 = niet aan kerken, 3 = niet aan vrije derden, 4 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift en niet aan kerken, 5 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift en niet aan vrije derden, 6 = niet aan kerken en niet aan vrije derden, 7 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift en niet aan vrije derden en niet aan kerken
+      format: int32
+    Geslachtsaanduiding:
+      enum:
+        - 0
+        - 1
+        - 2
+      type: integer
+      description: 0 = Onbekend, 1 = Man, 2 = Vrouw
+      format: int32
+    Huishouding:
+      required:
+        - aanvrager
+      type: object
+      properties:
+        aanvrager:
+          $ref: '#/components/schemas/Persoon'
+        medeaanvrager:
+          $ref: '#/components/schemas/Persoon'
+      additionalProperties: false
+    IngangBijstandsuitkering:
+      required:
+        - datumMeldingBijGemeente
+      type: object
+      properties:
+        datumMeldingBijGemeente:
+          type: string
+          description: Indien er direct een aanvraag is gedaan dan is de melddatum gelijk aan datum waarop aanvraag is ontvangen.
+          format: date
+        gewensteStartdatumUitkering:
+          type: string
+          description: Gewenste datum waarop uitkering ingaat
+          format: date
+          nullable: true
+      additionalProperties: false
+    LOBehandeld:
+      required:
+        - aanvraagdatum
+        - aanvraagid
+        - codeOntvangendeGemeente
+        - huishouding
+        - ingangBijstandsuitkering
+      type: object
+      properties:
+        aanvraagdatum:
+          type: string
+          description: De datum waarop de aanvraag is ingediend.Doorgaans is dit de verzenddatum, echter, de aanvraag kan leiden tot een compleetheid- en juistheidtoets. Dit kan betekenen dat de aanvraag pas later wordt gecompleteerd.
+          format: date
+        aanvraagid:
+          pattern: ^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$
+          type: string
+        codeOntvangendeGemeente:
+          type: string
+          description: De code van de gemeente, die de aanvraag ontvangt en verwerkt.
+        huishouding:
+          $ref: '#/components/schemas/Huishouding'
+        ingangBijstandsuitkering:
+          $ref: '#/components/schemas/IngangBijstandsuitkering'
+      additionalProperties: false
+    Naamgebruik:
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+      type: integer
+      description: |-
+        Een aanduiding voor de wijze van aanschrijving van de NATUURLIJK PERSOON.
+
+         1 = EigenNaam, 2 = ExEchtgenoot, 3 = ExEchtgenootEigenNaam, 4 = EigenNaamExEchtgenoot
+      format: int32
+    Partner:
+      required:
+        - partnerRelatietype
+      type: object
+      properties:
+        partnerRelatietype:
+          $ref: '#/components/schemas/PartnerRelatietype'
+      additionalProperties: false
+    PartnerRelatietype:
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+      type: integer
+      description: 1 = Partnergehuwd, 2 = Partnergeregistreerd, 3 = Partnerongehuwd, 4 = Overigefamilierelatie
+      format: int32
+    Persoon:
+      required:
+        - burgerservicenummer
+        - codeBrpGegevensGeheim
+        - geboortedatum
+        - geslachtsaanduiding
+        - geslachtsnaamPartner
+        - geslachtsnaamstam
+        - naamgebruik
+        - voorlettersAanschrijving
+        - voornamen
+        - voorvoegsel
+      type: object
+      properties:
+        aNummer:
+          type: string
+          description: 'Het administratienummer van een PERSOON binnen de gemeentelijke basisadministratie (GBA), zoals bedoeld als in artikel 50 van de Wet GBA.Norminstantie: GBA'
+          nullable: true
+        burgerservicenummer:
+          pattern: ^[0-9]{9}$
+          type: string
+          description: 'Een uniek identificerend nummer van een PERSOON, die ingeschreven staat in de Gemeentelijke Basisadministratie Persoonsgegevens (GBA) of de Registratie Niet-ingezetenen (RNI).Bron: SGROpmerking:Elk nummer moet voldoen aan de bij de voorwaarden beschreven proef.Voorwaarden waarde BSN:  Indien het nummer per cijfer wordt aangeduid als (s0 s1 s2 s3 s4 s5 s6 s7 s8), dan is de volgende voorwaarde te controleren: (9 x s0) + (8 x s1) + (7 x s2) + (6 x s3) + (5 x s4) + (4 x s5) + (3 x s6) + (2 x s7) - (1 x s8) is deelbaar door 11Toelichting:  Het Burgerservicenummer onderscheidt zich van het Sofi-nummer voornamelijk voor wat betreft het bereik ervan en de wijze waarop wettelijk is vastgelegd wat met behulp van het Burgerservicenummer mag gebeuren.  De gebruikers van het Burgerservicenummer bestaan uit overheidsorganen alsmede niet-overheidsorganen. Omdat het niet duidelijk is wat de criteria zijn om niet-overheidsorganen wel of niet toe te laten tot het gebruik van het Burgerservicenummer is besloten om de gebruikersaspecten niet in de definitie op te nemen.De oorspronkelijke naamgeving en definitie van dit gegevenselement conform de (authentieke) bron:Elementnaam:    BurgerservicenummerDefinitie:    Elk ingeschreven persoon heeft een BSN, een nummer dat de persoon uniek identificeert in alle overheidsadministraties.Norminstantie:    GBA'
+        geboortedatum:
+          type: string
+          description: 'De datum van geboorte van een PERSOON.Bron: NEN 1888:2002 - Geboortedatum (overgenomen zoals in SGR)Opmerking:Deze datum staat gewoonlijk vermeld op de geboorteakte dan wel een ander brondocument.Een GEBOORTEDATUM behoort te worden vastgesteld in verband met zijn rechtsgeldige betekenis, in het bijzonder voor de instellingen die minimaal een SZ-WET uitvoeren.'
+          format: date
+        partner:
+          $ref: '#/components/schemas/Partner'
+        geslachtsaanduiding:
+          $ref: '#/components/schemas/Geslachtsaanduiding'
+        geslachtsnaamstam:
+          pattern: ^[A-Za-z ]{1,40}$
+          type: string
+          description: De stam van de geslachtsnaam. Deze is ontadaan van voorvoegsels en titels.
+        voorlettersAanschrijving:
+          pattern: ^([^.^\d]*)$
+          type: string
+          description: De voorletters waarmee een persoon aangeschreven wil worden.
+        voornamen:
+          pattern: ^[A-Za-z ]{1,200}$
+          type: string
+          description: De samenvoeging van alle exemplaren van voornaam van een persoon.
+        voorvoegsel:
+          pattern: ^[A-Za-z ]{1,10}$
+          type: string
+          description: Voorvoegsel behorende bij de stam van de geslachtsnaam.
+        naamgebruik:
+          $ref: '#/components/schemas/Naamgebruik'
+        geslachtsnaamPartner:
+          pattern: ^[A-Za-z ]{1,51}$
+          type: string
+        codeBrpGegevensGeheim:
+          $ref: '#/components/schemas/Geheim'
+        nationaliteit:
+          maxItems: 2
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/CodeNationaliteit'
+          description: Codes die de Nationaliteiten van een PERSOON aangeeft.
+          nullable: true
+      additionalProperties: false
+    ResponseLOBehandeld:
+      required:
+        - berichtId
+        - responseId
+      type: object
+      properties:
+        berichtId:
+          type: string
+          description: maakt een response aan met de minimale gegevens
+          nullable: true
+        responseId:
+          type: string
+          description: identificerend gegeven van verwerking door Wigo4it
+          nullable: true
+        timestamp:
+          type: string
+          description: datum tijd waarop verweking is afgerond
+          nullable: true
+        foutcode:
+          type: string
+          description: foutcode, indien er een fout is opgetreden
+          nullable: true
+        foutomschrijving:
+          type: string
+          description: korte functionele omschrijving van fout
+          nullable: true
+        details:
+          type: string
+          description: details van fout, indien aanwezig
+          nullable: true
+        fouten:
+          type: array
+          items:
+            type: string
+          description: lijst van individuele validatiefouten, indien aanwezig
+          nullable: true
+      additionalProperties: false
+      description: response die altijd gegeven wordt
+    ZaakLOBehandeld:
+      required:
+        - identificatie
+        - loBehandeld
+      type: object
+      properties:
+        identificatie:
+          type: string
+          description: De unieke identificatie van de ZAAK binnen de organisatie die verantwoordelijk is voor de behandeling van de ZAAK.
+        loBehandeld:
+          $ref: '#/components/schemas/LOBehandeld'
+      additionalProperties: false

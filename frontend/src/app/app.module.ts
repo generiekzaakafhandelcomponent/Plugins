@@ -163,6 +163,10 @@ import {SuwinetAuthPluginModule} from "../../projects/valtimo-plugins/suwinet-au
 import {
     suwinetAuthPluginSpecification
 } from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.specification";
+import {SocratesPluginModule} from "../../projects/valtimo-plugins/socrates/src/lib/socrates-plugin.module";
+import {
+    socratesPluginSpecification
+} from "../../projects/valtimo-plugins/socrates/src/lib/socrates-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -264,6 +268,7 @@ export function tabsFactory() {
         DocsysPluginModule,
         TokenAuthenticationPluginModule,
         OpenKlantPluginModule,
+        SocratesPluginModule,
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -303,6 +308,7 @@ export function tabsFactory() {
             tokenAuthenticationPluginSpecification,
             zakenApiPluginSpecification,
             openKlantPluginSpecification,
+            socratesPluginSpecification
         ],
     }, {
         provide: CASE_TAB_TOKEN,
