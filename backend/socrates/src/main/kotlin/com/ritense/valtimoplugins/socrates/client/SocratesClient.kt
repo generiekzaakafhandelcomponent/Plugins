@@ -63,9 +63,11 @@ class SocratesClient(
                 .body<LOBehandeldRespons>()
         } catch (e: Exception) {
             if (e.cause is IOException) {
+                logger.error(e) { "error connecting to Socrates" }
                 throw SocratesError(e, "SOCRATES_CONNECT_ERROR")
             }
             else {
+                logger.error(e) { "error met aanmaken dienst in Socrates" }
                 throw e
             }
         }
