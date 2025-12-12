@@ -33,11 +33,11 @@ import java.time.LocalDate
 import java.util.UUID
 
 class OipKlanttaakService(
-    private val objectManagementService: ObjectManagementService,
     private val pluginService: PluginService,
+    private val objectManagementService: ObjectManagementService,
+    private val objectMapper: ObjectMapper,
     private val processDocumentService: ProcessDocumentService,
-    private val taskService: OperatonTaskService,
-    private val objectMapper: ObjectMapper
+    private val taskService: OperatonTaskService
 ) {
 
     fun delegateTaskToOip(
