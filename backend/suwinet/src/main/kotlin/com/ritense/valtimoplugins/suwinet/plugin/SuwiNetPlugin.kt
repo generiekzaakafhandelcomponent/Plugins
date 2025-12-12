@@ -402,6 +402,7 @@ class SuwiNetPlugin(
     fun getBijstandsregelingen(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String?,
         execution: DelegateExecution
     ) {
         logger.info { "Getting Bijstandsregelingen for case ${execution.businessKey}" }
@@ -414,7 +415,7 @@ class SuwiNetPlugin(
 
         try {
             suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(bsn,
-                suwinetBijstandsregelingenService.createBijstandsregelingenService())
+                suwinetBijstandsregelingenService.createBijstandsregelingenService(suffix))
                 ?.let {
                     execution.processInstance.setVariable(
                         resultProcessVariableName, objectMapper.convertValue(it)

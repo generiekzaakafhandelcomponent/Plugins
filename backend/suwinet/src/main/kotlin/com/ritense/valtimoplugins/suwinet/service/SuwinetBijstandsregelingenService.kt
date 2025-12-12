@@ -33,8 +33,13 @@ class SuwinetBijstandsregelingenService (
         this.soapClientConfig = soapClientConfig
     }
 
-    fun createBijstandsregelingenService(): BijstandsregelingenInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+    fun createBijstandsregelingenService(suffix: String?): BijstandsregelingenInfo {
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if(suffix != null) {
+            completeUrl = completeUrl.plus("/").plus(suffix)
+        }
+
         return suwinetSOAPClient
             .getService<BijstandsregelingenInfo>(
                 completeUrl,

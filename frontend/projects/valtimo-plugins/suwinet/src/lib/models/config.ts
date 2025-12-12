@@ -26,52 +26,56 @@ export interface SuwinetPluginConfig extends PluginConfigurationData {
     receiveTimeout: number;
 }
 
-export interface BrpPersoonInfoConfig {
+export interface BaseActionConfig {
+    suffix: string;
+}
+
+export interface BrpPersoonInfoConfig extends BaseActionConfig {
     bsn: string;
     resultProcessVariableName: string;
 }
 
-export interface BrpPartnerInfoConfig {
+export interface BrpPartnerInfoConfig extends BaseActionConfig {
     bsn: string;
     resultProcessVariableName: string;
 }
 
-export interface BijstandsRegelingenInfoConfig {
+export interface BijstandsRegelingenInfoConfig extends BaseActionConfig {
     bsn: string;
     resultProcessVariableName: string;
 }
 
-export interface BrpKinderenInfoConfig {
+export interface BrpKinderenInfoConfig extends BaseActionConfig {
     kinderenBsns: string;
     resultProcessVariableName: string;
 }
-export interface DUOPersoonsInfoComponent {
+export interface DUOPersoonsInfoComponent extends BaseActionConfig{
     bsn: string;
     resultProcessVariableName: string;
 }
 
-export interface DUOStudiefinancieringInfoComponent {
+export interface DUOStudiefinancieringInfoComponent extends BaseActionConfig{
     bsn: string;
     resultProcessVariableName: string;
 }
 
-export interface KadasterobjectenConfig {
+export interface KadasterobjectenConfig extends BaseActionConfig {
     bsn: string;
     resultProcessVariableName: string;
 }
 
-export interface RdwVoertuigenConfig {
+export interface RdwVoertuigenConfig extends BaseActionConfig {
     bsn: string;
     resultProcessVariableName: string;
 }
 
-export interface SVBPersoonsInfoComponent {
+export interface SVBPersoonsInfoComponent extends BaseActionConfig {
     bsn: string;
     resultProcessVariableName: string;
     maxPeriods: number;
 }
 
-export interface UwvInkomstenPersoonInfoConfig {
+export interface UwvInkomstenPersoonInfoConfig extends BaseActionConfig {
     bsn: string;
     resultProcessVariableName: string;
     maxPeriods: number;
