@@ -45,7 +45,7 @@
     <bpmn:sequenceFlow id="Flow_1qe90bb" sourceRef="OphalenKvkHandelsregisterBedrijfsnaamTask" targetRef="Gateway_0atlwtc" />
     <bpmn:sequenceFlow id="Flow_1ia9g59" name="kvk nummer niet gevonden" sourceRef="Gateway_0atlwtc" targetRef="KvkNietGevonden" />
     <bpmn:sequenceFlow id="Flow_0x3o4h3" name="kvk nummer gevonden, vestigingen opslaan" sourceRef="Gateway_0atlwtc" targetRef="StoreBedrijfsnaamTask">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable('kvkNummer')}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable('kvkZoekenResultaat')}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1do6agg" sourceRef="StoreBedrijfsnaamTask" targetRef="Event_1111mmu" />
     <bpmn:sequenceFlow id="Flow_0wq8uyx" sourceRef="KvkNietGevonden" targetRef="Event_1kw2ff6" />
