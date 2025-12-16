@@ -54,7 +54,7 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
         suwinetSOAPClient = Mockito.mock()
         nationaliteitenService = Mockito.mock()
         suwinetBrpInfoService = SuwinetBrpInfoService(suwinetSOAPClient, nationaliteitenService, dateTimeService)
-        suwinetBrpInfoService.setConfig(suwinetSOAPClientConfig)
+        suwinetBrpInfoService.setConfig(suwinetSOAPClientConfig, "")
     }
 
     @Test

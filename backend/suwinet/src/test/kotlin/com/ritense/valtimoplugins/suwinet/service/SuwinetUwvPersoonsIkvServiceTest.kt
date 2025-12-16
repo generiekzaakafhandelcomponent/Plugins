@@ -60,7 +60,7 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
             uwvCodeService,
             uwvSoortIkvService
         )
-        suwinetUwvPersoonsIkvService.setConfig(suwinetSOAPClientConfig)
+        suwinetUwvPersoonsIkvService.setConfig(suwinetSOAPClientConfig, "")
     }
 
     @Test

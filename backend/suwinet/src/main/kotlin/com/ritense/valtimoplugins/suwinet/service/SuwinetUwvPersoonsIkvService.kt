@@ -27,9 +27,11 @@ class SuwinetUwvPersoonsIkvService(
 ) {
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
     private var maxPeriods by Delegates.notNull<Int>()
+    var suffix: String? = ""
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun getUWVIkvInfoService(): UWVIkvInfo {
@@ -49,7 +51,7 @@ class SuwinetUwvPersoonsIkvService(
         uwvIkvInfoService: UWVIkvInfo,
         maxPeriods: Int
     ): UwvPersoonsIkvDto? {
-        logger.info { "Getting UWV inkomsten info from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting UWV inkomsten info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
         this.maxPeriods = maxPeriods
         try {
             val uwvPersoonsIkvInfo: UWVPersoonsIkvInfo = objectFactory
@@ -216,7 +218,7 @@ class SuwinetUwvPersoonsIkvService(
     )
 
     companion object {
-        const val SERVICE_PATH = "UWVDossierInkomstenGSD-v0200/v1"
+        const val SERVICE_PATH = "UWVDossierInkomstenGSD-v0200"
         const val SUWINET_DATEIN_PATTERN = "yyyyMMdd"
         const val DATEIN_PATTERN = "yyyy-MM-dd"
         private val objectFactory = ObjectFactory()

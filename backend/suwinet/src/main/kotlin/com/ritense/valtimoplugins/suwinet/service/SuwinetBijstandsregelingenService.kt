@@ -22,6 +22,7 @@ import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SzWetDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.VorderingDto
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.util.StringUtils
 import java.time.LocalDate
 
 class SuwinetBijstandsregelingenService (
@@ -29,15 +30,18 @@ class SuwinetBijstandsregelingenService (
 ) {
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    var suffix: String? = ""
+
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
-    fun createBijstandsregelingenService(suffix: String?): BijstandsregelingenInfo {
+    fun createBijstandsregelingenService(): BijstandsregelingenInfo {
         var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
 
-        if(suffix != null) {
-            completeUrl = completeUrl.plus("/").plus(suffix)
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
         }
 
         return suwinetSOAPClient
@@ -52,7 +56,7 @@ class SuwinetBijstandsregelingenService (
         bsn: String,
         infoService: BijstandsregelingenInfo
     ): BijstandsRegelingenDto? {
-        logger.info { "Getting Bijstandsregelingen from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting Bijstandsregelingen from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
 
         /* retrieve Bijstandsregeling info by bsn */
         val result = runCatching {

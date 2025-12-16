@@ -12,6 +12,7 @@ import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundExcepti
 import com.ritense.valtimoplugins.suwinet.model.UitkeringenDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import org.springframework.util.StringUtils
 import java.io.IOException
 
 import java.math.BigDecimal
@@ -26,13 +27,20 @@ class SuwinetSvbPersoonsInfoService(
 
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
     var maxPeriods by Delegates.notNull<Int>()
+    var suffix: String? = ""
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun createSvbInfo(): SVBInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
+
         return suwinetSOAPClient
             .getService<SVBInfo>(completeUrl,
                 soapClientConfig.connectionTimeout,
@@ -47,7 +55,7 @@ class SuwinetSvbPersoonsInfoService(
     ): UitkeringenDto? {
         this.maxPeriods = maxPeriods
 
-        logger.info { "Getting SVB PersoonsInfo from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting SVB PersoonsInfo from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
 
         try {
             val svbInfoRequest = objectFactory

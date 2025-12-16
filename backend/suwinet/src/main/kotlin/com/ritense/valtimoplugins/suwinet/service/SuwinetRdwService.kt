@@ -15,6 +15,7 @@ import com.ritense.valtimoplugins.suwinet.model.MotorvoertuigDto
 import com.ritense.valtimoplugins.suwinet.model.SoortVoertuig
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import org.springframework.util.StringUtils
 import java.io.IOException
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -29,13 +30,20 @@ class SuwinetRdwService(
 ) {
     lateinit var rdwService: RDW
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
+    var suffix: String? = ""
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun getRDWService(): RDW {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
+
         return suwinetSOAPClient
             .getService<RDW>(completeUrl,
                 soapClientConfig.connectionTimeout,
@@ -51,7 +59,7 @@ class SuwinetRdwService(
         /* configure soap service */
         this.rdwService = rdwService
 
-        logger.info { "retrieving RDW Voertuigen info from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "retrieving RDW Voertuigen info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
 
         return try {
             // retrieve voertuigen bezit by bsn
@@ -186,7 +194,7 @@ class SuwinetRdwService(
     private fun toDate(date: String) = toDateString(LocalDate.parse(date, dateInFormatter))
 
     companion object {
-        private const val SERVICE_PATH = "RDWDossierGSD-v0200/v1"
+        private const val SERVICE_PATH = "RDWDossierGSD-v0200"
         private const val SUWINET_DATE_IN_PATTERN = "yyyyMMdd"
         private const val DATE_OUT_PATTERN = "yyyy-MM-dd"
         private val dateInFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(SUWINET_DATE_IN_PATTERN)

@@ -49,7 +49,7 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
         suwinetSOAPClient = Mockito.mock()
       //  nationaliteitenService = NationaliteitenService()
         suwinetBrpInfoService = SuwinetBrpInfoService(suwinetSOAPClient, nationaliteitenService, dateTimeService)
-        suwinetBrpInfoService.setConfig(suwinetSOAPClientConfig)
+        suwinetBrpInfoService.setConfig(suwinetSOAPClientConfig, "")
     }
 
     @Test

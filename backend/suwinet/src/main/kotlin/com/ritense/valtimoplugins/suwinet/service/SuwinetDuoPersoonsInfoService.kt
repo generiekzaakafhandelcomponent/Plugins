@@ -13,6 +13,7 @@ import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundExcepti
 import com.ritense.valtimoplugins.suwinet.model.DuoPersoonsInfoDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import org.springframework.util.StringUtils
 import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,12 +24,19 @@ class SuwinetDuoPersoonsInfoService(
 
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    var suffix: String? = ""
+
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun createDuoService(): DUOInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
         return suwinetSOAPClient
             .getService<DUOInfo>(
                 completeUrl,
@@ -42,7 +50,7 @@ class SuwinetDuoPersoonsInfoService(
         bsn: String,
         duoInfo: DUOInfo
     ): DuoPersoonsInfoDto {
-        logger.info { "Getting duo persoons Onderwijsovereenkomst from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting duo persoons Onderwijsovereenkomst from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
 
         try {
             val persoonsInfoRequest = objectFactory
@@ -158,7 +166,7 @@ class SuwinetDuoPersoonsInfoService(
     private fun toDate(date: String) = toDateString(LocalDate.parse(date, dateInFormatter))
 
     companion object {
-        private const val SERVICE_PATH = "DUODossierPersoonGSD-v0300/v1"
+        private const val SERVICE_PATH = "DUODossierPersoonGSD-v0300"
         private const val suwinetDateInPattern = "yyyyMMdd"
         private val dateInFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(suwinetDateInPattern)
         private const val bbzDateOutPattern = "yyyy-MM-dd"

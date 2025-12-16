@@ -20,6 +20,7 @@ import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.KadastraleObjectenDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import org.springframework.util.StringUtils
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -29,13 +30,20 @@ class SuwinetKadasterInfoService(
 
     lateinit var kadasterService: KadasterInfo
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
+    var suffix: String? = ""
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun createKadasterService(): KadasterInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
+
         return suwinetSOAPClient
             .getService<KadasterInfo>(
                 completeUrl,
@@ -48,7 +56,7 @@ class SuwinetKadasterInfoService(
         bsn: String,
         kadasterService: KadasterInfo
     ): KadastraleObjectenDto {
-        logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
 
         try {
             this.kadasterService = kadasterService
@@ -216,7 +224,7 @@ class SuwinetKadasterInfoService(
     private fun toDate(date: String) = toDateString(LocalDate.parse(date, dateInFormatter))
 
     companion object {
-        private const val SERVICE_PATH = "KadasterDossierGSD-v0300/v1"
+        private const val SERVICE_PATH = "KadasterDossierGSD-v0300"
         private const val SUWINET_DATE_IN_PATTERN = "yyyyMMdd"
         private const val DATE_OUT_PATTERN = "yyyy-MM-dd"
         private val dateInFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(SUWINET_DATE_IN_PATTERN)

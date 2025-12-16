@@ -1,6 +1,6 @@
 [
   {
-    "activityId": "StartEvent_1",
+    "activityId": "StartEvent_bijstandsregelingen",
     "activityType": "bpmn:StartEvent:start",
     "formDefinitionName": "brongegevens.start",
     "viewModelEnabled": false,

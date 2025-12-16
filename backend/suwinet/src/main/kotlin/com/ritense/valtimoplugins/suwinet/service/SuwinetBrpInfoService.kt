@@ -24,6 +24,7 @@ import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import org.camunda.bpm.engine.exception.NotFoundException
+import org.springframework.util.StringUtils
 import java.io.IOException
 
 class SuwinetBrpInfoService(
@@ -33,12 +34,20 @@ class SuwinetBrpInfoService(
 ) {
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    var suffix: String? = ""
+
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?)  {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun getBRPInfo(): BRPInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
+
         return suwinetSOAPClient
             .getService<BRPInfo>(
                 completeUrl,
@@ -52,7 +61,7 @@ class SuwinetBrpInfoService(
         bsn: String, brpService: BRPInfo
     ): PersoonDto? {
 
-        logger.info { "Getting BRP personal info from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting BRP personal info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
 
         try {
             val request = objectFactory.createRequest().apply {
@@ -198,7 +207,7 @@ class SuwinetBrpInfoService(
     )
 
     companion object {
-        const val SERVICE_PATH = "BRPDossierPersoonGSD-v0200/v1"
+        const val SERVICE_PATH = "BRPDossierPersoonGSD-v0200"
         private val objectFactory = ObjectFactory()
         private val logger = KotlinLogging.logger {}
     }
