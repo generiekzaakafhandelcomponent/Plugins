@@ -1,0 +1,27 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "productUuid",
+      "type": "textfield",
+      "input": true,
+      "label": "Product UUID",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.update-product.start-productUuid"
+      },
+      "properties": {
+        "targetKey": "pv:/productUuid"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

@@ -19,7 +19,7 @@
     "aanvraagZaakUrl": {
       "type": "string"
     },
-    "eigenaarBSN": {
+    "eigenaarBsn": {
       "type": [
         "string",
         "null"
@@ -43,19 +43,19 @@
         "null"
       ]
     },
-    "productTypeUUID": {
+    "productTypeUuid": {
       "type": [
         "string",
         "null"
       ]
     },
-    "productUUID": {
+    "productUuid": {
       "type": [
         "string",
         "null"
       ]
     },
-    "frequentie": {
+    "productFrequentie": {
       "type": [
         "string",
         "null"

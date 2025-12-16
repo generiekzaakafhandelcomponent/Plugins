@@ -1,27 +1,26 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {CreateProductConfig} from './models/create-product-config';
+import {GetProductConfig} from './models/get-product-config';
 
 @Component({
-    selector: 'valtimo-create-product-configuration',
-    templateUrl: './create-product-configuration.component.html',
-    styleUrls: ['./create-product-configuration.component.scss'],
+    selector: 'valtimo-get-product-configuration',
+    templateUrl: './get-product-configuration.component.html'
 })
-export class CreateProductConfigurationComponent
+export class GetProductConfigurationComponent
     // The component explicitly implements the FunctionConfigurationComponent interface
     implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
-    @Input() prefillConfiguration$: Observable<CreateProductConfig>;
+    @Input() prefillConfiguration$: Observable<GetProductConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<CreateProductConfig> =
-        new EventEmitter<CreateProductConfig>();
+    @Output() configuration: EventEmitter<GetProductConfig> =
+        new EventEmitter<GetProductConfig>();
 
     private saveSubscription!: Subscription;
 
-    private readonly formValue$ = new BehaviorSubject<CreateProductConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<GetProductConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     ngOnInit(): void {
@@ -32,14 +31,13 @@ export class CreateProductConfigurationComponent
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: CreateProductConfig): void {
+    formValueChange(formValue: GetProductConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
-
     }
 
-    private handleValid(formValue: CreateProductConfig): void {
-        const valid = !!(formValue.productTypeUuid && formValue.eigenaarBsn && formValue.productPrijs && formValue.productStatus && formValue.aanvraagZaakUrn);
+    private handleValid(formValue: GetProductConfig): void {
+        const valid = !!(formValue.productUuid);
 
         this.valid$.next(valid);
         this.valid.emit(valid);

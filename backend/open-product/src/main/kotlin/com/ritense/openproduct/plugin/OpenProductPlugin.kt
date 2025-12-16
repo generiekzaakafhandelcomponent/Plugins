@@ -51,6 +51,44 @@ class OpenProductPlugin(
     lateinit var authenticationPluginConfiguration: TokenAuthenticationPlugin
 
     @PluginAction(
+        key = "get-product",
+        title = "Retrieve product plugin action",
+        description = "Retrieve product via UUID plugin action",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun getProduct(
+        execution: DelegateExecution,
+        @PluginActionProperty productUuid: String,
+        @PluginActionProperty resultaatPV: String
+    ) {
+        val result = openProductClient.getProduct(
+            baseUrl,
+            authenticationPluginConfiguration,
+            productUuid
+        )
+
+        execution.setVariable(resultaatPV, "Product: $result")
+    }
+
+    @PluginAction(
+        key = "get-all-products",
+        title = "Retrieve all products plugin action",
+        description = "Retrieve all products plugin action",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun getAllProducts(
+        execution: DelegateExecution,
+        @PluginActionProperty resultaatPV: String
+    ) {
+        val result = openProductClient.getAllProducts(
+            baseUrl,
+            authenticationPluginConfiguration
+        )
+
+        execution.setVariable(resultaatPV, "Product: $result")
+    }
+
+    @PluginAction(
         key = "create-product",
         title = "Create product plugin action",
         description = "Create product plugin action",
@@ -59,48 +97,44 @@ class OpenProductPlugin(
     fun createProduct(
         execution: DelegateExecution,
         @PluginActionProperty productNaam: String,
-        @PluginActionProperty productTypeUUID: String,
-        @PluginActionProperty eigenaarBSN: String,
+        @PluginActionProperty productTypeUuid: String,
+        @PluginActionProperty eigenaarBsn: String,
         @PluginActionProperty eigenaarData: List<DataBindingConfig>?,
         @PluginActionProperty aanvraagZaakUrn: String?,
         @PluginActionProperty aanvraagZaakUrl: String?,
         @PluginActionProperty productPrijs: String,
-        @PluginActionProperty status: String,
-        @PluginActionProperty frequentie: String,
+        @PluginActionProperty productStatus: String,
+        @PluginActionProperty productFrequentie: String,
         @PluginActionProperty gepubliceerd: java.lang.Boolean?,
         @PluginActionProperty resultaatPV: String
     ) {
-        val freqenum = toFreqEnum(frequentie)
-        val statusEnum = toStatusEnum(status)
+        val freqEnum = toFreqEnum(productFrequentie)
+        val statusEnum = toStatusEnum(productStatus)
 
         val resultaat = openProductClient.createProduct(
             baseUrl,
             authenticationPluginConfiguration,
             ProductRequest(
                 naam = productNaam,
-                producttypeUuid = productTypeUUID,
+                producttypeUuid = productTypeUuid,
                 eigenaren = listOf(
                     EigenaarRequest(
-                        bsn = eigenaarBSN
+                        bsn = eigenaarBsn
                     )
                 ),
                 gepubliceerd = gepubliceerd as Boolean?,
                 aanvraagZaakUrn = aanvraagZaakUrn,
                 aanvraagZaakUrl = aanvraagZaakUrl,
                 prijs = productPrijs,
-                frequentie = freqenum,
+                frequentie = freqEnum,
                 status = statusEnum
             )
         )
-        println(resultaat.toString())
-
-        println("Resultaat van aanmaken product: $resultaat")
-        execution.setVariable(resultaatPV, resultaat.toString())
-//        println("Product aangemaakt met de naam: $productNaam, resultaat opgeslagen in de procesvariabele: $resultaatPV")
+        execution.setVariable(resultaatPV, "Product aangemaakt: $productNaam")
     }
 
     @PluginAction(
-        key = "update-productt",
+        key = "update-product",
         title = "Update product plugin action",
         description = "Update product plugin action",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
@@ -110,20 +144,19 @@ class OpenProductPlugin(
         @PluginActionProperty productUuid: String,
         @PluginActionProperty productNaam: String,
         @PluginActionProperty productTypeUuid: String,
-        @PluginActionProperty eigenaarBSN: String,
+        @PluginActionProperty eigenaarBsn: String,
         @PluginActionProperty aanvraagZaakUrn: String?,
         @PluginActionProperty aanvraagZaakUrl: String?,
         @PluginActionProperty gepubliceerd: Boolean,
         @PluginActionProperty productPrijs: String,
-        @PluginActionProperty frequentie: String,
-        @PluginActionProperty status: String,
+        @PluginActionProperty productFrequentie: String,
+        @PluginActionProperty productStatus: String,
         @PluginActionProperty resultaatPV: String
     ) {
-        println("START")
-        val freqenum = toFreqEnum(frequentie)
-        val statusEnum = toStatusEnum(status)
+        val freqEnum = toFreqEnum(productFrequentie)
+        val statusEnum = toStatusEnum(productStatus)
 
-        val result = openProductClient.updateProduct(
+        val resultaat = openProductClient.updateProduct(
             baseUrl,
             authenticationPluginConfiguration,
             ProductRequest(
@@ -132,20 +165,19 @@ class OpenProductPlugin(
                 producttypeUuid = productTypeUuid,
                 eigenaren = listOf(
                     EigenaarRequest(
-                        bsn = eigenaarBSN
+                        bsn = eigenaarBsn
                     )
                 ),
                 gepubliceerd = gepubliceerd as Boolean?,
                 aanvraagZaakUrn = aanvraagZaakUrn,
                 aanvraagZaakUrl = aanvraagZaakUrl,
                 prijs = productPrijs,
-                frequentie = freqenum,
+                frequentie = freqEnum,
                 status = statusEnum
             )
         )
 
-        execution.setVariable(resultaatPV, result)
-        println("Product geupdate met UUID: $productUuid, resultaat opgeslagen in de procesvariabele: $resultaatPV")
+        execution.setVariable(resultaatPV, "Product gewijzigd met UUID: $productUuid")
     }
 
     @PluginAction(
@@ -156,17 +188,16 @@ class OpenProductPlugin(
     )
     fun deleteProduct(
         execution: DelegateExecution,
-        @PluginActionProperty productUUID: String,
+        @PluginActionProperty productUuid: String,
         @PluginActionProperty resultaatPV: String
     ) {
         val result = openProductClient.deleteProduct(
             baseUrl,
             authenticationPluginConfiguration,
-            productUUID
+            productUuid
         )
 
-        execution.setVariable(resultaatPV, "Product verwijderd met UUID: $productUUID")
-        println("Product verwijderd met UUID: $productUUID, resultaat opgeslagen in procesvariabele: $resultaatPV")
+        execution.setVariable(resultaatPV, "Product verwijderd met UUID: $productUuid")
     }
 
     fun toFreqEnum(frequentie: String): FrequentieEnum {

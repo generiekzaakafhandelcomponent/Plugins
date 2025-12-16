@@ -100,7 +100,7 @@
       "applyMaskOn": "change"
     },
     {
-      "label": "Frequentie",
+      "label": "Product Frequentie",
       "widget": "choicesjs",
       "tableView": true,
       "data": {
@@ -119,15 +119,15 @@
           }
         ]
       },
-      "key": "frequentie",
+      "key": "productFrequentie",
       "properties": {
-        "targetKey": "pv:/frequentie"
+        "targetKey": "pv:/productFrequentie"
       },
       "type": "select",
       "input": true
     },
     {
-      "label": "Status",
+      "label": "Product Status",
       "tableView": true,
       "data": {
         "values": [
@@ -161,9 +161,9 @@
           }
         ]
       },
-      "key": "status",
+      "key": "productStatus",
       "properties": {
-        "targetKey": "pv:/status"
+        "targetKey": "pv:/productStatus"
       },
       "type": "select",
       "input": true

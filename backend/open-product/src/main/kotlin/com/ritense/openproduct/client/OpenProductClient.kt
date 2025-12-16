@@ -2,15 +2,14 @@ package com.ritense.openproduct.client
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.tokenauthentication.plugin.TokenAuthenticationPlugin
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
-import org.springframework.web.client.toEntity
 
 @Component
 class OpenProductClient() {
+    val URL_PATH = "/producten/api/v1/producten/"
 
     fun getProduct(
         baseUrl: String,
@@ -20,7 +19,7 @@ class OpenProductClient() {
         val restClient = getRestclient(baseUrl, authenticationPlugin)
 
         val response = restClient.get()
-            .uri("/producten/$uuid")
+            .uri(URL_PATH + uuid)
             .retrieve()
 
         val result = response.toEntity(Product::class.java)
@@ -36,11 +35,14 @@ class OpenProductClient() {
         val restClient = getRestclient(baseUrl, authenticationPlugin)
 
         val response = restClient.get()
-            .uri("/producten")
+            .uri(URL_PATH)
             .retrieve()
-            .body(PaginatedProductList::class.java)
+            .toEntity(PaginatedProductList::class.java)
 
-        return response!!.resultaten
+        val result = response.body
+            ?: throw IllegalStateException("Failed to get product")
+
+        return result.resultaten
     }
 
     fun createProduct(
@@ -53,7 +55,7 @@ class OpenProductClient() {
         val requestJson = objectMapper.writeValueAsString(request)
 
         val response = restClient.post()
-            .uri("/producten/api/v1/producten")
+            .uri(URL_PATH)
             .contentType(MediaType.APPLICATION_JSON)
             .body(requestJson)
             .retrieve()
@@ -74,7 +76,7 @@ class OpenProductClient() {
         val requestJson = objectMapper.writeValueAsString(request)
 
         val response = restClient.patch()
-            .uri("/producten/" + request)
+            .uri(URL_PATH + request.uuid)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .body(requestJson)
             .retrieve()
@@ -93,7 +95,7 @@ class OpenProductClient() {
         val restClient = getRestclient(baseUrl, authenticationPlugin)
 
         val response = restClient.delete()
-            .uri("/producten/$uuid")
+            .uri(URL_PATH + uuid)
             .retrieve()
 
         val result = response.toEntity(String::class.java)

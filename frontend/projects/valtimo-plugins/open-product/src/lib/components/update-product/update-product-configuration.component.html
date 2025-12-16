@@ -32,24 +32,23 @@
     >
     </v-input>
     <v-input
-            name="productTypeUUID"
-            [title]="'productTypeUUID' | pluginTranslate: pluginId | async"
+            name="productTypeUuid"
+            [title]="'productTypeUuid' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.productTypeUUID"
+            [defaultValue]="obs.prefill?.productTypeUuid"
             [disabled]="obs.disabled"
             [required]="true"
     >
     </v-input>
     <v-input
-            name="burgerBSN"
-            [title]="'burgerBSN' | pluginTranslate: pluginId | async"
+            name="eigenaarBsn"
+            [title]="'eigenaarBsn' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.burgerBSN"
+            [defaultValue]="obs.prefill?.eigenaarBsn"
             [disabled]="obs.disabled"
             [required]="true"
     >
     </v-input>
-
     <valtimo-carbon-multi-input
             name="eigenaarData"
             [title]="'eigenaarData' | pluginTranslate: pluginId | async"
@@ -89,19 +88,19 @@
     >
     </v-input>
     <v-input
-            name="frequentie"
-            [title]="'frequentie' | pluginTranslate: pluginId | async"
+            name="productFrequentie"
+            [title]="'productFrequentie' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.frequentie"
+            [defaultValue]="obs.prefill?.productFrequentie"
             [disabled]="obs.disabled"
             [required]="true"
     >
     </v-input>
     <v-input
-            name="status"
-            [title]="'status' | pluginTranslate: pluginId | async"
+            name="productStatus"
+            [title]="'productStatus' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.status"
+            [defaultValue]="obs.prefill?.productStatus"
             [disabled]="obs.disabled"
             [required]="true"
     >

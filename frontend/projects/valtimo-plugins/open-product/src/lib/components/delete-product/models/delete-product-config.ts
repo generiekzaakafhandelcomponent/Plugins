@@ -1,5 +1,5 @@
 interface DeleteProductConfig {
-    productUUID: string;
+    productUuid: string;
     resultaatPV: string;
 }
 

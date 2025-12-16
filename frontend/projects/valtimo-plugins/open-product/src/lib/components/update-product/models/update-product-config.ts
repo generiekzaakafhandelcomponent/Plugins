@@ -2,11 +2,13 @@ interface UpdateProductConfig {
     productUuid: string;
     productNaam: string;
     productTypeUuid: string;
-    eigenaarBSN: string;
+    eigenaarBsn: string;
+    aanvraagZaakUrn: string;
+    aanvraagZaakUrl: string;
     gepubliceerd: boolean;
     productPrijs: string;
-    frequentie: string;
-    status: string;
+    productFrequentie: string;
+    productStatus: string;
     resultaatPV: string;
 }
 

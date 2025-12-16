@@ -21,7 +21,7 @@
         
     <bpmn:sequenceFlow id="Flow_1ociql1" sourceRef="SendRequest" targetRef="DisplayResponse"/>
         
-    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;pv:/resultaatPV&quot;, resultaatPV)}" completionQuantity="1" id="DisplayResponse" implementation="##WebService" isForCompensation="false" name="Display HTTP Response" startQuantity="1">
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/resultaatPV&quot;, resultaatPV)}" completionQuantity="1" id="DisplayResponse" implementation="##WebService" isForCompensation="false" name="Display HTTP Response" startQuantity="1">
             
       <bpmn:incoming>Flow_1ociql1</bpmn:incoming>
             

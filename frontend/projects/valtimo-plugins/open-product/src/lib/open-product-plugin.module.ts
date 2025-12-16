@@ -21,14 +21,17 @@ import {CommonModule} from '@angular/common';
 import {CarbonMultiInputModule, FormModule, InputModule, SelectModule} from '@valtimo/components';
 import {NgModule} from '@angular/core';
 import {PluginTranslatePipeModule} from "@valtimo/plugin";
+import {GetProductConfigurationComponent} from "./components/get-product/get-product-configuration.component";
 import {CreateProductConfigurationComponent} from './components/create-product/create-product-configuration.component'
 import {UpdateProductConfigurationComponent} from "./components/update-product/update-product-configuration.component";
 import {DeleteProductConfigurationComponent} from "./components/delete-product/delete-product-configuration.component";
+import {GetAllProductsConfigurationComponent} from "./components/get-all-products/get-all-products-configuration.component";
+
 
 @NgModule({
-    declarations: [OpenProductConfigurationComponent, CreateProductConfigurationComponent, UpdateProductConfigurationComponent, DeleteProductConfigurationComponent],
+    declarations: [OpenProductConfigurationComponent, GetProductConfigurationComponent, GetAllProductsConfigurationComponent, CreateProductConfigurationComponent, UpdateProductConfigurationComponent, DeleteProductConfigurationComponent],
     imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, SelectModule, CarbonMultiInputModule],
-    exports: [OpenProductConfigurationComponent, CreateProductConfigurationComponent, UpdateProductConfigurationComponent, DeleteProductConfigurationComponent],
+    exports: [OpenProductConfigurationComponent, GetProductConfigurationComponent, GetAllProductsConfigurationComponent, CreateProductConfigurationComponent, UpdateProductConfigurationComponent, DeleteProductConfigurationComponent],
 })
 export class OpenProductPluginModule {
 }

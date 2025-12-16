@@ -19,10 +19,13 @@ import {
 } from './components/open-product-configuration/open-product-configuration.component';
 import {OPEN_PRODUCT_PLUGIN_LOGO_BASE64} from './assets';
 import {PluginSpecification} from "@valtimo/plugin";
+import {GetProductConfigurationComponent} from "./components/get-product/get-product-configuration.component";
 import {CreateProductConfigurationComponent} from "./components/create-product/create-product-configuration.component";
 import {UpdateProductConfigurationComponent} from "./components/update-product/update-product-configuration.component";
 import {DeleteProductConfigurationComponent} from "./components/delete-product/delete-product-configuration.component";
-
+import {
+    GetAllProductsConfigurationComponent
+} from "./components/get-all-products/get-all-products-configuration.component";
 
 const openProductPluginSpecification: PluginSpecification = {
     pluginId: 'openproduct',
@@ -33,6 +36,8 @@ const openProductPluginSpecification: PluginSpecification = {
          For each plugin action id received from the backend, a component is provided of the interface FunctionConfigurationComponent.
          These are used to configure each plugin action.
          */
+        'get-product': GetProductConfigurationComponent,
+        'get-all-products': GetAllProductsConfigurationComponent,
         'create-product': CreateProductConfigurationComponent,
         'update-product': UpdateProductConfigurationComponent,
         'delete-product': DeleteProductConfigurationComponent
@@ -45,15 +50,15 @@ const openProductPluginSpecification: PluginSpecification = {
             configurationTitle: 'Configuratienaam',
             configurationTitleTooltip: 'Configuratie naam is de naam die gebruikt wordt om de configuratie te identificeren.',
             baseUrl: 'URL',
-            productUUID: 'De UUID van het product',
+            productUuid: 'De UUID van het product',
             productNaam: 'De naam van het product',
-            productTypeUUID: 'De UUID van het producttype',
-            eigenaarBSN: 'De bsn van de eigenaar',
+            productTypeUuid: 'De UUID van het producttype',
+            eigenaarBsn: 'De bsn van de eigenaar',
             eigenaarData: 'De gegevens van de eigenaar',
             gepubliceerd: 'Kan het object getoond worden?',
             productPrijs: 'De prijs van het product',
-            frequentie: 'De frequentie van de betalingen',
-            status: 'De status van het product',
+            productFrequentie: 'De frequentie van de betalingen',
+            productStatus: 'De status van het product',
             resultaatPV: 'De naam van de process variable waar het resultaat in komt',
             authenticationPluginConfiguration: 'Selecteer de authenticatie plugin configuratie',
         },
@@ -63,15 +68,15 @@ const openProductPluginSpecification: PluginSpecification = {
             configurationTitle: 'Configuration Name',
             configurationTitleTooltip: 'The name used to identify this configuration.',
             baseUrl: 'URL',
-            productUUID: 'The UUID of the product',
+            productUuid: 'The UUID of the product',
             productNaam: 'The name of the product',
-            productTypeUUID: 'The UUID of the product type',
-            eigenaarBSN: 'The citizen service number (BSN) of the owner',
+            productTypeUuid: 'The UUID of the product type',
+            eigenaarBsn: 'The citizen service number (BSN) of the owner',
             eigenaarData: 'The owner’s data',
             gepubliceerd: 'Should this product be publicly visible?',
             productPrijs: 'The price of the product',
-            frequentie: 'The payment frequency',
-            status: 'The product’s status',
+            productFrequentie: 'The payment frequency',
+            productStatus: 'The product’s status',
             resultaatPV: 'The name of the process variable that will contain the result',
             authenticationPluginConfiguration: 'Select the authentication plugin configuration',
         },
@@ -81,15 +86,15 @@ const openProductPluginSpecification: PluginSpecification = {
             configurationTitle: 'Konfigurationsname',
             configurationTitleTooltip: 'Der Name, mit dem diese Konfiguration identifiziert wird.',
             baseUrl: 'URL',
-            productUUID: 'Die UUID des Produkts',
+            productUuid: 'Die UUID des Produkts',
             productNaam: 'Der Name des Produkts',
-            productTypeUUID: 'Die UUID des Produkttyps',
-            eigenaarBSN: 'Die BSN (Bürgernummer) des Eigentümers',
+            productTypeUuid: 'Die UUID des Produkttyps',
+            eigenaarBsn: 'Die BSN (Bürgernummer) des Eigentümers',
             eigenaarData: 'Die Daten des Eigentümers',
             gepubliceerd: 'Soll dieses Produkt öffentlich angezeigt werden?',
             productPrijs: 'Der Preis des Produkts',
-            frequentie: 'Die Häufigkeit der Zahlungen',
-            status: 'Der Status des Produkts',
+            productFrequentie: 'Die Häufigkeit der Zahlungen',
+            productStatus: 'Der Status des Produkts',
             resultaatPV: 'Der Name der Prozessvariablen, in der das Ergebnis gespeichert wird',
             authenticationPluginConfiguration: 'Wählen Sie die Authentifizierungs-Plugin-Konfiguration aus',
         }

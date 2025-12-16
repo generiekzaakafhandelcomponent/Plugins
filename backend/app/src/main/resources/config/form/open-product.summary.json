@@ -11,7 +11,7 @@
         "data-testid": "open-product.resultaatPV"
       },
       "properties": {
-        "sourceKey": "pv:resultaatPV"
+        "sourceKey": "doc:resultaatPV"
       }
     },
     {
@@ -26,7 +26,7 @@
       ],
       "input": false,
       "label": "HTML",
-      "content": "<section> <h3>Open-Product Plugin</h3>\r\n  {{ data ?` \r\n <dl class=\"row mb-5\">\r\n <dt class=\"col-12\"><pre>${JSON.stringify(data, null, 2)}</pre></dt>\r\n </dl>` : '' }}\r\n\r\n   \r\n</section>\r\n\r\n<style>\r\n  pre{\r\n padding: 10px;\r\n overflow: auto;\r\n white-space: pre-wrap;\r\n min-height: 100px;\r\n resize: both;\r\n }\r\n</style>\r\n",
+      "content": "<section> <h3>Open-Product Plugin</h3>\r\n  {{ data ?` \r\n <dl class=\"row mb-5\">\r\n <dt class=\"col-12\"><pre>${data.resultaatPV}</pre></dt>\r\n </dl>` : '' }}\r\n\r\n   \r\n</section>\r\n\r\n<style>\r\n  pre{\r\n padding: 10px;\r\n overflow: auto;\r\n white-space: pre-wrap;\r\n min-height: 100px;\r\n resize: both;\r\n }\r\n</style>\r\n",
       "tableView": false,
       "refreshOnChange": false
     }

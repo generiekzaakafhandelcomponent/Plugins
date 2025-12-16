@@ -7,10 +7,14 @@ import java.util.UUID
 
 
 data class PaginatedProductList(
+    @JsonProperty("count")
     val aantal: Int,
+    @JsonProperty("next")
     val volgende: String?,
+    @JsonProperty("previous")
     val vorige: String?,
-    val resultaten: List<ProductResponse>
+    @JsonProperty("results")
+    val resultaten: List<ProductResponse> = emptyList()
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)

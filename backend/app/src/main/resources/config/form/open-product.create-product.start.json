@@ -16,7 +16,7 @@
       "applyMaskOn": "change"
     },
     {
-      "key": "productTypeUUID",
+      "key": "productTypeUuid",
       "type": "textfield",
       "input": true,
       "label": "Product Type UUID",
@@ -25,12 +25,12 @@
         "data-testid": "open-product.create-product.start-productTypeUuid"
       },
       "properties": {
-        "targetKey": "pv:/productTypeUUID"
+        "targetKey": "pv:/productTypeUuid"
       },
       "applyMaskOn": "change"
     },
     {
-      "key": "eigenaarBSN",
+      "key": "eigenaarBsn",
       "type": "textfield",
       "input": true,
       "label": "Eigenaar BSN",
@@ -39,7 +39,7 @@
         "data-testid": "open-product.create-product.start-eigenaarBsn"
       },
       "properties": {
-        "targetKey": "pv:/eigenaarBSN"
+        "targetKey": "pv:/eigenaarBsn"
       },
       "applyMaskOn": "change"
     },
@@ -107,7 +107,7 @@
       "applyMaskOn": "change"
     },
     {
-      "label": "Status",
+      "label": "Product Status",
       "tableView": true,
       "data": {
         "values": [
@@ -141,15 +141,15 @@
           }
         ]
       },
-      "key": "status",
+      "key": "productStatus",
       "properties": {
-        "targetKey": "pv:/status"
+        "targetKey": "pv:/productStatus"
       },
       "type": "select",
       "input": true
     },
     {
-      "label": "Frequentie",
+      "label": "Product Frequentie",
       "widget": "choicesjs",
       "tableView": true,
       "data": {
@@ -168,9 +168,9 @@
           }
         ]
       },
-      "key": "frequentie",
+      "key": "productFrequentie",
       "properties": {
-        "targetKey": "pv:/frequentie"
+        "targetKey": "pv:/productFrequentie"
       },
       "type": "select",
       "input": true
