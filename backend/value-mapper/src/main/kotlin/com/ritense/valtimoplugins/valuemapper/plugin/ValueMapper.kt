@@ -1,17 +1,17 @@
 /*
- *  Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
- *  Licensed under EUPL, Version 1.2 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" basis,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ritense.valtimoplugins.valuemapper.plugin
@@ -33,6 +33,7 @@ import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperDefinition
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTransformation
 import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperCommandException
 import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperMappingException
+import com.ritense.valtimoplugins.valuemapper.processor.SpelExpressionProcessor
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperTemplateService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
@@ -147,7 +148,7 @@ open class ValueMapper(
 
         require(sourcePointerParts.size == targetPointerParts.size) {
             "Target pointer must have the same amount of wildcard arrays ($JSON_POINTER_ARRAY_DELIMITER) " +
-                    "as the source pointer."
+                "as the source pointer."
         }
 
         val explodedSourceComplexPointer = findPaths(
@@ -230,36 +231,58 @@ open class ValueMapper(
      * Apply command to this node and store the result in provided output node.
      **/
     private fun JsonNode.applySimplePointerCommand(command: ValueMapperCommand, outputNode: JsonNode) {
-        val sourceValue: JsonNode = at(command.sourcePointer)
-        val resolvedValue: JsonNode? = sourceValue
+        val sourceValue: JsonNode? = at(command.sourcePointer)
             .takeUnless { it.isMissingNode }
 
-        if (resolvedValue != null) {
-            val transformedValue = when (resolvedValue) {
-                is ArrayNode -> resolvedValue.mapNotNull { listItem ->
-                    val (didSkip, transformationResult) = listItem
-                        .applyTransformations(command.transformations)
-
-                    if (didSkip) null else transformationResult ?: command.defaultValue
-                }.takeIf { it.isNotEmpty() } ?: command.defaultValue
-
-                else -> {
-                    val (didSkip, transformationResult) = resolvedValue
-                        .applyTransformations(command.transformations)
-
-                    if (didSkip) null else transformationResult ?: command.defaultValue
+        if (sourceValue != null) {
+            if (command.skipCondition != null && SpelExpressionProcessor.get().isExpression(command.sourcePointer)) {
+                val contextMap = mapOf(
+                    "input" to this,
+                    "output" to outputNode,
+                    "sourceValue" to sourceValue
+                )
+                if (SpelExpressionProcessor.get(contextMap = mapper.convertValue(contextMap))
+                        .process<Boolean>(command.skipCondition) == true
+                ) {
+                    logger.debug {
+                        "Skipping transformations for command with pointer ${command.sourcePointer}: " +
+                            "Skip Condition evaluated to \"true\""
+                    }
+                    return
                 }
             }
 
-            if (transformedValue != null) {
+            val targetValue = when (sourceValue) {
+                is ArrayNode -> sourceValue.mapNotNull { listItem ->
+                    val (didSkip, transformationResult) = listItem
+                        .applyTransformations(command.transformations)
+
+                    when (didSkip) {
+                        true -> null
+                        else -> transformationResult ?: command.defaultValue
+                    }
+                }.takeIf { it.isNotEmpty() }
+
+                else -> {
+                    val (didSkip, transformationResult) = sourceValue
+                        .applyTransformations(command.transformations)
+
+                    when (didSkip) {
+                        true -> null
+                        else -> transformationResult
+                    }
+                }
+            }
+
+            if (targetValue != null) {
                 outputNode.buildJsonStructure(
-                    targetValue = mapper.convertValue(transformedValue),
+                    targetValue = mapper.convertValue(targetValue),
                     targetPath = command.targetPointer
                 )
             } else {
                 logger.debug {
                     "Skipping command with pointer ${command.sourcePointer}: " +
-                            "No transformations matched value at ${command.sourcePointer}."
+                        "No transformations matched value at ${command.sourcePointer}."
                 }
             }
         } else {
@@ -350,8 +373,8 @@ open class ValueMapper(
                 JsonNodeType.OBJECT -> secondToLastNode.get(nextKey)
                 else -> throw ValueMapperMappingException(
                     "Node before \"$nextKey\" was not a ContainerNode in structure \"$targetPath\". " +
-                            "This could be due to multiple commands transformed values of incompatible types " +
-                            "into same structure."
+                        "This could be due to multiple commands transformed values of incompatible types " +
+                        "into same structure."
                 )
             } ?: mapper.missingNode()
 
@@ -409,9 +432,10 @@ open class ValueMapper(
             is ObjectNode -> secondToLastNode.replace(pathSteps.last(), targetValue)
             else -> throw ValueMapperMappingException(
                 "Can not add item/property to node of type ${secondToLastNode.nodeType}. " +
-                        "Make sure that your (transformed) value is compatible with the target structure."
+                    "Make sure that your (transformed) value is compatible with the target structure."
             )
         }
+
 
     }
 
