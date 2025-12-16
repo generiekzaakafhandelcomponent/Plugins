@@ -41,6 +41,7 @@ const suwinetPluginSpecification: PluginSpecification = {
     pluginConfigurationComponent: SuwinetPluginConfigurationComponent,
     pluginLogoBase64: SUWINET_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
+        'ophalen-bijstandsregelingen': BijstandsregelingenInfoComponent,
         'get-brp-persoonsgegevens': BrpPersoonInfoComponent,
         'get-brp-partner-persoonsgegevens': BrpPartnerInfoComponent,
         'get-brp-kinderen-persoonsgegevens': BrpKinderenInfoComponent,
@@ -50,7 +51,6 @@ const suwinetPluginSpecification: PluginSpecification = {
         'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
         'get-svb-persoonsinfo': SvbPersoonsInfoComponent,
         'get-uwv-inkomsten-info': UwvInkomstenInfoComponent,
-        'ophalen-bijstandsregelingen': BijstandsregelingenInfoComponent
     },
     pluginTranslations: {
         nl: {
@@ -67,12 +67,9 @@ const suwinetPluginSpecification: PluginSpecification = {
             resultProcessVariableName: 'Naam van de proces variabele voor het opslaan van de respons',
             resultProcessVariableNameTooltip:
                 'De naam van de proces variabele waar het resultaat in opgeslagen wordt. Zodoende kan deze variabele worden gebruikt in andere BPMN taken.',
-            keystorePath: 'Keystore certificate path',
-            keystoreSecret: 'Keystore certificate key',
-            truststorePath: 'Truststore certificate path',
-            truststoreSecret: 'Truststore certificate key',
-            basicAuthName: 'Basic Authorization name',
-            basicAuthSecret: 'Basic Authorization password',
+            authenticationPluginConfiguration: 'Configuratie authenticatie-plug-in',
+            authenticationPluginConfigurationTooltip:
+                'Selecteer de plugin die de authenticatie kan afhandelen. Wanneer de selectiebox leeg blijft zal de authenticatie plugin eerst aangemaakt moeten worden',
             baseUrl: 'Base URL',
             connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
             receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
@@ -93,12 +90,9 @@ const suwinetPluginSpecification: PluginSpecification = {
             resultProcessVariableName: 'Process variable name for storing the response',
             resultProcessVariableNameTooltip:
                 'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
-            keystorePath: 'Keystore certificate path',
-            keystoreSecret: 'Keystore certificate key',
-            truststorePath: 'Truststore certificate path',
-            truststoreSecret: 'Truststore certificate key',
-            basicAuthName: 'Basic Authorization name',
-            basicAuthSecret: 'Basic Authorization password',
+            authenticationPluginConfiguration: 'Authentication plugin configuration',
+            authenticationPluginConfigurationTooltip:
+                'Select the plugin that can handle the authentication. If the selection box remains empty, the authentication plugin will have to be created first',
             baseUrl: 'Base URL',
             connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
             receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
@@ -119,12 +113,9 @@ const suwinetPluginSpecification: PluginSpecification = {
             resultProcessVariableName: 'Process variable name for storing the response',
             resultProcessVariableNameTooltip:
                 'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
-            keystorePath: 'Keystore certificate path',
-            keystoreSecret: 'Keystore certificate key',
-            truststorePath: 'Truststore certificate path',
-            truststoreSecret: 'Truststore certificate key',
-            basicAuthName: 'Basic Authorization name',
-            basicAuthSecret: 'Basic Authorization password',
+            authenticationPluginConfiguration: 'Authentifizierungs-Plugin-Konfiguration',
+            authenticationPluginConfigurationTooltip:
+                'Wählen Sie das Plugin aus, das die Authentifizierung verarbeiten kann. Bleibt das Auswahlfeld leer, muss zunächst das Authentifizierungs-Plugin erstellt werden',
             baseUrl: 'Base URL',
             connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
             receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',

@@ -147,7 +147,7 @@ open class ValueMapper(
 
         require(sourcePointerParts.size == targetPointerParts.size) {
             "Target pointer must have the same amount of wildcard arrays ($JSON_POINTER_ARRAY_DELIMITER) " +
-                "as the source pointer."
+                    "as the source pointer."
         }
 
         val explodedSourceComplexPointer = findPaths(
@@ -187,7 +187,12 @@ open class ValueMapper(
             }
     }
 
-    private fun JsonNode.findPaths(currentPath: String, remainingParts: List<String>, lastProperty: String, foundPaths: MutableList<String>): List<String> {
+    private fun JsonNode.findPaths(
+        currentPath: String,
+        remainingParts: List<String>,
+        lastProperty: String,
+        foundPaths: MutableList<String>
+    ): List<String> {
         if (remainingParts.isEmpty()) {
             foundPaths.add(currentPath + lastProperty)
             return foundPaths
@@ -203,7 +208,13 @@ open class ValueMapper(
                             }
                             .flatten()
 
-                        true -> return listOf(currentPath)
+                        true -> {
+                            if (currentPath.endsWith(nextPathPart)) {
+                                return listOf(currentPath)
+                            } else {
+                                return listOf(currentPath + nextPathPart)
+                            }
+                        }
                     }
                 }
 
@@ -226,14 +237,18 @@ open class ValueMapper(
         if (resolvedValue != null) {
             val transformedValue = when (resolvedValue) {
                 is ArrayNode -> resolvedValue.mapNotNull { listItem ->
-                    listItem
+                    val (didSkip, transformationResult) = listItem
                         .applyTransformations(command.transformations)
-                        ?: command.defaultValue
-                }
 
-                else -> resolvedValue
-                    .applyTransformations(command.transformations)
-                    ?: command.defaultValue
+                    if (didSkip) null else transformationResult ?: command.defaultValue
+                }.takeIf { it.isNotEmpty() } ?: command.defaultValue
+
+                else -> {
+                    val (didSkip, transformationResult) = resolvedValue
+                        .applyTransformations(command.transformations)
+
+                    if (didSkip) null else transformationResult ?: command.defaultValue
+                }
             }
 
             if (transformedValue != null) {
@@ -244,7 +259,7 @@ open class ValueMapper(
             } else {
                 logger.debug {
                     "Skipping command with pointer ${command.sourcePointer}: " +
-                        "No transformations matched value at ${command.sourcePointer}."
+                            "No transformations matched value at ${command.sourcePointer}."
                 }
             }
         } else {
@@ -254,24 +269,23 @@ open class ValueMapper(
         }
     }
 
-
-    /**
-     * Find and apply a transformation for given value.
-     * @return
-     * * `null` when transformations are empty so that an optional default can be applied later
-     * * The initial value of the node if no transformation array is defined. This is used with simple copy commands
-     * * The result of a matching transformations' `transform()` method. `null` if no transformations matched value.
-     **/
-    private fun JsonNode.applyTransformations(transformations: List<ValueMapperTransformation>?): Any? {
+    private fun JsonNode.applyTransformations(transformations: List<ValueMapperTransformation>?): Pair<Boolean, Any?> {
         return when (transformations?.isEmpty()) {
-            null -> this
-            true -> null
+            null -> false to this
+            true -> false to null
             false -> when (this) {
-                is ValueNode, is ObjectNode -> transformations
-                    .firstOrNull { transformation ->
-                        transformation.canTransform(this)
-                    }
-                    ?.transform(this)
+                is ValueNode, is ObjectNode -> {
+                    val (didSkip, transformationResult) =
+                        transformations
+                            .firstOrNull { transformation ->
+                                transformation.canTransform(this)
+                            }
+                            ?.transform(this)
+                            ?: return false to null
+
+                    return didSkip to transformationResult
+                }
+
 
                 else -> throw ValueMapperMappingException(
                     "No supported transformation found for ${this.nodeType} node"
@@ -400,7 +414,6 @@ open class ValueMapper(
         }
 
     }
-
 
     companion object {
         const val JSON_POINTER_ARRAY_DELIMITER = "[]"

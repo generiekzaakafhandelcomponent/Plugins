@@ -37,6 +37,7 @@ import {
 
 } from '@valtimo/components';
 import {
+    CASE_TAB_TOKEN,
     DefaultTabs,
     DossierDetailTabAuditComponent,
     DossierDetailTabDocumentsComponent,
@@ -97,6 +98,11 @@ import {
 } from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
+import {
+    OpenKlantPluginModule,
+    openKlantPluginSpecification,
+    KlantcontactTabComponent
+} from '@valtimo-plugins/openklant';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {
     RotterdamOracleEbsPluginModule,
@@ -132,6 +138,10 @@ import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr
 import {
     valtimoOcrPluginSpecification
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
+import {ValtimoS2tPluginModule} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin-module";
+import {
+    valtimoS2tPluginSpecification
+} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
 import {DocumentSearchPluginModule, documentSearchPluginSpecification} from "@valtimo-plugins/document-search";
 import {SamplePluginModule} from "../../projects/valtimo-plugins/sample-plugin/src/lib/sample-plugin.module";
 import {
@@ -155,6 +165,14 @@ import {
 import {
     openProductPluginSpecification
 } from "../../projects/valtimo-plugins/open-product/src/lib/open-product-plugin.specification";
+import {SuwinetAuthPluginModule} from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.module";
+import {
+    suwinetAuthPluginSpecification
+} from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.specification";
+import {SocratesPluginModule} from "../../projects/valtimo-plugins/socrates/src/lib/socrates-plugin.module";
+import {
+    socratesPluginSpecification
+} from "../../projects/valtimo-plugins/socrates/src/lib/socrates-plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -177,6 +195,7 @@ export function tabsFactory() {
         NotifyNlPluginModule,
         ObjectManagementPluginModule,
         ValtimoOcrPluginModule,
+        ValtimoS2tPluginModule,
         MtlsSslcontextPluginModule,
         SlackPluginModule,
         ValtimoLlmPluginModule,
@@ -187,6 +206,7 @@ export function tabsFactory() {
         SmtpMailPluginModule,
         SpotlerPluginModule,
         SuwinetPluginModule,
+        SuwinetAuthPluginModule,
         XentialPluginModule,
         HttpClientModule,
         CommonModule,
@@ -254,11 +274,14 @@ export function tabsFactory() {
         DocsysPluginModule,
         TokenAuthenticationPluginModule,
         OpenProductPluginModule
+        OpenKlantPluginModule,
+        SocratesPluginModule,
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
         useValue: [
             valtimoOcrPluginSpecification,
+            valtimoS2tPluginSpecification,
             externeKlanttaakPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
@@ -277,6 +300,7 @@ export function tabsFactory() {
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
+            suwinetAuthPluginSpecification,
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
@@ -289,8 +313,16 @@ export function tabsFactory() {
             openZaakPluginSpecification,
             zakenApiPluginSpecification,
             tokenAuthenticationPluginSpecification,
-            openProductPluginSpecification
-        ]
+            openProductPluginSpecification,
+            zakenApiPluginSpecification,
+            openKlantPluginSpecification,
+            socratesPluginSpecification
+        ],
+    }, {
+        provide: CASE_TAB_TOKEN,
+        useValue: {
+            'klantcontact-tab': KlantcontactTabComponent,
+        }
     }],
     bootstrap: [AppComponent]
 })

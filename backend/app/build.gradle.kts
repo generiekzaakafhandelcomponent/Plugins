@@ -31,12 +31,15 @@ dependencies {
     implementation(project(":backend:smtpmail"))
     implementation(project(":backend:spotler"))
     implementation(project(":backend:suwinet"))
+    implementation(project(":backend:suwinet-auth"))
     implementation(project(":backend:token-authentication"))
     implementation(project(":backend:xential"))
     implementation(project(":backend:valtimo-llm"))
+    implementation(project(":backend:valtimo-s2t"))
     implementation(project(":backend:document-search"))
     implementation(project(":backend:docsys"))
     implementation(project(":backend:value-mapper"))
+    implementation(project(":backend:socrates"))
 }
 
 tasks.jar {

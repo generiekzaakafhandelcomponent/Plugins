@@ -269,6 +269,47 @@
         }
       }
     },
+    "@valtimo-plugins/openklant": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/openklant",
+      "sourceRoot": "projects/valtimo-plugins/openklant/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/openklant/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/openklant/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/openklant/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/openklant/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/openklant/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/openklant/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/openklant/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/openklant/src/**/*.ts",
+              "projects/valtimo-plugins/openklant/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/open-product": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/open-product",
@@ -387,6 +428,47 @@
             "lintFilePatterns": [
               "projects/valtimo-plugins/valtimo-ocr/src/**/*.ts",
               "projects/valtimo-plugins/valtimo-ocr/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/valtimo-s2t": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/valtimo-s2t",
+      "sourceRoot": "projects/valtimo-plugins/valtimo-s2t/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/valtimo-s2t/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/valtimo-s2t/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/valtimo-s2t/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/valtimo-s2t/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/valtimo-s2t/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/valtimo-s2t/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/valtimo-s2t/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/valtimo-s2t/src/**/*.ts",
+              "projects/valtimo-plugins/valtimo-s2t/src/**/*.html"
             ]
           }
         }
@@ -884,6 +966,47 @@
         }
       }
     },
+    "@valtimo-plugins/suwinet-auth": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/suwinet-auth",
+      "sourceRoot": "projects/valtimo-plugins/suwinet-auth/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/suwinet-auth/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/suwinet-auth/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/suwinet-auth/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/suwinet-auth/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/suwinet-auth/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/suwinet-auth/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/suwinet-auth/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/suwinet-auth/src/**/*.ts",
+              "projects/valtimo-plugins/suwinet-auth/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/value-mapper": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/value-mapper",
@@ -1072,8 +1195,49 @@
           }
         }
       }
+    },
+    "@valtimo-plugins/socrates": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/socrates",
+      "sourceRoot": "projects/valtimo-plugins/socrates/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/socrates/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/socrates/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/socrates/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/socrates/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/socrates/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/socrates/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/socrates/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/socrates/src/**/*.ts",
+              "projects/valtimo-plugins/socrates/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
-  },
+},
   "cli": {
     "analytics": false
   }

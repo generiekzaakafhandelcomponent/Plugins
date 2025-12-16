@@ -55,7 +55,7 @@ open class DocsysPlugin(
     @PluginProperty(key = "docsysApiUrl", secret = false)
     lateinit var docsysApiUrl: URI
 
-    @PluginProperty(key = "clientId", secret = true)
+    @PluginProperty(key = "clientId", secret = false)
     lateinit var clientId: String
 
     @PluginProperty(key = "clientSecret", secret = true)

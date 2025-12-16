@@ -11,11 +11,12 @@ data class PersoonDto(
     val adresBrp: AdresDto?,
     @JsonInclude(JsonInclude.Include.NON_NULL) val postadresBrp: AdresDto?,
     val verblijfstitel: Verblijfstitel?,
+    val verblijfplaatsHistorisch: List<VerblijfplaatsHistorisch>,
     val nationaliteiten: List<NationaliteitDto>?,
     @JsonInclude(JsonInclude.Include.NON_NULL) val kinderenBsns: List<String>?,
     val partnerBsn: String? = "",
     val datumOverlijden: String? = ""
-) {
+    ){
     data class Verblijfstitel(
         val codeVerblijfstitel: CodeVerblijfstitel,
         val datumAanvangVerblijfstitel: String,
@@ -26,4 +27,10 @@ data class PersoonDto(
             val name: String
         )
     }
+    data class VerblijfplaatsHistorisch(
+        val type: AdresType,
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        val adres: AdresDto?,
+        val datumBeginAdreshouding: String
+    )
 }
