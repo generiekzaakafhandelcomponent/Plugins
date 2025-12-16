@@ -26,6 +26,8 @@ import jakarta.xml.ws.WebServiceException
 import org.camunda.bpm.engine.exception.NotFoundException
 import org.springframework.util.StringUtils
 import java.io.IOException
+import java.time.LocalDate
+import java.time.YearMonth
 
 class SuwinetBrpInfoService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
@@ -157,13 +159,19 @@ class SuwinetBrpInfoService(
 
     private fun getVerblijfplaatsHistorisch(
         verblijfplaatsHistorisch: List<VerblijfplaatsHistorisch>?
-    ): List<PersoonDto.VerblijfplaatsHistorisch> =
-        verblijfplaatsHistorisch?.flatMap { it ->
-            val datumBeginAdreshouding =
-                dateTimeService.fromSuwinetToDateString(it.aangifteAdreshoudingBrp?.datBAdreshoudingBrp)
+    ): List<PersoonDto.VerblijfplaatsHistorisch> {
+        if (verblijfplaatsHistorisch.isNullOrEmpty()) return emptyList()
 
-            buildList {
-                it.domicilieAdres?.let { domicilieAdres ->
+        val cutoffDate = LocalDate.now().minusYears(3)
+
+        return buildList {
+            for (entry in verblijfplaatsHistorisch) {
+                val startDateRaw = entry.aangifteAdreshoudingBrp?.datBAdreshoudingBrp
+                val startDate = parseSuwinetDateOrNull(startDateRaw) ?: continue
+                if (startDate.isBefore(cutoffDate)) continue
+                val datumBeginAdreshouding = dateTimeService.fromSuwinetToDateString(startDateRaw)
+
+                entry.domicilieAdres?.let { domicilieAdres ->
                     add(
                         PersoonDto.VerblijfplaatsHistorisch(
                             type = AdresType.WOONADRES,
@@ -172,7 +180,7 @@ class SuwinetBrpInfoService(
                         )
                     )
                 }
-                it.correspondentieadres?.let { correspondentieadres ->
+                entry.correspondentieadres?.let { correspondentieadres ->
                     add(
                         PersoonDto.VerblijfplaatsHistorisch(
                             type = AdresType.POSTADRES,
@@ -182,7 +190,8 @@ class SuwinetBrpInfoService(
                     )
                 }
             }
-        } ?: emptyList()
+        }
+    }
 
     private fun Straatadres.mapToAdresDto() = AdresDto(
         straatnaam = straatnaam.orEmpty(),
@@ -205,6 +214,18 @@ class SuwinetBrpInfoService(
         aanduidingBijHuisnummer = aanduidingBijHuisnr.orEmpty(),
         locatieomschrijving = locatieoms.orEmpty()
     )
+
+    private fun parseSuwinetDateOrNull(raw: String?): LocalDate? {
+        val digits = raw?.filter(Char::isDigit) ?: return null
+        if (digits.length != 8) return null
+
+        val year = digits.substring(0, 4).toInt()
+        val month = digits.substring(4, 6).let { if (it == "00") 1 else it.toInt() }
+        val day = digits.substring(6, 8).let { if (it == "00") 1 else it.toInt() }
+            .coerceIn(1, YearMonth.of(year, month).lengthOfMonth())
+
+        return LocalDate.of(year, month, day)
+    }
 
     companion object {
         const val SERVICE_PATH = "BRPDossierPersoonGSD-v0200"

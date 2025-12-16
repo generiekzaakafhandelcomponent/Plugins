@@ -6,7 +6,7 @@ data class Persoon(
     val aNummer: String,
     val burgerservicenummer: String,
     val geboortedatum: LocalDate,
-    val partner: Partner,
+    val partner: Partner?,
 
     /**
      * 0 = Onbekend, 1 = Man, 2 = Vrouw
@@ -27,7 +27,7 @@ data class Persoon(
      * 1 = EigenNaam, 2 = ExEchtgenoot, 3 = ExEchtgenootEigenNaam, 4 = EigenNaamExEchtgenoot
      */
     val naamgebruik: Int,
-    val geslachtsnaamPartner: String,
+    val geslachtsnaamPartner: String?,
 
     /**
      * 0 = geen beperking, 1 = niet zonder toestemming aan derden ter uitvoering van een algemeen verbindend voorschrift,
