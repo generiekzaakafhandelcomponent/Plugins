@@ -51,7 +51,7 @@ internal class SuwinetSvbInfoServiceTest : BaseTest() {
         testHelper = TestHelper
         suwinetSOAPClient = Mockito.mock()
         codesUitkeringsperiodeService = Mockito.mock()
-        suwinetSVBPersoonsInfoService.setConfig(suwinetSOAPClientConfig)
+        suwinetSVBPersoonsInfoService.setConfig(suwinetSOAPClientConfig, "")
     }
 
     @Test

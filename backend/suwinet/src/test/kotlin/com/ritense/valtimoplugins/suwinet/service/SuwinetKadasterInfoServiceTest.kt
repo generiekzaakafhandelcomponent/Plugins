@@ -45,7 +45,7 @@ internal class SuwinetKadasterInfoServiceTest : BaseTest() {
     fun setup() {
         testHelper = TestHelper
         suwinetSOAPClient = Mockito.mock()
-        suwinetKadasterInfoService.setConfig(suwinetSOAPClientConfig)
+        suwinetKadasterInfoService.setConfig(suwinetSOAPClientConfig, "")
     }
     @Test
     fun `retrieving kadaster persoonsinfo with not found bsn should return empty list`() {

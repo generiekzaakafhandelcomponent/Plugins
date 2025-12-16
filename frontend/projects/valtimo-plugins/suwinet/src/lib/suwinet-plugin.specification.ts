@@ -61,6 +61,7 @@ const suwinetPluginSpecification: PluginSpecification = {
             description: 'Plugin om data uit Suwinet op te halen',
             url: 'URL',
             bsn: 'Burgerservicenummer',
+            suffixTooltip: 'Indien er een suffix na de service naam is, vul die hier in. Bijvoorbeeld /v1',
             kenteken: 'Kenteken',
             bsnTooltip: 'De burgerservice nummer waarop een zoek gedaan wordt',
             pluginActionWarning: 'Fill in the required fields for this plugin action',
