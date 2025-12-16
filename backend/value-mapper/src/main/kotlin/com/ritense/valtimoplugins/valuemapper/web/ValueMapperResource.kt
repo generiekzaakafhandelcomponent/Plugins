@@ -16,7 +16,6 @@
 
 package com.ritense.valtimoplugins.valuemapper.web
 
-
 import com.ritense.valtimo.web.rest.error.BadRequestAlertException
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTemplate
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperLoadingService
@@ -38,19 +37,15 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/management", produces = [APPLICATION_JSON])
 class ValueMapperResource(
     private val loadingService: ValueMapperLoadingService,
-    private val valueMapperTemplateService: ValueMapperTemplateService
+    private val valueMapperTemplateService: ValueMapperTemplateService,
 ) {
-
     @GetMapping("/v1/value-mapper/definitions")
-    fun getMappingDefinitions(): Set<String> {
-        return valueMapperTemplateService.getTemplatesKeys()
-    }
+    fun getMappingDefinitions(): Set<String> = valueMapperTemplateService.getTemplatesKeys()
 
     @GetMapping("/v1/value-mapper/definitionsPage")
-    fun getMappingDefinitionsPage(pageable: Pageable,
-    ): ResponseEntity<Page<TemplateListItemResponse>> {
+    fun getMappingDefinitionsPage(pageable: Pageable): ResponseEntity<Page<TemplateListItemResponse>> {
         val templates = valueMapperTemplateService.getTemplatesKeysPaged(pageable)
-        return ResponseEntity.ok(templates.map { TemplateListItemResponse( it, isReadOnly(it)) })
+        return ResponseEntity.ok(templates.map { TemplateListItemResponse(it, isReadOnly(it)) })
     }
 
     @GetMapping("/v1/value-mapper/definitions/{key}")
@@ -69,10 +64,11 @@ class ValueMapperResource(
             throw BadRequestAlertException("The key ${template.key} already exists", ValueMapperTemplate::class.simpleName, "keyExists")
         }
 
-        val template = valueMapperTemplateService.saveUpdate(
-            template.key,
-            ""
-        )
+        val template =
+            valueMapperTemplateService.saveUpdate(
+                template.key,
+                "",
+            )
 
         return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(template.key)))
     }
@@ -83,24 +79,28 @@ class ValueMapperResource(
         @RequestBody template: ValueMapperTemplateDTO,
     ): ResponseEntity<ValueMapperTemplateDTO> {
         if (template.key.isBlank() || key != template.key) {
-            throw BadRequestAlertException("The template key ${template.key} is not equal to the path variabele", ValueMapperTemplate::class.simpleName, "keyNOtEqual")
+            throw BadRequestAlertException(
+                "The template key ${template.key} is not equal to the path variabele",
+                ValueMapperTemplate::class.simpleName,
+                "keyNOtEqual",
+            )
         }
 
-        val template = valueMapperTemplateService.saveUpdate(
-            template.key,
-            template.content
-        )
+        val template =
+            valueMapperTemplateService.saveUpdate(
+                template.key,
+                template.content,
+            )
         return ResponseEntity.ok(ValueMapperTemplateDTO.of(template, isReadOnly(key)))
     }
 
     @DeleteMapping("/v1/value-mapper/definitions")
     fun deleteTemplates(
-        @RequestBody request: DeleteTemplateRequest
+        @RequestBody request: DeleteTemplateRequest,
     ): ResponseEntity<Unit> {
         valueMapperTemplateService.removeTemplate(request.templates)
         return ResponseEntity.ok().build()
     }
 
     private fun isReadOnly(key: String) = loadingService.resourceExists(key)
-
 }

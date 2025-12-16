@@ -1,17 +1,17 @@
 /*
- *  Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
- *  Licensed under EUPL, Version 1.2 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" basis,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ritense.valtimoplugins.valuemapper.domain
@@ -45,7 +45,6 @@ import kotlin.test.assertEquals
 
 @ExtendWith(MockitoExtension::class)
 class ValueMapperTest {
-
     @Mock
     lateinit var documentService: DocumentService
 
@@ -70,9 +69,10 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(def, emptyMap())
-        )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(def, emptyMap()),
+            )
 
         // then
         assert(mappingResult.isEmpty)
@@ -86,9 +86,10 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(def, mapOf("persoonsgegevens" to mapOf("voornamen" to "Anna")))
-        )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(def, mapOf("persoonsgegevens" to mapOf("voornamen" to "Anna"))),
+            )
 
         // then
         assertEquals("Anonymous", mappingResult.at("/persoon/voornaam").textValue())
@@ -101,17 +102,19 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                def,
-                mapOf(
-                    "persoonsgegevens" to mapOf(
-                        "voornamen" to "Anna",
-                        "contactgegevens" to mapOf("communicatievoorkeur" to "")
-                    )
-                )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "persoonsgegevens" to
+                            mapOf(
+                                "voornamen" to "Anna",
+                                "contactgegevens" to mapOf("communicatievoorkeur" to ""),
+                            ),
+                    ),
+                ),
             )
-        )
 
         // then
         assertTrue(mappingResult.at("/contacts/communicationChannel").isMissingNode)
@@ -139,47 +142,52 @@ class ValueMapperTest {
 
         // given
         whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
-        val inputObject = mapOf(
-            "adres" to mapOf(
-                "plaats" to "Amsterdam"
+        val inputObject =
+            mapOf(
+                "adres" to
+                    mapOf(
+                        "plaats" to "Amsterdam",
+                    ),
             )
-        )
 
         // then
-        val result = assertDoesNotThrow {
-            valueMapper.applyToObject(
-                "no-value-no-default",
-                inputObject
-            )
-        }
+        val result =
+            assertDoesNotThrow {
+                valueMapper.applyToObject(
+                    "no-value-no-default",
+                    inputObject,
+                )
+            }
 
         assertEquals(inputObject, result)
     }
 
     @Test
     fun `should map (by adding) array to new target in command order`() {
-
         val def = "test-array-moving-v1"
 
         // given
         whenever(templateService.getDefinition(def)).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                def,
-                mapOf(
-                    "mijn-kinderen" to listOf(
-                        mapOf("voornaam" to "Jan"),
-                        mapOf("voornaam" to "Henk")
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "mijn-kinderen" to
+                            listOf(
+                                mapOf("voornaam" to "Jan"),
+                                mapOf("voornaam" to "Henk"),
+                            ),
+                        "partner-kinderen" to
+                            listOf(
+                                mapOf("voornaam" to "Kees"),
+                                mapOf("voornaam" to "Maria"),
+                            ),
                     ),
-                    "partner-kinderen" to listOf(
-                        mapOf("voornaam" to "Kees"),
-                        mapOf("voornaam" to "Maria")
-                    )
-                )
+                ),
             )
-        )
 
         // then
         assert(mappingResult.at("/kinderen").size() == 4)
@@ -197,17 +205,19 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(def)).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                def,
-                mapOf(
-                    "selected-aanvraag-types" to listOf(
-                        "NORM",
-                        "SPEC"
-                    )
-                )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "selected-aanvraag-types" to
+                            listOf(
+                                "NORM",
+                                "SPEC",
+                            ),
+                    ),
+                ),
             )
-        )
 
         // then
         assert(mappingResult.at("/aanvraagTypes").size() == 2)
@@ -225,17 +235,19 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                def,
-                mapOf(
-                    "selected-aanvraag-types" to listOf(
-                        3,
-                        "NORM"
-                    )
-                )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "selected-aanvraag-types" to
+                            listOf(
+                                3,
+                                "NORM",
+                            ),
+                    ),
+                ),
             )
-        )
 
         // then
         assert(mappingResult.at("/aanvraagTypes").size() == 1)
@@ -247,23 +259,24 @@ class ValueMapperTest {
 
     @Test
     fun `should apply default to array items that don't hit any transformation criteria`() {
-
         val def = "test-array-transform-v2"
         // given
         whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                def,
-                mapOf(
-                    "selected-aanvraag-types" to listOf(
-                        3,
-                        "NORM"
-                    )
-                )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "selected-aanvraag-types" to
+                            listOf(
+                                3,
+                                "NORM",
+                            ),
+                    ),
+                ),
             )
-        )
 
         // then
         assert(mappingResult.at("/aanvraagTypes").size() == 2)
@@ -281,18 +294,20 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                def,
-                mapOf(
-                    "selected-aanvraag-types" to listOf(
-                        "NORM",
-                        "SPEC",
-                        "ASD"
-                    )
-                )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "selected-aanvraag-types" to
+                            listOf(
+                                "NORM",
+                                "SPEC",
+                                "ASD",
+                            ),
+                    ),
+                ),
             )
-        )
 
         // then
         assert(mappingResult.at("/aanvraagTypes").size() == 2)
@@ -302,7 +317,6 @@ class ValueMapperTest {
         assertEquals(mappingResult.at("/aanvraagTypes/1/value").textValue(), "This is a special request")
     }
 
-
     @Test
     fun `should create empty array`() {
         val def = "test-array-simple-v1"
@@ -311,17 +325,19 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                "test-array-simple-v1",
-                mapOf(
-                    "some" to mapOf<String, Any>(
-                        "thing1" to "a",
-                        "thing2" to "b"
-                    )
-                )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    "test-array-simple-v1",
+                    mapOf(
+                        "some" to
+                            mapOf<String, Any>(
+                                "thing1" to "a",
+                                "thing2" to "b",
+                            ),
+                    ),
+                ),
             )
-        )
 
         // then
         assert(mappingResult.at("/new/array").isArray)
@@ -335,43 +351,48 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(def)).thenReturn(testDefinitions[def])
 
         // when
-        val inputObject = mapOf(
-            "mijn-kinderen" to listOf(
-                mapOf(
-                    "voornaam" to "Jan",
-                    "toys" to listOf(
+        val inputObject =
+            mapOf(
+                "mijn-kinderen" to
+                    listOf(
                         mapOf(
-                            "toyCode" to 11
+                            "voornaam" to "Jan",
+                            "toys" to
+                                listOf(
+                                    mapOf(
+                                        "toyCode" to 11,
+                                    ),
+                                    mapOf(
+                                        "toyCode" to 22,
+                                    ),
+                                ),
                         ),
                         mapOf(
-                            "toyCode" to 22
-                        )
-                    )
-                ),
-                mapOf(
-                    "voornaam" to "Kees",
-                    "toys" to emptyList<Map<String, Any>>()
-                ),
-                mapOf(
-                    "voornaam" to "Maria",
-                    "toys" to listOf(
-                        mapOf(
-                            "toyCode" to 22
+                            "voornaam" to "Kees",
+                            "toys" to emptyList<Map<String, Any>>(),
                         ),
                         mapOf(
-                            "toyCode" to 33
-                        )
-                    )
-                )
+                            "voornaam" to "Maria",
+                            "toys" to
+                                listOf(
+                                    mapOf(
+                                        "toyCode" to 22,
+                                    ),
+                                    mapOf(
+                                        "toyCode" to 33,
+                                    ),
+                                ),
+                        ),
+                    ),
             )
-        )
 
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                "test-array-complex-v1",
-                inputObject
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    "test-array-complex-v1",
+                    inputObject,
+                ),
             )
-        )
 
         // then
         assertEquals(3, mappingResult.at("/kinderen").size())
@@ -397,8 +418,8 @@ class ValueMapperTest {
             mapper.convertValue(
                 valueMapper.applyToObject(
                     "test-invalid-complex-v1",
-                    inputObject
-                )
+                    inputObject,
+                ),
             )
         }
     }
@@ -413,25 +434,24 @@ class ValueMapperTest {
         // when
         val inputObject = emptyMap<String, Any>()
 
-
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                "test-empty-value-complex-v1",
-                inputObject
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    "test-empty-value-complex-v1",
+                    inputObject,
+                ),
             )
-        )
 
         assert(mappingResult.isEmpty)
     }
 
     @Test
     fun `should fail when no matching definition found`() {
-
         // then
         assertThrows<IllegalArgumentException> {
             valueMapper.applyToDocument(
                 "non-existing-v1",
-                document.id().toString()
+                document.id().toString(),
             )
         }
     }
@@ -445,15 +465,15 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
         whenever(document.content().asJson()).thenReturn(
             mapper.convertValue(
-                mapOf("persoonsgegevens" to mapOf("voornaam" to "Kees"))
-            )
+                mapOf("persoonsgegevens" to mapOf("voornaam" to "Kees")),
+            ),
         )
 
         // then
         assertThrows<ValueMapperCommandException> {
             valueMapper.applyToDocument(
                 "test-invalid-pointer",
-                document.id().toString()
+                document.id().toString(),
             )
         }
     }
@@ -466,22 +486,25 @@ class ValueMapperTest {
         whenever(templateService.getDefinition(eq(def))).thenReturn(testDefinitions[def])
 
         // when
-        val mappingResult: ObjectNode = mapper.convertValue(
-            valueMapper.applyToObject(
-                "test-convert-types-valid-v1",
-                mapOf(
-                    "customer" to mapOf<String, Any>(
-                        "adres" to mapOf<String, Any>(
-                            "streetname" to "Street",
-                            "housenumber" to "10",
-                            "saunaPresent" to "true",
-                            "doorsAreOpen" to false,
-                            "cost" to 312330
-                        )
-                    )
-                )
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    "test-convert-types-valid-v1",
+                    mapOf(
+                        "customer" to
+                            mapOf<String, Any>(
+                                "adres" to
+                                    mapOf<String, Any>(
+                                        "streetname" to "Street",
+                                        "housenumber" to "10",
+                                        "saunaPresent" to "true",
+                                        "doorsAreOpen" to false,
+                                        "cost" to 312330,
+                                    ),
+                            ),
+                    ),
+                ),
             )
-        )
 
         // then
         assert(mappingResult.at("/adres/huisnummer").isInt)
@@ -502,386 +525,483 @@ class ValueMapperTest {
 
         // when
         assertThrows<ValueMapperCommandException> {
-
             valueMapper.applyToObject(
                 "test-convert-type-invalid-v1",
                 mapOf(
-                    "customer" to mapOf<String, Any>(
-                        "adres" to mapOf<String, Any>(
-                            "housenumber" to "10"
-                        )
-                    )
-                )
+                    "customer" to
+                        mapOf<String, Any>(
+                            "adres" to
+                                mapOf<String, Any>(
+                                    "housenumber" to "10",
+                                ),
+                        ),
+                ),
             )
-
         }
     }
 
     companion object {
         private val mapper = ObjectMapper()
-        private val testDefinitions = mapOf(
-            "test-v1" to ValueMapperDefinition(
-                definitionId = "test-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/persoonsgegevens",
-                        "targetPointer": "/persoon"
-                    },
-                    {
-                        "defaultValue": "Anonymous",
-                        "sourcePointer": "/persoonsgegevens/voornamen",
-                        "targetPointer": "/persoon/voornaam",
-                        "transformations":[]
-                    },
-                    {
-                        "defaultValue": "LETTER",
-                        "sourcePointer": "/contactgegevens/communicatievoorkeur",
-                        "targetPointer": "/contacts/communicationChannel",
-                        "transformations": [
-                            {
-                                "when": "",
-                                "skipCondition": "it == ''"
-                            },
-                            {
-                                "when": "a",
-                                "then": "EMAIL"
-                            },
-                            {
-                                "when": "b",
-                                "then": "PHONE"
-                            },
-                            {
-                                "when": "c",
-                                "then": "LETTER"
-                            }
-                        ]
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-v2" to ValueMapperDefinition(
-                definitionId = "test-v2",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/persoonsgegevens",
-                        "targetPointer": "/persoon"
-                    },
-                    {
-                        "sourcePointer": "/contactgegevens/communicatievoorkeur",
-                        "targetPointer": "/contacts/communicationChannel",
-                        "transformations": [
-                            {
-                                "when": "a",
-                                "then": "EMAIL"
-                            },
-                            {
-                                "when": "b",
-                                "then": "PHONE"},
-                            {
-                                "when": "c",
-                                "then": "LETTER"
-                            }
-                        ]
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "no-value-no-default" to ValueMapperDefinition(
-                definitionId = "no-value-no-default",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/persoonsgegevens",
-                        "targetPointer": "/persoon"
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-invalid-pointer" to ValueMapperDefinition(
-                definitionId = "test-invalid-pointer",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/persoonsgegevens",
-                        "targetPointer": "/"
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-array-moving-v1" to ValueMapperDefinition(
-                definitionId = "test-array-moving-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/mijn-kinderen",
-                        "targetPointer": "/kinderen"
-                    },
-                    {
-                        "sourcePointer": "/partner-kinderen",
-                        "targetPointer": "/kinderen"
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-array-transform-v1" to ValueMapperDefinition(
-                definitionId = "test-array-transform-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/selected-aanvraag-types",
-                        "targetPointer": "/aanvraagTypes",
-                        "transformations": [
-                            {
-                                "when":"NORM",
-                                "then": {
-                                    "code": "NORMAL",
-                                    "value": "This is a normal request"
-                                }
-                            },
-                            {
-                                "when":"SPEC",
-                                "then": {
-                                    "code": "SPECIAL",
-                                    "value": "This is a special request"
-                                }
-                            },
-                            {
-                                "when":"ALT",
-                                "then": {
-                                    "code": "ALTERNATIVE",
-                                    "value": "This is an alternative request"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-array-transform-v2" to ValueMapperDefinition(
-                definitionId = "test-array-transform-v2",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "defaultValue": {
-                            "code": "UNKNOWN",
-                            "value": "The request type is unknown"
-                        },
-                        "sourcePointer": "/selected-aanvraag-types",
-                        "targetPointer": "/aanvraagTypes",
-                        "transformations": [
-                            {
-                                "when":"NORM",
-                                "then": {
-                                    "code": "NORMAL",
-                                    "value": "This is a normal request"
-                                }
-                            },
-                            {
-                                "when":"SPEC",
-                                "then": {
-                                    "code": "SPECIAL",
-                                    "value": "This is a special request"
-                                }
-                            },
-                            {
-                                "when":"ALT",
-                                "then": {
-                                    "code": "ALTERNATIVE",
-                                    "value": "This is an alternative request"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-array-complex-v1" to ValueMapperDefinition(
-                definitionId = "test-array-complex-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/mijn-kinderen/[]/voornaam",
-                        "targetPointer": "/kinderen/[]/voornaam"
-                    },
-                    {
-                        "defaultValue": {
-                            "code": "NVT",
-                            "value": "Niet van toepassing"
-                        },
-                        "sourcePointer": "/mijn-kinderen/[]/geslachtsaanduiding",
-                        "targetPointer": "/kinderen/[]/geslacht",
-                        "transformations": []
-                    },
-                    {
-                        "defaultValue": {
-                            "code": 0,
-                            "name": "Imagination",
-                            "description": "The sky is the limit... 🥲"
-                        },
-                        "sourcePointer": "/mijn-kinderen/[]/toys/[]/toyCode",
-                        "targetPointer": "/kinderen/[]/speelgoederen/[]",
-                        "transformations": [
-                            {
-                                "when": 11,
-                                "then": {
-                                    "code": 11,
-                                    "name": "Nintje Knuffel",
-                                    "description": "A cute toy rabbit. 🐰"
-                                }
-                            },
-                            {
-                                "when": 22,
-                                "then": {
-                                    "code": 22,
-                                    "name": "Lego blocks",
-                                    "description": "You can build a castle."
-                                }
-                            },
-                            {
-                                "when": 33,
-                                "then": {
-                                    "code": 33,
-                                    "name": "Toy Car",
-                                    "description": "It's red and very fast!"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-empty-value-complex-v1" to ValueMapperDefinition(
-                definitionId = "test-empty-value-complex-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/mijn-kinderen/[]/voornaam",
-                        "targetPointer": "/kinderen/[]/voornaam"
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-array-simple-v1" to ValueMapperDefinition(
-                definitionId = "test-array-simple-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "defaultValue": [],
-                        "sourcePointer": "/some",
-                        "targetPointer": "/new/array",
-                        "transformations": []
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-invalid-complex-v1" to ValueMapperDefinition(
-                definitionId = "test-invalid-complex-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/mijn-kinderen/[]/voornaam",
-                        "targetPointer": "/kinderen/voornaam"
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-convert-types-valid-v1" to ValueMapperDefinition(
-                definitionId = "test-convert-types-valid-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/customer/adres/housenumber",
-                        "targetPointer": "/adres/huisnummer",
-                        "operation": "CONVERT",
-                        "transformations":[
-                            {
-                                "whenType": "STRING",
-                                "thenType": "java.lang.Integer"
-                            }
-                        ]
-                    },
-                    {
-                        "sourcePointer": "/customer/adres/cost",
-                        "targetPointer": "/adres/value",
-                        "operation": "CONVERT",
-                        "transformations":[
-                            {
-                                "whenType": "NUMBER",
-                                "thenType": "java.lang.String"
-                            }
-                        ]
-                    },
-                    {
-                        "sourcePointer": "/customer/adres/doorsAreOpen",
-                        "targetPointer": "/adres/unlocked",
-                        "operation": "CONVERT",
-                        "transformations":[
-                            {
-                                "whenType": "BOOLEAN",
-                                "thenType": "java.lang.String"
-                            }
-                        ]
-                    },
-                    {
-                        "sourcePointer": "/customer/adres/saunaPresent",
-                        "targetPointer": "/adres/hasSauna",
-                        "operation": "CONVERT",
-                        "transformations":[
-                            {
-                                "whenType": "STRING",
-                                "thenType": "java.lang.Boolean"
-                            }
-                        ]
-                    }
-                ]
-            """.trimIndent()
-                )
-            ),
-            "test-convert-type-invalid-v1" to ValueMapperDefinition(
-                definitionId = "test-convert-type-invalid-v1",
-                commands = jacksonObjectMapper().readValue(
-                    """
-                [
-                    {
-                        "sourcePointer": "/customer/adres/housenumber",
-                        "targetPointer": "/adres/huisnummer",
-                        "operation": "CONVERT",
-                        "transformations":[
-                            {
-                                "whenType": "STRING",
-                                "thenType": "java.lang.Boolean"
-                            }
-                        ]
-                    }
-                ]
-            """.trimIndent()
-                )
+        private val testDefinitions =
+            mapOf(
+                "test-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/persoonsgegevens",
+                                        "targetPointer": "/persoon"
+                                    },
+                                    {
+                                        "defaultValue": "Anonymous",
+                                        "sourcePointer": "/persoonsgegevens/voornamen",
+                                        "targetPointer": "/persoon/voornaam",
+                                        "transformations":[]
+                                    },
+                                    {
+                                        "defaultValue": "LETTER",
+                                        "sourcePointer": "/contactgegevens/communicatievoorkeur",
+                                        "targetPointer": "/contacts/communicationChannel",
+                                        "transformations": [
+                                            {
+                                                "when": "",
+                                                "skipCondition": "it == ''"
+                                            },
+                                            {
+                                                "when": "a",
+                                                "then": "EMAIL"
+                                            },
+                                            {
+                                                "when": "b",
+                                                "then": "PHONE"
+                                            },
+                                            {
+                                                "when": "c",
+                                                "then": "LETTER"
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-v2" to
+                    ValueMapperDefinition(
+                        definitionId = "test-v2",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/persoonsgegevens",
+                                        "targetPointer": "/persoon"
+                                    },
+                                    {
+                                        "sourcePointer": "/contactgegevens/communicatievoorkeur",
+                                        "targetPointer": "/contacts/communicationChannel",
+                                        "transformations": [
+                                            {
+                                                "when": "a",
+                                                "then": "EMAIL"
+                                            },
+                                            {
+                                                "when": "b",
+                                                "then": "PHONE"},
+                                            {
+                                                "when": "c",
+                                                "then": "LETTER"
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "no-value-no-default" to
+                    ValueMapperDefinition(
+                        definitionId = "no-value-no-default",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/persoonsgegevens",
+                                        "targetPointer": "/persoon"
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-invalid-pointer" to
+                    ValueMapperDefinition(
+                        definitionId = "test-invalid-pointer",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/persoonsgegevens",
+                                        "targetPointer": "/"
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-array-moving-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-array-moving-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/mijn-kinderen",
+                                        "targetPointer": "/kinderen"
+                                    },
+                                    {
+                                        "sourcePointer": "/partner-kinderen",
+                                        "targetPointer": "/kinderen"
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-array-transform-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-array-transform-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/selected-aanvraag-types",
+                                        "targetPointer": "/aanvraagTypes",
+                                        "transformations": [
+                                            {
+                                                "when":"NORM",
+                                                "then": {
+                                                    "code": "NORMAL",
+                                                    "value": "This is a normal request"
+                                                }
+                                            },
+                                            {
+                                                "when":"SPEC",
+                                                "then": {
+                                                    "code": "SPECIAL",
+                                                    "value": "This is a special request"
+                                                }
+                                            },
+                                            {
+                                                "when":"ALT",
+                                                "then": {
+                                                    "code": "ALTERNATIVE",
+                                                    "value": "This is an alternative request"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-array-transform-v2" to
+                    ValueMapperDefinition(
+                        definitionId = "test-array-transform-v2",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "defaultValue": {
+                                            "code": "UNKNOWN",
+                                            "value": "The request type is unknown"
+                                        },
+                                        "sourcePointer": "/selected-aanvraag-types",
+                                        "targetPointer": "/aanvraagTypes",
+                                        "transformations": [
+                                            {
+                                                "when":"NORM",
+                                                "then": {
+                                                    "code": "NORMAL",
+                                                    "value": "This is a normal request"
+                                                }
+                                            },
+                                            {
+                                                "when":"SPEC",
+                                                "then": {
+                                                    "code": "SPECIAL",
+                                                    "value": "This is a special request"
+                                                }
+                                            },
+                                            {
+                                                "when":"ALT",
+                                                "then": {
+                                                    "code": "ALTERNATIVE",
+                                                    "value": "This is an alternative request"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-array-complex-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-array-complex-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/mijn-kinderen/[]/voornaam",
+                                        "targetPointer": "/kinderen/[]/voornaam"
+                                    },
+                                    {
+                                        "defaultValue": {
+                                            "code": "NVT",
+                                            "value": "Niet van toepassing"
+                                        },
+                                        "sourcePointer": "/mijn-kinderen/[]/geslachtsaanduiding",
+                                        "targetPointer": "/kinderen/[]/geslacht",
+                                        "transformations": []
+                                    },
+                                    {
+                                        "defaultValue": {
+                                            "code": 0,
+                                            "name": "Imagination",
+                                            "description": "The sky is the limit... 🥲"
+                                        },
+                                        "sourcePointer": "/mijn-kinderen/[]/toys/[]/toyCode",
+                                        "targetPointer": "/kinderen/[]/speelgoederen/[]",
+                                        "transformations": [
+                                            {
+                                                "when": 11,
+                                                "then": {
+                                                    "code": 11,
+                                                    "name": "Nintje Knuffel",
+                                                    "description": "A cute toy rabbit. 🐰"
+                                                }
+                                            },
+                                            {
+                                                "when": 22,
+                                                "then": {
+                                                    "code": 22,
+                                                    "name": "Lego blocks",
+                                                    "description": "You can build a castle."
+                                                }
+                                            },
+                                            {
+                                                "when": 33,
+                                                "then": {
+                                                    "code": 33,
+                                                    "name": "Toy Car",
+                                                    "description": "It's red and very fast!"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-empty-value-complex-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-empty-value-complex-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/mijn-kinderen/[]/voornaam",
+                                        "targetPointer": "/kinderen/[]/voornaam"
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-array-simple-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-array-simple-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "defaultValue": [],
+                                        "sourcePointer": "/some",
+                                        "targetPointer": "/new/array",
+                                        "transformations": []
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-invalid-complex-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-invalid-complex-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/mijn-kinderen/[]/voornaam",
+                                        "targetPointer": "/kinderen/voornaam"
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-convert-types-valid-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-convert-types-valid-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/customer/adres/housenumber",
+                                        "targetPointer": "/adres/huisnummer",
+                                        "operation": "CONVERT",
+                                        "transformations":[
+                                            {
+                                                "whenType": "STRING",
+                                                "thenType": "java.lang.Integer"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "sourcePointer": "/customer/adres/cost",
+                                        "targetPointer": "/adres/value",
+                                        "operation": "CONVERT",
+                                        "transformations":[
+                                            {
+                                                "whenType": "NUMBER",
+                                                "thenType": "java.lang.String"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "sourcePointer": "/customer/adres/doorsAreOpen",
+                                        "targetPointer": "/adres/unlocked",
+                                        "operation": "CONVERT",
+                                        "transformations":[
+                                            {
+                                                "whenType": "BOOLEAN",
+                                                "thenType": "java.lang.String"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "sourcePointer": "/customer/adres/saunaPresent",
+                                        "targetPointer": "/adres/hasSauna",
+                                        "operation": "CONVERT",
+                                        "transformations":[
+                                            {
+                                                "whenType": "STRING",
+                                                "thenType": "java.lang.Boolean"
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-convert-type-invalid-v1" to
+                    ValueMapperDefinition(
+                        definitionId = "test-convert-type-invalid-v1",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/customer/adres/housenumber",
+                                        "targetPointer": "/adres/huisnummer",
+                                        "operation": "CONVERT",
+                                        "transformations":[
+                                            {
+                                                "whenType": "STRING",
+                                                "thenType": "java.lang.Boolean"
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-skipping-empty-values-at-source-pointer" to
+                    ValueMapperDefinition(
+                        definitionId = "test-skipping-empty-values-at-source-pointer",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "sourcePointer": "/contactgegevens/communicatievoorkeur",
+                                        "targetPointer": "/contacts/communicationChannel",
+                                        "skipCondition": "\$\{ sourceValue == 'a' }"
+                                        "transformations": [
+                                            {
+                                                "when": "a",
+                                                "then": "EMAIL"
+                                            },
+                                            {
+                                                "when": "b",
+                                                "then": "PHONE"
+                                            },
+                                            {
+                                                "when": "c",
+                                                "then": "LETTER"
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "test-skipping-skipping-matched-transformations" to
+                    ValueMapperDefinition(
+                        definitionId = "test-skipping-skipping-matched-transformations",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                        {
+                                        
+                                        },
+                                [
+                                    {
+                                        "sourcePointer": "/contactgegevens/telefoonNummer",
+                                        "targetPointer": "/contacts/telefoonnummer",
+                                        "skipCondition": "\$\{ sourceValue <= '' }"
+                                    },
+                                    // set something > output
+                                    {
+                                        "sourcePointer": "/contactgegevens/communicatievoorkeur",
+                                        "targetPointer": "/contacts/communicationChannel",
+                                        "skipCondition": "\$\{ output.at('/contacts/telefoonnummer') == null }"
+                                        "transformations": [
+                                            {
+                                                "when": [],
+                                                "then": "",
+                                                "skipCondition": "\$\{ it <= '' }"
+                                            },
+                                            {
+                                                "when": "b",
+                                                "then": "PHONE",
+                                            },
+                                            {
+                                                "when": "c",
+                                                "then": "LETTER"
+                                            }
+                                        ]
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
             )
-        )
     }
 }

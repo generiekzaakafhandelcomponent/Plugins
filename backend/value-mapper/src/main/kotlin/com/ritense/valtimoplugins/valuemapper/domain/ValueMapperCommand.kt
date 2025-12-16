@@ -25,7 +25,7 @@ data class ValueMapperCommand(
     val transformations: List<ValueMapperTransformation>? = null,
     val sourcePointer: String,
     val targetPointer: String,
-    val skipCondition: String? = null
+    val skipCondition: String? = null,
 ) {
     init {
         require(sourcePointer.startsWith("/")) {
@@ -40,7 +40,7 @@ data class ValueMapperCommand(
                 require(
                     transformations != null &&
                         transformations.all { it is TypeTransformation } &&
-                        transformations.size == 1
+                        transformations.size == 1,
                 ) {
                     "Exactly one transformation is required when using CONVERT operation"
                 }
@@ -49,12 +49,15 @@ data class ValueMapperCommand(
                 }
             }
 
-            COPY -> require(transformations?.all { it is CopyTransformation } ?: true) {
-                "transformations array must only contain ValueTransformations"
-            }
+            COPY ->
+                require(transformations?.all { it is CopyTransformation } ?: true) {
+                    "transformations array must only contain ValueTransformations"
+                }
         }
-        if (defaultValue != null) requireNotNull(transformations) {
-            "defaultValue can only be used in combination with transformations"
+        if (defaultValue != null) {
+            requireNotNull(transformations) {
+                "defaultValue can only be used in combination with transformations"
+            }
         }
     }
 }

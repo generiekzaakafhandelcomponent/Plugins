@@ -8,8 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
-class ValueMapperCommandTest()  {
-
+class ValueMapperCommandTest {
     @Test
     fun `should create valid COPY command`() {
         // then
@@ -18,8 +17,7 @@ class ValueMapperCommandTest()  {
                 defaultValue = "Works",
                 transformations = listOf(),
                 sourcePointer = "/this/is/a/source/pointer",
-                targetPointer = "/this/is/a/target"
-
+                targetPointer = "/this/is/a/target",
             )
         }
     }
@@ -30,15 +28,15 @@ class ValueMapperCommandTest()  {
         assertDoesNotThrow {
             ValueMapperCommand(
                 operation = ValueMapperOperation.CONVERT,
-                transformations = listOf(
-                    TypeTransformation(
-                        whenType = JsonNodeType.NUMBER,
-                        thenType = "java.lang.String"
-                    )
-                ),
+                transformations =
+                    listOf(
+                        TypeTransformation(
+                            whenType = JsonNodeType.NUMBER,
+                            thenType = "java.lang.String",
+                        ),
+                    ),
                 sourcePointer = "/this/is/a/source/pointer",
-                targetPointer = "/this/is/a/target"
-
+                targetPointer = "/this/is/a/target",
             )
         }
     }
@@ -51,12 +49,10 @@ class ValueMapperCommandTest()  {
                 defaultValue = "Works",
                 transformations = listOf(),
                 sourcePointer = "Blade",
-                targetPointer = "/this/is/a/target"
-
+                targetPointer = "/this/is/a/target",
             )
         }
     }
-
 
     @Test
     fun `should fail when targetPointer is invalid`() {
@@ -66,12 +62,10 @@ class ValueMapperCommandTest()  {
                 defaultValue = "Works",
                 transformations = listOf(),
                 sourcePointer = "/this/is/a/source/pointer",
-                targetPointer = "2131283"
-
+                targetPointer = "2131283",
             )
         }
     }
-
 
     @Test
     fun `should fail when defaultValue is defined but transformations not`() {
@@ -80,8 +74,7 @@ class ValueMapperCommandTest()  {
             ValueMapperCommand(
                 defaultValue = "Works",
                 sourcePointer = "/this/is/a/source/pointer",
-                targetPointer = "/this/is/a/target"
-
+                targetPointer = "/this/is/a/target",
             )
         }
     }

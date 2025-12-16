@@ -7,7 +7,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 data class TypeTransformation(
     private val whenType: JsonNodeType,
-    private val thenType: String
+    private val thenType: String,
 ) : ValueMapperTransformation() {
     val thenClazz: Class<*> = Class.forName(thenType)
 

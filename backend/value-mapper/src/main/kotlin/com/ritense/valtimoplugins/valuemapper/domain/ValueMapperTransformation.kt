@@ -24,17 +24,14 @@ import com.fasterxml.jackson.databind.JsonNode
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes(
     Type(CopyTransformation::class),
-    Type(TypeTransformation::class)
+    Type(TypeTransformation::class),
 )
 open class ValueMapperTransformation {
-
     open fun canTransform(node: JsonNode): Boolean {
-
         TODO("Not implemented for base transformation")
     }
 
     open fun transform(value: Any): Pair<Boolean, Any> {
-
         TODO("Not implemented for base transformation")
     }
 }

@@ -28,13 +28,11 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 @Plugin(
     key = "value-mapper",
     title = "Value Mapper plugin",
-    description = "Plugin for mapping and transforming values from a source JSON document to a target JSON document"
+    description = "Plugin for mapping and transforming values from a source JSON document to a target JSON document",
 )
 open class ValueMapperPlugin(
-    private val valueMapper: ValueMapper
-
+    private val valueMapper: ValueMapper,
 ) {
-
     /**
      *  @param execution Execution reference of current process in scope.
      *  @param mappingDefinitionId the definition id (filename without `.valuemapping.json` suffix)
@@ -43,16 +41,17 @@ open class ValueMapperPlugin(
         key = "process-mapping-instructions",
         title = "Process mapping instructions",
         description = "Process mapping instructions from value mapping definition on a JSON document.",
-        activityTypes = [SERVICE_TASK_START]
+        activityTypes = [SERVICE_TASK_START],
     )
     fun processMapping(
         execution: DelegateExecution,
-        @PluginActionProperty definitionKey: String
-    )
-    {
+        @PluginActionProperty definitionKey: String,
+    ) {
         val businessKey = execution.businessKey
 
-        logger.info{"Processing mapping definition ${definitionKey} for process definition ${execution.processDefinitionId} with businesskey $businessKey"}
+        logger.info {
+            "Processing mapping definition $definitionKey for process definition ${execution.processDefinitionId} with businesskey $businessKey"
+        }
 
         valueMapper.applyToDocument(definitionKey, businessKey)
     }
@@ -60,5 +59,4 @@ open class ValueMapperPlugin(
     companion object {
         private val logger = KotlinLogging.logger { }
     }
-
 }

@@ -27,15 +27,18 @@ import org.springframework.expression.spel.support.StandardEvaluationContext
 class SpelExpressionProcessor(
     private val parserContext: ParserContext = TemplateParserContext("\${", "}"),
     private val evaluationContext: EvaluationContext = StandardEvaluationContext(),
-    private val contextMap: Map<String, Any?> = mapOf()
+    private val contextMap: Map<String, Any?> = mapOf(),
 ) {
-
-    fun <T> process(expression: String, resultType: Class<T>? = null): T? {
-        val spelExpression: Expression = try {
-            getParser().parseExpression(expression, parserContext)
-        } catch (e: ParseException) {
-            throw RuntimeException("Failed to parse SpEL expression: \"expression\"", e)
-        }
+    fun <T> process(
+        expression: String,
+        resultType: Class<T>? = null,
+    ): T? {
+        val spelExpression: Expression =
+            try {
+                getParser().parseExpression(expression, parserContext)
+            } catch (e: ParseException) {
+                throw RuntimeException("Failed to parse SpEL expression: \"expression\"", e)
+            }
 
         return try {
             spelExpression.getValue(evaluationContext, contextMap, resultType)
@@ -55,7 +58,6 @@ class SpelExpressionProcessor(
     private fun getParser(): SpelExpressionParser = SpelExpressionParser()
 
     companion object {
-        fun get(contextMap: Map<String, Any> = emptyMap()) =
-            SpelExpressionProcessor(contextMap = contextMap)
+        fun get(contextMap: Map<String, Any> = emptyMap()) = SpelExpressionProcessor(contextMap = contextMap)
     }
 }

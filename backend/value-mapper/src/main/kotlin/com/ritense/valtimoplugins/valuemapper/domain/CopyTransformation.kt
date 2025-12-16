@@ -24,7 +24,7 @@ import com.ritense.valtimoplugins.valuemapper.processor.SpelExpressionProcessor
 data class CopyTransformation(
     private val `when`: Any,
     private val then: Any? = null,
-    private val skipCondition: String? = null
+    private val skipCondition: String? = null,
 ) : ValueMapperTransformation() {
     override fun canTransform(node: JsonNode): Boolean = `when` == mapper.convertValue(node)
 
@@ -36,7 +36,9 @@ data class CopyTransformation(
             val contextMap = mapOf("it" to value)
             if (SpelExpressionProcessor.get(contextMap).process<Boolean>(skipCondition) == true) {
                 return true to value
-            } else return false to (then ?: value)
+            } else {
+                return false to (then ?: value)
+            }
         }
         return false to (then ?: value)
     }
