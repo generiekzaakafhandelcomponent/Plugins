@@ -1,6 +1,6 @@
 [
   {
-    "activityId": "StartEvent_1",
+    "activityId": "StartSocrates",
     "activityType": "bpmn:StartEvent:start",
     "formDefinitionName": "create-melding",
     "processLinkType": "form"
