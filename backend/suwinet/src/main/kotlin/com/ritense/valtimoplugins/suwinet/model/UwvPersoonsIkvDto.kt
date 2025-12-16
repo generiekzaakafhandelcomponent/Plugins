@@ -12,7 +12,9 @@ data class UwvPersoonsIkvDto(
         val opgaven: List<InkomstenOpgave>,
         val cdSector: String?,
         val loonheffingennummer: String?,
-        val straatadres: AdresDto?
+        val straatadres: AdresDto?,
+        val datumBeginIkv: String?,
+        val datumEindIkv: String?
     )
     data class InkomstenOpgave(
         val brutoSocialeVerzekeringsLoon: BigDecimal,

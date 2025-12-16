@@ -113,6 +113,8 @@ class SuwinetUwvPersoonsIkvService(
                 loonheffingennummer = it.administratieveEenheid?.loonheffingennr,
                 straatadres = getAdres(it.administratieveEenheid?.feitelijkAdresAeh?.firstOrNull()?.straatadres),
                 cdSector = it.sectorRisicogroepIkv.firstOrNull()?.sectorBeroepsEnBedrijfsleven?.cdSector,
+                datumBeginIkv = dateTimeService.fromSuwinetToDateString(it.datBIkv),
+                datumEindIkv = dateTimeService.fromSuwinetToDateString(it.datEIkv),
                 opgaven = getInkomstenOpgaven(
                     it.inkomstenopgave,
                     getInkomstenPeriodes(it.inkomstenperiode),
