@@ -37,7 +37,7 @@ class SocratesClient(
 
     fun dienstAanmaken(zaakId: String, loBehandeld: LoBehandeld): LOBehandeldRespons {
         val requestBody = LOBehandeldRequest(
-            zaakId = zaakId,
+            identificatie = zaakId,
             loBehandeld = loBehandeld,
         )
 
