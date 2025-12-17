@@ -37,7 +37,8 @@ class SuwinetSOAPClient {
             )
             loggingFeature.addSensitiveProtocolHeaderNames(
                 setOf<String>(
-                    "Authorization"
+                    "Authorization",
+                    "x-opentunnel-api-key"
                 )
             )
             this.features.add(loggingFeature)
