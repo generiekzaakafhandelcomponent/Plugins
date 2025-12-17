@@ -195,7 +195,7 @@ tasks.register<Wsdl2Java>("genUWVDossierInkomstenGSD") {
 
 tasks.register<Wsdl2Java>("genBijstandsregelingen") {
     toolOptions {
-        wsdl = "src/main/resources/soap/suwinet/Diensten/Bijstandsregelingen/v0500-b04/impl/BKWI.wsdl"
+        wsdl = "src/main/resources/soap/suwinet/Diensten/Bijstandsregelingen/v0500-b04/Impl/BKWI.wsdl"
         outputDir.set(layout.buildDirectory.dir("generated-sources/cxf/genBijstandsregelingen").get().asFile)
         markGenerated.set(true)
         packageNames.set(listOf("com.ritense.valtimoplugins.dkd.Bijstandsregelingen"))
