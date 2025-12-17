@@ -22,5 +22,5 @@ export * from './lib/models';
 export * from './lib/oip-klanttaak-plugin.module';
 export * from './lib/oip-klanttaak-plugin.specification';
 export * from './lib/components/configuration/configuration.component';
-export * from './lib/components/delegate-task-to-oip/delegate-task-to-oip.component';
-export * from './lib/components/complete-oip-delegated-task/complete-oip-delegated-task.component';
+export * from './lib/components/delegate-task/delegate-task.component';
+export * from './lib/components/complete-delegated-task/complete-delegated-task.component';

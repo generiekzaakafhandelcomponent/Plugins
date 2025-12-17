@@ -16,17 +16,17 @@
 
 import {NgModule} from '@angular/core';
 import {AsyncPipe, CommonModule, NgIf} from '@angular/common';
-import {CompleteOipDelegatedTaskComponent} from "./components/complete-oip-delegated-task/complete-oip-delegated-task.component";
+import {CompleteDelegatedTaskComponent} from "./components/complete-delegated-task/complete-delegated-task.component";
 import {ConfigurationComponent} from "./components/configuration/configuration.component";
-import {DelegateTaskToOipComponent} from "./components/delegate-task-to-oip/delegate-task-to-oip.component";
+import {DelegateTaskComponent} from "./components/delegate-task/delegate-task.component";
 import {PluginTranslatePipeModule} from "@valtimo/plugin";
 import {FormModule, InputModule, SelectModule} from "@valtimo/components";
 
 @NgModule({
     declarations: [
-        CompleteOipDelegatedTaskComponent,
+        CompleteDelegatedTaskComponent,
         ConfigurationComponent,
-        DelegateTaskToOipComponent
+        DelegateTaskComponent
     ],
     imports: [
         CommonModule,

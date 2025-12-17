@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
-import {PluginConfig} from '../../models/config.models';
+import {PluginConfig} from '../../models';
 import {SelectItem} from '@valtimo/components';
 import {TranslateService} from '@ngx-translate/core';
 import {ObjectManagementService} from '@valtimo/object-management';
@@ -10,7 +10,7 @@ import {ProcessService} from '@valtimo/process';
 
 @Component({
     standalone: false,
-    selector: 'valtimo-plugin-configuration',
+    selector: 'valtimo-oip-klanttaak-plugin-configuration',
     templateUrl: './configuration.component.html',
     styleUrl: './configuration.component.css'
 })

@@ -17,34 +17,57 @@
 import {PluginSpecification} from "@valtimo/plugin";
 import {PLUGIN_LOGO_BASE64} from "./assets/oip-klanttaak-plugin-logo";
 import {
-  CompleteOipDelegatedTaskComponent
-} from "./components/complete-oip-delegated-task/complete-oip-delegated-task.component";
+  CompleteDelegatedTaskComponent
+} from "./components/complete-delegated-task/complete-delegated-task.component";
 import {ConfigurationComponent} from "./components/configuration/configuration.component";
-import {DelegateTaskToOipComponent} from "./components/delegate-task-to-oip/delegate-task-to-oip.component";
+import {DelegateTaskComponent} from "./components/delegate-task/delegate-task.component";
 
-const opiKlanttaakPluginSpecification: PluginSpecification = {
+const oipKlanttaakPluginSpecification: PluginSpecification = {
   pluginId: 'oip-klanttaak',
   pluginConfigurationComponent: ConfigurationComponent,
   pluginLogoBase64: PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
-    'delegate-task-to-oip': DelegateTaskToOipComponent,
-    'complete-to-oip-delegated-task': CompleteOipDelegatedTaskComponent,
+    'complete-delegated-task': CompleteDelegatedTaskComponent,
+    'delegate-task': DelegateTaskComponent,
   },
   pluginTranslations: {
     nl: {
-      title: '',
-      description: '',
-
+      title: 'Open Inwoner Platform (OIP) - Klanttaak',
+      description: 'Delegeer gebruikerstaken naar het Open Inwoner Platform portaal zodat deze opgepakt kunnen worden door de gebruikers van dat portaal.',
+      'configuration.title': 'Configuratienaam',
+      'configuration.titleTooltip': 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
+      'configuration.notificatiesApiPlugin': 'Notificaties API Plugin',
+      'configuration.notificatiesApiPluginTooltip': 'Selecteer de Notificaties API plugin. Wanneer de selectiebox leeg is, zal de notificatie API plugin eerst aangemaakt moeten worden.',
+      'configuration.objectManagement': 'Object Management Configuratie',
+      'configuration.objectManagementTooltip': 'Selecteer de gewenste object management configuratie. Wanneer de selectiebox leeg is, zal er eerst een object management configuratie aangemaakt moeten worden.',
+      'configuration.finalizerProcess': 'Taak-afrondingsproces',
+      'configuration.finalizerProcessTooltip': 'Het proces dat een afgeronde taak verwerkt.',
     },
     en: {
-      title: '',
-      description: '',
+      title: 'Open Inwoner Platform (OIP) - Klanttaak',
+      description: 'Delegate user tasks to the Open Inwoner Platform portal so these can be picked up by the registered users of that portal.',
+      'configuration.title': 'Configuration title',
+      'configuration.titleTooltip': 'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
+      'configuration.notificatiesApiPlugin': 'Notification API Plugin',
+      'configuration.notificatiesApiPluginTooltip': 'Select the Notificaties API plugin. If the selection box remains empty, the Notificaties API plugin will have to be created first.',
+      'configuration.objectManagement': 'Object Management Configuration',
+      'configuration.objectManagementTooltip': 'Select the desired object management configuration. If the selection box is empty, an object management configuration must first be created.',
+      'configuration.finalizerProcess': 'Task-finalizer process',
+      'configuration.finalizerProcessTooltip': 'The process that processes a completed task.',
     },
     de: {
-      title: '',
-      description: '',
+      title: 'Open Inwoner Platform (OIP) - Klanttaak',
+      description: 'Delegieren Sie Benutzeraufgaben an das Open Resident Platform-Portal, damit diese von den Benutzern dieses Portals übernommen werden können.',
+      'configuration.title': 'Konfigurationsname',
+      'configuration.titleTooltip': 'Der Name der aktuellen Plugin-Konfiguration. Dieser Name wird verwendet, um die Konfiguration innerhalb der gesamten Anwendung zu finden.',
+      'configuration.notificatiesApiPlugin': 'Notifications API-Plugin',
+      'configuration.notificatiesApiPluginTooltip': 'Wählen Sie das Notifications API-Plugin aus. Falls das Auswahlfeld leer ist, muss das Notifications API-Plugin zuerst erstellt werden.',
+      'configuration.objectManagement': 'Objektverwaltungskonfiguration',
+      'configuration.objectManagementTooltip': 'Wählen Sie die gewünschte Objektverwaltungskonfiguration aus. Wenn das Auswahlfeld leer ist, muss zuerst eine Objektverwaltungskonfiguration erstellt werden.',
+      'configuration.finalizerProcess': 'Prozess zur Aufgabenerfüllung',
+      'configuration.finalizerProcessTooltip': 'Der Prozess, der eine abgeschlossene Aufgabe verarbeitet.',
     }
   }
 }
 
-export {opiKlanttaakPluginSpecification};
+export {oipKlanttaakPluginSpecification};

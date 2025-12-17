@@ -24,8 +24,8 @@
   <v-input
     name="configurationTitle"
     placeholder="OIP Klanttaak Plugin"
-    [title]="'configurationTitle' | pluginTranslate: pluginId | async"
-    [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
+    [title]="'configuration.title' | pluginTranslate: pluginId | async"
+    [tooltip]="'configuration.titleTooltip' | pluginTranslate: pluginId | async"
     [required]="true"
     [disabled]="obs.disabled"
     [defaultValue]="obs.prefill?.configurationTitle"
@@ -36,8 +36,8 @@
   @if (notificatiesApiPluginSelectItems$ | async; as notificatiesApiPluginSelectItems) {
     <v-select
       name="notificatiesApiPluginConfiguration"
-      [title]="'notificatiesApiPluginConfiguration' | pluginTranslate: pluginId | async"
-      [tooltip]="'notificatiesApiPluginConfigurationTooltip' | pluginTranslate: pluginId | async"
+      [title]="'configuration.notificatiesApiPlugin' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.notificatiesApiPluginTooltip' | pluginTranslate: pluginId | async"
       [items]="notificatiesApiPluginSelectItems"
       [required]="true"
       [disabled]="obs.disabled"
@@ -49,8 +49,8 @@
   @if(objectManagementConfigurationItems$ | async; as objectManagementConfigurationItems) {
     <v-select
       name="objectManagementId"
-      [title]="'objectManagementConfiguration' | pluginTranslate: pluginId | async"
-      [tooltip]="'objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
+      [title]="'configuration.objectManagement' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.objectManagementTooltip' | pluginTranslate: pluginId | async"
       [required]="true"
       [disabled]="obs.disabled"
       [margin]="true"
@@ -62,8 +62,8 @@
   @if (processSelectItems$ | async; as processSelectItems) {
       <v-select
       name="finalizerProcess"
-      [title]="'finalizerProcess' | pluginTranslate: pluginId | async"
-      [tooltip]="'finalizerProcessTooltip' | pluginTranslate: pluginId | async"
+      [title]="'configuration.finalizerProcess' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.finalizerProcessTooltip' | pluginTranslate: pluginId | async"
       [required]="true"
       [disabled]="obs.disabled"
       [margin]="true"

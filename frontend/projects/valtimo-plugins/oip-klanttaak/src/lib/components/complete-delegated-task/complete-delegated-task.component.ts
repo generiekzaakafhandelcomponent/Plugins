@@ -1,15 +1,15 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from "@valtimo/plugin";
 import {Observable} from "rxjs";
-import {CompleteToOipDelegatedTaskConfig} from "../../models/config.models";
+import {CompleteToOipDelegatedTaskConfig} from '../../models';
 
 @Component({
   standalone: false,
-  selector: 'valtimo-complete-to-oip-delegated-task-configuration',
-  templateUrl: './complete-oip-delegated-task.component.html',
-  styleUrl: './complete-oip-delegated-task.component.css'
+  selector: 'valtimo-complete-delegated-task-configuration',
+  templateUrl: './complete-delegated-task.component.html',
+  styleUrl: './complete-delegated-task.component.css'
 })
-export class CompleteOipDelegatedTaskComponent implements FunctionConfigurationComponent {
+export class CompleteDelegatedTaskComponent implements FunctionConfigurationComponent {
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() prefillConfiguration$: Observable<CompleteToOipDelegatedTaskConfig>;
