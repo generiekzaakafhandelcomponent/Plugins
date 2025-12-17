@@ -5,7 +5,7 @@
     "pluginDefinitionKey": "suwinet-auth",
     "properties": {
       "basicAuthName": "user",
-      "basicAuthSecret": "password",
+      "basicAuthSecret": "pwd",
       "authType": "BASIC"
     }
   },
