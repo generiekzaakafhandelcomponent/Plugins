@@ -66,6 +66,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
 import {
+    PLUGINS_TOKEN,
     CatalogiApiPluginModule,
     catalogiApiPluginSpecification,
     DocumentenApiPluginModule,
@@ -80,7 +81,6 @@ import {
     objectTokenAuthenticationPluginSpecification,
     ObjecttypenApiPluginModule,
     objecttypenApiPluginSpecification,
-    PLUGINS_TOKEN
 } from '@valtimo/plugin';
 import {ZgwModule} from '@valtimo/zgw';
 import {ProcessLinkModule} from '@valtimo/process-link';
@@ -137,7 +137,8 @@ import {
 } from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
 import {ValtimoS2tPluginModule} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin-module";
 import {valtimoS2tPluginSpecification} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
-
+import {OipKlanttaakPluginModule} from "../../projects/valtimo-plugins/oip-klanttaak/src/lib/oip-klanttaak-plugin.module";
+import {opiKlanttaakPluginSpecification} from "../../projects/valtimo-plugins/oip-klanttaak/src/lib/oip-klanttaak-plugin.specification";
 
 export function tabsFactory() {
   return new Map<string, object>([
@@ -198,6 +199,7 @@ export function tabsFactory() {
         ObjectModule,
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
+        OipKlanttaakPluginModule,
         OpenZaakPluginModule,
         PluginManagementModule,
         ProcessLinkModule,
@@ -253,6 +255,7 @@ export function tabsFactory() {
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
+            opiKlanttaakPluginSpecification,
             openZaakPluginSpecification,
             publictaskPluginSpecification,
             rotterdamOracleEbsPluginSpecification,

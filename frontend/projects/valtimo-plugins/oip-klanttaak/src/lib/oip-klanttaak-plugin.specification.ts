@@ -22,7 +22,7 @@ import {
   CompleteToOipDelegatedTaskComponent
 } from "./components/complete-to-oip-delegated-task/complete-to-oip-delegated-task.component";
 
-const opiKlanttaakPluginSpecification: PluginSpecification = {
+export const opiKlanttaakPluginSpecification: PluginSpecification = {
   pluginId: 'oip-klanttaak',
   pluginConfigurationComponent: PluginConfigurationImplComponent,
   pluginLogoBase64: PLUGIN_LOGO_BASE64,
@@ -34,6 +34,7 @@ const opiKlanttaakPluginSpecification: PluginSpecification = {
     nl: {
       title: '',
       description: '',
+
     },
     en: {
       title: '',

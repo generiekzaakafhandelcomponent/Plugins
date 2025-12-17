@@ -36,7 +36,7 @@
       "@valtimo-plugins/spotler": ["dist/valtimo-plugins/spotler"],
       "@valtimo-plugins/suwinet": ["dist/valtimo-plugins/suwinet"],
       "@valtimo-plugins/valtimo-ocr": ["dist/valtimo-plugins/valtimo-ocr"],
-      "@valtimo-plugins/xential": ["dist/valtimo-plugins/xential"],
+      "@valtimo-plugins/xential": ["dist/valtimo-plugins/xential"]
     }
   },
   "include": [
