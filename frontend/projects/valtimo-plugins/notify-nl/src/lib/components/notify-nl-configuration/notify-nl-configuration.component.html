@@ -34,15 +34,15 @@
   >
   </v-input>
   <v-input
-    name="notifyUrl"
-    [title]="'notifyUrl' | pluginTranslate: pluginId | async"
+    name="apiUrl"
+    [title]="'apiUrl' | pluginTranslate: pluginId | async"
     [fullWidth]="true"
     [margin]="true"
     [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.notifyUrl"
+    [defaultValue]="obs.prefill?.apiUrl"
     [required]="true"
-    [tooltip]="'notifyUrlTooltip' | pluginTranslate: pluginId | async"
-    placeholder="https://api.notifynl.nl"
+    [tooltip]="'apiUrlTooltip' | pluginTranslate: pluginId | async"
+    placeholder="https://api.notifynl.nl/"
   >
   </v-input>
   <v-input
