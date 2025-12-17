@@ -16,48 +16,59 @@
 
 package com.ritense.valtimoplugins.valuemapper.processor
 
-import org.springframework.expression.EvaluationContext
+import org.springframework.context.expression.MapAccessor
 import org.springframework.expression.Expression
 import org.springframework.expression.ParseException
-import org.springframework.expression.ParserContext
-import org.springframework.expression.common.TemplateParserContext
 import org.springframework.expression.spel.standard.SpelExpressionParser
 import org.springframework.expression.spel.support.StandardEvaluationContext
 
-class SpelExpressionProcessor(
-    private val parserContext: ParserContext = TemplateParserContext("\${", "}"),
-    private val evaluationContext: EvaluationContext = StandardEvaluationContext(),
-    private val contextMap: Map<String, Any?> = mapOf(),
-) {
-    fun <T> process(
+class SpelExpressionProcessor {
+    /**
+     * Parse and evaluate the given String as a SpEL Expression and return the typed result
+     *
+     * @param expression the expression String that should be evaluated by the [SpelExpressionParser]
+     * @param context optional object to use as the rootObject for the [StandardEvaluationContext]
+     * @param resultType Class type for the result of the expression.
+     *
+     * @return the result of the evaluated expression as the specified [resultType]
+     *
+     * @throws RuntimeException
+     **/
+    inline fun <reified T : Any> process(
         expression: String,
-        resultType: Class<T>? = null,
+        context: Any,
+        resultType: Class<T>? = T::class.java,
     ): T? {
         val spelExpression: Expression =
             try {
-                getParser().parseExpression(expression, parserContext)
+                SpelExpressionParser().parseExpression(expression)
             } catch (e: ParseException) {
                 throw RuntimeException("Failed to parse SpEL expression: \"expression\"", e)
             }
 
+        val evaluationContext =
+            StandardEvaluationContext(context).apply {
+                addPropertyAccessor(MapAccessor())
+            }
+
         return try {
-            spelExpression.getValue(evaluationContext, contextMap, resultType)
+            spelExpression.getValue(evaluationContext, resultType)
         } catch (e: RuntimeException) {
             throw RuntimeException("Failed to parse SpEL expression: \"$expression\"", e)
         }
     }
 
-    fun isExpression(expression: Any): Boolean {
+    /**
+     * Attempts to parse the provided expression as a [LiteralExpression][org.springframework.expression.common.LiteralExpression]
+     *
+     * @param expression the expression String that should be validated by the [SpelExpressionParser]
+     *
+     * @return a [Boolean] denoting whether the provided expression is a valid SpEL expression
+     **/
+    fun isExpression(expression: String): Boolean {
         return runCatching {
-            expression as String
-            getParser().parseRaw(expression)
+            SpelExpressionParser().parseRaw(expression)
             return true
         }.getOrDefault(false)
-    }
-
-    private fun getParser(): SpelExpressionParser = SpelExpressionParser()
-
-    companion object {
-        fun get(contextMap: Map<String, Any> = emptyMap()) = SpelExpressionProcessor(contextMap = contextMap)
     }
 }

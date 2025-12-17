@@ -19,29 +19,15 @@ package com.ritense.valtimoplugins.valuemapper.domain
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.valtimo.contract.json.MapperSingleton
-import com.ritense.valtimoplugins.valuemapper.processor.SpelExpressionProcessor
 
 data class CopyTransformation(
     private val `when`: Any,
     private val then: Any? = null,
-    private val skipCondition: String? = null,
+    val skipCondition: String? = null,
 ) : ValueMapperTransformation() {
     override fun canTransform(node: JsonNode): Boolean = `when` == mapper.convertValue(node)
 
-    override fun transform(value: Any): Pair<Boolean, Any> {
-        if (
-            !skipCondition.isNullOrBlank() &&
-            SpelExpressionProcessor.get().isExpression(skipCondition)
-        ) {
-            val contextMap = mapOf("it" to value)
-            if (SpelExpressionProcessor.get(contextMap).process<Boolean>(skipCondition) == true) {
-                return true to value
-            } else {
-                return false to (then ?: value)
-            }
-        }
-        return false to (then ?: value)
-    }
+    override fun transform(value: Any): Any? = then
 
     companion object {
         private val mapper = MapperSingleton.get()

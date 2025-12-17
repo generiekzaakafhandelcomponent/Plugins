@@ -31,7 +31,7 @@ open class ValueMapperTransformation {
         TODO("Not implemented for base transformation")
     }
 
-    open fun transform(value: Any): Pair<Boolean, Any> {
+    open fun transform(value: Any): Any? {
         TODO("Not implemented for base transformation")
     }
 }

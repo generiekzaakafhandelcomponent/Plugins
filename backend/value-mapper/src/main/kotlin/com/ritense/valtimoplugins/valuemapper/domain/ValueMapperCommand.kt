@@ -18,6 +18,7 @@ package com.ritense.valtimoplugins.valuemapper.domain
 
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperOperation.CONVERT
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperOperation.COPY
+import com.ritense.valtimoplugins.valuemapper.processor.SpelExpressionProcessor
 
 data class ValueMapperCommand(
     val defaultValue: Any? = null,
@@ -49,14 +50,16 @@ data class ValueMapperCommand(
                 }
             }
 
-            COPY ->
+            COPY -> {
                 require(transformations?.all { it is CopyTransformation } ?: true) {
                     "transformations array must only contain ValueTransformations"
                 }
-        }
-        if (defaultValue != null) {
-            requireNotNull(transformations) {
-                "defaultValue can only be used in combination with transformations"
+                if (skipCondition != null) {
+                    require(SpelExpressionProcessor().isExpression(skipCondition)) {
+                        "Could not parse skipCondition: [$skipCondition] as a SpEL expression " +
+                            "for command with sourcePointer: [$sourcePointer]"
+                    }
+                }
             }
         }
     }

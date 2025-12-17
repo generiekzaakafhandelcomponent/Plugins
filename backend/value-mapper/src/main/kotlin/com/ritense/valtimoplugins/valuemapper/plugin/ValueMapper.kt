@@ -28,6 +28,7 @@ import com.ritense.authorization.AuthorizationContext
 import com.ritense.document.domain.Document
 import com.ritense.document.service.DocumentService
 import com.ritense.valtimo.contract.json.MapperSingleton
+import com.ritense.valtimoplugins.valuemapper.domain.CopyTransformation
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperCommand
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperDefinition
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTransformation
@@ -101,7 +102,7 @@ open class ValueMapper(
         val mappingResult = inputNode.applyMapperDefinition(mapperDefinition)
 
         if (!mappingResult.isEmpty) {
-            AuthorizationContext.Companion.runWithoutAuthorization {
+            AuthorizationContext.runWithoutAuthorization {
                 documentService.modifyDocument(
                     this,
                     mappingResult,
@@ -117,9 +118,13 @@ open class ValueMapper(
             .commands
             .forEachIndexed { index, command ->
                 try {
+                    logger.debug { "Applying value mapper command #$index" }
                     this.mapWithCommandToTarget(command, outputNode)
                 } catch (e: Exception) {
-                    throw ValueMapperCommandException("Failed to parse value mapper command #$index", e)
+                    throw ValueMapperCommandException(
+                        message = "Failed to parse value mapper command with sourcePointer [${command.sourcePointer}]",
+                        cause = e,
+                    )
                 }
             }
 
@@ -217,13 +222,7 @@ open class ValueMapper(
                                     childNode.findPaths(newPath, remainingParts.drop(1), lastProperty, mutableListOf())
                                 }.flatten()
 
-                        true -> {
-                            if (currentPath.endsWith(nextPathPart)) {
-                                return listOf(currentPath)
-                            } else {
-                                return listOf(currentPath + nextPathPart)
-                            }
-                        }
+                        true -> listOf(currentPath)
                     }
                 }
 
@@ -247,17 +246,11 @@ open class ValueMapper(
                 .takeUnless { it.isMissingNode }
 
         if (sourceValue != null) {
-            if (command.skipCondition != null && SpelExpressionProcessor.get().isExpression(command.sourcePointer)) {
-                val contextMap =
-                    mapOf(
-                        "input" to this,
-                        "output" to outputNode,
-                        "sourceValue" to sourceValue,
-                    )
-                if (SpelExpressionProcessor
-                        .get(contextMap = mapper.convertValue(contextMap))
-                        .process<Boolean>(command.skipCondition) == true
-                ) {
+            val spelContext = buildValueMapperCommandSpELContext(inputNode = this, outputNode = outputNode, sourceValue = sourceValue)
+
+            if (command.skipCondition != null && spelProcessor.isExpression(command.skipCondition)) {
+                val skipCommand = spelProcessor.process<Boolean>(command.skipCondition, context = spelContext)
+                if (skipCommand == true) {
                     logger.debug {
                         "Skipping transformations for command with pointer ${command.sourcePointer}: " +
                             "Skip Condition evaluated to \"true\""
@@ -271,25 +264,25 @@ open class ValueMapper(
                     is ArrayNode ->
                         sourceValue
                             .mapNotNull { listItem ->
-                                val (didSkip, transformationResult) =
+                                val transformationResult =
                                     listItem
-                                        .applyTransformations(command.transformations)
+                                        .applyTransformations(
+                                            transformations = command.transformations,
+                                            spelContext = spelContext,
+                                        )
 
-                                when (didSkip) {
-                                    true -> null
-                                    else -> transformationResult ?: command.defaultValue
-                                }
+                                transformationResult ?: command.defaultValue
                             }.takeIf { it.isNotEmpty() }
 
                     else -> {
-                        val (didSkip, transformationResult) =
+                        val transformationResult =
                             sourceValue
-                                .applyTransformations(command.transformations)
+                                .applyTransformations(
+                                    transformations = command.transformations,
+                                    spelContext = spelContext,
+                                )
 
-                        when (didSkip) {
-                            true -> null
-                            else -> transformationResult
-                        }
+                        transformationResult ?: command.defaultValue
                     }
                 }
 
@@ -298,6 +291,9 @@ open class ValueMapper(
                     targetValue = mapper.convertValue(targetValue),
                     targetPath = command.targetPointer,
                 )
+                logger.debug {
+                    "Added transformed targetValue to outputNode at path ${command.targetPointer}"
+                }
             } else {
                 logger.debug {
                     "Skipping command with pointer ${command.sourcePointer}: " +
@@ -305,27 +301,50 @@ open class ValueMapper(
                 }
             }
         } else {
-            logger.debug {
-                "Skipping command with pointer ${command.sourcePointer}: No value found at pointer ${command.sourcePointer}."
+            if (command.defaultValue != null) {
+                outputNode.buildJsonStructure(
+                    targetValue = mapper.convertValue(command.defaultValue),
+                    targetPath = command.targetPointer,
+                )
+                logger.debug {
+                    "Added defaultValue to outputNode at path ${command.targetPointer}"
+                }
+            } else {
+                logger.debug {
+                    "Skipping command with pointer ${command.sourcePointer}: No value found at pointer ${command.sourcePointer} and no defaultValue provided."
+                }
             }
         }
     }
 
-    private fun JsonNode.applyTransformations(transformations: List<ValueMapperTransformation>?): Pair<Boolean, Any?> {
+    private fun JsonNode.applyTransformations(
+        transformations: List<ValueMapperTransformation>?,
+        spelContext: Any,
+    ): Any? {
         return when (transformations?.isEmpty()) {
-            null -> false to this
-            true -> false to null
+            null -> this
+            true -> null
             false ->
                 when (this) {
                     is ValueNode, is ObjectNode -> {
-                        val (didSkip, transformationResult) =
-                            transformations
-                                .firstOrNull { transformation ->
-                                    transformation.canTransform(this)
-                                }?.transform(this)
-                                ?: return false to null
-
-                        return didSkip to transformationResult
+                        transformations
+                            .firstOrNull { transformation ->
+                                transformation.canTransform(this)
+                            }?.let {
+                                if (it is CopyTransformation && it.skipCondition != null) {
+                                    val skipTransform = spelProcessor.process<Boolean>(it.skipCondition, context = spelContext)
+                                    if (skipTransform == true) {
+                                        logger.debug {
+                                            "Skipping transformation: Skip Condition evaluated to \"true\""
+                                        }
+                                        return null
+                                    } else {
+                                        it.transform(this)
+                                    }
+                                } else {
+                                    it.transform(this)
+                                }
+                            }
                     }
 
                     else -> throw ValueMapperMappingException(
@@ -475,6 +494,30 @@ open class ValueMapper(
         }
     }
 
+    /**
+     * Creates an object to use as the rootObject for the StandardEvaluationContext of a SpEL expression parser.
+     *
+     * @param inputNode
+     * @param outputNode
+     * @return a `Map<String, Any> object containing non null arguments`
+     **/
+    private fun buildValueMapperCommandSpELContext(
+        inputNode: JsonNode? = null,
+        outputNode: JsonNode? = null,
+        sourceValue: JsonNode? = null,
+        targetValue: JsonNode? = null,
+    ): Any {
+        val contextMap =
+            mapOf(
+                "inputNode" to inputNode,
+                "outputNode" to outputNode,
+                "sourceValue" to sourceValue,
+                "targetValue" to targetValue,
+            ).filterValues { it != null }
+
+        return mapper.convertValue<Any>(contextMap)
+    }
+
     companion object {
         const val JSON_POINTER_ARRAY_DELIMITER = "[]"
         const val JSON_POINTER_PROPERTY_DELIMITER = "/"
@@ -483,5 +526,6 @@ open class ValueMapper(
         private val ARRAY_DELIMITER_INDEX_MATCHER = """[(\[\d*\])]""".toRegex()
         private val logger = KotlinLogging.logger { }
         private val mapper = MapperSingleton.get()
+        private val spelProcessor = SpelExpressionProcessor()
     }
 }

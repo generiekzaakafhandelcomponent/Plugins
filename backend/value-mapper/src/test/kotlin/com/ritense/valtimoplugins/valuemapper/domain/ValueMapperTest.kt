@@ -62,7 +62,7 @@ class ValueMapperTest {
     }
 
     @Test
-    fun `should skip commands with no value at pointer`() {
+    fun `should skip commands with no value at pointer and no default`() {
         val def = "no-value-no-default"
 
         // given
@@ -76,6 +76,23 @@ class ValueMapperTest {
 
         // then
         assert(mappingResult.isEmpty)
+    }
+
+    @Test
+    fun `should apply default when no value at pointer`() {
+        val def = "no-value-with-default"
+
+        // given
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
+
+        // when
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(def, emptyMap()),
+            )
+
+        // then
+        assertEquals("Aanvrager", mappingResult.at("/persoon/roepnaam").textValue())
     }
 
     @Test
@@ -96,7 +113,51 @@ class ValueMapperTest {
     }
 
     @Test
-    fun `should skip command when skipCondition evaluates to true`() {
+    fun `should apply default value when transform result is null`() {
+        val def = "test-v1"
+        // given
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
+
+        // when
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "contactgegevens" to mapOf("communicatievoorkeur" to ""),
+                    ),
+                ),
+            )
+
+        // then
+        assertTrue(mappingResult.at("/contacts/communicationChannel").isTextual)
+        assertEquals("LETTER", mappingResult.at("/contacts/communicationChannel").textValue())
+    }
+
+    @Test
+    fun `should apply default value when transform matches but skipCondition is true`() {
+        val def = "test-v1"
+        // given
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
+
+        // when
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "contactgegevens" to mapOf("communicatievoorkeur" to "a"),
+                    ),
+                ),
+            )
+
+        // then
+        assertTrue(mappingResult.at("/contacts/communicationChannel").isTextual)
+        assertEquals("LETTER", mappingResult.at("/contacts/communicationChannel").textValue())
+    }
+
+    @Test
+    fun `should apply default value when transform is skipped`() {
         val def = "test-v1"
         // given
         whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
@@ -110,14 +171,54 @@ class ValueMapperTest {
                         "persoonsgegevens" to
                             mapOf(
                                 "voornamen" to "Anna",
-                                "contactgegevens" to mapOf("communicatievoorkeur" to ""),
+                            ),
+                        "contactgegevens" to
+                            mapOf(
+                                "communicatievoorkeur" to "a",
                             ),
                     ),
                 ),
             )
 
         // then
-        assertTrue(mappingResult.at("/contacts/communicationChannel").isMissingNode)
+        assertTrue(mappingResult.at("/contacts/communicationChannel").isTextual)
+        assertEquals("LETTER", mappingResult.at("/contacts/communicationChannel").textValue())
+    }
+
+    @Test
+    fun `should skip command when skipCondition evaluates to true`() {
+        val def = "test-command-skip-condition-simple-and-complex"
+        // given
+        whenever(templateService.getDefinition(any())).thenReturn(testDefinitions[def])
+
+        // when
+        val mappingResult: ObjectNode =
+            mapper.convertValue(
+                valueMapper.applyToObject(
+                    def,
+                    mapOf(
+                        "persoonsgegevens" to
+                            mapOf(
+                                "voornamen" to "Anna",
+                                "tussenvoegsel" to "",
+                            ),
+                        "contactgegevens" to
+                            mapOf(
+                                "telefoonnummers" to
+                                    listOf(
+                                        "+316000000000",
+                                        "+37250000000",
+                                    ),
+                            ),
+                    ),
+                ),
+            )
+
+        // then
+        assertTrue(mappingResult.at("/persoon/voornaam").isTextual)
+        assertTrue(mappingResult.at("/persoon/tussenvoegsel").isMissingNode)
+        assertTrue(mappingResult.at("/contactgegevens").isArray)
+        assertEquals(1, mappingResult.at("/contactgegevens").size())
     }
 
     @Test
@@ -568,11 +669,12 @@ class ValueMapperTest {
                                         "transformations": [
                                             {
                                                 "when": "",
-                                                "skipCondition": "it == ''"
+                                                "then": null
                                             },
                                             {
                                                 "when": "a",
-                                                "then": "EMAIL"
+                                                "then": "EMAIL",
+                                                "skipCondition": "outputNode?.get('contacts')?.get('email') == null"
                                             },
                                             {
                                                 "when": "b",
@@ -609,7 +711,8 @@ class ValueMapperTest {
                                             },
                                             {
                                                 "when": "b",
-                                                "then": "PHONE"},
+                                                "then": "PHONE"
+                                            },
                                             {
                                                 "when": "c",
                                                 "then": "LETTER"
@@ -630,6 +733,22 @@ class ValueMapperTest {
                                     {
                                         "sourcePointer": "/persoonsgegevens",
                                         "targetPointer": "/persoon"
+                                    }
+                                ]
+                                """.trimIndent(),
+                            ),
+                    ),
+                "no-value-with-default" to
+                    ValueMapperDefinition(
+                        definitionId = "no-value-no-default",
+                        commands =
+                            jacksonObjectMapper().readValue(
+                                """
+                                [
+                                    {
+                                        "defaultValue": "Aanvrager",
+                                        "sourcePointer": "/persoonsgegevens/roepnaam",
+                                        "targetPointer": "/persoon/roepnaam"
                                     }
                                 ]
                                 """.trimIndent(),
@@ -932,71 +1051,31 @@ class ValueMapperTest {
                                 """.trimIndent(),
                             ),
                     ),
-                "test-skipping-empty-values-at-source-pointer" to
+                "test-command-skip-condition-simple-and-complex" to
                     ValueMapperDefinition(
-                        definitionId = "test-skipping-empty-values-at-source-pointer",
+                        definitionId = "test-command-skip-condition-simple-and-complex",
                         commands =
                             jacksonObjectMapper().readValue(
                                 """
                                 [
                                     {
-                                        "sourcePointer": "/contactgegevens/communicatievoorkeur",
-                                        "targetPointer": "/contacts/communicationChannel",
-                                        "skipCondition": "\$\{ sourceValue == 'a' }"
-                                        "transformations": [
-                                            {
-                                                "when": "a",
-                                                "then": "EMAIL"
-                                            },
-                                            {
-                                                "when": "b",
-                                                "then": "PHONE"
-                                            },
-                                            {
-                                                "when": "c",
-                                                "then": "LETTER"
-                                            }
-                                        ]
-                                    }
-                                ]
-                                """.trimIndent(),
-                            ),
-                    ),
-                "test-skipping-skipping-matched-transformations" to
-                    ValueMapperDefinition(
-                        definitionId = "test-skipping-skipping-matched-transformations",
-                        commands =
-                            jacksonObjectMapper().readValue(
-                                """
-                                        {
-                                        
-                                        },
-                                [
-                                    {
-                                        "sourcePointer": "/contactgegevens/telefoonNummer",
-                                        "targetPointer": "/contacts/telefoonnummer",
-                                        "skipCondition": "\$\{ sourceValue <= '' }"
+                                        "sourcePointer": "/persoonsgegevens/voornamen",
+                                        "targetPointer": "/persoon/voornaam"
                                     },
-                                    // set something > output
                                     {
-                                        "sourcePointer": "/contactgegevens/communicatievoorkeur",
-                                        "targetPointer": "/contacts/communicationChannel",
-                                        "skipCondition": "\$\{ output.at('/contacts/telefoonnummer') == null }"
-                                        "transformations": [
-                                            {
-                                                "when": [],
-                                                "then": "",
-                                                "skipCondition": "\$\{ it <= '' }"
-                                            },
-                                            {
-                                                "when": "b",
-                                                "then": "PHONE",
-                                            },
-                                            {
-                                                "when": "c",
-                                                "then": "LETTER"
-                                            }
-                                        ]
+                                        "defaultValue": "Aanvrager",
+                                        "sourcePointer": "/persoonsgegevens/roepnaam",
+                                        "targetPointer": "/persoon/roepnaam"
+                                    },
+                                    {
+                                        "sourcePointer": "/persoonsgegevens/tussenvoegsel",
+                                        "targetPointer": "/persoon/tussenvoegsel",
+                                        "skipCondition": "sourceValue  <= ''"
+                                    },
+                                    {
+                                        "sourcePointer": "/contactgegevens/telefoonnummers/[]",
+                                        "targetPointer": "/contactgegevens/[]/telefoonnummer",
+                                        "skipCondition": "sourceValue.startsWith('+31') != true"
                                     }
                                 ]
                                 """.trimIndent(),
