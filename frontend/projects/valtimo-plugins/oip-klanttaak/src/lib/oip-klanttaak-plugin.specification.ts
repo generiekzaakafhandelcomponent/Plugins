@@ -16,19 +16,19 @@
 
 import {PluginSpecification} from "@valtimo/plugin";
 import {PLUGIN_LOGO_BASE64} from "./assets/oip-klanttaak-plugin-logo";
-import {PluginConfigurationImplComponent} from "./components/plugin-configuration/plugin-configuration.component";
-import {DelegateTaskToOipComponent} from "./components/delegate-task-to-oip/delegate-task-to-oip.component";
 import {
-  CompleteToOipDelegatedTaskComponent
-} from "./components/complete-to-oip-delegated-task/complete-to-oip-delegated-task.component";
+  CompleteOipDelegatedTaskComponent
+} from "./components/complete-oip-delegated-task/complete-oip-delegated-task.component";
+import {ConfigurationComponent} from "./components/configuration/configuration.component";
+import {DelegateTaskToOipComponent} from "./components/delegate-task-to-oip/delegate-task-to-oip.component";
 
-export const opiKlanttaakPluginSpecification: PluginSpecification = {
+const opiKlanttaakPluginSpecification: PluginSpecification = {
   pluginId: 'oip-klanttaak',
-  pluginConfigurationComponent: PluginConfigurationImplComponent,
+  pluginConfigurationComponent: ConfigurationComponent,
   pluginLogoBase64: PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
     'delegate-task-to-oip': DelegateTaskToOipComponent,
-    'complete-to-oip-delegated-task': CompleteToOipDelegatedTaskComponent,
+    'complete-to-oip-delegated-task': CompleteOipDelegatedTaskComponent,
   },
   pluginTranslations: {
     nl: {
@@ -46,3 +46,5 @@ export const opiKlanttaakPluginSpecification: PluginSpecification = {
     }
   }
 }
+
+export {opiKlanttaakPluginSpecification};

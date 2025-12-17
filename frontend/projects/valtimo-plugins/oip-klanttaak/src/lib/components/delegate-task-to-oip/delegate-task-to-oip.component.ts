@@ -4,8 +4,8 @@ import {Observable} from "rxjs";
 import {DelegateTaskToOipConfig} from "../../models/config.models";
 
 @Component({
-  selector: 'lib-delegate-task-to-oip',
-  imports: [],
+  standalone: false,
+  selector: 'valtimo-delegate-task-to-oip-configuration',
   templateUrl: './delegate-task-to-oip.component.html',
   styleUrl: './delegate-task-to-oip.component.css'
 })

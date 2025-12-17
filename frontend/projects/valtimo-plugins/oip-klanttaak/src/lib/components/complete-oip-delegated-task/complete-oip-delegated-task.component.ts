@@ -4,13 +4,12 @@ import {Observable} from "rxjs";
 import {CompleteToOipDelegatedTaskConfig} from "../../models/config.models";
 
 @Component({
-  selector: 'lib-complete-to-oip-delegated-task',
-  imports: [],
-  templateUrl: './complete-to-oip-delegated-task.component.html',
-  styleUrl: './complete-to-oip-delegated-task.component.css'
+  standalone: false,
+  selector: 'valtimo-complete-to-oip-delegated-task-configuration',
+  templateUrl: './complete-oip-delegated-task.component.html',
+  styleUrl: './complete-oip-delegated-task.component.css'
 })
-export class CompleteToOipDelegatedTaskComponent implements FunctionConfigurationComponent {
-
+export class CompleteOipDelegatedTaskComponent implements FunctionConfigurationComponent {
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() prefillConfiguration$: Observable<CompleteToOipDelegatedTaskConfig>;

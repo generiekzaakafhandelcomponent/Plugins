@@ -48,7 +48,7 @@
   }
   @if(objectManagementConfigurationItems$ | async; as objectManagementConfigurationItems) {
     <v-select
-      name="objectManagementConfigurationId"
+      name="objectManagementId"
       [title]="'objectManagementConfiguration' | pluginTranslate: pluginId | async"
       [tooltip]="'objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
       [required]="true"
@@ -61,9 +61,9 @@
   }
   @if (processSelectItems$ | async; as processSelectItems) {
       <v-select
-      name="finalizerTaakProcess"
-      [title]="'finalizerTaakProcess' | pluginTranslate: pluginId | async"
-      [tooltip]="'finalizerTaakProcessTooltip' | pluginTranslate: pluginId | async"
+      name="finalizerProcess"
+      [title]="'finalizerProcess' | pluginTranslate: pluginId | async"
+      [tooltip]="'finalizerProcessTooltip' | pluginTranslate: pluginId | async"
       [required]="true"
       [disabled]="obs.disabled"
       [margin]="true"

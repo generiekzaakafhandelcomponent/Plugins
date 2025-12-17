@@ -1,33 +1,20 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from "rxjs";
-import {
-    PluginConfigurationComponent,
-    PluginManagementService,
-    PluginTranslatePipeModule,
-    PluginTranslationService
-} from "@valtimo/plugin";
-import {PluginConfig} from "../../models/config.models";
-import {FormModule, InputModule, SelectItem, SelectModule} from "@valtimo/components";
-import {TranslateService} from "@ngx-translate/core";
-import {ObjectManagementService} from "@valtimo/object-management";
-import {AsyncPipe, NgIf} from "@angular/common";
-import {NGXLogger} from "ngx-logger";
-import {ProcessService} from "@valtimo/process";
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
+import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
+import {PluginConfig} from '../../models/config.models';
+import {SelectItem} from '@valtimo/components';
+import {TranslateService} from '@ngx-translate/core';
+import {ObjectManagementService} from '@valtimo/object-management';
+import {NGXLogger} from 'ngx-logger';
+import {ProcessService} from '@valtimo/process';
 
 @Component({
-    selector: 'lib-plugin-configuration',
-    imports: [
-        PluginTranslatePipeModule,
-        AsyncPipe,
-        FormModule,
-        InputModule,
-        SelectModule,
-        NgIf
-    ],
-    templateUrl: './plugin-configuration.component.html',
-    styleUrl: './plugin-configuration.component.css'
+    standalone: false,
+    selector: 'valtimo-plugin-configuration',
+    templateUrl: './configuration.component.html',
+    styleUrl: './configuration.component.css'
 })
-export class PluginConfigurationImplComponent implements PluginConfigurationComponent, OnInit, OnDestroy {
+export class ConfigurationComponent implements PluginConfigurationComponent, OnInit, OnDestroy {
     @Input() public save$: Observable<void>;
     @Input() public disabled$: Observable<boolean>;
     @Input() public pluginId: string;
