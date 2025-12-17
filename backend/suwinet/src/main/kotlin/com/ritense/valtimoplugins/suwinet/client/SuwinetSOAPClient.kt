@@ -10,6 +10,9 @@ import org.apache.cxf.message.Message
 import org.apache.cxf.transport.http.HTTPConduit
 import org.apache.cxf.transports.http.configuration.ConnectionType
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy
+import org.apache.cxf.ws.addressing.WSAddressingFeature
+
+
 
 class SuwinetSOAPClient {
 
@@ -37,10 +40,16 @@ class SuwinetSOAPClient {
             )
             loggingFeature.addSensitiveProtocolHeaderNames(
                 setOf<String>(
-                    "Authorization"
+                    "Authorization",
+                    "x-opentunnel-api-key"
                 )
             )
             this.features.add(loggingFeature)
+
+            // WS-adress feauture
+            val addressingFeature = WSAddressingFeature()
+            this.features.add(addressingFeature)
+
             create() as T
         }
 
