@@ -1,15 +1,24 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../out-tsc/lib",
-    "declaration": true,
+    "resolveJsonModule": true,
     "declarationMap": true,
+    "outDir": "../../../out-tsc/lib",
+    "target": "es2020",
+    "declaration": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "lib": ["dom", "es2018"],
+    "allowSyntheticDefaultImports": true
   },
-  "exclude": [
-    "**/*.spec.ts"
-  ]
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": true,
+    "compilationMode": "partial",
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "enableResourceInlining": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["src/test.ts", "**/*.spec.ts"]
 }
