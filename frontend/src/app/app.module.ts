@@ -107,7 +107,7 @@ import {
 } from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
-import {OipKlanttaakPluginModule, opiKlanttaakPluginSpecification} from '@valtimo-plugins/oip-klanttaak';
+import {OipKlanttaakPluginModule, oipKlanttaakPluginSpecification} from '@valtimo-plugins/oip-klanttaak';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {RotterdamOracleEbsPluginModule, rotterdamOracleEbsPluginSpecification} from '@valtimo-plugins/rotterdam-oracle-ebs';
 import {SlackPluginModule, slackPluginSpecification} from '@valtimo-plugins/slack';
@@ -236,7 +236,7 @@ export function tabsFactory() {
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
-            opiKlanttaakPluginSpecification,
+            oipKlanttaakPluginSpecification,
             openZaakPluginSpecification,
             publictaskPluginSpecification,
             rotterdamOracleEbsPluginSpecification,
