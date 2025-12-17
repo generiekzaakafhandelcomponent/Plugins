@@ -30,8 +30,8 @@ class OipKlanttaakPlugin(
     private val oipKlanttaakService: OipKlanttaakService
 ): NotificatiesApiListener {
 
-    @PluginProperty(key = "notificatiesApiPlugin", secret = false)
-    lateinit var notificatiesApiPlugin: NotificatiesApiPlugin
+    @PluginProperty(key = "notificatiesApiPluginConfiguration", secret = false)
+    lateinit var notificatiesApiPluginConfiguration: NotificatiesApiPlugin
 
     @PluginProperty(key = "objectManagementId", secret = false)
     lateinit var objectManagementId: UUID
@@ -74,7 +74,7 @@ class OipKlanttaakPlugin(
     }
 
     override fun getNotificatiesApiPlugin(): NotificatiesApiPlugin {
-        return notificatiesApiPlugin
+        return notificatiesApiPluginConfiguration
     }
 
     override fun getKanaalFilters(): List<Abonnement.Kanaal> {
