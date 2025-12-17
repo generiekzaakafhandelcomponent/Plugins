@@ -61,7 +61,7 @@ export class NotifyNlConfigurationComponent
   }
 
   private handleValid(formValue: NotifyNlConfig): void {
-    const valid = !!(formValue.configurationTitle && formValue.notifyUrl && formValue.apiKey);
+    const valid = !!(formValue.configurationTitle && formValue.apiUrl && formValue.apiKey);
 
     this.valid$.next(valid);
     this.valid.emit(valid);
