@@ -20,9 +20,8 @@ import java.io.IOException
 @Service
 class ValueMapperLoadingService(
     private val resourceLoader: ResourceLoader,
-    private val valueMapperTemplateService: ValueMapperTemplateService
+    private val valueMapperTemplateService: ValueMapperTemplateService,
 ) {
-
     @Order(-1)
     @EventListener(ApplicationReadyEvent::class)
     fun importValueMappers() {
@@ -39,16 +38,18 @@ class ValueMapperLoadingService(
         try {
             return definitionResources
                 .associate { resource ->
-                    val resourceId = resource.getId().also {
-                        logger.debug {
-                            "Parsing Value Mapper definition: $it"
+                    val resourceId =
+                        resource.getId().also {
+                            logger.debug {
+                                "Parsing Value Mapper definition: $it"
+                            }
                         }
-                    }
 
-                    resourceId to ValueMapperDefinition(
-                        definitionId = resourceId,
-                        commands = mapper.readValue(resource.inputStream)
-                    )
+                    resourceId to
+                        ValueMapperDefinition(
+                            definitionId = resourceId,
+                            commands = mapper.readValue(resource.inputStream),
+                        )
                 }
         } catch (e: Exception) {
             throw ValueMapperDefinitionLoadingException("Failed to load Value Mapper definitions", e)
@@ -56,21 +57,16 @@ class ValueMapperLoadingService(
     }
 
     @Cacheable(value = [VM_TEMPLATE_EXISTS_CACHE_NAME], key = "{ #key}")
-    fun resourceExists(
-        key: String
-    ): Boolean {
-        return loadResources().any { resource ->
+    fun resourceExists(key: String): Boolean =
+        loadResources().any { resource ->
             resource.getId() == key
         }
-    }
 
-    private fun Resource.getId(): String {
-        return this
+    private fun Resource.getId(): String =
+        this
             .filename
             ?.substringBeforeLast(VALUE_MAPPER_DEFINITION_SUFFIX)
             ?: throw IOException("Could not extract filename from resource at ${this.uri}")
-
-    }
 
     private fun loadResources(): Array<Resource> =
         ResourcePatternUtils

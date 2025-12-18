@@ -32,34 +32,29 @@ import java.util.UUID
 @Service
 class ValueMapperTemplateService(
     private val templateRepository: ValueMapperTemplateRepository,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) {
+    @Transactional(readOnly = true)
+    fun getTemplatesKeys(): Set<String> = templateRepository.getAll()
 
     @Transactional(readOnly = true)
-    fun getTemplatesKeys(): Set<String> {
-        return templateRepository.getAll()
-    }
+    fun getTemplatesKeysPaged(pageable: Pageable): Page<String> = templateRepository.findAllKeysPaged(pageable)
 
-    @Transactional(readOnly = true)
-    fun getTemplatesKeysPaged(pageable: Pageable): Page<String> {
-        return templateRepository.findAllKeysPaged(pageable)
-    }
-
-    fun getTemplate(key: String): ValueMapperTemplate {
-        return templateRepository.findByKey(key)!!
-    }
+    fun getTemplate(key: String): ValueMapperTemplate = templateRepository.findByKey(key)!!
 
     @Transactional(readOnly = true)
     fun getDefinition(key: String): ValueMapperDefinition {
-        val template = getTemplate(key);
+        val template = getTemplate(key)
         val commands: List<ValueMapperCommand> = objectMapper.readValue(template.content)
 
         return ValueMapperDefinition(template.key, commands)
     }
 
-
-    fun saveUpdate(key: String, content: String): ValueMapperTemplate {
-        val existingTemplate = templateRepository.findByKey(key);
+    fun saveUpdate(
+        key: String,
+        content: String,
+    ): ValueMapperTemplate {
+        val existingTemplate = templateRepository.findByKey(key)
 
         if (existingTemplate == null) {
             val newTemplate = ValueMapperTemplate(UUID.randomUUID(), key, content)
@@ -71,6 +66,6 @@ class ValueMapperTemplateService(
     }
 
     fun removeTemplate(keys: List<String>) {
-        keys.forEach {   templateRepository.deleteByKey(it)}
+        keys.forEach { templateRepository.deleteByKey(it) }
     }
 }

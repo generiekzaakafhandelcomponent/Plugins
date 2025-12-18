@@ -23,8 +23,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.util.UUID
 
-interface ValueMapperTemplateRepository: JpaRepository<ValueMapperTemplate, UUID> {
-
+interface ValueMapperTemplateRepository : JpaRepository<ValueMapperTemplate, UUID> {
     fun findByKey(key: String): ValueMapperTemplate?
 
     @Query("SELECT key FROM ValueMapperTemplate")

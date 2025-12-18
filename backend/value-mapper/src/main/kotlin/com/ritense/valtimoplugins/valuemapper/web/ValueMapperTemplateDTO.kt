@@ -21,15 +21,17 @@ import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTemplate
 data class ValueMapperTemplateDTO(
     val key: String,
     val content: String,
-    val readOnly: Boolean
+    val readOnly: Boolean,
 ) {
     companion object {
-        fun of(template: ValueMapperTemplate, readOnly: Boolean): ValueMapperTemplateDTO {
-            return ValueMapperTemplateDTO(
+        fun of(
+            template: ValueMapperTemplate,
+            readOnly: Boolean,
+        ): ValueMapperTemplateDTO =
+            ValueMapperTemplateDTO(
                 key = template.key,
                 content = template.content,
                 readOnly = readOnly,
             )
-        }
     }
 }

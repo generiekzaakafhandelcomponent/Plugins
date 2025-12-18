@@ -1,23 +1,22 @@
 /*
- *  Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
- *  Licensed under EUPL, Version 1.2 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" basis,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ritense.valtimoplugins.valuemapper.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
-
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTemplate
 import com.ritense.valtimoplugins.valuemapper.security.ValueMapperHttpSecurityConfigurer
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperLoadingService
@@ -46,12 +45,17 @@ import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
 import java.util.UUID
 
-
 @WebMvcTest
-@ContextConfiguration(classes = [ValueMapperLoadingService::class, ValueMapperTemplateService::class, ValueMapperResource::class, ValueMapperHttpSecurityConfigurer::class])
+@ContextConfiguration(
+    classes = [
+        ValueMapperLoadingService::class,
+        ValueMapperTemplateService::class,
+        ValueMapperResource::class,
+        ValueMapperHttpSecurityConfigurer::class,
+    ],
+)
 @WithMockUser(roles = ["ADMIN"])
 class ValueMapperResourceITTest {
-
     @MockBean
     lateinit var templateService: ValueMapperTemplateService
 
@@ -68,16 +72,17 @@ class ValueMapperResourceITTest {
     fun shouldGetMappingDefinitions() {
         whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def1", "def2"))
 
-        mockMvc.get("/api/management/v1/value-mapper/definitions") {
-            accept = MediaType.APPLICATION_JSON
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isOk() }
-            content { contentType(MediaType.APPLICATION_JSON) }
-            content {
-                json("['def1', 'def2']")
+        mockMvc
+            .get("/api/management/v1/value-mapper/definitions") {
+                accept = MediaType.APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                content {
+                    json("['def1', 'def2']")
+                }
             }
-        }
     }
 
     @Test
@@ -87,23 +92,26 @@ class ValueMapperResourceITTest {
 
         whenever(templateService.getTemplatesKeysPaged(any())).thenReturn(pageImpl)
 
-        mockMvc.get("/api/management/v1/value-mapper/definitionsPage") {
-            accept = MediaType.APPLICATION_JSON
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isOk() }
-            content { contentType(MediaType.APPLICATION_JSON) }
-            content {
-                json("{\"content\":[{\"key\":\"def1\",\"readOnly\":false}," +
-                        "{\"key\":\"def2\",\"readOnly\":false}]," +
-                        "\"pageable\":{\"pageNumber\":0,\"pageSize\":2," +
-                        "\"sort\":{\"empty\":true,\"sorted\":false,\"unsorted\":true}," +
-                        "\"offset\":0,\"paged\":true,\"unpaged\":false},\"last\":false," +
-                        "\"totalPages\":5,\"totalElements\":10,\"first\":true,\"size\":2," +
-                        "\"number\":0,\"sort\":{\"empty\":true,\"sorted\":false,\"unsorted\":true}," +
-                        "\"numberOfElements\":2,\"empty\":false}")
+        mockMvc
+            .get("/api/management/v1/value-mapper/definitionsPage") {
+                accept = MediaType.APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                content {
+                    json(
+                        "{\"content\":[{\"key\":\"def1\",\"readOnly\":false}," +
+                            "{\"key\":\"def2\",\"readOnly\":false}]," +
+                            "\"pageable\":{\"pageNumber\":0,\"pageSize\":2," +
+                            "\"sort\":{\"empty\":true,\"sorted\":false,\"unsorted\":true}," +
+                            "\"offset\":0,\"paged\":true,\"unpaged\":false},\"last\":false," +
+                            "\"totalPages\":5,\"totalElements\":10,\"first\":true,\"size\":2," +
+                            "\"number\":0,\"sort\":{\"empty\":true,\"sorted\":false,\"unsorted\":true}," +
+                            "\"numberOfElements\":2,\"empty\":false}",
+                    )
+                }
             }
-        }
     }
 
     @Test
@@ -114,18 +122,19 @@ class ValueMapperResourceITTest {
         whenever(templateService.saveUpdate(any(), any())).thenReturn(template)
         whenever(loadingService.resourceExists(any())).thenReturn(false)
 
-        mockMvc.post("/api/management/v1/value-mapper/definitions") {
-            content = mapper.writeValueAsString(template)
-            accept = MediaType.APPLICATION_JSON
-            contentType = MediaType.APPLICATION_JSON
-            with(csrf())
-        }.andExpect {
-            status { isOk() }
-            content { contentType(MediaType.APPLICATION_JSON) }
-            content {
-                content().toString().contains("def1")
+        mockMvc
+            .post("/api/management/v1/value-mapper/definitions") {
+                content = mapper.writeValueAsString(template)
+                accept = MediaType.APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
+                with(csrf())
+            }.andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                content {
+                    content().toString().contains("def1")
+                }
             }
-        }
 
         verify(templateService).saveUpdate(any(), any())
     }
@@ -134,22 +143,23 @@ class ValueMapperResourceITTest {
     fun shoulUpdateMappingDefinition() {
         val template = ValueMapperTemplate(UUID.randomUUID(), "def1", getValueMapperContent())
 
-        whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def1","def2"))
+        whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def1", "def2"))
         whenever(templateService.saveUpdate(any(), any())).thenReturn(template)
         whenever(loadingService.resourceExists(any())).thenReturn(false)
 
-        mockMvc.put("/api/management/v1/value-mapper/definitions/def1") {
-            content = mapper.writeValueAsString(template)
-            accept = MediaType.APPLICATION_JSON
-            contentType = MediaType.APPLICATION_JSON
-            with(csrf())
-        }.andExpect {
-            status { isOk() }
-            content { contentType(MediaType.APPLICATION_JSON) }
-            content {
-                content().toString().contains("def1")
+        mockMvc
+            .put("/api/management/v1/value-mapper/definitions/def1") {
+                content = mapper.writeValueAsString(template)
+                accept = MediaType.APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
+                with(csrf())
+            }.andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                content {
+                    content().toString().contains("def1")
+                }
             }
-        }
 
         verify(templateService).saveUpdate(any(), any())
     }
@@ -158,17 +168,18 @@ class ValueMapperResourceITTest {
     fun shoulRemoveMappingDefinition() {
         val deleteTemplateRequest = DeleteTemplateRequest(listOf("def1", "def2"))
 
-        whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def1","def2"))
+        whenever(templateService.getTemplatesKeys()).thenReturn(setOf("def1", "def2"))
         whenever(loadingService.resourceExists(any())).thenReturn(false)
 
-        mockMvc.delete("/api/management/v1/value-mapper/definitions") {
-            accept = MediaType.APPLICATION_JSON
-            contentType = MediaType.APPLICATION_JSON
-            content =  mapper.writeValueAsString(deleteTemplateRequest)
-            with(csrf())
-        }.andExpect {
-            status { isOk() }
-        }
+        mockMvc
+            .delete("/api/management/v1/value-mapper/definitions") {
+                accept = MediaType.APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
+                content = mapper.writeValueAsString(deleteTemplateRequest)
+                with(csrf())
+            }.andExpect {
+                status { isOk() }
+            }
 
         verify(templateService).removeTemplate(eq(listOf("def1", "def2")))
     }
@@ -176,28 +187,28 @@ class ValueMapperResourceITTest {
     @Test
     @WithAnonymousUser
     fun shouldFailOnSecurity() {
-        //test
-        mockMvc.get("/api/management/v1/value-mapper/definitions") {
-            accept = MediaType.APPLICATION_JSON
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isUnauthorized() }
-        }
+        // test
+        mockMvc
+            .get("/api/management/v1/value-mapper/definitions") {
+                accept = MediaType.APPLICATION_JSON
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isUnauthorized() }
+            }
     }
 
-    private fun getValueMapperContent(): String  {
+    private fun getValueMapperContent(): String {
         val content =
             """
-                [
-                    {
-                        "defaultValue": [],
-                        "sourcePointer": "/some",
-                        "targetPointer": "/new/array",
-                        "transformations": []
-                    }
-                ]
+            [
+                {
+                    "defaultValue": [],
+                    "sourcePointer": "/some",
+                    "targetPointer": "/new/array",
+                    "transformations": []
+                }
+            ]
             """.trimIndent()
         return content
     }
-
 }

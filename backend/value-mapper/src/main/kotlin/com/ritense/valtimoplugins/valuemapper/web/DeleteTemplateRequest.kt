@@ -17,5 +17,5 @@
 package com.ritense.valtimoplugins.valuemapper.web
 
 data class DeleteTemplateRequest(
-    val templates: List<String>
+    val templates: List<String>,
 )
