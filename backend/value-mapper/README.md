@@ -6,7 +6,8 @@ The ValueMapper plugin copies values from a source JSON to a target JSON, with o
 - Copy a value from `sourcePointer` to `targetPointer`.
 - Automatically create missing paths in the target.
 - Apply a transformation to the value (e.g., copy with different value or type conversion).
-- Conditionally skip a mapping with a SpEL `skipCondition`.
+- Provide a fallback `defaultValue` on COPY commands so the target can still be populated even when no transformation matches or transformations are omitted.
+- Conditionally skip a command or transformation with a SpEL `skipCondition`.
 
 ### Core objects
 - `ValueMapper`: executes mapping rules on `source: JsonNode` and `target: ObjectNode`.
@@ -80,10 +81,26 @@ The ValueMapper plugin copies values from a source JSON to a target JSON, with o
 }
 ```
 
+### Example 4: default value without transformations
+```json
+{
+  "commands": [
+    {
+      "sourcePointer": "/status",
+      "targetPointer": "/state",
+      "defaultValue": "UNKNOWN"
+    }
+  ]
+}
+```
+
 ### SpEL `skipCondition`
 - Template syntax: `${ ... }`.
 - Variable `it` contains the current source value.
 - Examples: `it == null`, `it > 100`.
+- Expressions are evaluated against a context map that exposes `sourceValue`, `targetValue`, `inputNode`, and `outputNode`, so both command-level and transformation-level conditions can inspect the current draft of the output and the source node.
+- Defining `skipCondition` on a command lets you short-circuit the entire command before any transformations execute; when the expression returns `true`, nothing is written to the target.
+- COPY command `Transformation` instances may keep their own `skipCondition`; if it evaluates to `true` the transformation returns `null` regardless of initially matching the sourcePoitner value, and the command can still populate the target if a `defaultValue` is supplied.
 
 ### Error handling (short)
 - `targetPointer == "/"` → error (root cannot be overwritten).
@@ -93,3 +110,5 @@ The ValueMapper plugin copies values from a source JSON to a target JSON, with o
 ### Recent additions
 - `CopyTransformation` (with SpEL-based `skipCondition`) and `TypeTransformation`.
 - Clear semantics: `null` transformation list copies; empty list skips.
+- SpEL `skipCondition` can now live on the command level, allowing commands to be skipped before any transformations run.
+- COPY commands honor `defaultValue` even when transformations are absent or skipped, so you can emit fallback data without adding a transformation.
