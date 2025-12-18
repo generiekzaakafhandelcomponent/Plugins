@@ -28,10 +28,9 @@ class OpenProductPluginAutoConfiguration {
     @Bean
     fun openProductPluginFactory(
         pluginService: PluginService,
-        openProductClient: OpenProductClient,
-        valueResolverService: ValueResolverService
+        openProductClient: OpenProductClient
     ): OpenProductPluginFactory {
-        return OpenProductPluginFactory(pluginService, openProductClient, valueResolverService)
+        return OpenProductPluginFactory(pluginService, openProductClient)
     }
 
     @Bean

@@ -1,0 +1,66 @@
+{
+  "$id": "open-product.schema",
+  "type": "object",
+  "title": "Open Product",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "eigenaarData": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "resultaatPV": {
+      "type": "string"
+    },
+    "aanvraagZaakUrn": {
+      "type": "string"
+    },
+    "aanvraagZaakUrl": {
+      "type": "string"
+    },
+    "eigenaarBsn": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productNaam": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productPrijs": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productStatus": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productTypeUuid": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productUuid": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "productFrequentie": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

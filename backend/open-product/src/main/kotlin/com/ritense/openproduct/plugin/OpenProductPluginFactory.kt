@@ -23,11 +23,10 @@ import com.ritense.valueresolver.ValueResolverService
 
 class OpenProductPluginFactory(
     pluginService: PluginService,
-    val openProductClient: OpenProductClient,
-    val valueResolverService: ValueResolverService
+    val openProductClient: OpenProductClient
 ) : PluginFactory<OpenProductPlugin>(pluginService) {
 
     override fun create(): OpenProductPlugin {
-        return OpenProductPlugin(pluginService, openProductClient, valueResolverService)
+        return OpenProductPlugin(pluginService, openProductClient)
     }
 }

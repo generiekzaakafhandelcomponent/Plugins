@@ -1,8 +1,8 @@
 package com.ritense.openproduct.config
 
-import com.ritense.openproduct.resolver.ProductValueResolverFactory
-import com.ritense.openproduct.service.ProductService
-import com.ritense.processdocument.service.ProcessDocumentService
+import com.ritense.openproduct.client.OpenProductClient
+import com.ritense.openproduct.plugin.OpenProductPluginFactory
+import com.ritense.plugin.service.PluginService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -15,12 +15,11 @@ import org.springframework.context.annotation.ComponentScan
 class ProductResolverAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(ProductValueResolverFactory::class)
-    fun productValueResolverFactory(
-        productService: ProductService,
-        processDocumentService: ProcessDocumentService
-    ) = ProductValueResolverFactory(
-        productService,
-        processDocumentService
-    )
+    @ConditionalOnMissingBean(OpenProductPluginFactory::class)
+    fun openProductPluginFactory(
+        pluginService: PluginService,
+        openProductClient: OpenProductClient,
+    ): OpenProductPluginFactory {
+        return OpenProductPluginFactory(pluginService, openProductClient)
+    }
 }

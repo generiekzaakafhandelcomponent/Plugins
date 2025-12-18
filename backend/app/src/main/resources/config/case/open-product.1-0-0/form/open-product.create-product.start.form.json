@@ -1,0 +1,201 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "productNaam",
+      "type": "textfield",
+      "input": true,
+      "label": "Product Name",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-productNaam"
+      },
+      "properties": {
+        "targetKey": "pv:/productNaam"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "productTypeUuid",
+      "type": "textfield",
+      "input": true,
+      "label": "Product Type UUID",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-productTypeUuid"
+      },
+      "properties": {
+        "targetKey": "pv:/productTypeUuid"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "eigenaarBsn",
+      "type": "textfield",
+      "input": true,
+      "label": "Eigenaar BSN",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-eigenaarBsn"
+      },
+      "properties": {
+        "targetKey": "pv:/eigenaarBsn"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "ownerData",
+      "type": "datamap",
+      "input": true,
+      "label": "Owner Data",
+      "tableView": false,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-ownerData"
+      },
+      "properties": {
+        "targetKey": "pv:/eigenaarData"
+      },
+      "valueComponent": {
+        "key": "value",
+        "type": "textfield",
+        "input": true,
+        "label": "Value",
+        "hideLabel": true,
+        "tableView": true
+      }
+    },
+    {
+      "key": "aanvraagZaakUrn",
+      "type": "textfield",
+      "input": true,
+      "label": "Aanvraag Zaak URN",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-aanvraagZaakUrn"
+      },
+      "properties": {
+        "targetKey": "pv:/aanvraagZaakUrn"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "aanvraagZaakUrl",
+      "type": "textfield",
+      "input": true,
+      "label": "Aanvraag Zaak URL",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-aanvraagZaakUrl"
+      },
+      "properties": {
+        "targetKey": "pv:/aanvraagZaakUrl"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "productPrijs",
+      "type": "textfield",
+      "input": true,
+      "label": "Product Prijs",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-productPrijs"
+      },
+      "properties": {
+            "targetKey": "pv:/productPrijs"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "label": "Product Status",
+      "tableView": true,
+      "data": {
+        "values": [
+          {
+            "label": "Initieel",
+            "value": "initieel"
+          },
+          {
+            "label": "In_aanvraag",
+            "value": "inAanvraag"
+          },
+          {
+            "label": "Gereed",
+            "value": "gereed"
+          },
+          {
+            "label": "Actief",
+            "value": "actief"
+          },
+          {
+            "label": "Ingetrokken",
+            "value": "ingetrokken"
+          },
+          {
+            "label": "Geweigerd",
+            "value": "geweigerd"
+          },
+          {
+            "label": "Verlopen",
+            "value": "verlopen"
+          }
+        ]
+      },
+      "key": "productStatus",
+      "properties": {
+        "targetKey": "pv:/productStatus"
+      },
+      "type": "select",
+      "input": true
+    },
+    {
+      "label": "Product Frequentie",
+      "widget": "choicesjs",
+      "tableView": true,
+      "data": {
+        "values": [
+          {
+            "label": "Eenmalig",
+            "value": "eenmalig"
+          },
+          {
+            "label": "Maandelijks",
+            "value": "maandelijks"
+          },
+          {
+            "label": "Jaarlijks",
+            "value": "jaarlijks"
+          }
+        ]
+      },
+      "key": "productFrequentie",
+      "properties": {
+        "targetKey": "pv:/productFrequentie"
+      },
+      "type": "select",
+      "input": true
+    },
+    {
+      "key": "gepubliceerd",
+      "type": "checkbox",
+      "input": true,
+      "label": "Gepubliceerd",
+      "tableView": false,
+      "properties": {
+        "targetKey": "pv:/gepubliceerd"
+      },
+      "defaultValue": false,
+      "attributes": {
+        "data-testid": "open-product.create-product.start-gepubliceerd"
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

@@ -16,10 +16,6 @@
 
 package com.ritense.openproduct.plugin
 
-import com.fasterxml.jackson.core.JsonPointer
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.convertValue
-import com.ritense.document.domain.patch.JsonPatchService
 import com.ritense.openproduct.client.*
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -28,9 +24,7 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.service.PluginService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.tokenauthentication.plugin.TokenAuthenticationPlugin
-import com.ritense.valtimo.contract.json.patch.JsonPatchBuilder
-import com.ritense.valueresolver.ValueResolverService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "openproduct",
@@ -39,8 +33,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 )
 class OpenProductPlugin(
     pluginService: PluginService,
-    private val openProductClient: OpenProductClient,
-    private val valueResolverService: ValueResolverService
+    private val openProductClient: OpenProductClient
 ) {
     private val objectMapper = pluginService.getObjectMapper()
 
@@ -219,38 +212,4 @@ class OpenProductPlugin(
             else -> throw IllegalArgumentException("Ongeldige status: $status")
         }
     }
-
-    private fun getEigenaarData(
-        keyValueMap: List<DataBindingConfig>,
-        documentId: String
-    ): JsonNode {
-        val resolvedValuesMap = valueResolverService.resolveValues(
-            documentId, keyValueMap.map { it.value }
-        )
-
-        if (keyValueMap.size != resolvedValuesMap.size) {
-            val failedValues = keyValueMap
-                .filter { !resolvedValuesMap.containsKey(it.value) }
-                .joinToString(", ") { "'${it.key}' = '${it.value}'" }
-            throw IllegalArgumentException(
-                "Error in case: '${documentId}'. Failed to resolve values: $failedValues".trimMargin()
-            )
-        }
-
-        val objectDataMap = keyValueMap.associate { it.key to resolvedValuesMap[it.value] }
-
-        val objectData = objectMapper.createObjectNode()
-        val jsonPatchBuilder = JsonPatchBuilder()
-
-        objectDataMap.forEach {
-            val path = JsonPointer.valueOf(it.key)
-            val valueNode = objectMapper.valueToTree<JsonNode>(it.value)
-            jsonPatchBuilder.addJsonNodeValue(objectData, path, valueNode)
-        }
-
-        JsonPatchService.apply(jsonPatchBuilder.build(), objectData)
-
-        return objectMapper.convertValue(objectData)
-    }
-
 }
