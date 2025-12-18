@@ -1,6 +1,6 @@
 # OIP Klanttaak plugin
 
-For handling User tasks created by Valtimo GZAC via the Open Inwonder Platform (OIP).
+For delegating (User) tasks created by Valtimo GZAC to the Open Inwonder Platform (OIP).
 
 ## Capabilities
 
@@ -9,8 +9,8 @@ specification .
 
 The plugin supports two actions:
 
-1. Delegate User task to OIP
-2. Handle to OIP delegated User task
+1. Delegate (User) task
+2. Complete delegated (User) task
 
 # Requirements
 
