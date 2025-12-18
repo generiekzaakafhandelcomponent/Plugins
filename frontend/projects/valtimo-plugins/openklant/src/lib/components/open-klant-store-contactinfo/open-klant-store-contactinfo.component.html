@@ -1,0 +1,50 @@
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
+>
+    <v-input
+            name="bsn"
+            [title]="'bsn' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.bsn"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="firstName"
+            [title]="'firstName' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.firstName"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="inFix"
+            [title]="'inFix' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.inFix"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="lastName"
+            [title]="'lastName' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.lastName"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="emailAddress"
+            [title]="'emailAddress' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.emailAddress"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="caseNumber"
+            [title]="'caseNumber' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.caseNumber"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+</v-form>
