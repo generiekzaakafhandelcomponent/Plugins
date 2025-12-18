@@ -1,11 +1,14 @@
 package com.ritense.valtimoplugins.oiptask.domain
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonValue
 import java.net.URI
 import java.time.OffsetDateTime
 import java.time.Period
 import java.util.UUID
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class OipKlanttaak(
     val soort: Soort = Soort.EXTERNFORMULIER,
     val titel: String,
@@ -41,10 +44,11 @@ data class LegalSubject(
     val identifierType: IdentifierType = IdentifierType.BSN,
 )
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class Portaalformulier(
     val formulier: Formulier,
-    val data: FormulierGegevens? = null,
-    @JsonProperty("verzonden_data") val verzondenData: FormulierGegevens? = null,
+    val data: Map<String, Any>? = null,
+    @JsonProperty("verzonden_data") val verzondenData: Map<String, Any>? = null,
 )
 
 data class Formulier(
@@ -52,12 +56,7 @@ data class Formulier(
     val value: URI,
 )
 
-data class FormulierGegevens(
-    @JsonProperty("volledige_naam") val volledigeNaam: String,
-    @JsonProperty("upload_documenten") val uploadDocumenten: List<UploadedDocument>? = null,
-)
-
-data class UploadedDocument(
+data class Document(
     val titel: String,
     val auteur: String,
     val formaat: String,
@@ -66,50 +65,45 @@ data class UploadedDocument(
     val vertrouwelijkheidaanduiding: Vertrouwelijkheidaanduiding,
 )
 
-enum class Soort(val value: String) {
-    @JsonProperty("externformulier")
+enum class Soort(@JsonValue val value: String) {
     EXTERNFORMULIER("externformulier");
 }
 
-enum class Status {
-    @JsonProperty("open") OPEN,
-    @JsonProperty("uitgevoerd") UITGEVOERD,
-    @JsonProperty("afgebroken") AFGEBROKEN,
-    @JsonProperty("verwerkt") VERWERKT,
-    @JsonProperty("ingetrokken") INGETROKKEN,
+enum class Status(@JsonValue val value: String) {
+    OPEN("open"),
+    UITGEVOERD("uitgevoerd"),
+    AFGEBROKEN("afgebroken"),
+    VERWERKT("verwerkt"),
+    INGETROKKEN("ingetrokken"),
 }
 
-enum class Registratie {
-    @JsonProperty("zaak") ZAAK,
-    @JsonProperty("product") PRODUCT,
+enum class Registratie(@JsonValue val value: String) {
+    ZAAK("zaak"),
+    PRODUCT("product"),
 }
 
-enum class Source {
-    @JsonProperty("digid") DIGID,
+enum class Source(@JsonValue val value: String) {
+    DIGID("digid"),
 }
 
-enum class IdentifierType {
-    @JsonProperty("bsn") BSN,
+enum class IdentifierType(@JsonValue val value: String) {
+    BSN("bsn"),
 }
 
-enum class LevelOfAssurance(val urn: String) {
-    @JsonProperty("urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport")
+enum class LevelOfAssurance(@JsonValue val value: String) {
     PASSWORD_PROTECTED_TRANSPORT("urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"),
-    @JsonProperty("urn:oasis:names:tc:SAML:2.0:ac:classes:MobileTwoFactorContract")
     MOBILE_TWO_FACTOR_CONTRACT("urn:oasis:names:tc:SAML:2.0:ac:classes:MobileTwoFactorContract"),
-    @JsonProperty("urn:oasis:names:tc:SAML:2.0:ac:classes:Smartcard")
     SMARTCARD("urn:oasis:names:tc:SAML:2.0:ac:classes:Smartcard"),
-    @JsonProperty("urn:oasis:names:tc:SAML:2.0:ac:classes:SmartcardPKI")
     SMARTCARD_PKI("urn:oasis:names:tc:SAML:2.0:ac:classes:SmartcardPKI"),
 }
 
-enum class FormulierSoort {
-    @JsonProperty("url") URL,
+enum class FormulierSoort(@JsonValue val value: String) {
+    URL("url"),
 }
 
-enum class Vertrouwelijkheidaanduiding {
-    @JsonProperty("openbaar") OPENBAAR,
-    @JsonProperty("intern") INTERN,
-    @JsonProperty("vertrouwelijk") VERTROUWELIJK,
-    @JsonProperty("zeer geheim") ZEER_GEHEIM,
+enum class Vertrouwelijkheidaanduiding(@JsonValue val value: String) {
+    OPENBAAR("openbaar"),
+    INTERN("intern"),
+    VERTROUWELIJK("vertrouwelijk"),
+    ZEER_GEHEIM("zeer geheim"),
 }
