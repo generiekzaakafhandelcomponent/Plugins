@@ -49,7 +49,7 @@ class DefaultOpenKlantService(
     ): DigitaalAdres =
         openKlantClient.createDigitaalAdres(
             CreateDigitaalAdresRequest(
-                verstrektDoorPartij = partij.makeUuidReference(),
+                verstrektDoorPartij = partij.getUuidReference(),
                 adres = contactInformation.emailAddress,
                 soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
                 referentie = contactInformation.caseNumber,
@@ -73,22 +73,42 @@ class DefaultOpenKlantService(
         val digitaleAdressen =
             openKlantClient
                 .getDigitaleAdressenByPartijByUuid(
-                    partij.makeReference().uuid,
+                    partij.getObjectReference().uuid,
                     properties,
-                )
-        val nieuweDigitaleAdressen = digitaleAdressen + createDigitalAddress(partij, contactInformation, properties)
-        updateDigitaleAdressenForPartij(partij, nieuweDigitaleAdressen, properties)
+                ).toMutableList()
+
+        val digitaleUniekeReferenties =
+            digitaleAdressen.map {
+                "${it.verstrektDoorPartij?.uuid},${it.referentie},${it.soortDigitaalAdres}"
+            }
+
+        // Maak alleen nieuwe aan wanneer deze uniek is (niet bestaat)
+        if ("${partij.getUuidReference().uuid},${contactInformation.caseNumber},${SoortDigitaalAdres.EMAIL}" !in
+            digitaleUniekeReferenties
+        ) {
+            digitaleAdressen.add(createDigitalAddress(partij, contactInformation, properties))
+        }
+
+        updateDigitaleAdressenForPartij(partij, digitaleAdressen.toList(), properties)
     }
 
     private suspend fun createAndStoreNewPartij(
         contactInformation: ContactInformation,
         properties: OpenKlantProperties,
     ): String {
-        val nieuwePartij = createNewPartij(contactInformation, properties)
-        val nieuweDigitaleAdress = createDigitalAddress(nieuwePartij, contactInformation, properties)
+        val partij = openKlantClient.getPartijByBsn(contactInformation.bsn, properties)
+        return if (partij != null) {
+            if (!isPreferredAddress(contactInformation.emailAddress, partij, properties)) {
+                updateExistingPartij(partij, contactInformation, properties)
+            }
+            partij.uuid
+        } else {
+            val nieuwePartij = createNewPartij(contactInformation, properties)
+            val nieuweDigitaleAdress = createDigitalAddress(nieuwePartij, contactInformation, properties)
 
-        updateDigitaleAdressenForPartij(nieuwePartij, nieuweDigitaleAdress, properties)
-        return nieuwePartij.uuid
+            updateDigitaleAdressenForPartij(nieuwePartij, nieuweDigitaleAdress, properties)
+            return nieuwePartij.uuid
+        }
     }
 
     private suspend fun updateDigitaleAdressenForPartij(
@@ -98,7 +118,7 @@ class DefaultOpenKlantService(
     ) {
         val patchData =
             mapOf(
-                "digitaleAdressen" to digitaleAdressen.map { it.makeUuidReference() },
+                "digitaleAdressen" to digitaleAdressen.map { it.getUuidReference() },
             )
         openKlantClient.patchPartij(partij.uuid, patchData, properties)
     }

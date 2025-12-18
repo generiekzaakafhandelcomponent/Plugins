@@ -4,7 +4,7 @@ interface Referable {
     val uuid: String
     val url: String
 
-    fun makeReference(): ObjectReference = ObjectReference(uuid, url)
+    fun getObjectReference(): ObjectReference = ObjectReference(uuid, url)
 
-    fun makeUuidReference(): UuidReference = UuidReference(uuid)
+    fun getUuidReference(): UuidReference = UuidReference(uuid)
 }
