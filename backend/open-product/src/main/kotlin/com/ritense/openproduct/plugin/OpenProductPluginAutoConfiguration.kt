@@ -17,9 +17,7 @@
 package com.ritense.openproduct.plugin
 
 import com.ritense.openproduct.client.OpenProductClient
-import com.ritense.openproduct.service.ProductService
 import com.ritense.plugin.service.PluginService
-import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valueresolver.ValueResolverService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.context.annotation.Bean
@@ -31,16 +29,13 @@ class OpenProductPluginAutoConfiguration {
     fun openProductPluginFactory(
         pluginService: PluginService,
         openProductClient: OpenProductClient,
-        valueResolverService: ValueResolverService,
-        processDocumentService: ProcessDocumentService,
-        productService: ProductService
+        valueResolverService: ValueResolverService
     ): OpenProductPluginFactory {
-        return OpenProductPluginFactory(
-            pluginService,
-            openProductClient,
-            valueResolverService,
-            processDocumentService,
-            productService
-        )
+        return OpenProductPluginFactory(pluginService, openProductClient, valueResolverService)
+    }
+
+    @Bean
+    fun openProductClient(): OpenProductClient {
+        return OpenProductClient()
     }
 }

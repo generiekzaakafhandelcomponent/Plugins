@@ -2,6 +2,7 @@ package com.ritense.openproduct.client
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.tokenauthentication.plugin.TokenAuthenticationPlugin
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -9,7 +10,6 @@ import org.springframework.web.client.RestClient
 
 @Component
 class OpenProductClient() {
-    val URL_PATH = "/producten/api/v1/producten/"
 
     fun getProduct(
         baseUrl: String,
@@ -19,7 +19,7 @@ class OpenProductClient() {
         val restClient = getRestclient(baseUrl, authenticationPlugin)
 
         val response = restClient.get()
-            .uri(URL_PATH + uuid)
+            .uri("/producten/$uuid")
             .retrieve()
 
         val result = response.toEntity(Product::class.java)
@@ -35,14 +35,11 @@ class OpenProductClient() {
         val restClient = getRestclient(baseUrl, authenticationPlugin)
 
         val response = restClient.get()
-            .uri(URL_PATH)
+            .uri("/producten")
             .retrieve()
-            .toEntity(PaginatedProductList::class.java)
+            .body(PaginatedProductList::class.java)
 
-        val result = response.body
-            ?: throw IllegalStateException("Failed to get product")
-
-        return result.resultaten
+        return response!!.resultaten
     }
 
     fun createProduct(
@@ -55,8 +52,8 @@ class OpenProductClient() {
         val requestJson = objectMapper.writeValueAsString(request)
 
         val response = restClient.post()
-            .uri(URL_PATH)
-            .contentType(MediaType.APPLICATION_JSON)
+            .uri("/producten")
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .body(requestJson)
             .retrieve()
 
@@ -69,14 +66,17 @@ class OpenProductClient() {
     fun updateProduct(
         baseUrl: String,
         authenticationPlugin: TokenAuthenticationPlugin,
-        request: ProductRequest
+        request: MutableMap<String, Any>
     ): String? {
         val restClient = getRestclient(baseUrl, authenticationPlugin)
         val objectMapper = jacksonObjectMapper()
+
+        val uuid = request["uuid"] as String
+
         val requestJson = objectMapper.writeValueAsString(request)
 
         val response = restClient.patch()
-            .uri(URL_PATH + request.uuid)
+            .uri("/producten/$uuid")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .body(requestJson)
             .retrieve()
@@ -95,7 +95,7 @@ class OpenProductClient() {
         val restClient = getRestclient(baseUrl, authenticationPlugin)
 
         val response = restClient.delete()
-            .uri(URL_PATH + uuid)
+            .uri("/producten/$uuid")
             .retrieve()
 
         val result = response.toEntity(String::class.java)
@@ -109,4 +109,6 @@ class OpenProductClient() {
             .baseUrl(baseUrl)
             .build()
     }
+
+
 }

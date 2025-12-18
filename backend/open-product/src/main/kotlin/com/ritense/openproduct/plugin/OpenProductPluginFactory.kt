@@ -17,27 +17,17 @@
 package com.ritense.openproduct.plugin
 
 import com.ritense.openproduct.client.OpenProductClient
-import com.ritense.openproduct.service.ProductService
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
-import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valueresolver.ValueResolverService
 
 class OpenProductPluginFactory(
     pluginService: PluginService,
     val openProductClient: OpenProductClient,
-    val valueResolverService: ValueResolverService,
-    val processDocumentService: ProcessDocumentService,
-    val productService: ProductService
+    val valueResolverService: ValueResolverService
 ) : PluginFactory<OpenProductPlugin>(pluginService) {
 
     override fun create(): OpenProductPlugin {
-        return OpenProductPlugin(
-            pluginService,
-            openProductClient,
-            valueResolverService,
-            processDocumentService,
-            productService
-        )
+        return OpenProductPlugin(pluginService, openProductClient, valueResolverService)
     }
 }
