@@ -14,18 +14,50 @@
  * limitations under the License.
  */
 
-import {PluginConfigurationData} from "@valtimo/plugin";
+import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface PluginConfig extends PluginConfigurationData {
+  notificatiesApiPluginConfiguration: string;
+  objectManagementConfigurationId: string;
+  finalizerProcess: string;
+}
+
+interface DelegateTaskConfig {
+  betrokkeneIdentifier: string;
+  levelOfAssurance: string;
+  formulierUri: string;
+  formulierData?: FormulierData | null;
+  toelichting?: string | null;
+  koppelingRegistratie?: Registratie | null;
+  koppelingIdentifier?: string | null;
+  verloopdatum?: Date | null;
+}
+
+interface FormulierData {
+  [key: string]: string | number | boolean | undefined;
+}
+
+interface CompleteDelegatedTaskConfig {
 
 }
 
-interface DelegateTaskToOipConfig {
-
+enum LevelOfAssurance {
+  PASSWORD_PROTECTED_TRANSPORT = 'Password protected transport',
+  MOBILE_TWO_FACTOR_CONTRACT = 'Mobile two factor contract',
+  SMARTCARD = 'Smartcard',
+  SMARTCARD_PKI = 'Smartcard PKI'
 }
 
-interface CompleteToOipDelegatedTaskConfig {
-
+enum Registratie {
+  ZAAK = 'Zaak',
+  PRODUCT = 'Product'
 }
 
-export {PluginConfig, DelegateTaskToOipConfig, CompleteToOipDelegatedTaskConfig};
+export {
+  PluginConfig,
+  DelegateTaskConfig,
+  FormulierData,
+  CompleteDelegatedTaskConfig,
+  LevelOfAssurance,
+  Registratie
+};

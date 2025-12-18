@@ -1,1 +1,138 @@
-<p>delegate-task-to-oip works!</p>
+
+<!--
+  ~ Copyright 2015-2025 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+  } as obs"
+>
+  <v-input
+    name="betrokkeneIdentifier"
+    [title]="'delegateTask.betrokkeneIdentifier' | pluginTranslate: pluginId | async"
+    [tooltip]="'delegateTask.betrokkeneIdentifierTooltip' | pluginTranslate: pluginId | async"
+    [required]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.betrokkeneIdentifier"
+    [margin]="true"
+    [trim]="true"
+  >
+  </v-input>
+
+  <v-input
+    name="levelOfAssurance"
+    [title]="'delegateTask.levelOfAssurance' | pluginTranslate: pluginId | async"
+    [tooltip]="'delegateTask.levelOfAssuranceTooltip' | pluginTranslate: pluginId | async"
+    [required]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.levelOfAssurance"
+    [margin]="true"
+    [trim]="true"
+    [presetOptions]="levelOfAssuranceOptions"
+  >
+  </v-input>
+
+  <v-input
+    name="formulierUri"
+    [title]="'delegateTask.formulierUri' | pluginTranslate: pluginId | async"
+    [tooltip]="'delegateTask.formulierUriTooltip' | pluginTranslate: pluginId | async"
+    [required]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.formulierUri"
+    [margin]="true"
+    [trim]="true"
+  >
+  </v-input>
+
+  <valtimo-carbon-multi-input
+    type="keyValue"
+    name="formulierData"
+    [title]="'delegateTask.formulierData' | pluginTranslate: pluginId | async"
+    [tooltip]="'delegateTask.formulierDataTooltip' | pluginTranslate: pluginId | async"
+    [required]="false"
+    [disabled]="obs.disabled"
+    [defaultValues]="obs.prefill?.formulierData"
+    [margin]="true"
+    [fullWidth]="true"
+    [valueColumnTitle]="'delegateTask.formulierDataValue' | pluginTranslate: pluginId | async"
+    [keyColumnTitle]="'delegateTask.formulierDataKey' | pluginTranslate: pluginId | async"
+    [minimumAmountOfRows]="0"
+    [initialAmountOfRows]="0"
+  ></valtimo-carbon-multi-input>
+
+  <v-input
+    type="textarea"
+    name="toelichting"
+    [title]="'delegateTask.toelichting' | pluginTranslate: pluginId | async"
+    [tooltip]="'delegateTask.toelichtingTooltip' | pluginTranslate: pluginId | async"
+    [required]="false"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.toelichting"
+    [margin]="true"
+    [trim]="true"
+  >
+  </v-input>
+
+  <ng-container>
+      <cds-toggle
+        #koppelingVanToepassing
+        class="toggle"
+        [label]="'delegateTask.koppelingVanToepassing' | pluginTranslate: pluginId | async"
+        [onText]="'toggle.ja' | pluginTranslate: pluginId | async"
+        [offText]="'toggle.nee' | pluginTranslate: pluginId | async"
+        [checked]="!!obs.prefill?.koppelingRegistratie"
+        [disabled]="obs.disabled"
+      >
+      </cds-toggle>
+      <br/>
+  </ng-container>
+  @if (koppelingVanToepassing.checked) {
+    <v-select
+      name="koppelingRegistratie"
+      [title]="'delegateTask.koppelingRegistratie' | pluginTranslate: pluginId | async"
+      [tooltip]="'delegateTask.koppelingRegistratieTooltip' | pluginTranslate: pluginId | async"
+      [margin]="true"
+      [disabled]="obs.disabled"
+      [defaultSelectionId]="obs.prefill?.koppelingRegistratie"
+      [required]="true"
+      [items]="koppelingRegistratieOptions"
+    ></v-select>
+    <v-input
+      name="koppelingIdentifier"
+      [title]="'delegateTask.koppelingIdentifier' | pluginTranslate: pluginId | async"
+      [tooltip]="'delegateTask.koppelingIdentifierTooltip' | pluginTranslate: pluginId | async"
+      [required]="true"
+      [disabled]="obs.disabled"
+      [defaultValue]="obs.prefill?.koppelingIdentifier"
+      [margin]="true"
+    ></v-input>
+  }
+
+  <v-input
+    name="verloopdatum"
+    [title]="'delegateTask.verloopdatum' | pluginTranslate: pluginId | async"
+    [tooltip]="'delegateTask.verloopdatumTooltip' | pluginTranslate: pluginId | async"
+    [required]="false"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.verloopdatum"
+    [margin]="true"
+    [trim]="true"
+  >
+  </v-input>
+
+</v-form>
