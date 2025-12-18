@@ -36,8 +36,8 @@
   @if (notificatiesApiPluginSelectItems$ | async; as notificatiesApiPluginSelectItems) {
     <v-select
       name="notificatiesApiPluginConfiguration"
-      [title]="'configuration.notificatiesApiPlugin' | pluginTranslate: pluginId | async"
-      [tooltip]="'configuration.notificatiesApiPluginTooltip' | pluginTranslate: pluginId | async"
+      [title]="'configuration.notificatiesApiPluginConfiguration' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.notificatiesApiPluginConfigurationTooltip' | pluginTranslate: pluginId | async"
       [items]="notificatiesApiPluginSelectItems"
       [required]="true"
       [disabled]="obs.disabled"
@@ -48,9 +48,9 @@
   }
   @if(objectManagementConfigurationItems$ | async; as objectManagementConfigurationItems) {
     <v-select
-      name="objectManagementId"
-      [title]="'configuration.objectManagement' | pluginTranslate: pluginId | async"
-      [tooltip]="'configuration.objectManagementTooltip' | pluginTranslate: pluginId | async"
+      name="objectManagementConfigurationId"
+      [title]="'configuration.objectManagementConfiguration' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
       [required]="true"
       [disabled]="obs.disabled"
       [margin]="true"
@@ -68,7 +68,7 @@
       [disabled]="obs.disabled"
       [margin]="true"
       [items]="processSelectItems"
-      [defaultSelectionId]="obs.prefill?.completeTaakProcess"
+      [defaultSelectionId]="obs.prefill?.finalizerProcess"
       [loading]="!processSelectItems"
     ></v-select>
   }
