@@ -42,7 +42,7 @@ import {
   CaseDetailTabProgressComponent,
   CaseDetailTabSummaryComponent,
   CaseModule,
-} from '@valtimo/Case';
+} from '@valtimo/case';
 import {CaseMigrationModule} from '@valtimo/case-migration';
 import {ProcessModule} from '@valtimo/process';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -59,7 +59,7 @@ import {MilestoneModule} from '@valtimo/milestone';
 import {LoggerModule} from 'ngx-logger';
 import {FormManagementModule} from '@valtimo/form-management';
 import {MigrationModule} from '@valtimo/migration';
-import {CaseManagementModule} from '@valtimo/Case-management';
+import {CaseManagementModule} from '@valtimo/case-management';
 import {BootstrapModule} from '@valtimo/bootstrap';
 import {ConfigModule, ConfigService, CustomMultiTranslateHttpLoaderFactory, LocalizationService} from '@valtimo/shared';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
