@@ -61,9 +61,6 @@ class OpenProductPlugin(
         @PluginActionProperty productUuid: String,
         @PluginActionProperty resultaatPV: String
     ) {
-        val documentId = processDocumentService.getDocumentId(CamundaProcessInstanceId(execution.processInstanceId), execution).toString()
-        productService.link(documentId, productUuid)
-
         val result = openProductClient.getProduct(
             baseUrl,
             authenticationPluginConfiguration,
@@ -107,6 +104,8 @@ class OpenProductPlugin(
         @PluginActionProperty productPrijs: String,
         @PluginActionProperty frequentie: String,
         @PluginActionProperty status: String,
+        @PluginActionProperty aanvraagZaakUrn: String,
+        @PluginActionProperty aanvraagZaakUrl: String,
         @PluginActionProperty resultaatPV: String,
     ) {
 

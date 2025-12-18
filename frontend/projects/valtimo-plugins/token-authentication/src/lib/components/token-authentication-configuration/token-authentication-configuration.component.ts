@@ -20,6 +20,7 @@ import {TokenAuthenticationConfig} from '../../models';
 import {PluginConfigurationComponent} from "@valtimo/plugin";
 
 @Component({
+  standalone: false,
   selector: 'valtimo-token-authentication-configuration',
   templateUrl: './token-authentication-configuration.component.html',
   styleUrls: ['./token-authentication-configuration.component.scss'],
