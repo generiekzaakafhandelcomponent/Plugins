@@ -7,22 +7,28 @@ import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.objecttypenapi.ObjecttypenApiPlugin
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
+import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.PluginConfigurationId
 import com.ritense.plugin.service.PluginService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.oiptask.domain.Koppeling
+import com.ritense.valtimoplugins.oiptask.domain.LevelOfAssurance
+import com.ritense.valtimoplugins.oiptask.domain.Registratie
 import com.ritense.valtimoplugins.oiptask.service.OipKlanttaakService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.oshai.kotlinlogging.withLoggingContext
 import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.operaton.bpm.engine.delegate.DelegateTask
 import java.net.URI
+import java.time.OffsetDateTime
+import java.time.Period
 import java.util.UUID
 
 @Plugin(
     key = "oip-klanttaak",
-    title = "Klanttaak voor het OIP",
-    description = ""
+    title = "Open Inwoner Platform (OIP) - Klanttaak",
+    description = "Delegate user tasks to the Open Inwoner Platform (OIP) portal so these can be picked up by the registered users of that portal."
 )
 class OipKlanttaakPlugin(
     private val pluginService: PluginService,
@@ -33,43 +39,70 @@ class OipKlanttaakPlugin(
     @PluginProperty(key = "notificatiesApiPluginConfiguration", secret = false)
     lateinit var notificatiesApiPluginConfiguration: NotificatiesApiPlugin
 
-    @PluginProperty(key = "objectManagementId", secret = false)
-    lateinit var objectManagementId: UUID
+    @PluginProperty(key = "objectManagementConfigurationId", secret = false)
+    lateinit var objectManagementConfigurationId: UUID
 
     @PluginProperty(key = "finalizerProcess", secret = false)
     lateinit var finalizerProcess: String
 
     @PluginAction(
-        key = "delegate-task-to-oip",
-        title = "Delegate task to OIP",
-        description = "Delegates the taak to the OIP by creating an OipKlanttaak object in the Objects API",
+        key = "delegate-task",
+        title = "Delegate task to",
+        description = "Delegates the user task to the OIP by creating an object in the Objects API",
         activityTypes = [ActivityTypeWithEventName.USER_TASK_CREATE]
     )
     fun delegateTaskToOip(
-        delegateTask: DelegateTask
+        delegateTask: DelegateTask,
+        @PluginActionProperty betrokkeneIdentifier: String,
+        @PluginActionProperty levelOfAssurance: String,
+        @PluginActionProperty formulierUri: String,
+        @PluginActionProperty formulierData: Map<String, Any>? = null,
+        @PluginActionProperty toelichting: String? = null,
+        @PluginActionProperty koppelingRegistratie: String? = null,
+        @PluginActionProperty koppelingIdentifier: String? = null,
+        @PluginActionProperty doorlooptijd: String? = null,
+        @PluginActionProperty verloopdatum: OffsetDateTime? = null,
+        @PluginActionProperty deadlineVerlengbaar: Boolean? = null,
     ) {
         withLoggingContext(DelegateTask::class.java.canonicalName to delegateTask.id) {
-            logger.info { "Delegating task to OIP." }
-            oipKlanttaakService.delegateTaskToOip(
+            logger.info { "Delegating the task" }
+            oipKlanttaakService.delegateTask(
                 delegateTask = delegateTask,
-                objectManagementId = objectManagementId,
-                portaalFormulierUri = URI.create("TODO")
+                objectManagementId = objectManagementConfigurationId,
+                authorizeeIdentifier = betrokkeneIdentifier,
+                levelOfAssurance = LevelOfAssurance.entries.single {
+                    it.value == levelOfAssurance || it.name == levelOfAssurance
+                },
+                formUri = URI.create(formulierUri),
+                formData = formulierData,
+                description = toelichting,
+                koppeling = koppelingRegistratie?.let {
+                    Koppeling(
+                        registratie = Registratie.entries.single {
+                            it.value == koppelingRegistratie || it.name == koppelingRegistratie
+                        },
+                        value = UUID.fromString(koppelingIdentifier!!)
+                    )
+               },
+                leadTime = doorlooptijd?.let { Period.parse(it) },
+                expirationDate = verloopdatum,
+                deadlineExtendable = deadlineVerlengbaar
             )
         }
     }
 
     @PluginAction(
-        key = "complete-to-oip-delegated-task",
-        title = "Complete delegated OIP Task",
-        description = "Complete the Task and update the status of the related OipKlanttaak object in the Objects Api",
+        key = "complete-delegated-task",
+        title = "Complete delegated Task",
+        description = "Complete the Task and update the status of the related object in the Objects Api",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
     fun completeToOipDelegatedTask(
         execution: DelegateExecution
     ) {
         withLoggingContext(DelegateExecution::class.java.canonicalName to execution.id) {
-            logger.info { "Completing the to OIP delegated task." }
-            oipKlanttaakService.completeToOipDelegatedTask(execution)
+            logger.info { "Completing the delegated task." }
+            oipKlanttaakService.completeDelegatedTask(execution)
         }
     }
 
@@ -78,7 +111,7 @@ class OipKlanttaakPlugin(
     }
 
     override fun getKanaalFilters(): List<Abonnement.Kanaal> {
-        val objectManagement = objectManagementService.getById(objectManagementId)
+        val objectManagement = objectManagementService.getById(objectManagementConfigurationId)
             ?: throw IllegalStateException("Object management not found for portaaltaak")
 
         val objecttypenApiPlugin = pluginService.createInstance(

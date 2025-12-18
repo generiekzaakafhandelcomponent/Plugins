@@ -17,6 +17,7 @@ import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valtimoplugins.oiptask.domain.Authorizee
 import com.ritense.valtimoplugins.oiptask.domain.Betrokkene
 import com.ritense.valtimoplugins.oiptask.domain.Formulier
+import com.ritense.valtimoplugins.oiptask.domain.Koppeling
 import com.ritense.valtimoplugins.oiptask.domain.LegalSubject
 import com.ritense.valtimoplugins.oiptask.domain.LevelOfAssurance
 import com.ritense.valtimoplugins.oiptask.domain.OipKlanttaak
@@ -30,6 +31,8 @@ import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.operaton.bpm.engine.delegate.DelegateTask
 import java.net.URI
 import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.Period
 import java.util.UUID
 
 class OipKlanttaakService(
@@ -40,13 +43,22 @@ class OipKlanttaakService(
     private val taskService: OperatonTaskService
 ) {
 
-    fun delegateTaskToOip(
+    fun delegateTask(
         delegateTask: DelegateTask,
         objectManagementId: UUID,
-        portaalFormulierUri: URI
+        taskOwner: String = DEFAULT_TASK_OWNER,
+        authorizeeIdentifier: String,
+        levelOfAssurance: LevelOfAssurance,
+        formUri: URI,
+        formData: Map<String, Any>? = null,
+        description: String? = null,
+        koppeling: Koppeling? = null,
+        leadTime: Period? = null,
+        expirationDate: OffsetDateTime? = null,
+        deadlineExtendable: Boolean? = null,
     ) {
         val objectManagement = objectManagementService.getById(objectManagementId)
-        requireNotNull(objectManagement) { "Object management not found for OIP Task" }
+        requireNotNull(objectManagement) { "Object management configuration not found!" }
 
         val documentId = processDocumentService.getDocumentId(
             OperatonProcessInstanceId(delegateTask.processInstanceId), delegateTask
@@ -63,34 +75,41 @@ class OipKlanttaakService(
                                 data = objectMapper.convertValue(OipKlanttaak(
                                     titel = delegateTask.name,
                                     status = Status.OPEN,
-                                    eigenaar = "",
+                                    eigenaar = taskOwner,
                                     betrokkene = Betrokkene(
-                                        levelOfAssurance = LevelOfAssurance.PASSWORD_PROTECTED_TRANSPORT,
+                                        levelOfAssurance = levelOfAssurance,
                                         authorizee = Authorizee(
                                             legalSubject = LegalSubject(
-                                                identifier = ""
+                                                identifier = authorizeeIdentifier
                                             )
                                         )
                                     ),
                                     portaalformulier = Portaalformulier(
                                         formulier = Formulier(
-                                            value = portaalFormulierUri
-                                        )
+                                            value = formUri
+                                        ),
+                                        data = formData
                                     ),
-                                    verwerkerTaakId = UUID.fromString(delegateTask.id)
+                                    verwerkerTaakId = UUID.fromString(delegateTask.id),
+                                    koppeling = koppeling,
+                                    toelichting = description,
+                                    doorlooptijd = leadTime,
+                                    verloopdatum = expirationDate,
+                                    deadlineVerlengbaar = deadlineExtendable
                                 )),
                                 startAt = LocalDate.now()
                             )
                         )
                     ).also {
                         logger.info {
-                            "OIP Klanttaak object with UUID '${it.uuid}' and URL '${it.url}' created for task with id '${delegateTask.id}'"
+                            "OIP Klanttaak object with UUID '${it.uuid}' and URL '${it.url}' created for " +
+                                "user task with id '${delegateTask.id}'"
                         }
                     }
             }
     }
 
-    fun completeToOipDelegatedTask(
+    fun completeDelegatedTask(
         execution: DelegateExecution,
     ) {
         val verwerkerTaakId = execution.getVariableAsString(VERWERKER_TAAK_ID)
@@ -139,6 +158,8 @@ class OipKlanttaakService(
 
     companion object {
         private val logger = KotlinLogging.logger {}
+
+        private const val DEFAULT_TASK_OWNER = "GZAC"
     }
 }
 
