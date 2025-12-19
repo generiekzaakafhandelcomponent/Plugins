@@ -6,7 +6,7 @@ import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthor
 import com.ritense.document.domain.Document
 import com.ritense.document.service.DocumentService
 
-class DocumentWriterService(
+class SuwinetDocumentWriterService(
     private val documentService: DocumentService
 ) {
 

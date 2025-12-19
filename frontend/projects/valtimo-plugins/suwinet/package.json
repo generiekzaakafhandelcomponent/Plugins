@@ -1,7 +1,7 @@
 {
   "name": "@valtimo-plugins/suwinet",
   "license": "EUPL-1.2",
-  "version": "1.8.0",
+  "version": "1.10.0",
   "scripts": {
     "build": "ng-packagr -p ng-package.json"
   },
