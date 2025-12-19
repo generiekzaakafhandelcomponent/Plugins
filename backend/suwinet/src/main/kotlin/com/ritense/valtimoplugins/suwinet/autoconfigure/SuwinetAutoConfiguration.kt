@@ -9,7 +9,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.plugin.SuwiNetPluginFactory
 import com.ritense.valtimoplugins.suwinet.service.CodesUitkeringsperiodeService
 import com.ritense.valtimoplugins.suwinet.service.DateTimeService
-import com.ritense.valtimoplugins.suwinet.service.DocumentWriterService
+import com.ritense.valtimoplugins.suwinet.service.SuwinetDocumentWriterService
 import com.ritense.valtimoplugins.suwinet.service.NationaliteitenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBijstandsregelingenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
@@ -30,10 +30,10 @@ class SuwinetAutoConfiguration {
 
     @Bean
     @ProcessBean
-    fun documentWriterService(
+    fun suwinetDocumentWriterService(
         documentService: DocumentService
-    ): DocumentWriterService {
-        return DocumentWriterService(
+    ): SuwinetDocumentWriterService {
+        return SuwinetDocumentWriterService(
             documentService
         )
     }
@@ -147,12 +147,12 @@ class SuwinetAutoConfiguration {
     @Bean
     @ProcessBean
     fun suwinetBrpStoreToDocService(
-        documentWriterService: DocumentWriterService,
+        suwinetDocumentWriterService: SuwinetDocumentWriterService,
         documentService: DocumentService,
         @Value("\${implementation.suwinet.maxAgeKindAlsThuiswonend:99}") maxAgeKindAlsThuiswonend: Int
     ): SuwinetBrpStoreToDocService {
         return SuwinetBrpStoreToDocService(
-            documentWriterService,
+            suwinetDocumentWriterService,
             documentService,
             DateTimeService(),
             maxAgeKindAlsThuiswonend
