@@ -64,6 +64,7 @@ class SuwinetSOAPClient {
         val conduit: HTTPConduit = client.conduit as HTTPConduit
         client.requestContext[Message.PROTOCOL_HEADERS] =
             mapOf("Expect" to listOf("100-continue"))
+        client.outInterceptors.add(StripSoapActionQuotesInterceptor())
 
         val httpPolicy = HTTPClientPolicy()
         httpPolicy.connectionTimeout = (connectionTimeout ?: 10) * 1000L
