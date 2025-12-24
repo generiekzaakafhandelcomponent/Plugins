@@ -12,8 +12,8 @@ import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundExcepti
 import com.ritense.valtimoplugins.suwinet.model.DuoStudiefinancieringInfoDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
-import java.io.IOException
 
 
 class SuwinetDuoStudiefinancieringInfoService(
@@ -37,39 +37,52 @@ class SuwinetDuoStudiefinancieringInfoService(
         }
 
         return suwinetSOAPClient
-            .getService<DUOInfo>(completeUrl,
+            .getService<DUOInfo>(
+                completeUrl,
                 soapClientConfig.connectionTimeout,
                 soapClientConfig.receiveTimeout,
-                soapClientConfig.authConfig)
+                soapClientConfig.authConfig
+            )
     }
 
     fun getStudiefinancieringInfoByBsn(
         bsn: String,
         duoStudiefinancieringInfo: DUOInfo
     ): DuoStudiefinancieringInfoDto {
-        logger.info { "Getting DUO studiefinanciering from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
+        logger.info { "Getting DUO studiefinanciering from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         /* retrieve duo studiefinanciering info by bsn */
         try {
-            val studiefinancieringInfoRequest =objectFactory
+            val studiefinancieringInfoRequest = objectFactory
                 .createDUOStudiefinancieringInfo()
                 .apply {
                     burgerservicenr = bsn
                 }
 
-            val response: DUOStudiefinancieringInfoResponse = duoStudiefinancieringInfo.duoStudiefinancieringInfo(studiefinancieringInfoRequest)
+            val response: DUOStudiefinancieringInfoResponse =
+                duoStudiefinancieringInfo.duoStudiefinancieringInfo(studiefinancieringInfoRequest)
             return response.unwrapResponse(bsn)
 
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting DUO studiefinanciering info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
         } catch (e: WebServiceException) {
-            when (e.cause) {
-                is IOException -> {
-                    logger.error(e) {
-                        "Error connecting to Suwinet while getting DUO studiefinanciering info for BSN $bsn"
-                    }
-                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
-                }
-                else -> throw e
-            }
+            logger.error(e) { "WebServiceException - Error getting DUO studiefinanciering info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting DUO studiefinanciering info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
         }
     }
 
@@ -87,14 +100,16 @@ class SuwinetDuoStudiefinancieringInfoService(
                     getStudiefinancieringen(responseValue.studiefinanciering)
                 )
             }
+
             is FWI -> {
                 throw SuwinetResultFWIException(
                     responseValue.foutOrWaarschuwingOrInformatie.joinToString { "${it.name} / ${it.value}\n" }
                 )
             }
+
             else -> {
                 val nietsGevonden = objectFactory.createNietsGevonden("test")
-                if( nietsGevonden.name.equals(content[0].name) ) {
+                if (nietsGevonden.name.equals(content[0].name)) {
                     return DuoStudiefinancieringInfoDto(bsn, listOf())
                 } else {
                     throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")

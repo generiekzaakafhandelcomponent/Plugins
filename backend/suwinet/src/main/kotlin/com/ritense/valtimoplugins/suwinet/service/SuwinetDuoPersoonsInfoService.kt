@@ -1,7 +1,6 @@
 package com.ritense.valtimoplugins.suwinet.service
 
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOInfo
-import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOPersoonsInfo
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOPersoonsInfoResponse
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.FWI
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.ObjectFactory
@@ -13,8 +12,8 @@ import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundExcepti
 import com.ritense.valtimoplugins.suwinet.model.DuoPersoonsInfoDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
-import java.io.IOException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -50,7 +49,7 @@ class SuwinetDuoPersoonsInfoService(
         bsn: String,
         duoInfo: DUOInfo
     ): DuoPersoonsInfoDto {
-        logger.info { "Getting duo persoons Onderwijsovereenkomst from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
+        logger.info { "Getting duo persoons Onderwijsovereenkomst from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
             val persoonsInfoRequest = objectFactory
@@ -61,14 +60,26 @@ class SuwinetDuoPersoonsInfoService(
             val response = duoInfo.duoPersoonsInfo(persoonsInfoRequest)
             return response.unwrapResponse(bsn)
 
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting DUO personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
         } catch (e: WebServiceException) {
-            when(e.cause) {
-                is IOException -> {
-                    logger.error { "Error connecting to Suwinet while getting BRP personal info from $bsn" }
-                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
-                }
-                else -> throw e
-            }
+            logger.error(e) { "WebServiceException - Error getting DUO personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting DUO personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
         }
     }
 

@@ -23,9 +23,9 @@ import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import jakarta.xml.ws.soap.SOAPFaultException
 import org.camunda.bpm.engine.exception.NotFoundException
 import org.springframework.util.StringUtils
-import java.io.IOException
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -38,7 +38,7 @@ class SuwinetBrpInfoService(
 
     var suffix: String? = ""
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?)  {
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
         this.suffix = suffix
     }
@@ -63,7 +63,7 @@ class SuwinetBrpInfoService(
         bsn: String, brpService: BRPInfo
     ): PersoonDto? {
 
-        logger.info { "Getting BRP personal info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
+        logger.info { "Getting BRP personal info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
             val request = objectFactory.createRequest().apply {
@@ -72,15 +72,27 @@ class SuwinetBrpInfoService(
             val person = brpService.aanvraagPersoon(request)
 
             return person.unwrapResponse()
-        } catch (e: WebServiceException) {
-            when (e.cause) {
-                is IOException -> {
-                    logger.error { "Error connecting to Suwinet while getting BRP personal info from $bsn" }
-                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
-                }
 
-                else -> throw e
-            }
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting BRP personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
+        } catch (e: WebServiceException) {
+            logger.error(e) { "WebServiceException - Error getting BRP personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting BRP personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
         }
     }
 

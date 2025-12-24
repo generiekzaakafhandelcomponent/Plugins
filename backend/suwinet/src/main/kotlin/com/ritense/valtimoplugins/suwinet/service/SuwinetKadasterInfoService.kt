@@ -20,6 +20,7 @@ import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.KadastraleObjectenDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -49,14 +50,15 @@ class SuwinetKadasterInfoService(
                 completeUrl,
                 soapClientConfig.connectionTimeout,
                 soapClientConfig.receiveTimeout,
-                soapClientConfig.authConfig)
+                soapClientConfig.authConfig
+            )
     }
 
     fun getPersoonsinfoByBsn(
         bsn: String,
         kadasterService: KadasterInfo
     ): KadastraleObjectenDto {
-        logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
+        logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
             this.kadasterService = kadasterService
@@ -65,19 +67,26 @@ class SuwinetKadasterInfoService(
 
             return getKadastraleObjects(kadastraleAanduidingen)
 
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting kadastrale objecten" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
         } catch (e: WebServiceException) {
-             when (e.cause) {
-                is java.io.IOException -> {
-                    logger.error(e) {
-                        "Error connecting to Suwinet while retrieving Kadaster info for BSN $bsn"
-                    }
-                    throw SuwinetError(
-                        e,
-                        "SUWINET_CONNECT_ERROR"
-                    )
-                }
-                else -> throw e
-            }
+            logger.error(e) { "WebServiceException - Error getting kadastrale objecten" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting kadastrale objecten" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
         }
     }
 
