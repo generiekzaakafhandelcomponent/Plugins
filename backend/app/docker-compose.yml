@@ -249,7 +249,7 @@ services:
     image: erikritense/suwinet-simulator:1.0.0
     environment:
       - SUWINET_USER=user
-      - SUWINET_PASSWORD=password
+      - SUWINET_PASSWORD=pwd
     ports:
       - "8090:8090"
 
