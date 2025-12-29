@@ -9,6 +9,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.ObjectFactory
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.PartnerBijstand
+import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.AanvraagUitkeringDto
@@ -27,6 +28,7 @@ import java.time.LocalDate
 
 class SuwinetBijstandsregelingenService (
     private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val flattener: ObjectFlattener,
 ) {
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
@@ -54,7 +56,8 @@ class SuwinetBijstandsregelingenService (
 
     fun getBijstandsregelingenByBsn(
         bsn: String,
-        infoService: BijstandsregelingenInfo
+        infoService: BijstandsregelingenInfo,
+        dynamicProperties: List<String>,
     ): BijstandsRegelingenDto? {
         logger.info { "Getting Bijstandsregelingen from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
 
@@ -66,13 +69,13 @@ class SuwinetBijstandsregelingenService (
                     burgerservicenr = bsn
                 }
             val response = infoService.bijstandsregelingenInfo(bijstandsregelingenInfoRequest)
-            response.unwrapResponse()
+            response.unwrapResponse(dynamicProperties)
         }
 
         return result.getOrThrow()
     }
 
-    private fun BijstandsregelingenInfoResponse.unwrapResponse(): BijstandsRegelingenDto? {
+    private fun BijstandsregelingenInfoResponse.unwrapResponse(dynamicProperties: List<String>): BijstandsRegelingenDto? {
         val responseValue =
             content.firstOrNull() ?: throw IllegalStateException("BijstandsregelingenInfoResponse contains no value")
 
@@ -83,7 +86,8 @@ class SuwinetBijstandsregelingenService (
                     burgerservicenr = bijstandsRegelingenInfo.burgerservicenr,
                     aanvraagUitkeringen = getAanvraagUitkeringen(bijstandsRegelingenInfo.aanvraagUitkering),
                     specifiekeGegevensBijzBijstandList = getSpeciekeGegevensBijzBijstand(bijstandsRegelingenInfo.specifiekeGegevensBijzBijstand),
-                    vorderingen = getVorderingen(bijstandsRegelingenInfo.vordering)
+                    vorderingen = getVorderingen(bijstandsRegelingenInfo.vordering),
+                    propertiesMap = getDynamicProperties(bijstandsRegelingenInfo, dynamicProperties)
                 )
             }
 
@@ -101,6 +105,19 @@ class SuwinetBijstandsregelingenService (
                 }
             }
         }
+    }
+
+    private fun getDynamicProperties(bijstandsRegelingenInfo: ClientSuwi, dynamicProperties: List<String>): Map<String, Any?> {
+        var propertiesMap: MutableMap<String, Any?> = mutableMapOf<String, Any?>()
+
+        val flatMap = flattener.toFlatMap(bijstandsRegelingenInfo)
+        dynamicProperties.forEach {
+            if(flatMap.containsKey(it)) {
+                propertiesMap[it] = flatMap[it]!!
+            }
+        }
+
+        return propertiesMap
     }
 
     private fun getVorderingen(vorderingen: MutableList<ClientSuwi.Vordering>): List<VorderingDto> =
