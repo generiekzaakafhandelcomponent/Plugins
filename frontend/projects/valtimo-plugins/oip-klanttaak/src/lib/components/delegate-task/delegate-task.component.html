@@ -34,18 +34,16 @@
   >
   </v-input>
 
-  <v-input
+  <v-select
     name="levelOfAssurance"
     [title]="'delegateTask.levelOfAssurance' | pluginTranslate: pluginId | async"
     [tooltip]="'delegateTask.levelOfAssuranceTooltip' | pluginTranslate: pluginId | async"
-    [required]="true"
-    [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.levelOfAssurance"
     [margin]="true"
-    [trim]="true"
-    [presetOptions]="levelOfAssuranceOptions"
-  >
-  </v-input>
+    [disabled]="obs.disabled"
+    [defaultSelectionId]="obs.prefill?.levelOfAssurance"
+    [required]="true"
+    [items]="levelOfAssuranceOptions"
+  ></v-select>
 
   <v-input
     name="formulierUri"
@@ -61,12 +59,12 @@
 
   <valtimo-carbon-multi-input
     type="keyValue"
-    name="formulierData"
+    name="formulierDataMapping"
     [title]="'delegateTask.formulierData' | pluginTranslate: pluginId | async"
     [tooltip]="'delegateTask.formulierDataTooltip' | pluginTranslate: pluginId | async"
     [required]="false"
     [disabled]="obs.disabled"
-    [defaultValues]="obs.prefill?.formulierData"
+    [defaultValues]="obs.prefill?.formulierDataMapping"
     [margin]="true"
     [fullWidth]="true"
     [valueColumnTitle]="'delegateTask.formulierDataValue' | pluginTranslate: pluginId | async"
@@ -116,7 +114,7 @@
       name="koppelingIdentifier"
       [title]="'delegateTask.koppelingIdentifier' | pluginTranslate: pluginId | async"
       [tooltip]="'delegateTask.koppelingIdentifierTooltip' | pluginTranslate: pluginId | async"
-      [required]="true"
+      [required]="koppelingVanToepassing.checked"
       [disabled]="obs.disabled"
       [defaultValue]="obs.prefill?.koppelingIdentifier"
       [margin]="true"

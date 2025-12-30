@@ -47,8 +47,8 @@ class OipKlanttaakPlugin(
 
     @PluginAction(
         key = "delegate-task",
-        title = "Delegate task to",
-        description = "Delegates the user task to the OIP by creating an object in the Objects API",
+        title = "Delegate task",
+        description = "Delegates the task to the OIP by creating an object in the Objects API",
         activityTypes = [ActivityTypeWithEventName.USER_TASK_CREATE]
     )
     fun delegateTaskToOip(
@@ -56,7 +56,7 @@ class OipKlanttaakPlugin(
         @PluginActionProperty betrokkeneIdentifier: String,
         @PluginActionProperty levelOfAssurance: String,
         @PluginActionProperty formulierUri: String,
-        @PluginActionProperty formulierData: Map<String, Any>? = null,
+        @PluginActionProperty formulierDataMapping: Map<String, Any>? = null,
         @PluginActionProperty toelichting: String? = null,
         @PluginActionProperty koppelingRegistratie: String? = null,
         @PluginActionProperty koppelingIdentifier: String? = null,
@@ -74,7 +74,7 @@ class OipKlanttaakPlugin(
                     it.value == levelOfAssurance || it.name == levelOfAssurance
                 },
                 formUri = URI.create(formulierUri),
-                formData = formulierData,
+                formData = formulierDataMapping,
                 description = toelichting,
                 koppeling = koppelingRegistratie?.let {
                     Koppeling(
@@ -93,12 +93,14 @@ class OipKlanttaakPlugin(
 
     @PluginAction(
         key = "complete-delegated-task",
-        title = "Complete delegated Task",
-        description = "Complete the Task and update the status of the related object in the Objects Api",
+        title = "Complete delegated task",
+        description = "Complete the task and update the status of the related object in the Objects Api",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
     fun completeToOipDelegatedTask(
-        execution: DelegateExecution
+        execution: DelegateExecution,
+        @PluginActionProperty ontvangenDataMapping: Map<String, Any>? = null,
+        @PluginActionProperty pathToDocumenten: String? = null,
     ) {
         withLoggingContext(DelegateExecution::class.java.canonicalName to execution.id) {
             logger.info { "Completing the delegated task." }

@@ -26,19 +26,20 @@ interface DelegateTaskConfig {
   betrokkeneIdentifier: string;
   levelOfAssurance: string;
   formulierUri: string;
-  formulierData?: FormulierData | null;
+  formulierDataMapping?: DataMapping | null;
   toelichting?: string | null;
   koppelingRegistratie?: Registratie | null;
   koppelingIdentifier?: string | null;
   verloopdatum?: Date | null;
 }
 
-interface FormulierData {
-  [key: string]: string | number | boolean | undefined;
+interface CompleteDelegatedTaskConfig {
+  ontvangenDataMapping?: DataMapping | null;
+  padNaarDocumenten?: string | null;
 }
 
-interface CompleteDelegatedTaskConfig {
-
+interface DataMapping {
+  [key: string]: string | number | boolean | undefined;
 }
 
 enum LevelOfAssurance {
@@ -56,7 +57,7 @@ enum Registratie {
 export {
   PluginConfig,
   DelegateTaskConfig,
-  FormulierData,
+  DataMapping,
   CompleteDelegatedTaskConfig,
   LevelOfAssurance,
   Registratie

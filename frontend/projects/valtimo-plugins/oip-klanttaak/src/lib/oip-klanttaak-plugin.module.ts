@@ -16,19 +16,19 @@
 
 import {NgModule} from '@angular/core';
 import {AsyncPipe, CommonModule, NgIf} from '@angular/common';
-import {CompleteDelegatedTaskComponent} from "./components/complete-delegated-task/complete-delegated-task.component";
-import {ConfigurationComponent} from "./components/configuration/configuration.component";
-import {DelegateTaskComponent} from "./components/delegate-task/delegate-task.component";
-import {PluginTranslatePipeModule} from "@valtimo/plugin";
 import {CarbonMultiInputModule, FormModule, InputModule, SelectModule} from '@valtimo/components';
+import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {ToggleModule} from 'carbon-components-angular';
+import {CompleteDelegatedTaskComponent} from './components/complete-delegated-task/complete-delegated-task.component';
+import {ConfigurationComponent} from './components/configuration/configuration.component';
+import {DelegateTaskComponent} from './components/delegate-task/delegate-task.component';
 
 @NgModule({
-    declarations: [
-        CompleteDelegatedTaskComponent,
-        ConfigurationComponent,
-        DelegateTaskComponent,
-    ],
+  declarations: [
+    CompleteDelegatedTaskComponent,
+    ConfigurationComponent,
+    DelegateTaskComponent,
+  ],
   imports: [
     AsyncPipe,
     CarbonMultiInputModule,
@@ -40,6 +40,6 @@ import {ToggleModule} from 'carbon-components-angular';
     SelectModule,
     ToggleModule,
   ],
-    exports: []
+  exports: []
 })
 export class OipKlanttaakPluginModule { }
