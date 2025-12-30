@@ -68,7 +68,7 @@ export class CompleteDelegatedTaskComponent implements FunctionConfigurationComp
     const valid =
       (
         this.bewaarIngediendeGegevens.checked === false ||
-        (!!formValue?.ontvangenDataMapping && Object.keys(formValue.ontvangenDataMapping).length > 0)
+        (!!formValue?.ontvangenDataMapping && formValue.ontvangenDataMapping.length > 0)
       ) &&
       (this.koppelDocumenten.checked === false || !!formValue.padNaarDocumenten);
 
