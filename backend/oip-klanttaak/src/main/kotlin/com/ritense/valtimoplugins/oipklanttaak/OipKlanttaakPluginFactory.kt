@@ -1,9 +1,9 @@
-package com.ritense.valtimoplugins.oiptask
+package com.ritense.valtimoplugins.oipklanttaak
 
 import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimoplugins.oiptask.service.OipKlanttaakService
+import com.ritense.valtimoplugins.oipklanttaak.service.OipKlanttaakService
 
 class OipKlanttaakPluginFactory(
     pluginService: PluginService,

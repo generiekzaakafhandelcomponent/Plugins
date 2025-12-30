@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.oiptask.listener
+package com.ritense.valtimoplugins.oipklanttaak.listener
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.convertValue
@@ -18,12 +18,12 @@ import com.ritense.valtimo.operaton.domain.OperatonTask
 import com.ritense.valtimo.security.exceptions.TaskNotFoundException
 import com.ritense.valtimo.service.OperatonProcessService
 import com.ritense.valtimo.service.OperatonTaskService
-import com.ritense.valtimoplugins.oiptask.OipKlanttaakPlugin
-import com.ritense.valtimoplugins.oiptask.domain.OipKlanttaak
-import com.ritense.valtimoplugins.oiptask.domain.ProcessVariables.OBJECTEN_API_PLUGIN_CONFIGURATION_ID
-import com.ritense.valtimoplugins.oiptask.domain.ProcessVariables.OIP_KLANTTAAK_OBJECT_URL
-import com.ritense.valtimoplugins.oiptask.domain.ProcessVariables.VERWERKER_TAAK_ID
-import com.ritense.valtimoplugins.oiptask.domain.Status
+import com.ritense.valtimoplugins.oipklanttaak.OipKlanttaakPlugin
+import com.ritense.valtimoplugins.oipklanttaak.domain.OipKlanttaak
+import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.OBJECTEN_API_PLUGIN_CONFIGURATION_ID
+import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.OIP_KLANTTAAK_OBJECT_URL
+import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.VERWERKER_TAAK_ID
+import com.ritense.valtimoplugins.oipklanttaak.domain.Status
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.transaction.annotation.Transactional

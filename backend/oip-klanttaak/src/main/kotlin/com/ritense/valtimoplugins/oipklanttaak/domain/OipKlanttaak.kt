@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.oiptask.domain
+package com.ritense.valtimoplugins.oipklanttaak.domain
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty

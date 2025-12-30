@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.oiptask.domain
+package com.ritense.valtimoplugins.oipklanttaak.domain
 
 object ProcessVariables {
     const val VERWERKER_TAAK_ID = "verwerkerTaakId"

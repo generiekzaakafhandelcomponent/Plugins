@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.oiptask
+package com.ritense.valtimoplugins.oipklanttaak
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.objectmanagement.service.ObjectManagementService
@@ -6,8 +6,9 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimo.service.OperatonProcessService
 import com.ritense.valtimo.service.OperatonTaskService
-import com.ritense.valtimoplugins.oiptask.listener.OipKlanttaakEventListener
-import com.ritense.valtimoplugins.oiptask.service.OipKlanttaakService
+import com.ritense.valtimoplugins.oipklanttaak.listener.OipKlanttaakEventListener
+import com.ritense.valtimoplugins.oipklanttaak.service.OipKlanttaakService
+import com.ritense.valueresolver.ValueResolverService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
@@ -34,12 +35,14 @@ class OipKlanttaakAutoConfiguration {
         objectManagementService: ObjectManagementService,
         objectMapper: ObjectMapper,
         processDocumentService: ProcessDocumentService,
+        valueResolverService: ValueResolverService,
         taskService: OperatonTaskService
     ) = OipKlanttaakService(
         pluginService = pluginService,
         objectManagementService = objectManagementService,
         objectMapper = objectMapper,
         processDocumentService = processDocumentService,
+        valueResolverService = valueResolverService,
         taskService = taskService
     )
 

@@ -1,4 +1,4 @@
-package com.ritense.valtimoplugins.oiptask
+package com.ritense.valtimoplugins.oipklanttaak
 
 import com.ritense.notificatiesapi.NotificatiesApiListener
 import com.ritense.notificatiesapi.NotificatiesApiPlugin
@@ -12,10 +12,11 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.PluginConfigurationId
 import com.ritense.plugin.service.PluginService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimoplugins.oiptask.domain.Koppeling
-import com.ritense.valtimoplugins.oiptask.domain.LevelOfAssurance
-import com.ritense.valtimoplugins.oiptask.domain.Registratie
-import com.ritense.valtimoplugins.oiptask.service.OipKlanttaakService
+import com.ritense.valtimoplugins.oipklanttaak.domain.DataBinding
+import com.ritense.valtimoplugins.oipklanttaak.domain.Koppeling
+import com.ritense.valtimoplugins.oipklanttaak.domain.LevelOfAssurance
+import com.ritense.valtimoplugins.oipklanttaak.domain.Registratie
+import com.ritense.valtimoplugins.oipklanttaak.service.OipKlanttaakService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.oshai.kotlinlogging.withLoggingContext
 import org.operaton.bpm.engine.delegate.DelegateExecution
@@ -56,7 +57,7 @@ class OipKlanttaakPlugin(
         @PluginActionProperty betrokkeneIdentifier: String,
         @PluginActionProperty levelOfAssurance: String,
         @PluginActionProperty formulierUri: String,
-        @PluginActionProperty formulierDataMapping: Map<String, Any>? = null,
+        @PluginActionProperty formulierDataMapping: List<DataBinding>? = null,
         @PluginActionProperty toelichting: String? = null,
         @PluginActionProperty koppelingRegistratie: String? = null,
         @PluginActionProperty koppelingIdentifier: String? = null,
@@ -74,7 +75,7 @@ class OipKlanttaakPlugin(
                     it.value == levelOfAssurance || it.name == levelOfAssurance
                 },
                 formUri = URI.create(formulierUri),
-                formData = formulierDataMapping,
+                formDataMapping = formulierDataMapping,
                 description = toelichting,
                 koppeling = koppelingRegistratie?.let {
                     Koppeling(
@@ -99,12 +100,21 @@ class OipKlanttaakPlugin(
     )
     fun completeToOipDelegatedTask(
         execution: DelegateExecution,
-        @PluginActionProperty ontvangenDataMapping: Map<String, Any>? = null,
+        @PluginActionProperty bewaarIngediendeGegevens: Boolean = false,
+        @PluginActionProperty ontvangenDataMapping: List<DataBinding>? = null,
+        @PluginActionProperty koppelDocumenten: Boolean = false,
         @PluginActionProperty pathToDocumenten: String? = null,
     ) {
         withLoggingContext(DelegateExecution::class.java.canonicalName to execution.id) {
             logger.info { "Completing the delegated task." }
-            oipKlanttaakService.completeDelegatedTask(execution)
+            oipKlanttaakService.completeDelegatedTask(
+                execution = execution,
+                objectManagementId = objectManagementConfigurationId,
+                saveReceivedData = bewaarIngediendeGegevens,
+                receivedDataMapping = ontvangenDataMapping,
+                linkDocuments = koppelDocumenten,
+                pathToDocuments = pathToDocumenten
+            )
         }
     }
 
