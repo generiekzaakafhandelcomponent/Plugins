@@ -11,7 +11,6 @@ import com.ritense.objectenapi.client.ObjectWrapper
 import com.ritense.objectmanagement.domain.ObjectManagement
 import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.domain.PluginConfiguration
-import com.ritense.plugin.domain.PluginConfigurationId
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
@@ -30,7 +29,6 @@ import org.springframework.context.event.EventListener
 import org.springframework.transaction.annotation.Transactional
 import java.net.URI
 import java.util.UUID
-import kotlin.text.substringAfterLast
 
 open class OipKlanttaakEventListener(
     private val pluginService: PluginService,
