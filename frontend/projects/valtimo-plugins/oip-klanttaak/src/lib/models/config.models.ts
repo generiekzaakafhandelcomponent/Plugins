@@ -34,7 +34,9 @@ interface DelegateTaskConfig {
 }
 
 interface CompleteDelegatedTaskConfig {
+  bewaarIngediendeGegevens: boolean;
   ontvangenDataMapping?: DataMapping | null;
+  koppelDocumenten: boolean;
   padNaarDocumenten?: string | null;
 }
 

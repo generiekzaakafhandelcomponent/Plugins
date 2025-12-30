@@ -29,7 +29,7 @@
         [label]="'completeDelegatedTask.bewaarIngediendeGegevens' | pluginTranslate: pluginId | async"
         [onText]="'toggle.ja' | pluginTranslate: pluginId | async"
         [offText]="'toggle.nee' | pluginTranslate: pluginId | async"
-        [checked]="!!obs.prefill?.ontvangenDataMapping"
+        [checked]="!!obs.prefill?.bewaarIngediendeGegevens"
         [disabled]="obs.disabled"
       >
       </cds-toggle>
@@ -60,7 +60,7 @@
         [label]="'completeDelegatedTask.koppelDocumenten' | pluginTranslate: pluginId | async"
         [onText]="'toggle.ja' | pluginTranslate: pluginId | async"
         [offText]="'toggle.nee' | pluginTranslate: pluginId | async"
-        [checked]="!!obs.prefill?.padNaarDocumenten"
+        [checked]="!!obs.prefill?.koppelDocumenten"
         [disabled]="obs.disabled"
       >
       </cds-toggle>

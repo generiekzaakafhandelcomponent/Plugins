@@ -67,10 +67,10 @@ export class CompleteDelegatedTaskComponent implements FunctionConfigurationComp
   private handleValid(formValue: CompleteDelegatedTaskConfig): void {
     const valid =
       (
-        this.bewaarIngediendeGegevens?.checked === false ||
+        this.bewaarIngediendeGegevens.checked === false ||
         (!!formValue?.ontvangenDataMapping && Object.keys(formValue.ontvangenDataMapping).length > 0)
       ) &&
-      (this.koppelDocumenten?.checked === false || !!formValue.padNaarDocumenten);
+      (this.koppelDocumenten.checked === false || !!formValue.padNaarDocumenten);
 
     this.logger.debug('handleValid', valid);
     this.valid$.next(valid);
@@ -83,7 +83,11 @@ export class CompleteDelegatedTaskComponent implements FunctionConfigurationComp
         .pipe(take(1))
         .subscribe(([formValue, valid]) => {
           if (valid) {
-            this.configuration.emit(formValue);
+            this.configuration.emit({
+              ...formValue,
+              bewaarIngediendeGegevens: this.bewaarIngediendeGegevens.checked,
+              koppelDocumenten: this.koppelDocumenten.checked
+            });
           }
         });
     });
