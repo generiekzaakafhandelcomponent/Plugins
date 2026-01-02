@@ -421,6 +421,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String>? = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting Bijstandsregelingen for case ${execution.businessKey}" }
@@ -432,10 +433,18 @@ class SuwiNetPlugin(
             suffix
         )
 
+        var props = dynamicProperties
+
+        if(dynamicProperties == null) {
+            props = listOf()
+        }
+
         try {
             suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(bsn,
-                suwinetBijstandsregelingenService.createBijstandsregelingenService())
+                suwinetBijstandsregelingenService.createBijstandsregelingenService(),
+                props)
                 ?.let {
+                    logger.debug { objectMapper.writeValueAsString(it)  }
                     execution.processInstance.setVariable(
                         resultProcessVariableName, objectMapper.convertValue(it)
                     )

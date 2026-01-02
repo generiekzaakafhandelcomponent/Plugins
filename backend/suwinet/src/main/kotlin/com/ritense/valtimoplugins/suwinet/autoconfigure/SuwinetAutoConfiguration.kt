@@ -1,11 +1,13 @@
 package com.ritense.valtimoplugins.suwinet.autoconfigure
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.suwinet.service.UwvCodeService
 import com.ritense.valtimoplugins.suwinet.service.UwvSoortIkvService
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
+import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
 import com.ritense.valtimoplugins.suwinet.plugin.SuwiNetPluginFactory
 import com.ritense.valtimoplugins.suwinet.service.CodesUitkeringsperiodeService
 import com.ritense.valtimoplugins.suwinet.service.DateTimeService
@@ -163,10 +165,17 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBijstandsRegelingenInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        mapper: ObjectMapper,
     ): SuwinetBijstandsregelingenService {
         return SuwinetBijstandsregelingenService(
-            suwinetSOAPClient
+            suwinetSOAPClient,
+            getFlattener(mapper)
         )
+    }
+
+    @Bean
+    fun getFlattener(mapper: ObjectMapper): ObjectFlattener {
+        return ObjectFlattener(mapper)
     }
 
     @Bean
