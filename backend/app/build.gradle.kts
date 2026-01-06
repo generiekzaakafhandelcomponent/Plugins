@@ -27,6 +27,7 @@ dependencies {
     implementation(project(":backend:notify-nl"))
     implementation(project(":backend:object-management"))
     implementation(project(":backend:oip-klanttaak"))
+    implementation(project(":backend:openklant"))
     implementation(project(":backend:publictask"))
     implementation(project(":backend:rotterdam-oracle-ebs"))
     implementation(project(":backend:slack"))
