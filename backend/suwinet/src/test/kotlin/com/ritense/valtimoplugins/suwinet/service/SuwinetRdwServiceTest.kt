@@ -46,7 +46,7 @@ internal class SuwinetRdwServiceTest : BaseTest() {
     fun setup() {
         testHelper = TestHelper
         suwinetSOAPClient = Mockito.mock()
-        suwinetRdwService.setConfig(suwinetSOAPClientConfig)
+        suwinetRdwService.setConfig(suwinetSOAPClientConfig, "")
     }
 
     @Test

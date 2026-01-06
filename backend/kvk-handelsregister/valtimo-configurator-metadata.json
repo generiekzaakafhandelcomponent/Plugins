@@ -11,7 +11,7 @@
         "codeAdditions": [
             {
                 "spec": "kvkPluginSpecification",
-                "module": "kvkPluginModule"
+                "module": "KvkPluginModule"
             }
         ]
     }

@@ -16,5 +16,7 @@
 
 package com.ritense.valtimoplugins.valuemapper.web
 
-data class TemplateListItemResponse(val key: String, val readOnly: Boolean)
-
+data class TemplateListItemResponse(
+    val key: String,
+    val readOnly: Boolean,
+)

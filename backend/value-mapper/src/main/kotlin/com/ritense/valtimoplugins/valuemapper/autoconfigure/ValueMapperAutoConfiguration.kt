@@ -3,7 +3,6 @@ package com.ritense.valtimoplugins.valuemapper.autoconfigure
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTemplate
 import com.ritense.valtimoplugins.valuemapper.plugin.ValueMapper
@@ -28,58 +27,53 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @EnableCaching
 @Configuration
 class ValueMapperAutoConfiguration {
-
     @Bean
     @ConditionalOnMissingBean(ValueMapperLoadingService::class)
     fun valueMapperLoadingService(
         resourceLoader: ResourceLoader,
         valueMapperTemplateService: ValueMapperTemplateService,
-    ): ValueMapperLoadingService {
-        return ValueMapperLoadingService(resourceLoader, valueMapperTemplateService)
-    }
+    ): ValueMapperLoadingService = ValueMapperLoadingService(resourceLoader, valueMapperTemplateService)
 
     @Bean
     @ConditionalOnMissingBean(ValueMapperTemplateService::class)
-    fun valueMapperTemplateService(repository: ValueMapperTemplateRepository, mapper: ObjectMapper): ValueMapperTemplateService{
-        return ValueMapperTemplateService(repository, mapper)
-    }
+    fun valueMapperTemplateService(
+        repository: ValueMapperTemplateRepository,
+        mapper: ObjectMapper,
+    ): ValueMapperTemplateService = ValueMapperTemplateService(repository, mapper)
 
     @Bean
     @ConditionalOnMissingBean(ValueMapper::class)
-    fun valueMapper(templateService: ValueMapperTemplateService, documentService: DocumentService ): ValueMapper {
-        return ValueMapper(templateService, documentService)
-    }
+    fun valueMapper(
+        templateService: ValueMapperTemplateService,
+        documentService: DocumentService,
+    ): ValueMapper = ValueMapper(templateService, documentService)
 
     @Bean
     @ConditionalOnMissingBean(ValueMapperPluginFactory::class)
-    fun valueMapperPluginFactory(pluginService: PluginService, valueMapper: ValueMapper): ValueMapperPluginFactory {
-        return ValueMapperPluginFactory(pluginService, valueMapper)
-    }
+    fun valueMapperPluginFactory(
+        pluginService: PluginService,
+        valueMapper: ValueMapper,
+    ): ValueMapperPluginFactory = ValueMapperPluginFactory(pluginService, valueMapper)
 
     @Bean
     @ConditionalOnMissingBean(ValueMapperResource::class)
     fun valueMapperResource(
         loadingService: ValueMapperLoadingService,
-        valueMapperTemplateService: ValueMapperTemplateService
-    ): ValueMapperResource {
-        return ValueMapperResource(
+        valueMapperTemplateService: ValueMapperTemplateService,
+    ): ValueMapperResource =
+        ValueMapperResource(
             loadingService,
-            valueMapperTemplateService
+            valueMapperTemplateService,
         )
-    }
 
     @Order(269)
     @Bean
     @ConditionalOnMissingBean(ValueMapperHttpSecurityConfigurer::class)
-    fun valueMapperSecurityConfig(): ValueMapperHttpSecurityConfigurer {
-        return ValueMapperHttpSecurityConfigurer()
-    }
+    fun valueMapperSecurityConfig(): ValueMapperHttpSecurityConfigurer = ValueMapperHttpSecurityConfigurer()
 
     @Order(HIGHEST_PRECEDENCE + 34)
     @Bean
     @ConditionalOnMissingBean(name = ["valueMapperLiquibaseMasterChangeLogLocation"])
-    fun valueMapperTemplateLiquibaseMasterChangeLogLocation(): LiquibaseMasterChangeLogLocation {
-        return LiquibaseMasterChangeLogLocation("config/liquibase/valuemapper-master.xml")
-    }
-
+    fun valueMapperTemplateLiquibaseMasterChangeLogLocation(): LiquibaseMasterChangeLogLocation =
+        LiquibaseMasterChangeLogLocation("config/liquibase/valuemapper-master.xml")
 }

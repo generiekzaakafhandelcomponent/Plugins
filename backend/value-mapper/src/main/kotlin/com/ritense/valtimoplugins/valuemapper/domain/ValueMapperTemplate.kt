@@ -25,17 +25,13 @@ import java.util.UUID
 @Entity
 @Table(name = "valuemapping_template")
 class ValueMapperTemplate(
-
     @Id
     @Column(name = "id")
     val id: UUID,
-
     @Column(name = "key")
     val key: String,
-
     @Column(name = "content")
-    var content: String = ""
+    var content: String = "",
 ) {
-
     override fun toString(): String = key
 }

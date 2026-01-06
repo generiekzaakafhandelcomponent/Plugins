@@ -39,7 +39,7 @@ class SuwinetBijstandsregelingenServiceTest: BaseTest() {
     @BeforeEach
     fun setup() {
         testHelper = TestHelper
-        service.setConfig(soapClientConfig)
+        service.setConfig(soapClientConfig, "")
     }
 
 

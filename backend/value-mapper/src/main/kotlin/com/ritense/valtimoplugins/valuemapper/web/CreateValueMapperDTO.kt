@@ -16,4 +16,6 @@
 
 package com.ritense.valtimoplugins.valuemapper.web
 
-data class CreateValueMapperDTO(val key: String)
+data class CreateValueMapperDTO(
+    val key: String,
+)

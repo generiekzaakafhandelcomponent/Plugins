@@ -40,7 +40,7 @@ internal class SuwinetDuoPersoonsInfoServiceTest : BaseTest() {
     fun setup() {
         testHelper = TestHelper
         suwinetSOAPClient = mock()
-        suwinetDuoPersoonsInfoService.setConfig(suwinetSOAPClientConfig)
+        suwinetDuoPersoonsInfoService.setConfig(suwinetSOAPClientConfig, "")
     }
 
     @Test

@@ -12,7 +12,8 @@ import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundExcepti
 import com.ritense.valtimoplugins.suwinet.model.DuoStudiefinancieringInfoDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
-import java.io.IOException
+import jakarta.xml.ws.soap.SOAPFaultException
+import org.springframework.util.StringUtils
 
 
 class SuwinetDuoStudiefinancieringInfoService(
@@ -21,46 +22,67 @@ class SuwinetDuoStudiefinancieringInfoService(
 
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    var suffix: String? = ""
+
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun createDuoStudiefinancieringService(): DUOInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
+
         return suwinetSOAPClient
-            .getService<DUOInfo>(completeUrl,
+            .getService<DUOInfo>(
+                completeUrl,
                 soapClientConfig.connectionTimeout,
                 soapClientConfig.receiveTimeout,
-                soapClientConfig.authConfig)
+                soapClientConfig.authConfig
+            )
     }
 
     fun getStudiefinancieringInfoByBsn(
         bsn: String,
         duoStudiefinancieringInfo: DUOInfo
     ): DuoStudiefinancieringInfoDto {
-        logger.info { "Getting DUO studiefinanciering from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting DUO studiefinanciering from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         /* retrieve duo studiefinanciering info by bsn */
         try {
-            val studiefinancieringInfoRequest =objectFactory
+            val studiefinancieringInfoRequest = objectFactory
                 .createDUOStudiefinancieringInfo()
                 .apply {
                     burgerservicenr = bsn
                 }
 
-            val response: DUOStudiefinancieringInfoResponse = duoStudiefinancieringInfo.duoStudiefinancieringInfo(studiefinancieringInfoRequest)
+            val response: DUOStudiefinancieringInfoResponse =
+                duoStudiefinancieringInfo.duoStudiefinancieringInfo(studiefinancieringInfoRequest)
             return response.unwrapResponse(bsn)
 
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting DUO studiefinanciering info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
         } catch (e: WebServiceException) {
-            when (e.cause) {
-                is IOException -> {
-                    logger.error(e) {
-                        "Error connecting to Suwinet while getting DUO studiefinanciering info for BSN $bsn"
-                    }
-                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
-                }
-                else -> throw e
-            }
+            logger.error(e) { "WebServiceException - Error getting DUO studiefinanciering info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting DUO studiefinanciering info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
         }
     }
 
@@ -78,14 +100,16 @@ class SuwinetDuoStudiefinancieringInfoService(
                     getStudiefinancieringen(responseValue.studiefinanciering)
                 )
             }
+
             is FWI -> {
                 throw SuwinetResultFWIException(
                     responseValue.foutOrWaarschuwingOrInformatie.joinToString { "${it.name} / ${it.value}\n" }
                 )
             }
+
             else -> {
                 val nietsGevonden = objectFactory.createNietsGevonden("test")
-                if( nietsGevonden.name.equals(content[0].name) ) {
+                if (nietsGevonden.name.equals(content[0].name)) {
                     return DuoStudiefinancieringInfoDto(bsn, listOf())
                 } else {
                     throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
@@ -109,7 +133,7 @@ class SuwinetDuoStudiefinancieringInfoService(
     }
 
     companion object {
-        private const val SERVICE_PATH = "DUODossierStudiefinancieringGSD-v0200/v1"
+        private const val SERVICE_PATH = "DUODossierStudiefinancieringGSD-v0200"
         private val objectFactory = ObjectFactory()
         private val logger = KotlinLogging.logger {}
     }

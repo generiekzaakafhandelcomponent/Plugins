@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 Ritense BV, the Netherlands.
+ *
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ritense.valtimoplugins.valuemapper.domain
 
 import com.fasterxml.jackson.databind.JsonNode
@@ -7,17 +23,17 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 data class TypeTransformation(
     private val whenType: JsonNodeType,
-    private val thenType: String
+    private val thenType: String,
 ) : ValueMapperTransformation() {
     val thenClazz: Class<*> = Class.forName(thenType)
 
     override fun canTransform(node: JsonNode): Boolean = whenType == node.nodeType
 
-    override fun transform(value: Any): Pair<Boolean, Any> {
+    override fun transform(value: Any): Any {
         logger.debug {
             "Attempting to convert $whenType value to ${thenClazz.simpleName}"
         }
-        return false to mapper.convertValue(value, thenClazz)
+        return mapper.convertValue(value, thenClazz)
     }
 
     companion object {

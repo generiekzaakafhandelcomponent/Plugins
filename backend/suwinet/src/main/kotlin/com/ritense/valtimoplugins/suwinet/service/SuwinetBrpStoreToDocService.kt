@@ -10,7 +10,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 @Suppress("UNUSED")
 class SuwinetBrpStoreToDocService(
-    private val documentWriterService: DocumentWriterService,
+    private val suwinetDocumentWriterService: SuwinetDocumentWriterService,
     private val documentService: DocumentService,
     private val dateTimeService: DateTimeService,
     private val maxAgeKindAlsThuiswonend: Int
@@ -28,7 +28,7 @@ class SuwinetBrpStoreToDocService(
             brpPersoonsgegevensInfo
                 ?.let {
                     val dto: PersoonDto = objectMapper.convertValue(brpPersoonsgegevensInfo)
-                    documentWriterService.writeValueToDocumentAtPath(dto, targetPathPersoon, businessKey)
+                    suwinetDocumentWriterService.writeValueToDocumentAtPath(dto, targetPathPersoon, businessKey)
                 }
         } catch (e: Exception) {
             logger.info("storePersoonsgegevens Exiting scope due to nested error.", e)
@@ -62,7 +62,7 @@ class SuwinetBrpStoreToDocService(
                                         && kind.datumOverlijden.isNullOrEmpty()
                                         && isNotToOld(kind.geboortedatum, yearOfCaseCreation)
                             }
-                            documentWriterService.writeValueToDocumentAtPath(filteredKinderen, targetPath, businessKey)
+                            suwinetDocumentWriterService.writeValueToDocumentAtPath(filteredKinderen, targetPath, businessKey)
                         } ?: throw ParseToDtoException("Unable to convert brp parent map to Dto")
                 } ?: throw IllegalArgumentException("children map null")
         } catch (e: Exception) {

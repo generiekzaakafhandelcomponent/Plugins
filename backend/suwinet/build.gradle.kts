@@ -16,7 +16,6 @@ import io.spring.gradle.dependencymanagement.org.apache.maven.model.Build
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 plugins {
     // CFX
     id("io.mateo.cxf-codegen") version "2.4.0"
@@ -58,11 +57,14 @@ dependencies {
     cxfCodegen("jakarta.annotation:jakarta.annotation-api:3.0.0")
     cxfCodegen("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
     cxfCodegen("jakarta.jws:jakarta.jws-api:3.0.0")
+    cxfCodegen("org.apache.cxf:cxf-rt-ws-addr:4.1.4")
 
     // Apache CXF and Jakarta dependencies
-    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:4.1.4")
+    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:4.0.7")
     implementation("org.apache.cxf:cxf-rt-transports-http:4.1.4")
     implementation("org.apache.cxf:cxf-rt-features-logging:4.1.4")
+    implementation("org.apache.cxf:cxf-rt-bindings-soap:4.0.7")
+    implementation("org.apache.cxf:cxf-rt-ws-addr:4.0.7")
     implementation("com.sun.xml.ws:jaxws-ri:4.0.3")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
 
@@ -183,6 +185,7 @@ tasks.register<Wsdl2Java>("genUWVDossierInkomstenGSD") {
         markGenerated.set(true)
         packageNames.set(listOf("com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD"))
         extendedSoapHeaders.set(true)
+        autoNameResolution.set(true)
     }
     allJvmArgs = listOf("-Duser.language=en", "-Duser.country=NL")
     doFirst {

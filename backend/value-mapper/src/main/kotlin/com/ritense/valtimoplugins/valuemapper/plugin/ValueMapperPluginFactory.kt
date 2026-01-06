@@ -20,13 +20,9 @@ import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.valuemapper.plugin.ValueMapper
 
-
 open class ValueMapperPluginFactory(
     pluginService: PluginService,
-    val valueMapper: ValueMapper
-): PluginFactory<ValueMapperPlugin>(pluginService) {
-
-    override fun create(): ValueMapperPlugin {
-        return ValueMapperPlugin(valueMapper)
-    }
+    val valueMapper: ValueMapper,
+) : PluginFactory<ValueMapperPlugin>(pluginService) {
+    override fun create(): ValueMapperPlugin = ValueMapperPlugin(valueMapper)
 }

@@ -62,6 +62,7 @@ class SuwiNetPlugin(
     fun getBrpPersoonsgegevens(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP info for case ${execution.businessKey}" }
@@ -70,7 +71,8 @@ class SuwiNetPlugin(
             require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
             suwinetBrpInfoService.setConfig(
-                getSuwinetSOAPClientConfig()
+                getSuwinetSOAPClientConfig(),
+                suffix
             )
 
             suwinetBrpInfoService.getPersoonsgegevensByBsn(
@@ -105,13 +107,15 @@ class SuwiNetPlugin(
     fun getBrpPartnerGegevens(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP partner info for case ${execution.businessKey}" }
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
         try {
             suwinetBrpInfoService.setConfig(
-                getSuwinetSOAPClientConfig()
+                getSuwinetSOAPClientConfig(),
+                suffix
             )
 
             suwinetBrpInfoService.getPersoonsgegevensByBsn(
@@ -143,12 +147,14 @@ class SuwiNetPlugin(
     fun getBrpKinderenGegevens(
         @PluginActionProperty kinderenBsns: List<String>,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP Kinderen info for case ${execution.businessKey}" }
         try {
             suwinetBrpInfoService.setConfig(
-                getSuwinetSOAPClientConfig()
+                getSuwinetSOAPClientConfig(),
+                suffix
             )
 
             val kinderen = kinderenBsns.mapNotNull {
@@ -186,6 +192,7 @@ class SuwiNetPlugin(
     fun getDUOPersoonsInfo(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -193,7 +200,8 @@ class SuwiNetPlugin(
 
         try {
             suwinetDuoPersoonsInfoService.setConfig(
-                getSuwinetSOAPClientConfig()
+                getSuwinetSOAPClientConfig(),
+                suffix
             )
 
             suwinetDuoPersoonsInfoService.getPersoonsInfoByBsn(
@@ -218,6 +226,7 @@ class SuwiNetPlugin(
     fun getDUOStudiefinancieringInfo(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -225,7 +234,8 @@ class SuwiNetPlugin(
 
         try {
             suwinetDuoStudiefinancieringInfoService.setConfig(
-                getSuwinetSOAPClientConfig()
+                getSuwinetSOAPClientConfig(),
+                suffix
             )
 
             suwinetDuoStudiefinancieringInfoService.getStudiefinancieringInfoByBsn(
@@ -251,6 +261,7 @@ class SuwiNetPlugin(
     fun getKadastraleObjecten(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -258,7 +269,8 @@ class SuwiNetPlugin(
 
         try {
             suwinetKadasterInfoService.setConfig(
-                getSuwinetSOAPClientConfig()
+                getSuwinetSOAPClientConfig(),
+                suffix
             )
 
             suwinetKadasterInfoService.getPersoonsinfoByBsn(
@@ -284,6 +296,7 @@ class SuwiNetPlugin(
     fun getRdwVoertuigen(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -291,7 +304,8 @@ class SuwiNetPlugin(
 
         try {
             suwinetRdwService.setConfig(
-                getSuwinetSOAPClientConfig()
+                getSuwinetSOAPClientConfig(),
+                suffix
             )
 
             suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(
@@ -320,13 +334,15 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty maxPeriods: Int,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         logger.info { "Getting SVB info for case ${execution.businessKey}" }
 
         try {
             suwinetSvbPersoonsInfoService.setConfig(
-                getSuwinetSOAPClientConfig()
+                getSuwinetSOAPClientConfig(),
+                suffix
             )
 
             suwinetSvbPersoonsInfoService.getPersoonsgegevensByBsn(
@@ -355,13 +371,15 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty maxPeriods: Int,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
         logger.info { "Getting uwv info for case ${execution.businessKey}" }
         suwinetUwvPersoonsIkvService.setConfig(
-            getSuwinetSOAPClientConfig()
+            getSuwinetSOAPClientConfig(),
+            suffix
         )
 
         try {
@@ -402,6 +420,7 @@ class SuwiNetPlugin(
     fun getBijstandsregelingen(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         logger.info { "Getting Bijstandsregelingen for case ${execution.businessKey}" }
@@ -409,7 +428,8 @@ class SuwiNetPlugin(
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
         suwinetBijstandsregelingenService.setConfig(
-            getSuwinetSOAPClientConfig()
+            getSuwinetSOAPClientConfig(),
+            suffix
         )
 
         try {

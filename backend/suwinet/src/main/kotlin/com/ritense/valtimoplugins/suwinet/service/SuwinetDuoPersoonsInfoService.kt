@@ -1,7 +1,6 @@
 package com.ritense.valtimoplugins.suwinet.service
 
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOInfo
-import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOPersoonsInfo
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.DUOPersoonsInfoResponse
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.FWI
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.ObjectFactory
@@ -13,7 +12,8 @@ import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundExcepti
 import com.ritense.valtimoplugins.suwinet.model.DuoPersoonsInfoDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
-import java.io.IOException
+import jakarta.xml.ws.soap.SOAPFaultException
+import org.springframework.util.StringUtils
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -23,12 +23,19 @@ class SuwinetDuoPersoonsInfoService(
 
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    var suffix: String? = ""
+
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun createDuoService(): DUOInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
         return suwinetSOAPClient
             .getService<DUOInfo>(
                 completeUrl,
@@ -42,7 +49,7 @@ class SuwinetDuoPersoonsInfoService(
         bsn: String,
         duoInfo: DUOInfo
     ): DuoPersoonsInfoDto {
-        logger.info { "Getting duo persoons Onderwijsovereenkomst from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting duo persoons Onderwijsovereenkomst from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
             val persoonsInfoRequest = objectFactory
@@ -53,14 +60,26 @@ class SuwinetDuoPersoonsInfoService(
             val response = duoInfo.duoPersoonsInfo(persoonsInfoRequest)
             return response.unwrapResponse(bsn)
 
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting DUO personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
         } catch (e: WebServiceException) {
-            when(e.cause) {
-                is IOException -> {
-                    logger.error { "Error connecting to Suwinet while getting BRP personal info from $bsn" }
-                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
-                }
-                else -> throw e
-            }
+            logger.error(e) { "WebServiceException - Error getting DUO personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting DUO personal info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
         }
     }
 
@@ -158,7 +177,7 @@ class SuwinetDuoPersoonsInfoService(
     private fun toDate(date: String) = toDateString(LocalDate.parse(date, dateInFormatter))
 
     companion object {
-        private const val SERVICE_PATH = "DUODossierPersoonGSD-v0300/v1"
+        private const val SERVICE_PATH = "DUODossierPersoonGSD-v0300"
         private const val suwinetDateInPattern = "yyyyMMdd"
         private val dateInFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(suwinetDateInPattern)
         private const val bbzDateOutPattern = "yyyy-MM-dd"

@@ -12,8 +12,8 @@ import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundExcepti
 import com.ritense.valtimoplugins.suwinet.model.UitkeringenDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
-import java.io.IOException
-
+import jakarta.xml.ws.soap.SOAPFaultException
+import org.springframework.util.StringUtils
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -26,18 +26,27 @@ class SuwinetSvbPersoonsInfoService(
 
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
     var maxPeriods by Delegates.notNull<Int>()
+    var suffix: String? = ""
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun createSvbInfo(): SVBInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
+
         return suwinetSOAPClient
-            .getService<SVBInfo>(completeUrl,
+            .getService<SVBInfo>(
+                completeUrl,
                 soapClientConfig.connectionTimeout,
                 soapClientConfig.receiveTimeout,
-                soapClientConfig.authConfig)
+                soapClientConfig.authConfig
+            )
     }
 
     fun getPersoonsgegevensByBsn(
@@ -47,7 +56,7 @@ class SuwinetSvbPersoonsInfoService(
     ): UitkeringenDto? {
         this.maxPeriods = maxPeriods
 
-        logger.info { "Getting SVB PersoonsInfo from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting SVB PersoonsInfo from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
             val svbInfoRequest = objectFactory
@@ -59,16 +68,26 @@ class SuwinetSvbPersoonsInfoService(
             // retrieve svb info by bsn
             return response.unwrapResponse()
 
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting SVB Persoons info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
         } catch (e: WebServiceException) {
-            when (e.cause) {
-                is IOException -> {
-                    logger.error(e) {
-                        "Error connecting to Suwinet while getting SVB PersoonsInfo for BSN $bsn"
-                    }
-                    throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
-                }
-                else -> throw e
-            }
+            logger.error(e) { "WebServiceException - Error getting SVB Persoons info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting SVB Persoons info" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
         }
     }
 
@@ -104,7 +123,7 @@ class SuwinetSvbPersoonsInfoService(
 
     private fun selectMaxPeriods(
         periods: List<UitkeringenDto.UitkeringPeriode>
-    ) = periods.drop(if (periods.size - maxPeriods< 1) 0 else periods.size - maxPeriods)
+    ) = periods.drop(if (periods.size - maxPeriods < 1) 0 else periods.size - maxPeriods)
 
     private fun getUitkeringen(uitkeringsverhoudingen: List<SVBPersoonsInfoResponse.ClientSuwi.Uitkeringsverhouding>) =
         uitkeringsverhoudingen.map {
@@ -117,7 +136,10 @@ class SuwinetSvbPersoonsInfoService(
             )
         }
 
-    private fun getUitkeringsPeriod(uitkeringsperiode: List<SVBPersoonsInfoResponse.ClientSuwi.Uitkeringsverhouding.Uitkeringsperiode>, codeSzWet: String) =
+    private fun getUitkeringsPeriod(
+        uitkeringsperiode: List<SVBPersoonsInfoResponse.ClientSuwi.Uitkeringsverhouding.Uitkeringsperiode>,
+        codeSzWet: String
+    ) =
         selectMaxPeriods(
             uitkeringsperiode.map { period ->
 

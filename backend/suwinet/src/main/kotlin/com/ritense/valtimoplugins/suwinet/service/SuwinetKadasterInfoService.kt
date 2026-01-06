@@ -20,6 +20,8 @@ import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.KadastraleObjectenDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
+import jakarta.xml.ws.soap.SOAPFaultException
+import org.springframework.util.StringUtils
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -29,26 +31,34 @@ class SuwinetKadasterInfoService(
 
     lateinit var kadasterService: KadasterInfo
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
+    var suffix: String? = ""
 
-    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig) {
+    fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
         this.soapClientConfig = soapClientConfig
+        this.suffix = suffix
     }
 
     fun createKadasterService(): KadasterInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
+
         return suwinetSOAPClient
             .getService<KadasterInfo>(
                 completeUrl,
                 soapClientConfig.connectionTimeout,
                 soapClientConfig.receiveTimeout,
-                soapClientConfig.authConfig)
+                soapClientConfig.authConfig
+            )
     }
 
     fun getPersoonsinfoByBsn(
         bsn: String,
         kadasterService: KadasterInfo
     ): KadastraleObjectenDto {
-        logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH}" }
+        logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
             this.kadasterService = kadasterService
@@ -57,19 +67,26 @@ class SuwinetKadasterInfoService(
 
             return getKadastraleObjects(kadastraleAanduidingen)
 
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting kadastrale objecten" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
         } catch (e: WebServiceException) {
-             when (e.cause) {
-                is java.io.IOException -> {
-                    logger.error(e) {
-                        "Error connecting to Suwinet while retrieving Kadaster info for BSN $bsn"
-                    }
-                    throw SuwinetError(
-                        e,
-                        "SUWINET_CONNECT_ERROR"
-                    )
-                }
-                else -> throw e
-            }
+            logger.error(e) { "WebServiceException - Error getting kadastrale objecten" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting kadastrale objecten" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
         }
     }
 
@@ -216,7 +233,7 @@ class SuwinetKadasterInfoService(
     private fun toDate(date: String) = toDateString(LocalDate.parse(date, dateInFormatter))
 
     companion object {
-        private const val SERVICE_PATH = "KadasterDossierGSD-v0300/v1"
+        private const val SERVICE_PATH = "KadasterDossierGSD-v0300"
         private const val SUWINET_DATE_IN_PATTERN = "yyyyMMdd"
         private const val DATE_OUT_PATTERN = "yyyy-MM-dd"
         private val dateInFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(SUWINET_DATE_IN_PATTERN)

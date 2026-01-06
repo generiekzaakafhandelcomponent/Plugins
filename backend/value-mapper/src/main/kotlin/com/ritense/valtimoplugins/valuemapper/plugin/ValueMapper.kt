@@ -1,17 +1,17 @@
 /*
- *  Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
- *  Licensed under EUPL, Version 1.2 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" basis,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.ritense.valtimoplugins.valuemapper.plugin
@@ -28,11 +28,13 @@ import com.ritense.authorization.AuthorizationContext
 import com.ritense.document.domain.Document
 import com.ritense.document.service.DocumentService
 import com.ritense.valtimo.contract.json.MapperSingleton
+import com.ritense.valtimoplugins.valuemapper.domain.CopyTransformation
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperCommand
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperDefinition
 import com.ritense.valtimoplugins.valuemapper.domain.ValueMapperTransformation
 import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperCommandException
 import com.ritense.valtimoplugins.valuemapper.exception.ValueMapperMappingException
+import com.ritense.valtimoplugins.valuemapper.processor.SpelExpressionProcessor
 import com.ritense.valtimoplugins.valuemapper.service.ValueMapperTemplateService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
@@ -40,9 +42,8 @@ import org.springframework.stereotype.Service
 @Service
 open class ValueMapper(
     private val templateService: ValueMapperTemplateService,
-    private val documentService: DocumentService
+    private val documentService: DocumentService,
 ) {
-
     /**
      * Retrieves the document content based on the provided businessKey and applies a value definition
      * to said content.
@@ -56,10 +57,10 @@ open class ValueMapper(
      **/
     fun applyToDocument(
         definitionKey: String,
-        businessKey: String
+        businessKey: String,
     ) {
-        val mapperDefinition = requireNotNull(templateService.getDefinition(definitionKey))
-        { "No Mapper Definitions found with id $definitionKey" }
+        val mapperDefinition =
+            requireNotNull(templateService.getDefinition(definitionKey)) { "No Mapper Definitions found with id $definitionKey" }
 
         documentService
             .get(businessKey)
@@ -81,10 +82,10 @@ open class ValueMapper(
      **/
     fun applyToObject(
         definitionId: String,
-        inputObject: Map<String, Any>
+        inputObject: Map<String, Any>,
     ): Any {
-        val mapperDefinition = requireNotNull(templateService.getDefinition(definitionId))
-        { "No Mapper Definitions found with id $definitionId" }
+        val mapperDefinition =
+            requireNotNull(templateService.getDefinition(definitionId)) { "No Mapper Definitions found with id $definitionId" }
         val inputNode: ObjectNode = mapper.convertValue(inputObject)
 
         val mappingResult = inputNode.applyMapperDefinition(mapperDefinition)
@@ -101,10 +102,10 @@ open class ValueMapper(
         val mappingResult = inputNode.applyMapperDefinition(mapperDefinition)
 
         if (!mappingResult.isEmpty) {
-            AuthorizationContext.Companion.runWithoutAuthorization {
+            AuthorizationContext.runWithoutAuthorization {
                 documentService.modifyDocument(
                     this,
-                    mappingResult
+                    mappingResult,
                 )
             }
         }
@@ -117,16 +118,23 @@ open class ValueMapper(
             .commands
             .forEachIndexed { index, command ->
                 try {
+                    logger.debug { "Applying value mapper command #$index" }
                     this.mapWithCommandToTarget(command, outputNode)
                 } catch (e: Exception) {
-                    throw ValueMapperCommandException("Failed to parse value mapper command #$index", e)
+                    throw ValueMapperCommandException(
+                        message = "Failed to parse value mapper command with sourcePointer [${command.sourcePointer}]",
+                        cause = e,
+                    )
                 }
             }
 
         return outputNode
     }
 
-    private fun ObjectNode.mapWithCommandToTarget(command: ValueMapperCommand, outputNode: JsonNode): JsonNode {
+    private fun ObjectNode.mapWithCommandToTarget(
+        command: ValueMapperCommand,
+        outputNode: JsonNode,
+    ): JsonNode {
         when (command.sourcePointer.contains(ARRAY_DELIMITER_MATCHER)) {
             false -> applySimplePointerCommand(command, outputNode)
             true -> applyComplexPointerCommand(command, outputNode)
@@ -138,7 +146,10 @@ open class ValueMapper(
     /**
      * Deconstruct a command that contains a complex pointer. Apply all resulting commands to This node.
      **/
-    private fun JsonNode.applyComplexPointerCommand(command: ValueMapperCommand, outputNode: JsonNode) {
+    private fun JsonNode.applyComplexPointerCommand(
+        command: ValueMapperCommand,
+        outputNode: JsonNode,
+    ) {
         val sourcePointer = command.sourcePointer
         val targetPointer = command.targetPointer
         val sourcePointerParts = sourcePointer.split("/$JSON_POINTER_ARRAY_DELIMITER")
@@ -147,27 +158,30 @@ open class ValueMapper(
 
         require(sourcePointerParts.size == targetPointerParts.size) {
             "Target pointer must have the same amount of wildcard arrays ($JSON_POINTER_ARRAY_DELIMITER) " +
-                    "as the source pointer."
+                "as the source pointer."
         }
 
-        val explodedSourceComplexPointer = findPaths(
-            "",
-            sourcePointerParts.dropLast(1),
-            sourcePointerParts.last(),
-            mutableListOf()
-        )
+        val explodedSourceComplexPointer =
+            findPaths(
+                "",
+                sourcePointerParts.dropLast(1),
+                sourcePointerParts.last(),
+                mutableListOf(),
+            )
 
-        val explodedTargetComplexPointer = explodedSourceComplexPointer
-            .map { explodedSourcePointer ->
-                val indices = explodedSourcePointer
-                    .split(JSON_POINTER_PROPERTY_DELIMITER)
-                    .filterNot { sourcePointerProperties.contains(it) }
-                    .toMutableList()
+        val explodedTargetComplexPointer =
+            explodedSourceComplexPointer
+                .map { explodedSourcePointer ->
+                    val indices =
+                        explodedSourcePointer
+                            .split(JSON_POINTER_PROPERTY_DELIMITER)
+                            .filterNot { sourcePointerProperties.contains(it) }
+                            .toMutableList()
 
-                ARRAY_DELIMITER_MATCHER.replace(targetPointer) { _ ->
-                    "[${indices.removeFirstOrNull() ?: 0}]"
+                    ARRAY_DELIMITER_MATCHER.replace(targetPointer) { _ ->
+                        "[${indices.removeFirstOrNull() ?: 0}]"
+                    }
                 }
-            }
 
         List(explodedSourceComplexPointer.size) { simplePointerIndex ->
             val newSourcePointer = explodedSourceComplexPointer[simplePointerIndex]
@@ -176,7 +190,7 @@ open class ValueMapper(
             if (newSourcePointer.isNotEmpty()) {
                 command.copy(
                     sourcePointer = newSourcePointer,
-                    targetPointer = newTargetPointer
+                    targetPointer = newTargetPointer,
                 )
             } else {
                 null
@@ -191,7 +205,7 @@ open class ValueMapper(
         currentPath: String,
         remainingParts: List<String>,
         lastProperty: String,
-        foundPaths: MutableList<String>
+        foundPaths: MutableList<String>,
     ): List<String> {
         if (remainingParts.isEmpty()) {
             foundPaths.add(currentPath + lastProperty)
@@ -201,26 +215,20 @@ open class ValueMapper(
             return when (val currentNode = at(nextPathPart)) {
                 is ArrayNode -> {
                     when (currentNode.isEmpty) {
-                        false -> currentNode
-                            .mapIndexed { index, childNode ->
-                                val newPath = "$currentPath$nextPathPart/$index"
-                                childNode.findPaths(newPath, remainingParts.drop(1), lastProperty, mutableListOf())
-                            }
-                            .flatten()
+                        false ->
+                            currentNode
+                                .mapIndexed { index, childNode ->
+                                    val newPath = "$currentPath$nextPathPart/$index"
+                                    childNode.findPaths(newPath, remainingParts.drop(1), lastProperty, mutableListOf())
+                                }.flatten()
 
-                        true -> {
-                            if (currentPath.endsWith(nextPathPart)) {
-                                return listOf(currentPath)
-                            } else {
-                                return listOf(currentPath + nextPathPart)
-                            }
-                        }
+                        true -> listOf(currentPath)
                     }
                 }
 
                 is MissingNode -> return findPaths(currentPath, remainingParts.drop(1), lastProperty, foundPaths)
                 else -> throw ValueMapperCommandException(
-                    "Expected ARRAY at path ${remainingParts.first()} but found ${currentNode.nodeType}"
+                    "Expected ARRAY at path ${remainingParts.first()} but found ${currentNode.nodeType}",
                 )
             }
         }
@@ -229,75 +237,132 @@ open class ValueMapper(
     /**
      * Apply command to this node and store the result in provided output node.
      **/
-    private fun JsonNode.applySimplePointerCommand(command: ValueMapperCommand, outputNode: JsonNode) {
-        val sourceValue: JsonNode = at(command.sourcePointer)
-        val resolvedValue: JsonNode? = sourceValue
-            .takeUnless { it.isMissingNode }
+    private fun JsonNode.applySimplePointerCommand(
+        command: ValueMapperCommand,
+        outputNode: JsonNode,
+    ) {
+        val sourceValue: JsonNode? =
+            at(command.sourcePointer)
+                .takeUnless { it.isMissingNode }
 
-        if (resolvedValue != null) {
-            val transformedValue = when (resolvedValue) {
-                is ArrayNode -> resolvedValue.mapNotNull { listItem ->
-                    val (didSkip, transformationResult) = listItem
-                        .applyTransformations(command.transformations)
+        if (sourceValue != null) {
+            val spelContext = buildValueMapperCommandSpELContext(inputNode = this, outputNode = outputNode, sourceValue = sourceValue)
 
-                    if (didSkip) null else transformationResult ?: command.defaultValue
-                }.takeIf { it.isNotEmpty() } ?: command.defaultValue
-
-                else -> {
-                    val (didSkip, transformationResult) = resolvedValue
-                        .applyTransformations(command.transformations)
-
-                    if (didSkip) null else transformationResult ?: command.defaultValue
+            if (command.skipCondition != null && spelProcessor.isExpression(command.skipCondition)) {
+                val skipCommand = spelProcessor.process<Boolean>(command.skipCondition, context = spelContext)
+                if (skipCommand == true) {
+                    logger.debug {
+                        "Skipping transformations for command with pointer ${command.sourcePointer}: " +
+                            "Skip Condition evaluated to \"true\""
+                    }
+                    return
                 }
             }
 
-            if (transformedValue != null) {
+            val targetValue =
+                when (sourceValue) {
+                    is ArrayNode ->
+                        sourceValue
+                            .mapNotNull { listItem ->
+                                val transformationResult =
+                                    listItem
+                                        .applyTransformations(
+                                            transformations = command.transformations,
+                                            spelContext = spelContext,
+                                        )
+
+                                transformationResult ?: command.defaultValue
+                            }.takeIf { it.isNotEmpty() }
+
+                    else -> {
+                        val transformationResult =
+                            sourceValue
+                                .applyTransformations(
+                                    transformations = command.transformations,
+                                    spelContext = spelContext,
+                                )
+
+                        transformationResult ?: command.defaultValue
+                    }
+                }
+
+            if (targetValue != null) {
                 outputNode.buildJsonStructure(
-                    targetValue = mapper.convertValue(transformedValue),
-                    targetPath = command.targetPointer
+                    targetValue = mapper.convertValue(targetValue),
+                    targetPath = command.targetPointer,
                 )
+                logger.debug {
+                    "Added transformed targetValue to outputNode at path ${command.targetPointer}"
+                }
             } else {
                 logger.debug {
                     "Skipping command with pointer ${command.sourcePointer}: " +
-                            "No transformations matched value at ${command.sourcePointer}."
+                        "No transformations matched value at ${command.sourcePointer}."
                 }
             }
         } else {
-            logger.debug {
-                "Skipping command with pointer ${command.sourcePointer}: No value found at pointer ${command.sourcePointer}."
+            if (command.defaultValue != null) {
+                outputNode.buildJsonStructure(
+                    targetValue = mapper.convertValue(command.defaultValue),
+                    targetPath = command.targetPointer,
+                )
+                logger.debug {
+                    "Added defaultValue to outputNode at path ${command.targetPointer}"
+                }
+            } else {
+                logger.debug {
+                    "Skipping command with pointer ${command.sourcePointer}: No value found at pointer ${command.sourcePointer} and no defaultValue provided."
+                }
             }
         }
     }
 
-    private fun JsonNode.applyTransformations(transformations: List<ValueMapperTransformation>?): Pair<Boolean, Any?> {
+    private fun JsonNode.applyTransformations(
+        transformations: List<ValueMapperTransformation>?,
+        spelContext: Any,
+    ): Any? {
         return when (transformations?.isEmpty()) {
-            null -> false to this
-            true -> false to null
-            false -> when (this) {
-                is ValueNode, is ObjectNode -> {
-                    val (didSkip, transformationResult) =
+            null -> this
+            true -> null
+            false ->
+                when (this) {
+                    is ValueNode, is ObjectNode -> {
                         transformations
                             .firstOrNull { transformation ->
                                 transformation.canTransform(this)
+                            }?.let {
+                                if (it is CopyTransformation && it.skipCondition != null) {
+                                    val skipTransform = spelProcessor.process<Boolean>(it.skipCondition, context = spelContext)
+                                    if (skipTransform == true) {
+                                        logger.debug {
+                                            "Skipping transformation: Skip Condition evaluated to \"true\""
+                                        }
+                                        return null
+                                    } else {
+                                        it.transform(this)
+                                    }
+                                } else {
+                                    it.transform(this)
+                                }
                             }
-                            ?.transform(this)
-                            ?: return false to null
+                    }
 
-                    return didSkip to transformationResult
+                    else -> throw ValueMapperMappingException(
+                        "No supported transformation found for ${this.nodeType} node",
+                    )
                 }
-
-
-                else -> throw ValueMapperMappingException(
-                    "No supported transformation found for ${this.nodeType} node"
-                )
-            }
         }
     }
 
-    private fun JsonNode.buildJsonStructure(targetValue: JsonNode, targetPath: String) {
-        if (targetPath == "/") throw ValueMapperMappingException(
-            "Can not put value at path $targetPath. Root node modification is not supported."
-        )
+    private fun JsonNode.buildJsonStructure(
+        targetValue: JsonNode,
+        targetPath: String,
+    ) {
+        if (targetPath == "/") {
+            throw ValueMapperMappingException(
+                "Can not put value at path $targetPath. Root node modification is not supported.",
+            )
+        }
         val targetKey = targetPath.substringAfterLast("/")
         val targetPointer = JsonPointer.compile(targetPath.replace(ARRAY_DELIMITER_PARTS_MATCHER, ""))
         val parentPointer = targetPointer.head()
@@ -305,10 +370,11 @@ open class ValueMapper(
         when (val parentNode = this.at(parentPointer)) {
             is ObjectNode -> {
                 when (val targetNode = parentNode.at(targetPointer.last())) {
-                    is ArrayNode -> when (targetValue) {
-                        is ArrayNode -> targetNode.addAll(targetValue)
-                        else -> targetNode.add(targetValue)
-                    }
+                    is ArrayNode ->
+                        when (targetValue) {
+                            is ArrayNode -> targetNode.addAll(targetValue)
+                            else -> targetNode.add(targetValue)
+                        }
 
                     else -> parentNode.replace(targetKey, targetValue)
                 }
@@ -316,10 +382,11 @@ open class ValueMapper(
 
             is ArrayNode -> {
                 when (val targetNode = parentNode.at(targetPointer.last())) {
-                    is ArrayNode -> when (targetValue) {
-                        is ArrayNode -> targetNode.addAll(targetValue)
-                        else -> targetNode.add(targetValue)
-                    }
+                    is ArrayNode ->
+                        when (targetValue) {
+                            is ArrayNode -> targetNode.addAll(targetValue)
+                            else -> targetNode.add(targetValue)
+                        }
 
                     is MissingNode -> parentNode.add(targetValue)
                     else -> parentNode.set(targetKey.replace(ARRAY_DELIMITER_PARTS_MATCHER, "").toInt(), targetValue)
@@ -330,11 +397,14 @@ open class ValueMapper(
         }
     }
 
-
-    private fun JsonNode.buildJsonStructureForNonExistingPointer(targetPath: String, targetValue: JsonNode) {
-        val pathSteps = targetPath
-            .split(JSON_POINTER_PROPERTY_DELIMITER)
-            .drop(1)
+    private fun JsonNode.buildJsonStructureForNonExistingPointer(
+        targetPath: String,
+        targetValue: JsonNode,
+    ) {
+        val pathSteps =
+            targetPath
+                .split(JSON_POINTER_PROPERTY_DELIMITER)
+                .drop(1)
         val pathIterator = pathSteps.listIterator()
 
         var secondToLastNode: JsonNode = mapper.missingNode()
@@ -342,66 +412,76 @@ open class ValueMapper(
         while (pathIterator.hasNext()) {
             secondToLastNode = currentNode
             val nextKey = pathIterator.next()
-            val nextNode: JsonNode = when (secondToLastNode.nodeType) {
-                JsonNodeType.ARRAY -> secondToLastNode.get(
-                    nextKey.replace(ARRAY_DELIMITER_PARTS_MATCHER, "").toInt()
-                )
+            val nextNode: JsonNode =
+                when (secondToLastNode.nodeType) {
+                    JsonNodeType.ARRAY ->
+                        secondToLastNode.get(
+                            nextKey.replace(ARRAY_DELIMITER_PARTS_MATCHER, "").toInt(),
+                        )
 
-                JsonNodeType.OBJECT -> secondToLastNode.get(nextKey)
-                else -> throw ValueMapperMappingException(
-                    "Node before \"$nextKey\" was not a ContainerNode in structure \"$targetPath\". " +
+                    JsonNodeType.OBJECT -> secondToLastNode.get(nextKey)
+                    else -> throw ValueMapperMappingException(
+                        "Node before \"$nextKey\" was not a ContainerNode in structure \"$targetPath\". " +
                             "This could be due to multiple commands transformed values of incompatible types " +
-                            "into same structure."
-                )
-            } ?: mapper.missingNode()
+                            "into same structure.",
+                    )
+                } ?: mapper.missingNode()
 
-            currentNode = when (currentNode) {
-                is ArrayNode -> when (nextNode.nodeType) {
-                    JsonNodeType.MISSING -> when (pathIterator.hasNext()) {
-                        true -> {
-                            val nextOfNext = pathIterator.next()
-                            pathIterator.previous()
-                            when (nextOfNext.contains(ARRAY_DELIMITER_INDEX_MATCHER)) {
-                                true -> currentNode
-                                    .add(mapper.createArrayNode())
-                                    .last()
+            currentNode =
+                when (currentNode) {
+                    is ArrayNode ->
+                        when (nextNode.nodeType) {
+                            JsonNodeType.MISSING ->
+                                when (pathIterator.hasNext()) {
+                                    true -> {
+                                        val nextOfNext = pathIterator.next()
+                                        pathIterator.previous()
+                                        when (nextOfNext.contains(ARRAY_DELIMITER_INDEX_MATCHER)) {
+                                            true ->
+                                                currentNode
+                                                    .add(mapper.createArrayNode())
+                                                    .last()
 
-                                false -> currentNode
-                                    .add(mapper.createObjectNode())
+                                            false ->
+                                                currentNode
+                                                    .add(mapper.createObjectNode())
+                                                    .last()
+                                        }
+                                    }
+
+                                    false -> currentNode
+                                }
+
+                            JsonNodeType.OBJECT, JsonNodeType.ARRAY -> nextNode
+
+                            else ->
+                                currentNode
+                                    .add(nextNode)
                                     .last()
-                            }
                         }
 
-                        false -> currentNode
-                    }
+                    is ObjectNode ->
+                        when (nextNode.nodeType) {
+                            JsonNodeType.MISSING ->
+                                when (pathIterator.hasNext()) {
+                                    false -> currentNode.putObject(nextKey)
+                                    true -> {
+                                        val nextOfNext = pathIterator.next()
+                                        pathIterator.previous()
+                                        when (nextOfNext.contains(ARRAY_DELIMITER_INDEX_MATCHER)) {
+                                            true -> currentNode.putArray(nextKey)
+                                            false -> currentNode.putObject(nextKey)
+                                        }
+                                    }
+                                }
 
-                    JsonNodeType.OBJECT, JsonNodeType.ARRAY -> nextNode
+                            JsonNodeType.OBJECT, JsonNodeType.ARRAY -> nextNode
 
-                    else -> currentNode
-                        .add(nextNode)
-                        .last()
-                }
-
-                is ObjectNode -> when (nextNode.nodeType) {
-                    JsonNodeType.MISSING -> when (pathIterator.hasNext()) {
-                        false -> currentNode.putObject(nextKey)
-                        true -> {
-                            val nextOfNext = pathIterator.next()
-                            pathIterator.previous()
-                            when (nextOfNext.contains(ARRAY_DELIMITER_INDEX_MATCHER)) {
-                                true -> currentNode.putArray(nextKey)
-                                false -> currentNode.putObject(nextKey)
-                            }
+                            else -> currentNode.replace(nextKey, nextNode)
                         }
-                    }
 
-                    JsonNodeType.OBJECT, JsonNodeType.ARRAY -> nextNode
-
-                    else -> currentNode.replace(nextKey, nextNode)
+                    else -> throw ValueMapperMappingException("Failed to build stucture in target Node for path $targetPath")
                 }
-
-                else -> throw ValueMapperMappingException("Failed to build stucture in target Node for path $targetPath")
-            }
         }
 
         when (secondToLastNode) {
@@ -409,10 +489,33 @@ open class ValueMapper(
             is ObjectNode -> secondToLastNode.replace(pathSteps.last(), targetValue)
             else -> throw ValueMapperMappingException(
                 "Can not add item/property to node of type ${secondToLastNode.nodeType}. " +
-                        "Make sure that your (transformed) value is compatible with the target structure."
+                    "Make sure that your (transformed) value is compatible with the target structure.",
             )
         }
+    }
 
+    /**
+     * Creates an object to use as the rootObject for the StandardEvaluationContext of a SpEL expression parser.
+     *
+     * @param inputNode
+     * @param outputNode
+     * @return a `Map<String, Any> object containing non null arguments`
+     **/
+    private fun buildValueMapperCommandSpELContext(
+        inputNode: JsonNode? = null,
+        outputNode: JsonNode? = null,
+        sourceValue: JsonNode? = null,
+        targetValue: JsonNode? = null,
+    ): Any {
+        val contextMap =
+            mapOf(
+                "inputNode" to inputNode,
+                "outputNode" to outputNode,
+                "sourceValue" to sourceValue,
+                "targetValue" to targetValue,
+            ).filterValues { it != null }
+
+        return mapper.convertValue<Any>(contextMap)
     }
 
     companion object {
@@ -423,5 +526,6 @@ open class ValueMapper(
         private val ARRAY_DELIMITER_INDEX_MATCHER = """[(\[\d*\])]""".toRegex()
         private val logger = KotlinLogging.logger { }
         private val mapper = MapperSingleton.get()
+        private val spelProcessor = SpelExpressionProcessor()
     }
 }
