@@ -12,7 +12,12 @@
   {
     "actionProperties": {
       "bsn": "pv:bsn",
-      "resultProcessVariableName": "bijstandsregelingenInfo"
+      "resultProcessVariableName": "bijstandsregelingenInfo",
+      "dynamicProperties": [
+        "SpecifiekeGegevensBijzBijstand[0]*",
+        "Voornamen",
+        "DossierGsd"
+      ]
     },
     "activityId": "SuwinetOphalenBijstandsregelingenInfo",
     "activityType": "bpmn:ServiceTask:start",
