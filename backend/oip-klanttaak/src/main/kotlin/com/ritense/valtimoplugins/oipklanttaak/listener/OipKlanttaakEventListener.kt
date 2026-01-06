@@ -20,7 +20,6 @@ import com.ritense.valtimo.service.OperatonProcessService
 import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valtimoplugins.oipklanttaak.OipKlanttaakPlugin
 import com.ritense.valtimoplugins.oipklanttaak.domain.OipKlanttaak
-import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.OBJECTEN_API_PLUGIN_CONFIGURATION_ID
 import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.OIP_KLANTTAAK_OBJECT_URL
 import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.VERWERKER_TAAK_ID
 import com.ritense.valtimoplugins.oipklanttaak.domain.Status
@@ -35,7 +34,7 @@ open class OipKlanttaakEventListener(
     private val objectManagementService: ObjectManagementService,
     private val processDocumentService: ProcessDocumentService,
     private val processService: OperatonProcessService,
-    private val taskService: OperatonTaskService,
+    private val taskService: OperatonTaskService
 ) {
 
     private val objectMapper = pluginService.getObjectMapper()
@@ -68,6 +67,67 @@ open class OipKlanttaakEventListener(
         }
     }
 
+    private fun eventMatchesCompleteTaskCriteria(event: NotificatiesApiNotificationReceivedEvent): Boolean =
+        (
+            objectTypeFrom(event) != null
+            &&
+            event.kanaal.equals("objecten", ignoreCase = true)
+            &&
+            event.actie.equals("update", ignoreCase = true)
+        ).also {
+            if (!it) {
+                logger.info { "Skipping: Event does not match criteria to complete an OIP Task." }
+            }
+        }
+
+    private fun operatonTaskFor(
+        resourceUrl: String,
+        objectenApiPluginConfigurationId: UUID
+    ): OperatonTask? =
+        getObjectByUrl(resourceUrl, objectenApiPluginConfigurationId).let { objectWrapper ->
+            objectMapper.convertValue<OipKlanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
+                if (oipKlanttaak.status != Status.UITGEVOERD) {
+                    logger.info {
+                        "Skipping: Taak cannot be handled. Does not match expected status UITGEVOERD."
+                    }
+                    return null
+                }
+                return try {
+                    taskService.findTaskById(oipKlanttaak.verwerkerTaakId.toString())
+                } catch (_: TaskNotFoundException) {
+                    logger.info {
+                        "Skipping: No OperatonTask found with id '${oipKlanttaak.verwerkerTaakId}'."
+                    }
+                    null
+                }
+            }
+        }
+
+    private fun handleTaskFor(
+        resourceUrl: String,
+        operatonTask: OperatonTask,
+        objectManagement: ObjectManagement,
+        oipKlanttaakPluginConfiguration: PluginConfiguration,
+    ) {
+        pluginService.createInstance<OipKlanttaakPlugin>(oipKlanttaakPluginConfiguration.id.id).let { oipKlanttaakPlugin ->
+            val documentId = runWithoutAuthorization {
+                processDocumentService.getDocumentId(
+                    OperatonProcessInstanceId(operatonTask.getProcessInstanceId()),
+                    operatonTask
+                )
+            }
+            logger.debug { "Starting finalizer process for OIP Klanttaak with verwerker-taak-id '${operatonTask.id}'" }
+            startFinalizerProcess(
+                processDefinitionKey = oipKlanttaakPlugin.finalizerProcess,
+                businessKey = documentId.id.toString(),
+                variables = mapOf(
+                    VERWERKER_TAAK_ID to operatonTask.id,
+                    OIP_KLANTTAAK_OBJECT_URL to resourceUrl
+                )
+            )
+        }
+    }
+
     private fun startFinalizerProcess(
         processDefinitionKey: String,
         businessKey: String,
@@ -95,66 +155,6 @@ open class OipKlanttaakEventListener(
         }
     }
 
-    private fun handleTaskFor(
-        resourceUrl: String,
-        operatonTask: OperatonTask,
-        objectManagement: ObjectManagement,
-        oipKlanttaakPluginConfiguration: PluginConfiguration,
-    ) {
-        pluginService.createInstance<OipKlanttaakPlugin>(oipKlanttaakPluginConfiguration.id.id).let { oipKlanttaakPlugin ->
-            val documentId = runWithoutAuthorization {
-                processDocumentService.getDocumentId(
-                    OperatonProcessInstanceId(operatonTask.getProcessInstanceId()),
-                    operatonTask
-                )
-            }
-            logger.debug { "Starting finalizer process for OIP Klanttaak with verwerker-taak-id '${operatonTask.id}'" }
-            startFinalizerProcess(
-                processDefinitionKey = oipKlanttaakPlugin.finalizerProcess,
-                businessKey = documentId.id.toString(),
-                variables = mapOf(
-                    VERWERKER_TAAK_ID to operatonTask.id,
-                    OBJECTEN_API_PLUGIN_CONFIGURATION_ID to objectManagement.objectenApiPluginConfigurationId.toString(),
-                    OIP_KLANTTAAK_OBJECT_URL to resourceUrl
-                )
-            )
-        }
-    }
-
-    private fun operatonTaskFor(
-        resourceUrl: String,
-        objectenApiPluginConfigurationId: UUID
-    ): OperatonTask? =
-        getObjectByUrl(resourceUrl, objectenApiPluginConfigurationId).let { objectWrapper ->
-            objectMapper.convertValue<OipKlanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
-                if (oipKlanttaak.status != Status.UITGEVOERD) {
-                    logger.info {
-                        "Skipping: Taak cannot be handled. Does not match expected status UITGEVOERD."
-                    }
-                    return null
-                }
-                return try {
-                    taskService.findTaskById(oipKlanttaak.verwerkerTaakId.toString())
-                } catch (_: TaskNotFoundException) {
-                    logger.info {
-                        "Skipping: No OperatonTask found with id '${oipKlanttaak.verwerkerTaakId}'."
-                    }
-                    null
-                }
-            }
-        }
-
-    private fun oipKlanttaakPluginConfigurationFor(objectManagement: ObjectManagement): PluginConfiguration? =
-        pluginService.findPluginConfiguration(OipKlanttaakPlugin::class.java) { properties: JsonNode ->
-            properties.get(OBJECT_MANAGEMENT_CONFIGURATION_ID).textValue().equals(objectManagement.id.toString())
-        }.also {
-            if (it == null) {
-                logger.warn {
-                    "Skipping: No OIP Klanttaak plugin configuration found for object management with id '${objectManagement.id}'"
-                }
-            }
-        }
-
     private fun objectManagementFor(event: NotificatiesApiNotificationReceivedEvent): ObjectManagement? =
         objectTypeFrom(event).let { objectType ->
             requireNotNull(objectType) { "Object type is required." }
@@ -167,16 +167,14 @@ open class OipKlanttaakEventListener(
             }
         }
 
-    private fun eventMatchesCompleteTaskCriteria(event: NotificatiesApiNotificationReceivedEvent): Boolean =
-        (
-            objectTypeFrom(event) != null
-            &&
-            event.kanaal.equals("objecten", ignoreCase = true)
-            &&
-            event.actie.equals("update", ignoreCase = true)
-        ).also {
-            if (!it) {
-                logger.info { "Skipping: Event does not match criteria to complete an OIP Task." }
+    private fun oipKlanttaakPluginConfigurationFor(objectManagement: ObjectManagement): PluginConfiguration? =
+        pluginService.findPluginConfiguration(OipKlanttaakPlugin::class.java) { properties: JsonNode ->
+            properties.get(OBJECT_MANAGEMENT_CONFIGURATION_ID).textValue().equals(objectManagement.id.toString())
+        }.also {
+            if (it == null) {
+                logger.warn {
+                    "Skipping: No OIP Klanttaak plugin configuration found for object management with id '${objectManagement.id}'"
+                }
             }
         }
 
