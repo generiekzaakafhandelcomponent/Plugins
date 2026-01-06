@@ -15,7 +15,6 @@
  */
 
 dependencies {
-
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:document")
@@ -24,8 +23,6 @@ dependencies {
     implementation("com.ritense.valtimo:value-resolver")
     //implementation("com.ritense.valtimoplugins:token-authentication")
     implementation(project(":backend:token-authentication"))
-
-
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.19.0")
