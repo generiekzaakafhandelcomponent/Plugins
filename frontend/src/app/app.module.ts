@@ -98,6 +98,8 @@ import {
 } from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
+import {OpenProductPluginModule} from '../../projects/valtimo-plugins/open-product/src/lib/open-product-plugin.module';
+import {openProductPluginSpecification} from '../../projects/valtimo-plugins/open-product/src/lib/open-product-plugin.specification';
 import {
     OpenKlantPluginModule,
     openKlantPluginSpecification,
@@ -207,6 +209,7 @@ export function tabsFactory() {
         ObjectModule,
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
+        OpenProductPluginModule,
         OpenKlantPluginModule,
         OpenZaakPluginModule,
         PluginManagementModule,
@@ -263,6 +266,7 @@ export function tabsFactory() {
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
+            openProductPluginSpecification,
             openKlantPluginSpecification,
             openZaakPluginSpecification,
             publictaskPluginSpecification,
