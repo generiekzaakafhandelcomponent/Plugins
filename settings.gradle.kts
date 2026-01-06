@@ -9,6 +9,7 @@ include(
     "backend:haal-centraal-auth",
     "backend:mTLS-SSLContext",
     "backend:notify-nl",
+    "backend:open-product",
     "backend:object-management",
     "backend:openklant",
     "backend:publictask",
