@@ -23,7 +23,6 @@
       "@valtimo-plugins/freemarker": ["dist/valtimo-plugins/freemarker"],
       "@valtimo-plugins/haal-centraal": ["dist/valtimo-plugins/haal-centraal"],
       "@valtimo-plugins/haal-centraal-auth": ["dist/valtimo-plugins/haal-centraal-auth"],
-      "@valtimo-plugins/hugging-face": ["dist/valtimo-plugins/hugging-face"],
       "@valtimo-plugins/kvk-handelsregister": ["dist/valtimo-plugins/kvk-handelsregister"],
       "@valtimo-plugins/mtls-sslcontext": ["dist/valtimo-plugins/mtls-sslcontext"],
       "@valtimo-plugins/notify-nl": ["dist/valtimo-plugins/notify-nl"],
