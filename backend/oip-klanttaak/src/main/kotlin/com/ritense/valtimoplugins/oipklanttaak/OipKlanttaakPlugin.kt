@@ -15,6 +15,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.oipklanttaak.domain.DataBinding
 import com.ritense.valtimoplugins.oipklanttaak.domain.Koppeling
 import com.ritense.valtimoplugins.oipklanttaak.domain.LevelOfAssurance
+import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.VERWERKER_TAAK_ID
 import com.ritense.valtimoplugins.oipklanttaak.domain.Registratie
 import com.ritense.valtimoplugins.oipklanttaak.service.OipKlanttaakService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -66,7 +67,19 @@ class OipKlanttaakPlugin(
         @PluginActionProperty deadlineVerlengbaar: Boolean? = null,
     ) {
         withLoggingContext(DelegateTask::class.java.canonicalName to delegateTask.id) {
-            logger.info { "Delegating the task" }
+            logger.info { "Delegating Task(id=${delegateTask.id}, key=${delegateTask.taskDefinitionKey}) to OIP" }
+            logger.debug {
+                "betrokkeneIdentifier: $betrokkeneIdentifier, " +
+                "levelOfAssurance: $levelOfAssurance, " +
+                "formulierUri: $formulierUri, " +
+                "formulierDataMapping: $formulierDataMapping, " +
+                "toelichting: $toelichting, " +
+                "koppelingRegistratie: $koppelingRegistratie, " +
+                "koppelingIdentifier: $koppelingIdentifier, " +
+                "doorlooptijd: $doorlooptijd, " +
+                "verloopdatum: $verloopdatum, " +
+                "deadlineVerlengbaar: $deadlineVerlengbaar"
+            }
             oipKlanttaakService.delegateTask(
                 delegateTask = delegateTask,
                 objectManagementId = objectManagementConfigurationId,
@@ -103,17 +116,26 @@ class OipKlanttaakPlugin(
         @PluginActionProperty bewaarIngediendeGegevens: Boolean = false,
         @PluginActionProperty ontvangenDataMapping: List<DataBinding>? = null,
         @PluginActionProperty koppelDocumenten: Boolean = false,
-        @PluginActionProperty pathToDocumenten: String? = null,
+        @PluginActionProperty padNaarDocumenten: String? = null,
     ) {
         withLoggingContext(DelegateExecution::class.java.canonicalName to execution.id) {
-            logger.info { "Completing the delegated task." }
+            logger.info {
+                "Completing delegated Task(id=${execution.getVariable(VERWERKER_TAAK_ID)}) via " +
+                "ProcessInstance(id=${execution.processInstanceId})"
+            }
+            logger.debug {
+                "bewaarIngediendeGegevens: $bewaarIngediendeGegevens, " +
+                "ontvangenDataMapping: $ontvangenDataMapping, " +
+                "koppelDocumenten: $koppelDocumenten, " +
+                "padNaarDocumenten: $padNaarDocumenten"
+            }
             oipKlanttaakService.completeDelegatedTask(
                 execution = execution,
                 objectManagementId = objectManagementConfigurationId,
                 saveReceivedData = bewaarIngediendeGegevens,
                 receivedDataMapping = ontvangenDataMapping,
                 linkDocuments = koppelDocumenten,
-                pathToDocuments = pathToDocumenten
+                pathToDocuments = padNaarDocumenten
             )
         }
     }

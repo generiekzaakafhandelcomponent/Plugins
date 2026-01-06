@@ -29,6 +29,7 @@ dependencies {
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:value-resolver")
+    implementation("com.ritense.valtimo:zaken-api")
 
     // Logging
     implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")

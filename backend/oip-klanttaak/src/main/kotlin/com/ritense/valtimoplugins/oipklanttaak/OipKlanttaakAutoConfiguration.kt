@@ -9,6 +9,7 @@ import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valtimoplugins.oipklanttaak.listener.OipKlanttaakEventListener
 import com.ritense.valtimoplugins.oipklanttaak.service.OipKlanttaakService
 import com.ritense.valueresolver.ValueResolverService
+import com.ritense.zakenapi.ZaakUrlProvider
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
@@ -34,16 +35,16 @@ class OipKlanttaakAutoConfiguration {
         pluginService: PluginService,
         objectManagementService: ObjectManagementService,
         objectMapper: ObjectMapper,
-        processDocumentService: ProcessDocumentService,
+        taskService: OperatonTaskService,
         valueResolverService: ValueResolverService,
-        taskService: OperatonTaskService
+        zaakUrlProvider: ZaakUrlProvider
     ) = OipKlanttaakService(
         pluginService = pluginService,
         objectManagementService = objectManagementService,
         objectMapper = objectMapper,
-        processDocumentService = processDocumentService,
+        taskService = taskService,
         valueResolverService = valueResolverService,
-        taskService = taskService
+        zaakUrlProvider = zaakUrlProvider
     )
 
     @Bean

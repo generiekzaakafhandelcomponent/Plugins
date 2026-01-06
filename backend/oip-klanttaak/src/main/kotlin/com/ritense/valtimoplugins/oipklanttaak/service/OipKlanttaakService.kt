@@ -3,6 +3,7 @@ package com.ritense.valtimoplugins.oipklanttaak.service
 import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
 import com.ritense.document.domain.patch.JsonPatchService
@@ -14,23 +15,25 @@ import com.ritense.objectmanagement.domain.ObjectManagement
 import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.objecttypenapi.ObjecttypenApiPlugin
 import com.ritense.plugin.service.PluginService
-import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimo.contract.json.patch.JsonPatchBuilder
 import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valtimoplugins.oipklanttaak.domain.Authorizee
 import com.ritense.valtimoplugins.oipklanttaak.domain.Betrokkene
 import com.ritense.valtimoplugins.oipklanttaak.domain.DataBinding
+import com.ritense.valtimoplugins.oipklanttaak.domain.Document
 import com.ritense.valtimoplugins.oipklanttaak.domain.Formulier
 import com.ritense.valtimoplugins.oipklanttaak.domain.Koppeling
 import com.ritense.valtimoplugins.oipklanttaak.domain.LegalSubject
 import com.ritense.valtimoplugins.oipklanttaak.domain.LevelOfAssurance
 import com.ritense.valtimoplugins.oipklanttaak.domain.OipKlanttaak
 import com.ritense.valtimoplugins.oipklanttaak.domain.Portaalformulier
-import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.OBJECTEN_API_PLUGIN_CONFIGURATION_ID
 import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.OIP_KLANTTAAK_OBJECT_URL
 import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.VERWERKER_TAAK_ID
+import com.ritense.valtimoplugins.oipklanttaak.domain.Soort
 import com.ritense.valtimoplugins.oipklanttaak.domain.Status
 import com.ritense.valueresolver.ValueResolverService
+import com.ritense.zakenapi.ZaakUrlProvider
+import com.ritense.zakenapi.ZakenApiPlugin
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.operaton.bpm.engine.delegate.DelegateTask
@@ -44,9 +47,9 @@ class OipKlanttaakService(
     private val pluginService: PluginService,
     private val objectManagementService: ObjectManagementService,
     private val objectMapper: ObjectMapper,
-    private val processDocumentService: ProcessDocumentService,
+    private val taskService: OperatonTaskService,
     private val valueResolverService: ValueResolverService,
-    private val taskService: OperatonTaskService
+    private val zaakUrlProvider: ZaakUrlProvider
 ) {
 
     fun delegateTask(
@@ -115,56 +118,6 @@ class OipKlanttaakService(
         }
     }
 
-    fun completeDelegatedTask(
-        execution: DelegateExecution,
-        objectManagementId: UUID,
-        saveReceivedData: Boolean,
-        receivedDataMapping: List<DataBinding>? = null,
-        linkDocuments: Boolean,
-        pathToDocuments: String? = null,
-    ) {
-        val verwerkerTaakId = execution.getVariableAsString(VERWERKER_TAAK_ID)
-        val objectenApiPluginConfigurationId = execution.getVariableAsUUID(OBJECTEN_API_PLUGIN_CONFIGURATION_ID)
-        val oipTaskObjectUrl = execution.getVariableAsURI(OIP_KLANTTAAK_OBJECT_URL)
-
-        runWithoutAuthorization { taskService.complete(verwerkerTaakId) }.also {
-            logger.info { "Task with id '$verwerkerTaakId' for object with URL '$oipTaskObjectUrl' completed" }
-        }
-
-        if (saveReceivedData) {
-//        val documentId = processDocumentService.getDocumentId(
-//            OperatonProcessInstanceId(delegateTask.processInstanceId), delegateTask
-//        )
-        }
-
-        if (linkDocuments) {
-//            pathToDocuments
-        }
-
-        val objectenApiPlugin = objectenApiPluginByPluginConfigurationId(objectenApiPluginConfigurationId)
-
-        objectenApiPlugin.getObject(oipTaskObjectUrl).let { objectWrapper ->
-            requireNotNull(objectWrapper.record.data) { "No data found for object with URL '$oipTaskObjectUrl'" }
-            objectMapper.convertValue<OipKlanttaak>(objectWrapper.record.data).let { oipTask ->
-                oipTask.copy(status = Status.VERWERKT).let { modifiedOipTask ->
-                    objectenApiPlugin.objectPatch(
-                        oipTaskObjectUrl,
-                        ObjectRequest(
-                            type = objectWrapper.type,
-                            record = objectWrapper.record.copy(
-                                data = objectMapper.convertValue(modifiedOipTask)
-                            )
-                        )
-                    ).also {
-                        logger.info {
-                            "OipTask object with URL '${oipTaskObjectUrl}' completed by changing status to 'VERWERKT'"
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     private fun resolveTaakData(
         delegateTask: DelegateTask,
         formDataMapping: List<DataBinding>
@@ -198,6 +151,97 @@ class OipKlanttaakService(
         }
     }
 
+    fun completeDelegatedTask(
+        execution: DelegateExecution,
+        objectManagementId: UUID,
+        saveReceivedData: Boolean,
+        receivedDataMapping: List<DataBinding>? = null,
+        linkDocuments: Boolean,
+        pathToDocuments: String? = null,
+    ) {
+        val verwerkerTaakId = execution.getVariableAsString(VERWERKER_TAAK_ID)
+        val oipTaskObjectUrl = execution.getVariableAsURI(OIP_KLANTTAAK_OBJECT_URL)
+
+        objectManagementById(objectManagementId).let { objectManagement ->
+            objectenApiPluginByPluginConfigurationId(objectManagement.objectenApiPluginConfigurationId).let { objectenApiPlugin ->
+                objectenApiPlugin.getObject(oipTaskObjectUrl).let { objectWrapper ->
+                    requireNotNull(objectWrapper.record.data) {
+                        "No data found for object with URL '$oipTaskObjectUrl'"
+                    }
+                    objectMapper.convertValue<OipKlanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
+                        require(oipKlanttaak.soort == Soort.EXTERNFORMULIER) {
+                            "Soort is not '${Soort.EXTERNFORMULIER.name}'"
+                        }
+                        require(oipKlanttaak.status == Status.UITGEVOERD) {
+                            "Status is not '${Status.UITGEVOERD.name}'"
+                        }
+                        runWithoutAuthorization { taskService.complete(verwerkerTaakId) }.also {
+                            logger.info { "Task with id '$verwerkerTaakId' for object with URL '$oipTaskObjectUrl' completed" }
+                        }
+
+                        if (saveReceivedData || linkDocuments) {
+                            requireNotNull(oipKlanttaak.portaalformulier.verzondenData) {
+                                "Form does not contain any submitted data"
+                            }
+                            objectMapper.valueToTree<ObjectNode>(oipKlanttaak.portaalformulier.verzondenData).let { receivedDataNode ->
+                                if (saveReceivedData) {
+                                    logger.debug { "Saving received data to document" }
+                                    requireNotNull(receivedDataMapping) { "Received data mapping is null" }
+                                    require(receivedDataMapping.isNotEmpty()) { "Received data mapping is empty" }
+                                    // extract data from submitted data and map to document
+                                    receivedDataMapping.associate { it.value to receivedDataNode.at(JsonPointer.valueOf(it.key)) }.let { resolvedData ->
+                                        valueResolverService.handleValues(
+                                            documentId = UUID.fromString(execution.businessKey),
+                                            values = resolvedData
+                                        )
+                                    }
+                                }
+
+                                if (linkDocuments) {
+                                    logger.debug { "Linking documents to zaak" }
+                                    requireNotNull(pathToDocuments) { "Path to documents is null" }
+                                    require(pathToDocuments.isNotBlank()) { "Path to documents is blank" }
+                                    receivedDataNode.at(JsonPointer.valueOf(pathToDocuments)).let { documentsNode ->
+                                        if (documentsNode.isArray) {
+                                            zakenApiPluginByDocumentId(UUID.fromString(execution.businessKey)).let { zakenApiPlugin ->
+                                                documentsNode.forEach { documentNode ->
+                                                    objectMapper.convertValue<Document>(documentNode).let { document ->
+                                                        zakenApiPlugin.linkDocumentToZaak(
+                                                            execution = execution,
+                                                            documentUrl = document.informatieobjecttype.toASCIIString(),
+                                                            titel = document.titel,
+                                                            beschrijving = document.omschrijving
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        oipKlanttaak.copy(status = Status.VERWERKT).let { modifiedOipTask ->
+                            objectenApiPlugin.objectPatch(
+                                oipTaskObjectUrl,
+                                ObjectRequest(
+                                    type = objectWrapper.type,
+                                    record = objectWrapper.record.copy(
+                                        data = objectMapper.convertValue(modifiedOipTask)
+                                    )
+                                )
+                            ).also {
+                                logger.info {
+                                    "OipTask object with URL '${oipTaskObjectUrl}' completed by changing status to '${Status.VERWERKT.name}'"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun objectManagementById(id: UUID): ObjectManagement =
         objectManagementService.getById(id).let { objectManagement ->
             requireNotNull(objectManagement) { "Object Management Configuration with ID '$id' not found!" }
@@ -209,6 +253,14 @@ class OipKlanttaakService(
 
     private fun objectenApiPluginByPluginConfigurationId(id: UUID) =
         pluginService.createInstance<ObjectenApiPlugin>(id)
+
+    private fun zakenApiPluginByDocumentId(id: UUID): ZakenApiPlugin =
+        zaakUrlProvider.getZaakUrl(id).let { zaakUrl ->
+            requireNotNull(pluginService.createInstance(
+                ZakenApiPlugin::class.java,
+                ZakenApiPlugin.findConfigurationByUrl(zaakUrl)
+            )) { "Zaken API Plugin configuration not found for zaak with URL '$zaakUrl'" }
+        }
 
     private fun DelegateExecution.getVariableAsString(variableName: String): String =
         getVariable(variableName).let { variableValue ->
