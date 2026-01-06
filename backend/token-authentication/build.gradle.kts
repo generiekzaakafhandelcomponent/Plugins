@@ -15,27 +15,14 @@
  */
 
 dependencies {
-    implementation("com.ritense.valtimo:contract")
-    implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:case")
-    implementation("com.ritense.valtimo:document")
+
     implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:process-document")
-    implementation("com.ritense.valtimo:value-resolver")
-    //implementation("com.ritense.valtimoplugins:token-authentication")
-    implementation(project(":backend:token-authentication"))
-
-
-
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.19.0")
-
 
     tasks.jar {
         enabled = true
         manifest {
-            attributes("Implementation-Title" to "Open Product plugin")
+            attributes("Implementation-Title" to "Token Authentication plugin spring boot starter")
         }
     }
 }
