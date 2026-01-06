@@ -1,6 +1,8 @@
 package com.ritense.valtimoplugins.socrates.client
 
-class LOBehandeldRespons(
+import java.io.Serializable
+
+class LOBehandeldRespons (
     val berichtId: String,
     val responseId: String,
     val timestamp: String?,
@@ -8,4 +10,4 @@ class LOBehandeldRespons(
     val foutomschrijving: String?,
     val details: String?,
     val fouten: List<String>?
-)
+) : Serializable
