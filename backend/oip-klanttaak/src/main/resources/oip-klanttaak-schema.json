@@ -55,8 +55,7 @@
   ],
   "properties": {
     "soort": {
-      "const": "externformulier",
-      "type": "string"
+      "const": "externformulier"
     },
     "titel": {
       "type": "string",
@@ -107,8 +106,7 @@
       ],
       "properties": {
         "source": {
-          "const": "digid",
-          "type": "string"
+          "const": "digid"
         },
         "authorizee": {
           "type": "object",
@@ -128,8 +126,7 @@
                   "pattern": "^[0-9]{9}$"
                 },
                 "identifierType": {
-                  "const": "bsn",
-                  "type": "string"
+                  "const": "bsn"
                 }
               },
               "additionalProperties": false
@@ -189,8 +186,7 @@
           ],
           "properties": {
             "soort": {
-              "const": "url",
-              "type": "string"
+              "const": "url"
             },
             "value": {
               "type": "string",
