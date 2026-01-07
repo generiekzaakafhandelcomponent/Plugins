@@ -3,7 +3,7 @@ package com.ritense.valtimoplugins.openklant.resolver
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
@@ -66,7 +66,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockZaak.uuid } returns zaakUuid
         every { zaakDocumentService.getZaakByDocumentIdOrThrow(UUID.fromString(documentId)) } returns mockZaak
 
-        val klantContact = mockk<KlantContact>()
+        val klantContact = mockk<Klantcontact>()
         every { klantContact.uuid } returns "test-uuid"
         every { klantContact.url } returns "test-url"
         every { klantContact.kanaal } returns "test-kanaal"
@@ -84,9 +84,9 @@ class OpenKlantValueResolverFactoryTest {
         every { klantContact.plaatsgevondenOp } returns null
         every { klantContact.expand } returns null
 
-        val expectedKlantContacten = listOf(klantContact)
+        val expectedKlantcontacten = listOf(klantContact)
         val reflectedResult = mapOf("reflected" to "data")
-        coEvery { openKlantService.getAllKlantContacten(any()) } returns expectedKlantContacten
+        coEvery { openKlantService.getAllKlantcontacten(any()) } returns expectedKlantcontacten
         every { reflectionUtil.deepReflectedMapOf(any()) } returns reflectedResult
 
         // Act
@@ -96,7 +96,7 @@ class OpenKlantValueResolverFactoryTest {
         // Assert
         assertEquals(reflectedResult, result)
         verify { zaakDocumentService.getZaakByDocumentIdOrThrow(UUID.fromString(documentId)) }
-        coVerify { openKlantService.getAllKlantContacten(any()) }
+        coVerify { openKlantService.getAllKlantcontacten(any()) }
         verify { reflectionUtil.deepReflectedMapOf(any()) }
     }
 
@@ -109,7 +109,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockZaak.uuid } returns zaakUuid
         every { zaakDocumentService.getZaakByDocumentIdOrThrow(UUID.fromString(documentId)) } returns mockZaak
 
-        val klantContact = mockk<KlantContact>()
+        val klantContact = mockk<Klantcontact>()
         every { klantContact.uuid } returns "test-uuid"
         every { klantContact.url } returns "test-url"
         every { klantContact.kanaal } returns "test-kanaal"
@@ -127,9 +127,9 @@ class OpenKlantValueResolverFactoryTest {
         every { klantContact.plaatsgevondenOp } returns null
         every { klantContact.expand } returns null
 
-        val expectedKlantContacten = listOf(klantContact)
+        val expectedKlantcontacten = listOf(klantContact)
         val reflectedResult = mapOf("reflected" to "data")
-        coEvery { openKlantService.getAllKlantContacten(any()) } returns expectedKlantContacten
+        coEvery { openKlantService.getAllKlantcontacten(any()) } returns expectedKlantcontacten
         every { reflectionUtil.deepReflectedMapOf(any()) } returns reflectedResult
 
         // Act
@@ -172,7 +172,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockZaak.uuid } returns zaakUuid
         every { zaakDocumentService.getZaakByDocumentIdOrThrow(documentId) } returns mockZaak
 
-        val klantContact = mockk<KlantContact>()
+        val klantContact = mockk<Klantcontact>()
         every { klantContact.uuid } returns "test-uuid"
         every { klantContact.url } returns "test-url"
         every { klantContact.kanaal } returns "test-kanaal"
@@ -190,9 +190,9 @@ class OpenKlantValueResolverFactoryTest {
         every { klantContact.plaatsgevondenOp } returns null
         every { klantContact.expand } returns null
 
-        val expectedKlantContacten = listOf(klantContact)
+        val expectedKlantcontacten = listOf(klantContact)
         val reflectedResult = mapOf("reflected" to "data")
-        coEvery { openKlantService.getAllKlantContacten(any()) } returns expectedKlantContacten
+        coEvery { openKlantService.getAllKlantcontacten(any()) } returns expectedKlantcontacten
         every { reflectionUtil.deepReflectedMapOf(any()) } returns reflectedResult
 
         // Act
@@ -203,7 +203,7 @@ class OpenKlantValueResolverFactoryTest {
         assertEquals(reflectedResult, result)
         verify { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) }
         verify { zaakDocumentService.getZaakByDocumentIdOrThrow(documentId) }
-        coVerify { openKlantService.getAllKlantContacten(any()) }
+        coVerify { openKlantService.getAllKlantcontacten(any()) }
     }
 
     @Test
@@ -221,7 +221,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockZaak.uuid } returns zaakUuid
         every { zaakDocumentService.getZaakByDocumentIdOrThrow(documentId) } returns mockZaak
 
-        val klantContact = mockk<KlantContact>()
+        val klantContact = mockk<Klantcontact>()
         every { klantContact.uuid } returns "test-uuid"
         every { klantContact.url } returns "test-url"
         every { klantContact.kanaal } returns "test-kanaal"
@@ -239,9 +239,9 @@ class OpenKlantValueResolverFactoryTest {
         every { klantContact.plaatsgevondenOp } returns null
         every { klantContact.expand } returns null
 
-        val expectedKlantContacten = listOf(klantContact)
+        val expectedKlantcontacten = listOf(klantContact)
         val reflectedResult = mapOf("reflected" to "data")
-        coEvery { openKlantService.getAllKlantContacten(any()) } returns expectedKlantContacten
+        coEvery { openKlantService.getAllKlantcontacten(any()) } returns expectedKlantcontacten
         every { reflectionUtil.deepReflectedMapOf(any()) } returns reflectedResult
 
         // Act

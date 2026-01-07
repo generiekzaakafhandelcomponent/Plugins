@@ -3,11 +3,11 @@ package com.ritense.valtimoplugins.openklant.service
 import com.ritense.valtimoplugins.openklant.client.OpenKlantClient
 import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
 import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
-import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 
 class DefaultOpenKlantService(
@@ -29,8 +29,11 @@ class DefaultOpenKlantService(
         }
     }
 
-    override suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact> =
-        openKlantClient.getKlantContacten(properties).results
+    override suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
+        openKlantClient.getKlantcontacten(properties).results
+
+    override suspend fun getAllKlantcontactenByBsn(properties: KlantcontactOptions): List<Klantcontact> =
+        openKlantClient.getKlantcontacten(properties).results
 
     private suspend fun isPreferredAddress(
         emailAddress: String,
