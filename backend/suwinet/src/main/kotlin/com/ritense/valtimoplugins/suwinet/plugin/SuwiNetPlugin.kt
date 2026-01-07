@@ -212,8 +212,7 @@ class SuwiNetPlugin(
                 )
             }
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            handleSuwinetException(e)
         }
     }
 
@@ -247,8 +246,7 @@ class SuwiNetPlugin(
                 )
             }
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            handleSuwinetException(e)
         }
     }
 
@@ -282,8 +280,7 @@ class SuwiNetPlugin(
             }
 
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            handleSuwinetException(e)
         }
     }
 
@@ -318,8 +315,7 @@ class SuwiNetPlugin(
                 }
             }
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            handleSuwinetException(e)
         }
 
     }
@@ -356,8 +352,7 @@ class SuwiNetPlugin(
             }
 
         } catch (e: Exception) {
-            logger.info("Exiting scope due to nested error.", e)
-            return
+            handleSuwinetException(e)
         }
     }
 
@@ -398,19 +393,6 @@ class SuwiNetPlugin(
         }
     }
 
-    private fun handleSuwinetException(e: Exception): Nothing {
-        return when (e) {
-            is SuwinetError -> {
-                throw BpmnError(e.errorCode)
-            }
-            else -> {
-                logger.error(e) { "Unexpected Suwinet error in SuwiNetPlugin" }
-                throw e
-            }
-        }
-    }
-
-
     @PluginAction(
         key = "ophalen-bijstandsregelingen",
         title = "SuwiNet ophalen Bijstandsregelingen",
@@ -441,15 +423,21 @@ class SuwiNetPlugin(
                     )
                 }
         } catch (e: Exception) {
-            val  message = "error retrieving bijstandsregelingen from Suwinet"
-
-            logger.error { message }
-            throw BpmnError("bijstandsRegelingenError",
-                message,
-                SuwinetException(message, e))
+            handleSuwinetException(e)
         }
     }
 
+    private fun handleSuwinetException(e: Exception): Nothing {
+        return when (e) {
+            is SuwinetError -> {
+                throw BpmnError(e.errorCode)
+            }
+            else -> {
+                logger.error(e) { "Unexpected Suwinet error in SuwiNetPlugin" }
+                throw e
+            }
+        }
+    }
 
     private fun getSuwinetSOAPClientConfig() =
         SuwinetSOAPClientConfig(
