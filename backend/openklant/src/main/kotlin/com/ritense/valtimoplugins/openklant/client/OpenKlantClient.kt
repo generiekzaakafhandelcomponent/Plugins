@@ -12,6 +12,7 @@ import io.netty.handler.ssl.SslContextBuilder
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory
 import io.netty.resolver.DefaultAddressResolverGroup
 import mu.KotlinLogging
+import org.jetbrains.annotations.VisibleForTesting
 import org.springframework.http.HttpStatus
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.reactive.function.client.WebClient
@@ -19,6 +20,9 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.server.ResponseStatusException
 import reactor.netty.http.client.HttpClient
+import org.springframework.web.util.UriBuilder
+import java.net.URI
+
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
@@ -143,32 +147,51 @@ class OpenKlantClient(
             handleResponseException(e, "Error creating DigitaalAdres")
         }
 
-    suspend fun getKlantContacten(klantContactOptions: KlantContactOptions): Page<KlantContact> =
+    suspend fun getKlantcontacten(klantContactOptions: KlantcontactOptions): Page<Klantcontact> =
         try {
             webClientFactory(klantContactOptions)
                 .get()
                 .uri { uriBuilder ->
-                    klantContactOptions.objectTypeId?.let {
-                        uriBuilder.queryParam(OK_OBJECTTYPE_PARAM, it)
-                    }
-                    klantContactOptions.objectUuid?.let {
-                        uriBuilder.queryParam(OK_OBJECT_ID_PARAM, it)
-                    }
-                    uriBuilder.path(OK_KLANTCONTACTEN_PATH).build()
+                    buildOpenklantUri(uriBuilder, klantContactOptions)
                 }.retrieve()
-                .awaitBody<Page<KlantContact>>()
+                .awaitBody<Page<Klantcontact>>()
         } catch (e: WebClientResponseException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: WebClientResponseException) {
-            handleResponseException(e, "Error fetching KlantContacts")
+            handleResponseException(e, "Error fetching Klantcontacts")
         }
 
-    private fun webClient(properties: OpenKlantProperties): WebClient =
-        openKlantWebClientBuilder
-            .clone()
-            .baseUrl(properties.klantinteractiesUrl.toASCIIString())
-            .defaultHeader("Authorization", "Token ${properties.token}")
+    suspend fun getKlantcontactenByBsn(klantContactOptions: KlantcontactOptions): Page<Klantcontact> =
+        try {
+            webClientFactory(klantContactOptions)
+                .get()
+                .uri { uriBuilder ->
+                    buildOpenklantUri(uriBuilder, klantContactOptions)
+                }.retrieve()
+                .awaitBody<Page<Klantcontact>>()
+        } catch (e: WebClientResponseException.InternalServerError) {
+            handleInternalServerError(e)
+        } catch (e: WebClientResponseException) {
+            handleResponseException(e, "Error fetching Klantcontacts")
+        }
+
+    @VisibleForTesting
+    internal fun buildOpenklantUri(
+        builder: UriBuilder,
+        options: KlantcontactOptions,
+    ): URI {
+        options.objectTypeId?.let {
+            builder.queryParam(OK_OBJECTTYPE_PARAM, it)
+        }
+        options.bsn?.let {
+            builder.queryParam(OK_BSN_PARAM, it)
+        }
+        options.objectUuid?.let {
+            builder.queryParam(OK_OBJECT_ID_PARAM, it)
+        }
+        return builder.path(OK_KLANTCONTACTEN_PATH)
             .build()
+    }
 
     private fun handleInternalServerError(e: WebClientResponseException.InternalServerError): Nothing {
         logger.warn { "Response body:  ${e.responseBodyAsString}" }
@@ -204,6 +227,7 @@ class OpenKlantClient(
         private const val OK_SOORT_PARTIJ_PARAM = "soortPartij"
         private const val OK_OBJECTTYPE_PARAM = "onderwerpobject__onderwerpobjectidentificatorCodeObjecttype"
         private const val OK_OBJECT_ID_PARAM = "onderwerpobject__onderwerpobjectidentificatorObjectId"
+        private const val OK_BSN_PARAM = "hadBetrokkene__wasPartij__partijIdentificator__objectId"
 
         private val logger = KotlinLogging.logger { }
     }
