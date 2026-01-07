@@ -3,6 +3,47 @@
   "type": "object",
   "title": "OIP Klanttaak",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "definitions": {
+    "informatieobject": {
+      "type": "object",
+      "required": [
+        "informatieobjecttype",
+        "titel",
+        "omschrijving",
+        "vertrouwelijkheidaanduiding",
+        "auteur",
+        "formaat"
+      ],
+      "properties": {
+        "titel": {
+          "type": "string"
+        },
+        "auteur": {
+          "type": "string"
+        },
+        "formaat": {
+          "type": "string"
+        },
+        "omschrijving": {
+          "type": "string"
+        },
+        "informatieobjecttype": {
+          "type": "string",
+          "format": "uri"
+        },
+        "vertrouwelijkheidaanduiding": {
+          "enum": [
+            "openbaar",
+            "intern",
+            "vertrouwelijk",
+            "zeer geheim"
+          ],
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
   "required": [
     "titel",
     "status",
@@ -128,60 +169,17 @@
       "properties": {
         "data": {
           "type": "object",
-          "required": [
-            "volledige_naam"
-          ],
           "properties": {
-            "volledige_naam": {
-              "type": "string",
-              "description": "Volledige naam van de persoon"
-            },
             "upload_documenten": {
               "type": "array",
               "items": {
-                "type": "object",
-                "required": [
-                  "informatieobjecttype",
-                  "titel",
-                  "omschrijving",
-                  "vertrouwelijkheidaanduiding",
-                  "auteur",
-                  "formaat"
-                ],
-                "properties": {
-                  "titel": {
-                    "type": "string"
-                  },
-                  "auteur": {
-                    "type": "string"
-                  },
-                  "formaat": {
-                    "type": "string"
-                  },
-                  "omschrijving": {
-                    "type": "string"
-                  },
-                  "informatieobjecttype": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "vertrouwelijkheidaanduiding": {
-                    "enum": [
-                      "openbaar",
-                      "intern",
-                      "vertrouwelijk",
-                      "zeer geheim"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/definitions/informatieobject"
               },
               "description": "Geüploade documenten"
             }
           },
           "description": "Prefill data voor het externe formulier",
-          "additionalProperties": false
+          "additionalProperties": true
         },
         "formulier": {
           "type": "object",
@@ -214,49 +212,13 @@
             "upload_documenten": {
               "type": "array",
               "items": {
-                "type": "object",
-                "required": [
-                  "informatieobjecttype",
-                  "titel",
-                  "omschrijving",
-                  "vertrouwelijkheidaanduiding",
-                  "auteur",
-                  "formaat"
-                ],
-                "properties": {
-                  "titel": {
-                    "type": "string"
-                  },
-                  "auteur": {
-                    "type": "string"
-                  },
-                  "formaat": {
-                    "type": "string"
-                  },
-                  "omschrijving": {
-                    "type": "string"
-                  },
-                  "informatieobjecttype": {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "vertrouwelijkheidaanduiding": {
-                    "enum": [
-                      "openbaar",
-                      "intern",
-                      "vertrouwelijk",
-                      "zeer geheim"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/definitions/informatieobject"
               },
               "description": "Geüploade documenten"
             }
           },
           "description": "Gegevens ingevuld door de gebruiker",
-          "additionalProperties": false
+          "additionalProperties": true
         }
       },
       "additionalProperties": false
