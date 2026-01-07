@@ -1,0 +1,12 @@
+[
+  {
+    "id": "188c8eb4-82a0-4537-b421-7f2a4c0a2ef6",
+    "title": "OIP Klanttaak",
+    "pluginDefinitionKey": "oip-klanttaak",
+    "properties": {
+      "notificatiesApiPluginConfiguration": "020e6ca3-1c15-4496-a4cf-67bfaa36332f",
+      "objectManagementConfigurationId": "14dd1664-33ad-4797-aed3-2007420f1fc6",
+      "finalizerProcess": "oip-verwerk-afgeronde-klanttaak"
+    }
+  }
+]
