@@ -5,6 +5,7 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
@@ -83,15 +84,51 @@ class OpenKlantPlugin(
                 objectUuid = objectUuid,
             )
 
-        fetchAndStoreKlantContacts(execution, resultPvName, pluginProperties)
+        fetchKlantcontactenAndStore(
+            execution = execution,
+            resultPvName = resultPvName,
+            pluginProperties = pluginProperties,
+            fetcher = openKlantPluginService::getAllKlantcontacten,
+        )
     }
 
-    private suspend fun fetchAndStoreKlantContacts(
+
+    @PluginAction(
+        key = "get-contact-moments-by-bsn",
+        title = "Get contact moments by BSN",
+        description = "Get contact moments by BSN from OpenKlant. Queries the API using the 'partij-identificator object-ID' parameter.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun getContactMomentsByBsn(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultPvName: String,
+        execution: DelegateExecution,
+    ): Unit =
+        runBlocking {
+            logger.info { "Fetching Contactmomenten from OpenKlant by case BSN: $bsn - ${execution.processBusinessKey}" }
+
+            val pluginProperties =
+                KlantcontactOptions(
+                    klantinteractiesUrl,
+                    token = token,
+                    bsn = bsn,
+                )
+
+            fetchKlantcontactenAndStore(
+                execution = execution,
+                resultPvName = resultPvName,
+                pluginProperties = pluginProperties,
+                fetcher = openKlantPluginService::getAllKlantcontactenByBsn,
+            )
+        }
+
+    private suspend fun fetchKlantcontactenAndStore(
         execution: DelegateExecution,
         resultPvName: String,
-        pluginProperties: KlantContactOptions,
+        pluginProperties: KlantcontactOptions,
+        fetcher: suspend (KlantcontactOptions) -> List<Klantcontact>,
     ) {
-        val klantcontacten = openKlantPluginService.getAllKlantContacten(pluginProperties)
+        val klantcontacten = fetcher(pluginProperties)
         val contactenMaps = klantcontacten.map { reflectionUtil.deepReflectedMapOf(it) }
         execution.setVariable(resultPvName, contactenMaps)
     }
