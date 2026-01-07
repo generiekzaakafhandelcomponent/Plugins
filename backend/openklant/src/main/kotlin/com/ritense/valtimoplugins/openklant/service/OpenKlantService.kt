@@ -1,8 +1,8 @@
 package com.ritense.valtimoplugins.openklant.service
 
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
-import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 
 interface OpenKlantService {
@@ -11,5 +11,7 @@ interface OpenKlantService {
         contactInformation: ContactInformation,
     ): String
 
-    suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact>
+    suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact>
+
+    suspend fun getAllKlantcontactenByBsn(properties: KlantcontactOptions): List<Klantcontact>
 }
