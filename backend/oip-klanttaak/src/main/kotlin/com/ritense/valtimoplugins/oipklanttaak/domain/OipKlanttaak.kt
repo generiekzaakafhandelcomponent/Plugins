@@ -56,7 +56,7 @@ data class Formulier(
     val value: URI,
 )
 
-data class Document(
+data class InformatieObject(
     val titel: String,
     val auteur: String,
     val formaat: String,

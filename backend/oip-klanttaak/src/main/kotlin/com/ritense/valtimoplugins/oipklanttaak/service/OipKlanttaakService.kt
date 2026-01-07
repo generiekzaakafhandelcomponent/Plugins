@@ -20,7 +20,7 @@ import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valtimoplugins.oipklanttaak.domain.Authorizee
 import com.ritense.valtimoplugins.oipklanttaak.domain.Betrokkene
 import com.ritense.valtimoplugins.oipklanttaak.domain.DataBinding
-import com.ritense.valtimoplugins.oipklanttaak.domain.Document
+import com.ritense.valtimoplugins.oipklanttaak.domain.InformatieObject
 import com.ritense.valtimoplugins.oipklanttaak.domain.Formulier
 import com.ritense.valtimoplugins.oipklanttaak.domain.Koppeling
 import com.ritense.valtimoplugins.oipklanttaak.domain.LegalSubject
@@ -205,12 +205,12 @@ class OipKlanttaakService(
                                         if (documentsNode.isArray) {
                                             zakenApiPluginByDocumentId(UUID.fromString(execution.businessKey)).let { zakenApiPlugin ->
                                                 documentsNode.forEach { documentNode ->
-                                                    objectMapper.convertValue<Document>(documentNode).let { document ->
+                                                    objectMapper.convertValue<InformatieObject>(documentNode).let { informatieObject ->
                                                         zakenApiPlugin.linkDocumentToZaak(
                                                             execution = execution,
-                                                            documentUrl = document.informatieobjecttype.toASCIIString(),
-                                                            titel = document.titel,
-                                                            beschrijving = document.omschrijving
+                                                            documentUrl = informatieObject.informatieobjecttype.toASCIIString(),
+                                                            titel = informatieObject.titel,
+                                                            beschrijving = informatieObject.omschrijving
                                                         )
                                                     }
                                                 }
