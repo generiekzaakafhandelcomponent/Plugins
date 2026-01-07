@@ -22,13 +22,20 @@ import reactor.netty.http.client.HttpClient
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
+    private val webClientFactory: (OpenKlantProperties) -> WebClient = { props ->
+        openKlantWebClientBuilder
+            .clone()
+            .baseUrl(props.klantinteractiesUrl.toASCIIString())
+            .defaultHeader("Authorization", "Token ${props.token}")
+            .build()
+    },
 ) {
     suspend fun getPartijByBsn(
         bsn: String,
         properties: OpenKlantProperties,
     ): Partij? =
         try {
-            webClient(properties)
+            webClientFactory(properties)
                 .get()
                 .uri { uriBuilder ->
                     uriBuilder
@@ -52,7 +59,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): Partij =
         try {
-            webClient(properties)
+            webClientFactory(properties)
                 .post()
                 .uri(OK_PARTIJEN_PATH)
                 .bodyValue(request)
@@ -70,7 +77,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): Partij =
         try {
-            webClient(properties)
+            webClientFactory(properties)
                 .patch()
                 .uri("$OK_PARTIJEN_PATH/$id")
                 .bodyValue(patchData)
@@ -87,7 +94,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): List<DigitaalAdres> =
         try {
-            webClient(properties)
+            webClientFactory(properties)
                 .get()
                 .uri { uriBuilder ->
                     uriBuilder
@@ -108,7 +115,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): DigitaalAdres =
         try {
-            webClient(properties)
+            webClientFactory(properties)
                 .get()
                 .uri("$OK_DIGITALE_ADRESSEN_PATH/$uuid")
                 .retrieve()
@@ -124,7 +131,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): DigitaalAdres =
         try {
-            webClient(properties)
+            webClientFactory(properties)
                 .post()
                 .uri(OK_DIGITALE_ADRESSEN_PATH)
                 .bodyValue(request)
@@ -138,7 +145,7 @@ class OpenKlantClient(
 
     suspend fun getKlantContacten(klantContactOptions: KlantContactOptions): Page<KlantContact> =
         try {
-            webClient(klantContactOptions)
+            webClientFactory(klantContactOptions)
                 .get()
                 .uri { uriBuilder ->
                     klantContactOptions.objectTypeId?.let {
