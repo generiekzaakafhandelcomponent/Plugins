@@ -101,24 +101,31 @@ services:
     expose:
       - 6379
 
-  objecten-api:
+  objects-objecttypes-api-redis:
+    image: redis:8.2.2
+    container_name: valtimo-plugins-local-objects-objecttypes-api-redis
+    expose:
+      - 6379
+    command: [ "redis-server", "--appendonly", "yes" ]
+
+  objects-api:
     image: maykinmedia/objects-api:3.3.0
-    container_name: valtimo-plugins-local-objecten-api
+    container_name: valtimo-plugins-local-objects-api
     platform: linux/amd64
     ports:
       - "8010:8000"
     environment: &objects-env
       - DB_USER=objects
       - DB_PASSWORD=objects
-      - DB_HOST=objecten-api-database
+      - DB_HOST=objects-api-database
       - DJANGO_SETTINGS_MODULE=objects.conf.docker
       - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
       - IS_HTTPS=no
       - ALLOWED_HOSTS=*
-      - CACHE_DEFAULT=objecten-api-redis:6379/0
-      - CACHE_AXES=objecten-api-redis:6379/0
-      - CELERY_BROKER_URL=redis://objecten-api-redis:6379/1
-      - CELERY_RESULT_BACKEND=redis://objecten-api-redis:6379/1
+      - CACHE_DEFAULT=objects-objecttypes-api-redis:6379/0
+      - CACHE_AXES=objects-objecttypes-api-redis:6379/0
+      - CELERY_BROKER_URL=redis://objects-objecttypes-api-redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://objects-objecttypes-api-redis:6379/1
       - CELERY_LOGLEVEL=DEBUG
       - DISABLE_2FA=True
       - OBJECTS_SUPERUSER_EMAIL=admin@example.org
@@ -126,8 +133,8 @@ services:
       - OBJECTS_SUPERUSER_PASSWORD=admin
       - DEBUG=True
     depends_on:
-      - objecten-api-database
-      - objecten-api-redis
+      - objects-api-database
+      - objects-objecttypes-api-redis
     healthcheck:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
       interval: 30s
@@ -138,9 +145,9 @@ services:
       # to wait for the database migrations.
       start_period: 30s
 
-  objecten-api-database:
+  objects-api-database:
     image: postgis/postgis:17-3.4
-    container_name: valtimo-plugins-local-objecten-api-database
+    container_name: valtimo-plugins-local-objects-api-database
     platform: linux/amd64
     ports:
       - "54322:5432"
@@ -149,9 +156,9 @@ services:
       - POSTGRES_PASSWORD=objects
       - POSTGRES_DB=objects
 
-  objecten-api-celery:
+  objects-api-celery:
     image: maykinmedia/objects-api:3.3.0
-    container_name: valtimo-plugins-local-objecten-api-celery
+    container_name: valtimo-plugins-local-objects-api-celery
     platform: linux/amd64
     environment: *objects-env
     command: /celery_worker.sh
@@ -162,10 +169,10 @@ services:
       retries: 3
       start_period: 10s
     depends_on:
-      objecten-api:
+      objects-api:
         condition: service_healthy
 
-  objecten-api-import:
+  objects-api-import:
     image: maykinmedia/objects-api:3.3.0
     container_name: valtimo-plugins-local-objects-api-import
     platform: linux/amd64
@@ -176,33 +183,26 @@ services:
       - ./imports/objects-api/fixtures:/app/src/objects/fixtures
       - ./imports/objects-api/init:/app/init
     depends_on:
-      objecten-api:
+      objects-api:
         condition: service_healthy
 
-  objecten-api-redis:
-    image: redis:8.2.2
-    container_name: valtimo-plugins-local-objecten-api-redis
-    expose:
-      - 6379
-    command: [ "redis-server", "--appendonly", "yes" ]
-
-  objecttypen-api:
+  objecttypes-api:
     image: maykinmedia/objecttypes-api:3.3.0
-    container_name: valtimo-plugins-local-objecttypen-api
+    container_name: valtimo-plugins-local-objecttypes-api
     platform: linux/amd64
     ports:
       - "8011:8000"
     environment: &objecttypes-env
-      - DB_HOST=objecttypen-api-database
+      - DB_HOST=objecttypes-api-database
       - DB_USER=objecttypes
       - DB_PASSWORD=objecttypes
       - DJANGO_SETTINGS_MODULE=objecttypes.conf.docker
       - SECRET_KEY=${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cy$$15d}
       - ALLOWED_HOSTS=*
-      - CACHE_DEFAULT=objecten-api-redis:6379/0
-      - CACHE_AXES=objecten-api-redis:6379/0
-      - CELERY_BROKER_URL=redis://objecten-api-redis:6379/1
-      - CELERY_RESULT_BACKEND=redis://objecten-api-redis:6379/1
+      - CACHE_DEFAULT=objects-objecttypes-api-redis:6379/0
+      - CACHE_AXES=objects-objecttypes-api-redis:6379/0
+      - CELERY_BROKER_URL=redis://objects-objecttypes-api-redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://objects-objecttypes-api-redis:6379/1
       - CELERY_LOGLEVEL=DEBUG
       - DISABLE_2FA=True
       - OBJECTTYPE_SUPERUSER_EMAIL=admin@example.org
@@ -210,7 +210,8 @@ services:
       - OBJECTTYPE_SUPERUSER_PASSWORD=admin
       - DEBUG=True
     depends_on:
-      - objecttypen-api-database
+      - objecttypes-api-database
+      - objects-objecttypes-api-redis
     healthcheck:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
       interval: 30s
@@ -221,9 +222,9 @@ services:
       # to wait for the database migrations.
       start_period: 30s
 
-  objecttypen-api-database:
+  objecttypes-api-database:
     image: postgres:17.4
-    container_name: valtimo-plugins-local-objecttypen-api-database
+    container_name: valtimo-plugins-local-objecttypes-api-database
     ports:
       - "54323:5432"
     environment:
@@ -231,9 +232,9 @@ services:
       - POSTGRES_PASSWORD=objecttypes
       - POSTGRES_DB=objecttypes
 
-  objecttypen-api-import:
+  objecttypes-api-import:
     image: maykinmedia/objecttypes-api:3.3.0
-    container_name: valtimo-plugins-local-objecttypen-api-import
+    container_name: valtimo-plugins-local-objecttypes-api-import
     platform: linux/amd64
     environment: *objecttypes-env
     command: sh init/init.sh
@@ -241,7 +242,7 @@ services:
       - ./imports/objecttypes-api/fixtures:/app/src/objecttypes/fixtures
       - ./imports/objecttypes-api/init:/app/init
     depends_on:
-      objecttypen-api:
+      objecttypes-api:
         condition: service_healthy
 
   open-notificaties:
