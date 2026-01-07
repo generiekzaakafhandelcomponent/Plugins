@@ -1,0 +1,6 @@
+services:
+  db:
+    ports:
+      - "54353:5432"
+    environment:
+      - POSTGRES_DB=document-verzoek-test
