@@ -1,0 +1,80 @@
+
+<!--
+  ~ Copyright 2015-2025 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+  } as obs"
+>
+  <ng-container>
+      <cds-toggle
+        #bewaarIngediendeGegevens
+        class="toggle"
+        [label]="'completeDelegatedTask.bewaarIngediendeGegevens' | pluginTranslate: pluginId | async"
+        [onText]="'toggle.ja' | pluginTranslate: pluginId | async"
+        [offText]="'toggle.nee' | pluginTranslate: pluginId | async"
+        [checked]="!!obs.prefill?.bewaarIngediendeGegevens"
+        [disabled]="obs.disabled"
+      >
+      </cds-toggle>
+      <br/>
+  </ng-container>
+  @if (bewaarIngediendeGegevens.checked) {
+    <valtimo-carbon-multi-input
+      type="keyValue"
+      name="ontvangenDataMapping"
+      [title]="'completeDelegatedTask.ontvangenData' | pluginTranslate: pluginId | async"
+      [tooltip]="'completeDelegatedTask.ontvangenDataTooltip' | pluginTranslate: pluginId | async"
+      [required]="false"
+      [disabled]="obs.disabled"
+      [defaultValues]="obs.prefill?.ontvangenDataMapping"
+      [margin]="true"
+      [fullWidth]="true"
+      [keyColumnTitle]="'completeDelegatedTask.ontvangenDataKey' | pluginTranslate: pluginId | async"
+      [valueColumnTitle]="'completeDelegatedTask.ontvangenDataValue' | pluginTranslate: pluginId | async"
+      [minimumAmountOfRows]="0"
+      [initialAmountOfRows]="0"
+    ></valtimo-carbon-multi-input>
+  }
+
+  <ng-container>
+      <cds-toggle
+        #koppelDocumenten
+        class="toggle"
+        [label]="'completeDelegatedTask.koppelDocumenten' | pluginTranslate: pluginId | async"
+        [onText]="'toggle.ja' | pluginTranslate: pluginId | async"
+        [offText]="'toggle.nee' | pluginTranslate: pluginId | async"
+        [checked]="!!obs.prefill?.koppelDocumenten"
+        [disabled]="obs.disabled"
+      >
+      </cds-toggle>
+      <br/>
+  </ng-container>
+  @if (koppelDocumenten.checked) {
+    <v-input
+      name="padNaarDocumenten"
+      [title]="'completeDelegatedTask.padNaarDocumenten' | pluginTranslate: pluginId | async"
+      [tooltip]="'completeDelegatedTask.padNaarDocumentenTooltip' | pluginTranslate: pluginId | async"
+      [required]="koppelDocumenten.checked"
+      [disabled]="obs.disabled"
+      [defaultValue]="obs.prefill?.padNaarDocumenten"
+      [margin]="true"
+    ></v-input>
+  }
+</v-form>

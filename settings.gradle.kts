@@ -10,6 +10,7 @@ include(
     "backend:mTLS-SSLContext",
     "backend:notify-nl",
     "backend:object-management",
+    "backend:oip-klanttaak",
     "backend:openklant",
     "backend:publictask",
     "backend:rotterdam-oracle-ebs",

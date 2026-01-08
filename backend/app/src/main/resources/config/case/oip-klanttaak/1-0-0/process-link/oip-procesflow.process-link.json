@@ -1,0 +1,82 @@
+[
+  {
+    "activityId" : "StartEvent_1",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "start-form",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : null,
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "Activity_0ztdco7",
+    "activityType" : "bpmn:UserTask:create",
+    "pluginConfigurationId" : "188c8eb4-82a0-4537-b421-7f2a4c0a2ef6",
+    "pluginActionDefinitionKey" : "delegate-task",
+    "actionProperties" : {
+      "betrokkeneIdentifier" : "123456789",
+      "formulierUri" : "https://host.docker.local/formulier/123456",
+      "toelichting" : "Gegevens aan te leveren door burger alvorens process in behandeling genomen kan worden.",
+      "koppelingIdentifier" : "case:id",
+      "verloopdatum" : null,
+      "levelOfAssurance" : "MOBILE_TWO_FACTOR_CONTRACT",
+      "koppelingRegistratie" : "ZAAK",
+      "formulierDataMapping" : [
+        {
+          "key" : "/voornaam",
+          "value" : "doc:/voornaam"
+        },
+        {
+          "key" : "/tussenvoegsel",
+          "value" : "doc:/tussenvoegsel"
+        },
+        {
+          "key" : "/achternaam",
+          "value" : "doc:/achternaam"
+        },
+        {
+          "key" : "/emailadres",
+          "value" : "doc:/emailadres"
+        }
+      ]
+    },
+    "processLinkType" : "plugin"
+  },
+  {
+    "activityId" : "ut-oip-gegevens-aanleveren",
+    "activityType" : "bpmn:UserTask:create",
+    "pluginConfigurationId" : "188c8eb4-82a0-4537-b421-7f2a4c0a2ef6",
+    "pluginActionDefinitionKey" : "delegate-task",
+    "actionProperties" : {
+      "betrokkeneIdentifier" : "000000000",
+      "formulierUri" : "http://host.docker.local/formulieren/123456789",
+      "toelichting" : "Aanleveren van de gevraagde gegevens om het process van de aanvraag te kunnen vervolgen.",
+      "verloopdatum" : null,
+      "levelOfAssurance" : "MOBILE_TWO_FACTOR_CONTRACT",
+      "formulierDataMapping" : [
+        {
+          "key" : "/voornaam",
+          "value" : "doc:/voornaam"
+        },
+        {
+          "key" : "/tussenvoegsel",
+          "value" : "doc:/tussenvoegsel"
+        },
+        {
+          "key" : "/achternaam",
+          "value" : "doc:/achternaam"
+        },
+        {
+          "key" : "/emailadres",
+          "value" : "doc:/emailadres"
+        },
+        {
+          "key" : "/volledige_naam",
+          "value" : "pv:volledigeNaam"
+        }
+      ]
+    },
+    "processLinkType" : "plugin"
+  }
+]

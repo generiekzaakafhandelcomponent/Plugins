@@ -1,7 +1,7 @@
 [
   {
     "id": "531935ce-e9ae-45d7-bf1a-08993e358482",
-    "title": "SMTP mail configuration",
+    "title": "SMTP mail configuration (Autodeployed)",
     "pluginDefinitionKey": "smtp-mail",
     "properties": {
       "host": "${SMTP_MAIL_CONFIGURATION_HOST}",
@@ -16,7 +16,7 @@
   },
   {
     "id": "515cc605-b5e5-4875-bbf0-f609f788f80e",
-    "title": "Mail template plugin",
+    "title": "Mail template plugin (Autodeployed)",
     "pluginDefinitionKey": "mail-template"
   }
 ]

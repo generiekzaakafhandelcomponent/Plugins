@@ -1,0 +1,12 @@
+{
+  "key" : "oip-klanttaak",
+  "versionTag" : "1.0.0",
+  "name" : "OIP Klanttaak",
+  "description" : "",
+  "createdBy" : "admin@example.com",
+  "createdDate" : "2025-12-30T13:16:52.000Z",
+  "basedOnVersionTag" : null,
+  "final" : false,
+  "canHaveAssignee" : false,
+  "autoAssignTasks" : false
+}

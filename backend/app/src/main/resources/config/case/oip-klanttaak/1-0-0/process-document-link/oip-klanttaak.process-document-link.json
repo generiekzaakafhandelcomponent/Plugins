@@ -1,0 +1,12 @@
+[
+  {
+    "processDefinitionKey" : "oip-procesflow",
+    "canInitializeDocument" : true,
+    "startableByUser" : true
+  },
+  {
+    "processDefinitionKey" : "oip-verwerk-afgeronde-klanttaak",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  }
+]

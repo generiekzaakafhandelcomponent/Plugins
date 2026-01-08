@@ -9,8 +9,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:54340/example-core-db
-    username: example
+    url: jdbc:postgresql://localhost:54340/valtimo-db
+    username: valtimo
     password: password
     hikari:
       auto-commit: false

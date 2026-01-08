@@ -1,0 +1,12 @@
+[
+  {
+    "id": "4c927c7c-02ea-4f77-bac8-09eac3eea96e",
+    "title": "Spotler configuration (Autodeployed)",
+    "pluginDefinitionKey": "spotler",
+    "properties": {
+      "clientId": "${SPOTLER_CLIENTID}",
+      "accountId": "${SPOTLER_ACCOUNTID}",
+      "clientSecret": "${SPOTLER_CLIENTSECRET}"
+    }
+  }
+]

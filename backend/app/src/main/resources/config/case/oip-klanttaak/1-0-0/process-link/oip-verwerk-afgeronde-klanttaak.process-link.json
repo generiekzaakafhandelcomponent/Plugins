@@ -1,0 +1,36 @@
+[
+  {
+    "activityId" : "st-verwerk-afgeronde-klanttaak",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "188c8eb4-82a0-4537-b421-7f2a4c0a2ef6",
+    "pluginActionDefinitionKey" : "complete-delegated-task",
+    "actionProperties" : {
+      "padNaarDocumenten" : "/upload_documenten",
+      "ontvangenDataMapping" : [
+        {
+          "key" : "/volledige_naam",
+          "value" : "doc:/volledigeNaam"
+        },
+        {
+          "key" : "/voornaam",
+          "value" : "doc:/voornaam"
+        },
+        {
+          "key" : "/tussenvoegsel",
+          "value" : "doc:/tussenvoegsel"
+        },
+        {
+          "key" : "/achternaam",
+          "value" : "doc:/achternaam"
+        },
+        {
+          "key" : "/emailadres",
+          "value" : "doc:/emailadres"
+        }
+      ],
+      "bewaarIngediendeGegevens" : true,
+      "koppelDocumenten" : true
+    },
+    "processLinkType" : "plugin"
+  }
+]
