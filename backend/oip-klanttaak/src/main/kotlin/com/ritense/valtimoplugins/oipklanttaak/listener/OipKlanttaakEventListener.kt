@@ -14,6 +14,7 @@ import com.ritense.plugin.domain.PluginConfiguration
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
+import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimo.operaton.domain.OperatonTask
 import com.ritense.valtimo.security.exceptions.TaskNotFoundException
 import com.ritense.valtimo.service.OperatonProcessService
@@ -58,7 +59,6 @@ open class OipKlanttaakEventListener(
                         handleTaskFor(
                             resourceUrl = event.resourceUrl,
                             operatonTask = operatonTask,
-                            objectManagement = objectManagement,
                             oipKlanttaakPluginConfiguration = oipKlanttaakPluginConfiguration
                         )
                     }
@@ -106,7 +106,6 @@ open class OipKlanttaakEventListener(
     private fun handleTaskFor(
         resourceUrl: String,
         operatonTask: OperatonTask,
-        objectManagement: ObjectManagement,
         oipKlanttaakPluginConfiguration: PluginConfiguration,
     ) {
         pluginService.createInstance<OipKlanttaakPlugin>(oipKlanttaakPluginConfiguration.id.id).let { oipKlanttaakPlugin ->
@@ -120,6 +119,12 @@ open class OipKlanttaakEventListener(
             startFinalizerProcess(
                 processDefinitionKey = oipKlanttaakPlugin.finalizerProcess,
                 businessKey = documentId.id.toString(),
+                caseDefinitionId = oipKlanttaakPlugin.caseDefinitionVersion?.let {
+                    CaseDefinitionId.of(
+                        key = it.substringBefore(":"),
+                        versionTag = it.substringAfter(":")
+                    )
+                },
                 variables = mapOf(
                     VERWERKER_TAAK_ID to operatonTask.id,
                     OIP_KLANTTAAK_OBJECT_URL to resourceUrl
@@ -131,19 +136,36 @@ open class OipKlanttaakEventListener(
     private fun startFinalizerProcess(
         processDefinitionKey: String,
         businessKey: String,
+        caseDefinitionId: CaseDefinitionId? = null,
         variables: Map<String, Any>
     ) {
         try {
             runWithoutAuthorization {
-                processService.startProcess(
-                    processDefinitionKey,
-                    businessKey,
-                    variables
-                ).also {
-                    logger.info {
-                        "Started ProcessInstance(id=${it.processInstanceDto.id}) successfully for " +
-                            "ProcessDefinition(key=$processDefinitionKey) and " +
-                            "Document(id=$businessKey)"
+                if (caseDefinitionId != null) {
+                    processService.startProcess(
+                        processDefinitionKey,
+                        businessKey,
+                        caseDefinitionId,
+                        variables
+                    ).also {
+                        logger.info {
+                            "Started ProcessInstance(id=${it.processInstanceDto.id}) successfully for " +
+                                "CaseDefinition(id=${caseDefinitionId}), " +
+                                "ProcessDefinition(key=$processDefinitionKey) and " +
+                                "Document(id=$businessKey)"
+                        }
+                    }
+                } else {
+                    processService.startProcess(
+                        processDefinitionKey,
+                        businessKey,
+                        variables
+                    ).also {
+                        logger.info {
+                            "Started ProcessInstance(id=${it.processInstanceDto.id}) successfully for " +
+                                "ProcessDefinition(key=$processDefinitionKey) and " +
+                                "Document(id=$businessKey)"
+                        }
                     }
                 }
             }

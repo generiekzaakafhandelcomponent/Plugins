@@ -47,6 +47,9 @@ class OipKlanttaakPlugin(
     @PluginProperty(key = "finalizerProcess", secret = false)
     lateinit var finalizerProcess: String
 
+    @PluginProperty(key = "caseDefinitionVersion", secret = false)
+    var caseDefinitionVersion: String? = null
+
     @PluginAction(
         key = "delegate-task",
         title = "Delegate task",

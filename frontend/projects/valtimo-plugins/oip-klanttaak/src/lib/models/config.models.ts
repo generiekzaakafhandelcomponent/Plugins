@@ -20,6 +20,12 @@ interface PluginConfig extends PluginConfigurationData {
   notificatiesApiPluginConfiguration: string;
   objectManagementConfigurationId: string;
   finalizerProcess: string;
+  caseDefinitionVersion?: string | null;
+}
+
+interface PluginConfigFormValue extends PluginConfig {
+  systemFinalizerProcess?: string;
+  caseFinalizerProcess?: string;
 }
 
 interface DelegateTaskConfig {
@@ -59,6 +65,7 @@ enum Registratie {
 
 export {
   PluginConfig,
+  PluginConfigFormValue,
   DelegateTaskConfig,
   DataBinding,
   CompleteDelegatedTaskConfig,

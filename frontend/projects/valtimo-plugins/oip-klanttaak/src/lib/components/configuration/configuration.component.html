@@ -33,6 +33,7 @@
     [trim]="true"
   >
   </v-input>
+
   @if (notificatiesApiPluginSelectItems$ | async; as notificatiesApiPluginSelectItems) {
     <v-select
       name="notificatiesApiPluginConfiguration"
@@ -46,6 +47,7 @@
       [loading]="!notificatiesApiPluginSelectItems"
     ></v-select>
   }
+
   @if(objectManagementConfigurationItems$ | async; as objectManagementConfigurationItems) {
     <v-select
       name="objectManagementConfigurationId"
@@ -59,17 +61,32 @@
       [loading]="!objectManagementConfigurationItems"
     ></v-select>
   }
-  @if (processSelectItems$ | async; as processSelectItems) {
-      <v-select
-      name="finalizerProcess"
-      [title]="'configuration.finalizerProcess' | pluginTranslate: pluginId | async"
+
+  @if (systemProcessDefinitionItems$ | async; as processDefinitionItems) {
+    <v-select
+      name="systemFinalizerProcess"
+      [title]="'configuration.systemFinalizerProcess' | pluginTranslate: pluginId | async"
       [tooltip]="'configuration.finalizerProcessTooltip' | pluginTranslate: pluginId | async"
       [required]="true"
-      [disabled]="obs.disabled"
+      [disabled]="obs.disabled || (caseFinalizerProcessSelected$ | async)"
       [margin]="true"
-      [items]="processSelectItems"
+      [items]="processDefinitionItems"
       [defaultSelectionId]="obs.prefill?.finalizerProcess"
-      [loading]="!processSelectItems"
+      [loading]="!processDefinitionItems"
+    ></v-select>
+  }
+
+  @if (caseProcessDefinitionItems$ | async; as processDefinitionItems) {
+    <v-select
+      name="caseFinalizerProcess"
+      [title]="'configuration.caseFinalizerProcess' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.finalizerProcessTooltip' | pluginTranslate: pluginId | async"
+      [required]="true"
+      [disabled]="obs.disabled || (systemFinalizerProcessSelected$ | async)"
+      [margin]="true"
+      [items]="processDefinitionItems"
+      [defaultSelectionId]="formatCaseFinalizerProcessFrom(obs.prefill)"
+      [loading]="!processDefinitionItems"
     ></v-select>
   }
 </v-form>
