@@ -342,6 +342,7 @@ export function tabsFactory() {
       provide: CASE_TAB_TOKEN,
       useValue: {
         "klantcontact-tab": KlantcontactTabComponent,
+        "generieke-contactgeschiedenis": ContactHistoryTabComponent,
       },
     },
   ],
