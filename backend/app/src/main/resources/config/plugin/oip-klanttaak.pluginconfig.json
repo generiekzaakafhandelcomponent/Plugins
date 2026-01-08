@@ -1,7 +1,7 @@
 [
   {
     "id": "188c8eb4-82a0-4537-b421-7f2a4c0a2ef6",
-    "title": "OIP Klanttaak",
+    "title": "OIP Klanttaak (Autodeployed)",
     "pluginDefinitionKey": "oip-klanttaak",
     "properties": {
       "notificatiesApiPluginConfiguration": "020e6ca3-1c15-4496-a4cf-67bfaa36332f",

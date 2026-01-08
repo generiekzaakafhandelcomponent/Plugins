@@ -1,7 +1,7 @@
 [
   {
     "id": "c086e155-d592-47b9-aafe-868991f2fb88",
-    "title": "NotifyNL",
+    "title": "NotifyNL (Autodeployed)",
     "pluginDefinitionKey": "notify-nl",
     "properties": {
       "notifyUrl": "${NOTIFY_NL_API_URL}",
