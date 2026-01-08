@@ -33,7 +33,7 @@ class OpenKlantPlugin(
     lateinit var token: String
 
     @PluginAction(
-        key = "store-contactinfo",
+        key = "store-contact-info",
         title = "Store Contactinfo",
         description = "Store contact info in OpenKlant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
@@ -65,7 +65,7 @@ class OpenKlantPlugin(
     }
 
     @PluginAction(
-        key = "get-contact-moments-by-case",
+        key = "get-contact-moments-by-case-uuid",
         title = "Get contact moments by case UUID",
         description = "Get contact moments by case UUID from OpenKlant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
