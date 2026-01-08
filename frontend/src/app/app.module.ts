@@ -82,6 +82,7 @@ import {
     objecttypenApiPluginSpecification,
     PLUGINS_TOKEN
 } from '@valtimo/plugin';
+import {ZgwModule} from '@valtimo/zgw';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
 import {ObjectModule} from "@valtimo/object";
@@ -244,7 +245,8 @@ export function tabsFactory() {
         ValuePathSelectorComponent,
         WidgetModule,
         XentialPluginModule,
-        ZakenApiPluginModule
+        ZakenApiPluginModule,
+        ZgwModule
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
