@@ -71,17 +71,17 @@ class OpenKlantPlugin(
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun getContactMoments(
-        @PluginActionProperty objectUuid: String,
+        @PluginActionProperty caseUuid: String,
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
     ) = runBlocking {
-        logger.info { "Fetch Contactmomenten from OpenKlant by case UUID: $objectUuid - ${execution.processBusinessKey}" }
+        logger.info { "Fetch Contactmomenten from OpenKlant by case UUID: $caseUuid - ${execution.processBusinessKey}" }
 
         val pluginProperties =
             KlantcontactOptions(
                 klantinteractiesUrl,
                 token = token,
-                objectUuid = objectUuid,
+                objectUuid = caseUuid,
             )
 
         fetchKlantcontactenAndStore(
