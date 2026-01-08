@@ -2,18 +2,18 @@ name: valtimo-plugins-local
 
 services:
 
-  example-core-db:
-    container_name: valtimo-plugins-local-example-core-db
+  valtimo-db:
+    container_name: valtimo-plugins-local-valtimo-db
     image: postgres:17.4
     ports:
       - "54340:5432"
     environment:
-      POSTGRES_USER: example
+      POSTGRES_USER: valtimo
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: example-core-db
+      POSTGRES_DB: valtimo-db
 
-  example-core-keycloak:
-    container_name: valtimo-plugins-local-example-core-keycloak
+  keycloak:
+    container_name: valtimo-plugins-local-keycloak
     image: quay.io/keycloak/keycloak:24.0.5
     ports:
       - "8081:8080"
@@ -21,7 +21,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://example-core-keycloak-db/keycloak
+      KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: keycloak
       KC_FEATURES: token-exchange,admin-fine-grained-authz
@@ -34,7 +34,7 @@ services:
       - --import-realm
       - --http-enabled=true
     depends_on:
-      - example-core-keycloak-db
+      - keycloak-db
     healthcheck:
       test: [ 'CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() == 200 ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/auth' ]
       interval: 10s
@@ -42,9 +42,9 @@ services:
       retries: 60
       start_period: 5s
 
-  example-core-keycloak-db:
+  keycloak-db:
     image: postgres:17.4
-    container_name: valtimo-plugins-local-example-core-keycloak-db
+    container_name: valtimo-plugins-local-keycloak-db
     ports:
       - "54320:5432"
     environment:
