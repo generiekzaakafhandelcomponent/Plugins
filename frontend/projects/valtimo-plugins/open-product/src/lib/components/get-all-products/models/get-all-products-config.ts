@@ -1,5 +1,5 @@
 interface GetAllProductsConfig {
-    resultaatPV: string;
+    test: string;
 }
 
 export {GetAllProductsConfig};

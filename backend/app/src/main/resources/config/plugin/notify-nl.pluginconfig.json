@@ -4,7 +4,7 @@
     "title": "NotifyNL",
     "pluginDefinitionKey": "notify-nl",
     "properties": {
-      "apiUrl": "${NOTIFY_NL_API_URL}",
+      "notifyUrl": "${NOTIFY_NL_API_URL}",
       "apiKey": "${NOTIFY_NL_API_KEY}"
     }
   }

@@ -5,14 +5,6 @@
         prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
     } as obs"
 >
-    <v-input name="resultaatPV"
-             [title]="'resultaatPV' | pluginTranslate: pluginId | async"
-             [margin]="true"
-             [defaultValue]="obs.prefill?.resultaatPV"
-             [disabled]="obs.disabled"
-             [required]="true"
-             [tooltip]="'resultaatPVTooltip' | pluginTranslate: pluginId | async"
-    ></v-input>
     <v-input
             name="productUuid"
             [title]="'productUuid' | pluginTranslate: pluginId | async"
@@ -49,17 +41,6 @@
             [required]="true"
     >
     </v-input>
-    <valtimo-carbon-multi-input
-            name="eigenaarData"
-            [title]="'eigenaarData' | pluginTranslate: pluginId | async"
-            type="keyValue"
-            [disabled]="obs.disabled"
-            [defaultValues]="[{key: 'uuid', value: 'pv:/eigenaarUUID'}, {key: 'bsn', value: 'pv:/eigenaarBSN'}, {key: 'klantnummer', value: 'pv:/eigenaarKlantnummer'}]"
-            [margin]="true"
-            [required]="false"
-            [tooltip]="'eigenaarDataTooltip' | pluginTranslate: pluginId | async"
-            [minimumAmountOfRows]="1"
-    ></valtimo-carbon-multi-input>
     <v-input
             name="aanvraagZaakUrn"
             [title]="'aanvraagZaakUrn' | pluginTranslate: pluginId | async"

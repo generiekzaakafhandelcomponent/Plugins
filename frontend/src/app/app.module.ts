@@ -85,7 +85,6 @@ import {
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
 import {ObjectModule} from "@valtimo/object";
-
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {
     DocumentGeneratorPluginModule,
@@ -113,6 +112,8 @@ import {SlackPluginModule, slackPluginSpecification} from '@valtimo-plugins/slac
 import {SmtpMailPluginModule, smtpmailPluginSpecification} from '@valtimo-plugins/smtpmail';
 import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/spotler';
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
+import {TokenAuthenticationPluginModule} from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.module"
+import {tokenAuthenticationPluginSpecification} from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.specification"
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {ValtimoLlmPluginModule} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module"
@@ -226,6 +227,7 @@ export function tabsFactory() {
         SseModule,
         SuwinetPluginModule,
         SwaggerModule,
+        TokenAuthenticationPluginModule,
         TaskModule,
         TextTemplatePluginModule,
         TranslateModule.forRoot({
@@ -272,6 +274,7 @@ export function tabsFactory() {
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
+            tokenAuthenticationPluginSpecification,
             textTemplatePluginSpecification,
             valtimoOcrPluginSpecification,
             valtimoS2tPluginSpecification,

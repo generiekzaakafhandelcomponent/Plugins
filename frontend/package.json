@@ -32,6 +32,7 @@
     "libs:build:smtpmail": "ng build @valtimo-plugins/smtpmail",
     "libs:build:spotler": "ng build @valtimo-plugins/spotler",
     "libs:build:suwinet": "ng build @valtimo-plugins/suwinet",
+    "libs:build:token-authentication": "ng build @valtimo-plugins/token-authentication",
     "libs:build:xential": "ng build @valtimo-plugins/xential",
     "libs:build:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm",
     "lint": "ng lint",
@@ -52,6 +53,7 @@
     "libs:watch:smtpmail": "ng build @valtimo-plugins/smtpmail --watch",
     "libs:watch:spotler": "ng build @valtimo-plugins/spotler --watch",
     "libs:watch:suwinet": "ng build @valtimo-plugins/suwinet --watch",
+    "libs:watch:token-authentication": "ng build @valtimo-plugins/token-authentication --watch",
     "libs:watch:xential": "ng build @valtimo-plugins/xential --watch",
     "libs:watch:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm --watch"
   },
@@ -156,6 +158,7 @@
     "@valtimo-plugins/smtpmail": "file:dist/valtimo-plugins/smtpmail",
     "@valtimo-plugins/spotler": "file:dist/valtimo-plugins/spotler",
     "@valtimo-plugins/suwinet": "file:dist/valtimo-plugins/suwinet",
+    "@valtimo-plugins/token-authentication": "file:dist/valtimo-plugins/token-authentication",
     "@valtimo-plugins/valtimo-ocr": "file:dist/valtimo-plugins/valtimo-ocr",
     "@valtimo-plugins/valtimo-s2t": "file:dist/valtimo-plugins/valtimo-s2t",
     "@valtimo-plugins/xential": "file:dist/valtimo-plugins/xential",

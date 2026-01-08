@@ -16,10 +16,6 @@
 
 package com.ritense.openproduct.plugin
 
-import com.fasterxml.jackson.core.JsonPointer
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.convertValue
-import com.ritense.document.domain.patch.JsonPatchService
 import com.ritense.openproduct.client.*
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
@@ -28,9 +24,8 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.service.PluginService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.tokenauthentication.plugin.TokenAuthenticationPlugin
-import com.ritense.valtimo.contract.json.patch.JsonPatchBuilder
 import com.ritense.valueresolver.ValueResolverService
-import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.operaton.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "openproduct",
@@ -42,8 +37,6 @@ class OpenProductPlugin(
     private val openProductClient: OpenProductClient,
     private val valueResolverService: ValueResolverService
 ) {
-    private val objectMapper = pluginService.getObjectMapper()
-
     @PluginProperty(key = "baseUrl", secret = false, required = true)
     lateinit var baseUrl: String
 
@@ -58,16 +51,16 @@ class OpenProductPlugin(
     )
     fun getProduct(
         execution: DelegateExecution,
-        @PluginActionProperty productUuid: String,
-        @PluginActionProperty resultaatPV: String
+        @PluginActionProperty productUuid: String
     ) {
         val result = openProductClient.getProduct(
             baseUrl,
             authenticationPluginConfiguration,
             productUuid
         )
+        println(result)
 
-        execution.setVariable(resultaatPV, "Product: $result")
+        execution.setVariable("resultaatPV", "Product: $result")
     }
 
     @PluginAction(
@@ -77,15 +70,14 @@ class OpenProductPlugin(
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun getAllProducts(
-        execution: DelegateExecution,
-        @PluginActionProperty resultaatPV: String
+        execution: DelegateExecution
     ) {
         val result = openProductClient.getAllProducts(
             baseUrl,
             authenticationPluginConfiguration
         )
 
-        execution.setVariable(resultaatPV, "Product: $result")
+        execution.setVariable("resultaatPV", "Product: $result")
     }
 
     @PluginAction(
@@ -105,8 +97,7 @@ class OpenProductPlugin(
         @PluginActionProperty productPrijs: String,
         @PluginActionProperty productStatus: String,
         @PluginActionProperty productFrequentie: String,
-        @PluginActionProperty gepubliceerd: java.lang.Boolean?,
-        @PluginActionProperty resultaatPV: String
+        @PluginActionProperty gepubliceerd: java.lang.Boolean?
     ) {
         val freqEnum = toFreqEnum(productFrequentie)
         val statusEnum = toStatusEnum(productStatus)
@@ -130,7 +121,7 @@ class OpenProductPlugin(
                 status = statusEnum
             )
         )
-        execution.setVariable(resultaatPV, "Product aangemaakt: $productNaam")
+        execution.setVariable("resultaatPV", "Product aangemaakt: $productNaam")
     }
 
     @PluginAction(
@@ -150,8 +141,7 @@ class OpenProductPlugin(
         @PluginActionProperty gepubliceerd: Boolean,
         @PluginActionProperty productPrijs: String,
         @PluginActionProperty productFrequentie: String,
-        @PluginActionProperty productStatus: String,
-        @PluginActionProperty resultaatPV: String
+        @PluginActionProperty productStatus: String
     ) {
         val freqEnum = toFreqEnum(productFrequentie)
         val statusEnum = toStatusEnum(productStatus)
@@ -177,7 +167,7 @@ class OpenProductPlugin(
             )
         )
 
-        execution.setVariable(resultaatPV, "Product gewijzigd met UUID: $productUuid")
+        execution.setVariable("resultaatPV", "Product gewijzigd met UUID: $productUuid")
     }
 
     @PluginAction(
@@ -188,8 +178,7 @@ class OpenProductPlugin(
     )
     fun deleteProduct(
         execution: DelegateExecution,
-        @PluginActionProperty productUuid: String,
-        @PluginActionProperty resultaatPV: String
+        @PluginActionProperty productUuid: String
     ) {
         val result = openProductClient.deleteProduct(
             baseUrl,
@@ -197,7 +186,7 @@ class OpenProductPlugin(
             productUuid
         )
 
-        execution.setVariable(resultaatPV, "Product verwijderd met UUID: $productUuid")
+        execution.setVariable("resultaatPV", "Product verwijderd met UUID: $productUuid")
     }
 
     fun toFreqEnum(frequentie: String): FrequentieEnum {
@@ -219,39 +208,6 @@ class OpenProductPlugin(
             "verlopen" -> StatusEnum.VERLOPEN
             else -> throw IllegalArgumentException("Ongeldige status: $status")
         }
-    }
-
-    private fun getEigenaarData(
-        keyValueMap: List<DataBindingConfig>,
-        documentId: String
-    ): JsonNode {
-        val resolvedValuesMap = valueResolverService.resolveValues(
-            documentId, keyValueMap.map { it.value }
-        )
-
-        if (keyValueMap.size != resolvedValuesMap.size) {
-            val failedValues = keyValueMap
-                .filter { !resolvedValuesMap.containsKey(it.value) }
-                .joinToString(", ") { "'${it.key}' = '${it.value}'" }
-            throw IllegalArgumentException(
-                "Error in case: '${documentId}'. Failed to resolve values: $failedValues".trimMargin()
-            )
-        }
-
-        val objectDataMap = keyValueMap.associate { it.key to resolvedValuesMap[it.value] }
-
-        val objectData = objectMapper.createObjectNode()
-        val jsonPatchBuilder = JsonPatchBuilder()
-
-        objectDataMap.forEach {
-            val path = JsonPointer.valueOf(it.key)
-            val valueNode = objectMapper.valueToTree<JsonNode>(it.value)
-            jsonPatchBuilder.addJsonNodeValue(objectData, path, valueNode)
-        }
-
-        JsonPatchService.apply(jsonPatchBuilder.build(), objectData)
-
-        return objectMapper.convertValue(objectData)
     }
 
 }
