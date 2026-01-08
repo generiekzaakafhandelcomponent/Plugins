@@ -58,7 +58,7 @@ services:
     container_name: valtimo-plugins-local-openzaak
     platform: linux/amd64
     environment:
-      - DB_HOST=openzaak-database
+      - DB_HOST=openzaak-db
       - DB_POST=5432
       - SECRET_KEY=veryRestrictedSecretKey
       - DB_USER=openzaak
@@ -77,14 +77,14 @@ services:
     ports:
       - "8001:8000"
     depends_on:
-      - openzaak-database
+      - openzaak-db
       - openzaak-redis
     volumes:
       - openzaak-private-media:/app/private-media # persist data even if container shuts down
 
-  openzaak-database:
+  openzaak-db:
     image: postgis/postgis:17-3.4
-    container_name: valtimo-plugins-local-openzaak-database
+    container_name: valtimo-plugins-local-openzaak-db
     platform: linux/amd64
     ports:
       - "54321:5432"
@@ -117,7 +117,7 @@ services:
     environment: &objects-env
       - DB_USER=objects
       - DB_PASSWORD=objects
-      - DB_HOST=objects-api-database
+      - DB_HOST=objects-api-db
       - DJANGO_SETTINGS_MODULE=objects.conf.docker
       - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
       - IS_HTTPS=no
@@ -133,7 +133,7 @@ services:
       - OBJECTS_SUPERUSER_PASSWORD=admin
       - DEBUG=True
     depends_on:
-      - objects-api-database
+      - objects-api-db
       - objects-objecttypes-api-redis
     healthcheck:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
@@ -145,9 +145,9 @@ services:
       # to wait for the database migrations.
       start_period: 30s
 
-  objects-api-database:
+  objects-api-db:
     image: postgis/postgis:17-3.4
-    container_name: valtimo-plugins-local-objects-api-database
+    container_name: valtimo-plugins-local-objects-api-db
     platform: linux/amd64
     ports:
       - "54322:5432"
@@ -193,7 +193,7 @@ services:
     ports:
       - "8011:8000"
     environment: &objecttypes-env
-      - DB_HOST=objecttypes-api-database
+      - DB_HOST=objecttypes-api-db
       - DB_USER=objecttypes
       - DB_PASSWORD=objecttypes
       - DJANGO_SETTINGS_MODULE=objecttypes.conf.docker
@@ -210,7 +210,7 @@ services:
       - OBJECTTYPE_SUPERUSER_PASSWORD=admin
       - DEBUG=True
     depends_on:
-      - objecttypes-api-database
+      - objecttypes-api-db
       - objects-objecttypes-api-redis
     healthcheck:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
@@ -222,9 +222,9 @@ services:
       # to wait for the database migrations.
       start_period: 30s
 
-  objecttypes-api-database:
+  objecttypes-api-db:
     image: postgres:17.4
-    container_name: valtimo-plugins-local-objecttypes-api-database
+    container_name: valtimo-plugins-local-objecttypes-api-db
     ports:
       - "54323:5432"
     environment:
@@ -258,7 +258,7 @@ services:
       - CACHE_DEFAULT=open-notificaties-redis:6379/0
       - CACHE_AXES=open-notificaties-redis:6379/1
       - DB_PORT=5432
-      - DB_HOST=open-notificaties-database
+      - DB_HOST=open-notificaties-db
       - DB_NAME=notifications
       - DB_USER=notifications
       - DB_PASSWORD=notifications
@@ -279,13 +279,13 @@ services:
     environment: *notificaties-env
     command: /celery_worker.sh
     depends_on:
-      - open-notificaties-database
+      - open-notificaties-db
       - open-notificaties-rabbitmq
       - open-notificaties-redis
 
-  open-notificaties-database:
+  open-notificaties-db:
     image: postgres:17.4
-    container_name: valtimo-plugins-local-open-notificaties-database
+    container_name: valtimo-plugins-local-open-notificaties-db
     ports:
       - "54324:5432"
     environment:
