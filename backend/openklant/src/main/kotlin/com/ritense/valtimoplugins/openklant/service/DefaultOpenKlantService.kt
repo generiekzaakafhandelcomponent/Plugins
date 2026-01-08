@@ -32,6 +32,10 @@ class DefaultOpenKlantService(
     override suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact> =
         openKlantClient.getKlantContacten(properties).results
 
+    override suspend fun postKlantContact(properties: OpenKlantProperties) {
+        TODO("Not yet implemented")
+    }
+
     private suspend fun isPreferredAddress(
         emailAddress: String,
         partij: Partij,

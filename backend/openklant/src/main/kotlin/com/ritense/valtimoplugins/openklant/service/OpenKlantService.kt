@@ -12,4 +12,6 @@ interface OpenKlantService {
     ): String
 
     suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact>
+
+    suspend fun postKlantContact(properties: OpenKlantProperties)
 }
