@@ -7,6 +7,9 @@ import {Klantcontact} from './model/klantcontact';
 import {DocumentContent} from './model/document.content';
 import {CarbonListModule, TimelineModule} from '@valtimo/components';
 
+/**
+ * @deprecated Use `ContactHistoryTabComponent` instead.
+ */
 @Component({
     selector: 'app-klantcontact-tab',
     standalone: true,
