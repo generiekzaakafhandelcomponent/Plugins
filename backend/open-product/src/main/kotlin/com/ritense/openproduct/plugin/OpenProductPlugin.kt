@@ -58,7 +58,6 @@ class OpenProductPlugin(
             authenticationPluginConfiguration,
             productUuid
         )
-        println(result)
 
         execution.setVariable("resultaatPV", "Product: $result")
     }
