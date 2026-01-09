@@ -1,25 +1,42 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
-import {Observable, BehaviorSubject, Subscription, combineLatest, take} from 'rxjs';
-import {OpenKlantStoreContactinfoConfig} from '../../models/open-klant-store-contactinfo-config';
-
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from "@angular/core";
+import {
+  FunctionConfigurationComponent,
+  FunctionConfigurationData,
+} from "@valtimo/plugin";
+import {
+  Observable,
+  BehaviorSubject,
+  Subscription,
+  combineLatest,
+  take,
+} from "rxjs";
+import { StoreContactInfoConfig } from "../../models/store-contact-info-config";
 
 @Component({
-  selector: 'app-store-contact-info',
-  templateUrl: './open-klant-store-contactinfo.component.html',
-  styleUrls: ['./open-klant-store-contactinfo.component.scss']
+  selector: "store-contact-info",
+  templateUrl: "./store-contact-info.component.html",
+  styleUrls: ["./store-contact-info.component.scss"],
 })
-export class OpenKlantStoreContactinfoComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
-
+export class StoreContactInfoComponent
+  implements FunctionConfigurationComponent, OnInit, OnDestroy
+{
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
-  @Input() prefillConfiguration$: Observable<OpenKlantStoreContactinfoConfig>;
+  @Input() prefillConfiguration$: Observable<StoreContactInfoConfig>;
 
   @Output() valid = new EventEmitter<boolean>();
   @Output() configuration = new EventEmitter<FunctionConfigurationData>();
 
-  private readonly formValue$ = new BehaviorSubject<OpenKlantStoreContactinfoConfig | null>(null);
+  private readonly formValue$ =
+    new BehaviorSubject<StoreContactInfoConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
   private saveSubscription: Subscription;
 
@@ -31,12 +48,12 @@ export class OpenKlantStoreContactinfoComponent implements FunctionConfiguration
     this.saveSubscription?.unsubscribe();
   }
 
-  formValueChange(formValue: OpenKlantStoreContactinfoConfig): void {
+  formValueChange(formValue: StoreContactInfoConfig): void {
     this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: OpenKlantStoreContactinfoConfig): void {
+  private handleValid(formValue: StoreContactInfoConfig): void {
     const valid =
       !!formValue.bsn &&
       !!formValue.firstName &&

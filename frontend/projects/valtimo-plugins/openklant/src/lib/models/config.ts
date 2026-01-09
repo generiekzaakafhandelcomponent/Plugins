@@ -1,7 +1,7 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface Config extends PluginConfigurationData {
-    baseUrl: string;
+  baseUrl: string;
 }
 
 export {Config};

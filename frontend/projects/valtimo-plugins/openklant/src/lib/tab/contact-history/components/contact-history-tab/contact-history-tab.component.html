@@ -1,0 +1,50 @@
+<div [ngClass]="['contact-history-spinner', 'refresh-container', !isLoading ? 'no-height' : '']">
+    <span class="loading-description mr-2">{{ isLoading ? 'Verversen...' : 'Opgehaald' }}</span>
+    <cds-loading [size]="'sm'" [isActive]="isLoading" [overlay]="false"></cds-loading>
+</div>
+
+<section class="valtimo-timeline ng-star-inserted" *ngIf="contactHistory?.length > 0">
+    <ul class="timeline mb-0 py-5">
+        <li
+            *ngFor="let customerContact of contactHistory"
+            class="timeline-item"
+            [ngClass]="{
+                failed: customerContact.outcome === ContactOutcome.FAILURE
+            }"
+        >
+            <div class="timeline-date">
+                <p>{{ formatAsDate(customerContact.occurredAt) }}</p>
+                <p>{{ formatAsTime(customerContact.occurredAt) }}</p>
+            </div>
+
+            <div class="timeline-content">
+                <p class="timeline-author">
+                    <em class="klantcontact-number">{{ customerContact.id }}:</em>
+                    {{ customerContact.channel | titlecase }} -
+                    {{ getOutcomeLabel(customerContact.outcome) }}
+                </p>
+
+                <details>
+                    <summary>{{ customerContact.subject }}</summary>
+                    <p>{{ customerContact.content }}</p>
+                </details>
+            </div>
+        </li>
+    </ul>
+</section>
+
+<valtimo-no-results
+    *ngIf="contactHistory === null"
+    [description]="
+        'Er bestaat geen \'contactgeschiedenis\'-property in de dossierdefinitie. Voeg deze toe aan het dossierdefinitie.'
+    "
+    [title]="'Geen contactgeschiedenis property'"
+    illustration="valtimo-layout/img/emptystate-no-result.svg"
+></valtimo-no-results>
+
+<valtimo-no-results
+    *ngIf="contactHistory?.length === 0"
+    [description]="'Er bestaat nog geen contactgeschiedenis voor dit dossier.'"
+    [title]="'Geen contactgeschiedenis'"
+    illustration="valtimo-layout/img/emptystate-no-result.svg"
+></valtimo-no-results>
