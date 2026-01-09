@@ -59,11 +59,11 @@ class SocratesClient(
                 .build()
                 .post()
                 .uri {
-                    it.scheme(socratesBaseUri!!.scheme)
-                        .host(socratesBaseUri!!.host)
-                        .path(socratesBaseUri!!.path)
+                    it.scheme(socratesBaseUri.scheme)
+                        .host(socratesBaseUri.host)
+                        .path(socratesBaseUri.path)
                         .path(SOCRATES_API_LOBehandeld)
-                        .port(socratesBaseUri!!.port)
+                        .port(socratesBaseUri.port)
                         .build()
                 }
                 .headers {
@@ -87,7 +87,7 @@ class SocratesClient(
             }
             else if (e.cause is HttpServerErrorException) {
                 val msg = "error connecting to Socrates"
-                logger.error(e) {msg }
+                logger.error(e) {msg}
                 throw SocratesError(e, msg,"SOCRATES_ERROR")
             }
             else {
@@ -100,6 +100,9 @@ class SocratesClient(
         if (response == null) {
             throw IllegalStateException("no respons")
         }
+
+        logger.debug { response }
+        logger.debug { response.berichtId }
 
         return response
     }
