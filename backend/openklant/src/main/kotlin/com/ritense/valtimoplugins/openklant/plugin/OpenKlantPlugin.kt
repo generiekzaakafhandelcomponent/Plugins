@@ -6,6 +6,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
+import com.ritense.valtimoplugins.openklant.model.CreateKlantContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
@@ -84,6 +85,48 @@ class OpenKlantPlugin(
             )
 
         fetchAndStoreKlantContacts(execution, resultPvName, pluginProperties)
+    }
+
+    @PluginAction(
+        key = "post-klantcontact",
+        title = "Post klantcontact",
+        description = "Sends a new klantContact to OpenKlant",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun postKlantContact(
+        @PluginActionProperty communicationChannel: String,
+        @PluginActionProperty subject: String,
+        @PluginActionProperty content: String,
+        @PluginActionProperty confidential: Boolean,
+        @PluginActionProperty startDateTime: String,
+        @PluginActionProperty partijUuid: String,
+        @PluginActionProperty initials: String,
+        @PluginActionProperty firstName: String,
+        @PluginActionProperty prefixesSurname: String,
+        @PluginActionProperty lastName: String,
+        execution: DelegateExecution,
+        ) = runBlocking {
+        logger.info { "Posting klantcontact: - ${execution.processBusinessKey}" }
+
+        val createKlantContactInformation = CreateKlantContactInformation(
+            communicationChannel = communicationChannel,
+            subject = subject,
+            content = content,
+            confidential = confidential,
+            startDateTime = startDateTime,
+            partijUuid = partijUuid,
+            initials = initials,
+            firstName = firstName,
+            prefixesSurname = prefixesSurname,
+            lastName = lastName
+        )
+
+        val properties = OpenKlantProperties(klantinteractiesUrl, token)
+
+        openKlantPluginService.postKlantContact(
+            properties,
+            createKlantContactInformation
+        )
     }
 
     private suspend fun fetchAndStoreKlantContacts(
