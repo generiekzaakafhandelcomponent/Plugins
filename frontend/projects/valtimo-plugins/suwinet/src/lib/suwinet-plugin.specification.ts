@@ -61,9 +61,11 @@ const suwinetPluginSpecification: PluginSpecification = {
             description: 'Plugin om data uit Suwinet op te halen',
             url: 'URL',
             bsn: 'Burgerservicenummer',
+            kinderenBsns: 'Kinderen Burgerservicenummers',
+            bsnTooltip: 'De burgerservice nummer waarop een zoek gedaan wordt',
+            kinderenBsnsTooltip: 'De burgerservicenummers van de kinderen waarop een zoek gedaan wordt',
             suffixTooltip: 'Indien er een suffix na de service naam is, vul die hier in. Bijvoorbeeld /v1',
             kenteken: 'Kenteken',
-            bsnTooltip: 'De burgerservice nummer waarop een zoek gedaan wordt',
             pluginActionWarning: 'Fill in the required fields for this plugin action',
             resultProcessVariableName: 'Naam van de proces variabele voor het opslaan van de respons',
             resultProcessVariableNameTooltip:
@@ -95,7 +97,9 @@ const suwinetPluginSpecification: PluginSpecification = {
             description: 'This plugin makes it possible to communicate with SuwiNet.',
             url: 'URL',
             bsn: 'BSN',
+            kinderenBsns: 'Childrens BSNs',
             bsnTooltip: 'The burgerservicenummer for which the request should be made',
+            kinderenBsnsTooltip: 'The burgerservicenummers of the children for which the request should be made',
             resultProcessVariableName: 'Process variable name for storing the response',
             resultProcessVariableNameTooltip:
                 'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
@@ -126,7 +130,9 @@ const suwinetPluginSpecification: PluginSpecification = {
             description: 'This plugin makes it possible to communicate with SuwiNet.',
             url: 'URL',
             bsn: 'BSN',
-            bsnTooltip: 'The burgerservicenummer for which the request should be made',
+            kinderenBsns: 'Steueridentifikationsnummer der Kinder',
+            bsnTooltip: 'Die Bürgerservicenummer, für die die Anfrage gestellt werden soll',
+            kinderenBsnsTooltip: 'Die Bürgerservicenummer der Kinder, nach denen gesucht wird',
             resultProcessVariableName: 'Process variable name for storing the response',
             resultProcessVariableNameTooltip:
                 'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
