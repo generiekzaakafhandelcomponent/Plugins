@@ -1,42 +1,42 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {EMPTY, of} from 'rxjs';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { EMPTY, of } from "rxjs";
 
-import {StoreContactInfoComponent} from './store-contact-info.component';
-import {StoreContactInfoConfig} from '../../models/store-contactinfo-config';
+import { StoreContactInfoComponent } from "./store-contact-info.component";
+import { StoreContactInfoConfig } from "../../models/store-contact-info-config";
 
-describe('StoreContactInfoComponent', () => {
-    let component: StoreContactInfoComponent;
-    let fixture: ComponentFixture<StoreContactInfoComponent>;
+describe("StoreContactInfoComponent", () => {
+  let component: StoreContactInfoComponent;
+  let fixture: ComponentFixture<StoreContactInfoComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [StoreContactInfoComponent]
-        })
-            .overrideTemplate(StoreContactInfoComponent, '')
-            .compileComponents();
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [StoreContactInfoComponent],
+    })
+      .overrideTemplate(StoreContactInfoComponent, "")
+      .compileComponents();
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(StoreContactInfoComponent);
-        component = fixture.componentInstance;
+  beforeEach(() => {
+    fixture = TestBed.createComponent(StoreContactInfoComponent);
+    component = fixture.componentInstance;
 
-        component.save$ = EMPTY;
-        component.disabled$ = of(false);
-        component.pluginId = 'test-plugin';
+    component.save$ = EMPTY;
+    component.disabled$ = of(false);
+    component.pluginId = "test-plugin";
 
-        component.prefillConfiguration$ = of({
-            bsn: '',
-            firstName: '',
-            inFix: '',
-            lastName: '',
-            emailAddress: '',
-            caseNumber: ''
-        } as StoreContactInfoConfig);
+    component.prefillConfiguration$ = of({
+      bsn: "",
+      firstName: "",
+      inFix: "",
+      lastName: "",
+      emailAddress: "",
+      caseNumber: "",
+    } as StoreContactInfoConfig);
 
-        fixture.detectChanges();
-    });
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it("should create", () => {
+    expect(component).toBeTruthy();
+  });
 });
