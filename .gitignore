@@ -163,3 +163,4 @@ Desktop.ini
 **/*.d.ts
 /.env.properties
 dist
+backend/.idea/
