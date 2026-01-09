@@ -7,6 +7,7 @@ import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.plugin.OpenKlantPluginFactory
 import com.ritense.valtimoplugins.openklant.resolver.OpenKlantValueResolverFactory
 import com.ritense.valtimoplugins.openklant.service.DefaultOpenKlantService
+import com.ritense.valtimoplugins.openklant.service.KlantContactFactory
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.service.PartijFactory
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
@@ -36,10 +37,12 @@ class OpenKlantAutoConfiguration {
     fun openKlantService(
         openKlantClient: OpenKlantClient,
         partijFactory: PartijFactory,
+        klantContactFactory: KlantContactFactory
     ): OpenKlantService =
         DefaultOpenKlantService(
             openKlantClient,
             partijFactory,
+            klantContactFactory
         )
 
     @Bean

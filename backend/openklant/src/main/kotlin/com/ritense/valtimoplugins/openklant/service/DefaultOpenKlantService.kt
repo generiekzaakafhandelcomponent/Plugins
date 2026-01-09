@@ -1,18 +1,16 @@
 package com.ritense.valtimoplugins.openklant.service
 
 import com.ritense.valtimoplugins.openklant.client.OpenKlantClient
-import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
-import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
-import com.ritense.valtimoplugins.openklant.dto.Partij
-import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
+import com.ritense.valtimoplugins.openklant.dto.*
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
+import com.ritense.valtimoplugins.openklant.model.CreateKlantContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 
 class DefaultOpenKlantService(
     private val openKlantClient: OpenKlantClient,
     private val partijFactory: PartijFactory,
+    private val klantContactFactory: KlantContactFactory,
 ) : OpenKlantService {
     override suspend fun storeContactInformation(
         properties: OpenKlantProperties,
@@ -32,8 +30,15 @@ class DefaultOpenKlantService(
     override suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact> =
         openKlantClient.getKlantContacten(properties).results
 
-    override suspend fun postKlantContact(properties: OpenKlantProperties) {
-        TODO("Not yet implemented")
+    override suspend fun postKlantContact(
+        properties: OpenKlantProperties,
+        createKlantContactInformation: CreateKlantContactInformation,
+    ) {
+        val klantContactRequest = klantContactFactory.createKlantContactRequest(createKlantContactInformation)
+        openKlantClient.postKlantContact(
+            request = klantContactRequest,
+            properties = properties
+        )
     }
 
     private suspend fun isPreferredAddress(
