@@ -6,7 +6,7 @@
       "type": "textfield",
       "input": true,
       "label": "BSN-nummer",
-      "tooltip": "Zal in het tabblad 'Contactgeschiedenis' de contacten ophalen op basis van dit BSN-nummer",
+      "tooltip": "Zal in het tabblad 'Contactgeschiedenis' de contacten ophalen op basis van dit BSN-nummer"
     },
     {
       "key": "submit",
