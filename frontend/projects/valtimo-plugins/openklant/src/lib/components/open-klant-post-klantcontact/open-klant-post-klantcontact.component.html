@@ -1,1 +1,79 @@
-<p>open-klant-post-klantcontact works!</p>
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
+>
+    <v-input
+            name="communicationChannel"
+            [title]="'communicationChannel' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.communicationChannel"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="subject"
+            [title]="'subject' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.subject"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="content"
+            [title]="'content' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.content"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="confidential"
+            [title]="'confidential' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.confidential"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="startDateTime"
+            [title]="'startDateTime' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.startDateTime"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="partijUuid"
+            [title]="'partijUuid' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.partijUuid"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="initials"
+            [title]="'initials' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.initials"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="firstName"
+            [title]="'firstName' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.firstName"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="inFix"
+            [title]="'inFix' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.inFix"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="lastName"
+            [title]="'lastName' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.lastName"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+
+</v-form>
