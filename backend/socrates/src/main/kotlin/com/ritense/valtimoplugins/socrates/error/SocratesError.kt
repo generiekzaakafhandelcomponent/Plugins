@@ -1,3 +1,5 @@
 package com.ritense.valtimoplugins.socrates.error
 
-data class SocratesError(val exception: Exception, val errorCode: String): Exception(exception)
+import org.apache.commons.validator.Msg
+
+data class SocratesError(val exception: Exception, val error: Any?, val errorCode: String): Exception(exception)
