@@ -49,7 +49,7 @@
             [title]="'suffix' | pluginTranslate : pluginId | async"
             [margin]="true"
             [fullWidth]="true"
-            [defaultValue]="obs.prefill.suffix"
+            [defaultValue]="obs.prefill?.suffix"
             [disabled]="obs.disabled"
             [tooltip]="'suffixTooltip' | pluginTranslate : pluginId | async"
             [required]="false"
