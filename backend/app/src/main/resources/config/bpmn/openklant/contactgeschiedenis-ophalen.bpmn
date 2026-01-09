@@ -2,9 +2,9 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
   <message id="Message_1570bfo" name="Message_FAILURE_ONTVANGEN" />
   <collaboration id="Collaboration_1a0h0q2">
-    <participant id="Participant_0vwhxi3" name="Contactgeschiedenis Ophalen" processRef="contactgeschiedenis-ophalen" />
+    <participant id="Participant_0vwhxi3" name="OpenKlant: Contactgeschiedenis Ophalen" processRef="contactgeschiedenis-ophalen" />
   </collaboration>
-  <process id="contactgeschiedenis-ophalen" name="Contactgeschiedenis Ophalen" isExecutable="true" camunda:versionTag="">
+  <process id="contactgeschiedenis-ophalen" name="OpenKlant: Contactgeschiedenis Ophalen" isExecutable="true" camunda:versionTag="">
     <sequenceFlow id="Flow_1tpnzje" sourceRef="Activity_0ifw82q" targetRef="Event_167urb2" />
     <startEvent id="startEvent1" name="start">
       <outgoing>Flow_0du2437</outgoing>
