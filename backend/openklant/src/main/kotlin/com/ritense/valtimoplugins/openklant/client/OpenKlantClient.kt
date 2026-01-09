@@ -1,24 +1,17 @@
 package com.ritense.valtimoplugins.openklant.client
 
-import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
-import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
-import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
-import com.ritense.valtimoplugins.openklant.dto.Partij
+import com.ritense.valtimoplugins.openklant.dto.*
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.zgw.Page
-import io.netty.handler.ssl.SslContextBuilder
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory
-import io.netty.resolver.DefaultAddressResolverGroup
+import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
-import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.server.ResponseStatusException
-import reactor.netty.http.client.HttpClient
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
@@ -156,6 +149,24 @@ class OpenKlantClient(
             handleResponseException(e, "Error fetching KlantContacts")
         }
 
+    suspend fun postKlantContact(
+        @Valid @RequestBody request: CreateKlantContactRequest,
+        properties: OpenKlantProperties
+    ) {
+        try {
+            webClient(properties)
+                .post()
+                .uri(OK_CREATE_KLANTCONTACT_PATH)
+                .bodyValue(request)
+                .retrieve()
+                .awaitBody<CreateKlantContact>()
+        } catch (e: WebClientResponseException.InternalServerError) {
+            handleInternalServerError(e)
+        } catch (e: WebClientResponseException) {
+            handleResponseException(e, "Error creating Klantcontact")
+        }
+    }
+
     private fun webClient(properties: OpenKlantProperties): WebClient =
         openKlantWebClientBuilder
             .clone()
@@ -190,6 +201,7 @@ class OpenKlantClient(
         private const val OK_PARTIJEN_PATH = "partijen"
         private const val OK_KLANTCONTACTEN_PATH = "klantcontacten"
         private const val OK_DIGITALE_ADRESSEN_PATH = "digitaleadressen"
+        private const val OK_CREATE_KLANTCONTACT_PATH = "maak-klantcontact"
 
         private const val OK_VERSTREKT_DOOR_PARTIJ_ID_PARAM = "verstrektDoorPartij__uuid"
         private const val OK_SOORT_PARTIJ_IDENTIFICATOR_PARAM = "partijIdentificator__codeSoortObjectId"
