@@ -10,6 +10,6 @@ data class CreateKlantContactInformation(
     val partijUuid: String,
     val initials: String,
     val firstName: String,
-    val prefixesSurname: String,
+    val inFix: String,
     val lastName: String,
 )

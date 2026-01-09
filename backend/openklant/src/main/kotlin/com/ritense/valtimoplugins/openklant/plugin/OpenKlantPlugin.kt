@@ -102,7 +102,7 @@ class OpenKlantPlugin(
         @PluginActionProperty partijUuid: String,
         @PluginActionProperty initials: String,
         @PluginActionProperty firstName: String,
-        @PluginActionProperty prefixesSurname: String,
+        @PluginActionProperty inFix: String,
         @PluginActionProperty lastName: String,
         execution: DelegateExecution,
         ) = runBlocking {
@@ -117,7 +117,7 @@ class OpenKlantPlugin(
             partijUuid = partijUuid,
             initials = initials,
             firstName = firstName,
-            prefixesSurname = prefixesSurname,
+            inFix = inFix,
             lastName = lastName
         )
 

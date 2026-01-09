@@ -39,7 +39,7 @@ class KlantContactFactory {
     private fun contactNaam(createKlantContactInformation: CreateKlantContactInformation) = Contactnaam(
         voorletters = createKlantContactInformation.initials,
         voornaam = createKlantContactInformation.firstName,
-        voorvoegselAchternaam = createKlantContactInformation.prefixesSurname,
+        voorvoegselAchternaam = createKlantContactInformation.inFix,
         achternaam = createKlantContactInformation.lastName
     )
 }
