@@ -11,5 +11,5 @@ data class CreateKlantContactInformation(
     val initials: String,
     val firstName: String,
     val prefixesSurname: String,
-    val surname: String,
+    val lastName: String,
 )

@@ -40,6 +40,6 @@ class KlantContactFactory {
         voorletters = createKlantContactInformation.initials,
         voornaam = createKlantContactInformation.firstName,
         voorvoegselAchternaam = createKlantContactInformation.prefixesSurname,
-        achternaam = createKlantContactInformation.surname
+        achternaam = createKlantContactInformation.lastName
     )
 }
