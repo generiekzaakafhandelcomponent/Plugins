@@ -28,13 +28,6 @@ data class Betrokkene(
     @JsonProperty("initiator")
     val initiator: Boolean,
 ) : Referable {
-    data class UuidAndUrlReference(
-        @JsonProperty("uuid")
-        val uuid: String,
-
-        @JsonProperty("url")
-        val url: String
-    )
 
     enum class Rol {
         @JsonProperty("vertegenwoordiger")
