@@ -1,0 +1,46 @@
+{
+  "changesetId": "openklant.case-tabs.1767804564949",
+  "case-definitions": [
+    {
+      "key": "openklant",
+      "tabs": [
+        {
+          "key": "summary",
+          "name": null,
+          "type": "standard",
+          "contentKey": "summary"
+        },
+        {
+          "key": "progress",
+          "name": null,
+          "type": "standard",
+          "contentKey": "progress"
+        },
+        {
+          "key": "audit",
+          "name": null,
+          "type": "standard",
+          "contentKey": "audit"
+        },
+        {
+          "key": "documents",
+          "name": null,
+          "type": "standard",
+          "contentKey": "documents"
+        },
+        {
+          "key": "notes",
+          "name": null,
+          "type": "standard",
+          "contentKey": "notes"
+        },
+        {
+          "key": "contactgeschiedenis",
+          "name": "Contactgeschiedenis",
+          "type": "custom",
+          "contentKey": "klantcontact-tab"
+        }
+      ]
+    }
+  ]
+}

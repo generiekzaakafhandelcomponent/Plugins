@@ -1,0 +1,7 @@
+[
+    {
+        "processDefinitionKey": "openklant_start",
+        "canInitializeDocument": true,
+        "startableByUser": true
+    }
+]
