@@ -86,7 +86,6 @@ import {ZgwModule} from '@valtimo/zgw';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
 import {ObjectModule} from "@valtimo/object";
-
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {
     DocumentGeneratorPluginModule,
@@ -98,6 +97,8 @@ import {
 } from '@valtimo-plugins/freemarker';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
+import {OpenProductPluginModule} from '../../projects/valtimo-plugins/open-product/src/lib/open-product-plugin.module';
+import {openProductPluginSpecification} from '../../projects/valtimo-plugins/open-product/src/lib/open-product-plugin.specification';
 import {
     OpenKlantPluginModule,
     openKlantPluginSpecification,
@@ -112,6 +113,8 @@ import {SlackPluginModule, slackPluginSpecification} from '@valtimo-plugins/slac
 import {SmtpMailPluginModule, smtpmailPluginSpecification} from '@valtimo-plugins/smtpmail';
 import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/spotler';
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
+import {TokenAuthenticationPluginModule} from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.module"
+import {tokenAuthenticationPluginSpecification} from "../../projects/valtimo-plugins/token-authentication/src/lib/token-authentication-plugin.specification"
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {ValtimoLlmPluginModule} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module"
@@ -207,6 +210,7 @@ export function tabsFactory() {
         ObjectModule,
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
+        OpenProductPluginModule,
         OpenKlantPluginModule,
         OpenZaakPluginModule,
         PluginManagementModule,
@@ -224,6 +228,7 @@ export function tabsFactory() {
         SseModule,
         SuwinetPluginModule,
         SwaggerModule,
+        TokenAuthenticationPluginModule,
         TaskModule,
         TextTemplatePluginModule,
         TranslateModule.forRoot({
@@ -241,7 +246,6 @@ export function tabsFactory() {
         WidgetModule,
         XentialPluginModule,
         ZakenApiPluginModule,
-        ZgwModule,
         ZgwModule
     ],
     providers: [{
@@ -263,6 +267,7 @@ export function tabsFactory() {
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
+            openProductPluginSpecification,
             openKlantPluginSpecification,
             openZaakPluginSpecification,
             publictaskPluginSpecification,
@@ -271,6 +276,7 @@ export function tabsFactory() {
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
+            tokenAuthenticationPluginSpecification,
             textTemplatePluginSpecification,
             valtimoOcrPluginSpecification,
             valtimoS2tPluginSpecification,

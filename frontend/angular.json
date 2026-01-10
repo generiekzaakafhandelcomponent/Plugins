@@ -268,6 +268,47 @@
         }
       }
     },
+    "@valtimo-plugins/open-product": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/open-product",
+      "sourceRoot": "projects/valtimo-plugins/open-product/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/open-product/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/open-product/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/open-product/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/open-product/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/open-product/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/open-product/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/open-product/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/open-product/src/**/*.ts",
+              "projects/valtimo-plugins/open-product/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/openklant": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/openklant",
@@ -796,6 +837,47 @@
             "lintFilePatterns": [
               "projects/valtimo-plugins/suwinet/src/**/*.ts",
               "projects/valtimo-plugins/suwinet/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/token-authentication": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/token-authentication",
+      "sourceRoot": "projects/valtimo-plugins/token-authentication/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/token-authentication/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/token-authentication/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/token-authentication/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/token-authentication/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/token-authentication/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/token-authentication/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/token-authentication/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/token-authentication/src/**/*.ts",
+              "projects/valtimo-plugins/token-authentication/src/**/*.html"
             ]
           }
         }
