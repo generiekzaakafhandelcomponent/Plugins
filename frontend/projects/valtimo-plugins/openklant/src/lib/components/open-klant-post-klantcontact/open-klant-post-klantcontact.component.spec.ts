@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OpenKlantPostKlantcontactComponent } from './open-klant-post-klantcontact.component';
+import {OpenKlantPostKlantcontactComponent} from './open-klant-post-klantcontact.component';
 import {OpenKlantPostKlantcontactConfig} from "../../models/open-klant-post-klantcontact-config";
 import {BehaviorSubject, Subject} from "rxjs";
 import {EventEmitter, NO_ERRORS_SCHEMA} from "@angular/core";
@@ -11,10 +11,7 @@ import {
 } from '@ngx-translate/core';
 import {PluginService} from "@valtimo/plugin";
 
-
-const pluginServiceMock: Partial<PluginService> = {
-} as any;
-
+const pluginServiceMock: Partial<PluginService> = {} as any;
 
 describe('OpenKlantPostKlantcontactComponent', () => {
     let component: OpenKlantPostKlantcontactComponent;
@@ -55,16 +52,15 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         disabled$ = new BehaviorSubject<boolean>(false);
 
 
-
         await TestBed.configureTestingModule({
             imports: [
                 OpenKlantPostKlantcontactComponent,
                 TranslateModule.forRoot({
-                    loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+                    loader: {provide: TranslateLoader, useClass: TranslateFakeLoader},
                 }),
             ],
             providers: [
-                { provide: PluginService, useValue: pluginServiceMock },
+                {provide: PluginService, useValue: pluginServiceMock},
             ],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
