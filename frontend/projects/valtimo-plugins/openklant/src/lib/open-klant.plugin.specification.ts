@@ -9,6 +9,9 @@ import {OPEN_KLANT_PLUGIN_LOGO_BASE64} from './assets/open-klant-plugin-logo';
 import {
     OpenKlantGetContactMomentsByCaseUuidComponent
 } from './components/open-klant-get-contact-moments-by-case-uuid/open-klant-get-contact-moments-by-case-uuid.component';
+import {
+    OpenKlantPostKlantcontactComponent
+} from "./components/open-klant-post-klantcontact/open-klant-post-klantcontact.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
     pluginId: 'openklant',
@@ -16,7 +19,8 @@ const openKlantPluginSpecification: PluginSpecification = {
     pluginLogoBase64: OPEN_KLANT_PLUGIN_LOGO_BASE64,
     functionConfigurationComponents: {
         'get-contact-moments-by-case': OpenKlantGetContactMomentsByCaseUuidComponent,
-        'store-contactinfo': OpenKlantStoreContactinfoComponent
+        'store-contactinfo': OpenKlantStoreContactinfoComponent,
+        'post-klantcontact': OpenKlantPostKlantcontactComponent,
     },
     pluginTranslations: {
         nl: {
@@ -35,6 +39,13 @@ const openKlantPluginSpecification: PluginSpecification = {
             lastName: 'Achternaam',
             emailAddress: 'E-mailadres ',
             caseNumber: 'Zaaknummer',
+            communicationChannel: 'Communicatiekanaal',
+            subject: 'Onderwerp',
+            content: 'Inhoud',
+            confidential: 'Vertrouwelijk (true/false)',
+            startDateTime: 'Start datum/tijd (ISO 8601)',
+            partijUuid: 'Partij Uuid',
+            initials: 'Initialen',
 
         },
         en: {
@@ -53,6 +64,13 @@ const openKlantPluginSpecification: PluginSpecification = {
             lastName: 'Last Name',
             emailAddress: 'E-mail Address ',
             caseNumber: 'Case Number',
+            communicationChannel: 'Communication channel',
+            subject: 'Subject',
+            content: 'Content',
+            confidential: 'Confidential (true/false)',
+            startDateTime: 'Start date/time (ISO 8601)',
+            partijUuid: 'Partij Uuid',
+            initials: 'Initials',
         }
     }
 };
