@@ -1,23 +1,205 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OpenKlantPostKlantcontactComponent } from './open-klant-post-klantcontact.component';
+import {OpenKlantPostKlantcontactConfig} from "../../models/open-klant-post-klantcontact-config";
+import {BehaviorSubject, Subject} from "rxjs";
+import {EventEmitter, NO_ERRORS_SCHEMA} from "@angular/core";
+import {
+    TranslateModule,
+    TranslateLoader,
+    TranslateFakeLoader,
+} from '@ngx-translate/core';
+import {PluginService} from "@valtimo/plugin";
+
+
+const pluginServiceMock: Partial<PluginService> = {
+} as any;
+
 
 describe('OpenKlantPostKlantcontactComponent', () => {
-  let component: OpenKlantPostKlantcontactComponent;
-  let fixture: ComponentFixture<OpenKlantPostKlantcontactComponent>;
+    let component: OpenKlantPostKlantcontactComponent;
+    let fixture: ComponentFixture<OpenKlantPostKlantcontactComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [OpenKlantPostKlantcontactComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(OpenKlantPostKlantcontactComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    let save$: Subject<void>;
+    let disabled$: BehaviorSubject<boolean>;
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    const validFormValue: OpenKlantPostKlantcontactConfig = {
+        communicationChannel: 'email',
+        subject: 'Subject',
+        content: 'Content',
+        confidential: true,
+        startDateTime: new Date().toISOString(),
+        partijUuid: 'uuid-123',
+        initials: 'J.D.',
+        firstName: 'John',
+        inFix: 'van',
+        lastName: 'Doe',
+    };
+
+    const invalidFormValueMissingField: OpenKlantPostKlantcontactConfig = {
+        communicationChannel: '',
+        subject: 'Subject',
+        content: 'Content',
+        confidential: true,
+        startDateTime: new Date().toISOString(),
+        partijUuid: 'uuid-123',
+        initials: 'J.D.',
+        firstName: 'John',
+        inFix: 'van',
+        lastName: 'Doe',
+    };
+
+
+    beforeEach(async () => {
+        save$ = new Subject<void>();
+        disabled$ = new BehaviorSubject<boolean>(false);
+
+
+
+        await TestBed.configureTestingModule({
+            imports: [
+                OpenKlantPostKlantcontactComponent,
+                TranslateModule.forRoot({
+                    loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
+                }),
+            ],
+            providers: [
+                { provide: PluginService, useValue: pluginServiceMock },
+            ],
+            schemas: [NO_ERRORS_SCHEMA],
+        }).compileComponents();
+
+
+        fixture = TestBed.createComponent(OpenKlantPostKlantcontactComponent);
+        component = fixture.componentInstance;
+
+        component.save$ = save$.asObservable();
+        component.disabled$ = disabled$.asObservable();
+        component.pluginId = 'plugin-123';
+
+        component.valid = new EventEmitter<boolean>();
+        component.configuration = new EventEmitter<OpenKlantPostKlantcontactConfig>();
+
+        spyOn(component.valid, 'emit');
+        spyOn(component.configuration, 'emit');
+
+        fixture.detectChanges();
+    });
+
+    afterEach(() => {
+        component.ngOnDestroy();
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
+
+    describe('lifecycle', () => {
+        it('should open save subscription on init', () => {
+            expect((component as any).saveSubscription).toBeDefined();
+        });
+
+        it('should unsubscribe on destroy', () => {
+            const sub = (component as any).saveSubscription;
+            spyOn(sub, 'unsubscribe').and.callThrough();
+
+            component.ngOnDestroy();
+            expect(sub.unsubscribe).toHaveBeenCalled();
+        });
+    });
+
+    describe('validation', () => {
+        it('should mark valid when all required fields are present', () => {
+            component.formValueChange(validFormValue);
+            expect(component.valid.emit).toHaveBeenCalledWith(true);
+        });
+
+        it('should mark valid when all required fields are present and confidential is set to false', () => {
+            const validFormValueWithConfidentialSetOnFalse: OpenKlantPostKlantcontactConfig = {
+                communicationChannel: 'email',
+                subject: 'Subject',
+                content: 'Content',
+                confidential: false,
+                startDateTime: new Date().toISOString(),
+                partijUuid: 'uuid-123',
+                initials: 'J.D.',
+                firstName: 'John',
+                inFix: 'van',
+                lastName: 'Doe',
+            };
+
+            component.formValueChange(validFormValueWithConfidentialSetOnFalse);
+            expect(component.valid.emit).toHaveBeenCalledWith(true);
+        });
+
+        it('should mark invalid when any required field is missing or falsy', () => {
+            component.formValueChange(invalidFormValueMissingField);
+            expect(component.valid.emit).toHaveBeenCalledWith(false);
+        });
+
+        it('should emit multiple valid states as form changes', () => {
+            component.formValueChange(invalidFormValueMissingField);
+            component.formValueChange(validFormValue);
+
+            expect(component.valid.emit).toHaveBeenCalledWith(false);
+            expect(component.valid.emit).toHaveBeenCalledWith(true);
+            expect((component as any).valid$.getValue()).toBeTrue();
+        });
+    });
+
+    describe('save behavior', () => {
+        it('should emit configuration when valid on save', () => {
+            component.formValueChange(validFormValue);
+
+            save$.next();
+
+            expect(component.configuration.emit).toHaveBeenCalledTimes(1);
+            expect(component.configuration.emit).toHaveBeenCalledWith(validFormValue);
+        });
+
+        it('should NOT emit configuration when invalid on save', () => {
+            component.formValueChange(invalidFormValueMissingField);
+
+            save$.next();
+
+            expect(component.configuration.emit).not.toHaveBeenCalled();
+        });
+
+        it('should only take the latest snapshot at the moment of save', () => {
+            component.formValueChange(invalidFormValueMissingField);
+
+            component.formValueChange(validFormValue);
+
+            save$.next();
+
+            expect(component.configuration.emit).toHaveBeenCalledTimes(1);
+            expect(component.configuration.emit).toHaveBeenCalledWith(validFormValue);
+        });
+
+        it('should handle multiple saves gracefully', () => {
+            component.formValueChange(validFormValue);
+
+            save$.next();
+            save$.next();
+            save$.next();
+
+            expect(component.configuration.emit).toHaveBeenCalledTimes(3);
+        });
+    });
+
+    describe('formValueChange', () => {
+        it('should update internal formValue$ state', () => {
+            component.formValueChange(validFormValue);
+            const current = (component as any).formValue$.getValue();
+            expect(current).toEqual(validFormValue);
+        });
+
+        it('should compute and emit validity when formValue changes', () => {
+            component.formValueChange(invalidFormValueMissingField);
+            expect(component.valid.emit).toHaveBeenCalledWith(false);
+
+            component.formValueChange(validFormValue);
+            expect(component.valid.emit).toHaveBeenCalledWith(true);
+        });
+    });
 });
