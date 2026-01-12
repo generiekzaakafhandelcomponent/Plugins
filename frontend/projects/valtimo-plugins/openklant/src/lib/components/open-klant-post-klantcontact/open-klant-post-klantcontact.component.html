@@ -29,7 +29,7 @@
     <v-input
             name="confidential"
             [title]="'confidential' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.confidential"
+            [defaultValue]="obs.prefill?.confidential.toString()"
             [disabled]="obs.disabled"
             [required]="true"
     ></v-input>
