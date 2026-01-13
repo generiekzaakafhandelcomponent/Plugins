@@ -19,8 +19,12 @@ import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.AdresType
-import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
-import com.ritense.valtimoplugins.suwinet.model.PersoonDto
+import com.ritense.valtimoplugins.suwinet.model.brp.AanduidingNaamgebruik
+import com.ritense.valtimoplugins.suwinet.model.brp.BrpGegevensGeheim
+import com.ritense.valtimoplugins.suwinet.model.brp.GeslachtsAanduiding
+import com.ritense.valtimoplugins.suwinet.model.brp.NationaliteitDto
+import com.ritense.valtimoplugins.suwinet.model.brp.PartnerDto
+import com.ritense.valtimoplugins.suwinet.model.brp.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
@@ -107,6 +111,7 @@ class SuwinetBrpInfoService(
 
                 PersoonDto(
                     bsn = persoon.burgerservicenr,
+                    aNummer = persoon.aNr,
                     voornamen = persoon.voornamen ?: "",
                     achternaam = persoon.significantDeelVanDeAchternaam ?: "",
                     voorvoegsel = persoon.voorvoegsel ?: "",
@@ -118,7 +123,24 @@ class SuwinetBrpInfoService(
                     nationaliteiten = getNationaliteiten(persoon.nationaliteit),
                     kinderenBsns = getKinderen(persoon.kind),
                     partnerBsn = getPartnerBsn(persoon.huwelijk),
-                    datumOverlijden = dateTimeService.fromSuwinetToDateString(persoon.overlijden?.datOverlijden)
+                    datumOverlijden = dateTimeService.fromSuwinetToDateString(persoon.overlijden?.datOverlijden),
+                    codeBrpGegevensGeheim = persoon.cdBrpGegevensGeheim?.let{
+                        BrpGegevensGeheim.fromCode(persoon.cdBrpGegevensGeheim)
+                    },
+                    naamgebruik = persoon.aanduidingNaamgebruik?.let {
+                        AanduidingNaamgebruik.fromCode(persoon.aanduidingNaamgebruik)
+                    },
+                    geslachtsAanduiding = persoon.geslacht?.let { GeslachtsAanduiding.fromCode(persoon.geslacht) },
+                    partnerDto = persoon.huwelijk
+                        ?.firstOrNull()
+                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }
+                        ?.let { huwelijk ->
+                            PartnerDto(
+                                geslachtsnaamPartner = huwelijk.partner.significantDeelVanDeAchternaam,
+                                aNummer = huwelijk.partner.aNr,
+                                burgerServiceNummer = huwelijk.partner.burgerservicenr
+                            )
+                        },
                 )
             }
 

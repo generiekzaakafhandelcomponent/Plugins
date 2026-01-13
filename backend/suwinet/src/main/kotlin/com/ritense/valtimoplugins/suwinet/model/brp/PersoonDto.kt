@@ -1,6 +1,8 @@
-package com.ritense.valtimoplugins.suwinet.model
+package com.ritense.valtimoplugins.suwinet.model.brp
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.ritense.valtimoplugins.suwinet.model.AdresDto
+import com.ritense.valtimoplugins.suwinet.model.AdresType
 
 data class PersoonDto(
     val voornamen: String,
@@ -15,7 +17,14 @@ data class PersoonDto(
     val nationaliteiten: List<NationaliteitDto>?,
     @JsonInclude(JsonInclude.Include.NON_NULL) val kinderenBsns: List<String>?,
     val partnerBsn: String? = "",
-    val datumOverlijden: String? = ""
+    val partnerDto: PartnerDto?,
+    val datumOverlijden: String? = "",
+
+    val codeBrpGegevensGeheim:  BrpGegevensGeheim?,
+    val aNummer: String?,
+
+    val naamgebruik: AanduidingNaamgebruik?,
+    val geslachtsAanduiding: GeslachtsAanduiding?,
     ){
     data class Verblijfstitel(
         val codeVerblijfstitel: CodeVerblijfstitel,
