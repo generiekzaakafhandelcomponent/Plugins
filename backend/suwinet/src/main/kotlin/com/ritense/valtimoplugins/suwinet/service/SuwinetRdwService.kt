@@ -9,9 +9,10 @@ import com.ritense.valtimoplugins.dkd.rdwdossier.RDW
 import com.ritense.valtimoplugins.dkd.rdwdossier.VoertuigbezitInfoPersoonResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
-import com.ritense.valtimoplugins.suwinet.model.MotorvoertuigDto
+import com.ritense.valtimoplugins.suwinet.model.MotorvoertuigDynamicDto
 import com.ritense.valtimoplugins.suwinet.model.SoortVoertuig
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
@@ -26,7 +27,8 @@ const val SUWINET_DATE_PATTERN = "yyyyMMdd"
 const val SUWINET_TIME_PATTERN = "HHmmss00"
 
 class SuwinetRdwService(
-    private val suwinetSOAPClient: SuwinetSOAPClient
+    private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val flattener: ObjectFlattener,
 ) {
     lateinit var rdwService: RDW
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
@@ -55,8 +57,9 @@ class SuwinetRdwService(
 
     fun getVoertuigbezitInfoPersoonByBsn(
         bsn: String,
-        rdwService: RDW
-    ): MotorvoertuigDto {
+        rdwService: RDW,
+        dynamicProperties: List<String>,
+    ): MotorvoertuigDynamicDto {
 
         /* configure soap service */
         this.rdwService = rdwService
@@ -68,7 +71,7 @@ class SuwinetRdwService(
             val kentekens = retrieveVoertuigenBezitInfo(bsn)
 
             // retrieve voertuigen details from kenteken list
-            getVoertuigenDetails(kentekens)
+            getVoertuigenDetails(kentekens, dynamicProperties)
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -104,38 +107,35 @@ class SuwinetRdwService(
         return response.unwrapResponse()
     }
 
-    private fun getVoertuigenDetails(kentekens: List<String>) =
-        MotorvoertuigDto(
+    private fun getVoertuigenDetails(kentekens: List<String>, properties: List<String>): MotorvoertuigDynamicDto  =
+        MotorvoertuigDynamicDto(
             kentekens.mapNotNull {
-                getMotorvoertuigDetails(it)
+                getMotorvoertuigDetails(it, properties)
             }
         )
 
 
+
     private fun getMotorvoertuigDetails(
-        kenteken: String
+        kenteken: String,
+        properties: List<String>,
     ) = try {
-        retrieveAansprakelijkeInfoFromSuwi(kenteken)?.let { mapToSimpleMotorvoertuig(it) }
+        retrieveAansprakelijkeInfoFromSuwi(kenteken)?.let { mapToSimpleMotorvoertuig(it, properties) }
     } catch (e: Error) {
         logger.error { "error retrieving: $e" }
         null
     }
 
-    fun mapToSimpleMotorvoertuig(rdwAansprakelijke: KentekenInfoResponse.ClientSuwi.Aansprakelijke?): MotorvoertuigDto.Motorvoertuig {
+    fun mapToSimpleMotorvoertuig(rdwAansprakelijke: KentekenInfoResponse.ClientSuwi.Aansprakelijke?, properties: List<String>): MotorvoertuigDynamicDto.MotorvoertuigDynamic {
 
         val rdwVoertuig = rdwAansprakelijke?.voertuig
-        val soortVoertuig = rdwVoertuig?.cdSrtVoertuig?.let { SoortVoertuig.findByCode(it) }
-        val soortVoertuigNode = objectMapper.createObjectNode()
-        soortVoertuigNode.put("name", soortVoertuig?.naam ?: "Onbekend")
-        soortVoertuigNode.put("code", soortVoertuig?.code ?: rdwVoertuig?.cdSrtVoertuig)
-        return MotorvoertuigDto.Motorvoertuig(
-            kenteken = rdwVoertuig?.kentekenVoertuig ?: "",
-            soortMotorvoertuig = soortVoertuigNode,
-            merk = rdwVoertuig?.merkVoertuig ?: "",
-            model = rdwVoertuig?.typeVoertuig ?: "",
-            datumEersteInschrijving = rdwVoertuig?.datEersteInschrijvingVoertuigNat?.let { toDate(it) } ?: "",
-            datumRegistratieAansprakelijkheid = rdwAansprakelijke?.datRegistratieAansprakelijkheid?.let { toDate(it) }
-                ?: ""
+//        val soortVoertuig = rdwVoertuig?.cdSrtVoertuig?.let { SoortVoertuig.findByCode(it) }
+//        val soortVoertuigNode = objectMapper.createObjectNode()
+//        soortVoertuigNode.put("name", soortVoertuig?.naam ?: "Onbekend")
+//        soortVoertuigNode.put("code", soortVoertuig?.code ?: rdwVoertuig?.cdSrtVoertuig)
+        return MotorvoertuigDynamicDto.MotorvoertuigDynamic(
+           propertiesMap = getDynamicProperties(rdwVoertuig as Any , properties),
+            properties = getAvailableProperties(rdwVoertuig)
         )
     }
 
@@ -200,6 +200,41 @@ class SuwinetRdwService(
         } else {
             listOf<String>()
         }
+    }
+
+    private fun getAvailableProperties(info: Any): List<String> {
+        val flatMap = flattener.toFlatMap(info)
+        return flatMap.keys.toList()
+    }
+
+    private fun getDynamicProperties(
+        info: Any,
+        dynamicProperties: List<String>
+    ): Map<String, Any?> {
+        var propertiesMap: MutableMap<String, Any?> = mutableMapOf<String, Any?>()
+
+        val flatMap = flattener.toFlatMap(info)
+
+        // exact matching
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) {
+                propertiesMap[prop] = flatMap[prop]
+            }
+
+            // do wildcards
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd(
+                    '*'
+                )
+                flatMap.keys.forEach {
+                    if (it.startsWith(prefixValue)) {
+                        propertiesMap[it] = flatMap[it]
+                    }
+                }
+            }
+        }
+
+        return propertiesMap
     }
 
     private fun toDateString(date: LocalDate) = date.format(dateOutFormatter)

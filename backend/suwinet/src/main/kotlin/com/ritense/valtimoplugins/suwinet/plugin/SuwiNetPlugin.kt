@@ -297,10 +297,17 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String>? = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
         logger.info { "Getting voertuigen for case ${execution.businessKey}" }
+
+        var props = dynamicProperties
+
+        if(dynamicProperties == null) {
+            props = listOf()
+        }
 
         try {
             suwinetRdwService.setConfig(
@@ -309,7 +316,9 @@ class SuwiNetPlugin(
             )
 
             suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(
-                bsn = bsn, suwinetRdwService.getRDWService()
+                bsn = bsn,
+                dynamicProperties = props,
+                rdwService = suwinetRdwService.getRDWService()
             ).let {
                 if(it.motorVoertuigen.isNotEmpty()) {
                     execution.processInstance.setVariable(

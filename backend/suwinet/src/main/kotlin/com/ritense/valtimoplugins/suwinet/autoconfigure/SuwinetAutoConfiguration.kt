@@ -77,9 +77,11 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetRdwService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        mapper: ObjectMapper
     ): SuwinetRdwService {
         return SuwinetRdwService(
-            suwinetSOAPClient
+            suwinetSOAPClient,
+            getFlattener(mapper)
         )
     }
 
