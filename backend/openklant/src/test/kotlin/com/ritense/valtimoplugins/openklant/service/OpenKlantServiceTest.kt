@@ -33,6 +33,7 @@ class OpenKlantServiceTest {
 
     @MockK
     lateinit var partijFactory: PartijFactory
+    lateinit var klantContactFactory: KlantContactFactory
     lateinit var service: OpenKlantService
     private val defaultDigitaalAdres =
         DigitaalAdres(
@@ -94,7 +95,7 @@ class OpenKlantServiceTest {
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        service = DefaultOpenKlantService(client, partijFactory)
+        service = DefaultOpenKlantService(client, partijFactory, klantContactFactory)
     }
 
     @Test

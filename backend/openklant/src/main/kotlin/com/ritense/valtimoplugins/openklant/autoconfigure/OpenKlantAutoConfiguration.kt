@@ -34,6 +34,9 @@ class OpenKlantAutoConfiguration {
     fun partijFactory(): PartijFactory = PartijFactory()
 
     @Bean
+    fun klantContactFactory(): KlantContactFactory = KlantContactFactory()
+
+    @Bean
     fun openKlantService(
         openKlantClient: OpenKlantClient,
         partijFactory: PartijFactory,
