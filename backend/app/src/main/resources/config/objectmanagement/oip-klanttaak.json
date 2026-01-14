@@ -6,6 +6,6 @@
     "objecttypeId": "de1713dc-78f2-4ec9-8254-e550e5bb8957",
     "objecttypeVersion": 1,
     "showInDataMenu": false,
-    "formDefinitionView": "oip-klanttaak.viewform",
-    "formDefinitionEdit": "oip-klanttaak.editform"
+    "formDefinitionView": "",
+    "formDefinitionEdit": ""
 }
