@@ -4,42 +4,42 @@ import com.ritense.valtimoplugins.openklant.dto.Betrokkene.Rol
 import com.ritense.valtimoplugins.openklant.dto.Contactnaam
 import com.ritense.valtimoplugins.openklant.dto.CreateKlantContactRequest
 import com.ritense.valtimoplugins.openklant.dto.UuidReference
-import com.ritense.valtimoplugins.openklant.model.CreateKlantContactInformation
+import com.ritense.valtimoplugins.openklant.model.KlantContactCreationInformation
 
 class KlantContactFactory {
-    fun createKlantContactRequest(createKlantContactInformation: CreateKlantContactInformation): CreateKlantContactRequest =
+    fun createKlantContactRequest(klantContactCreationInformation: KlantContactCreationInformation): CreateKlantContactRequest =
         CreateKlantContactRequest(
-            klantcontact = klantcontactRequest(createKlantContactInformation),
-            betrokkene = betrokkeneRequest(createKlantContactInformation)
+            klantcontact = klantcontactRequest(klantContactCreationInformation),
+            betrokkene = betrokkeneRequest(klantContactCreationInformation)
         )
 
-    private fun klantcontactRequest(createKlantContactInformation: CreateKlantContactInformation) =
+    private fun klantcontactRequest(klantContactCreationInformation: KlantContactCreationInformation) =
         CreateKlantContactRequest.KlantContactRequest(
             nummer = null,
-            kanaal = createKlantContactInformation.communicationChannel,
-            onderwerp = createKlantContactInformation.subject,
-            inhoud = createKlantContactInformation.content,
+            kanaal = klantContactCreationInformation.communicationChannel,
+            onderwerp = klantContactCreationInformation.subject,
+            inhoud = klantContactCreationInformation.content,
             indicateContactGelukt = true,
             taal = "nld",
-            vertrouwelijk = createKlantContactInformation.confidential,
-            plaatsgevondenOp = createKlantContactInformation.startDateTime,
+            vertrouwelijk = klantContactCreationInformation.confidential,
+            plaatsgevondenOp = klantContactCreationInformation.startDateTime,
         )
 
-    private fun betrokkeneRequest(createKlantContactInformation: CreateKlantContactInformation) =
+    private fun betrokkeneRequest(klantContactCreationInformation: KlantContactCreationInformation) =
         CreateKlantContactRequest.BetrokkeneRequest(
-            wasPartij = UuidReference(createKlantContactInformation.partijUuid),
+            wasPartij = UuidReference(klantContactCreationInformation.partijUuid),
             bezoekadres = null,
             correspondentieadres = null,
-            contactnaam = contactNaam(createKlantContactInformation),
+            contactnaam = contactNaam(klantContactCreationInformation),
             rol = Rol.KLANT,
             organisatienaam = null,
             initiator = true
         )
 
-    private fun contactNaam(createKlantContactInformation: CreateKlantContactInformation) = Contactnaam(
-        voorletters = createKlantContactInformation.initials,
-        voornaam = createKlantContactInformation.firstName,
-        voorvoegselAchternaam = createKlantContactInformation.inFix,
-        achternaam = createKlantContactInformation.lastName
+    private fun contactNaam(klantContactCreationInformation: KlantContactCreationInformation) = Contactnaam(
+        voorletters = klantContactCreationInformation.initials,
+        voornaam = klantContactCreationInformation.firstName,
+        voorvoegselAchternaam = klantContactCreationInformation.inFix,
+        achternaam = klantContactCreationInformation.lastName
     )
 }

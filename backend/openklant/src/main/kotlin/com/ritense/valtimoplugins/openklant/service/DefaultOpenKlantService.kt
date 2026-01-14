@@ -7,7 +7,7 @@ import com.ritense.valtimoplugins.openklant.dto.KlantContact
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
-import com.ritense.valtimoplugins.openklant.model.CreateKlantContactInformation
+import com.ritense.valtimoplugins.openklant.model.KlantContactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 
@@ -36,9 +36,9 @@ class DefaultOpenKlantService(
 
     override suspend fun postKlantContact(
         properties: OpenKlantProperties,
-        createKlantContactInformation: CreateKlantContactInformation,
+        klantContactCreationInformation: KlantContactCreationInformation,
     ) {
-        val klantContactRequest = klantContactFactory.createKlantContactRequest(createKlantContactInformation)
+        val klantContactRequest = klantContactFactory.createKlantContactRequest(klantContactCreationInformation)
         openKlantClient.postKlantContact(
             request = klantContactRequest,
             properties = properties

@@ -6,7 +6,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
-import com.ritense.valtimoplugins.openklant.model.CreateKlantContactInformation
+import com.ritense.valtimoplugins.openklant.model.KlantContactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
@@ -108,7 +108,7 @@ class OpenKlantPlugin(
         ) = runBlocking {
         logger.info { "Sending klantcontact: - ${execution.processBusinessKey}" }
 
-        val createKlantContactInformation = CreateKlantContactInformation(
+        val klantContactCreationInformation = KlantContactCreationInformation(
             communicationChannel = communicationChannel,
             subject = subject,
             content = content,
@@ -125,7 +125,7 @@ class OpenKlantPlugin(
 
         openKlantPluginService.postKlantContact(
             properties,
-            createKlantContactInformation
+            klantContactCreationInformation
         )
     }
 
