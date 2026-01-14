@@ -1,8 +1,24 @@
+/*
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
+ *
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ritense.valtimoplugins.oipklanttaak.listener
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
+import com.ritense.authorization.AuthorizationContext
 import com.ritense.authorization.annotation.RunWithoutAuthorization
 import com.ritense.notificatiesapi.event.NotificatiesApiNotificationReceivedEvent
 import com.ritense.notificatiesapi.exception.NotificatiesNotificationEventException
@@ -19,11 +35,10 @@ import com.ritense.valtimo.operaton.domain.OperatonTask
 import com.ritense.valtimo.security.exceptions.TaskNotFoundException
 import com.ritense.valtimo.service.OperatonProcessService
 import com.ritense.valtimo.service.OperatonTaskService
-import com.ritense.valtimoplugins.oipklanttaak.OipKlanttaakPlugin
 import com.ritense.valtimoplugins.oipklanttaak.domain.OipKlanttaak
-import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.OIP_KLANTTAAK_OBJECT_URL
-import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.VERWERKER_TAAK_ID
+import com.ritense.valtimoplugins.oipklanttaak.ProcessVariables
 import com.ritense.valtimoplugins.oipklanttaak.domain.Status
+import com.ritense.valtimoplugins.oipklanttaak.plugin.OipKlanttaakPlugin
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.transaction.annotation.Transactional
@@ -109,7 +124,7 @@ open class OipKlanttaakEventListener(
         oipKlanttaakPluginConfiguration: PluginConfiguration,
     ) {
         pluginService.createInstance<OipKlanttaakPlugin>(oipKlanttaakPluginConfiguration.id.id).let { oipKlanttaakPlugin ->
-            val documentId = runWithoutAuthorization {
+            val documentId = AuthorizationContext.Companion.runWithoutAuthorization {
                 processDocumentService.getDocumentId(
                     OperatonProcessInstanceId(operatonTask.getProcessInstanceId()),
                     operatonTask
@@ -120,14 +135,14 @@ open class OipKlanttaakEventListener(
                 processDefinitionKey = oipKlanttaakPlugin.finalizerProcess,
                 businessKey = documentId.id.toString(),
                 caseDefinitionId = oipKlanttaakPlugin.caseDefinitionVersion?.let {
-                    CaseDefinitionId.of(
+                    CaseDefinitionId.Companion.of(
                         key = it.substringBefore(":"),
                         versionTag = it.substringAfter(":")
                     )
                 },
                 variables = mapOf(
-                    VERWERKER_TAAK_ID to operatonTask.id,
-                    OIP_KLANTTAAK_OBJECT_URL to resourceUrl
+                    ProcessVariables.VERWERKER_TAAK_ID to operatonTask.id,
+                    ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to resourceUrl
                 )
             )
         }
@@ -140,7 +155,7 @@ open class OipKlanttaakEventListener(
         variables: Map<String, Any>
     ) {
         try {
-            runWithoutAuthorization {
+            AuthorizationContext.Companion.runWithoutAuthorization {
                 if (caseDefinitionId != null) {
                     processService.startProcess(
                         processDefinitionKey,
@@ -150,9 +165,9 @@ open class OipKlanttaakEventListener(
                     ).also {
                         logger.info {
                             "Started ProcessInstance(id=${it.processInstanceDto.id}) successfully for " +
-                                "CaseDefinition(id=${caseDefinitionId}), " +
-                                "ProcessDefinition(key=$processDefinitionKey) and " +
-                                "Document(id=$businessKey)"
+                                    "CaseDefinition(id=${caseDefinitionId}), " +
+                                    "ProcessDefinition(key=$processDefinitionKey) and " +
+                                    "Document(id=$businessKey)"
                         }
                     }
                 } else {
@@ -163,8 +178,8 @@ open class OipKlanttaakEventListener(
                     ).also {
                         logger.info {
                             "Started ProcessInstance(id=${it.processInstanceDto.id}) successfully for " +
-                                "ProcessDefinition(key=$processDefinitionKey) and " +
-                                "Document(id=$businessKey)"
+                                    "ProcessDefinition(key=$processDefinitionKey) and " +
+                                    "Document(id=$businessKey)"
                         }
                     }
                 }
@@ -172,7 +187,7 @@ open class OipKlanttaakEventListener(
         } catch (ex: RuntimeException) {
             throw NotificatiesNotificationEventException(
                 "Could not start ProcessInstance from ProcessDefinition(key=$processDefinitionKey) and businessKey: $businessKey.\n" +
-                    "Reason: ${ex.message}"
+                        "Reason: ${ex.message}"
             )
         }
     }
@@ -213,4 +228,3 @@ open class OipKlanttaakEventListener(
         private const val OBJECT_MANAGEMENT_CONFIGURATION_ID = "objectManagementConfigurationId"
     }
 }
-

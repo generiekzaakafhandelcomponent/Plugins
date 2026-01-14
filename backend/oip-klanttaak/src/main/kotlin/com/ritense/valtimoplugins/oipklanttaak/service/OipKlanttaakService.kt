@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
+ *
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ritense.valtimoplugins.oipklanttaak.service
 
 import com.fasterxml.jackson.core.JsonPointer
@@ -5,10 +21,9 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.ritense.authorization.AuthorizationContext.Companion.runWithoutAuthorization
+import com.ritense.authorization.AuthorizationContext
 import com.ritense.document.domain.patch.JsonPatchService
 import com.ritense.objectenapi.ObjectenApiPlugin
-import com.ritense.objectenapi.client.ObjectGeometry
 import com.ritense.objectenapi.client.ObjectRecord
 import com.ritense.objectenapi.client.ObjectRequest
 import com.ritense.objectmanagement.domain.ObjectManagement
@@ -19,18 +34,18 @@ import com.ritense.valtimo.contract.json.patch.JsonPatchBuilder
 import com.ritense.valtimo.service.OperatonTaskService
 import com.ritense.valtimoplugins.oipklanttaak.domain.Authorizee
 import com.ritense.valtimoplugins.oipklanttaak.domain.Betrokkene
-import com.ritense.valtimoplugins.oipklanttaak.domain.DataBinding
-import com.ritense.valtimoplugins.oipklanttaak.domain.InformatieObject
+import com.ritense.valtimoplugins.oipklanttaak.dto.DataBinding
 import com.ritense.valtimoplugins.oipklanttaak.domain.Formulier
+import com.ritense.valtimoplugins.oipklanttaak.domain.InformatieObject
 import com.ritense.valtimoplugins.oipklanttaak.domain.Koppeling
 import com.ritense.valtimoplugins.oipklanttaak.domain.LegalSubject
 import com.ritense.valtimoplugins.oipklanttaak.domain.LevelOfAssurance
 import com.ritense.valtimoplugins.oipklanttaak.domain.OipKlanttaak
 import com.ritense.valtimoplugins.oipklanttaak.domain.Portaalformulier
-import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.OIP_KLANTTAAK_OBJECT_URL
-import com.ritense.valtimoplugins.oipklanttaak.domain.ProcessVariables.VERWERKER_TAAK_ID
+import com.ritense.valtimoplugins.oipklanttaak.ProcessVariables
 import com.ritense.valtimoplugins.oipklanttaak.domain.Soort
 import com.ritense.valtimoplugins.oipklanttaak.domain.Status
+import com.ritense.valtimoplugins.oipklanttaak.copy
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
@@ -75,8 +90,9 @@ class OipKlanttaakService(
                                 type = objectTypeUrl,
                                 record = ObjectRecord(
                                     typeVersion = objectManagement.objecttypeVersion,
-                                    data = objectMapper.convertValue(OipKlanttaak(
-                                        titel = delegateTask.name,
+                                    data = objectMapper.convertValue(
+                                        OipKlanttaak(
+                                            titel = delegateTask.name,
                                         status = Status.OPEN,
                                         eigenaar = taskOwner,
                                         betrokkene = Betrokkene(
@@ -159,8 +175,8 @@ class OipKlanttaakService(
         linkDocuments: Boolean,
         pathToDocuments: String? = null,
     ) {
-        val verwerkerTaakId = execution.getVariableAsString(VERWERKER_TAAK_ID)
-        val oipTaskObjectUrl = execution.getVariableAsURI(OIP_KLANTTAAK_OBJECT_URL)
+        val verwerkerTaakId = execution.getVariableAsString(ProcessVariables.VERWERKER_TAAK_ID)
+        val oipTaskObjectUrl = execution.getVariableAsURI(ProcessVariables.OIP_KLANTTAAK_OBJECT_URL)
 
         objectManagementById(objectManagementId).let { objectManagement ->
             objectenApiPluginByPluginConfigurationId(objectManagement.objectenApiPluginConfigurationId).let { objectenApiPlugin ->
@@ -175,7 +191,8 @@ class OipKlanttaakService(
                         require(oipKlanttaak.status == Status.UITGEVOERD) {
                             "Status is not '${Status.UITGEVOERD.name}'"
                         }
-                        runWithoutAuthorization { taskService.complete(verwerkerTaakId) }.also {
+                        AuthorizationContext.Companion.runWithoutAuthorization { taskService.complete(verwerkerTaakId) }
+                            .also {
                             logger.info { "Task with id '$verwerkerTaakId' for object with URL '$oipTaskObjectUrl' completed" }
                         }
 
@@ -258,7 +275,7 @@ class OipKlanttaakService(
         zaakUrlProvider.getZaakUrl(id).let { zaakUrl ->
             requireNotNull(pluginService.createInstance(
                 ZakenApiPlugin::class.java,
-                ZakenApiPlugin.findConfigurationByUrl(zaakUrl)
+                ZakenApiPlugin.Companion.findConfigurationByUrl(zaakUrl)
             )) { "Zaken API Plugin configuration not found for zaak with URL '$zaakUrl'" }
         }
 
@@ -267,9 +284,6 @@ class OipKlanttaakService(
             requireNotNull(variableValue) { "Variable '$variableName' is required but was not provided" }
             variableValue as String
         }
-
-    private fun DelegateExecution.getVariableAsUUID(variableName: String): UUID =
-        UUID.fromString(getVariableAsString(variableName))
 
     private fun DelegateExecution.getVariableAsURI(variableName: String): URI =
         URI.create(getVariableAsString(variableName))
@@ -280,25 +294,3 @@ class OipKlanttaakService(
         private const val DEFAULT_TASK_OWNER = "GZAC"
     }
 }
-
-internal fun ObjectRecord.copy(
-    index: Int? = this.index,
-    typeVersion: Int = this.typeVersion,
-    data: JsonNode? = this.data,
-    geometry: ObjectGeometry? = this.geometry,
-    startAt: LocalDate = this.startAt,
-    endAt: LocalDate? = this.endAt,
-    registrationAt: LocalDate? = this.registrationAt,
-    correctionFor: String? = this.correctionFor,
-    correctedBy: String? = this.correctedBy
-) = ObjectRecord(
-    index = index,
-    typeVersion = typeVersion,
-    data = data,
-    geometry = geometry,
-    startAt = startAt,
-    endAt = endAt,
-    registrationAt = registrationAt,
-    correctionFor = correctionFor,
-    correctedBy = correctedBy
-)
