@@ -26,13 +26,14 @@
             [disabled]="obs.disabled"
             [required]="true"
     ></v-input>
-    <v-input
+    <v-radio
             name="confidential"
             [title]="'confidential' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.confidential.toString()"
+            [defaultValue]="obs.prefill?.confidential"
+            [radioValues]="confidentialOptions$ | async"
             [disabled]="obs.disabled"
             [required]="true"
-    ></v-input>
+    ></v-radio>
     <v-input
             name="startDateTime"
             [title]="'startDateTime' | pluginTranslate: pluginId | async"

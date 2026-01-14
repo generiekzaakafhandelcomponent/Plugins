@@ -1,37 +1,45 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormModule, InputModule} from "@valtimo/components";
+import {FormModule, InputModule, RadioModule, RadioValue} from "@valtimo/components";
 import {FunctionConfigurationComponent, FunctionConfigurationData, PluginTranslatePipeModule} from "@valtimo/plugin";
 import {AsyncPipe} from "@angular/common";
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from "rxjs";
-import {OpenKlantPostKlantcontactConfig} from "../../models/open-klant-post-klantcontact-config";
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from "rxjs";
+import {OpenKlantSendKlantcontactConfig} from "../../models/open-klant-send-klantcontact-config";
 
 @Component({
-    selector: 'lib-open-klant-post-klantcontact',
+    selector: 'open-klant-send-klantcontact',
     standalone: true,
     imports: [
         CommonModule,
         FormModule,
         InputModule,
         PluginTranslatePipeModule,
-        AsyncPipe
+        AsyncPipe,
+        RadioModule
     ],
-    templateUrl: './open-klant-post-klantcontact.component.html',
-    styleUrl: './open-klant-post-klantcontact.component.css'
+    templateUrl: './open-klant-send-klantcontact.component.html',
+    styleUrl: './open-klant-send-klantcontact.component.css'
 })
-export class OpenKlantPostKlantcontactComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
+export class OpenKlantSendKlantcontactComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
-    @Input() prefillConfiguration$?: Observable<OpenKlantPostKlantcontactConfig>;
+    @Input() prefillConfiguration$?: Observable<OpenKlantSendKlantcontactConfig>;
 
-    @Output() valid: EventEmitter<boolean>;
-    @Output() configuration: EventEmitter<FunctionConfigurationData>;
+    @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
-    private readonly formValue$ = new BehaviorSubject<OpenKlantPostKlantcontactConfig | null>(null);
-    private readonly valid$ = new BehaviorSubject<boolean>(false);
     private saveSubscription: Subscription;
+    private readonly formValue$ = new BehaviorSubject<OpenKlantSendKlantcontactConfig | null>(null);
+    private readonly valid$ = new BehaviorSubject<boolean>(false);
+    readonly pluginId$ = new BehaviorSubject<string>('');
 
+    readonly confidentialOptions$: Observable<Array<RadioValue>> = this.pluginId$.pipe(
+        map(() => [
+            { value: true, title: "True" },
+            { value: false, title: "False" }
+        ])
+    );
 
     ngOnInit(): void {
         this.openSaveSubscription();
@@ -41,17 +49,17 @@ export class OpenKlantPostKlantcontactComponent implements FunctionConfiguration
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: OpenKlantPostKlantcontactConfig): void {
+    formValueChange(formValue: OpenKlantSendKlantcontactConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: OpenKlantPostKlantcontactConfig): void {
+    private handleValid(formValue: OpenKlantSendKlantcontactConfig): void {
         const valid =
             !!formValue.communicationChannel &&
             !!formValue.subject &&
             !!formValue.content &&
-            (formValue.confidential === true || formValue.confidential === false) &&
+            !!(formValue.confidential === true || formValue.confidential === false) &&
             !!formValue.startDateTime &&
             !!formValue.partijUuid &&
             !!formValue.initials &&

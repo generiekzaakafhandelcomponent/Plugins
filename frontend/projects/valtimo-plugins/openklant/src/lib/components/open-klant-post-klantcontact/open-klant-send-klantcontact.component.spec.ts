@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {OpenKlantPostKlantcontactComponent} from './open-klant-post-klantcontact.component';
-import {OpenKlantPostKlantcontactConfig} from "../../models/open-klant-post-klantcontact-config";
+import {OpenKlantSendKlantcontactComponent} from './open-klant-send-klantcontact.component';
+import {OpenKlantSendKlantcontactConfig} from "../../models/open-klant-send-klantcontact-config";
 import {BehaviorSubject, Subject} from "rxjs";
 import {EventEmitter, NO_ERRORS_SCHEMA} from "@angular/core";
 import {
@@ -14,13 +14,13 @@ import {PluginService} from "@valtimo/plugin";
 const pluginServiceMock: Partial<PluginService> = {} as any;
 
 describe('OpenKlantPostKlantcontactComponent', () => {
-    let component: OpenKlantPostKlantcontactComponent;
-    let fixture: ComponentFixture<OpenKlantPostKlantcontactComponent>;
+    let component: OpenKlantSendKlantcontactComponent;
+    let fixture: ComponentFixture<OpenKlantSendKlantcontactComponent>;
 
     let save$: Subject<void>;
     let disabled$: BehaviorSubject<boolean>;
 
-    const validFormValue: OpenKlantPostKlantcontactConfig = {
+    const validFormValue: OpenKlantSendKlantcontactConfig = {
         communicationChannel: 'email',
         subject: 'Subject',
         content: 'Content',
@@ -33,7 +33,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         lastName: 'Doe',
     };
 
-    const invalidFormValueMissingField: OpenKlantPostKlantcontactConfig = {
+    const invalidFormValueMissingField: OpenKlantSendKlantcontactConfig = {
         communicationChannel: '',
         subject: 'Subject',
         content: 'Content',
@@ -54,7 +54,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
 
         await TestBed.configureTestingModule({
             imports: [
-                OpenKlantPostKlantcontactComponent,
+                OpenKlantSendKlantcontactComponent,
                 TranslateModule.forRoot({
                     loader: {provide: TranslateLoader, useClass: TranslateFakeLoader},
                 }),
@@ -66,7 +66,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         }).compileComponents();
 
 
-        fixture = TestBed.createComponent(OpenKlantPostKlantcontactComponent);
+        fixture = TestBed.createComponent(OpenKlantSendKlantcontactComponent);
         component = fixture.componentInstance;
 
         component.save$ = save$.asObservable();
@@ -74,7 +74,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         component.pluginId = 'plugin-123';
 
         component.valid = new EventEmitter<boolean>();
-        component.configuration = new EventEmitter<OpenKlantPostKlantcontactConfig>();
+        component.configuration = new EventEmitter<OpenKlantSendKlantcontactConfig>();
 
         spyOn(component.valid, 'emit');
         spyOn(component.configuration, 'emit');
@@ -111,7 +111,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         });
 
         it('should mark valid when all required fields are present and confidential is set to false', () => {
-            const validFormValueWithConfidentialSetOnFalse: OpenKlantPostKlantcontactConfig = {
+            const validFormValueWithConfidentialSetOnFalse: OpenKlantSendKlantcontactConfig = {
                 communicationChannel: 'email',
                 subject: 'Subject',
                 content: 'Content',

@@ -1,4 +1,4 @@
-export interface OpenKlantPostKlantcontactConfig {
+export interface OpenKlantSendKlantcontactConfig {
     communicationChannel: string;
     subject: string;
     content: string;

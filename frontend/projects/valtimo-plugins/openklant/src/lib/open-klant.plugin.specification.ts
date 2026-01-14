@@ -10,8 +10,8 @@ import {
     OpenKlantGetContactMomentsByCaseUuidComponent
 } from './components/open-klant-get-contact-moments-by-case-uuid/open-klant-get-contact-moments-by-case-uuid.component';
 import {
-    OpenKlantPostKlantcontactComponent
-} from "./components/open-klant-post-klantcontact/open-klant-post-klantcontact.component";
+    OpenKlantSendKlantcontactComponent
+} from "./components/open-klant-post-klantcontact/open-klant-send-klantcontact.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
     pluginId: 'openklant',
@@ -20,7 +20,7 @@ const openKlantPluginSpecification: PluginSpecification = {
     functionConfigurationComponents: {
         'get-contact-moments-by-case': OpenKlantGetContactMomentsByCaseUuidComponent,
         'store-contactinfo': OpenKlantStoreContactinfoComponent,
-        'post-klantcontact': OpenKlantPostKlantcontactComponent,
+        'send-klantcontact': OpenKlantSendKlantcontactComponent,
     },
     pluginTranslations: {
         nl: {
@@ -42,7 +42,7 @@ const openKlantPluginSpecification: PluginSpecification = {
             communicationChannel: 'Communicatiekanaal',
             subject: 'Onderwerp',
             content: 'Inhoud',
-            confidential: 'Vertrouwelijk (true/false)',
+            confidential: 'Vertrouwelijk',
             startDateTime: 'Start datum/tijd (ISO 8601)',
             partijUuid: 'Partij Uuid',
             initials: 'Initialen',
@@ -67,7 +67,7 @@ const openKlantPluginSpecification: PluginSpecification = {
             communicationChannel: 'Communication channel',
             subject: 'Subject',
             content: 'Content',
-            confidential: 'Confidential (true/false)',
+            confidential: 'Confidential',
             startDateTime: 'Start date/time (ISO 8601)',
             partijUuid: 'Partij Uuid',
             initials: 'Initials',
