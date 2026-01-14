@@ -27,7 +27,7 @@ const openKlantPluginSpecification: PluginSpecification = {
       resultPvName: "Naam van resultaatprocesvariabele",
       bsn: "BSN-nummer variabele",
       bsnTooltip:
-        "pad van de variabele waar het burgerservicenummer uit opgehaald kan worden",
+        "Pad van de variabele waar het burgerservicenummer uit opgehaald kan worden",
 
       // Store contact info
       "store-contact-info": "Maak digitaal adres (en partij) aan",
