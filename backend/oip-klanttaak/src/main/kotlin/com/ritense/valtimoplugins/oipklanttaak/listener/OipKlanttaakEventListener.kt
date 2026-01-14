@@ -198,7 +198,7 @@ open class OipKlanttaakEventListener(
             objectType.substringAfterLast("/").let { objectTypeId ->
                 objectManagementService.findByObjectTypeId(objectTypeId).also {
                     if (it == null) {
-                        logger.warn { "Skipping: Object management not found for object type id '$objectTypeId'" }
+                        logger.warn { "Skipping: Object management configuration not found for object type id '$objectTypeId'" }
                     }
                 }
             }
