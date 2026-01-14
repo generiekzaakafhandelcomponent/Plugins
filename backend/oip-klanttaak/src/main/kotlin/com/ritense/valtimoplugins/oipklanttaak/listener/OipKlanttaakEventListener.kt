@@ -35,7 +35,7 @@ import com.ritense.valtimo.operaton.domain.OperatonTask
 import com.ritense.valtimo.security.exceptions.TaskNotFoundException
 import com.ritense.valtimo.service.OperatonProcessService
 import com.ritense.valtimo.service.OperatonTaskService
-import com.ritense.valtimoplugins.oipklanttaak.domain.OipKlanttaak
+import com.ritense.valtimoplugins.oipklanttaak.domain.Klanttaak
 import com.ritense.valtimoplugins.oipklanttaak.ProcessVariables
 import com.ritense.valtimoplugins.oipklanttaak.domain.Status
 import com.ritense.valtimoplugins.oipklanttaak.plugin.OipKlanttaakPlugin
@@ -100,7 +100,7 @@ open class OipKlanttaakEventListener(
         objectenApiPluginConfigurationId: UUID
     ): OperatonTask? =
         getObjectByUrl(resourceUrl, objectenApiPluginConfigurationId).let { objectWrapper ->
-            objectMapper.convertValue<OipKlanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
+            objectMapper.convertValue<Klanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
                 if (oipKlanttaak.status != Status.UITGEVOERD) {
                     logger.info {
                         "Skipping: Taak cannot be handled. Does not match expected status UITGEVOERD."

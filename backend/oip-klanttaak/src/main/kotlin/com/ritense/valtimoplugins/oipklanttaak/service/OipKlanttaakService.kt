@@ -40,7 +40,7 @@ import com.ritense.valtimoplugins.oipklanttaak.domain.InformatieObject
 import com.ritense.valtimoplugins.oipklanttaak.domain.Koppeling
 import com.ritense.valtimoplugins.oipklanttaak.domain.LegalSubject
 import com.ritense.valtimoplugins.oipklanttaak.domain.LevelOfAssurance
-import com.ritense.valtimoplugins.oipklanttaak.domain.OipKlanttaak
+import com.ritense.valtimoplugins.oipklanttaak.domain.Klanttaak
 import com.ritense.valtimoplugins.oipklanttaak.domain.Portaalformulier
 import com.ritense.valtimoplugins.oipklanttaak.ProcessVariables
 import com.ritense.valtimoplugins.oipklanttaak.domain.Soort
@@ -91,7 +91,7 @@ class OipKlanttaakService(
                                 record = ObjectRecord(
                                     typeVersion = objectManagement.objecttypeVersion,
                                     data = objectMapper.convertValue(
-                                        OipKlanttaak(
+                                        Klanttaak(
                                             titel = delegateTask.name,
                                         status = Status.OPEN,
                                         eigenaar = taskOwner,
@@ -184,7 +184,7 @@ class OipKlanttaakService(
                     requireNotNull(objectWrapper.record.data) {
                         "No data found for object with URL '$oipTaskObjectUrl'"
                     }
-                    objectMapper.convertValue<OipKlanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
+                    objectMapper.convertValue<Klanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
                         require(oipKlanttaak.soort == Soort.EXTERNFORMULIER) {
                             "Soort is not '${Soort.EXTERNFORMULIER.name}'"
                         }
