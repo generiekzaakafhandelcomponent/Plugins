@@ -1,7 +1,7 @@
 [
     {
         "id": "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
-        "title": "Xential",
+        "title": "Xential (Autodeployed)",
         "properties": {
             "applicationName": "${XENTIAL_ACCOUNT_NAME}",
             "applicationPassword": "${XENTIAL_ACCOUNT_PASSWORD}",

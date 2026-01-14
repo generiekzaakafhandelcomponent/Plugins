@@ -1,7 +1,7 @@
 [
   {
     "id": "cb0ddb83-da46-4f0c-8b9b-11af057a25a1",
-    "title": "Externe Klanttaak",
+    "title": "Externe Klanttaak (Autodeployed)",
     "pluginDefinitionKey": "externe-klanttaak",
     "properties": {
       "pluginVersion": "1.1.0",

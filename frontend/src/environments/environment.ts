@@ -109,10 +109,13 @@ export const environment: ValtimoConfig = {
                     {link: ['/processes'], title: 'Processes', sequence: 12},
                     {link: ['/decision-tables'], title: 'Decision tables', sequence: 13},
 
-                    {title: 'Other', textClass: 'text-dark font-weight-bold c-default', sequence: 14},
-                    {link: ['/logging'], title: 'Logs', sequence: 15},
-                    {link: ['/case-migration'], title: 'Case migration (beta)', sequence: 16},
-                    {link: ['/process-migration'], title: 'Process migration', sequence: 17},
+                    {title: 'Migration', textClass: 'text-dark font-weight-bold c-default', sequence: 14},
+                    {link: ['/case-migration'], title: 'Case migration (beta)', sequence: 15},
+                    {link: ['/process-migration'], title: 'Process migration', sequence: 16},
+
+                    {title: 'Other', textClass: 'text-dark font-weight-bold c-default', sequence: 17},
+                    {link: ['/logging'], title: 'Logs', sequence: 18},
+                    {link: ['/notifications-api/notifications/failed'], title: 'Notifications', sequence: 19},
                 ]
             },
             {
