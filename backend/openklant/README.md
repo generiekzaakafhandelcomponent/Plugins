@@ -49,7 +49,7 @@ AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN=AAAAAAAAAAAAAAAAAA
 
 ### Opslaan partij:
 
-Voor het handmatig configureren, zie screenshots.
+![opslaan partij configuratie](img/opslaan-contactinfo-in-openklant.png)
 
 Voorbeeld `*.processlink.json`:
 
@@ -71,9 +71,35 @@ Voorbeeld `*.processlink.json`:
 }
 ```
 
+### Versturen van klantcontact
+![versturen klantcontact](img/versturen-klantcontact.png)
+
+Voorbeeld `*.processlink.json`
+```json
+{
+  "activityId": "VersturenKlantcontact",
+  "activityType": "bpmn:ServiceTask:start",
+  "pluginConfigurationId": "b3c54f5e-a6b2-4b22-a87f-eebb113bc432",
+  "pluginActionDefinitionKey": "send-klantcontact",
+  "actionProperties": {
+    "communicationChannel": "doc:/contactgegevens/kanaal",
+    "subject": "doc:/contactgegevens/onderwerp",
+    "content": "doc:/contactgegevens/inhoud",
+    "confidential": "doc:/contactgegevens/vertrouwelijk",
+    "startDateTime": "doc:/contactgegevens/beginContact",
+    "partijUuid": "doc:/persoonsgegevens/partijUuid",
+    "initials": "doc:/persoonsgegevens/initials",
+    "firstName": "doc:/persoonsgegevens/firstName",
+    "inFix": "doc:/persoonsgegevens/tussenvoegsel",
+    "lastName": "doc:/persoonsgegevens/lastName"
+  },
+  "processLinkType": "plugin"
+}
+```
+
 ### Ophalen klantcontacten (actie):
 
-Voor het handmatig configureren, zie screenshots.
+![ophalen klantcontacten configuratie](img/fetch-contactmomenten.png)
 
 Voorbeeld `*.processlink.json`:
 
