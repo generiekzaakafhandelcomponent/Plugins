@@ -23,7 +23,6 @@
       "@valtimo-plugins/freemarker": ["dist/valtimo-plugins/freemarker"],
       "@valtimo-plugins/haal-centraal": ["dist/valtimo-plugins/haal-centraal"],
       "@valtimo-plugins/haal-centraal-auth": ["dist/valtimo-plugins/haal-centraal-auth"],
-      "@valtimo-plugins/hugging-face": ["dist/valtimo-plugins/hugging-face"],
       "@valtimo-plugins/kvk-handelsregister": ["dist/valtimo-plugins/kvk-handelsregister"],
       "@valtimo-plugins/mtls-sslcontext": ["dist/valtimo-plugins/mtls-sslcontext"],
       "@valtimo-plugins/notify-nl": ["dist/valtimo-plugins/notify-nl"],
@@ -34,7 +33,9 @@
       "@valtimo-plugins/smtpmail": ["dist/valtimo-plugins/smtpmail"],
       "@valtimo-plugins/spotler": ["dist/valtimo-plugins/spotler"],
       "@valtimo-plugins/suwinet": ["dist/valtimo-plugins/suwinet"],
+      "@valtimo-plugins/valtimo-llm": ["dist/valtimo-plugins/valtimo-llm"],
       "@valtimo-plugins/valtimo-ocr": ["dist/valtimo-plugins/valtimo-ocr"],
+      "@valtimo-plugins/valtimo-s2t": ["dist/valtimo-plugins/valtimo-s2t"],
       "@valtimo-plugins/xential": ["dist/valtimo-plugins/xential"]
     }
   },

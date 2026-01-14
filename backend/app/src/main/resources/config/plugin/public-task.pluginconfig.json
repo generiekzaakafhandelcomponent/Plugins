@@ -1,7 +1,7 @@
 [
     {
         "id": "a45c1762-7819-47bb-b492-959db9cfd810",
-        "title": "Public task",
+        "title": "Public task (Autodeployed)",
         "properties": { },
         "pluginDefinitionKey": "public-task"
     }
