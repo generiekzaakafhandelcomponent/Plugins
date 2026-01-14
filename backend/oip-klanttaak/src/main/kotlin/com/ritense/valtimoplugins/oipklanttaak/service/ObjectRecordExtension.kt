@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.oipklanttaak
+package com.ritense.valtimoplugins.oipklanttaak.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.ritense.objectenapi.client.ObjectGeometry

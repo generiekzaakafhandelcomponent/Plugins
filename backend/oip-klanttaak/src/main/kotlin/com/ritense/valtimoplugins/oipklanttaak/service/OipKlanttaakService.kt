@@ -45,7 +45,6 @@ import com.ritense.valtimoplugins.oipklanttaak.domain.Portaalformulier
 import com.ritense.valtimoplugins.oipklanttaak.ProcessVariables
 import com.ritense.valtimoplugins.oipklanttaak.domain.Soort
 import com.ritense.valtimoplugins.oipklanttaak.domain.Status
-import com.ritense.valtimoplugins.oipklanttaak.copy
 import com.ritense.valueresolver.ValueResolverService
 import com.ritense.zakenapi.ZaakUrlProvider
 import com.ritense.zakenapi.ZakenApiPlugin
