@@ -88,8 +88,8 @@ class OpenKlantPlugin(
     }
 
     @PluginAction(
-        key = "post-klantcontact",
-        title = "Post klantcontact",
+        key = "send-klantcontact",
+        title = "Send klantcontact",
         description = "Sends a new klantContact to OpenKlant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
@@ -106,7 +106,7 @@ class OpenKlantPlugin(
         @PluginActionProperty lastName: String,
         execution: DelegateExecution,
         ) = runBlocking {
-        logger.info { "Posting klantcontact: - ${execution.processBusinessKey}" }
+        logger.info { "Sending klantcontact: - ${execution.processBusinessKey}" }
 
         val createKlantContactInformation = CreateKlantContactInformation(
             communicationChannel = communicationChannel,
