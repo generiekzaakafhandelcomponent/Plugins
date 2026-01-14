@@ -190,8 +190,7 @@ class OipKlanttaakService(
                         require(oipKlanttaak.status == Status.UITGEVOERD) {
                             "Status is not '${Status.UITGEVOERD.name}'"
                         }
-                        AuthorizationContext.Companion.runWithoutAuthorization { taskService.complete(verwerkerTaakId) }
-                            .also {
+                        AuthorizationContext.runWithoutAuthorization { taskService.complete(verwerkerTaakId) }.also {
                             logger.info { "Task with id '$verwerkerTaakId' for object with URL '$oipTaskObjectUrl' completed" }
                         }
 

@@ -124,7 +124,7 @@ open class OipKlanttaakEventListener(
         oipKlanttaakPluginConfiguration: PluginConfiguration,
     ) {
         pluginService.createInstance<OipKlanttaakPlugin>(oipKlanttaakPluginConfiguration.id.id).let { oipKlanttaakPlugin ->
-            val documentId = AuthorizationContext.Companion.runWithoutAuthorization {
+            val documentId = AuthorizationContext.runWithoutAuthorization {
                 processDocumentService.getDocumentId(
                     OperatonProcessInstanceId(operatonTask.getProcessInstanceId()),
                     operatonTask
@@ -135,7 +135,7 @@ open class OipKlanttaakEventListener(
                 processDefinitionKey = oipKlanttaakPlugin.finalizerProcess,
                 businessKey = documentId.id.toString(),
                 caseDefinitionId = oipKlanttaakPlugin.caseDefinitionVersion?.let {
-                    CaseDefinitionId.Companion.of(
+                    CaseDefinitionId.of(
                         key = it.substringBefore(":"),
                         versionTag = it.substringAfter(":")
                     )
@@ -155,7 +155,7 @@ open class OipKlanttaakEventListener(
         variables: Map<String, Any>
     ) {
         try {
-            AuthorizationContext.Companion.runWithoutAuthorization {
+            AuthorizationContext.runWithoutAuthorization {
                 if (caseDefinitionId != null) {
                     processService.startProcess(
                         processDefinitionKey,
