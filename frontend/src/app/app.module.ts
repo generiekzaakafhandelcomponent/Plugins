@@ -105,18 +105,20 @@ import {
     TextTemplatePluginModule,
     textTemplatePluginSpecification
 } from '@valtimo-plugins/freemarker';
+import {KvkPluginModule, kvkPluginSpecification} from '@valtimo-plugins/kvk-handelsregister';
+import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
 import {OipKlanttaakPluginModule, oipKlanttaakPluginSpecification} from '@valtimo-plugins/oip-klanttaak';
 import {OpenKlantPluginModule, openKlantPluginSpecification, KlantcontactTabComponent} from '@valtimo-plugins/openklant';
+import {OpenProductPluginModule, openProductPluginSpecification} from '@valtimo-plugins/open-product';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {RotterdamOracleEbsPluginModule, rotterdamOracleEbsPluginSpecification} from '@valtimo-plugins/rotterdam-oracle-ebs';
 import {SlackPluginModule, slackPluginSpecification} from '@valtimo-plugins/slack';
 import {SmtpMailPluginModule, smtpmailPluginSpecification} from '@valtimo-plugins/smtpmail';
 import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/spotler';
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
-import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
-import {KvkPluginModule, kvkPluginSpecification} from '@valtimo-plugins/kvk-handelsregister';
+import {TokenAuthenticationPluginModule, tokenAuthenticationPluginSpecification} from '@valtimo-plugins/token-authentication';
 import {ValtimoLlmPluginModule, valtimoLlmPluginSpecification} from '@valtimo-plugins/valtimo-llm'
 import {ValtimoOcrPluginModule, valtimoOcrPluginSpecification} from '@valtimo-plugins/valtimo-ocr';
 import {ValtimoS2tPluginModule, valtimoS2tPluginSpecification} from '@valtimo-plugins/valtimo-s2t';
@@ -182,6 +184,7 @@ export function tabsFactory() {
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
         OipKlanttaakPluginModule,
+        OpenProductPluginModule,
         OpenKlantPluginModule,
         OpenZaakPluginModule,
         PluginManagementModule,
@@ -199,6 +202,7 @@ export function tabsFactory() {
         SseModule,
         SuwinetPluginModule,
         SwaggerModule,
+        TokenAuthenticationPluginModule,
         TaskModule,
         TextTemplatePluginModule,
         TranslateModule.forRoot({
@@ -216,7 +220,6 @@ export function tabsFactory() {
         WidgetModule,
         XentialPluginModule,
         ZakenApiPluginModule,
-        ZgwModule,
         ZgwModule
     ],
     providers: [{
@@ -239,6 +242,7 @@ export function tabsFactory() {
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
             oipKlanttaakPluginSpecification,
+            openProductPluginSpecification,
             openKlantPluginSpecification,
             openZaakPluginSpecification,
             publictaskPluginSpecification,
@@ -247,6 +251,7 @@ export function tabsFactory() {
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
+            tokenAuthenticationPluginSpecification,
             textTemplatePluginSpecification,
             valtimoOcrPluginSpecification,
             valtimoS2tPluginSpecification,
