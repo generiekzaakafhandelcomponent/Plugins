@@ -11,7 +11,7 @@ import {
 } from './components/open-klant-get-contact-moments-by-case-uuid/open-klant-get-contact-moments-by-case-uuid.component';
 import {
     OpenKlantSendKlantcontactComponent
-} from "./components/open-klant-post-klantcontact/open-klant-send-klantcontact.component";
+} from "./components/open-klant-send-klantcontact/open-klant-send-klantcontact.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
     pluginId: 'openklant',
