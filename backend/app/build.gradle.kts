@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":backend:docsys"))
     implementation(project(":backend:value-mapper"))
     implementation(project(":backend:socrates"))
+    implementation(project(":backend:printstraat"))
 }
 
 tasks.jar {
