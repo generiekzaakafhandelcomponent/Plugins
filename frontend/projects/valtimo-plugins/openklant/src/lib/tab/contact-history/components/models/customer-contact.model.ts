@@ -10,10 +10,10 @@ export interface CustomerContact {
 }
 
 export enum ContactOutcome {
-    SUCCESS = 'success',
-    FAILURE = 'failure',
-    NOT_APPLICABLE = 'not_applicable',
-    UNKNOWN = 'unknown'
+  SUCCESS = "success",
+  FAILURE = "failure",
+  NOT_APPLICABLE = "not_applicable",
+  UNKNOWN = "unknown",
 }
 
 export interface CustomerContactDTO {
@@ -36,7 +36,9 @@ export function mapDtoToModel(dto: CustomerContactDTO): CustomerContact {
         outcome: parseWasSuccessfulToContactOutcome(dto.indicatieContactGelukt),
         preferredLanguage: dto.taal,
         isConfidential: dto.vertrouwelijk,
-        occurredAt: dto.plaatsgevondenOp ? new Date(dto.plaatsgevondenOp) : undefined
+    occurredAt: dto.plaatsgevondenOp
+      ? new Date(dto.plaatsgevondenOp)
+      : undefined,
     };
 }
 
@@ -49,7 +51,9 @@ export function mapModelToDto(model: CustomerContact): CustomerContactDTO {
         indicatieContactGelukt: parseContactOutcomeToBoolean(model.outcome),
         taal: model.preferredLanguage,
         vertrouwelijk: model.isConfidential,
-        plaatsgevondenOp: model.occurredAt ? model.occurredAt.toISOString() : undefined
+    plaatsgevondenOp: model.occurredAt
+      ? model.occurredAt.toISOString()
+      : undefined,
     };
 }
 
