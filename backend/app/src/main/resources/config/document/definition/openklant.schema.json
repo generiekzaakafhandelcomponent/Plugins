@@ -1,7 +1,7 @@
 {
     "$id": "openklant.schema",
     "type": "object",
-    "title": "OpenKlant",
+    "title": "Open Klant",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
         "bsn": {

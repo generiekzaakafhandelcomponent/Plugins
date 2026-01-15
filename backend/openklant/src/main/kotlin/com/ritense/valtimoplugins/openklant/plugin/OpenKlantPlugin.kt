@@ -66,8 +66,8 @@ class OpenKlantPlugin(
 
     @PluginAction(
         key = "get-contact-moments-by-case-uuid",
-        title = "Get contact moments by case UUID",
-        description = "Get contact moments by case UUID from OpenKlant",
+        title = "Get contact history by case UUID",
+        description = "Get contact history by case UUID from Open Klant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun getContactMoments(
@@ -75,7 +75,7 @@ class OpenKlantPlugin(
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
     ) = runBlocking {
-        logger.info { "Fetch Contactmomenten from OpenKlant by case UUID: $caseUuid - ${execution.processBusinessKey}" }
+        logger.info { "Fetching contact history from Open Klant by case UUID: $caseUuid - ${execution.processBusinessKey}" }
 
         val pluginProperties =
             KlantcontactOptions(
@@ -95,8 +95,8 @@ class OpenKlantPlugin(
 
     @PluginAction(
         key = "get-contact-moments-by-bsn",
-        title = "Get contact moments by BSN",
-        description = "Get contact moments by BSN from OpenKlant. Queries the API using the 'partij-identificator object-ID' parameter.",
+        title = "Get contact history by BSN",
+        description = "Get contact history by BSN from Open Klant. Queries the API using the 'partij-identificator object-ID' parameter.",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun getContactMomentsByBsn(
@@ -105,8 +105,7 @@ class OpenKlantPlugin(
         execution: DelegateExecution,
     ): Unit =
         runBlocking {
-            logger.info { "Fetching Contactmomenten from OpenKlant by case BSN: $bsn - ${execution.processBusinessKey}" }
-
+            logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
             val pluginProperties =
                 KlantcontactOptions(
                     klantinteractiesUrl,

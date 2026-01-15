@@ -1,8 +1,8 @@
-# OpenKlant
+# Open Klant
 
 ## Omschrijving
 
-De OpenKlant plug-in verzorgt:
+De Open Klant plug-in verzorgt:
 
 - Plug-in acties:
     - Het opslaan van partij op basis van voor- en achternaam, e-mailadres, bsn en zaaknummer.
@@ -13,15 +13,15 @@ De OpenKlant plug-in verzorgt:
 - Custom tabblad component:
     - Het tonen van klantcontacten
 
-Het communiceert met een OpenKlant (v2) implementatie.
+Het communiceert met een Open Klant (v2) implementatie.
 
 ## Documentatie
 
 ### Plug-in properties:
 
-* OpenKlant klantinteracties URL (_bv. https://openklant.gemeente.nl/klantinteracties/api/v1/_)
+* Open Klant klantinteracties URL (_bv. https://openklant.gemeente.nl/klantinteracties/api/v1/_)
 
-* OpenKlant Token
+* Open Klant Token
 
 Een algemene beschrijving van het configureren van plug-ins vind je
 hier:[https://docs.valtimo.nl/features/plugins#configuring-plugins](https://docs.valtimo.nl/features/plugins#configuring-plugins)
@@ -31,7 +31,7 @@ Voorbeeld `*.pluginconfig.json`:
 ```json   
 {
   "id": "12023724-a4bd-431d-93c0-5ba52049e9cd",
-  "title": "OpenKlant",
+  "title": "Open Klant",
   "pluginDefinitionKey": "openklant",
   "properties": {
     "klantinteractiesUrl": "${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL}",
