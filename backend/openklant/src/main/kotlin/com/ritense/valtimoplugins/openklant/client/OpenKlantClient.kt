@@ -8,18 +8,13 @@ import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.zgw.Page
-import io.netty.handler.ssl.SslContextBuilder
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory
-import io.netty.resolver.DefaultAddressResolverGroup
 import mu.KotlinLogging
 import org.jetbrains.annotations.VisibleForTesting
 import org.springframework.http.HttpStatus
-import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.server.ResponseStatusException
-import reactor.netty.http.client.HttpClient
 import org.springframework.web.util.UriBuilder
 import java.net.URI
 
