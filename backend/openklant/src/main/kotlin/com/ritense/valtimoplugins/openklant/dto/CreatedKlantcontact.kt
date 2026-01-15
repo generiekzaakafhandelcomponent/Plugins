@@ -1,6 +1,6 @@
 package com.ritense.valtimoplugins.openklant.dto
 
-data class CreateKlantContact(
+data class CreatedKlantcontact(
     val klantContact: KlantContact,
     val betrokkene: Betrokkene,
     val onderwerpobject: Onderwerpobject

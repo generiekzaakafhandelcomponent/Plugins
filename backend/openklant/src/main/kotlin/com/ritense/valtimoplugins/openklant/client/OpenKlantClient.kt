@@ -1,8 +1,8 @@
 package com.ritense.valtimoplugins.openklant.client
 
 import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
-import com.ritense.valtimoplugins.openklant.dto.CreateKlantContact
-import com.ritense.valtimoplugins.openklant.dto.CreateKlantContactRequest
+import com.ritense.valtimoplugins.openklant.dto.CreatedKlantcontact
+import com.ritense.valtimoplugins.openklant.dto.KlantcontactCreationRequest
 import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
 import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
 import com.ritense.valtimoplugins.openklant.dto.KlantContact
@@ -153,11 +153,11 @@ class OpenKlantClient(
         } catch (e: WebClientResponseException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: WebClientResponseException) {
-            handleResponseException(e, "Error fetching KlantContacts")
+            handleResponseException(e, "Error fetching Klantcontacten")
         }
 
-    suspend fun postKlantContact(
-        @Valid @RequestBody request: CreateKlantContactRequest,
+    suspend fun postKlantcontact(
+        @Valid @RequestBody request: KlantcontactCreationRequest,
         properties: OpenKlantProperties
     ) {
         try {
@@ -166,7 +166,7 @@ class OpenKlantClient(
                 .uri(OK_MAAK_KLANTCONTACT_PATH)
                 .bodyValue(request)
                 .retrieve()
-                .awaitBody<CreateKlantContact>()
+                .awaitBody<CreatedKlantcontact>()
         } catch (e: WebClientResponseException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: WebClientResponseException) {

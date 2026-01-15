@@ -39,7 +39,7 @@ class DefaultOpenKlantService(
         klantContactCreationInformation: KlantContactCreationInformation,
     ) {
         val klantContactRequest = klantContactFactory.createKlantContactRequest(klantContactCreationInformation)
-        openKlantClient.postKlantContact(
+        openKlantClient.postKlantcontact(
             request = klantContactRequest,
             properties = properties
         )

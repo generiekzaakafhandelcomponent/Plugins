@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
-data class CreateKlantContactRequest(
+data class KlantcontactCreationRequest(
     @JsonProperty("klantcontact")
     @field:NotBlank
     val klantcontact: KlantContactRequest,
