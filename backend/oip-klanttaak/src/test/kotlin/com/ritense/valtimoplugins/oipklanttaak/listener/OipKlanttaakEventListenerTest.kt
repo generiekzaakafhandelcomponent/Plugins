@@ -128,7 +128,7 @@ class OipKlanttaakEventListenerTest {
             any(),
             eq(mapOf(
                 ProcessVariables.VERWERKER_TAAK_ID to taskId().toString(),
-                ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to objectUrl().toString()
+                ProcessVariables.KLANTTAAK_OBJECT_URL to objectUrl().toString()
             ))
         )
     }
@@ -172,7 +172,7 @@ class OipKlanttaakEventListenerTest {
             eq(CaseDefinitionId.of(caseType, caseVersion)),
             eq(mapOf(
                 ProcessVariables.VERWERKER_TAAK_ID to taskId().toString(),
-                ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to objectUrl().toString()
+                ProcessVariables.KLANTTAAK_OBJECT_URL to objectUrl().toString()
             ))
         )
     }
