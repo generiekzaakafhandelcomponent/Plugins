@@ -33,7 +33,7 @@ export class HaalCentraalBagPluginConfigurationComponent
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string
-    // If the plugin had already been saved, a prefilled configuration of the type PrintstraatPluginConfig is expected
+    // If the plugin had already been saved, a prefilled configuration of the type HaalCentraalBagPluginConfig is expected
     @Input() prefillConfiguration$: Observable<BagConfig>;
 
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
