@@ -57,15 +57,13 @@ services:
     image: openzaak/open-zaak:1.25.0
     container_name: valtimo-plugins-local-openzaak
     platform: linux/amd64
-    environment:
+    environment: &openzaak-env
       - DB_HOST=openzaak-db
       - DB_POST=5432
       - SECRET_KEY=veryRestrictedSecretKey
       - DB_USER=openzaak
       - DB_PASSWORD=openzaak
       - DB_NAME=openzaak
-      - CACHE_DEFAULT=openzaak-redis:6379/0
-      - CACHE_AXES=openzaak-redis:6379/0
       - DEBUG=true
       - ALLOWED_HOSTS=localhost,host.docker.internal,172.17.0.1,openzaak
       - OPENZAAK_SUPERUSER_USERNAME=admin
@@ -73,6 +71,11 @@ services:
       - DJANGO_SUPERUSER_PASSWORD=admin
       - SENDFILE_BACKEND=django_sendfile.backends.simple
       - NOTIFICATIONS_DISABLED=true
+      - CACHE_DEFAULT=openzaak-redis:6379/0
+      - CACHE_AXES=openzaak-redis:6379/0
+      - CELERY_BROKER_URL=redis://openzaak-redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://openzaak-redis:6379/0
+      - REDIS_URL=redis://openzaak-redis:6379/0
       - DISABLE_2FA=True
     ports:
       - "8001:8000"
@@ -100,6 +103,19 @@ services:
     container_name: valtimo-plugins-local-openzaak-redis
     expose:
       - 6379
+
+  openzaak-api-celery:
+    image: openzaak/open-zaak:1.25.0
+    container_name: valtimo-plugins-local-openzaak-api-celery
+    platform: linux/amd64
+    environment: *openzaak-env
+    command: /celery_worker.sh
+    healthcheck:
+      test: [ "CMD", "python", "/app/bin/check_celery_worker_liveness.py" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   objects-objecttypes-api-redis:
     image: redis:8.2.2
