@@ -60,6 +60,7 @@ export class OpenKlantSendKlantcontactComponent implements FunctionConfiguration
             !!formValue.onderwerp &&
             !!formValue.inhoud &&
             !!(formValue.vertrouwelijk === true || formValue.vertrouwelijk === false) &&
+            !!formValue.taal &&
             !!formValue.plaatsgevondenOp &&
             !!formValue.partijUuid &&
             !!formValue.voorletters &&
