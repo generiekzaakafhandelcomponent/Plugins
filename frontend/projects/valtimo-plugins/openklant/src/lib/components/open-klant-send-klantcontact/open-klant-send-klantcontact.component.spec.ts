@@ -24,7 +24,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         kanaal: 'email',
         onderwerp: 'Subject',
         inhoud: 'Content',
-        vertrouwelijk: true,
+        vertrouwelijk: 'true',
         taal: 'nld',
         plaatsgevondenOp: new Date().toISOString(),
         partijUuid: 'uuid-123',
@@ -38,7 +38,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         kanaal: '',
         onderwerp: 'Subject',
         inhoud: 'Content',
-        vertrouwelijk: true,
+        vertrouwelijk: 'true',
         taal: 'nld',
         plaatsgevondenOp: new Date().toISOString(),
         partijUuid: 'uuid-123',
@@ -89,7 +89,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(component instanceof OpenKlantSendKlantcontactComponent).toBeTrue()
     });
 
     describe('lifecycle', () => {
@@ -117,7 +117,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
                 kanaal: 'email',
                 onderwerp: 'Subject',
                 inhoud: 'Content',
-                vertrouwelijk: false,
+                vertrouwelijk: 'false',
                 taal: 'nld',
                 plaatsgevondenOp: new Date().toISOString(),
                 partijUuid: 'uuid-123',
