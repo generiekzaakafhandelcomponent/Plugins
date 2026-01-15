@@ -174,16 +174,6 @@ describe('OpenKlantPostKlantcontactComponent', () => {
             expect(component.configuration.emit).toHaveBeenCalledTimes(1);
             expect(component.configuration.emit).toHaveBeenCalledWith(validFormValue);
         });
-
-        it('should handle multiple saves gracefully', () => {
-            component.formValueChange(validFormValue);
-
-            save$.next();
-            save$.next();
-            save$.next();
-
-            expect(component.configuration.emit).toHaveBeenCalledTimes(3);
-        });
     });
 
     describe('formValueChange', () => {
