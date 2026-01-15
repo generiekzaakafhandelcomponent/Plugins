@@ -21,29 +21,31 @@ describe('OpenKlantPostKlantcontactComponent', () => {
     let disabled$: BehaviorSubject<boolean>;
 
     const validFormValue: OpenKlantSendKlantcontactConfig = {
-        communicationChannel: 'email',
-        subject: 'Subject',
-        content: 'Content',
-        confidential: true,
-        startDateTime: new Date().toISOString(),
+        kanaal: 'email',
+        onderwerp: 'Subject',
+        inhoud: 'Content',
+        vertrouwelijk: true,
+        taal: 'nld',
+        plaatsgevondenOp: new Date().toISOString(),
         partijUuid: 'uuid-123',
-        initials: 'J.D.',
-        firstName: 'John',
-        inFix: 'van',
-        lastName: 'Doe',
+        voorletters: 'J.D.',
+        voornaam: 'John',
+        voorvoegselAchternaam: 'van',
+        achternaam: 'Doe',
     };
 
     const invalidFormValueMissingField: OpenKlantSendKlantcontactConfig = {
-        communicationChannel: '',
-        subject: 'Subject',
-        content: 'Content',
-        confidential: true,
-        startDateTime: new Date().toISOString(),
+        kanaal: '',
+        onderwerp: 'Subject',
+        inhoud: 'Content',
+        vertrouwelijk: true,
+        taal: 'nld',
+        plaatsgevondenOp: new Date().toISOString(),
         partijUuid: 'uuid-123',
-        initials: 'J.D.',
-        firstName: 'John',
-        inFix: 'van',
-        lastName: 'Doe',
+        voorletters: 'J.D.',
+        voornaam: 'John',
+        voorvoegselAchternaam: 'van',
+        achternaam: 'Doe',
     };
 
 
@@ -110,18 +112,19 @@ describe('OpenKlantPostKlantcontactComponent', () => {
             expect(component.valid.emit).toHaveBeenCalledWith(true);
         });
 
-        it('should mark valid when all required fields are present and confidential is set to false', () => {
+        it('should mark valid when all required fields are present and vertrouwelijk is set to false', () => {
             const validFormValueWithConfidentialSetOnFalse: OpenKlantSendKlantcontactConfig = {
-                communicationChannel: 'email',
-                subject: 'Subject',
-                content: 'Content',
-                confidential: false,
-                startDateTime: new Date().toISOString(),
+                kanaal: 'email',
+                onderwerp: 'Subject',
+                inhoud: 'Content',
+                vertrouwelijk: false,
+                taal: 'nld',
+                plaatsgevondenOp: new Date().toISOString(),
                 partijUuid: 'uuid-123',
-                initials: 'J.D.',
-                firstName: 'John',
-                inFix: 'van',
-                lastName: 'Doe',
+                voorletters: 'J.D.',
+                voornaam: 'John',
+                voorvoegselAchternaam: 'van',
+                achternaam: 'Doe',
             };
 
             component.formValueChange(validFormValueWithConfidentialSetOnFalse);

@@ -34,7 +34,7 @@ export class OpenKlantSendKlantcontactComponent implements FunctionConfiguration
     private readonly valid$ = new BehaviorSubject<boolean>(false);
     readonly pluginId$ = new BehaviorSubject<string>('');
 
-    readonly confidentialOptions$: Observable<Array<RadioValue>> = this.pluginId$.pipe(
+    readonly vertrouwelijkOptions: Observable<Array<RadioValue>> = this.pluginId$.pipe(
         map(() => [
             { value: true, title: "True" },
             { value: false, title: "False" }
@@ -56,16 +56,16 @@ export class OpenKlantSendKlantcontactComponent implements FunctionConfiguration
 
     private handleValid(formValue: OpenKlantSendKlantcontactConfig): void {
         const valid =
-            !!formValue.communicationChannel &&
-            !!formValue.subject &&
-            !!formValue.content &&
-            !!(formValue.confidential === true || formValue.confidential === false) &&
-            !!formValue.startDateTime &&
+            !!formValue.kanaal &&
+            !!formValue.onderwerp &&
+            !!formValue.inhoud &&
+            !!(formValue.vertrouwelijk === true || formValue.vertrouwelijk === false) &&
+            !!formValue.plaatsgevondenOp &&
             !!formValue.partijUuid &&
-            !!formValue.initials &&
-            !!formValue.firstName &&
-            !!formValue.inFix &&
-            !!formValue.lastName;
+            !!formValue.voorletters &&
+            !!formValue.voornaam &&
+            !!formValue.voorvoegselAchternaam &&
+            !!formValue.achternaam;
 
         this.valid$.next(valid);
         this.valid.emit(valid);

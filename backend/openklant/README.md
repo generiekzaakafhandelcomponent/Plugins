@@ -82,16 +82,17 @@ Voorbeeld `*.processlink.json`
   "pluginConfigurationId": "b3c54f5e-a6b2-4b22-a87f-eebb113bc432",
   "pluginActionDefinitionKey": "send-klantcontact",
   "actionProperties": {
-    "communicationChannel": "doc:/contactgegevens/kanaal",
-    "subject": "doc:/contactgegevens/onderwerp",
-    "content": "doc:/contactgegevens/inhoud",
-    "confidential": "doc:/contactgegevens/vertrouwelijk",
-    "startDateTime": "doc:/contactgegevens/beginContact",
+    "kanaal": "doc:/contactgegevens/kanaal",
+    "onderwerp": "doc:/contactgegevens/onderwerp",
+    "inhoud": "doc:/contactgegevens/inhoud",
+    "vertrouwelijk": "doc:/contactgegevens/vertrouwelijk",
+    "taal": "doc:/contactgegevens/taal",
+    "plaatsgevondenOp": "doc:/contactgegevens/plaatsgevondenOp",
     "partijUuid": "doc:/persoonsgegevens/partijUuid",
-    "initials": "doc:/persoonsgegevens/initials",
-    "firstName": "doc:/persoonsgegevens/firstName",
-    "inFix": "doc:/persoonsgegevens/tussenvoegsel",
-    "lastName": "doc:/persoonsgegevens/lastName"
+    "voorletters": "doc:/persoonsgegevens/voorletters",
+    "voornaam": "doc:/persoonsgegevens/voornaam",
+    "voorvoegselAchternaam": "doc:/persoonsgegevens/voorvoegselAchternaam",
+    "achternaam": "doc:/persoonsgegevens/achternaam"
   },
   "processLinkType": "plugin"
 }

@@ -1,12 +1,13 @@
 export interface OpenKlantSendKlantcontactConfig {
-    communicationChannel: string;
-    subject: string;
-    content: string;
-    confidential: boolean;
-    startDateTime: string;
+    kanaal: string;
+    onderwerp: string;
+    inhoud: string;
+    vertrouwelijk: boolean;
+    taal: string;
+    plaatsgevondenOp: string;
     partijUuid: string;
-    initials: string;
-    firstName: string;
-    inFix: string;
-    lastName: string;
+    voorletters: string;
+    voornaam: string;
+    voorvoegselAchternaam: string;
+    achternaam: string;
 }
