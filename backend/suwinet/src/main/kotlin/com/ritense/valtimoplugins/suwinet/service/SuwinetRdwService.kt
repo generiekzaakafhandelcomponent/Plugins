@@ -234,7 +234,31 @@ class SuwinetRdwService(
             }
         }
 
-        return propertiesMap
+        return flatMapToNested(propertiesMap)
+    }
+
+    fun flatMapToNested(flatMap: Map<String, Any?>): Map<String, Any?> {
+        val result = mutableMapOf<String, Any?>()
+
+        flatMap.forEach { (key, value) ->
+            val parts = key.split(".")
+            var current = result
+
+            parts.forEachIndexed { index, part ->
+                if (index == parts.lastIndex) {
+                    // Last part - assign the value
+                    current[part] = value
+                } else {
+                    // Not the last part - create or navigate to nested map
+                    @Suppress("UNCHECKED_CAST")
+                    current = current.getOrPut(part) {
+                        mutableMapOf<String, Any?>()
+                    } as MutableMap<String, Any?>
+                }
+            }
+        }
+
+        return result
     }
 
     private fun toDateString(date: LocalDate) = date.format(dateOutFormatter)
