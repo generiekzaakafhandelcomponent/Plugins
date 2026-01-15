@@ -152,7 +152,7 @@ class OpenKlantClient(
             webClientFactory(klantContactOptions)
                 .get()
                 .uri { uriBuilder ->
-                    buildOpenklantUri(uriBuilder, klantContactOptions)
+                    buildOpenKlantUri(uriBuilder, klantContactOptions)
                 }.retrieve()
                 .awaitBody<Page<Klantcontact>>()
         } catch (e: WebClientResponseException.InternalServerError) {
@@ -166,7 +166,7 @@ class OpenKlantClient(
             webClientFactory(klantContactOptions)
                 .get()
                 .uri { uriBuilder ->
-                    buildOpenklantUri(uriBuilder, klantContactOptions)
+                    buildOpenKlantUri(uriBuilder, klantContactOptions)
                 }.retrieve()
                 .awaitBody<Page<Klantcontact>>()
         } catch (e: WebClientResponseException.InternalServerError) {
@@ -176,7 +176,7 @@ class OpenKlantClient(
         }
 
     @VisibleForTesting
-    internal fun buildOpenklantUri(
+    internal fun buildOpenKlantUri(
         builder: UriBuilder,
         options: KlantcontactOptions,
     ): URI {
@@ -195,7 +195,7 @@ class OpenKlantClient(
 
     private fun handleInternalServerError(e: WebClientResponseException.InternalServerError): Nothing {
         logger.warn { "Response body:  ${e.responseBodyAsString}" }
-        logger.error(e) { "Internal Server Error calling OpenKlant" }
+        logger.error(e) { "Internal Server Error calling Open Klant" }
         throw ResponseStatusException(
             HttpStatus.INTERNAL_SERVER_ERROR,
             "Internal Server Error calling OpenKlant",
@@ -207,7 +207,7 @@ class OpenKlantClient(
         e: WebClientResponseException,
         reason: String,
     ): Nothing {
-        logger.warn(e) { "Client error calling OpenKlant" }
+        logger.warn(e) { "Client error calling Open Klant" }
         logger.warn { "Response body:  ${e.responseBodyAsString}" }
         throw ResponseStatusException(
             e.statusCode,

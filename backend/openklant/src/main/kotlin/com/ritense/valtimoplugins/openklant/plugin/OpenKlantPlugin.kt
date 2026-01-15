@@ -35,7 +35,7 @@ class OpenKlantPlugin(
     @PluginAction(
         key = "store-contact-info",
         title = "Store Contactinfo",
-        description = "Store contact info in OpenKlant",
+        description = "Store contact info in Open Klant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun storeContactInformation(
@@ -47,7 +47,7 @@ class OpenKlantPlugin(
         @PluginActionProperty emailAddress: String,
         @PluginActionProperty caseNumber: String,
     ) = runBlocking {
-        logger.info { "Store Contactinformation in OpenKlant - ${execution.processBusinessKey}" }
+        logger.info { "Store Contactinformation in Open Klant - ${execution.processBusinessKey}" }
 
         val contactInformation =
             ContactInformation(

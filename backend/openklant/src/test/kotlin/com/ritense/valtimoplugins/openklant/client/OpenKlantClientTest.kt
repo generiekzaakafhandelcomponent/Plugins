@@ -36,7 +36,7 @@ class OpenKlantClientTest {
 
         // Act
         val builder = DefaultUriBuilderFactory().builder()
-        val uri = openKlantClient.buildOpenklantUri(builder, options)
+        val uri = openKlantClient.buildOpenKlantUri(builder, options)
 
         // Assert
         assertTrue(uri.toString().contains("hadBetrokkene__wasPartij__partijIdentificator__objectId=1234567890"))
