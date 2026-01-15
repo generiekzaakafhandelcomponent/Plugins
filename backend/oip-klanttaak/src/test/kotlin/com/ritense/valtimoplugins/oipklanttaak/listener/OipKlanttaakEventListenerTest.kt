@@ -34,6 +34,7 @@ import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.operaton.domain.OperatonTask
 import com.ritense.valtimo.service.OperatonProcessService
 import com.ritense.valtimo.service.OperatonTaskService
+import com.ritense.valtimoplugins.oipklanttaak.ProcessVariables
 import com.ritense.valtimoplugins.oipklanttaak.domain.Authorizee
 import com.ritense.valtimoplugins.oipklanttaak.domain.Betrokkene
 import com.ritense.valtimoplugins.oipklanttaak.domain.Formulier
@@ -125,7 +126,10 @@ class OipKlanttaakEventListenerTest {
         verify(processServiceMock, times(1)).startProcess(
             any(),
             any(),
-            any()
+            eq(mapOf(
+                ProcessVariables.VERWERKER_TAAK_ID to taskId().toString(),
+                ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to objectUrl()
+            ))
         )
     }
 
@@ -166,7 +170,10 @@ class OipKlanttaakEventListenerTest {
             any(),
             any(),
             eq(CaseDefinitionId.of(caseType, caseVersion)),
-            any()
+            eq(mapOf(
+                ProcessVariables.VERWERKER_TAAK_ID to taskId().toString(),
+                ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to objectUrl()
+            ))
         )
     }
 
@@ -257,9 +264,15 @@ class OipKlanttaakEventListenerTest {
     private fun notificatiesApiNotificationReceivedEvent() = mock<NotificatiesApiNotificationReceivedEvent> {
         on { kanaal } doReturn "objecten"
         on { actie } doReturn "update"
-        on { resourceUrl } doReturn "https://example.com/resource/9aa32593-6e0a-42f9-9e36-3e1ee180003f"
-        on { kenmerken } doReturn mapOf("objectType" to "https://example.com/objectType/${objectTypeId()}")
+        on { resourceUrl } doReturn objectUrl()
+        on { kenmerken } doReturn mapOf(
+            "objectType" to objectTypeUrl()
+        )
     }
+
+    private fun objectUrl() = "https://example.com/object/9aa32593-6e0a-42f9-9e36-3e1ee180003f"
+
+    private fun objectTypeUrl() = "https://example.com/objectType/${objectTypeId()}"
 
     private fun klanttaak(status: Status = Status.UITGEVOERD) = Klanttaak(
         titel = "Klanttaak",
