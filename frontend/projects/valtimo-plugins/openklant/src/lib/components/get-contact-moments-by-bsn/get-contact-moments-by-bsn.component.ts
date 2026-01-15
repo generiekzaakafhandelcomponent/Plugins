@@ -21,7 +21,6 @@ import {
 import { AsyncPipe, NgIf } from "@angular/common";
 import { FormModule, InputModule, TooltipModule } from "@valtimo/components";
 import { GetContactMomentsByBsnConfig } from "../../models/get-contact-moments-by-bsn-config";
-import { filter } from "rxjs";
 
 @Component({
   selector: "get-contact-moments-by-bsn",
