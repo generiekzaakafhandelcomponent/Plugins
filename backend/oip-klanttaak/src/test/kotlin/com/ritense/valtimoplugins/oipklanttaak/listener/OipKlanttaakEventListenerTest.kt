@@ -128,7 +128,7 @@ class OipKlanttaakEventListenerTest {
             any(),
             eq(mapOf(
                 ProcessVariables.VERWERKER_TAAK_ID to taskId().toString(),
-                ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to objectUrl()
+                ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to objectUrl().toString()
             ))
         )
     }
@@ -172,7 +172,7 @@ class OipKlanttaakEventListenerTest {
             eq(CaseDefinitionId.of(caseType, caseVersion)),
             eq(mapOf(
                 ProcessVariables.VERWERKER_TAAK_ID to taskId().toString(),
-                ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to objectUrl()
+                ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to objectUrl().toString()
             ))
         )
     }
@@ -264,15 +264,11 @@ class OipKlanttaakEventListenerTest {
     private fun notificatiesApiNotificationReceivedEvent() = mock<NotificatiesApiNotificationReceivedEvent> {
         on { kanaal } doReturn "objecten"
         on { actie } doReturn "update"
-        on { resourceUrl } doReturn objectUrl()
+        on { resourceUrl } doReturn objectUrl().toString()
         on { kenmerken } doReturn mapOf(
-            "objectType" to objectTypeUrl()
+            "objectType" to objectTypeUrl().toString()
         )
     }
-
-    private fun objectUrl() = "https://example.com/object/9aa32593-6e0a-42f9-9e36-3e1ee180003f"
-
-    private fun objectTypeUrl() = "https://example.com/objectType/${objectTypeId()}"
 
     private fun klanttaak(status: Status = Status.UITGEVOERD) = Klanttaak(
         titel = "Klanttaak",
@@ -324,6 +320,12 @@ class OipKlanttaakEventListenerTest {
 
     private fun objectTypeId() = "72d10488-30b6-48cc-8670-edc07c0e7252"
 
+    private fun objectTypeUrl() = URI.create("https://example.com/objectType/${objectTypeId()}")
+
+    private fun objectId() = UUID.fromString("fbf7f397-946f-4656-9cce-46d539ea43a7")
+
+    private fun objectUrl() = URI.create("https://example.com/object/${objectId()}")
+
     private fun objectManagementConfiguration() = ObjectManagement(
         id = objectManagementConfigurationId(),
         title = "OIP Klanttaak",
@@ -341,9 +343,9 @@ class OipKlanttaakEventListenerTest {
             data = objectMapper.valueToTree(klanttaak)
         )
         val objectWrapper = ObjectWrapper(
-            url = mock(),
-            uuid = UUID.fromString("fbf7f397-946f-4656-9cce-46d539ea43a7"),
-            type = mock(),
+            url = objectUrl(),
+            uuid = objectId(),
+            type = objectTypeUrl(),
             record = objectRecord
         )
         return mock<ObjectenApiPlugin> {
