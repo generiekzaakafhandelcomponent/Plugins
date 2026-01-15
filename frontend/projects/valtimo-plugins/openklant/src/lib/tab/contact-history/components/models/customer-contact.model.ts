@@ -21,7 +21,7 @@ export interface CustomerContactDTO {
     kanaal: string;
     onderwerp: string;
     inhoud?: string;
-    indicatieContactGelukt?: boolean | null;
+  indicatieContactGelukt?: string | null; // Although the API docs type this as a boolean, in practice, the API returns a string, e.g. 'true'
     taal: string;
     vertrouwelijk: boolean;
     plaatsgevondenOp?: string;
@@ -53,25 +53,29 @@ export function mapModelToDto(model: CustomerContact): CustomerContactDTO {
     };
 }
 
-function parseWasSuccessfulToContactOutcome(wasSuccessful?: boolean | null): ContactOutcome {
+function parseWasSuccessfulToContactOutcome(
+  wasSuccessful?: string | null
+): ContactOutcome {
     switch (wasSuccessful) {
         case null:
             return ContactOutcome.NOT_APPLICABLE;
-        case true:
+    case "true":
             return ContactOutcome.SUCCESS;
-        case false:
+    case "false":
             return ContactOutcome.FAILURE;
         default:
             return ContactOutcome.UNKNOWN;
     }
 }
 
-function parseContactOutcomeToBoolean(outcome: ContactOutcome): boolean | null | undefined {
+function parseContactOutcomeToBoolean(
+  outcome: ContactOutcome
+): string | null | undefined {
     switch (outcome) {
         case ContactOutcome.SUCCESS:
-            return true;
+      return "true";
         case ContactOutcome.FAILURE:
-            return false;
+      return "false";
         case ContactOutcome.NOT_APPLICABLE:
             return null;
         case ContactOutcome.UNKNOWN:
