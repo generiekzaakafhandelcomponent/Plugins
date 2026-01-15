@@ -16,21 +16,21 @@ const openKlantPluginSpecification: PluginSpecification = {
   },
   pluginTranslations: {
     nl: {
-      title: "OpenKlant",
-      configurationTitle: "Configuratie van de OpenKlant-plugin",
+      title: "Open Klant",
+      configurationTitle: "Configuratie van de Open Klant-plugin",
       description:
-        "Een plugin voor het ophalen en versturen van OpenKlant-gegevens.",
+        "Een plugin voor het ophalen en versturen van Open Klant-gegevens.",
       configurationTitleTooltip:
-        "In dit onderdeel configureer je de OpenKlant-plugin, om zo gemakkelijk gegevens te kunnen verzenden en op te kunnen halen.",
+        "In dit onderdeel configureer je de Open Klant-plugin, om zo gemakkelijk gegevens te kunnen verzenden en op te kunnen halen.",
 
       // Common
       resultPvName: "Naam van resultaatprocesvariabele",
-      bsn: "BSN-nummer variabele",
+      bsn: "BSN variabele",
       bsnTooltip:
-        "Pad van de variabele waar het burgerservicenummer uit opgehaald kan worden",
+        "Pad van de variabele waar het BSN (burgerservicenummer) uit opgehaald kan worden",
 
       // Store contact info
-      "store-contact-info": "Maak digitaal adres (en partij) aan",
+      "store-contact-info": "Maak digitaal adres (en Partij) aan",
       firstName: "Voornaam",
       firstNameTooltip: "Variabele waaruit de voornaam opgehaald kan worden",
       inFix: "Tussenvoegsel",
@@ -40,33 +40,33 @@ const openKlantPluginSpecification: PluginSpecification = {
       emailAddress: "E-mailadres",
       emailAddressTooltip:
         "Variabele waaruit het e-mailadres opgehaald kan worden",
-      caseUuid: "OpenZaak-nummer",
+      caseUuid: "Open Zaak-nummer",
       caseUuidTooltip:
-        "Variabele waaruit het OpenZaak-nummer opgehaald kan worden",
+        "Variabele waaruit het Open Zaak-nummer opgehaald kan worden",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn":
-        "Contactgeschiedenis ophalen op basis van BSN-nummer",
+        "Contactgeschiedenis ophalen op basis van BSN",
 
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
-        "Contactgeschiedenis ophalen op basis van OpenZaak-nummer",
+        "Contactgeschiedenis ophalen op basis van Open Zaak-nummer",
     },
     en: {
-      title: "OpenKlant",
-      configurationTitle: "OpenKlant plugin configuration",
-      description: "A plugin for retrieving and sending OpenKlant data.",
+      title: "Open Klant",
+      configurationTitle: "Open Klant plugin configuration",
+      description: "A plugin for retrieving and sending Open Klant data.",
       configurationTitleTooltip:
-        "In this section you configure the OpenKlant plugin to easily send and retrieve data.",
+        "In this section you configure the Open Klant plugin to easily send and retrieve data.",
 
       // Common
       resultPvName: "Result process variable name",
       bsn: "BSN number variable",
       bsnTooltip:
-        "Path of the variable from which the Dutch citizen service number can be retrieved",
+        "Path of the variable from which the Dutch BSN (citizen service number) can be retrieved",
 
       // Store contact info
-      "store-contact-info": "Create digital address (and party)",
+      "store-contact-info": "Create digital address (and Partij)",
       firstName: "First name",
       firstNameTooltip: "Variable from which the first name can be retrieved",
       inFix: "Name infix",
@@ -76,9 +76,9 @@ const openKlantPluginSpecification: PluginSpecification = {
       emailAddress: "Email address",
       emailAddressTooltip:
         "Variable from which the email address can be retrieved",
-      caseUuid: "OpenZaak case number",
+      caseUuid: "Open Zaak case number",
       caseUuidTooltip:
-        "Variable from which the OpenZaak number can be retrieved",
+        "Variable from which the Open Zaak number can be retrieved",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn":
@@ -86,23 +86,23 @@ const openKlantPluginSpecification: PluginSpecification = {
 
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
-        "Retrieve contact history based on OpenZaak number",
+        "Retrieve contact history based on Open Zaak number",
     },
     de: {
-      title: "OpenKlant",
-      configurationTitle: "Konfiguration des OpenKlant-Plugins",
-      description: "Ein Plugin zum Abrufen und Versenden von OpenKlant-Daten.",
+      title: "Open Klant",
+      configurationTitle: "Konfiguration des Open Klant-Plugins",
+      description: "Ein Plugin zum Abrufen und Versenden von Open Klant-Daten.",
       configurationTitleTooltip:
-        "In diesem Abschnitt konfigurieren Sie das OpenKlant-Plugin, um Daten einfach senden und abrufen zu können.",
+        "In diesem Abschnitt konfigurieren Sie das Open Klant-Plugin, um Daten einfach senden und abrufen zu können.",
 
       // Common
       resultPvName: "Name der Ergebnis-Prozessvariable",
       bsn: "BSN-Nummernvariable",
       bsnTooltip:
-        "Pfad der Variable, aus der die Bürgerservicenummer abgerufen werden kann",
+        "Pfad der Variable, aus der die niederländische BSN (Bürgerservicenummer) abgerufen werden kann",
 
       // Store contact info
-      "store-contact-info": "Digitale Adresse (und Partei) erstellen",
+      "store-contact-info": "Digitale Adresse (und Partij) erstellen",
       firstName: "Vorname",
       firstNameTooltip: "Variable, aus der der Vorname abgerufen werden kann",
       inFix: "Namenszusatz",
@@ -112,17 +112,17 @@ const openKlantPluginSpecification: PluginSpecification = {
       emailAddress: "E-Mail-Adresse",
       emailAddressTooltip:
         "Variable, aus der die E-Mail-Adresse abgerufen werden kann",
-      caseUuid: "OpenZaak-Vorgangsnummer",
+      caseUuid: "Open Zaak-Vorgangsnummer",
       caseUuidTooltip:
-        "Variable, aus der die OpenZaak-Vorgangsnummer abgerufen werden kann",
+        "Variable, aus der die Open Zaak-Vorgangsnummer abgerufen werden kann",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn":
-        "Kontaktverlauf anhand der BSN-Nummer abrufen",
+        "Kontaktverlauf anhand der BSN (Bürgerservicenummer) abrufen",
 
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
-        "Kontaktverlauf anhand der OpenZaak-Nummer abrufen",
+        "Kontaktverlauf anhand der Open Zaak-Nummer abrufen",
     },
   },
 };
