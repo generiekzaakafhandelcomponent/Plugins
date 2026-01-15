@@ -69,12 +69,14 @@ class OipKlanttaakAutoConfiguration {
     fun oipKlanttaakEventListener(
         pluginService: PluginService,
         objectManagementService: ObjectManagementService,
+        objectMapper: ObjectMapper,
         processDocumentService: ProcessDocumentService,
         processService: OperatonProcessService,
         taskService: OperatonTaskService
     ) = OipKlanttaakEventListener(
         pluginService = pluginService,
         objectManagementService = objectManagementService,
+        objectMapper = objectMapper,
         processDocumentService = processDocumentService,
         processService = processService,
         taskService = taskService

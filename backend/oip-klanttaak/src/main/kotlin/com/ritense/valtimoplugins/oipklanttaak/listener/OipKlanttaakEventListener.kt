@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.oipklanttaak.listener
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.authorization.AuthorizationContext
 import com.ritense.authorization.annotation.RunWithoutAuthorization
@@ -48,12 +49,11 @@ import java.util.UUID
 open class OipKlanttaakEventListener(
     private val pluginService: PluginService,
     private val objectManagementService: ObjectManagementService,
+    private val objectMapper: ObjectMapper,
     private val processDocumentService: ProcessDocumentService,
     private val processService: OperatonProcessService,
     private val taskService: OperatonTaskService
 ) {
-
-    private val objectMapper = pluginService.getObjectMapper()
 
     @Transactional
     @RunWithoutAuthorization
@@ -100,18 +100,18 @@ open class OipKlanttaakEventListener(
         objectenApiPluginConfigurationId: UUID
     ): OperatonTask? =
         getObjectByUrl(resourceUrl, objectenApiPluginConfigurationId).let { objectWrapper ->
-            objectMapper.convertValue<Klanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
-                if (oipKlanttaak.status != Status.UITGEVOERD) {
+            objectMapper.convertValue<Klanttaak>(objectWrapper.record.data).let { klanttaak ->
+                if (klanttaak.status != Status.UITGEVOERD) {
                     logger.info {
                         "Skipping: Taak cannot be handled. Does not match expected status UITGEVOERD."
                     }
                     return null
                 }
                 return try {
-                    taskService.findTaskById(oipKlanttaak.verwerkerTaakId.toString())
+                    taskService.findTaskById(klanttaak.verwerkerTaakId.toString())
                 } catch (_: TaskNotFoundException) {
                     logger.info {
-                        "Skipping: No OperatonTask found with id '${oipKlanttaak.verwerkerTaakId}'."
+                        "Skipping: No OperatonTask found with id '${klanttaak.verwerkerTaakId}'."
                     }
                     null
                 }
