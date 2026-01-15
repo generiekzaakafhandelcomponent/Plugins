@@ -147,9 +147,9 @@ export class ContactHistoryTabComponent implements OnInit {
       case ContactOutcome.FAILURE:
         return "Mislukt";
       case ContactOutcome.NOT_APPLICABLE:
-        return "Niet van toepassing";
+        return "Status niet van toepassing";
       case ContactOutcome.UNKNOWN:
-        return "Onbekend";
+        return "Status onbekend";
     }
   }
 
