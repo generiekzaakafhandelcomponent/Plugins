@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.oipklanttaak.listener
 
 import com.ritense.authorization.AuthorizationContext
+import com.ritense.document.domain.impl.JsonSchemaDocumentId
 import com.ritense.notificatiesapi.event.NotificatiesApiNotificationReceivedEvent
 import com.ritense.notificatiesapi.exception.NotificatiesNotificationEventException
 import com.ritense.objectenapi.ObjectenApiPlugin
@@ -28,6 +29,7 @@ import com.ritense.plugin.domain.PluginConfiguration
 import com.ritense.plugin.domain.PluginConfigurationId
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDocumentService
+import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimo.contract.json.MapperSingleton
 import com.ritense.valtimo.operaton.domain.OperatonTask
 import com.ritense.valtimo.service.OperatonProcessService
@@ -47,6 +49,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
@@ -89,37 +92,82 @@ class OipKlanttaakEventListenerTest {
     }
 
     @Test
-    fun `handle should process valid event when task is found`() {
+    fun `handle should process valid event and start a system process when task is found`() {
         // given
         val event = notificatiesApiNotificationReceivedEvent()
-
-        val taskId = "c9f7d131-9289-4a39-8bff-fcdeba4c3915"
-        val mockedTask = mock<OperatonTask> {
-            on { id } doReturn taskId
-        }
 
         doReturn(objectManagementConfiguration())
             .whenever(objectManagementServiceMock).findByObjectTypeId(eq(objectTypeId()))
 
-        doReturn(pluginConfiguration())
+        doReturn(oipKlanttaakPluginConfiguration())
             .whenever(pluginServiceMock).findPluginConfiguration<OipKlanttaakPlugin>(any(), any())
 
         doReturn(objectenApiPlugin())
             .whenever(pluginServiceMock).createInstance<ObjectenApiPlugin>(eq(objectenApiPluginConfigurationId()))
 
-        doReturn(mockedTask)
-            .whenever(taskServiceMock).findTaskById(eq(taskId))
+        doReturn(task())
+            .whenever(taskServiceMock).findTaskById(eq(taskId().toString()))
 
-        whenever(processDocumentServiceMock.getDocumentId(any(), any()))
-            .thenReturn(mock())
+        doReturn(documentId())
+            .whenever(processDocumentServiceMock).getDocumentId(any(), any())
+
+        doReturn(oipKlanttaakPlugin())
+            .whenever(pluginServiceMock).createInstance<OipKlanttaakPlugin>(eq(oipKlanttaakPluginConfigurationId()))
 
         // when
         AuthorizationContext.runWithoutAuthorization<Any> {
-            assertDoesNotThrow { listener.handle(event) }
+            assertDoesNotThrow {
+                listener.handle(event)
+            }
         }
 
         // then
-        verify(processServiceMock, times(1)).startProcess(any(), any(), any())
+        verify(processServiceMock, times(1)).startProcess(
+            any(),
+            any(),
+            any()
+        )
+    }
+
+    @Test
+    fun `handle should process valid event and start a case specific process when task is found`() {
+        // given
+        val caseType = "case-type"
+        val caseVersion = "1.0.0"
+        val event = notificatiesApiNotificationReceivedEvent()
+
+        doReturn(objectManagementConfiguration())
+            .whenever(objectManagementServiceMock).findByObjectTypeId(eq(objectTypeId()))
+
+        doReturn(oipKlanttaakPluginConfiguration())
+            .whenever(pluginServiceMock).findPluginConfiguration<OipKlanttaakPlugin>(any(), any())
+
+        doReturn(objectenApiPlugin())
+            .whenever(pluginServiceMock).createInstance<ObjectenApiPlugin>(eq(objectenApiPluginConfigurationId()))
+
+        doReturn(task())
+            .whenever(taskServiceMock).findTaskById(eq(taskId().toString()))
+
+        doReturn(documentId())
+            .whenever(processDocumentServiceMock).getDocumentId(any(), any())
+
+        doReturn(oipKlanttaakPlugin(caseDefinitionVersion = "$caseType:$caseVersion"))
+            .whenever(pluginServiceMock).createInstance<OipKlanttaakPlugin>(eq(oipKlanttaakPluginConfigurationId()))
+
+        // when
+        AuthorizationContext.runWithoutAuthorization<Any> {
+            assertDoesNotThrow {
+                listener.handle(event)
+            }
+        }
+
+        // then
+        verify(processServiceMock, times(1)).startProcess(
+            any(),
+            any(),
+            eq(CaseDefinitionId.of(caseType, caseVersion)),
+            any()
+        )
     }
 
     @Test
@@ -152,14 +200,23 @@ class OipKlanttaakEventListenerTest {
         doReturn(objectManagementConfiguration())
             .whenever(objectManagementServiceMock).findByObjectTypeId(eq(objectTypeId()))
 
-        doReturn(pluginConfiguration())
+        doReturn(oipKlanttaakPluginConfiguration())
             .whenever(pluginServiceMock).findPluginConfiguration<OipKlanttaakPlugin>(any(), any())
 
         doReturn(objectenApiPlugin())
             .whenever(pluginServiceMock).createInstance<ObjectenApiPlugin>(eq(objectenApiPluginConfigurationId()))
 
-        whenever(processServiceMock.startProcess(any(), any(), any()))
-            .thenThrow(RuntimeException("Process start failed"))
+        doReturn(task())
+            .whenever(taskServiceMock).findTaskById(eq(taskId().toString()))
+
+        doReturn(documentId())
+            .whenever(processDocumentServiceMock).getDocumentId(any(), any())
+
+        doReturn(oipKlanttaakPlugin())
+            .whenever(pluginServiceMock).createInstance<OipKlanttaakPlugin>(eq(oipKlanttaakPluginConfigurationId()))
+
+        doThrow(RuntimeException("Process start failed"))
+            .whenever(processServiceMock).startProcess(any(), any(), any())
 
         // when
         assertThrows<NotificatiesNotificationEventException> {
@@ -178,10 +235,14 @@ class OipKlanttaakEventListenerTest {
         doReturn(objectManagementConfiguration())
             .whenever(objectManagementServiceMock).findByObjectTypeId(eq(objectTypeId()))
 
-        doReturn(pluginConfiguration())
+        doReturn(oipKlanttaakPluginConfiguration())
             .whenever(pluginServiceMock).findPluginConfiguration<OipKlanttaakPlugin>(any(), any())
 
-        doReturn(objectenApiPlugin())
+        doReturn(objectenApiPlugin(
+            klanttaak = klanttaak(
+                status = Status.VERWERKT
+            )
+        ))
             .whenever(pluginServiceMock).createInstance<ObjectenApiPlugin>(eq(objectenApiPluginConfigurationId()))
 
         // when
@@ -191,6 +252,13 @@ class OipKlanttaakEventListenerTest {
 
         // then
         verify(taskServiceMock, never()).findTaskById(any())
+    }
+
+    private fun notificatiesApiNotificationReceivedEvent() = mock<NotificatiesApiNotificationReceivedEvent> {
+        on { kanaal } doReturn "objecten"
+        on { actie } doReturn "update"
+        on { resourceUrl } doReturn "https://example.com/resource/9aa32593-6e0a-42f9-9e36-3e1ee180003f"
+        on { kenmerken } doReturn mapOf("objectType" to "https://example.com/objectType/${objectTypeId()}")
     }
 
     private fun klanttaak(status: Status = Status.UITGEVOERD) = Klanttaak(
@@ -208,23 +276,32 @@ class OipKlanttaakEventListenerTest {
                 value = URI.create("https://example.com/form/123")
             ),
         ),
-        verwerkerTaakId = UUID.fromString("99ab6902-80a1-46f9-8c79-5c040ebd118f")
+        verwerkerTaakId = taskId()
     )
 
-    private fun notificatiesApiNotificationReceivedEvent() = mock<NotificatiesApiNotificationReceivedEvent> {
-        on { kanaal } doReturn "objecten"
-        on { actie } doReturn "update"
-        on { resourceUrl } doReturn "https://example.com/resource/9aa32593-6e0a-42f9-9e36-3e1ee180003f"
-        on { kenmerken } doReturn mapOf("objectType" to "https://example.com/objectType/${objectTypeId()}")
+    private fun taskId() = UUID.fromString("99ab6902-80a1-46f9-8c79-5c040ebd118f")
+
+    private fun processInstanceId() = UUID.fromString("7f7aeaad-604b-470e-b5ee-c8da087c7d0e")
+
+    private fun task() = mock<OperatonTask> {
+        on { id } doReturn taskId().toString()
+        on { getProcessInstanceId() } doReturn processInstanceId().toString()
     }
 
-    private fun pluginConfigurationId() = UUID.fromString("5489f080-8355-4f28-a305-5ebd88ecdd22")
+    private fun documentId() = JsonSchemaDocumentId.existingId(UUID.fromString("466954bd-1d21-4462-a3fb-d7af0b5ddc41"))
 
-    private fun pluginConfiguration() = PluginConfiguration(
-        id = PluginConfigurationId.existingId(pluginConfigurationId()),
+    private fun oipKlanttaakPluginConfigurationId() = UUID.fromString("5489f080-8355-4f28-a305-5ebd88ecdd22")
+
+    private fun oipKlanttaakPluginConfiguration() = PluginConfiguration(
+        id = PluginConfigurationId.existingId(oipKlanttaakPluginConfigurationId()),
         title = "OIP Klanttaak Plugin Configuration",
         pluginDefinition = mock()
     )
+
+    private fun oipKlanttaakPlugin(caseDefinitionVersion: String? = null) = mock<OipKlanttaakPlugin> {
+        on { this.caseDefinitionVersion } doReturn caseDefinitionVersion
+        on { this.finalizerProcess } doReturn "finalizer-process"
+    }
 
     private fun objectManagementConfigurationId() = UUID.fromString("135851f4-ace3-4e8c-832b-ec71b0a28352")
 
@@ -242,11 +319,13 @@ class OipKlanttaakEventListenerTest {
         objectenApiPluginConfigurationId = objectenApiPluginConfigurationId()
     )
 
-    private fun objectenApiPlugin(): ObjectenApiPlugin {
+    private fun objectenApiPlugin(
+        klanttaak: Klanttaak = klanttaak()
+    ): ObjectenApiPlugin {
         val objectRecord = ObjectRecord(
             typeVersion = 1,
             startAt = LocalDate.parse("2023-01-01"),
-            data = objectMapper.valueToTree(klanttaak())
+            data = objectMapper.valueToTree(klanttaak)
         )
         val objectWrapper = ObjectWrapper(
             url = mock(),
