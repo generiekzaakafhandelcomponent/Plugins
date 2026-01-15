@@ -47,40 +47,53 @@
             [disabled]="obs.disabled"
             [required]="true"
     ></v-input>
-    <v-input
-            name="partijUuid"
-            [title]="'partijUuid' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.partijUuid"
-            [disabled]="obs.disabled"
-            [required]="true"
-    ></v-input>
-    <v-input
-            name="voorletters"
-            [title]="'voorletters' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.voorletters"
-            [disabled]="obs.disabled"
-            [required]="true"
-    ></v-input>
-    <v-input
-            name="voornaam"
-            [title]="'voornaam' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.voornaam"
-            [disabled]="obs.disabled"
-            [required]="true"
-    ></v-input>
-    <v-input
-            name="voorvoegselAchternaam"
-            [title]="'voorvoegselAchternaam' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.voorvoegselAchternaam"
-            [disabled]="obs.disabled"
-            [required]="true"
-    ></v-input>
-    <v-input
-            name="achternaam"
-            [title]="'achternaam' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.achternaam"
-            [disabled]="obs.disabled"
-            [required]="true"
-    ></v-input>
+    <cds-toggle
+        #hasBetrokkene
+        class="toggle"
+        [label]="'heeftBetrokkene' | pluginTranslate: pluginId | async"
+        [onText]="'heeftBetrokkene.betrokkene' | pluginTranslate: pluginId | async"
+        [offText]="'heeftBetrokkene.anoniem' | pluginTranslate: pluginId | async"
+        [checked]="!!obs.prefill?.hasBetrokkene"
+        [disabled]="obs.disabled"
+        >
+    </cds-toggle>
+    <ng-container
+            *ngIf="hasBetrokkene.checked">
+        <v-input
+                name="partijUuid"
+                [title]="'partijUuid' | pluginTranslate: pluginId | async"
+                [defaultValue]="obs.prefill?.partijUuid"
+                [disabled]="obs.disabled"
+                [required]="true"
+        ></v-input>
+        <v-input
+                name="voorletters"
+                [title]="'voorletters' | pluginTranslate: pluginId | async"
+                [defaultValue]="obs.prefill?.voorletters"
+                [disabled]="obs.disabled"
+                [required]="true"
+        ></v-input>
+        <v-input
+                name="voornaam"
+                [title]="'voornaam' | pluginTranslate: pluginId | async"
+                [defaultValue]="obs.prefill?.voornaam"
+                [disabled]="obs.disabled"
+                [required]="true"
+        ></v-input>
+        <v-input
+                name="voorvoegselAchternaam"
+                [title]="'voorvoegselAchternaam' | pluginTranslate: pluginId | async"
+                [defaultValue]="obs.prefill?.voorvoegselAchternaam"
+                [disabled]="obs.disabled"
+                [required]="true"
+        ></v-input>
+        <v-input
+                name="achternaam"
+                [title]="'achternaam' | pluginTranslate: pluginId | async"
+                [defaultValue]="obs.prefill?.achternaam"
+                [disabled]="obs.disabled"
+                [required]="true"
+        ></v-input>
+    </ng-container>
 
 </v-form>

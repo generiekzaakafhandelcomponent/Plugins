@@ -8,9 +8,10 @@ data class KlantcontactCreationInformation(
     val taal: String,
     val plaatsgevondenOp: String,
 
-    val partijUuid: String,
-    val voorletters: String,
-    val voornaam: String,
-    val voorvoegselAchternaam: String,
-    val achternaam: String,
+    val hasBetrokkene: Boolean,
+    val partijUuid: String?,
+    val voorletters: String?,
+    val voornaam: String?,
+    val voorvoegselAchternaam: String?,
+    val achternaam: String?,
 )

@@ -8,10 +8,17 @@ import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformatio
 
 class KlantContactFactory {
     fun createKlantContactRequest(klantContactCreationInformation: KlantcontactCreationInformation): KlantcontactCreationRequest =
-        KlantcontactCreationRequest(
-            klantcontact = klantcontactRequest(klantContactCreationInformation),
-            betrokkene = betrokkeneRequest(klantContactCreationInformation)
-        )
+        if (klantContactCreationInformation.hasBetrokkene) {
+            KlantcontactCreationRequest(
+                klantcontact = klantcontactRequest(klantContactCreationInformation),
+                betrokkene = betrokkeneRequest(klantContactCreationInformation)
+            )
+        } else {
+            KlantcontactCreationRequest(
+                klantcontact = klantcontactRequest(klantContactCreationInformation),
+            )
+        }
+
 
     private fun klantcontactRequest(klantContactCreationInformation: KlantcontactCreationInformation) =
         KlantcontactCreationRequest.KlantContactRequest(
@@ -27,7 +34,10 @@ class KlantContactFactory {
 
     private fun betrokkeneRequest(klantContactCreationInformation: KlantcontactCreationInformation) =
         KlantcontactCreationRequest.BetrokkeneRequest(
-            wasPartij = UuidReference(klantContactCreationInformation.partijUuid),
+            wasPartij = UuidReference(
+                klantContactCreationInformation.partijUuid
+                    ?: throw IllegalArgumentException("No partijUuid was specified to create a betrokkene request")
+            ),
             bezoekadres = null,
             correspondentieadres = null,
             contactnaam = contactNaam(klantContactCreationInformation),

@@ -5,6 +5,7 @@ import {FunctionConfigurationComponent, FunctionConfigurationData, PluginTransla
 import {AsyncPipe} from "@angular/common";
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from "rxjs";
 import {OpenKlantSendKlantcontactConfig} from "../../models/open-klant-send-klantcontact-config";
+import {ToggleModule} from "carbon-components-angular";
 
 @Component({
     selector: 'open-klant-send-klantcontact',
@@ -15,7 +16,8 @@ import {OpenKlantSendKlantcontactConfig} from "../../models/open-klant-send-klan
         InputModule,
         PluginTranslatePipeModule,
         AsyncPipe,
-        RadioModule
+        RadioModule,
+        ToggleModule
     ],
     templateUrl: './open-klant-send-klantcontact.component.html',
     styleUrl: './open-klant-send-klantcontact.component.css'
@@ -54,11 +56,11 @@ export class OpenKlantSendKlantcontactComponent implements FunctionConfiguration
             !!formValue.vertrouwelijk &&
             !!formValue.taal &&
             !!formValue.plaatsgevondenOp &&
-            !!formValue.partijUuid &&
-            !!formValue.voorletters &&
-            !!formValue.voornaam &&
-            !!formValue.voorvoegselAchternaam &&
-            !!formValue.achternaam;
+            !!(!formValue.hasBetrokkene || formValue.partijUuid) &&
+            !!(!formValue.hasBetrokkene || formValue.voorletters) &&
+            !!(!formValue.hasBetrokkene || formValue.voornaam) &&
+            !!(!formValue.hasBetrokkene || formValue.voorvoegselAchternaam) &&
+            !!(!formValue.hasBetrokkene || formValue.achternaam);
 
         this.valid$.next(valid);
         this.valid.emit(valid);

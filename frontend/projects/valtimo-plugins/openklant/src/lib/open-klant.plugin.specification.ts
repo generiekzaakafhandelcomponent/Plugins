@@ -51,6 +51,10 @@ const openKlantPluginSpecification: PluginSpecification = {
             voornaam: 'Voornaam',
             voorvoegselAchternaam: 'Tussenvoegsel',
             achternaam: 'Achternaam',
+            heeftBetrokkene: 'Bevat het klantcontact een betrokkene of is het anoniem?',
+            'heeftBetrokkene.betrokkene': 'Heeft betrokkene',
+            'heeftBetrokkene.anoniem': 'Is anoniem',
+
         },
         en: {
             configurationTitle: 'Configuration name',
@@ -77,9 +81,12 @@ const openKlantPluginSpecification: PluginSpecification = {
             plaatsgevondenOp: 'Start date/time (ISO 8601)',
             partijUuid: 'Partij Uuid',
             voorletters: 'Initials',
-            voornaam: 'Voornaam',
-            voorvoegselAchternaam: 'Tussenvoegsel',
-            achternaam: 'Achternaam',
+            voornaam: 'First Name',
+            voorvoegselAchternaam: 'Infix',
+            achternaam: 'Last name',
+            heeftBetrokkene: 'Does the contact moment involve an individual or is it anonymous?',
+            'heeftBetrokkene.betrokkene': 'Has an individual',
+            'heeftBetrokkene.anoniem': 'Is anonymous',
         }
     }
 };

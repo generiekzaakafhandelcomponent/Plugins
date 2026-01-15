@@ -5,9 +5,10 @@ export interface OpenKlantSendKlantcontactConfig {
     vertrouwelijk: string;
     taal: string;
     plaatsgevondenOp: string;
-    partijUuid: string;
-    voorletters: string;
-    voornaam: string;
-    voorvoegselAchternaam: string;
-    achternaam: string;
+    hasBetrokkene: boolean;
+    partijUuid: string | undefined;
+    voorletters: string | undefined;
+    voornaam: string | undefined;
+    voorvoegselAchternaam: string | undefined;
+    achternaam: string | undefined;
 }
