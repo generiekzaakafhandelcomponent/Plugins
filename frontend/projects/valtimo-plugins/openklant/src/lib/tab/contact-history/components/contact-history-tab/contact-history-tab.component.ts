@@ -17,8 +17,8 @@ import { LoadingModule } from "carbon-components-angular";
 import { NGXLogger } from "ngx-logger";
 import {
   ContactOutcome,
-  CustomerContact,
-} from "../models/customer-contact.model";
+  Klantcontact as KlantContact,
+} from "../models/klantcontact.model";
 import { ProcessPollingService } from "../../services/process-polling.service";
 import { ContactHistoryService } from "../../services/contact-history.service";
 
@@ -63,7 +63,7 @@ export class ContactHistoryTabComponent implements OnInit {
     this._isFailed = isFailed;
   }
 
-  private _contactHistory: CustomerContact[] | null = null;
+  private _contactHistory: KlantContact[] | null = null;
   get contactHistory() {
     return this._contactHistory;
   }

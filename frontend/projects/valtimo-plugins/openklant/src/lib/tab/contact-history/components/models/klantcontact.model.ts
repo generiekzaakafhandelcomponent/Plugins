@@ -1,4 +1,4 @@
-export interface CustomerContact {
+export interface Klantcontact {
   id?: string;
   channel: string;
   subject: string;
@@ -16,7 +16,7 @@ export enum ContactOutcome {
   UNKNOWN = "unknown",
 }
 
-export interface CustomerContactDTO {
+export interface KlantcontactDTO {
   nummer?: string;
   kanaal: string;
   onderwerp: string;
@@ -27,7 +27,7 @@ export interface CustomerContactDTO {
   plaatsgevondenOp?: string;
 }
 
-export function mapDtoToModel(dto: CustomerContactDTO): CustomerContact {
+export function mapDtoToModel(dto: KlantcontactDTO): Klantcontact {
   return {
     id: dto.nummer,
     channel: dto.kanaal,
@@ -42,7 +42,7 @@ export function mapDtoToModel(dto: CustomerContactDTO): CustomerContact {
   };
 }
 
-export function mapModelToDto(model: CustomerContact): CustomerContactDTO {
+export function mapModelToDto(model: Klantcontact): KlantcontactDTO {
   return {
     nummer: model.id,
     kanaal: model.channel,

@@ -1,5 +1,5 @@
-import {CustomerContactDTO} from './customer-contact.model';
+import { KlantcontactDTO } from "./klantcontact.model";
 
 export interface DocumentContentWithContactHistory {
-    contactgeschiedenis: CustomerContactDTO[];
+  contactgeschiedenis: KlantcontactDTO[];
 }
