@@ -337,16 +337,15 @@ class OipKlanttaakEventListenerTest {
     private fun objectenApiPlugin(
         klanttaak: Klanttaak = klanttaak()
     ): ObjectenApiPlugin {
-        val objectRecord = ObjectRecord(
-            typeVersion = 1,
-            startAt = LocalDate.parse("2023-01-01"),
-            data = objectMapper.valueToTree(klanttaak)
-        )
         val objectWrapper = ObjectWrapper(
             url = objectUrl(),
             uuid = objectId(),
             type = objectTypeUrl(),
-            record = objectRecord
+            record = ObjectRecord(
+                typeVersion = 1,
+                startAt = LocalDate.parse("2026-01-01"),
+                data = objectMapper.valueToTree(klanttaak)
+            )
         )
         return mock<ObjectenApiPlugin> {
             on { getObject(any() ) } doReturn objectWrapper
