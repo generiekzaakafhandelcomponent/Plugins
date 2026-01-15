@@ -33,7 +33,7 @@ class DefaultOpenKlantService(
         openKlantClient.getKlantcontacten(properties).results
 
     override suspend fun getAllKlantcontactenByBsn(properties: KlantcontactOptions): List<Klantcontact> =
-        openKlantClient.getKlantcontacten(properties).results
+        openKlantClient.getKlantcontactenByBsn(properties).results
 
     private suspend fun isPreferredAddress(
         emailAddress: String,
