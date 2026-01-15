@@ -6,9 +6,10 @@ import com.ritense.valtimoplugins.printstraat.dto.PrintstraatPluginDto
 import com.ritense.valtimoplugins.printstraat.plugin.PrintstraatPlugin
 import org.springframework.http.HttpStatus
 import org.springframework.web.client.HttpServerErrorException
-import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.client.RestClient
+import org.springframework.web.client.RestClientResponseException
 
-class PrintstraatWebClient(
+class PrintstraatRestClient(
     private val pluginService: PluginService
 ) : PrintstraatClient {
 
@@ -16,15 +17,19 @@ class PrintstraatWebClient(
         try {
             val printstraatPluginProperties = getPrintstraatConnectionData()
 
-            WebClient.builder()
+            RestClient.builder()
                 .baseUrl(printstraatPluginProperties.url)
                 .defaultHeader(API_KEY_HEADER_NAME, printstraatPluginProperties.token)
                 .build()
                 .post()
-                .bodyValue(printstraatBodyDto)
+                .body(printstraatBodyDto)
                 .retrieve()
                 .toBodilessEntity()
-                .block()
+        } catch (e: RestClientResponseException) {
+            throw HttpServerErrorException(
+                HttpStatus.BAD_REQUEST,
+                "Request to Printstraat failed (status ${e.statusCode}). Body='${e.responseBodyAsString}'"
+            )
         } catch (e: Exception) {
             throw HttpServerErrorException(
                 HttpStatus.BAD_REQUEST,

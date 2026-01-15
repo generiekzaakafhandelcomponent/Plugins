@@ -2,12 +2,11 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
-import {Config} from "../models/config";
+import {PrintstraatPluginConfig} from "../models/printstraat-plugin-config";
 
 @Component({
   selector: 'printstraat-plugin-configuration',
-  templateUrl: './printstraat-plugin-configuration.component.html',
-  styleUrls: ['./printstraat-plugin-configuration.component.scss']
+  templateUrl: './printstraat-plugin-configuration.component.html'
 })
 export class PrintstraatPluginConfigurationComponent
   // The component explicitly implements the PluginConfigurationComponent interface
@@ -17,17 +16,17 @@ export class PrintstraatPluginConfigurationComponent
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
   // If the plugin had already been saved, a prefill configuration of the type SamplePluginConfig is expected
-  @Input() prefillConfiguration$: Observable<Config>;
+  @Input() prefillConfiguration$: Observable<PrintstraatPluginConfig>;
 
   // If the configuration data changes, output whether the data is valid or not
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
   // If the configuration is valid, output a configuration of the type SamplePluginConfig
-  @Output() configuration: EventEmitter<Config> =
-    new EventEmitter<Config>();
+  @Output() configuration: EventEmitter<PrintstraatPluginConfig> =
+    new EventEmitter<PrintstraatPluginConfig>();
 
   private saveSubscription!: Subscription;
 
-  private readonly formValue$ = new BehaviorSubject<Config | null>(null);
+  private readonly formValue$ = new BehaviorSubject<PrintstraatPluginConfig | null>(null);
   private readonly valid$ = new BehaviorSubject<boolean>(false);
 
   readonly authenticationPluginSelectItems$: Observable<Array<{id: string; text: string}>> =
@@ -65,7 +64,7 @@ export class PrintstraatPluginConfigurationComponent
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: Config): void {
+  private handleValid(formValue: PrintstraatPluginConfig): void {
     // The configuration is valid when a configuration title and url are defined
     const valid = !!(formValue.configurationTitle
       &&

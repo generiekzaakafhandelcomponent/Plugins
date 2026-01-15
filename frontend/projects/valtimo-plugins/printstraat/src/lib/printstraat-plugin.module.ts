@@ -3,9 +3,15 @@ import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {FormModule, InputModule, SelectModule} from '@valtimo/components';
 import {PrintstraatPluginConfigurationComponent} from './components/printstraat-plugin-configuration.component';
+import {
+  PrintstraatPluginActionConfigurationComponent
+} from "./components/printstraat-plugin-action-configuration.component";
 
 @NgModule({
-  declarations: [PrintstraatPluginConfigurationComponent],
+  declarations: [
+      PrintstraatPluginConfigurationComponent,
+      PrintstraatPluginActionConfigurationComponent
+  ],
   imports: [
     CommonModule,
     PluginTranslatePipeModule,
@@ -13,6 +19,6 @@ import {PrintstraatPluginConfigurationComponent} from './components/printstraat-
     InputModule,
     SelectModule
   ],
-  exports: [PrintstraatPluginConfigurationComponent]
+  exports: [PrintstraatPluginConfigurationComponent, PrintstraatPluginActionConfigurationComponent]
 })
 export class PrintstraatPluginModule {}

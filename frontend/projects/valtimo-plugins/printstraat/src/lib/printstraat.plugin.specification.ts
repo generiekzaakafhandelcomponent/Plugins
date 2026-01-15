@@ -1,6 +1,9 @@
 import {PluginSpecification} from '@valtimo/plugin';
 import {PrintstraatPluginConfigurationComponent} from './components/printstraat-plugin-configuration.component';
 import {PRINTSTRAAT_PLUGIN_LOGO_BASE64} from './assets';
+import {
+  PrintstraatPluginActionConfigurationComponent
+} from "./components/printstraat-plugin-action-configuration.component";
 
 const printstraatPluginSpecification: PluginSpecification = {
   /*
@@ -14,6 +17,9 @@ const printstraatPluginSpecification: PluginSpecification = {
   pluginConfigurationComponent: PrintstraatPluginConfigurationComponent,
   // Points to a Base64 encoded string, which contains the logo of the plugin.
   pluginLogoBase64: PRINTSTRAAT_PLUGIN_LOGO_BASE64,
+  functionConfigurationComponents: {
+    'send-files-to-printstraat': PrintstraatPluginActionConfigurationComponent
+  },
   /*
   For each language key an implementation supports, translation keys with a translation are provided below.
   These can then be used in configuration components using the pluginTranslate pipe or the PluginTranslationService.
@@ -28,16 +34,24 @@ const printstraatPluginSpecification: PluginSpecification = {
       title: 'Printstraat',
       description: 'Maakt connectie met Printstraat via OpenTunnel',
       url: 'URL',
-      token: 'token'
+      token: 'Token',
+      'send-files-to-printstraat': 'Stuur bestanden naar Printstraat',
+      documentenApiPluginConfigurationId: 'Documenten API Plugin configuratie ID',
+      documentenListVariableName: 'Documenten lijst procesvariabele naam',
+      documentenListVariableNameTooltip: 'De naam van de procesvariabele die de lijst met documentgegevens bevat',
     },
     en: {
       configurationTitle: 'Configuration name',
       configurationTitleTooltip:
-          'Name of the Document Search Plugin configuration',
+          'Printstraat Plugin configuration name',
       title: 'Printstraat',
       description: 'Connects to Printstraat via OpenTunnel"',
       url: 'URL',
-      token: 'token'
+      token: 'Token',
+      'send-files-to-printstraat': 'Send files to Printstraat',
+      documentenApiPluginConfigurationId: 'Documenten API Plugin configuration ID',
+      documentenListVariableName: 'Document list process variable name',
+      documentenListVariableNameTooltip: 'Name of the process variable that contains the list of document data',
     }
   }
 };

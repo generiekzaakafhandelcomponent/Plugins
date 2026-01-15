@@ -21,14 +21,18 @@ class PrintstraatService(
     private val objectMapper: ObjectMapper,
 ) {
 
-    fun getFilesAndSendToPrintstraat(execution: DelegateExecution) {
+    fun getFilesAndSendToPrintstraat(
+        execution: DelegateExecution,
+        documentenApiPluginConfigurationId: String,
+        documentenListVariableName: String
+    ) {
         try {
             val zaak = zaakDocumentService.getZaakByDocumentId(UUID.fromString(execution.businessKey))
-            val documentenBijlagen = getDocumentenBijlageIdList(objectMapper, execution)
+            val documentenBijlagen = getDocumentenBijlageIdList(execution, objectMapper, documentenListVariableName)
 
             documentenBijlagen.forEach { documentData ->
                 val file = documentenApiService.downloadInformatieObject(
-                    pluginConfigurationId = DOCUMENTEN_API_PLUGIN_CONFIGURATION_ID,
+                    pluginConfigurationId = documentenApiPluginConfigurationId,
                     documentId = documentData.id.toString()
                 )
 
@@ -54,6 +58,17 @@ class PrintstraatService(
         return Base64.getEncoder().encodeToString(bytes)
     }
 
+    private fun getDocumentenBijlageIdList(
+        execution: DelegateExecution,
+        objectMapper: ObjectMapper,
+        documentenListVariableName: String
+    ): List<DocumentenApiDto> {
+        val documentenBijlageIdListString = execution.getVariable(documentenListVariableName) as String
+        return objectMapper.readValue(
+            documentenBijlageIdListString,
+            object : TypeReference<List<DocumentenApiDto>>() {})
+    }
+
     private fun throwBpmnError() {
         throw BpmnError(
             "PrintstraatError",
@@ -63,26 +78,5 @@ class PrintstraatService(
 
     companion object {
         val logger = KotlinLogging.logger {}
-
-        const val DOCUMENTEN_LIST = "documentenDataList"
-        private const val DOCUMENTEN_API_PLUGIN_CONFIGURATION_ID = "ef0f96bc-dd85-4c69-a284-d4d44ed4b352"
-
-        fun getDocumentenBijlageIdList(
-            objectMapper: ObjectMapper,
-            execution: DelegateExecution,
-        ): List<DocumentenApiDto> {
-            val documentenBijlageIdListString = execution.getVariable(DOCUMENTEN_LIST) as String
-            return objectMapper.readValue(
-                documentenBijlageIdListString,
-                object : TypeReference<List<DocumentenApiDto>>() {})
-        }
-
-        fun setDocumentenBijlageIdList(
-            objectMapper: ObjectMapper,
-            execution: DelegateExecution,
-            documentenBijlageIdList: List<DocumentenApiDto>,
-        ) {
-            execution.setVariable(DOCUMENTEN_LIST, objectMapper.writeValueAsString(documentenBijlageIdList))
-        }
     }
 }

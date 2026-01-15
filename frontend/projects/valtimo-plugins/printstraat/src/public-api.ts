@@ -15,8 +15,9 @@
  *
  */
 
-export * from './lib/models/config';
+export * from './lib/models/printstraat-plugin-config';
 export * from './lib/printstraat-plugin.module';
 export * from './lib/printstraat.plugin.specification';
 export * from './lib/components/printstraat-plugin-configuration.component';
+export * from './lib/components/printstraat-plugin-action-configuration.component';
 export * from './lib/assets';
