@@ -6,7 +6,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
-import com.ritense.valtimoplugins.openklant.model.KlantContactCreationInformation
+import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
@@ -97,7 +97,7 @@ class OpenKlantPlugin(
         @PluginActionProperty kanaal: String,
         @PluginActionProperty onderwerp: String,
         @PluginActionProperty inhoud: String,
-        @PluginActionProperty vertrouwelijk: Boolean,
+        @PluginActionProperty vertrouwelijk: String,
         @PluginActionProperty taal: String,
         @PluginActionProperty plaatsgevondenOp: String,
         @PluginActionProperty partijUuid: String,
@@ -109,11 +109,11 @@ class OpenKlantPlugin(
         ) = runBlocking {
         logger.info { "Registered klantcontact: - ${execution.processBusinessKey}" }
 
-        val klantContactCreationInformation = KlantContactCreationInformation(
+        val klantcontactCreationInformation = KlantcontactCreationInformation(
             kanaal = kanaal,
             onderwerp = onderwerp,
             inhoud = inhoud,
-            vertrouwelijk = vertrouwelijk,
+            vertrouwelijk = vertrouwelijk.toBoolean(),
             taal = taal,
             plaatsgevondenOp = plaatsgevondenOp,
             partijUuid = partijUuid,
@@ -127,7 +127,7 @@ class OpenKlantPlugin(
 
         openKlantPluginService.postKlantContact(
             properties,
-            klantContactCreationInformation
+            klantcontactCreationInformation
         )
     }
 

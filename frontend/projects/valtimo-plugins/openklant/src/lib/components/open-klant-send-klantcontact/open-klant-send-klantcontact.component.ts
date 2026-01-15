@@ -32,14 +32,6 @@ export class OpenKlantSendKlantcontactComponent implements FunctionConfiguration
     private saveSubscription: Subscription;
     private readonly formValue$ = new BehaviorSubject<OpenKlantSendKlantcontactConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
-    readonly pluginId$ = new BehaviorSubject<string>('');
-
-    readonly vertrouwelijkOptions: Observable<Array<RadioValue>> = this.pluginId$.pipe(
-        map(() => [
-            { value: true, title: "True" },
-            { value: false, title: "False" }
-        ])
-    );
 
     ngOnInit(): void {
         this.openSaveSubscription();
@@ -59,7 +51,7 @@ export class OpenKlantSendKlantcontactComponent implements FunctionConfiguration
             !!formValue.kanaal &&
             !!formValue.onderwerp &&
             !!formValue.inhoud &&
-            !!(formValue.vertrouwelijk === true || formValue.vertrouwelijk === false) &&
+            !!formValue.vertrouwelijk &&
             !!formValue.taal &&
             !!formValue.plaatsgevondenOp &&
             !!formValue.partijUuid &&

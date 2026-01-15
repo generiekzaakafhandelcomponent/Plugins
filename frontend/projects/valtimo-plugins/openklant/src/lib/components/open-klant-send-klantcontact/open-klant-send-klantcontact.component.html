@@ -26,14 +26,13 @@
             [disabled]="obs.disabled"
             [required]="true"
     ></v-input>
-    <v-radio
+    <v-input
             name="vertrouwelijk"
             [title]="'vertrouwelijk' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.vertrouwelijk"
-            [radioValues]="vertrouwelijkOptions | async"
+            [defaultValue]="obs.prefill?.vertrouwelijk.toString()"
             [disabled]="obs.disabled"
             [required]="true"
-    ></v-radio>
+    ></v-input>
     <v-input
             name="taal"
             [title]="'taal' | pluginTranslate: pluginId | async"
