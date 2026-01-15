@@ -9,24 +9,29 @@
     <startEvent id="startEvent1" name="start">
       <outgoing>Flow_0du2437</outgoing>
     </startEvent>
-    <serviceTask id="Activity_0ifw82q" name="Sla contact-momenten in document op" camunda:expression="${valueResolverDelegateService.handleValue(execution, targetDocPath, contactmomenten)}">
+    <sequenceFlow id="Flow_0ivoj5e" sourceRef="Activity_GetContactgeschiedenisTask" targetRef="Activity_0ifw82q" />
+    <sequenceFlow id="Flow_0du2437" sourceRef="startEvent1" targetRef="Activity_0x3d6tk" />
+    <serviceTask id="Activity_0ifw82q" name="Sla contact-momenten in document op" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#39;doc:/contactgeschiedenis&#39;, contactgeschiedenis)}">
       <incoming>Flow_0ivoj5e</incoming>
       <outgoing>Flow_1tpnzje</outgoing>
     </serviceTask>
-    <sequenceFlow id="Flow_0ivoj5e" sourceRef="Activity_GetContactmomentenTask" targetRef="Activity_0ifw82q" />
-    <sequenceFlow id="Flow_0du2437" sourceRef="startEvent1" targetRef="Activity_GetContactmomentenTask" />
-    <serviceTask id="Activity_GetContactmomentenTask" name="Haal contact-momenten op via Openklant " camunda:expression="${true}">
-      <incoming>Flow_0du2437</incoming>
+    <serviceTask id="Activity_GetContactgeschiedenisTask" name="Haal contact-momenten op via Openklant " camunda:expression="${true}">
+      <incoming>Flow_1p90xbm</incoming>
       <outgoing>Flow_0ivoj5e</outgoing>
     </serviceTask>
     <endEvent id="Event_167urb2" name="end">
       <incoming>Flow_1tpnzje</incoming>
     </endEvent>
+    <sequenceFlow id="Flow_1p90xbm" sourceRef="Activity_0x3d6tk" targetRef="Activity_GetContactgeschiedenisTask" />
+    <serviceTask id="Activity_0x3d6tk" name="Haal BSN-nummer op uit document" camunda:expression="valueResolverDelegateService.resolveValue(execution, &#34;doc:/bsn&#34;) " camunda:resultVariable="bsn">
+      <incoming>Flow_0du2437</incoming>
+      <outgoing>Flow_1p90xbm</outgoing>
+    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_process">
     <bpmndi:BPMNPlane id="BPMNPlane_process" bpmnElement="Collaboration_1a0h0q2">
       <bpmndi:BPMNShape id="Participant_0vwhxi3_di" bpmnElement="Participant_0vwhxi3" isHorizontal="true">
-        <omgdc:Bounds x="60" y="350" width="490" height="230" />
+        <omgdc:Bounds x="60" y="350" width="620" height="230" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
@@ -36,30 +41,37 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0yun8wh_di" bpmnElement="Activity_0ifw82q">
-        <omgdc:Bounds x="340" y="430" width="100" height="80" />
+        <omgdc:Bounds x="470" y="430" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0lhi0r1_di" bpmnElement="Activity_GetContactmomentenTask">
-        <omgdc:Bounds x="190" y="430" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_0lhi0r1_di" bpmnElement="Activity_GetContactgeschiedenisTask">
+        <omgdc:Bounds x="320" y="430" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_167urb2_di" bpmnElement="Event_167urb2">
-        <omgdc:Bounds x="492" y="452" width="36" height="36" />
+        <omgdc:Bounds x="622" y="452" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds x="501" y="495" width="19" height="14" />
+          <omgdc:Bounds x="631" y="495" width="19" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04v180f_di" bpmnElement="Activity_0x3d6tk">
+        <omgdc:Bounds x="180" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1tpnzje_di" bpmnElement="Flow_1tpnzje">
-        <omgdi:waypoint x="440" y="470" />
-        <omgdi:waypoint x="492" y="470" />
+        <omgdi:waypoint x="570" y="470" />
+        <omgdi:waypoint x="622" y="470" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ivoj5e_di" bpmnElement="Flow_0ivoj5e">
-        <omgdi:waypoint x="290" y="470" />
-        <omgdi:waypoint x="340" y="470" />
+        <omgdi:waypoint x="420" y="470" />
+        <omgdi:waypoint x="470" y="470" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0du2437_di" bpmnElement="Flow_0du2437">
         <omgdi:waypoint x="147" y="470" />
-        <omgdi:waypoint x="190" y="470" />
+        <omgdi:waypoint x="180" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1p90xbm_di" bpmnElement="Flow_1p90xbm">
+        <omgdi:waypoint x="280" y="470" />
+        <omgdi:waypoint x="320" y="470" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
