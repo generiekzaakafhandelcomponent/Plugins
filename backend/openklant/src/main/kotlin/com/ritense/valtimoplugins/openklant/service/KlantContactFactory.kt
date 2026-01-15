@@ -16,13 +16,13 @@ class KlantContactFactory {
     private fun klantcontactRequest(klantContactCreationInformation: KlantContactCreationInformation) =
         CreateKlantContactRequest.KlantContactRequest(
             nummer = null,
-            kanaal = klantContactCreationInformation.communicationChannel,
-            onderwerp = klantContactCreationInformation.subject,
-            inhoud = klantContactCreationInformation.content,
+            kanaal = klantContactCreationInformation.kanaal,
+            onderwerp = klantContactCreationInformation.onderwerp,
+            inhoud = klantContactCreationInformation.inhoud,
             indicateContactGelukt = true,
-            taal = "nld",
-            vertrouwelijk = klantContactCreationInformation.confidential,
-            plaatsgevondenOp = klantContactCreationInformation.startDateTime,
+            taal = klantContactCreationInformation.taal,
+            vertrouwelijk = klantContactCreationInformation.vertrouwelijk,
+            plaatsgevondenOp = klantContactCreationInformation.plaatsgevondenOp,
         )
 
     private fun betrokkeneRequest(klantContactCreationInformation: KlantContactCreationInformation) =
@@ -37,9 +37,9 @@ class KlantContactFactory {
         )
 
     private fun contactNaam(klantContactCreationInformation: KlantContactCreationInformation) = Contactnaam(
-        voorletters = klantContactCreationInformation.initials,
-        voornaam = klantContactCreationInformation.firstName,
-        voorvoegselAchternaam = klantContactCreationInformation.inFix,
-        achternaam = klantContactCreationInformation.lastName
+        voorletters = klantContactCreationInformation.voorletters,
+        voornaam = klantContactCreationInformation.voornaam,
+        voorvoegselAchternaam = klantContactCreationInformation.voorvoegselAchternaam,
+        achternaam = klantContactCreationInformation.achternaam
     )
 }

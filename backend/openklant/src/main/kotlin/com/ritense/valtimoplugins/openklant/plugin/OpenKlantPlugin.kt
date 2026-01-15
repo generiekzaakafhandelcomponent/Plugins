@@ -88,37 +88,39 @@ class OpenKlantPlugin(
     }
 
     @PluginAction(
-        key = "send-klantcontact",
-        title = "Send klantcontact",
-        description = "Sends a new klantContact to OpenKlant",
+        key = "register-klantcontact",
+        title = "Register klantcontact",
+        description = "Registers a new klantContact to OpenKlant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun postKlantContact(
-        @PluginActionProperty communicationChannel: String,
-        @PluginActionProperty subject: String,
-        @PluginActionProperty content: String,
-        @PluginActionProperty confidential: Boolean,
-        @PluginActionProperty startDateTime: String,
+        @PluginActionProperty kanaal: String,
+        @PluginActionProperty onderwerp: String,
+        @PluginActionProperty inhoud: String,
+        @PluginActionProperty vertrouwelijk: Boolean,
+        @PluginActionProperty taal: String,
+        @PluginActionProperty plaatsgevondenOp: String,
         @PluginActionProperty partijUuid: String,
-        @PluginActionProperty initials: String,
-        @PluginActionProperty firstName: String,
-        @PluginActionProperty inFix: String,
-        @PluginActionProperty lastName: String,
+        @PluginActionProperty voorletters: String,
+        @PluginActionProperty voornaam: String,
+        @PluginActionProperty voorvoegselAchternaam: String,
+        @PluginActionProperty achternaam: String,
         execution: DelegateExecution,
         ) = runBlocking {
-        logger.info { "Sending klantcontact: - ${execution.processBusinessKey}" }
+        logger.info { "Registered klantcontact: - ${execution.processBusinessKey}" }
 
         val klantContactCreationInformation = KlantContactCreationInformation(
-            communicationChannel = communicationChannel,
-            subject = subject,
-            content = content,
-            confidential = confidential,
-            startDateTime = startDateTime,
+            kanaal = kanaal,
+            onderwerp = onderwerp,
+            inhoud = inhoud,
+            vertrouwelijk = vertrouwelijk,
+            taal = taal,
+            plaatsgevondenOp = plaatsgevondenOp,
             partijUuid = partijUuid,
-            initials = initials,
-            firstName = firstName,
-            inFix = inFix,
-            lastName = lastName
+            voorletters = voorletters,
+            voornaam = voornaam,
+            voorvoegselAchternaam = voorvoegselAchternaam,
+            achternaam = achternaam
         )
 
         val properties = OpenKlantProperties(klantinteractiesUrl, token)

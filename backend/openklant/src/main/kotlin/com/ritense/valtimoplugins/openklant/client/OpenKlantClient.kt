@@ -163,7 +163,7 @@ class OpenKlantClient(
         try {
             webClient(properties)
                 .post()
-                .uri(OK_CREATE_KLANTCONTACT_PATH)
+                .uri(OK_MAAK_KLANTCONTACT_PATH)
                 .bodyValue(request)
                 .retrieve()
                 .awaitBody<CreateKlantContact>()
@@ -208,7 +208,7 @@ class OpenKlantClient(
         private const val OK_PARTIJEN_PATH = "partijen"
         private const val OK_KLANTCONTACTEN_PATH = "klantcontacten"
         private const val OK_DIGITALE_ADRESSEN_PATH = "digitaleadressen"
-        private const val OK_CREATE_KLANTCONTACT_PATH = "maak-klantcontact"
+        private const val OK_MAAK_KLANTCONTACT_PATH = "maak-klantcontact"
 
         private const val OK_VERSTREKT_DOOR_PARTIJ_ID_PARAM = "verstrektDoorPartij__uuid"
         private const val OK_SOORT_PARTIJ_IDENTIFICATOR_PARAM = "partijIdentificator__codeSoortObjectId"

@@ -1,15 +1,16 @@
 package com.ritense.valtimoplugins.openklant.model
 
 data class KlantContactCreationInformation(
-    val communicationChannel: String,
-    val subject: String,
-    val content: String,
-    val confidential: Boolean,
-    val startDateTime: String,
+    val kanaal: String,
+    val onderwerp: String,
+    val inhoud: String,
+    val vertrouwelijk: Boolean,
+    val taal: String,
+    val plaatsgevondenOp: String,
 
     val partijUuid: String,
-    val initials: String,
-    val firstName: String,
-    val inFix: String,
-    val lastName: String,
+    val voorletters: String,
+    val voornaam: String,
+    val voorvoegselAchternaam: String,
+    val achternaam: String,
 )
