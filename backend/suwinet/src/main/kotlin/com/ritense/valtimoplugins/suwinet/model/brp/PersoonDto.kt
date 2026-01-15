@@ -17,7 +17,7 @@ data class PersoonDto(
     val nationaliteiten: List<NationaliteitDto>?,
     @JsonInclude(JsonInclude.Include.NON_NULL) val kinderenBsns: List<String>?,
     val partnerBsn: String? = "",
-    val partnerDto: PartnerDto?,
+    val geslachtsnaamPartner: String?,
     val datumOverlijden: String? = "",
 
     val codeBrpGegevensGeheim:  BrpGegevensGeheim?,

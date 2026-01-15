@@ -23,7 +23,6 @@ import com.ritense.valtimoplugins.suwinet.model.brp.AanduidingNaamgebruik
 import com.ritense.valtimoplugins.suwinet.model.brp.BrpGegevensGeheim
 import com.ritense.valtimoplugins.suwinet.model.brp.GeslachtsAanduiding
 import com.ritense.valtimoplugins.suwinet.model.brp.NationaliteitDto
-import com.ritense.valtimoplugins.suwinet.model.brp.PartnerDto
 import com.ritense.valtimoplugins.suwinet.model.brp.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
@@ -131,16 +130,9 @@ class SuwinetBrpInfoService(
                         AanduidingNaamgebruik.fromCode(persoon.aanduidingNaamgebruik)
                     },
                     geslachtsAanduiding = persoon.geslacht?.let { GeslachtsAanduiding.fromCode(persoon.geslacht) },
-                    partnerDto = persoon.huwelijk
-                        ?.firstOrNull()
-                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }
-                        ?.let { huwelijk ->
-                            PartnerDto(
-                                geslachtsnaamPartner = huwelijk.partner.significantDeelVanDeAchternaam,
-                                aNummer = huwelijk.partner.aNr,
-                                burgerServiceNummer = huwelijk.partner.burgerservicenr
-                            )
-                        },
+                    geslachtsnaamPartner = persoon.huwelijk
+                                        ?.firstOrNull()
+                                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner?.significantDeelVanDeAchternaam,
                 )
             }
 
