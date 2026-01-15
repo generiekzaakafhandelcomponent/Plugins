@@ -4,16 +4,16 @@ import com.ritense.valtimoplugins.openklant.dto.Betrokkene.Rol
 import com.ritense.valtimoplugins.openklant.dto.Contactnaam
 import com.ritense.valtimoplugins.openklant.dto.KlantcontactCreationRequest
 import com.ritense.valtimoplugins.openklant.dto.UuidReference
-import com.ritense.valtimoplugins.openklant.model.KlantContactCreationInformation
+import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 
 class KlantContactFactory {
-    fun createKlantContactRequest(klantContactCreationInformation: KlantContactCreationInformation): KlantcontactCreationRequest =
+    fun createKlantContactRequest(klantContactCreationInformation: KlantcontactCreationInformation): KlantcontactCreationRequest =
         KlantcontactCreationRequest(
             klantcontact = klantcontactRequest(klantContactCreationInformation),
             betrokkene = betrokkeneRequest(klantContactCreationInformation)
         )
 
-    private fun klantcontactRequest(klantContactCreationInformation: KlantContactCreationInformation) =
+    private fun klantcontactRequest(klantContactCreationInformation: KlantcontactCreationInformation) =
         KlantcontactCreationRequest.KlantContactRequest(
             nummer = null,
             kanaal = klantContactCreationInformation.kanaal,
@@ -25,7 +25,7 @@ class KlantContactFactory {
             plaatsgevondenOp = klantContactCreationInformation.plaatsgevondenOp,
         )
 
-    private fun betrokkeneRequest(klantContactCreationInformation: KlantContactCreationInformation) =
+    private fun betrokkeneRequest(klantContactCreationInformation: KlantcontactCreationInformation) =
         KlantcontactCreationRequest.BetrokkeneRequest(
             wasPartij = UuidReference(klantContactCreationInformation.partijUuid),
             bezoekadres = null,
@@ -36,7 +36,7 @@ class KlantContactFactory {
             initiator = true
         )
 
-    private fun contactNaam(klantContactCreationInformation: KlantContactCreationInformation) = Contactnaam(
+    private fun contactNaam(klantContactCreationInformation: KlantcontactCreationInformation) = Contactnaam(
         voorletters = klantContactCreationInformation.voorletters,
         voornaam = klantContactCreationInformation.voornaam,
         voorvoegselAchternaam = klantContactCreationInformation.voorvoegselAchternaam,

@@ -90,7 +90,7 @@ class OpenKlantPlugin(
     @PluginAction(
         key = "register-klantcontact",
         title = "Register klantcontact",
-        description = "Registers a new klantContact to OpenKlant",
+        description = "Registers a new klantcontact to OpenKlant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun postKlantContact(

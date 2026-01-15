@@ -1,6 +1,6 @@
 package com.ritense.valtimoplugins.openklant.model
 
-data class KlantContactCreationInformation(
+data class KlantcontactCreationInformation(
     val kanaal: String,
     val onderwerp: String,
     val inhoud: String,
