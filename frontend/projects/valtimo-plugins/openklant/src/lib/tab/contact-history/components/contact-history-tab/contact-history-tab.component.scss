@@ -23,6 +23,8 @@
 }
 
 .valtimo-timeline {
+  background-color: var(--cds-layer-01);
+
   p {
     font-size: var(--cds-font-size-normal);
   }
@@ -37,14 +39,15 @@
 
   .timeline-item:before {
     border: 2px solid var(--cds-border-strong-01);
+    background-color: var(--cds-layer-01);
   }
 
   .timeline-content {
-    background-color: var(--cds-layer-background-02);
+    background-color: var(--cds-layer-01);
     color: var(--cds-text-secondary);
 
     &:before {
-      background-color: var(--cds-layer-background-02);
+      background-color: var(--cds-layer-01);
     }
 
     .timeline-author {
