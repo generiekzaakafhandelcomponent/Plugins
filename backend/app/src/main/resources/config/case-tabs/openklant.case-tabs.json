@@ -1,5 +1,5 @@
 {
-  "changesetId": "openklant.case-tabs.1767804564949",
+  "changesetId": "openklant.case-tabs.1767804564950",
   "case-definitions": [
     {
       "key": "openklant",
@@ -38,7 +38,7 @@
           "key": "contactgeschiedenis",
           "name": "Contactgeschiedenis",
           "type": "custom",
-          "contentKey": "klantcontact-tab"
+          "contentKey": "generieke-contactgeschiedenis"
         }
       ]
     }
