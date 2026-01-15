@@ -125,7 +125,7 @@ class OipKlanttaakService(
                             )
                         ).also {
                             logger.info {
-                                "OIP Klanttaak object with UUID '${it.uuid}' and URL '${it.url}' created for " +
+                                "Klanttaak object with UUID '${it.uuid}' and URL '${it.url}' created for " +
                                     "task with id '${delegateTask.id}'"
                             }
                         }
@@ -175,30 +175,32 @@ class OipKlanttaakService(
         pathToDocuments: String? = null,
     ) {
         val verwerkerTaakId = execution.getVariableAsString(ProcessVariables.VERWERKER_TAAK_ID)
-        val oipTaskObjectUrl = execution.getVariableAsURI(ProcessVariables.OIP_KLANTTAAK_OBJECT_URL)
+        val klanttaakObjectUrl = execution.getVariableAsURI(ProcessVariables.KLANTTAAK_OBJECT_URL)
 
         objectManagementById(objectManagementId).let { objectManagement ->
             objectenApiPluginByPluginConfigurationId(objectManagement.objectenApiPluginConfigurationId).let { objectenApiPlugin ->
-                objectenApiPlugin.getObject(oipTaskObjectUrl).let { objectWrapper ->
+                objectenApiPlugin.getObject(klanttaakObjectUrl).let { objectWrapper ->
                     requireNotNull(objectWrapper.record.data) {
-                        "No data found for object with URL '$oipTaskObjectUrl'"
+                        "No data found for object with URL '$klanttaakObjectUrl'"
                     }
-                    objectMapper.convertValue<Klanttaak>(objectWrapper.record.data).let { oipKlanttaak ->
-                        require(oipKlanttaak.soort == Soort.EXTERNFORMULIER) {
+                    objectMapper.convertValue<Klanttaak>(objectWrapper.record.data).let { klanttaak ->
+                        require(klanttaak.soort == Soort.EXTERNFORMULIER) {
                             "Soort is not '${Soort.EXTERNFORMULIER.name}'"
                         }
-                        require(oipKlanttaak.status == Status.UITGEVOERD) {
+                        require(klanttaak.status == Status.UITGEVOERD) {
                             "Status is not '${Status.UITGEVOERD.name}'"
                         }
-                        AuthorizationContext.runWithoutAuthorization { taskService.complete(verwerkerTaakId) }.also {
-                            logger.info { "Task with id '$verwerkerTaakId' for object with URL '$oipTaskObjectUrl' completed" }
+                        AuthorizationContext.runWithoutAuthorization {
+                            taskService.complete(verwerkerTaakId)
+                        }.also {
+                            logger.info { "Task with id '$verwerkerTaakId' for object with URL '$klanttaakObjectUrl' completed" }
                         }
 
                         if (saveReceivedData || linkDocuments) {
-                            requireNotNull(oipKlanttaak.portaalformulier.verzondenData) {
+                            requireNotNull(klanttaak.portaalformulier.verzondenData) {
                                 "Form does not contain any submitted data"
                             }
-                            objectMapper.valueToTree<ObjectNode>(oipKlanttaak.portaalformulier.verzondenData).let { receivedDataNode ->
+                            objectMapper.valueToTree<ObjectNode>(klanttaak.portaalformulier.verzondenData).let { receivedDataNode ->
                                 if (saveReceivedData) {
                                     logger.debug { "Saving received data to document" }
                                     requireNotNull(receivedDataMapping) { "Received data mapping is null" }
@@ -236,9 +238,9 @@ class OipKlanttaakService(
                             }
                         }
 
-                        oipKlanttaak.copy(status = Status.VERWERKT).let { modifiedOipTask ->
+                        klanttaak.copy(status = Status.VERWERKT).let { modifiedOipTask ->
                             objectenApiPlugin.objectPatch(
-                                oipTaskObjectUrl,
+                                klanttaakObjectUrl,
                                 ObjectRequest(
                                     type = objectWrapper.type,
                                     record = objectWrapper.record.copy(
@@ -247,7 +249,7 @@ class OipKlanttaakService(
                                 )
                             ).also {
                                 logger.info {
-                                    "OipTask object with URL '${oipTaskObjectUrl}' completed by changing status to '${Status.VERWERKT.name}'"
+                                    "Klanttaak object with URL '${klanttaakObjectUrl}' completed by changing status to '${Status.VERWERKT.name}'"
                                 }
                             }
                         }

@@ -59,7 +59,7 @@ open class OipKlanttaakEventListener(
     @RunWithoutAuthorization
     @EventListener(NotificatiesApiNotificationReceivedEvent::class)
     open fun handle(event: NotificatiesApiNotificationReceivedEvent) {
-        logger.info { "Received Notification API event, attempting to handle Resource as OIP Task Object" }
+        logger.info { "Received Notification API event, attempting to handle Resource as Klanttaak Object" }
         logger.trace { "Event: $event" }
         if (eventMatchesCompleteTaskCriteria(event)) {
             objectManagementFor(event)?.let { objectManagement ->
@@ -69,7 +69,7 @@ open class OipKlanttaakEventListener(
                         objectenApiPluginConfigurationId = objectManagement.objectenApiPluginConfigurationId
                     )?.let { operatonTask ->
                         logger.info {
-                            "Trying to handle OIP Klanttaak using plugin configuration with id '${oipKlanttaakPluginConfiguration.id}'"
+                            "Trying to handle Klanttaak using plugin configuration with id '${oipKlanttaakPluginConfiguration.id}'"
                         }
                         handleTaskFor(
                             resourceUrl = event.resourceUrl,
@@ -103,7 +103,7 @@ open class OipKlanttaakEventListener(
             objectMapper.convertValue<Klanttaak>(objectWrapper.record.data).let { klanttaak ->
                 if (klanttaak.status != Status.UITGEVOERD) {
                     logger.info {
-                        "Skipping: Taak cannot be handled. Does not match expected status UITGEVOERD."
+                        "Skipping: Klanttaak cannot be handled. Does not match expected status UITGEVOERD."
                     }
                     return null
                 }
@@ -130,7 +130,7 @@ open class OipKlanttaakEventListener(
                     operatonTask
                 )
             }
-            logger.debug { "Starting finalizer process for OIP Klanttaak with verwerker-taak-id '${operatonTask.id}'" }
+            logger.debug { "Starting finalizer process for Klanttaak with verwerker-taak-id '${operatonTask.id}'" }
             startFinalizerProcess(
                 processDefinitionKey = oipKlanttaakPlugin.finalizerProcess,
                 businessKey = documentId.id.toString(),
@@ -142,7 +142,7 @@ open class OipKlanttaakEventListener(
                 },
                 variables = mapOf(
                     ProcessVariables.VERWERKER_TAAK_ID to operatonTask.id,
-                    ProcessVariables.OIP_KLANTTAAK_OBJECT_URL to resourceUrl
+                    ProcessVariables.KLANTTAAK_OBJECT_URL to resourceUrl
                 )
             )
         }
@@ -165,9 +165,9 @@ open class OipKlanttaakEventListener(
                     ).also {
                         logger.info {
                             "Started ProcessInstance(id=${it.processInstanceDto.id}) successfully for " +
-                                    "CaseDefinition(id=${caseDefinitionId}), " +
-                                    "ProcessDefinition(key=$processDefinitionKey) and " +
-                                    "Document(id=$businessKey)"
+                                "CaseDefinition(id=${caseDefinitionId}), " +
+                                "ProcessDefinition(key=$processDefinitionKey) and " +
+                                "Document(id=$businessKey)"
                         }
                     }
                 } else {
@@ -178,8 +178,8 @@ open class OipKlanttaakEventListener(
                     ).also {
                         logger.info {
                             "Started ProcessInstance(id=${it.processInstanceDto.id}) successfully for " +
-                                    "ProcessDefinition(key=$processDefinitionKey) and " +
-                                    "Document(id=$businessKey)"
+                                "ProcessDefinition(key=$processDefinitionKey) and " +
+                                "Document(id=$businessKey)"
                         }
                     }
                 }
@@ -187,7 +187,7 @@ open class OipKlanttaakEventListener(
         } catch (ex: RuntimeException) {
             throw NotificatiesNotificationEventException(
                 "Could not start ProcessInstance from ProcessDefinition(key=$processDefinitionKey) and businessKey: $businessKey.\n" +
-                        "Reason: ${ex.message}"
+                    "Reason: ${ex.message}"
             )
         }
     }
@@ -210,7 +210,7 @@ open class OipKlanttaakEventListener(
         }.also {
             if (it == null) {
                 logger.warn {
-                    "Skipping: No OIP Klanttaak plugin configuration found for object management with id '${objectManagement.id}'"
+                    "Skipping: No Klanttaak plugin configuration found for object management with id '${objectManagement.id}'"
                 }
             }
         }
