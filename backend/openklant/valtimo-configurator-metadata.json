@@ -10,8 +10,8 @@
         "import": "@valtimo-plugins/openklant",
         "codeAdditions": [
             {
-                "spec": "haalCentraalBrpAuthPluginSpecification",
-                "module": "HaalCentraalBrpAuthPluginModule"
+                "spec": "openKlantPluginSpecification",
+                "module": "OpenKlantPluginModule"
             }
         ]
     }
