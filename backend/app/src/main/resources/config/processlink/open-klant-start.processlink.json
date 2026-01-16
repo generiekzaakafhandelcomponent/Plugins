@@ -1,12 +1,12 @@
 [
-  {
-    "activityId": "StartEvent_1",
-    "activityType": "bpmn:StartEvent:start",
-    "formDefinitionName": "openklant-start",
-    "viewModelEnabled": false,
-    "formDisplayType": "modal",
-    "formSize": "medium",
-    "subtitles": null,
-    "processLinkType": "form"
-  }
+    {
+        "activityId": "StartEvent_1",
+        "activityType": "bpmn:StartEvent:start",
+        "formDefinitionName": "open-klant-start",
+        "viewModelEnabled": false,
+        "formDisplayType": "modal",
+        "formSize": "medium",
+        "subtitles": null,
+        "processLinkType": "form"
+    }
 ]
