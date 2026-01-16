@@ -23,7 +23,7 @@ dependencies {
     implementation(project(":backend:mTLS-SSLContext"))
     implementation(project(":backend:notify-nl"))
     implementation(project(":backend:object-management"))
-    implementation(project(":backend:openklant"))
+    implementation(project(":backend:open-klant"))
     implementation(project(":backend:publictask"))
     implementation(project(":backend:rotterdam-oracle-ebs"))
     implementation(project(":backend:sample-plugin"))
