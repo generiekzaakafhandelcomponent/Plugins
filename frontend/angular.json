@@ -269,24 +269,24 @@
         }
       }
     },
-    "@valtimo-plugins/openklant": {
+    "@valtimo-plugins/open-klant": {
       "projectType": "library",
-      "root": "projects/valtimo-plugins/openklant",
-      "sourceRoot": "projects/valtimo-plugins/openklant/src",
+      "root": "projects/valtimo-plugins/open-klant",
+      "sourceRoot": "projects/valtimo-plugins/open-klant/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/valtimo-plugins/openklant/tsconfig.lib.json",
-            "project": "projects/valtimo-plugins/openklant/ng-package.json"
+            "tsConfig": "projects/valtimo-plugins/open-klant/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/open-klant/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/valtimo-plugins/openklant/tsconfig.lib.prod.json"
+              "tsConfig": "projects/valtimo-plugins/open-klant/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/valtimo-plugins/openklant/tsconfig.lib.json"
+              "tsConfig": "projects/valtimo-plugins/open-klant/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -294,17 +294,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/valtimo-plugins/openklant/src/test.ts",
-            "tsConfig": "projects/valtimo-plugins/openklant/tsconfig.spec.json",
-            "karmaConfig": "projects/valtimo-plugins/openklant/karma.conf.js"
+            "main": "projects/valtimo-plugins/open-klant/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/open-klant/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/open-klant/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/valtimo-plugins/openklant/src/**/*.ts",
-              "projects/valtimo-plugins/openklant/src/**/*.html"
+              "projects/valtimo-plugins/open-klant/src/**/*.ts",
+              "projects/valtimo-plugins/open-klant/src/**/*.html"
             ]
           }
         }
@@ -1196,7 +1196,7 @@
         }
       }
     }
-},
+  },
   "cli": {
     "analytics": false
   }

@@ -119,7 +119,8 @@ import {
   OpenKlantPluginModule,
   openKlantPluginSpecification,
   KlantcontactTabComponent,
-} from "@valtimo-plugins/openklant";
+  ContactHistoryTabComponent,
+} from "@valtimo-plugins/open-klant";
 import {
   PublictaskPluginModule,
   publictaskPluginSpecification,
@@ -194,7 +195,6 @@ import { SuwinetAuthPluginModule } from "../../projects/valtimo-plugins/suwinet-
 import { suwinetAuthPluginSpecification } from "../../projects/valtimo-plugins/suwinet-auth/src/lib/suwinet-auth-plugin.specification";
 import { SocratesPluginModule } from "../../projects/valtimo-plugins/socrates/src/lib/socrates-plugin.module";
 import { socratesPluginSpecification } from "../../projects/valtimo-plugins/socrates/src/lib/socrates-plugin.specification";
-import { ContactHistoryTabComponent } from "../../projects/valtimo-plugins/openklant/src/lib/tab/contact-history/components/contact-history-tab/contact-history-tab.component";
 
 export function tabsFactory() {
   return new Map<string, object>([

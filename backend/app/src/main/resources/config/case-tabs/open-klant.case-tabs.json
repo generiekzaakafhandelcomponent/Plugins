@@ -1,8 +1,8 @@
 {
-  "changesetId": "openklant.case-tabs.1767804564950",
+  "changesetId": "open-klant.case-tabs.1767804564950",
   "case-definitions": [
     {
-      "key": "openklant",
+      "key": "open-klant",
       "tabs": [
         {
           "key": "summary",
