@@ -35,7 +35,7 @@ class KlantContactFactory {
     private fun betrokkeneRequest(klantContactCreationInformation: KlantcontactCreationInformation) =
         KlantcontactCreationRequest.BetrokkeneRequest(
             wasPartij = UuidReference(
-                klantContactCreationInformation.partijUuid
+                uuid = klantContactCreationInformation.partijUuid
                     ?: throw IllegalArgumentException("No partijUuid was specified to create a betrokkene request")
             ),
             bezoekadres = null,
