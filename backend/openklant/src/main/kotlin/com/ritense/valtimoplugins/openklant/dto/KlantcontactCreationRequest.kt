@@ -1,10 +1,12 @@
 package com.ritense.valtimoplugins.openklant.dto
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class KlantcontactCreationRequest(
     @JsonProperty("klantcontact")
     @field:NotBlank
@@ -16,6 +18,7 @@ data class KlantcontactCreationRequest(
     @JsonProperty("onderwerobject")
     val onderwerpobject: OnderwerpobjectRequest? = null,
 ) {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class KlantContactRequest(
         @JsonProperty("nummer")
         @field:Size(max = 10)
@@ -54,6 +57,7 @@ data class KlantcontactCreationRequest(
         val plaatsgevondenOp: String? = null,
     )
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class BetrokkeneRequest(
         @JsonProperty("wasPartij")
         val wasPartij: UuidReference? = null,
@@ -80,6 +84,7 @@ data class KlantcontactCreationRequest(
         val initiator: Boolean,
     )
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class OnderwerpobjectRequest(
         @JsonProperty("wasKlantcontact")
         val wasKlantcontact: UuidReference? = null,
