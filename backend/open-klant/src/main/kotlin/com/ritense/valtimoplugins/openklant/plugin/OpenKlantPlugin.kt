@@ -17,7 +17,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(
-    key = "openklant",
+    key = "open-klant",
     title = "Open Klant 2 Plugin",
     description = "Open Klant 2 plugin",
 )

@@ -30,7 +30,7 @@ class OpenKlantValueResolverFactory(
                 "klantcontacten" -> runBlocking { getKlantcontacten(zaakUuid) }
                 "klantcontactenOrNull" -> runBlocking { getKlantcontactenOrNull(zaakUuid) }
 
-                else -> throw IllegalArgumentException("Unknown openklant column with name: $requestedValue")
+                else -> throw IllegalArgumentException("Unknown Open Klant column with name: $requestedValue")
             }
         }
     }

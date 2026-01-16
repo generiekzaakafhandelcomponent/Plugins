@@ -32,7 +32,7 @@ Voorbeeld `*.pluginconfig.json`:
 {
   "id": "12023724-a4bd-431d-93c0-5ba52049e9cd",
   "title": "Open Klant",
-  "pluginDefinitionKey": "openklant",
+  "pluginDefinitionKey": "open-klant",
   "properties": {
     "klantinteractiesUrl": "${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL}",
     "token": "${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN}"
