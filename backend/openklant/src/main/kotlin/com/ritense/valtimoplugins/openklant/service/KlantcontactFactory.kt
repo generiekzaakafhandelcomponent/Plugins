@@ -6,8 +6,8 @@ import com.ritense.valtimoplugins.openklant.dto.KlantcontactCreationRequest
 import com.ritense.valtimoplugins.openklant.dto.UuidReference
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 
-class KlantContactFactory {
-    fun createKlantContactRequest(klantContactCreationInformation: KlantcontactCreationInformation): KlantcontactCreationRequest =
+class KlantcontactFactory {
+    fun createKlantcontactRequest(klantContactCreationInformation: KlantcontactCreationInformation): KlantcontactCreationRequest =
         if (klantContactCreationInformation.hasBetrokkene) {
             KlantcontactCreationRequest(
                 klantcontact = klantcontactRequest(klantContactCreationInformation),
@@ -21,7 +21,7 @@ class KlantContactFactory {
 
 
     private fun klantcontactRequest(klantContactCreationInformation: KlantcontactCreationInformation) =
-        KlantcontactCreationRequest.KlantContactRequest(
+        KlantcontactCreationRequest.KlantcontactRequest(
             nummer = null,
             kanaal = klantContactCreationInformation.kanaal,
             onderwerp = klantContactCreationInformation.onderwerp,

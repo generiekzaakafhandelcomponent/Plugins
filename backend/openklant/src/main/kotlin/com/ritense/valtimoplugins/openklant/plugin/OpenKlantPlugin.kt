@@ -127,7 +127,7 @@ class OpenKlantPlugin(
 
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
 
-        openKlantPluginService.postKlantContact(
+        openKlantPluginService.postKlantcontact(
             properties,
             klantcontactCreationInformation
         )

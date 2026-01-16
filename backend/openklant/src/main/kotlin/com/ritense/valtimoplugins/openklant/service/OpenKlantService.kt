@@ -14,7 +14,7 @@ interface OpenKlantService {
 
     suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact>
 
-    suspend fun postKlantContact(
+    suspend fun postKlantcontact(
         properties: OpenKlantProperties,
         klantContactCreationInformation: KlantcontactCreationInformation
     )

@@ -1,24 +1,22 @@
 package com.ritense.valtimoplugins.openklant.client
 
-import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
-import com.ritense.valtimoplugins.openklant.dto.CreatedKlantcontact
-import com.ritense.valtimoplugins.openklant.dto.KlantcontactCreationRequest
-import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
-import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
-import com.ritense.valtimoplugins.openklant.dto.Partij
+import com.ritense.valtimoplugins.openklant.dto.*
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.zgw.Page
+import io.netty.handler.ssl.SslContextBuilder
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory
+import io.netty.resolver.DefaultAddressResolverGroup
 import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
+import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.server.ResponseStatusException
-import kotlin.collections.firstOrNull
+import reactor.netty.http.client.HttpClient
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
