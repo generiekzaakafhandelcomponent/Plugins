@@ -6,3 +6,4 @@ export * from "./lib/components/get-contact-moments-by-case-uuid/get-contact-mom
 export * from "./lib/components/get-contact-moments-by-bsn/get-contact-moments-by-bsn.component";
 export * from "./lib/components/store-contact-info/store-contact-info.component";
 export * from "./lib/tab/klantcontact-tab/klantcontact-tab.component";
+export * from "./lib/tab/contact-history/components/contact-history-tab/contact-history-tab.component";
