@@ -145,7 +145,7 @@ Voorbeeld-`[...].processlink.json`-bestand:
   "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
   "pluginActionDefinitionKey": "get-contact-moments-by-bsn",
   "actionProperties": {
-      "bsn": "bsn",
+      "bsn": "pv:bsn",
       "resultPvName": "contactgeschiedenis"
   },
   "processLinkType": "plugin"

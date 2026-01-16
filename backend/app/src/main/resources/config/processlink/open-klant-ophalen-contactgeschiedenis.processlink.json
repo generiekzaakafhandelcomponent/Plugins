@@ -1,9 +1,12 @@
 {
-    "id": "80ca9599-35bc-4220-b218-4500df2f2f91",
-    "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
-    "pluginActionDefinitionKey": "get-contact-moments-by-bsn",
     "actionProperties": {
-        "bsn": "bsn",
+        "bsn": "pv:bsn",
         "resultPvName": "contactgeschiedenis"
-    }
+    },
+    "activityId": "Activity_HaalContactgeschiedenisOpTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+    "processDefinitionId": "1640e2c1-f2ec-11f0-9ab2-f2245779f1a0",
+    "pluginActionDefinitionKey": "get-contact-moments-by-bsn",
+    "processLinkType": "plugin"
 }
