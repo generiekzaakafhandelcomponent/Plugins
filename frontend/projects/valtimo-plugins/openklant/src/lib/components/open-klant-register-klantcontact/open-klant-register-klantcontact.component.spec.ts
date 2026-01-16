@@ -21,6 +21,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
     let disabled$: BehaviorSubject<boolean>;
 
     const validFormValue: OpenKlantRegisterKlantcontactConfig = {
+        hasBetrokkene: true,
         kanaal: 'email',
         onderwerp: 'Subject',
         inhoud: 'Content',
@@ -31,10 +32,11 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         voorletters: 'J.D.',
         voornaam: 'John',
         voorvoegselAchternaam: 'van',
-        achternaam: 'Doe',
+        achternaam: 'Doe'
     };
 
     const invalidFormValueMissingField: OpenKlantRegisterKlantcontactConfig = {
+        hasBetrokkene: true,
         kanaal: '',
         onderwerp: 'Subject',
         inhoud: 'Content',
@@ -45,7 +47,7 @@ describe('OpenKlantPostKlantcontactComponent', () => {
         voorletters: 'J.D.',
         voornaam: 'John',
         voorvoegselAchternaam: 'van',
-        achternaam: 'Doe',
+        achternaam: 'Doe'
     };
 
 
@@ -112,24 +114,25 @@ describe('OpenKlantPostKlantcontactComponent', () => {
             expect(component.valid.emit).toHaveBeenCalledWith(true);
         });
 
-        it('should mark valid when all required fields are present and vertrouwelijk is set to false', () => {
+        it('should mark valid when hasBetrokkene is set to false and all required fields are present', () => {
             const validFormValueWithConfidentialSetOnFalse: OpenKlantRegisterKlantcontactConfig = {
+                hasBetrokkene: false,
                 kanaal: 'email',
                 onderwerp: 'Subject',
                 inhoud: 'Content',
                 vertrouwelijk: 'false',
                 taal: 'nld',
                 plaatsgevondenOp: new Date().toISOString(),
-                partijUuid: 'uuid-123',
-                voorletters: 'J.D.',
-                voornaam: 'John',
-                voorvoegselAchternaam: 'van',
-                achternaam: 'Doe',
+                partijUuid: undefined,
+                voorletters: undefined,
+                voornaam: undefined,
+                voorvoegselAchternaam: undefined,
+                achternaam: undefined
             };
 
             component.formValueChange(validFormValueWithConfidentialSetOnFalse);
             expect(component.valid.emit).toHaveBeenCalledWith(true);
-        });
+        })
 
         it('should mark invalid when any required field is missing or falsy', () => {
             component.formValueChange(invalidFormValueMissingField);
