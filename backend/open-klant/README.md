@@ -71,7 +71,7 @@ Voorbeeld `*.processlink.json`:
 }
 ```
 
-### Ophalen klantcontacten (actie):
+### Ophalen klantcontacten (contactgeschiedenis) via Open-Zaaknummer (UUID): plugin-actie:
 
 Voor het handmatig configureren, zie screenshots.
 
@@ -91,7 +91,7 @@ Voorbeeld `*.processlink.json`:
 }
 ```
 
-### Ophalen klantcontacten (value resolver):
+### Ophalen klantcontacten via Open-Zaaknummer (UUID): value resolver:
 
 Benodigde configuratie in `.env.properties`:
 
@@ -102,7 +102,7 @@ AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN=
 
 Tonen klantcontacten:
 
-Benodigde dossier properties:
+Benodigde dossier-properties:
 
 ```json
 {
@@ -127,8 +127,30 @@ Benodigde dossier properties:
   }
 ```
 
-LET OP: het klantcontacten property moet bereikbaar zijn via `doc:/klantcontacten` om het tab te kunnen laten
+LET OP: de klantcontacten property moet bereikbaar zijn via `doc:/klantcontacten` om het tab te kunnen laten
 werken.
+
+
+### Ophalen klantcontacten (contactgeschiedenis) via BSN: plugin-actie:
+
+Vul in de process het pad de variabele in waar het BSN gevonden kan worden in onder `bsn`, en geef bij `resultPvName` aan onder welke procesvariabelenaam de lijst van contactmomenten (de volledige contactgeschiedenis voor dit BSN) weggeschreven kan worden. Zie ook het voorbeeldbestand, `bpmn/open-klant/contactgeschiedenis-ophalen-bsn.bpmn`, om een vollediger beeld te krijgen. 
+
+Voorbeeld-`[...].processlink.json`-bestand:
+
+```json
+{
+  "activityId": "Activity_HaalContactgeschiedenisOpTask",
+  "activityType": "bpmn:ServiceTask:start",
+  "id": "80ca9599-35bc-4220-b218-4500df2f2f91",
+  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+  "pluginActionDefinitionKey": "get-contact-moments-by-bsn",
+  "actionProperties": {
+      "bsn": "bsn",
+      "resultPvName": "contactgeschiedenis"
+  },
+  "processLinkType": "plugin"
+}
+```
 
 ### Frontend
 

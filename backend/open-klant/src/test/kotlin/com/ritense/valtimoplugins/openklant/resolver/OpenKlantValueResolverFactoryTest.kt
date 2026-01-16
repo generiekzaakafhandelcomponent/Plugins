@@ -1,12 +1,12 @@
-package com.ritense.valtimoplugins.openklant.resolver
+package resolver
 
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
-import com.ritense.valtimoplugins.openklant.dto.Klantcontact
-import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
-import com.ritense.valtimoplugins.openklant.service.OpenKlantService
-import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
+import dto.Klantcontact
+import model.OpenKlantProperties
+import service.OpenKlantService
+import util.ReflectionUtil
 import com.ritense.zakenapi.domain.ZaakResponse
 import com.ritense.zakenapi.service.ZaakDocumentService
 import io.mockk.*
