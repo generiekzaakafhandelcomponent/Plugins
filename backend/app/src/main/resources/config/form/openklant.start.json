@@ -1,0 +1,264 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "isKlantcontact",
+      "type": "radio",
+      "input": true,
+      "label": "Verstuur klantcontact",
+      "inline": false,
+      "values": [
+        {
+          "label": "Ja",
+          "value": "true",
+          "shortcut": ""
+        },
+        {
+          "label": "Nee",
+          "value": "false",
+          "shortcut": ""
+        }
+      ],
+      "tableView": false,
+      "attributes": {
+        "data-testid": "openklant.start-klantcontact.vertrouwelijk"
+      },
+      "defaultValue": false,
+      "optionsLabelPosition": "right"
+    },
+    {
+      "key": "klantcontact",
+      "type": "panel",
+      "input": false,
+      "label": "Panel",
+      "title": "Versturen Klantcontact",
+      "tableView": false,
+      "components": [
+        {
+          "key": "klantcontact.kanaal",
+          "type": "textfield",
+          "input": true,
+          "label": "Kanaal",
+          "tableView": true,
+          "attributes": {
+            "data-testid": "openklant.start-klantcontact.kanaal"
+          },
+          "applyMaskOn": "change",
+          "defaultValue": "telefoon"
+        },
+        {
+          "key": "klantcontact.onderwerp",
+          "type": "textfield",
+          "input": true,
+          "label": "Onderwerp",
+          "tableView": true,
+          "attributes": {
+            "data-testid": "openklant.start-klantcontact.onderwerp"
+          },
+          "applyMaskOn": "change",
+          "defaultValue": "Lorem ipsum dolor sit amet consectetur adipiscing elit."
+        },
+        {
+          "key": "klantcontact.inhoud",
+          "type": "textarea",
+          "input": true,
+          "label": "inhoud",
+          "tableView": true,
+          "attributes": {
+            "data-testid": "openklant.start-klantcontact.inhoud"
+          },
+          "autoExpand": false,
+          "applyMaskOn": "change",
+          "defaultValue": "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos."
+        },
+        {
+          "key": "klantcontact.vertrouwelijk",
+          "type": "radio",
+          "input": true,
+          "label": "Vertrouwelijk",
+          "inline": false,
+          "values": [
+            {
+              "label": "Ja",
+              "value": "true",
+              "shortcut": ""
+            },
+            {
+              "label": "Nee",
+              "value": "false",
+              "shortcut": ""
+            }
+          ],
+          "tableView": false,
+          "attributes": {
+            "data-testid": "openklant.start-klantcontact.vertrouwelijk"
+          },
+          "defaultValue": false,
+          "optionsLabelPosition": "right"
+        },
+        {
+          "key": "klantcontact.taal",
+          "type": "textfield",
+          "input": true,
+          "label": "Taal",
+          "tableView": true,
+          "attributes": {
+            "data-testid": "openklant.start-klantcontact.taal"
+          },
+          "applyMaskOn": "change",
+          "defaultValue": "nld"
+        },
+        {
+          "key": "klantcontact.plaatsgevondenOp",
+          "type": "datetime",
+          "input": true,
+          "label": "Date / Time",
+          "format": "yyyy-MM-ddTHH:mm:ss.sss",
+          "widget": {
+            "mode": "single",
+            "type": "calendar",
+            "format": "yyyy-MM-ddTHH:mm:ss.sss",
+            "locale": "en",
+            "maxDate": null,
+            "minDate": null,
+            "time_24hr": false,
+            "allowInput": true,
+            "enableTime": true,
+            "noCalendar": false,
+            "hourIncrement": 1,
+            "disableWeekdays": false,
+            "disableWeekends": false,
+            "minuteIncrement": 1,
+            "displayInTimezone": "viewer",
+            "useLocaleSettings": false
+          },
+          "tableView": false,
+          "attributes": {
+            "data-testid": "openklant.start-klantcontact.plaatsgevondenOp"
+          },
+          "datePicker": {
+            "disableWeekdays": false,
+            "disableWeekends": false
+          },
+          "defaultDate": "moment()",
+          "enableMaxDateInput": false,
+          "enableMinDateInput": false
+        },
+        {
+          "key": "klantcontact.hasBetrokkene",
+          "type": "radio",
+          "input": true,
+          "label": "Heeft betrokkene",
+          "inline": false,
+          "values": [
+            {
+              "label": "Ja",
+              "value": "true",
+              "shortcut": ""
+            },
+            {
+              "label": "Nee",
+              "value": "false",
+              "shortcut": ""
+            }
+          ],
+          "tableView": false,
+          "attributes": {
+            "data-testid": "openklant.start-klantcontact.hasBetrokkene"
+          },
+          "defaultValue": true,
+          "optionsLabelPosition": "right"
+        },
+        {
+          "key": "betrokkene",
+          "type": "panel",
+          "input": false,
+          "label": "Panel",
+          "title": "Betrokkene",
+          "tableView": false,
+          "components": [
+            {
+              "key": "klantcontact.betrokkene.partijUuid",
+              "type": "textfield",
+              "input": true,
+              "label": "partijUuid",
+              "tableView": true,
+              "attributes": {
+                "data-testid": "openklant.start-klantcontact.betrokkene.partijUuid"
+              },
+              "applyMaskOn": "change"
+            },
+            {
+              "key": "klantcontact.betrokkene.voorletters",
+              "type": "textfield",
+              "input": true,
+              "label": "Voorletters",
+              "tableView": true,
+              "attributes": {
+                "data-testid": "openklant.start-klantcontact.betrokkene.voorletters"
+              },
+              "applyMaskOn": "change",
+              "defaultValue": "J"
+            },
+            {
+              "key": "klantcontact.betrokkene.voornaam",
+              "type": "textfield",
+              "input": true,
+              "label": "Voornaam",
+              "tableView": true,
+              "attributes": {
+                "data-testid": "openklant.start-klantcontact.betrokkene.voornaam"
+              },
+              "applyMaskOn": "change",
+              "defaultValue": "John"
+            },
+            {
+              "key": "klantcontact.betrokkene.voorvoegselAchternaam",
+              "type": "textfield",
+              "input": true,
+              "label": "Voorvoegsel Achternaam",
+              "tableView": true,
+              "attributes": {
+                "data-testid": "openklant.start-klantcontact.betrokkene.voorvoegselAchternaam"
+              },
+              "applyMaskOn": "change",
+              "defaultValue": "D"
+            },
+            {
+              "key": "klantcontact.betrokkene.achternaam",
+              "type": "textfield",
+              "input": true,
+              "label": "Achternaam",
+              "tableView": true,
+              "attributes": {
+                "data-testid": "openklant.start-klantcontact.betrokkene.achternaam"
+              },
+              "applyMaskOn": "change",
+              "defaultValue": "Doe"
+            }
+          ],
+          "collapsible": false,
+          "conditional": {
+            "eq": "true",
+            "show": true,
+            "when": "klantcontact.hasBetrokkene"
+          }
+        }
+      ],
+      "collapsible": false,
+      "conditional": {
+        "eq": "true",
+        "show": true,
+        "when": "isKlantcontact"
+      }
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}
