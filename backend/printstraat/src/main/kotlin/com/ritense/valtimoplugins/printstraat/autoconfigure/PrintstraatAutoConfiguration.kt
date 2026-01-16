@@ -10,22 +10,27 @@ import com.ritense.valtimoplugins.printstraat.service.PrintstraatService
 import com.ritense.zakenapi.service.ZaakDocumentService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.client.RestClient
 
 @Configuration
 class PrintstraatAutoConfiguration {
 
     @Bean
-    fun printstraatClient(pluginService: PluginService) = PrintstraatRestClient(pluginService = pluginService)
+    fun printstraatClient(
+        pluginService: PluginService,
+        restClientBuilder: RestClient.Builder
+    ) = PrintstraatRestClient(
+        pluginService = pluginService,
+        restClientBuilder = restClientBuilder
+    )
 
     @Bean
     fun printstraatService(
         printstraatClient: PrintstraatClient,
         documentenApiService: DocumentenApiService,
-        objectMapper: ObjectMapper,
-        zaakDocumentService: ZaakDocumentService
+        objectMapper: ObjectMapper
     ): PrintstraatService = PrintstraatService(
         printstraatClient = printstraatClient,
-        zaakDocumentService = zaakDocumentService,
         documentenApiService = documentenApiService,
         objectMapper = objectMapper,
     )

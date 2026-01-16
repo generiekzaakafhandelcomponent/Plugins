@@ -31,14 +31,23 @@
     [required]="true"
   ></v-input>
   <v-input
-    name="documentenListVariableName"
-    [title]="'documentenListVariableName' | pluginTranslate: pluginId | async"
+    name="zaaknummer"
+    [title]="'zaaknummer' | pluginTranslate: pluginId | async"
     [margin]="true"
     [fullWidth]="true"
-    [defaultValue]="obs.prefill?.documentenListVariableName"
+    [defaultValue]="obs.prefill?.zaaknummer"
     [disabled]="obs.disabled"
     [required]="true"
-    [tooltip]="'documentenListVariableNameTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+  <v-input
+    name="documentMetadataVariableName"
+    [title]="'documentMetadataVariableName' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [fullWidth]="true"
+    [defaultValue]="obs.prefill?.documentMetadataVariableName"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'documentMetadataVariableNameTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
 
 </v-form>

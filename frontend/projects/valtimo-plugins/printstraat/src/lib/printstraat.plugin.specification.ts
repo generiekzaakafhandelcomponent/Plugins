@@ -18,7 +18,7 @@ const printstraatPluginSpecification: PluginSpecification = {
   // Points to a Base64 encoded string, which contains the logo of the plugin.
   pluginLogoBase64: PRINTSTRAAT_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
-    'send-files-to-printstraat': PrintstraatPluginActionConfigurationComponent
+    'send-file-to-printstraat': PrintstraatPluginActionConfigurationComponent
   },
   /*
   For each language key an implementation supports, translation keys with a translation are provided below.
@@ -35,10 +35,11 @@ const printstraatPluginSpecification: PluginSpecification = {
       description: 'Maakt connectie met Printstraat via OpenTunnel',
       url: 'URL',
       token: 'Token',
-      'send-files-to-printstraat': 'Stuur bestanden naar Printstraat',
+      'send-file-to-printstraat': 'Stuur bestand naar Printstraat',
       documentenApiPluginConfigurationId: 'Documenten API Plugin configuratie ID',
-      documentenListVariableName: 'Documenten lijst procesvariabele naam',
-      documentenListVariableNameTooltip: 'De naam van de procesvariabele die de lijst met documentgegevens bevat',
+      zaaknummer: 'Zaaknummer',
+      documentMetadataVariableName: 'Document metadata procesvariabele naam',
+      documentMetadataVariableNameTooltip: 'Naam van de procesvariabele die de metadata van het document bevat.',
     },
     en: {
       configurationTitle: 'Configuration name',
@@ -48,10 +49,11 @@ const printstraatPluginSpecification: PluginSpecification = {
       description: 'Connects to Printstraat via OpenTunnel"',
       url: 'URL',
       token: 'Token',
-      'send-files-to-printstraat': 'Send files to Printstraat',
+      'send-file-to-printstraat': 'Send file to Printstraat',
       documentenApiPluginConfigurationId: 'Documenten API Plugin configuration ID',
-      documentenListVariableName: 'Document list process variable name',
-      documentenListVariableNameTooltip: 'Name of the process variable that contains the list of document data',
+      zaaknummer: 'Case number',
+      documentMetadataVariableName: 'Document metadata variable name',
+      documentMetadataVariableNameTooltip: 'Name of the process variable that contains the metadata of the document',
     }
   }
 };

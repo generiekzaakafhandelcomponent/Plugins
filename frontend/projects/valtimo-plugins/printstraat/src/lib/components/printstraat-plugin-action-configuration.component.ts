@@ -54,7 +54,8 @@ export class PrintstraatPluginActionConfigurationComponent
     private handleValid(formValue: PrintstraatPluginActionConfig): void {
         const valid = !!(
             formValue.documentenApiPluginConfigurationId &&
-            formValue.documentenListVariableName
+            formValue.zaaknummer &&
+            formValue.documentMetadataVariableName
         );
 
         this.valid$.next(valid);

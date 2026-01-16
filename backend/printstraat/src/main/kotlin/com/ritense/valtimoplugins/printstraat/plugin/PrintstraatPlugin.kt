@@ -25,20 +25,22 @@ class PrintstraatPlugin(
     lateinit var token: String
 
     @PluginAction(
-        key = "send-files-to-printstraat",
-        title = "Send files to Printstraat",
-        description = "Sends the files to Printstraat",
+        key = "send-file-to-printstraat",
+        title = "Send file to Printstraat",
+        description = "Sends file to Printstraat",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-    fun getFilesAndSendToPrintstraat(
+    fun sendFileToPrintstraat(
         execution: DelegateExecution,
         @PluginActionProperty documentenApiPluginConfigurationId: String,
-        @PluginActionProperty documentenListVariableName: String
+        @PluginActionProperty zaaknummer: String,
+        @PluginActionProperty documentMetadataVariableName: String
     ) {
-        printstraatService.getFilesAndSendToPrintstraat(
+        printstraatService.sendFileToPrintstraat(
             execution,
             documentenApiPluginConfigurationId,
-            documentenListVariableName
+            zaaknummer,
+            documentMetadataVariableName
         )
     }
 }

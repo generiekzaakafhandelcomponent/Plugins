@@ -7,7 +7,8 @@ interface PrintstraatPluginConfig extends PluginConfigurationData {
 
 interface PrintstraatPluginActionConfig {
   documentenApiPluginConfigurationId: string,
-  documentenListVariableName: string;
+  zaaknummer: string,
+  documentMetadataVariableName: string;
 }
 
 export {PrintstraatPluginConfig, PrintstraatPluginActionConfig};

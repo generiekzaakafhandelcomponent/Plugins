@@ -6,50 +6,49 @@ import com.ritense.documentenapi.service.DocumentenApiService
 import com.ritense.valtimoplugins.printstraat.client.PrintstraatClient
 import com.ritense.valtimoplugins.printstraat.dto.DocumentenApiDto
 import com.ritense.valtimoplugins.printstraat.dto.PrintstraatBodyDto
-import com.ritense.zakenapi.service.ZaakDocumentService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.springframework.web.client.RestClientResponseException
 import java.io.InputStream
 import java.util.Base64
-import java.util.UUID
 
 class PrintstraatService(
     private val printstraatClient: PrintstraatClient,
-    private val zaakDocumentService: ZaakDocumentService,
     private val documentenApiService: DocumentenApiService,
     private val objectMapper: ObjectMapper,
 ) {
 
-    fun getFilesAndSendToPrintstraat(
+    fun sendFileToPrintstraat(
         execution: DelegateExecution,
         documentenApiPluginConfigurationId: String,
-        documentenListVariableName: String
+        zaaknummer: String?,
+        documentMetadataVariableName: String
     ) {
         try {
-            val zaak = zaakDocumentService.getZaakByDocumentId(UUID.fromString(execution.businessKey))
-            val documentenBijlagen = getDocumentenBijlageIdList(execution, objectMapper, documentenListVariableName)
+            val metadata = readDocumentMetadataFromExecution(execution, objectMapper, documentMetadataVariableName)
 
-            documentenBijlagen.forEach { documentData ->
-                val file = documentenApiService.downloadInformatieObject(
-                    pluginConfigurationId = documentenApiPluginConfigurationId,
-                    documentId = documentData.id.toString()
+            // Printstraat cannot handle multiple calls with the same file
+            val uniqueFileName = "${metadata.id} - ${metadata.name}"
+
+            val stream = documentenApiService.downloadInformatieObject(
+                pluginConfigurationId = documentenApiPluginConfigurationId,
+                documentId = metadata.id.toString()
+            )
+            printstraatClient.postDocumentToPrintstraat(
+                PrintstraatBodyDto(
+                    zaaknummer = zaaknummer,
+                    file = inputStreamToBase64(stream),
+                    fileName = uniqueFileName
                 )
-
-                // Printstraat cannot handle multiple calls with the same file
-                val uniqueFileName = UUID.randomUUID().toString() + " - " + documentData.name
-
-                printstraatClient.postDocumentToPrintstraat(
-                    PrintstraatBodyDto(
-                        zaaknummer = zaak?.identificatie,
-                        file = inputStreamToBase64(file),
-                        fileName = uniqueFileName
-                    )
-                )
-            }
+            )
+            logger.info { "Printstraat | upload ok | zaak='$zaaknummer' id='${metadata.id}' file='$uniqueFileName'" }
+        } catch (e: RestClientResponseException) {
+            logger.error(e) { "Printstraat request failed (status=${e.statusCode}) body='${e.responseBodyAsString}'" }
+            throwBpmnError("Request to Printstraat failed (status ${e.statusCode})")
         } catch (e: Exception) {
-            logger.warn { "Printing of file has failed with error message: ${e.stackTraceToString()}" }
-            throwBpmnError()
+            logger.error(e) { "Sending file to Printstraat failed: ${e.message}" }
+            throwBpmnError("Sending file to Printstraat failed: ${e.message}")
         }
     }
 
@@ -58,22 +57,19 @@ class PrintstraatService(
         return Base64.getEncoder().encodeToString(bytes)
     }
 
-    private fun getDocumentenBijlageIdList(
+    private fun readDocumentMetadataFromExecution(
         execution: DelegateExecution,
         objectMapper: ObjectMapper,
-        documentenListVariableName: String
-    ): List<DocumentenApiDto> {
-        val documentenBijlageIdListString = execution.getVariable(documentenListVariableName) as String
+        documentMetadataVariableName: String
+    ): DocumentenApiDto {
+        val documentMetadataString = execution.getVariable(documentMetadataVariableName) as String
         return objectMapper.readValue(
-            documentenBijlageIdListString,
-            object : TypeReference<List<DocumentenApiDto>>() {})
+            documentMetadataString,
+            object : TypeReference<DocumentenApiDto>() {})
     }
 
-    private fun throwBpmnError() {
-        throw BpmnError(
-            "PrintstraatError",
-            "File has not been sent to Printstraat"
-        )
+    private fun throwBpmnError(message: String) {
+        throw BpmnError("PrintstraatError", message)
     }
 
     companion object {

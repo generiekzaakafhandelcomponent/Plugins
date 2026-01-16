@@ -10,14 +10,16 @@ import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestClientResponseException
 
 class PrintstraatRestClient(
-    private val pluginService: PluginService
+    private val pluginService: PluginService,
+    private val restClientBuilder: RestClient.Builder
 ) : PrintstraatClient {
 
     override fun postDocumentToPrintstraat(printstraatBodyDto: PrintstraatBodyDto) {
         try {
             val printstraatPluginProperties = getPrintstraatConnectionData()
 
-            RestClient.builder()
+            restClientBuilder
+                .clone()
                 .baseUrl(printstraatPluginProperties.url)
                 .defaultHeader(API_KEY_HEADER_NAME, printstraatPluginProperties.token)
                 .build()
