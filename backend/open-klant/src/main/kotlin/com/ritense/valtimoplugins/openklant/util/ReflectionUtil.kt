@@ -1,4 +1,4 @@
-package util
+package com.ritense.valtimoplugins.openklant.util
 
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties

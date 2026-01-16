@@ -1,12 +1,12 @@
-package resolver
+package com.ritense.valtimoplugins.openklant.resolver
 
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
-import dto.Klantcontact
-import model.OpenKlantProperties
-import service.OpenKlantService
-import util.ReflectionUtil
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
+import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.service.OpenKlantService
+import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.zakenapi.domain.ZaakResponse
 import com.ritense.zakenapi.service.ZaakDocumentService
 import io.mockk.*
@@ -154,7 +154,7 @@ class OpenKlantValueResolverFactoryTest {
         val exception = assertThrows<IllegalArgumentException> {
             resolver.apply("unknownValue")
         }
-        assertEquals("Unknown openklant column with name: unknownValue", exception.message)
+        assertEquals("Unknown Open Klant column with name: unknownValue", exception.message)
     }
 
     @Test
@@ -271,7 +271,7 @@ class OpenKlantValueResolverFactoryTest {
         val exception = assertThrows<IllegalArgumentException> {
             resolver.apply("unknownValue")
         }
-        assertEquals("Unknown openklant column with name: unknownValue", exception.message)
+        assertEquals("Unknown Open Klant column with name: unknownValue", exception.message)
     }
 
     @Test
