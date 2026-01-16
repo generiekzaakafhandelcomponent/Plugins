@@ -77,22 +77,43 @@ Voorbeeld `*.processlink.json`:
 Voorbeeld `*.processlink.json`
 ```json
 {
-  "activityId": "VersturenKlantcontact",
+  "activityId": "verstuurKlantcontact",
   "activityType": "bpmn:ServiceTask:start",
-  "pluginConfigurationId": "b3c54f5e-a6b2-4b22-a87f-eebb113bc432",
-  "pluginActionDefinitionKey": "send-klantcontact",
+  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+  "pluginActionDefinitionKey": "register-klantcontact",
   "actionProperties": {
-    "kanaal": "doc:/contactgegevens/kanaal",
-    "onderwerp": "doc:/contactgegevens/onderwerp",
-    "inhoud": "doc:/contactgegevens/inhoud",
-    "vertrouwelijk": "doc:/contactgegevens/vertrouwelijk",
-    "taal": "doc:/contactgegevens/taal",
-    "plaatsgevondenOp": "doc:/contactgegevens/plaatsgevondenOp",
-    "partijUuid": "doc:/persoonsgegevens/partijUuid",
-    "voorletters": "doc:/persoonsgegevens/voorletters",
-    "voornaam": "doc:/persoonsgegevens/voornaam",
-    "voorvoegselAchternaam": "doc:/persoonsgegevens/voorvoegselAchternaam",
-    "achternaam": "doc:/persoonsgegevens/achternaam"
+    "hasBetrokkene": true,
+    "kanaal": "doc:/klantcontact/kanaal",
+    "onderwerp": "doc:/klantcontact/onderwerp",
+    "inhoud": "doc:/klantcontact/inhoud",
+    "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
+    "taal": "doc:/klantcontact/taal",
+    "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp",
+    "partijUuid": "doc:/klantcontact/betrokkene/partijUuid",
+    "voorletters": "doc:/klantcontact/betrokkene/voorletters",
+    "voornaam": "doc:/klantcontact/betrokkene/voornaam",
+    "voorvoegselAchternaam": "doc:/klantcontact/betrokkene/tussenvoegsel",
+    "achternaam": "doc:/klantcontact/betrokkene/achternaam"
+  },
+  "processLinkType": "plugin"
+}
+```
+
+zonder betrokkene:
+```json
+{
+  "activityId": "verstuurKlantcontactZonderBetrokkene",
+  "activityType": "bpmn:ServiceTask:start",
+  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+  "pluginActionDefinitionKey": "register-klantcontact",
+  "actionProperties": {
+    "hasBetrokkene": false,
+    "kanaal": "doc:/klantcontact/kanaal",
+    "onderwerp": "doc:/klantcontact/onderwerp",
+    "inhoud": "doc:/klantcontact/inhoud",
+    "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
+    "taal": "doc:/klantcontact/taal",
+    "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp"
   },
   "processLinkType": "plugin"
 }
