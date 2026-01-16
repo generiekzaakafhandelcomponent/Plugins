@@ -1,4 +1,4 @@
-export interface OpenKlantSendKlantcontactConfig {
+export interface OpenKlantRegisterKlantcontactConfig {
     kanaal: string;
     onderwerp: string;
     inhoud: string;

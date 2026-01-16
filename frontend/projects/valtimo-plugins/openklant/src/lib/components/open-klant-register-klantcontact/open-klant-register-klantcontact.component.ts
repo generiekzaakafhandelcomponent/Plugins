@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormModule, InputModule, RadioModule, RadioValue} from "@valtimo/components";
 import {FunctionConfigurationComponent, FunctionConfigurationData, PluginTranslatePipeModule} from "@valtimo/plugin";
 import {AsyncPipe} from "@angular/common";
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from "rxjs";
-import {OpenKlantSendKlantcontactConfig} from "../../models/open-klant-send-klantcontact-config";
+import {OpenKlantRegisterKlantcontactConfig} from "../../models/open-klant-register-klantcontact-config";
 import {ToggleModule} from "carbon-components-angular";
+import {Toggle} from 'carbon-components-angular';
 
 @Component({
-    selector: 'open-klant-send-klantcontact',
+    selector: 'open-klant-register-klantcontact',
     standalone: true,
     imports: [
         CommonModule,
@@ -19,20 +20,22 @@ import {ToggleModule} from "carbon-components-angular";
         RadioModule,
         ToggleModule
     ],
-    templateUrl: './open-klant-send-klantcontact.component.html',
-    styleUrl: './open-klant-send-klantcontact.component.css'
+    templateUrl: './open-klant-register-klantcontact.component.html',
+    styleUrl: './open-klant-register-klantcontact.component.css'
 })
-export class OpenKlantSendKlantcontactComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
+export class OpenKlantRegisterKlantcontactComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
-    @Input() prefillConfiguration$?: Observable<OpenKlantSendKlantcontactConfig>;
+    @Input() prefillConfiguration$?: Observable<OpenKlantRegisterKlantcontactConfig>;
 
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
+    @ViewChild('hasBetrokkene') hasBetrokkene: Toggle;
+
     private saveSubscription: Subscription;
-    private readonly formValue$ = new BehaviorSubject<OpenKlantSendKlantcontactConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<OpenKlantRegisterKlantcontactConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     ngOnInit(): void {
@@ -43,12 +46,15 @@ export class OpenKlantSendKlantcontactComponent implements FunctionConfiguration
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: OpenKlantSendKlantcontactConfig): void {
-        this.formValue$.next(formValue);
+    formValueChange(formValue: OpenKlantRegisterKlantcontactConfig): void {
+        this.formValue$.next({
+            hasBetrokkene: this.hasBetrokkene.checked,
+            ...formValue
+        });
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: OpenKlantSendKlantcontactConfig): void {
+    private handleValid(formValue: OpenKlantRegisterKlantcontactConfig): void {
         const valid =
             !!formValue.kanaal &&
             !!formValue.onderwerp &&

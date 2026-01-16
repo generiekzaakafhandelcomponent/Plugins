@@ -10,8 +10,8 @@ import {
     OpenKlantGetContactMomentsByCaseUuidComponent
 } from './components/open-klant-get-contact-moments-by-case-uuid/open-klant-get-contact-moments-by-case-uuid.component';
 import {
-    OpenKlantSendKlantcontactComponent
-} from "./components/open-klant-send-klantcontact/open-klant-send-klantcontact.component";
+    OpenKlantRegisterKlantcontactComponent
+} from "./components/open-klant-register-klantcontact/open-klant-register-klantcontact.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
     pluginId: 'openklant',
@@ -20,7 +20,7 @@ const openKlantPluginSpecification: PluginSpecification = {
     functionConfigurationComponents: {
         'get-contact-moments-by-case': OpenKlantGetContactMomentsByCaseUuidComponent,
         'store-contactinfo': OpenKlantStoreContactinfoComponent,
-        'send-klantcontact': OpenKlantSendKlantcontactComponent,
+        'register-klantcontact': OpenKlantRegisterKlantcontactComponent,
     },
     pluginTranslations: {
         nl: {
@@ -33,7 +33,7 @@ const openKlantPluginSpecification: PluginSpecification = {
             resultPvName: 'Resultaat procesvariabele naam',
             'get-contact-moments-by-case': 'Haal contactmomenten op o.b.v. Zaak',
             'store-contactinfo': 'Sla contactinformatie op',
-            'send-klantcontact': 'Verstuur klantcontact',
+            'register-klantcontact': 'Verstuur klantcontact',
             bsn: 'Bsn',
             firstName: 'Voornaam',
             inFix: 'Tussenvoegsel',
