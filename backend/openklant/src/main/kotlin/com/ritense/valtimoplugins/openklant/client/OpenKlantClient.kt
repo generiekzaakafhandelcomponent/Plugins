@@ -166,7 +166,6 @@ class OpenKlantClient(
                 .uri(OK_MAAK_KLANTCONTACT_PATH)
                 .bodyValue(request)
                 .retrieve()
-                .awaitBody<CreatedKlantcontact>()
         } catch (e: WebClientResponseException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: WebClientResponseException) {
