@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class KlantcontactCreationRequest(
     @JsonProperty("klantcontact")
     @field:NotBlank
-    val klantcontact: KlantContactRequest,
+    val klantcontact: KlantcontactRequest,
 
     @JsonProperty("betrokkene")
     val betrokkene: BetrokkeneRequest? = null,
@@ -18,8 +18,8 @@ data class KlantcontactCreationRequest(
     @JsonProperty("onderwerobject")
     val onderwerpobject: OnderwerpobjectRequest? = null,
 ) {
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    data class KlantContactRequest(
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    data class KlantcontactRequest(
         @JsonProperty("nummer")
         @field:Size(max = 10)
         val nummer: String? = null,
@@ -57,7 +57,7 @@ data class KlantcontactCreationRequest(
         val plaatsgevondenOp: String? = null,
     )
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     data class BetrokkeneRequest(
         @JsonProperty("wasPartij")
         val wasPartij: UuidReference? = null,
