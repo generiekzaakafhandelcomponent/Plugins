@@ -6,7 +6,7 @@ import { GetContactMomentsByCaseUuidComponent } from "./components/get-contact-m
 import { GetContactMomentsByBsnComponent } from "./components/get-contact-moments-by-bsn/get-contact-moments-by-bsn.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
-  pluginId: "openklant",
+  pluginId: "open-klant",
   pluginConfigurationComponent: OpenKlantPluginConfigurationComponent,
   pluginLogoBase64: OPEN_KLANT_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
