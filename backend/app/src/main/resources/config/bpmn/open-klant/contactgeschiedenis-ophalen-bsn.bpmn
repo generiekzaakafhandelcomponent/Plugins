@@ -23,7 +23,7 @@
       <incoming>Flow_1tpnzje</incoming>
     </endEvent>
     <sequenceFlow id="Flow_1p90xbm" sourceRef="Activity_0x3d6tk" targetRef="Activity_HaalContactgeschiedenisOpTask" />
-    <serviceTask id="Activity_0x3d6tk" name="Haal BSN-nummer op uit document" camunda:expression="valueResolverDelegateService.resolveValue(execution, &#34;doc:/bsn&#34;) " camunda:resultVariable="bsn">
+    <serviceTask id="Activity_0x3d6tk" name="Haal BSN-nummer op uit document" camunda:expression="${valueResolverDelegateService.resolveValue(execution, &#39;doc:/bsn&#39;)}" camunda:resultVariable="bsn">
       <incoming>Flow_0du2437</incoming>
       <outgoing>Flow_1p90xbm</outgoing>
     </serviceTask>
