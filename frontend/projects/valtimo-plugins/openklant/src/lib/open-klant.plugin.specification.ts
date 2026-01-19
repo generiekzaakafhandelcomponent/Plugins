@@ -49,7 +49,7 @@ const openKlantPluginSpecification: PluginSpecification = {
             partijUuid: 'Partij Uuid',
             voorletters: 'Voorletters',
             voornaam: 'Voornaam',
-            voorvoegselAchternaam: 'Tussenvoegsel',
+            voorvoegselAchternaam: 'Voorvoegsel Achternaam',
             achternaam: 'Achternaam',
             heeftBetrokkene: 'Bevat het klantcontact een betrokkene of is het anoniem?',
             'heeftBetrokkene.betrokkene': 'Heeft betrokkene',

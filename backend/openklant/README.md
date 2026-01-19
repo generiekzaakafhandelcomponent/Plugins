@@ -92,7 +92,7 @@ Voorbeeld `*.processlink.json`
     "partijUuid": "doc:/klantcontact/betrokkene/partijUuid",
     "voorletters": "doc:/klantcontact/betrokkene/voorletters",
     "voornaam": "doc:/klantcontact/betrokkene/voornaam",
-    "voorvoegselAchternaam": "doc:/klantcontact/betrokkene/tussenvoegsel",
+    "voorvoegselAchternaam": "doc:/klantcontact/betrokkene/voorvoegselAchternaam",
     "achternaam": "doc:/klantcontact/betrokkene/achternaam"
   },
   "processLinkType": "plugin"
