@@ -108,7 +108,7 @@ class OpenKlantPlugin(
         @PluginActionProperty achternaam: String?,
         execution: DelegateExecution,
         ) = runBlocking {
-        logger.info { "Registered klantcontact: - ${execution.processBusinessKey}" }
+        logger.info { "Registering klantcontact: - ${execution.processBusinessKey}" }
 
         val klantcontactCreationInformation = KlantcontactCreationInformation(
             kanaal = kanaal,
