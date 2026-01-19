@@ -172,7 +172,7 @@ In de frontend moet de volgende waarden toegevoegd worden:
         {
             provide: CASE_TAB_TOKEN,
             useValue: {
-                'klantcontact-tab': KlantcontactTabComponent, // voeg deze alleen toe als je het klantcontacten tab wilt gebruiken.
+                "generieke-contactgeschiedenis": ContactHistoryTabComponent, // voeg deze alleen toe als je het contactgeschiedenistabblad wilt gebruiken.
             }
         }
     ],
