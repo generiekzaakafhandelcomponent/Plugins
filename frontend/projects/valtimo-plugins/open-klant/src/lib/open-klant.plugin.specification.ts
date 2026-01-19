@@ -21,13 +21,13 @@ const openKlantPluginSpecification: PluginSpecification = {
       description:
         "Een plugin voor het ophalen en versturen van Open Klant-gegevens.",
       configurationTitleTooltip:
-        "In dit onderdeel configureer je de Open Klant-plugin, om zo gemakkelijk gegevens te kunnen verzenden en op te kunnen halen.",
+        "In dit onderdeel configureer je de Open Klant-plugin om eenvoudig gegevens te kunnen verzenden en ophalen.",
 
       // Common
-      resultPvName: "Naam van resultaatprocesvariabele",
-      bsn: "BSN variabele",
+      resultPvName: "Naam van resultaat-procesvariabele",
+      bsn: "BSN-variabele",
       bsnTooltip:
-        "Pad van de variabele waar het BSN (burgerservicenummer) uit opgehaald kan worden",
+        "Pad van de variabele waaruit het BSN (burgerservicenummer) opgehaald kan worden",
 
       // Store contact info
       "store-contact-info": "Maak digitaal adres (en Partij) aan",
@@ -51,17 +51,39 @@ const openKlantPluginSpecification: PluginSpecification = {
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
         "Contactgeschiedenis ophalen op basis van Open Zaak-nummer",
+
+      // Register contact moment
+      "register-klantcontact": "Verstuur klantcontact",
+      objectTypeId: "Type van het object, bijvoorbeeld: 'zaak'",
+      objectUuid: "Zaak-UUID",
+      caseNumber: "Zaaknummer",
+      kanaal: "Communicatiekanaal",
+      onderwerp: "Onderwerp",
+      inhoud: "Inhoud",
+      vertrouwelijk: "Vertrouwelijk (true/false)",
+      taal: "Taal (ISO 639-2/B-formaat)",
+      plaatsgevondenOp: "Plaatsgevonden op (ISO 8601)",
+      partijUuid: "Partij-UUID",
+      voorletters: "Voorletters",
+      voornaam: "Voornaam",
+      voorvoegselAchternaam: "Voorvoegsel achternaam",
+      achternaam: "Achternaam",
+      heeftBetrokkene:
+        "Bevat het klantcontact een betrokkene of is het anoniem?",
+      "heeftBetrokkene.betrokkene": "Heeft betrokkene",
+      "heeftBetrokkene.anoniem": "Is anoniem",
     },
+
     en: {
       title: "Open Klant",
       configurationTitle: "Open Klant plugin configuration",
       description: "A plugin for retrieving and sending Open Klant data.",
       configurationTitleTooltip:
-        "In this section you configure the Open Klant plugin to easily send and retrieve data.",
+        "In this section, you configure the Open Klant plugin to easily send and retrieve data.",
 
       // Common
       resultPvName: "Result process variable name",
-      bsn: "BSN number variable",
+      bsn: "BSN variable",
       bsnTooltip:
         "Path of the variable from which the Dutch BSN (citizen service number) can be retrieved",
 
@@ -81,48 +103,82 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Variable from which the Open Zaak number can be retrieved",
 
       // Get contact moments by BSN
-      "get-contact-moments-by-bsn":
-        "Retrieve contact history based on BSN number",
+      "get-contact-moments-by-bsn": "Retrieve contact history based on BSN",
 
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
-        "Retrieve contact history based on Open Zaak number",
+        "Retrieve contact history based on Open Zaak case number",
+
+      // Register contact moment
+      "register-klantcontact": "Send customer contact",
+      kanaal: "Communication channel",
+      onderwerp: "Subject",
+      inhoud: "Message content",
+      vertrouwelijk: "Confidential (true/false)",
+      taal: "Language (ISO 639-2/B format)",
+      plaatsgevondenOp: "Occurred on (ISO 8601)",
+      partijUuid: "Partij UUID",
+      voorletters: "Initials",
+      voornaam: "First name",
+      voorvoegselAchternaam: "Name infix",
+      achternaam: "Last name",
+      heeftBetrokkene:
+        "Does the contact moment involve an individual or is it anonymous?",
+      "heeftBetrokkene.betrokkene": "Has an individual",
+      "heeftBetrokkene.anoniem": "Is anonymous",
     },
+
     de: {
       title: "Open Klant",
-      configurationTitle: "Konfiguration des Open Klant-Plugins",
-      description: "Ein Plugin zum Abrufen und Versenden von Open Klant-Daten.",
+      configurationTitle: "Konfiguration des Open-Klant-Plugins",
+      description: "Ein Plugin zum Abrufen und Versenden von Open-Klant-Daten.",
       configurationTitleTooltip:
-        "In diesem Abschnitt konfigurieren Sie das Open Klant-Plugin, um Daten einfach senden und abrufen zu können.",
+        "In diesem Abschnitt konfigurieren Sie das Open-Klant-Plugin, um Daten einfach zu senden und abzurufen.",
 
       // Common
-      resultPvName: "Name der Ergebnis-Prozessvariable",
-      bsn: "BSN-Nummernvariable",
+      resultPvName: "Name der Ergebnis-Prozessvariablen",
+      bsn: "BSN-Variable",
       bsnTooltip:
-        "Pfad der Variable, aus der die niederländische BSN (Bürgerservicenummer) abgerufen werden kann",
+        "Pfad der Variable, aus der die niederländische BSN (Bürgerservicenummer) abgerufen wird",
 
       // Store contact info
       "store-contact-info": "Digitale Adresse (und Partij) erstellen",
       firstName: "Vorname",
-      firstNameTooltip: "Variable, aus der der Vorname abgerufen werden kann",
+      firstNameTooltip: "Variable, aus der der Vorname abgerufen wird",
       inFix: "Namenszusatz",
-      inFixTooltip: "Variable, aus der der Namenszusatz abgerufen werden kann",
+      inFixTooltip: "Variable, aus der der Namenszusatz abgerufen wird",
       lastName: "Nachname",
-      lastNameTooltip: "Variable, aus der der Nachname abgerufen werden kann",
+      lastNameTooltip: "Variable, aus der der Nachname abgerufen wird",
       emailAddress: "E-Mail-Adresse",
       emailAddressTooltip:
-        "Variable, aus der die E-Mail-Adresse abgerufen werden kann",
-      caseUuid: "Open Zaak-Vorgangsnummer",
-      caseUuidTooltip:
-        "Variable, aus der die Open Zaak-Vorgangsnummer abgerufen werden kann",
+        "Variable, aus der die E-Mail-Adresse abgerufen wird",
+      caseUuid: "Open-Zaak-Nummer",
+      caseUuidTooltip: "Variable, aus der das Open-Zaak-Nummer abgerufen wird",
 
       // Get contact moments by BSN
-      "get-contact-moments-by-bsn":
-        "Kontaktverlauf anhand der BSN (Bürgerservicenummer) abrufen",
+      "get-contact-moments-by-bsn": "Kontaktverlauf basierend auf BSN abrufen",
 
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
-        "Kontaktverlauf anhand der Open Zaak-Nummer abrufen",
+        "Kontaktverlauf basierend auf Open-Zaak-Nummer abrufen",
+
+      // Register contact moment
+      "register-klantcontact": "Kundenkontakt senden",
+      kanaal: "Kommunikationskanal",
+      onderwerp: "Betreff",
+      inhoud: "Inhalt",
+      vertrouwelijk: "Vertraulich (true/false)",
+      taal: "Sprache (ISO 639-2/B-Format)",
+      plaatsgevondenOp: "Stattgefunden am (ISO 8601)",
+      partijUuid: "Partij-UUID",
+      voorletters: "Initialen",
+      voornaam: "Vorname",
+      voorvoegselAchternaam: "Namenszusatz",
+      achternaam: "Nachname",
+      heeftBetrokkene:
+        "Enthält der Kundenkontakt eine betroffene Person oder ist er anonym?",
+      "heeftBetrokkene.betrokkene": "Hat eine betroffene Person",
+      "heeftBetrokkene.anoniem": "Ist anonym",
     },
   },
 };

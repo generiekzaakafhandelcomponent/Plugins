@@ -49,7 +49,7 @@ AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN=AAAAAAAAAAAAAAAAAA
 
 ### Opslaan partij:
 
-Voor het handmatig configureren, zie screenshots.
+![opslaan partij configuratie](img/opslaan-contactinfo-in-openklant.png)
 
 Voorbeeld `*.processlink.json`:
 
@@ -71,9 +71,57 @@ Voorbeeld `*.processlink.json`:
 }
 ```
 
+### Versturen van klantcontact
+![versturen klantcontact](img/versturen-klantcontact.png)
+
+Voorbeeld `*.processlink.json`
+```json
+{
+  "activityId": "verstuurKlantcontact",
+  "activityType": "bpmn:ServiceTask:start",
+  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+  "pluginActionDefinitionKey": "register-klantcontact",
+  "actionProperties": {
+    "hasBetrokkene": true,
+    "kanaal": "doc:/klantcontact/kanaal",
+    "onderwerp": "doc:/klantcontact/onderwerp",
+    "inhoud": "doc:/klantcontact/inhoud",
+    "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
+    "taal": "doc:/klantcontact/taal",
+    "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp",
+    "partijUuid": "doc:/klantcontact/betrokkene/partijUuid",
+    "voorletters": "doc:/klantcontact/betrokkene/voorletters",
+    "voornaam": "doc:/klantcontact/betrokkene/voornaam",
+    "voorvoegselAchternaam": "doc:/klantcontact/betrokkene/voorvoegselAchternaam",
+    "achternaam": "doc:/klantcontact/betrokkene/achternaam"
+  },
+  "processLinkType": "plugin"
+}
+```
+
+zonder betrokkene:
+```json
+{
+  "activityId": "verstuurKlantcontactZonderBetrokkene",
+  "activityType": "bpmn:ServiceTask:start",
+  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+  "pluginActionDefinitionKey": "register-klantcontact",
+  "actionProperties": {
+    "hasBetrokkene": false,
+    "kanaal": "doc:/klantcontact/kanaal",
+    "onderwerp": "doc:/klantcontact/onderwerp",
+    "inhoud": "doc:/klantcontact/inhoud",
+    "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
+    "taal": "doc:/klantcontact/taal",
+    "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp"
+  },
+  "processLinkType": "plugin"
+}
+```
+
 ### Ophalen klantcontacten (contactgeschiedenis) via Open-Zaaknummer (UUID): plugin-actie:
 
-Voor het handmatig configureren, zie screenshots.
+![ophalen klantcontacten configuratie](img/fetch-contactmomenten.png)
 
 Voorbeeld `*.processlink.json`:
 

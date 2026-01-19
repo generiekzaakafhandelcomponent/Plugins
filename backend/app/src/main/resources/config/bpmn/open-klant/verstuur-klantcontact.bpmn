@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="verstuur-klantcontact" name="open klant" processType="None" isClosed="false" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1xgxipo</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1xgxipo" sourceRef="StartEvent_1" targetRef="Gateway_0unxpx3" />
+    <bpmn:endEvent id="Event_1xd82ed">
+      <bpmn:incoming>Flow_068tev9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0a8hsze" sourceRef="verstuurKlantcontact" targetRef="Gateway_08zm5q6" />
+    <bpmn:serviceTask id="verstuurKlantcontact" name="Verstuur klantcontact met betrokkene" implementation="##WebService" camunda:expression="${true}">
+      <bpmn:incoming>Flow_0tvlv51</bpmn:incoming>
+      <bpmn:outgoing>Flow_0a8hsze</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_018e90x" name="Heeft betrokkene?" default="Flow_0zgjdd1">
+      <bpmn:incoming>Flow_0wrea3g</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tvlv51</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0zgjdd1</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0tvlv51" name="Ja&#10;&#10;" sourceRef="Gateway_018e90x" targetRef="verstuurKlantcontact">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">
+        ${valueResolverDelegateService.resolveValue(execution, "doc:klantcontact.hasBetrokkene") }
+      </bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0zgjdd1" name="Nee" sourceRef="Gateway_018e90x" targetRef="verstuurKlantcontactZonderBetrokkene" />
+    <bpmn:exclusiveGateway id="Gateway_08zm5q6">
+      <bpmn:incoming>Flow_0a8hsze</bpmn:incoming>
+      <bpmn:incoming>Flow_189u9mw</bpmn:incoming>
+      <bpmn:outgoing>Flow_068tev9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_068tev9" sourceRef="Gateway_08zm5q6" targetRef="Event_1xd82ed" />
+    <bpmn:sequenceFlow id="Flow_189u9mw" sourceRef="verstuurKlantcontactZonderBetrokkene" targetRef="Gateway_08zm5q6" />
+    <bpmn:serviceTask id="verstuurKlantcontactZonderBetrokkene" name="Verstuur klantcontact zonder betrokkene" implementation="##WebService" camunda:expression="${true}">
+      <bpmn:incoming>Flow_0zgjdd1</bpmn:incoming>
+      <bpmn:outgoing>Flow_189u9mw</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_0unxpx3" name="Verstuur klantcontact?" default="Flow_1dtsupf">
+      <bpmn:incoming>Flow_1xgxipo</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wrea3g</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1dtsupf</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0wrea3g" name="Ja" sourceRef="Gateway_0unxpx3" targetRef="Gateway_018e90x">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">
+        ${valueResolverDelegateService.resolveValue(execution, "doc:verstuurKlantcontact") }
+      </bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_11gksk9">
+      <bpmn:incoming>Flow_1dtsupf</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1dtsupf" name="Nee" sourceRef="Gateway_0unxpx3" targetRef="Event_11gksk9" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="verstuur-klantcontact">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1xd82ed_di" bpmnElement="Event_1xd82ed">
+        <dc:Bounds x="742" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0svnlob_di" bpmnElement="verstuurKlantcontact">
+        <dc:Bounds x="480" y="-30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_018e90x_di" bpmnElement="Gateway_018e90x" isMarkerVisible="true">
+        <dc:Bounds x="365" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="425" y="113" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_08zm5q6_di" bpmnElement="Gateway_08zm5q6" isMarkerVisible="true">
+        <dc:Bounds x="641" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0l1cx16_di" bpmnElement="verstuurKlantcontactZonderBetrokkene">
+        <dc:Bounds x="480" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0unxpx3_di" bpmnElement="Gateway_0unxpx3" isMarkerVisible="true">
+        <dc:Bounds x="255" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="248" y="65" width="65" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_11gksk9_di" bpmnElement="Event_11gksk9">
+        <dc:Bounds x="752" y="322" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1xgxipo_di" bpmnElement="Flow_1xgxipo">
+        <di:waypoint x="198" y="120" />
+        <di:waypoint x="255" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0a8hsze_di" bpmnElement="Flow_0a8hsze">
+        <di:waypoint x="580" y="10" />
+        <di:waypoint x="666" y="10" />
+        <di:waypoint x="666" y="95" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tvlv51_di" bpmnElement="Flow_0tvlv51">
+        <di:waypoint x="390" y="95" />
+        <di:waypoint x="390" y="10" />
+        <di:waypoint x="480" y="10" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="424" y="-10" width="12" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0zgjdd1_di" bpmnElement="Flow_0zgjdd1">
+        <di:waypoint x="390" y="145" />
+        <di:waypoint x="390" y="230" />
+        <di:waypoint x="480" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="419" y="243" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_068tev9_di" bpmnElement="Flow_068tev9">
+        <di:waypoint x="691" y="120" />
+        <di:waypoint x="742" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_189u9mw_di" bpmnElement="Flow_189u9mw">
+        <di:waypoint x="580" y="230" />
+        <di:waypoint x="666" y="230" />
+        <di:waypoint x="666" y="145" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wrea3g_di" bpmnElement="Flow_0wrea3g">
+        <di:waypoint x="305" y="120" />
+        <di:waypoint x="365" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="314" y="102" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dtsupf_di" bpmnElement="Flow_1dtsupf">
+        <di:waypoint x="280" y="145" />
+        <di:waypoint x="280" y="340" />
+        <di:waypoint x="752" y="340" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="285" y="240" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

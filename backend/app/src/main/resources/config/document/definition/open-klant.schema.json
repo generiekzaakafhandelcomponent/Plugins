@@ -13,6 +13,55 @@
                 "properties": {}
             },
             "default": []
+        },
+        "klantcontact": {
+            "type": "object",
+            "properties": {
+                "taal": {
+                    "type": "string"
+                },
+                "inhoud": {
+                    "type": "string"
+                },
+                "kanaal": {
+                    "type": "string"
+                },
+                "onderwerp": {
+                    "type": "string"
+                },
+                "betrokkene": {
+                    "type": "object",
+                    "properties": {
+                        "voornaam": {
+                            "type": "string"
+                        },
+                        "achternaam": {
+                            "type": "string"
+                        },
+                        "partijUuid": {
+                            "type": "string"
+                        },
+                        "voorletters": {
+                            "type": "string"
+                        },
+                        "voorvoegselAchternaam": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "hasBetrokkene": {
+                    "type": "boolean"
+                },
+                "vertrouwelijk": {
+                    "type": "boolean"
+                },
+                "plaatsgevondenOp": {
+                    "type": "string"
+                }
+            }
+        },
+        "verstuurKlantcontact": {
+            "type": "boolean"
         }
     },
     "additionalProperties": false
