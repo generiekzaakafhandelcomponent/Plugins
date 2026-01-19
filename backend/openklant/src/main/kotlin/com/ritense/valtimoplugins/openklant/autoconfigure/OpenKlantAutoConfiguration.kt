@@ -23,10 +23,7 @@ import java.net.URI
 @EnableConfigurationProperties
 class OpenKlantAutoConfiguration {
     @Bean
-    fun openKlantPluginClient(
-        openKlantWebClientBuilder: WebClient.Builder,
-    ): OpenKlantClient =
-        OpenKlantClient(openKlantWebClientBuilder)
+    fun openKlantPluginClient(openKlantWebClientBuilder: WebClient.Builder): OpenKlantClient = OpenKlantClient(openKlantWebClientBuilder)
 
     @Bean
     fun partijFactory(): PartijFactory = PartijFactory()
@@ -38,12 +35,12 @@ class OpenKlantAutoConfiguration {
     fun openKlantService(
         openKlantClient: OpenKlantClient,
         partijFactory: PartijFactory,
-        klantcontactFactory: KlantcontactFactory
+        klantcontactFactory: KlantcontactFactory,
     ): OpenKlantService =
         DefaultOpenKlantService(
             openKlantClient,
             partijFactory,
-            klantcontactFactory
+            klantcontactFactory,
         )
 
     @Bean
@@ -73,7 +70,7 @@ class OpenKlantAutoConfiguration {
         zaakDocumentService,
         openKlantService,
         reflectionUtil,
-        OpenKlantProperties(URI.create(klantinteractieUrl), openKlantToken)
+        OpenKlantProperties(URI.create(klantinteractieUrl), openKlantToken),
     )
 
     @Bean
