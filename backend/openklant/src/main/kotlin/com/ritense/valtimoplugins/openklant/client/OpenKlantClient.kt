@@ -1,6 +1,12 @@
 package com.ritense.valtimoplugins.openklant.client
 
-import com.ritense.valtimoplugins.openklant.dto.*
+
+import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
+import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
+import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
+import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.KlantcontactCreationRequest
+import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.zgw.Page
