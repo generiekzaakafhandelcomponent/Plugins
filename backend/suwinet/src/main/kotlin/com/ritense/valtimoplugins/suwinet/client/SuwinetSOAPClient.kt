@@ -5,6 +5,8 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.cxf.ext.logging.LoggingFeature
 
 import org.apache.cxf.frontend.ClientProxy
+import org.apache.cxf.interceptor.LoggingInInterceptor
+import org.apache.cxf.interceptor.LoggingOutInterceptor
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean
 import org.apache.cxf.message.Message
 import org.apache.cxf.transport.http.HTTPConduit
@@ -25,6 +27,8 @@ class SuwinetSOAPClient {
 
             val loggingFeature: LoggingFeature = LoggingFeature()
             loggingFeature.setPrettyLogging(true)
+            loggingFeature.setVerbose(true);
+            loggingFeature.setLogMultipart(true);
             loggingFeature.addSensitiveElementNames(
                 setOf<String>(
                     "Burgerservicenr",
@@ -59,8 +63,17 @@ class SuwinetSOAPClient {
     }
 
     fun setDefaultPolicies(service: Any, authConfig: SuwinetAuth, connectionTimeout: Int?, receiveTimeout: Int?) {
-
         val client = ClientProxy.getClient(service)
+
+        if(logger.isDebugEnabled()) {
+            // deprecated loggers do log RAW messages
+            client.inInterceptors.add(LoggingInInterceptor())
+            client.outInterceptors.add(LoggingOutInterceptor())
+
+            client.inFaultInterceptors.add(LoggingInInterceptor())
+            client.outFaultInterceptors.add(LoggingOutInterceptor())
+        }
+
         val conduit: HTTPConduit = client.conduit as HTTPConduit
         client.requestContext[Message.PROTOCOL_HEADERS] =
             mapOf("Expect" to listOf("100-continue"))

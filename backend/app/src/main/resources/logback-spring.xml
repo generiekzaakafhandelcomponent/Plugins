@@ -7,6 +7,7 @@
 
     <logger name="com.ritense.valtimo" level="#logback.loglevel#"/>
     <logger name="com.ritense.valtimo.web.logging" level="DEBUG"/>
+    <logger name="com.ritense.valtimoplugins.suwinet.client" level="DEBUG" />
 
     <root level="${logback.loglevel:-INFO}">
         <appender-ref ref="CONSOLE"/>

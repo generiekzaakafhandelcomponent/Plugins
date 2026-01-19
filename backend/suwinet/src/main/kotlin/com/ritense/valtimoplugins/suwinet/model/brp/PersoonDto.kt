@@ -23,8 +23,8 @@ data class PersoonDto(
     val codeBrpGegevensGeheim:  BrpGegevensGeheim?,
     val aNummer: String?,
 
-    val naamgebruik: AanduidingNaamgebruik?,
-    val geslachtsAanduiding: GeslachtsAanduiding?,
+    val naamgebruik: String?,
+    val geslachtsAanduiding: String?,
     ){
     data class Verblijfstitel(
         val codeVerblijfstitel: CodeVerblijfstitel,
