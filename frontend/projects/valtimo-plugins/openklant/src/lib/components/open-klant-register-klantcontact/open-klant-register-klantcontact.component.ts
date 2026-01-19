@@ -20,8 +20,7 @@ import {Toggle} from 'carbon-components-angular';
         RadioModule,
         ToggleModule
     ],
-    templateUrl: './open-klant-register-klantcontact.component.html',
-    styleUrl: './open-klant-register-klantcontact.component.css'
+    templateUrl: './open-klant-register-klantcontact.component.html'
 })
 export class OpenKlantRegisterKlantcontactComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$: Observable<void>;

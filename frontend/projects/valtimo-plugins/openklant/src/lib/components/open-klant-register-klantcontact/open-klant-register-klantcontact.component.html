@@ -55,7 +55,7 @@
         [offText]="'heeftBetrokkene.anoniem' | pluginTranslate: pluginId | async"
         [checked]="!!obs.prefill?.hasBetrokkene"
         [disabled]="obs.disabled"
-        >
+    >
     </cds-toggle>
     <ng-container
             *ngIf="hasBetrokkene.checked">
@@ -95,5 +95,4 @@
                 [required]="true"
         ></v-input>
     </ng-container>
-
 </v-form>
