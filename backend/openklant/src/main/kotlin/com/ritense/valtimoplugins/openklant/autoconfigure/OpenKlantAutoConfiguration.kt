@@ -38,12 +38,12 @@ class OpenKlantAutoConfiguration {
     fun openKlantService(
         openKlantClient: OpenKlantClient,
         partijFactory: PartijFactory,
-        klantContactFactory: KlantcontactFactory
+        klantcontactFactory: KlantcontactFactory
     ): OpenKlantService =
         DefaultOpenKlantService(
             openKlantClient,
             partijFactory,
-            klantContactFactory
+            klantcontactFactory
         )
 
     @Bean
