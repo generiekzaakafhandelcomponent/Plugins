@@ -216,7 +216,7 @@
               "key": "klantcontact.betrokkene.voorvoegselAchternaam",
               "type": "textfield",
               "input": true,
-              "label": "Voorvoegsel Achternaam",
+              "label": "Voorvoegsel achternaam",
               "tableView": true,
               "attributes": {
                 "data-testid": "openklant.start-klantcontact.betrokkene.voorvoegselAchternaam"
