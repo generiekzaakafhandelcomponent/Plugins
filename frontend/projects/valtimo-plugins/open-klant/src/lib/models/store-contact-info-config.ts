@@ -1,4 +1,4 @@
-export interface OpenKlantStoreContactinfoConfig {
+export interface StoreContactInfoConfig {
   bsn: string;
   firstName: String;
   inFix: String;
