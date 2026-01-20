@@ -124,28 +124,6 @@ INSERT INTO public.vng_api_common_jwtsecret VALUES (1, 'valtimo_client', 'e09b8b
 INSERT INTO public.vng_api_common_jwtsecret VALUES (2, 'opennotificaties', 'opennotificaties');
 INSERT INTO public.vng_api_common_jwtsecret VALUES (3, 'openformulieren', 'openformulieren');
 
-
---
--- Data for Name: zaken_zaakidentificatie; Type: TABLE DATA; Schema: public; Owner: openzaak
---
-
---
--- Data for Name: zaken_zaak; Type: TABLE DATA; Schema: public; Owner: openzaak
---
-
-
---
--- Data for Name: zaken_rol; Type: TABLE DATA; Schema: public; Owner: openzaak
---
-
-
-
---
--- Data for Name: zaken_natuurlijkpersoon; Type: TABLE DATA; Schema: public; Owner: openzaak
---
-
-
-
 --
 -- Name: accounts_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: openzaak
 --
@@ -235,13 +213,6 @@ SELECT pg_catalog.setval('public.zaken_natuurlijkpersoon_id_seq', 9, true);
 --
 
 SELECT pg_catalog.setval('public.zaken_rol_id_seq', 10, true);
-
-
---
--- Name: zaken_zaakidentificatie_id_seq; Type: SEQUENCE SET; Schema: public; Owner: openzaak
---
-
-SELECT pg_catalog.setval('public.zaken_zaakidentificatie_id_seq', 13, true);
 
 --
 -- PostgreSQL database dump complete
