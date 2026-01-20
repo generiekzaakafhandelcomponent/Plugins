@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.2 (Debian 11.2-1.pgdg90+1)
--- Dumped by pg_dump version 17.0
+-- Dumped from database version 17.0 (Debian 17.0-1.pgdg110+1)
+-- Dumped by pg_dump version 17.7 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,8 +21,8 @@ SET row_security = off;
 -- Data for Name: accounts_user; Type: TABLE DATA; Schema: public; Owner: openzaak
 --
 
-INSERT INTO public.accounts_user VALUES (1, 'pbkdf2_sha256$260000$PINGrXbEuTXfDccVDSVGua$QFUBURai3eTcknSmBvaQZpzHHJfwI7rYd++N5xId4j8=', NULL, true, 'admin', '', '', 'admin@admin.org', true, true, '2024-11-04 15:05:01.029862+00');
 INSERT INTO public.accounts_user VALUES (2, 'pbkdf2_sha256$150000$5dnJUqLDsmX0$EEbO4AGZqyp88ZCTu+7W2uGRLkdidlL4HkXWc8ZfZV8=', NULL, true, 'demo', 'Valtimo', 'Demo', 'demo@valtimo.nl', true, true, '2024-11-04 14:45:51.796139+00');
+INSERT INTO public.accounts_user VALUES (1, 'pbkdf2_sha256$1000000$hciWXznwILubcp7yfvgu0f$bWnyIEWWVJtbUA5heFnWIxWtTF17diK/YIS/ev8lfJk=', '2026-01-20 10:53:23.099085+00', true, 'admin', '', '', 'admin@admin.org', true, true, '2026-01-20 10:50:18.905132+00');
 
 
 --
@@ -129,40 +129,9 @@ INSERT INTO public.vng_api_common_jwtsecret VALUES (3, 'openformulieren', 'openf
 -- Data for Name: zaken_zaakidentificatie; Type: TABLE DATA; Schema: public; Owner: openzaak
 --
 
-INSERT INTO public.zaken_zaakidentificatie VALUES (1, 'ZAAK-2021-0000000001', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (2, 'ZAAK-2021-0000000002', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (3, 'ZAAK-2021-0000000003', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (4, 'ZAAK-2021-0000000004', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (5, 'ZAAK-2021-0000000005', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (6, 'ZAAK-2021-0000000006', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (7, 'ZAAK-2021-0000000007', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (8, 'ZAAK-2021-0000000008', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (9, 'ZAAK-2021-0000000009', '100000009');
-INSERT INTO public.zaken_zaakidentificatie VALUES (10, 'ZAAK-2024-0000000001', '100000009');
-
-
---
--- Data for Name: zgw_consumers_service; Type: TABLE DATA; Schema: public; Owner: openzaak
---
-
-INSERT INTO public.zgw_consumers_service VALUES (1, 'Notificaties API', 'nrc', 'https://notificaties-api.vng.cloud/api/v1/', '', '', 'no_auth', '', '', 'https://notificaties-api.vng.cloud/api/v1/schema/openapi.yaml', '', '', '', '', NULL, NULL, 'd2b82dc4-0b2e-4b09-bfb5-2d3de518f4f2');
-INSERT INTO public.zgw_consumers_service VALUES (2, 'VNG Selectielijst', 'orc', 'https://selectielijst.openzaak.nl/api/v1/', '', '', 'no_auth', '', '', 'https://selectielijst.openzaak.nl/api/v1/schema/openapi.yaml', '', '', '', '', NULL, NULL, '416b1d93-b596-44c3-b226-d2aca2184b7d');
-
-
 --
 -- Data for Name: zaken_zaak; Type: TABLE DATA; Schema: public; Owner: openzaak
 --
-
-INSERT INTO public.zaken_zaak VALUES (1, '703af290-abe0-418c-b9c3-10a65e662788', 'ZAAK-2021-0000000001', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 1, '_etag', '051845623', NULL, NULL, 1, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (2, '60b30357-e81c-40f7-80cf-cd715e01a981', 'ZAAK-2021-0000000002', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 2, '_etag', '051845623', NULL, NULL, 2, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (3, '59a4e114-cc09-4a09-b324-63ec7e18a896', 'ZAAK-2021-0000000003', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 3, '_etag', '051845623', NULL, NULL, 3, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (4, 'ba439c9a-5a2d-46da-bb30-7827bd672382', 'ZAAK-2021-0000000004', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 4, '_etag', '051845623', NULL, NULL, 4, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (5, '1e1cb360-f6d3-4c2a-b815-119f09aaa95d', 'ZAAK-2021-0000000005', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 5, '_etag', '051845623', NULL, NULL, 5, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (6, 'f621749d-d222-49b8-9392-eff8723e0922', 'ZAAK-2021-0000000006', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 6, '_etag', '051845623', NULL, NULL, 6, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (7, '8c0243f2-6f2c-4757-940a-5140d71b74a0', 'ZAAK-2021-0000000007', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 7, '_etag', '051845623', NULL, NULL, 7, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (8, '7b18aa8c-968f-427e-9875-d827bbdc9624', 'ZAAK-2021-0000000008', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 8, '_etag', '051845623', NULL, NULL, 8, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (9, '64eaf9ef-37b4-4898-acc9-ae47bee577a2', 'ZAAK-2021-0000000009', '051845623', '', '', '2024-11-04', '051845623', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', NULL, false, '', '', NULL, 'nog_te_archiveren', NULL, 1, 9, '_etag', '051845623', NULL, NULL, 9, '', '', '', '', '', NULL);
-INSERT INTO public.zaken_zaak VALUES (NULL, '239e1863-6516-492d-a691-4e85e45dd4f4', '', '', '', '', '2024-11-04', '100000009', '2024-11-04', NULL, NULL, NULL, NULL, '{}', '', 'openbaar', '', NULL, NULL, '', '00:00:00', false, '', '', NULL, 'nog_te_archiveren', NULL, 1, NULL, '771598e6d588b6d3f661e745a662588a', '', NULL, NULL, 10, '', '', '', '', '', NULL);
 
 
 --
@@ -185,15 +154,6 @@ INSERT INTO public.zaken_rol VALUES (10, '8d68e2db-cfbb-419c-a035-769fb3f4b0ef',
 -- Data for Name: zaken_natuurlijkpersoon; Type: TABLE DATA; Schema: public; Owner: openzaak
 --
 
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (1, '569312863', '', '', '', '', '', '', 'm', '', 1, NULL, NULL);
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (2, '569312863', '', '', '', '', '', '', 'm', '', 2, NULL, NULL);
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (3, '569312863', '', '', '', '', '', '', 'm', '', 3, NULL, NULL);
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (4, '569312863', '', '', '', '', '', '', 'm', '', 4, NULL, NULL);
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (5, '569312863', '', '', '', '', '', '', 'm', '', 5, NULL, NULL);
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (6, '569312863', '', '', '', '', '', '', 'm', '', 6, NULL, NULL);
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (7, '569312863', '', '', '', '', '', '', 'm', '', 7, NULL, NULL);
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (8, '569312863', '', '', '', '', '', '', 'm', '', 8, NULL, NULL);
-INSERT INTO public.zaken_natuurlijkpersoon VALUES (9, '569312863', '', '', '', '', '', '', 'm', '', 9, NULL, NULL);
 
 
 --
