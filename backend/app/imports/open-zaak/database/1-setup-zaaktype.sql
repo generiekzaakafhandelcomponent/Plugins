@@ -138,16 +138,6 @@ INSERT INTO public.vng_api_common_jwtsecret VALUES (3, 'openformulieren', 'openf
 -- Data for Name: zaken_rol; Type: TABLE DATA; Schema: public; Owner: openzaak
 --
 
-INSERT INTO public.zaken_rol VALUES (1, '6a5959f6-64c4-4b12-9092-d042ae269ba2', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.933363+00', 'gemachtigde', 1, 1, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (2, 'e0a8eb00-98e3-4152-b4c0-a680c1bed966', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.934596+00', 'gemachtigde', 1, 2, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (3, '06aa5a31-387a-4ed3-8f15-5e9be832ef1f', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.935796+00', 'gemachtigde', 1, 3, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (4, 'cb86065d-86a7-4933-a6bf-7ea15c8f9132', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.936872+00', 'gemachtigde', 1, 4, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (5, '7315f0e1-fec6-430b-923c-2a4fecb6abd8', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.938017+00', 'gemachtigde', 1, 5, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (6, '79bb6761-e835-4fa8-92f5-61166bb4c5a0', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.939188+00', 'gemachtigde', 1, 6, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (7, 'f82037f1-f1cf-4c4b-809b-319e1aa7bb6a', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.93998+00', 'gemachtigde', 1, 7, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (8, '129f37c5-1e8b-43a1-9514-c7d9c57a0b8b', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.941013+00', 'gemachtigde', 1, 8, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (9, '10684831-cef6-43e5-aebc-455dd8585714', '1', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Test rol', '2024-11-04 14:45:51.942119+00', 'gemachtigde', 1, 9, '_etag', NULL, NULL, '', '', '', '', '');
-INSERT INTO public.zaken_rol VALUES (10, '8d68e2db-cfbb-419c-a035-769fb3f4b0ef', '', 'natuurlijk_persoon', 'Aanvrager', 'initiator', 'Aanvrager', '2024-11-04 14:54:13.209889+00', '', 1, 10, '634b951b504ea34c0ca504e5ea5f14ed', NULL, NULL, '', '', '', '', '');
 
 
 --
@@ -251,17 +241,10 @@ SELECT pg_catalog.setval('public.zaken_rol_id_seq', 10, true);
 -- Name: zaken_zaakidentificatie_id_seq; Type: SEQUENCE SET; Schema: public; Owner: openzaak
 --
 
-SELECT pg_catalog.setval('public.zaken_zaakidentificatie_id_seq', 10, true);
-
-
---
--- Name: zgw_consumers_service_id_seq; Type: SEQUENCE SET; Schema: public; Owner: openzaak
---
-
-SELECT pg_catalog.setval('public.zgw_consumers_service_id_seq', 2, true);
-
+SELECT pg_catalog.setval('public.zaken_zaakidentificatie_id_seq', 13, true);
 
 --
 -- PostgreSQL database dump complete
 --
 
+SELECT pg_catalog.setval('public.zgw_consumers_service_id_seq', 2, true);
