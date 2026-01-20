@@ -47,10 +47,6 @@ class SuwinetSOAPClient {
             )
             this.features.add(loggingFeature)
 
-            // WS-adress feauture
-//            val addressingFeature = WSAddressingFeature()
-//            this.features.add(addressingFeature)
-
             create() as T
         }
 
