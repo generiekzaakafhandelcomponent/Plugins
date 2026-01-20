@@ -1,0 +1,287 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "title": "Selecteer één of meerdere demo's",
+            "collapsible": false,
+            "key": "panelTitle",
+            "type": "panel",
+            "label": "Panel",
+            "input": false,
+            "tableView": false,
+            "components": [
+                {
+                    "key": "contactgeschiedenisOphalenBsn",
+                    "type": "checkbox",
+                    "label": "Contactgeschiedenis ophalen op basis van BSN",
+                    "tableView": false,
+                    "labelPosition": "right"
+                },
+                {
+                    "label": "Nieuw klantcontact registreren",
+                    "key": "nieuwKlantcontactRegistreren",
+                    "type": "checkbox",
+                    "dataGridLabel": true,
+                    "labelPosition": "right"
+                }
+            ]
+        },
+        {
+            "key": "contactgeschiedenisOphalenBsnPanel",
+            "type": "panel",
+            "input": false,
+            "label": "Panel",
+            "title": "Contactgeschiedenis ophalen op basis van BSN",
+            "tableView": false,
+            "components": [
+                {
+                    "key": "bsn",
+                    "type": "textfield",
+                    "input": true,
+                    "label": "BSN-nummer",
+                    "tooltip": "Zal in het tabblad 'Contactgeschiedenis' de contacten ophalen op basis van dit BSN-nummer"
+                }
+            ],
+            "collapsible": false,
+            "conditional": {
+                "when": "contactgeschiedenisOphalenBsn",
+                "eq": "true",
+                "show": true
+            }
+        },
+        {
+            "key": "klantcontact",
+            "type": "panel",
+            "input": false,
+            "label": "Panel",
+            "title": "Nieuw klantcontact registreren",
+            "tableView": false,
+            "components": [
+                {
+                    "key": "klantcontact.kanaal",
+                    "type": "textfield",
+                    "input": true,
+                    "label": "Kanaal",
+                    "tableView": true,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.kanaal"
+                    },
+                    "applyMaskOn": "change",
+                    "defaultValue": "telefoon"
+                },
+                {
+                    "key": "klantcontact.onderwerp",
+                    "type": "textfield",
+                    "input": true,
+                    "label": "Onderwerp",
+                    "tableView": true,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.onderwerp"
+                    },
+                    "applyMaskOn": "change",
+                    "defaultValue": "Lorem ipsum dolor sit amet consectetur adipiscing elit."
+                },
+                {
+                    "key": "klantcontact.inhoud",
+                    "type": "textarea",
+                    "input": true,
+                    "label": "inhoud",
+                    "tableView": true,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.inhoud"
+                    },
+                    "autoExpand": false,
+                    "applyMaskOn": "change",
+                    "defaultValue": "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos."
+                },
+                {
+                    "key": "klantcontact.vertrouwelijk",
+                    "type": "radio",
+                    "input": true,
+                    "label": "Vertrouwelijk",
+                    "inline": false,
+                    "values": [
+                        {
+                            "label": "Ja",
+                            "value": "true",
+                            "shortcut": ""
+                        },
+                        {
+                            "label": "Nee",
+                            "value": "false",
+                            "shortcut": ""
+                        }
+                    ],
+                    "tableView": false,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.vertrouwelijk"
+                    },
+                    "defaultValue": false,
+                    "optionsLabelPosition": "right"
+                },
+                {
+                    "key": "klantcontact.taal",
+                    "type": "textfield",
+                    "input": true,
+                    "label": "Taal",
+                    "tableView": true,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.taal"
+                    },
+                    "applyMaskOn": "change",
+                    "defaultValue": "nld"
+                },
+                {
+                    "key": "klantcontact.plaatsgevondenOp",
+                    "type": "datetime",
+                    "input": true,
+                    "label": "Date / Time",
+                    "format": "yyyy-MM-ddTHH:mm:ss.sss",
+                    "widget": {
+                        "mode": "single",
+                        "type": "calendar",
+                        "format": "yyyy-MM-ddTHH:mm:ss.sss",
+                        "locale": "en",
+                        "maxDate": null,
+                        "minDate": null,
+                        "time_24hr": false,
+                        "allowInput": true,
+                        "enableTime": true,
+                        "noCalendar": false,
+                        "hourIncrement": 1,
+                        "disableWeekdays": false,
+                        "disableWeekends": false,
+                        "minuteIncrement": 1,
+                        "displayInTimezone": "viewer",
+                        "useLocaleSettings": false
+                    },
+                    "tableView": false,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.plaatsgevondenOp"
+                    },
+                    "datePicker": {
+                        "disableWeekdays": false,
+                        "disableWeekends": false
+                    },
+                    "defaultDate": "moment()",
+                    "enableMaxDateInput": false,
+                    "enableMinDateInput": false
+                },
+                {
+                    "key": "klantcontact.hasBetrokkene",
+                    "type": "radio",
+                    "input": true,
+                    "label": "Heeft betrokkene",
+                    "inline": false,
+                    "values": [
+                        {
+                            "label": "Ja",
+                            "value": "true",
+                            "shortcut": ""
+                        },
+                        {
+                            "label": "Nee",
+                            "value": "false",
+                            "shortcut": ""
+                        }
+                    ],
+                    "tableView": false,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.hasBetrokkene"
+                    },
+                    "defaultValue": true,
+                    "optionsLabelPosition": "right"
+                },
+                {
+                    "key": "betrokkene",
+                    "type": "panel",
+                    "input": false,
+                    "label": "Panel",
+                    "title": "Betrokkene",
+                    "tableView": false,
+                    "components": [
+                        {
+                            "key": "klantcontact.betrokkene.partijUuid",
+                            "type": "textfield",
+                            "input": true,
+                            "label": "partijUuid",
+                            "tableView": true,
+                            "attributes": {
+                                "data-testid": "open-klant.start-klantcontact.betrokkene.partijUuid"
+                            },
+                            "applyMaskOn": "change"
+                        },
+                        {
+                            "key": "klantcontact.betrokkene.voorletters",
+                            "type": "textfield",
+                            "input": true,
+                            "label": "Voorletters",
+                            "tableView": true,
+                            "attributes": {
+                                "data-testid": "open-klant.start-klantcontact.betrokkene.voorletters"
+                            },
+                            "applyMaskOn": "change",
+                            "defaultValue": "J"
+                        },
+                        {
+                            "key": "klantcontact.betrokkene.voornaam",
+                            "type": "textfield",
+                            "input": true,
+                            "label": "Voornaam",
+                            "tableView": true,
+                            "attributes": {
+                                "data-testid": "open-klant.start-klantcontact.betrokkene.voornaam"
+                            },
+                            "applyMaskOn": "change",
+                            "defaultValue": "John"
+                        },
+                        {
+                            "key": "klantcontact.betrokkene.voorvoegselAchternaam",
+                            "type": "textfield",
+                            "input": true,
+                            "label": "Voorvoegsel achternaam",
+                            "tableView": true,
+                            "attributes": {
+                                "data-testid": "open-klant.start-klantcontact.betrokkene.voorvoegselAchternaam"
+                            },
+                            "applyMaskOn": "change",
+                            "defaultValue": "D"
+                        },
+                        {
+                            "key": "klantcontact.betrokkene.achternaam",
+                            "type": "textfield",
+                            "input": true,
+                            "label": "Achternaam",
+                            "tableView": true,
+                            "attributes": {
+                                "data-testid": "open-klant.start-klantcontact.betrokkene.achternaam"
+                            },
+                            "applyMaskOn": "change",
+                            "defaultValue": "Doe"
+                        }
+                    ],
+                    "collapsible": false,
+                    "conditional": {
+                        "eq": "true",
+                        "show": true,
+                        "when": "klantcontact.hasBetrokkene"
+                    }
+                }
+            ],
+            "collapsible": false,
+            "conditional": {
+                "when": "nieuwKlantcontactRegistreren",
+                "eq": "true",
+                "show": true
+            }
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Creëer dossier",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

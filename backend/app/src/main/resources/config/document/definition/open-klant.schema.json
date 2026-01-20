@@ -60,7 +60,10 @@
                 }
             }
         },
-        "verstuurKlantcontact": {
+        "nieuwKlantcontactRegistreren": {
+            "type": "boolean"
+        },
+        "contactgeschiedenisOphalenBsn": {
             "type": "boolean"
         }
     },
