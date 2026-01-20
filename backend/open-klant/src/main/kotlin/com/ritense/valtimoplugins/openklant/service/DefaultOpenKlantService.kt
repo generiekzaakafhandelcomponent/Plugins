@@ -40,7 +40,7 @@ class DefaultOpenKlantService(
 
     override suspend fun postKlantcontact(
         properties: OpenKlantProperties,
-        klantContactCreationInformation: KlantcontactCreationInformation,
+        klantcontactCreationInformation: KlantcontactCreationInformation,
     ) {
         val klantContactRequest = klantContactFactory.createKlantcontactRequest(klantContactCreationInformation)
         openKlantClient.postKlantcontact(
