@@ -555,6 +555,39 @@
         }
       }
     },
+    "@valtimo-plugins/oip-klanttaak": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/oip-klanttaak",
+      "sourceRoot": "projects/valtimo-plugins/oip-klanttaak/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/valtimo-plugins/oip-klanttaak/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/oip-klanttaak/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/oip-klanttaak/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/oip-klanttaak/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/publictask": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/publictask",

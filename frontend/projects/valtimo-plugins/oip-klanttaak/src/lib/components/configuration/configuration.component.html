@@ -1,0 +1,92 @@
+<!--
+  ~ Copyright 2015-2025 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+  } as obs"
+>
+  <v-input
+    name="configurationTitle"
+    placeholder="OIP Klanttaak Plugin"
+    [title]="'configuration.title' | pluginTranslate: pluginId | async"
+    [tooltip]="'configuration.titleTooltip' | pluginTranslate: pluginId | async"
+    [required]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.configurationTitle"
+    [margin]="true"
+    [trim]="true"
+  >
+  </v-input>
+
+  @if (notificatiesApiPluginSelectItems$ | async; as notificatiesApiPluginSelectItems) {
+    <v-select
+      name="notificatiesApiPluginConfiguration"
+      [title]="'configuration.notificatiesApiPluginConfiguration' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.notificatiesApiPluginConfigurationTooltip' | pluginTranslate: pluginId | async"
+      [items]="notificatiesApiPluginSelectItems"
+      [required]="true"
+      [disabled]="obs.disabled"
+      [margin]="true"
+      [defaultSelectionId]="obs.prefill?.notificatiesApiPluginConfiguration"
+      [loading]="!notificatiesApiPluginSelectItems"
+    ></v-select>
+  }
+
+  @if(objectManagementConfigurationItems$ | async; as objectManagementConfigurationItems) {
+    <v-select
+      name="objectManagementConfigurationId"
+      [title]="'configuration.objectManagementConfiguration' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
+      [required]="true"
+      [disabled]="obs.disabled"
+      [margin]="true"
+      [items]="objectManagementConfigurationItems"
+      [defaultSelectionId]="obs.prefill?.objectManagementConfigurationId"
+      [loading]="!objectManagementConfigurationItems"
+    ></v-select>
+  }
+
+  @if (systemProcessDefinitionItems$ | async; as processDefinitionItems) {
+    <v-select
+      name="systemFinalizerProcess"
+      [title]="'configuration.systemFinalizerProcess' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.finalizerProcessTooltip' | pluginTranslate: pluginId | async"
+      [required]="true"
+      [disabled]="obs.disabled || (caseFinalizerProcessSelected$ | async)"
+      [margin]="true"
+      [items]="processDefinitionItems"
+      [defaultSelectionId]="obs.prefill?.finalizerProcess"
+      [loading]="!processDefinitionItems"
+    ></v-select>
+  }
+
+  @if (caseProcessDefinitionItems$ | async; as processDefinitionItems) {
+    <v-select
+      name="caseFinalizerProcess"
+      [title]="'configuration.caseFinalizerProcess' | pluginTranslate: pluginId | async"
+      [tooltip]="'configuration.finalizerProcessTooltip' | pluginTranslate: pluginId | async"
+      [required]="true"
+      [disabled]="obs.disabled || (systemFinalizerProcessSelected$ | async)"
+      [margin]="true"
+      [items]="processDefinitionItems"
+      [defaultSelectionId]="formatCaseFinalizerProcessFrom(obs.prefill)"
+      [loading]="!processDefinitionItems"
+    ></v-select>
+  }
+</v-form>

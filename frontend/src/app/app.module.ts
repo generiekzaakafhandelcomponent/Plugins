@@ -75,20 +75,13 @@ import {DashboardManagementModule} from '@valtimo/dashboard-management';
 import {SseModule} from '@valtimo/sse';
 import {
     PLUGINS_TOKEN,
-    CatalogiApiPluginModule,
-    catalogiApiPluginSpecification,
-    DocumentenApiPluginModule,
-    documentenApiPluginSpecification,
-    OpenZaakPluginModule,
-    openZaakPluginSpecification,
-    ZakenApiPluginModule,
-    zakenApiPluginSpecification,
-    ObjectenApiPluginModule,
-    objectenApiPluginSpecification,
-    ObjectTokenAuthenticationPluginModule,
-    objectTokenAuthenticationPluginSpecification,
-    ObjecttypenApiPluginModule,
-    objecttypenApiPluginSpecification,
+    CatalogiApiPluginModule,catalogiApiPluginSpecification,
+    DocumentenApiPluginModule, documentenApiPluginSpecification,
+    OpenZaakPluginModule, openZaakPluginSpecification,
+    ZakenApiPluginModule, zakenApiPluginSpecification,
+    ObjectenApiPluginModule, objectenApiPluginSpecification,
+    ObjectTokenAuthenticationPluginModule, objectTokenAuthenticationPluginSpecification,
+    ObjecttypenApiPluginModule, objecttypenApiPluginSpecification,
 } from '@valtimo/plugin';
 
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
@@ -98,17 +91,15 @@ import {
     HaalCentraalBrpPluginModule, haalCentraalBrpPluginSpecification
 } from '@valtimo-plugins/haal-centraal';
 import {
-    DocumentGeneratorPluginModule,
-    documentGeneratorPluginSpecification,
-    MailTemplatePluginModule,
-    mailTemplatePluginSpecification,
-    TextTemplatePluginModule,
-    textTemplatePluginSpecification
+    DocumentGeneratorPluginModule, documentGeneratorPluginSpecification,
+    MailTemplatePluginModule, mailTemplatePluginSpecification,
+    TextTemplatePluginModule, textTemplatePluginSpecification
 } from '@valtimo-plugins/freemarker';
 import {KvkPluginModule, kvkPluginSpecification} from '@valtimo-plugins/kvk-handelsregister';
 import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
+import {OipKlanttaakPluginModule, oipKlanttaakPluginSpecification} from '@valtimo-plugins/oip-klanttaak';
 import {OpenKlantPluginModule, openKlantPluginSpecification, KlantcontactTabComponent} from '@valtimo-plugins/openklant';
 import {OpenProductPluginModule, openProductPluginSpecification} from '@valtimo-plugins/open-product';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
@@ -182,6 +173,7 @@ export function tabsFactory() {
         ObjectModule,
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
+        OipKlanttaakPluginModule,
         OpenProductPluginModule,
         OpenKlantPluginModule,
         OpenZaakPluginModule,
@@ -239,6 +231,7 @@ export function tabsFactory() {
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
+            oipKlanttaakPluginSpecification,
             openProductPluginSpecification,
             openKlantPluginSpecification,
             openZaakPluginSpecification,
@@ -248,8 +241,8 @@ export function tabsFactory() {
             smtpmailPluginSpecification,
             spotlerPluginSpecification,
             suwinetPluginSpecification,
-            tokenAuthenticationPluginSpecification,
             textTemplatePluginSpecification,
+            tokenAuthenticationPluginSpecification,
             valtimoOcrPluginSpecification,
             valtimoS2tPluginSpecification,
             valtimoLlmPluginSpecification,

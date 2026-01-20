@@ -1,0 +1,11 @@
+{
+    "id": "14dd1664-33ad-4797-aed3-2007420f1fc6",
+    "title": "OIP Klanttaak",
+    "objectenApiPluginConfigurationId": "a1a5e464-92db-41fc-9ab9-da663dd18471",
+    "objecttypenApiPluginConfigurationId": "bc109d5e-0388-4637-bcfa-b454f402bef8",
+    "objecttypeId": "de1713dc-78f2-4ec9-8254-e550e5bb8957",
+    "objecttypeVersion": 1,
+    "showInDataMenu": false,
+    "formDefinitionView": "",
+    "formDefinitionEdit": ""
+}

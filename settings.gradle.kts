@@ -11,6 +11,7 @@ include(
     "backend:notify-nl",
     "backend:open-product",
     "backend:object-management",
+    "backend:oip-klanttaak",
     "backend:openklant",
     "backend:publictask",
     "backend:rotterdam-oracle-ebs",

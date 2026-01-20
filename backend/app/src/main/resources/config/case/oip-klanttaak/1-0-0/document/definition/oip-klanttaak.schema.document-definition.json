@@ -1,0 +1,39 @@
+{
+  "$id" : "oip-klanttaak.schema",
+  "type" : "object",
+  "title" : "OIP Klanttaak",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "properties" : {
+    "voornaam" : {
+      "type" : [
+        "string",
+        "null"
+      ]
+    },
+    "achternaam" : {
+      "type" : [
+        "string",
+        "null"
+      ]
+    },
+    "emailadres" : {
+      "type" : [
+        "string",
+        "null"
+      ]
+    },
+    "tussenvoegsel" : {
+      "type" : [
+        "string",
+        "null"
+      ]
+    },
+    "volledigeNaam" : {
+      "type" : [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties" : false
+}

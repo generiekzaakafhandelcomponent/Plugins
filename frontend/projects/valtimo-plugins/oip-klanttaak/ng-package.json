@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../dist/valtimo-plugins/oip-klanttaak",
+  "assets": ["./assets"],
+  "lib": {
+    "entryFile": "src/public_api.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "@angular/core",
+    "@angular/common",
+    "@ngx-translate/core",
+    "@ngx-translate/http-loader",
+    "@valtimo/components",
+    "@valtimo/plugin",
+    "bootstrap",
+    "core-js",
+    "jquery",
+    "moment",
+    "ngx-logger",
+    "rxjs",
+    "tslib"
+  ]
+}
