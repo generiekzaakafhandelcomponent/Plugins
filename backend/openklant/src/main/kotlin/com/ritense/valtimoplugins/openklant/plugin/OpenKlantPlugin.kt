@@ -6,6 +6,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
+import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
@@ -84,6 +85,52 @@ class OpenKlantPlugin(
             )
 
         fetchAndStoreKlantContacts(execution, resultPvName, pluginProperties)
+    }
+
+    @PluginAction(
+        key = "register-klantcontact",
+        title = "Register klantcontact",
+        description = "Registers a new klantcontact to OpenKlant",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun postKlantContact(
+        @PluginActionProperty kanaal: String,
+        @PluginActionProperty onderwerp: String,
+        @PluginActionProperty inhoud: String,
+        @PluginActionProperty vertrouwelijk: String,
+        @PluginActionProperty taal: String,
+        @PluginActionProperty plaatsgevondenOp: String,
+        @PluginActionProperty hasBetrokkene: Boolean,
+        @PluginActionProperty partijUuid: String?,
+        @PluginActionProperty voorletters: String?,
+        @PluginActionProperty voornaam: String?,
+        @PluginActionProperty voorvoegselAchternaam: String?,
+        @PluginActionProperty achternaam: String?,
+        execution: DelegateExecution,
+        ) = runBlocking {
+        logger.info { "Registering klantcontact: - ${execution.processBusinessKey}" }
+
+        val klantcontactCreationInformation = KlantcontactCreationInformation(
+            kanaal = kanaal,
+            onderwerp = onderwerp,
+            inhoud = inhoud,
+            vertrouwelijk = vertrouwelijk.toBoolean(),
+            taal = taal,
+            plaatsgevondenOp = plaatsgevondenOp,
+            hasBetrokkene = hasBetrokkene,
+            partijUuid = partijUuid,
+            voorletters = voorletters,
+            voornaam = voornaam,
+            voorvoegselAchternaam = voorvoegselAchternaam,
+            achternaam = achternaam
+        )
+
+        val properties = OpenKlantProperties(klantinteractiesUrl, token)
+
+        openKlantPluginService.postKlantcontact(
+            properties,
+            klantcontactCreationInformation
+        )
     }
 
     private suspend fun fetchAndStoreKlantContacts(

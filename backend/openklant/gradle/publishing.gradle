@@ -23,8 +23,8 @@ pluginManager.withPlugin("maven-publish") {
                 version = pluginProperties.pluginVersion
 
                 pom {
-                    name = "Sample Plugin"
-                    description = "A sample plugin for Valtimo"
+                    name = "Open Klant Plugin"
+                    description = "Open Klant plugin for Valtimo"
                     developers {
                         developer {
                             id = "team-valtimo"
