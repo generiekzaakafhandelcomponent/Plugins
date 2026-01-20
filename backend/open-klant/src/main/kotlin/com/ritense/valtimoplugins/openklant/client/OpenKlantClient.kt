@@ -179,7 +179,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties
     ) {
         try {
-            webClient(properties)
+            webClientFactory(properties)
                 .post()
                 .uri(OK_MAAK_KLANTCONTACT_PATH)
                 .bodyValue(request)
