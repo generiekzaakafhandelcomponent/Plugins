@@ -14,15 +14,13 @@
                     "key": "contactgeschiedenisOphalenBsn",
                     "type": "checkbox",
                     "label": "Contactgeschiedenis ophalen op basis van BSN",
-                    "tableView": false,
-                    "labelPosition": "right"
+                    "tableView": false
                 },
                 {
                     "label": "Nieuw klantcontact registreren",
                     "key": "nieuwKlantcontactRegistreren",
                     "type": "checkbox",
-                    "dataGridLabel": true,
-                    "labelPosition": "right"
+                    "tableView": false
                 }
             ]
         },
