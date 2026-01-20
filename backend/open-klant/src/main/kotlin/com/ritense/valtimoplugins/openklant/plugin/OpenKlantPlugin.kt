@@ -168,7 +168,7 @@ class OpenKlantPlugin(
         )
     }
 
-    private suspend fun fetchAndStoreKlantContacts(
+    private suspend fun fetchKlantcontactenAndStore(
         execution: DelegateExecution,
         resultPvName: String,
         pluginProperties: KlantcontactOptions,
