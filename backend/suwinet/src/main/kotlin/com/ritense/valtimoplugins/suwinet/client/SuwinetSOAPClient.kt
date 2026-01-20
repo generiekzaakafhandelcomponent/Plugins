@@ -11,10 +11,6 @@ import org.apache.cxf.message.Message
 import org.apache.cxf.transport.http.HTTPConduit
 import org.apache.cxf.transports.http.configuration.ConnectionType
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy
-import org.apache.cxf.ws.addressing.AddressingProperties
-import org.apache.cxf.ws.addressing.AttributedURIType
-
-
 
 
 class SuwinetSOAPClient {
