@@ -19,9 +19,7 @@ import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
 import com.ritense.valtimoplugins.suwinet.model.AdresType
-import com.ritense.valtimoplugins.suwinet.model.brp.AanduidingNaamgebruik
 import com.ritense.valtimoplugins.suwinet.model.brp.BrpGegevensGeheim
-import com.ritense.valtimoplugins.suwinet.model.brp.GeslachtsAanduiding
 import com.ritense.valtimoplugins.suwinet.model.brp.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.brp.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -126,10 +124,8 @@ class SuwinetBrpInfoService(
                     codeBrpGegevensGeheim = persoon.cdBrpGegevensGeheim?.let{
                         BrpGegevensGeheim.fromCode(persoon.cdBrpGegevensGeheim)
                     },
-                    naamgebruik = persoon.aanduidingNaamgebruik?.let {
-                        AanduidingNaamgebruik.fromCode(persoon.aanduidingNaamgebruik)
-                    },
-                    geslachtsAanduiding = persoon.geslacht?.let { GeslachtsAanduiding.fromCode(persoon.geslacht) },
+                    naamgebruik = persoon.aanduidingNaamgebruik,
+                    geslachtsAanduiding = persoon.geslacht,
                     geslachtsnaamPartner = persoon.huwelijk
                                         ?.firstOrNull()
                                         ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner?.significantDeelVanDeAchternaam,
