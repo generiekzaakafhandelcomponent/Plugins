@@ -1,6 +1,6 @@
 [
     {
-        "processDefinitionKey": "open_klant_start",
+        "processDefinitionKey": "open-klant-start",
         "canInitializeDocument": true,
         "startableByUser": true
     }
