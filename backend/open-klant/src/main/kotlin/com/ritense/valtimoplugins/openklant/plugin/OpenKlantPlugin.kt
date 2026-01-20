@@ -7,8 +7,8 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
-import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
@@ -93,7 +93,6 @@ class OpenKlantPlugin(
         )
     }
 
-
     @PluginAction(
         key = "get-contact-moments-by-bsn",
         title = "Get contact history by BSN",
@@ -142,29 +141,30 @@ class OpenKlantPlugin(
         @PluginActionProperty voorvoegselAchternaam: String?,
         @PluginActionProperty achternaam: String?,
         execution: DelegateExecution,
-        ) = runBlocking {
+    ) = runBlocking {
         logger.info { "Registered klantcontact: - ${execution.processBusinessKey}" }
 
-        val klantcontactCreationInformation = KlantcontactCreationInformation(
-            kanaal = kanaal,
-            onderwerp = onderwerp,
-            inhoud = inhoud,
-            vertrouwelijk = vertrouwelijk.toBoolean(),
-            taal = taal,
-            plaatsgevondenOp = plaatsgevondenOp,
-            hasBetrokkene = hasBetrokkene,
-            partijUuid = partijUuid,
-            voorletters = voorletters,
-            voornaam = voornaam,
-            voorvoegselAchternaam = voorvoegselAchternaam,
-            achternaam = achternaam
-        )
+        val klantcontactCreationInformation =
+            KlantcontactCreationInformation(
+                kanaal = kanaal,
+                onderwerp = onderwerp,
+                inhoud = inhoud,
+                vertrouwelijk = vertrouwelijk.toBoolean(),
+                taal = taal,
+                plaatsgevondenOp = plaatsgevondenOp,
+                hasBetrokkene = hasBetrokkene,
+                partijUuid = partijUuid,
+                voorletters = voorletters,
+                voornaam = voornaam,
+                voorvoegselAchternaam = voorvoegselAchternaam,
+                achternaam = achternaam,
+            )
 
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
 
         openKlantPluginService.postKlantcontact(
             properties,
-            klantcontactCreationInformation
+            klantcontactCreationInformation,
         )
     }
 
