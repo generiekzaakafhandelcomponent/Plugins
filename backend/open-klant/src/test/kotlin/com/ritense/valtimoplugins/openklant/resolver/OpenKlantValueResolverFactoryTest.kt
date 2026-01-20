@@ -9,18 +9,25 @@ import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.zakenapi.domain.ZaakResponse
 import com.ritense.zakenapi.service.ZaakDocumentService
-import io.mockk.*
+import io.mockk.clearAllMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
+import io.mockk.verify
 import org.camunda.bpm.engine.delegate.VariableScope
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import java.net.URI
-import java.util.*
+import java.util.UUID
 
 @ExtendWith(MockKExtension::class)
 class OpenKlantValueResolverFactoryTest {
-
     private lateinit var factory: OpenKlantValueResolverFactory
     private lateinit var processDocumentService: ProcessDocumentService
     private lateinit var zaakDocumentService: ZaakDocumentService
@@ -38,13 +45,14 @@ class OpenKlantValueResolverFactoryTest {
         variableScope = mockk()
         properties = OpenKlantProperties(URI.create("https://test.klantinteracties.org"), "openklant-token")
 
-        factory = OpenKlantValueResolverFactory(
-            processDocumentService = processDocumentService,
-            zaakDocumentService = zaakDocumentService,
-            openKlantService = openKlantService,
-            reflectionUtil = reflectionUtil,
-            properties = properties,
-        )
+        factory =
+            OpenKlantValueResolverFactory(
+                processDocumentService = processDocumentService,
+                zaakDocumentService = zaakDocumentService,
+                openKlantService = openKlantService,
+                reflectionUtil = reflectionUtil,
+                properties = properties,
+            )
     }
 
     @AfterEach
@@ -151,9 +159,10 @@ class OpenKlantValueResolverFactoryTest {
 
         // Act & Assert
         val resolver = factory.createResolver(documentId)
-        val exception = assertThrows<IllegalArgumentException> {
-            resolver.apply("unknownValue")
-        }
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                resolver.apply("unknownValue")
+            }
         assertEquals("Unknown Open Klant column with name: unknownValue", exception.message)
     }
 
@@ -166,7 +175,12 @@ class OpenKlantValueResolverFactoryTest {
 
         val mockDocument = mockk<com.ritense.document.domain.Document>()
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
-        every { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) } returns mockDocument
+        every {
+            processDocumentService.getDocument(
+                CamundaProcessInstanceId(processInstanceId),
+                variableScope,
+            )
+        } returns mockDocument
 
         val mockZaak = mockk<ZaakResponse>()
         every { mockZaak.uuid } returns zaakUuid
@@ -215,7 +229,12 @@ class OpenKlantValueResolverFactoryTest {
 
         val mockDocument = mockk<com.ritense.document.domain.Document>()
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
-        every { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) } returns mockDocument
+        every {
+            processDocumentService.getDocument(
+                CamundaProcessInstanceId(processInstanceId),
+                variableScope,
+            )
+        } returns mockDocument
 
         val mockZaak = mockk<ZaakResponse>()
         every { mockZaak.uuid } returns zaakUuid
@@ -260,7 +279,12 @@ class OpenKlantValueResolverFactoryTest {
 
         val mockDocument = mockk<com.ritense.document.domain.Document>()
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
-        every { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) } returns mockDocument
+        every {
+            processDocumentService.getDocument(
+                CamundaProcessInstanceId(processInstanceId),
+                variableScope,
+            )
+        } returns mockDocument
 
         val mockZaak = mockk<ZaakResponse>()
         every { mockZaak.uuid } returns UUID.randomUUID()
@@ -268,9 +292,10 @@ class OpenKlantValueResolverFactoryTest {
 
         // Act & Assert
         val resolver = factory.createResolver(processInstanceId, variableScope)
-        val exception = assertThrows<IllegalArgumentException> {
-            resolver.apply("unknownValue")
-        }
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                resolver.apply("unknownValue")
+            }
         assertEquals("Unknown Open Klant column with name: unknownValue", exception.message)
     }
 
