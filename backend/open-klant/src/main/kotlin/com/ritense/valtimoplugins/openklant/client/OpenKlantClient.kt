@@ -13,7 +13,6 @@ import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.jetbrains.annotations.VisibleForTesting
 import org.springframework.http.HttpStatus
-import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
@@ -21,7 +20,6 @@ import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriBuilder
 import java.net.URI
-
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
@@ -176,7 +174,7 @@ class OpenKlantClient(
 
     suspend fun postKlantcontact(
         @Valid @RequestBody request: KlantcontactCreationRequest,
-        properties: OpenKlantProperties
+        properties: OpenKlantProperties,
     ) {
         try {
             webClientFactory(properties)
@@ -206,7 +204,8 @@ class OpenKlantClient(
         options.objectUuid?.let {
             builder.queryParam(OK_OBJECT_ID_PARAM, it)
         }
-        return builder.path(OK_KLANTCONTACTEN_PATH)
+        return builder
+            .path(OK_KLANTCONTACTEN_PATH)
             .build()
     }
 
