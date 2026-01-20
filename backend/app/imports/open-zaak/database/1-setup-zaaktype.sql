@@ -202,19 +202,6 @@ SELECT pg_catalog.setval('public.vng_api_common_jwtsecret_id_seq', 3, true);
 
 
 --
--- Name: zaken_natuurlijkpersoon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: openzaak
---
-
-SELECT pg_catalog.setval('public.zaken_natuurlijkpersoon_id_seq', 9, true);
-
-
---
--- Name: zaken_rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: openzaak
---
-
-SELECT pg_catalog.setval('public.zaken_rol_id_seq', 10, true);
-
---
 -- PostgreSQL database dump complete
 --
 
