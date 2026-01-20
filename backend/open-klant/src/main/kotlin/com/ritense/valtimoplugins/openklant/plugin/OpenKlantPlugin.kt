@@ -122,7 +122,6 @@ class OpenKlantPlugin(
             )
         }
 
-    private suspend fun fetchKlantcontactenAndStore(
     @PluginAction(
         key = "register-klantcontact",
         title = "Register klantcontact",
