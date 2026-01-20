@@ -42,7 +42,7 @@ class DefaultOpenKlantService(
         properties: OpenKlantProperties,
         klantcontactCreationInformation: KlantcontactCreationInformation,
     ) {
-        val klantContactRequest = klantContactFactory.createKlantcontactRequest(klantContactCreationInformation)
+        val klantContactRequest = klantcontactFactory.createKlantcontactRequest(klantcontactCreationInformation)
         openKlantClient.postKlantcontact(
             request = klantContactRequest,
             properties = properties
