@@ -34,7 +34,7 @@ Add the following dependency to your `build.gradle`:
 
 ```kotlin
 dependencies {
-    implementation("com.ritense.valtimoplugins:oip-klanttaak:0.0.1")
+    implementation("com.ritense.valtimoplugins:oip-klanttaak:[plugin version]")
 }
 ```
 
@@ -47,7 +47,7 @@ Add the following dependency to your `package.json`:
 ```json
 {
   "dependencies": {
-    "@valtimo-plugins/oip-klanttaak": "0.0.1"
+    "@valtimo-plugins/oip-klanttaak": "[plugin version]"
   }
 }
 ```
