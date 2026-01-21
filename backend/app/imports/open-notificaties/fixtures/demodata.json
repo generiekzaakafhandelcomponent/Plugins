@@ -1,0 +1,162 @@
+[
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$1nekPRFXHLFUfW1Sg5NqwU$FyL63/Vgbq7vjAUnZuMxvvtNEiUXkAqkbwpZk6906e0=",
+    "last_login": "2026-01-21T14:44:38.844Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@exmaple.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2021-09-22T14:13:43.383Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authorizations.applicatie",
+  "pk": 1,
+  "fields": {
+    "uuid": "003aa834-4d24-4335-80aa-9a57555dcbe8",
+    "client_ids": "[\"objectsapi\"]",
+    "label": "ObjectsAPI",
+    "heeft_alle_autorisaties": true
+  }
+},
+{
+  "model": "authorizations.applicatie",
+  "pk": 2,
+  "fields": {
+    "uuid": "1f5cb913-caa3-433b-851d-9a371a0c93a8",
+    "client_ids": "[\"valtimo\"]",
+    "label": "Valtimo",
+    "heeft_alle_autorisaties": true
+  }
+},
+{
+  "model": "authorizations.applicatie",
+  "pk": 3,
+  "fields": {
+    "uuid": "d346a22a-7f6a-48ef-99f2-4439c3f8f17d",
+    "client_ids": "[\"openzaak\"]",
+    "label": "Open Zaak",
+    "heeft_alle_autorisaties": true
+  }
+},
+{
+  "model": "authorizations.authorizationsconfig",
+  "pk": 1,
+  "fields": {
+    "component": "zrc",
+    "authorizations_api_service": 1
+  }
+},
+{
+  "model": "vng_api_common.jwtsecret",
+  "pk": 1,
+  "fields": {
+    "identifier": "objectsapi",
+    "secret": "9wu2''Z`[x(eEk![:.$mBT6&:F!,%)EY74TS.AU+6"
+  }
+},
+{
+  "model": "vng_api_common.jwtsecret",
+  "pk": 2,
+  "fields": {
+    "identifier": "valtimo",
+    "secret": "zZ!xRP&$qTn4A9ETa^ZMKepDm^8egjPz"
+  }
+},
+{
+  "model": "vng_api_common.jwtsecret",
+  "pk": 3,
+  "fields": {
+    "identifier": "openzaak",
+    "secret": "openzaak"
+  }
+},
+{
+  "model": "datamodel.kanaal",
+  "pk": 1,
+  "fields": {
+    "uuid": "e069e3f0-6d5b-40ac-91fb-ad16384c5851",
+    "naam": "zaken",
+    "documentatie_link": "",
+    "filters": "[]"
+  }
+},
+{
+  "model": "datamodel.kanaal",
+  "pk": 2,
+  "fields": {
+    "uuid": "132e72c8-59b4-46c3-ab77-3c9b43738d51",
+    "naam": "documenten",
+    "documentatie_link": "",
+    "filters": "[]"
+  }
+},
+{
+  "model": "datamodel.kanaal",
+  "pk": 3,
+  "fields": {
+    "uuid": "ed8f505d-6247-4357-bf0e-50e75609d4e8",
+    "naam": "besluiten",
+    "documentatie_link": "",
+    "filters": "[]"
+  }
+},
+{
+  "model": "datamodel.kanaal",
+  "pk": 4,
+  "fields": {
+    "uuid": "f4636227-e02c-4a49-8eaa-1908bb1a1e68",
+    "naam": "autorisaties",
+    "documentatie_link": "",
+    "filters": "[]"
+  }
+},
+{
+  "model": "datamodel.kanaal",
+  "pk": 5,
+  "fields": {
+    "uuid": "e3e3b1bc-8433-41a3-87b7-a08b83156e93",
+    "naam": "zaaktypen",
+    "documentatie_link": "",
+    "filters": "[]"
+  }
+},
+{
+  "model": "datamodel.kanaal",
+  "pk": 6,
+  "fields": {
+    "uuid": "a6fcc591-f9a5-4e44-b789-f8a4a86914b9",
+    "naam": "informatieobjecttypen",
+    "documentatie_link": "",
+    "filters": "[]"
+  }
+},
+{
+  "model": "datamodel.kanaal",
+  "pk": 7,
+  "fields": {
+    "uuid": "bffea38a-3aa2-4212-be7d-a7b1233a7408",
+    "naam": "besluittypen",
+    "documentatie_link": "",
+    "filters": "[]"
+  }
+},
+{
+  "model": "datamodel.kanaal",
+  "pk": 8,
+  "fields": {
+    "uuid": "f03be3b0-01a1-46a7-b0ac-d39978e05878",
+    "naam": "objecten",
+    "documentatie_link": "",
+    "filters": "[]"
+  }
+}
+]
