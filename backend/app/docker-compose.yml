@@ -329,7 +329,7 @@ services:
       - POSTGRES_PASSWORD=notifications
       - POSTGRES_DB=notifications
     volumes:
-      - ./imports/open-notificaties:/docker-entrypoint-initdb.d
+      - ./imports/open-notificaties-db:/docker-entrypoint-initdb.d
 
   open-notificaties-rabbitmq:
     image: rabbitmq:4.1.0-management
