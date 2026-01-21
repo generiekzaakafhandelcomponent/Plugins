@@ -108,7 +108,7 @@ class SuwinetBrpInfoService(
 
                 PersoonDto(
                     bsn = persoon.burgerservicenr,
-                    //aNummer = persoon.aNr,
+                    aNummer = persoon.aNr,
                     voornamen = persoon.voornamen ?: "",
                     achternaam = persoon.significantDeelVanDeAchternaam ?: "",
                     voorvoegsel = persoon.voorvoegsel ?: "",
@@ -120,15 +120,15 @@ class SuwinetBrpInfoService(
                     nationaliteiten = getNationaliteiten(persoon.nationaliteit),
                     kinderenBsns = getKinderen(persoon.kind),
                     partnerBsn = getPartnerBsn(persoon.huwelijk),
-                    datumOverlijden = dateTimeService.fromSuwinetToDateString(persoon.overlijden?.datOverlijden)
-//                    codeBrpGegevensGeheim = persoon.cdBrpGegevensGeheim?.let{
-//                        BrpGegevensGeheim.fromCode(persoon.cdBrpGegevensGeheim)
-//                    },
-//                    naamgebruik = persoon.aanduidingNaamgebruik,
-//                    geslachtsAanduiding = persoon.geslacht,
-//                    geslachtsnaamPartner = persoon.huwelijk
-//                                        ?.firstOrNull()
-//                                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner?.significantDeelVanDeAchternaam,
+                    datumOverlijden = dateTimeService.fromSuwinetToDateString(persoon.overlijden?.datOverlijden),
+                    codeBrpGegevensGeheim = persoon.cdBrpGegevensGeheim?.let{
+                        BrpGegevensGeheim.fromCode(persoon.cdBrpGegevensGeheim)
+                    },
+                    naamgebruik = persoon.aanduidingNaamgebruik,
+                    geslachtsAanduiding = persoon.geslacht,
+                    geslachtsnaamPartner = persoon.huwelijk
+                                        ?.firstOrNull()
+                                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner?.significantDeelVanDeAchternaam,
                 )
             }
 
