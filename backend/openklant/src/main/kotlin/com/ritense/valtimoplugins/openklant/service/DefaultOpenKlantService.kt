@@ -7,12 +7,14 @@ import com.ritense.valtimoplugins.openklant.dto.KlantContact
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
+import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 
 class DefaultOpenKlantService(
     private val openKlantClient: OpenKlantClient,
     private val partijFactory: PartijFactory,
+    private val klantContactFactory: KlantcontactFactory,
 ) : OpenKlantService {
     override suspend fun storeContactInformation(
         properties: OpenKlantProperties,
@@ -31,6 +33,17 @@ class DefaultOpenKlantService(
 
     override suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact> =
         openKlantClient.getKlantContacten(properties).results
+
+    override suspend fun postKlantcontact(
+        properties: OpenKlantProperties,
+        klantContactCreationInformation: KlantcontactCreationInformation,
+    ) {
+        val klantContactRequest = klantContactFactory.createKlantcontactRequest(klantContactCreationInformation)
+        openKlantClient.postKlantcontact(
+            request = klantContactRequest,
+            properties = properties
+        )
+    }
 
     private suspend fun isPreferredAddress(
         emailAddress: String,

@@ -26,9 +26,9 @@ data class CreatePartijRequest(
     @JsonProperty("indicatieActief")
     val indicatieActief: Boolean,
     @JsonProperty("bezoekadres")
-    val bezoekadres: Partij.Adres?,
+    val bezoekadres: Adres?,
     @JsonProperty("correspondentieAdres")
-    val correspondentieAdres: Partij.Adres?,
+    val correspondentieAdres: Adres?,
     @JsonProperty("partijIdentificatie")
     val partijIdentificatie: Partij.PartijIdentificatie?,
 )

@@ -1,0 +1,8 @@
+{
+  "key" : "open-klant-plugin",
+  "name" : "Open Klant Plugin",
+  "versionTag" : "1.0.0",
+  "final": false,
+  "canHaveAssignee": false,
+  "autoAssignTasks": false
+}
