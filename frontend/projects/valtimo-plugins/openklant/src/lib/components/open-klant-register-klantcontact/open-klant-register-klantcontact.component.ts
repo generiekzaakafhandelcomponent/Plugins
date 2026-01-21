@@ -44,8 +44,8 @@ import { Toggle } from "carbon-components-angular";
     RadioModule,
     ToggleModule,
   ],
-  templateUrl: "./register-klantcontact.component.html",
-  styleUrl: "./register-klantcontact.component.css",
+  templateUrl: "./open-klant-register-klantcontact.component.html",
+  styleUrl: "./open-klant-register-klantcontact.component.css",
 })
 export class RegisterKlantcontactComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy

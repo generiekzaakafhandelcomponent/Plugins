@@ -4,7 +4,7 @@ import { StoreContactInfoComponent } from "./components/store-contact-info/store
 import { OPEN_KLANT_PLUGIN_LOGO_BASE64 } from "./assets/open-klant-plugin-logo";
 import { GetContactMomentsByCaseUuidComponent } from "./components/get-contact-moments-by-case-uuid/get-contact-moments-by-case-uuid.component";
 import { GetContactMomentsByBsnComponent } from "./components/get-contact-moments-by-bsn/get-contact-moments-by-bsn.component";
-import { RegisterKlantcontactComponent } from "./components/register-klantcontact/register-klantcontact.component";
+import { RegisterKlantcontactComponent } from "./components/open-klant-register-klantcontact/open-klant-register-klantcontact.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
   pluginId: "open-klant",
