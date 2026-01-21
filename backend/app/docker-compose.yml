@@ -69,6 +69,7 @@ services:
       - POSTGRES_USER=openzaak
       - POSTGRES_PASSWORD=openzaak
       - POSTGRES_DB=openzaak
+## Data load is now initiated via the openzaak-import container loading the demodata fixtures.
 #    volumes:
 #      - ./imports/open-zaak-db:/docker-entrypoint-initdb.d
 
@@ -303,6 +304,7 @@ services:
       - POSTGRES_USER=notifications
       - POSTGRES_PASSWORD=notifications
       - POSTGRES_DB=notifications
+## Data load is now initiated via the open-notificaties-import container loading the demodata fixtures.
 #    volumes:
 #      - ./imports/open-notificaties-db:/docker-entrypoint-initdb.d
 
