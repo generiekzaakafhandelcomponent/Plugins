@@ -23,7 +23,7 @@
 >
   <v-input
     name="configurationTitle"
-    placeholder="OIP Klanttaak Plugin"
+    placeholder="OIP Klanttaak"
     [title]="'configuration.title' | pluginTranslate: pluginId | async"
     [tooltip]="'configuration.titleTooltip' | pluginTranslate: pluginId | async"
     [required]="true"
@@ -55,12 +55,22 @@
       [tooltip]="'configuration.objectManagementConfigurationTooltip' | pluginTranslate: pluginId | async"
       [required]="true"
       [disabled]="obs.disabled"
-      [margin]="true"
+      [margin]="false"
       [items]="objectManagementConfigurationItems"
       [defaultSelectionId]="obs.prefill?.objectManagementConfigurationId"
       [loading]="!objectManagementConfigurationItems"
     ></v-select>
   }
+
+  <cds-inline-notification
+    class="inline-notification"
+    [notificationObj]="{
+      type: 'info',
+      message: 'configuration.finalizerProcess' | pluginTranslate: pluginId | async,
+      showClose: false,
+      lowContrast: true
+  }">
+  </cds-inline-notification>
 
   @if (systemProcessDefinitionItems$ | async; as processDefinitionItems) {
     <v-select
