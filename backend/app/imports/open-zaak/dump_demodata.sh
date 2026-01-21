@@ -21,4 +21,4 @@ python /app/src/manage.py dumpdata \
     zaken.zaakidentificatie \
     zaken.zaak \
     zaken.rol \
-    zaken.natuurlijkpersoon --indent 2 --format json > "/app/demodata/demodata.json"
+    zaken.natuurlijkpersoon --indent 2 --format json > /app/demodata/demodata.json
