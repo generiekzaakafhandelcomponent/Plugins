@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { RegisterKlantcontactComponent } from "./register-klantcontact.component";
+import { RegisterKlantcontactComponent } from "./open-klant-register-klantcontact.component";
 import { RegisterKlantcontactConfig } from "../../models/register-klantcontact-config";
 import { BehaviorSubject, Subject } from "rxjs";
 import { EventEmitter, NO_ERRORS_SCHEMA } from "@angular/core";
