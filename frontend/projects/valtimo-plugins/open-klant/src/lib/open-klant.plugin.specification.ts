@@ -4,6 +4,7 @@ import { StoreContactInfoComponent } from "./components/store-contact-info/store
 import { OPEN_KLANT_PLUGIN_LOGO_BASE64 } from "./assets/open-klant-plugin-logo";
 import { GetContactMomentsByCaseUuidComponent } from "./components/get-contact-moments-by-case-uuid/get-contact-moments-by-case-uuid.component";
 import { GetContactMomentsByBsnComponent } from "./components/get-contact-moments-by-bsn/get-contact-moments-by-bsn.component";
+import { RegisterKlantcontactComponent } from "./components/register-klantcontact/register-klantcontact.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
   pluginId: "open-klant",
@@ -13,6 +14,7 @@ const openKlantPluginSpecification: PluginSpecification = {
     "get-contact-moments-by-bsn": GetContactMomentsByBsnComponent,
     "get-contact-moments-by-case-uuid": GetContactMomentsByCaseUuidComponent,
     "store-contact-info": StoreContactInfoComponent,
+    "register-klantcontact": RegisterKlantcontactComponent,
   },
   pluginTranslations: {
     nl: {
@@ -53,7 +55,7 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Contactgeschiedenis ophalen op basis van Open Zaak-nummer",
 
       // Register contact moment
-      "register-klantcontact": "Verstuur klantcontact",
+      "register-klantcontact": "Registreer nieuw klantcontact",
       objectTypeId: "Type van het object, bijvoorbeeld: 'zaak'",
       objectUuid: "Zaak-UUID",
       caseNumber: "Zaaknummer",
@@ -110,7 +112,7 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Retrieve contact history based on Open Zaak case number",
 
       // Register contact moment
-      "register-klantcontact": "Send customer contact",
+      "register-klantcontact": "Register new klantcontact (customer contact)",
       kanaal: "Communication channel",
       onderwerp: "Subject",
       inhoud: "Message content",
@@ -163,7 +165,8 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Kontaktverlauf basierend auf Open-Zaak-Nummer abrufen",
 
       // Register contact moment
-      "register-klantcontact": "Kundenkontakt senden",
+      "register-klantcontact":
+        "Neuen Klantcontact (Kundenkontakt) registrieren",
       kanaal: "Kommunikationskanal",
       onderwerp: "Betreff",
       inhoud: "Inhalt",
