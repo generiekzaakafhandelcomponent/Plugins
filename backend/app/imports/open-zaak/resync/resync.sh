@@ -2,7 +2,7 @@
 
 # The pg_dump will extract the data only from the specified tables, if you need more tables you can add them here.
 
-pg_dump --inserts --data-only --host localhost --port 8091 --username openzaak openzaak \
+pg_dump --inserts --data-only --host localhost --port 54321 --username openzaak openzaak \
 -t accounts_user \
 -t catalogi_catalogus \
 -t authorizations_applicatie \
