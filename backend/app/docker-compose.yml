@@ -83,7 +83,17 @@ services:
       - openzaak-db
       - openzaak-redis
     volumes:
-      - openzaak-private-media:/app/private-media # persist data even if container shuts down
+      - openzaak-private-media:/app/private-media # persist data even if the container shuts down
+      - ./imports/open-zaak/dump_demodata.sh:/app/dump_demodata.sh
+      - ./imports/open-zaak/fixtures:/app/demodata
+    # This health check in turn allows other containers to wait for the database migrations.
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      # This should allow for enough time for migrations to run before the max retries have passed.
+      start_period: 30s
 
   openzaak-db:
     image: postgis/postgis:17-3.4
@@ -95,18 +105,12 @@ services:
       - POSTGRES_USER=openzaak
       - POSTGRES_PASSWORD=openzaak
       - POSTGRES_DB=openzaak
-    volumes:
-      - ./imports/open-zaak:/docker-entrypoint-initdb.d
+#    volumes:
+#      - ./imports/open-zaak-db:/docker-entrypoint-initdb.d
 
-  openzaak-redis:
-    image: redis:8.2.2
-    container_name: valtimo-plugins-local-openzaak-redis
-    expose:
-      - 6379
-
-  openzaak-api-celery:
+  openzaak-celery:
     image: openzaak/open-zaak:1.25.0
-    container_name: valtimo-plugins-local-openzaak-api-celery
+    container_name: valtimo-plugins-local-openzaak-celery
     platform: linux/amd64
     environment: *openzaak-env
     command: /celery_worker.sh
@@ -116,6 +120,25 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+
+  openzaak-import:
+    image: openzaak/open-zaak:1.25.0
+    container_name: valtimo-plugins-local-openzaak-import
+    platform: linux/amd64
+    environment: *openzaak-env
+    command: sh /app/load_demodata.sh
+    volumes:
+      - ./imports/open-zaak/fixtures:/app/demodata
+      - ./imports/open-zaak/load_demodata.sh:/app/load_demodata.sh
+    depends_on:
+      openzaak:
+        condition: service_healthy
+
+  openzaak-redis:
+    image: redis:8.2.2
+    container_name: valtimo-plugins-local-openzaak-redis
+    expose:
+      - 6379
 
   objects-objecttypes-api-redis:
     image: redis:8.2.2
@@ -151,14 +174,13 @@ services:
     depends_on:
       - objects-api-db
       - objects-objecttypes-api-redis
+    # This health check in turn allows other containers to wait for the database migrations.
     healthcheck:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
       interval: 30s
       timeout: 5s
       retries: 3
-      # This should allow for enough time for migrations to run before the max
-      # retries have passed. This healthcheck in turn allows other containers
-      # to wait for the database migrations.
+      # This should allow for enough time for migrations to run before the max retries have passed.
       start_period: 30s
 
   objects-api-db:
@@ -193,7 +215,6 @@ services:
     container_name: valtimo-plugins-local-objects-api-import
     platform: linux/amd64
     environment: *objects-env
-    # in the current version of django it is not possible to create a new user with password without user interaction by using the createsuperuser command
     command: sh init/init.sh
     volumes:
       - ./imports/objects-api/fixtures:/app/src/objects/fixtures
@@ -228,14 +249,13 @@ services:
     depends_on:
       - objecttypes-api-db
       - objects-objecttypes-api-redis
+    # This health check in turn allows other containers to wait for the database migrations.
     healthcheck:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
       interval: 30s
       timeout: 5s
       retries: 3
-      # This should allow for enough time for migrations to run before the max
-      # retries have passed. This healthcheck in turn allows other containers
-      # to wait for the database migrations.
+      # This should allow for enough time for migrations to run before the max retries have passed.
       start_period: 30s
 
   objecttypes-api-db:
