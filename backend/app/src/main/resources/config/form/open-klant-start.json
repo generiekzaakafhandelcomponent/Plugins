@@ -2,30 +2,35 @@
     "display": "form",
     "components": [
         {
-            "title": "Selecteer één of meerdere demo's",
-            "collapsible": false,
-            "key": "panelTitle",
-            "type": "panel",
-            "label": "Panel",
-            "input": false,
-            "tableView": false,
-            "components": [
+            "label": "selectedDemo",
+            "key": "selectedDemo",
+            "type": "hidden",
+            "input": true,
+            "tableView": false
+        },
+        {
+            "key": "selectedDemo",
+            "type": "radio",
+            "input": true,
+            "label": "Selecteer een demo-proces",
+            "inline": false,
+            "values": [
                 {
-                    "key": "contactgeschiedenisOphalenBsn",
-                    "type": "checkbox",
                     "label": "Contactgeschiedenis ophalen op basis van BSN",
-                    "tableView": false
+                    "value": "contactgeschiedenisOphalenBsn",
+                    "shortcut": ""
                 },
                 {
                     "label": "Nieuw klantcontact registreren",
-                    "key": "nieuwKlantcontactRegistreren",
-                    "type": "checkbox",
-                    "tableView": false
+                    "value": "nieuwKlantcontactRegistreren",
+                    "shortcut": ""
                 }
-            ]
+            ],
+            "tableView": false,
+            "defaultValue": false,
+            "optionsLabelPosition": "right"
         },
         {
-            "key": "contactgeschiedenisOphalenBsnPanel",
             "type": "panel",
             "input": false,
             "label": "Panel",
@@ -37,13 +42,17 @@
                     "type": "textfield",
                     "input": true,
                     "label": "BSN-nummer",
-                    "tooltip": "Zal in het tabblad 'Contactgeschiedenis' de contacten ophalen op basis van dit BSN-nummer"
+                    "tooltip": "Zal in het tabblad 'Contactgeschiedenis' de contacten ophalen op basis van dit BSN-nummer",
+                    "validate": {
+                        "required": true
+                    },
+                    "validateWhenHidden": false
                 }
             ],
             "collapsible": false,
             "conditional": {
-                "when": "contactgeschiedenisOphalenBsn",
-                "eq": "true",
+                "when": "selectedDemo",
+                "eq": "contactgeschiedenisOphalenBsn",
                 "show": true
             }
         },
@@ -268,8 +277,8 @@
             ],
             "collapsible": false,
             "conditional": {
-                "when": "nieuwKlantcontactRegistreren",
-                "eq": "true",
+                "when": "selectedDemo",
+                "eq": "nieuwKlantcontactRegistreren",
                 "show": true
             }
         },

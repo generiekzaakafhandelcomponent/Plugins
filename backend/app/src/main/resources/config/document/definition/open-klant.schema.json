@@ -5,7 +5,8 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "properties": {
         "bsn": {
-            "type": "string"
+            "type": "string",
+            "default": null
         },
         "contactgeschiedenis": {
             "type": "array",
@@ -60,11 +61,8 @@
                 }
             }
         },
-        "nieuwKlantcontactRegistreren": {
-            "type": "boolean"
-        },
-        "contactgeschiedenisOphalenBsn": {
-            "type": "boolean"
+        "selectedDemo": {
+            "type": "string"
         }
     },
     "additionalProperties": false
