@@ -69,7 +69,7 @@ class PrintstraatService(
     }
 
     private fun throwBpmnError(message: String) {
-        throw BpmnError("PrintstraatError", message)
+        throw BpmnError("PRINTSTRAAT_ERROR", message)
     }
 
     companion object {
