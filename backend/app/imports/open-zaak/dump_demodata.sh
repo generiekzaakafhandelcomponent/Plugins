@@ -17,8 +17,4 @@ python /app/src/manage.py dumpdata \
     catalogi.roltype \
     catalogi.informatieobjecttype \
     catalogi.zaaktypeinformatieobjecttype \
-    zgw_consumers.service \
-    zaken.zaakidentificatie \
-    zaken.zaak \
-    zaken.rol \
-    zaken.natuurlijkpersoon --indent 2 --format json > /app/demodata/demodata.json
+    zgw_consumers.service --indent 2 --format json > /app/demodata/demodata.json
