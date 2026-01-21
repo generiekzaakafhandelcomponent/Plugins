@@ -1,0 +1,746 @@
+[
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$C2tukNpgAmgmfngTWDPfGV$RPPckMOXa7PxpqONIkpw+aPgxsxSFLrgRAiR7Wh28qY=",
+    "last_login": "2026-01-21T10:59:08.735Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@admin.org",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-21T09:50:21.623Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$5dnJUqLDsmX0$EEbO4AGZqyp88ZCTu+7W2uGRLkdidlL4HkXWc8ZfZV8=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "demo",
+    "first_name": "Valtimo",
+    "last_name": "Demo",
+    "email": "demo@valtimo.nl",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-11-04T14:45:51.796Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "catalogi.catalogus",
+  "pk": 1,
+  "fields": {
+    "_etag": "_etag",
+    "naam": "valtimo",
+    "uuid": "8225508a-6840-413e-acc9-6422af120db1",
+    "domein": "VAL",
+    "rsin": "002564440",
+    "contactpersoon_beheer_naam": "Valtimo Demo",
+    "contactpersoon_beheer_telefoonnummer": "06-12345678",
+    "contactpersoon_beheer_emailadres": "demo@valtimo.nl",
+    "versie": "",
+    "begindatum_versie": null
+  }
+},
+{
+  "model": "catalogi.zaaktype",
+  "pk": 1,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": "2021-01-01",
+    "datum_einde_geldigheid": null,
+    "concept": false,
+    "uuid": "744ca059-f412-49d4-8963-5800e4afd486",
+    "identificatie": "bezwaar-behandelen",
+    "zaaktype_omschrijving": "Bezwaar behandelen",
+    "zaaktype_omschrijving_generiek": "Bezwaar behandelen",
+    "vertrouwelijkheidaanduiding": "zaakvertrouwelijk",
+    "doel": "Een uitspraak doen op een ingekomen bezwaar tegen een eerder genomen besluit.",
+    "aanleiding": "Er is een bezwaarschrift ontvangen tegen een besluit dat genomen is door de gemeente.",
+    "toelichting": "Conform de Algemene Wet Bestuursrecht (AWB) heeft een natuurlijk of niet-natuurlijk persoon de mogelijkheid om bezwaar te maken tegen een genomen besluit van de gemeente, bijvoorbeeld het niet verlenen van een vergunning.",
+    "indicatie_intern_of_extern": "extern",
+    "handeling_initiator": "Indienen",
+    "onderwerp": "Bezwaar",
+    "handeling_behandelaar": "Behandelen",
+    "doorlooptijd_behandeling": "P84D",
+    "servicenorm_behandeling": null,
+    "opschorting_en_aanhouding_mogelijk": false,
+    "verlenging_mogelijk": true,
+    "verlengingstermijn": "P42D",
+    "trefwoorden": "[\"bezwaar\", \"bezwaarschrift\"]",
+    "publicatie_indicatie": false,
+    "publicatietekst": "",
+    "verantwoordingsrelatie": "[]",
+    "versiedatum": "2021-01-01",
+    "verantwoordelijke": "002564440",
+    "producten_of_diensten": "[\"https://github.com/valtimo-platform/valtimo-platform\"]",
+    "selectielijst_procestype": "https://selectielijst.openzaak.nl/api/v1/procestypen/e1b73b12-b2f6-4c4e-8929-94f84dd2a57d",
+    "selectielijst_procestype_jaar": 2017,
+    "referentieproces_naam": "Bezwaar behandelen",
+    "referentieproces_link": "http://www.gemmaonline.nl/index.php/Referentieproces_bezwaar_behandelen",
+    "broncatalogus_url": "",
+    "broncatalogus_domein": "",
+    "broncatalogus_rsin": "",
+    "bronzaaktype_url": "",
+    "bronzaaktype_identificatie": "",
+    "bronzaaktype_omschrijving": "",
+    "catalogus": 1,
+    "deelzaaktypen": []
+  }
+},
+{
+  "model": "catalogi.statustype",
+  "pk": 2,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "5169f9e9-b49b-4003-a508-df09575aa9f9",
+    "zaaktype": 1,
+    "statustype_omschrijving": "Intake afgerond",
+    "statustype_omschrijving_generiek": "Intake afgerond",
+    "statustypevolgnummer": 1,
+    "doorlooptijd": null,
+    "informeren": true,
+    "statustekst": "Geachte heer/mevrouw, Op %ZAAK. Registratiedatum% heeft u een bezwaar ingediend. Uw bezwaar is bij ons in behandeling genomen onder zaaknummer %ZAAK. Zaakidentificatie%. Wij vragen u dit zaaknummer te gebruiken in geval van correspondentie over dit bezwaar cq. deze zaak.  U wordt per e-mail op de hoogte gehouden van de status van de behandeling van uw bezwaar.",
+    "toelichting": "Initiële status van de zaak waarbij het bezwaarschrift ontvangen is en naar aanleiding daarvan de zaak aangemaakt en de behandelaar bepaald is. De indiener is een ontvangstbevestiging van zijn (of haar) bezwaar gezonden."
+  }
+},
+{
+  "model": "catalogi.statustype",
+  "pk": 3,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "ff89cbe2-49ea-4182-bb21-da8d4a04e6ca",
+    "zaaktype": 1,
+    "statustype_omschrijving": "Indieningsvereisten getoetst",
+    "statustype_omschrijving_generiek": "Indieningsvereisten getoetst",
+    "statustypevolgnummer": 2,
+    "doorlooptijd": null,
+    "informeren": true,
+    "statustekst": "Geachte heer/mevrouw, Op %ZAAK.Registratiedatum% heeft u een bezwaar ingediend. Uw bezwaar is bij ons in behandeling onder zaaknummer %ZAAK.Zaakidentificatie% en is compleet bevonden. Dit houdt in dat wij uw bezwaar gaan beoordelen.  U wordt per e-mail op de hoogte gehouden van de status van de behandeling van uw bezwaar.",
+    "toelichting": "Het ingediende bezwaar is getoetst op de indieningsvereisten. De uitkomst van deze toets wordt vastgelegd in de eigenschap Uitslag toetsing. Indien er niet aan de indieningseisen wordt voldaan, dan wordt het bezwaar niet-ontvankelijk verklaard en kunnen de volgende vier statussen worden overgeslagen."
+  }
+},
+{
+  "model": "catalogi.statustype",
+  "pk": 4,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "6d793ae5-db9f-41f8-bf7e-4a7caa9326c4",
+    "zaaktype": 1,
+    "statustype_omschrijving": "Bezwaar beoordeeld",
+    "statustype_omschrijving_generiek": "Bezwaar beoordeeld",
+    "statustypevolgnummer": 3,
+    "doorlooptijd": null,
+    "informeren": true,
+    "statustekst": "Geachte heer/mevrouw, Op %ZAAK.Registratiedatum% heeft u een bezwaar ingediend. Uw bezwaar is bij ons in behandeling onder zaaknummer %ZAAK.Zaakidentificatie%. Wij hebben uw bezwaar beoordeeld en gaan nu de hoorzitting voorbereiden.  U wordt per e-mail op de hoogte gehouden van de status van de behandeling van uw bezwaar.",
+    "toelichting": "Het ingediende bezwaar is inhoudelijk beoordeeld. Indien gegrond dan is, indien mogelijk, het besluit herroepen of aangepast. Indien niet gegrond dan heeft, indien van toepassing, mediation plaatsgevonden. Indien het besluit als gegrond is beoordeeld of indien mediation heeft geleid tot overeenstemming, dan wordt de volgende status overgeslagen. In het andere geval wordt een statusmelding verzonden."
+  }
+},
+{
+  "model": "catalogi.statustype",
+  "pk": 5,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "ff1d3b73-0d87-4abd-a81a-4b4e051311bc",
+    "zaaktype": 1,
+    "statustype_omschrijving": "Hoorzitting gehouden",
+    "statustype_omschrijving_generiek": "Hoorzitting gehouden",
+    "statustypevolgnummer": 4,
+    "doorlooptijd": null,
+    "informeren": false,
+    "statustekst": "",
+    "toelichting": "Er is een verweerschrift opgesteld en verstuurd, een pleitnota is opgesteld en er heeft een hoorzitting plaatsgevonden. De bezwarencommissie heeft een advies uitgebracht."
+  }
+},
+{
+  "model": "catalogi.statustype",
+  "pk": 6,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "eda60181-8f09-4b58-84d3-f2550be528bb",
+    "zaaktype": 1,
+    "statustype_omschrijving": "Concept-besluit opgesteld",
+    "statustype_omschrijving_generiek": "Concept-besluit opgesteld",
+    "statustypevolgnummer": 5,
+    "doorlooptijd": null,
+    "informeren": false,
+    "statustekst": "",
+    "toelichting": "Het conceptbesluit voor de beslisser is opgesteld, indien van toepassing op basis van het advies van de bezwarencommissie."
+  }
+},
+{
+  "model": "catalogi.statustype",
+  "pk": 7,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "d9ab722c-2e3b-4760-8ec0-3ebf72363b6d",
+    "zaaktype": 1,
+    "statustype_omschrijving": "Besluit vastgesteld",
+    "statustype_omschrijving_generiek": "Besluit vastgesteld",
+    "statustypevolgnummer": 6,
+    "doorlooptijd": null,
+    "informeren": true,
+    "statustekst": "Geachte heer/mevrouw, Op %ZAAK.Registratiedatum% hebben wij heeft u een bezwaar ingediend. Uw bezwaar is bij ons in behandeling onder zaaknummer %ZAAK.Zaakidentificatie%.  De gemeente heeft een besluit genomen over uw bezwaar onder besluitnummer %BESLUIT. Besluitidentificatie%.  Het besluit van de gemeente is:  %BESLUIT.Toelichting%  Het schriftelijke besluit op uw bezwaar inclusief motivatie wordt zo spoedig mogelijk per post naar u toegestuurd.",
+    "toelichting": "De uitspraak op het bezwaar is vastgesteld door de beslisser."
+  }
+},
+{
+  "model": "catalogi.statustype",
+  "pk": 8,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "99115d8c-a2d5-4f9d-9592-a7160d5fbbbb",
+    "zaaktype": 1,
+    "statustype_omschrijving": "Zaak afgerond",
+    "statustype_omschrijving_generiek": "Zaak afgerond",
+    "statustypevolgnummer": 7,
+    "doorlooptijd": null,
+    "informeren": true,
+    "statustekst": "Geachte heer/mevrouw, Op %ZAAK. Registratiedatum% heeft u een bezwaar ingediend. Uw bezwaar is bij ons in behandeling onder zaaknummer %ZAAK.Zaakidentificatie%. Onlangs bent u al op de hoogte gesteld van het besluit. Met deze e-mail willen wij u mededelen dat het besluit per post naar u is toegestuurd en dat wij de zaak hebben afgesloten.",
+    "toelichting": "Het besluit is schriftelijk kenbaar gemaakt aan de indiener van het bezwaar. De zaak is gearchiveerd en afgehandeld."
+  }
+},
+{
+  "model": "catalogi.eigenschapspecificatie",
+  "pk": 1,
+  "fields": {
+    "groep": "tekst",
+    "formaat": "tekst",
+    "lengte": "100",
+    "kardinaliteit": "1",
+    "waardenverzameling": "[]"
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 1,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "e4ace2d9-4ef2-44c8-94a8-d5dfa12e4f1e",
+    "eigenschapnaam": "voornaam",
+    "definitie": "voornaam",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 2,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "69536ee2-83a5-4eab-ad7a-799c76190171",
+    "eigenschapnaam": "achternaam",
+    "definitie": "achternaam",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 3,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "4424a4e6-dbb0-41df-90bf-29c54198399f",
+    "eigenschapnaam": "bsn",
+    "definitie": "bsn",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 4,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "421b88e6-83c5-48d3-9238-3e6904fb3856",
+    "eigenschapnaam": "bezwaar",
+    "definitie": "bezwaar",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 5,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "96024ef5-85fd-45d9-865f-62650d478547",
+    "eigenschapnaam": "straatnaam",
+    "definitie": "straatnaam",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 6,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "7fae3cc5-bc94-4072-811c-58f4a5b9e318",
+    "eigenschapnaam": "huisnummer",
+    "definitie": "huisnummer",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 7,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "67b1794d-f75a-472f-bf7b-c01fa1f9e721",
+    "eigenschapnaam": "toevoeging",
+    "definitie": "toevoeging",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 8,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "997350f6-2e11-4966-97dd-7f4a1d3fa11f",
+    "eigenschapnaam": "postcode",
+    "definitie": "postcode",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 9,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "93bc7aa4-6b82-40e2-be8a-c2a0830ab30c",
+    "eigenschapnaam": "plaats",
+    "definitie": "plaats",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 10,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "706a1a43-d3c2-43ce-8297-5e60d1ba6014",
+    "eigenschapnaam": "telefoonnummer",
+    "definitie": "telefoonnummer",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 11,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "8232dafd-8c10-4726-b582-17d77e780e06",
+    "eigenschapnaam": "e-mailadres",
+    "definitie": "e-mailadres",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 12,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "d1877e6f-9cb6-467c-9a8f-35a16ca0a7ee",
+    "eigenschapnaam": "zaaknummer",
+    "definitie": "zaaknummer",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 13,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "1a993d1f-aa14-4772-987a-63f8d5ed227b",
+    "eigenschapnaam": "datumBesluit",
+    "definitie": "datumBesluit",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 14,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "67f7aaa9-f4d3-45a0-a6aa-05fe0fe699bc",
+    "eigenschapnaam": "besluit",
+    "definitie": "besluit",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 15,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "1887dbf5-001f-4d3a-943a-1a93d8a85827",
+    "eigenschapnaam": "communicatie",
+    "definitie": "communicatie",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 16,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "9f35b1dc-6169-4718-a505-ac0bce3dea2d",
+    "eigenschapnaam": "beslissingBezwaar",
+    "definitie": "beslissingBezwaar",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 17,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "810fc646-0aa7-4462-8a61-7bd58349a9bd",
+    "eigenschapnaam": "naamBehandelaar",
+    "definitie": "naamBehandelaar",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 18,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "5eb0f4dd-b755-4793-a67e-dfdb9e12834c",
+    "eigenschapnaam": "e-mailBehandelaar",
+    "definitie": "e-mailBehandelaar",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 19,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "7e4112c1-23ed-4905-814c-7895bcca1495",
+    "eigenschapnaam": "aanvraagAanvulInfo",
+    "definitie": "aanvraagAanvulInfo",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 20,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "036831ae-49c9-4bdb-b2c6-89579230b15d",
+    "eigenschapnaam": "aanvullendeInfo",
+    "definitie": "aanvullendeInfo",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.eigenschap",
+  "pk": 21,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "b33b8b4d-1e83-4084-bf9a-c78bd7223931",
+    "eigenschapnaam": "naamBeslisser",
+    "definitie": "naamBeslisser",
+    "specificatie_van_eigenschap": 1,
+    "toelichting": "",
+    "zaaktype": 1,
+    "statustype": null
+  }
+},
+{
+  "model": "catalogi.roltype",
+  "pk": 1,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": null,
+    "datum_einde_geldigheid": null,
+    "uuid": "1c359a1b-c38d-47b8-bed5-994db88ead61",
+    "omschrijving": "Aanvrager",
+    "omschrijving_generiek": "initiator",
+    "zaaktype": 1
+  }
+},
+{
+  "model": "catalogi.informatieobjecttype",
+  "pk": 1,
+  "fields": {
+    "_etag": "_etag",
+    "datum_begin_geldigheid": "2021-10-04",
+    "datum_einde_geldigheid": null,
+    "concept": false,
+    "uuid": "efc332f2-be3b-4bad-9e3c-49a6219c92ad",
+    "omschrijving": "test",
+    "informatieobjectcategorie": "onbekend",
+    "trefwoord": "[]",
+    "vertrouwelijkheidaanduiding": "zaakvertrouwelijk",
+    "omschrijving_generiek_informatieobjecttype": "",
+    "omschrijving_generiek_definitie": "",
+    "omschrijving_generiek_herkomst": "",
+    "omschrijving_generiek_hierarchie": "",
+    "omschrijving_generiek_opmerking": "",
+    "catalogus": 1
+  }
+},
+{
+  "model": "catalogi.zaaktypeinformatieobjecttype",
+  "pk": 1,
+  "fields": {
+    "_etag": "_etag",
+    "uuid": "405da8a9-7296-439c-a2eb-a470b84f17ee",
+    "zaaktype": 1,
+    "informatieobjecttype": 1,
+    "volgnummer": 1,
+    "richting": "inkomend",
+    "statustype": null
+  }
+},
+{
+  "model": "authorizations.applicatie",
+  "pk": 1,
+  "fields": {
+    "uuid": "377e8200-f9e0-4282-8167-e686baa8f08d",
+    "client_ids": "[\"valtimo_client\"]",
+    "label": "Valtimo",
+    "heeft_alle_autorisaties": true
+  }
+},
+{
+  "model": "authorizations.applicatie",
+  "pk": 2,
+  "fields": {
+    "uuid": "1765318d-df37-43db-9612-7751bf206bda",
+    "client_ids": "[\"opennotificaties\"]",
+    "label": "Open notificaties",
+    "heeft_alle_autorisaties": true
+  }
+},
+{
+  "model": "authorizations.applicatie",
+  "pk": 3,
+  "fields": {
+    "uuid": "fb29f94d-4fbe-4b55-a79a-78c3ec1ae9cf",
+    "client_ids": "[\"openformulieren\"]",
+    "label": "Open Formulieren",
+    "heeft_alle_autorisaties": true
+  }
+},
+{
+  "model": "vng_api_common.jwtsecret",
+  "pk": 1,
+  "fields": {
+    "identifier": "valtimo_client",
+    "secret": "e09b8bc5-5831-4618-ab28-41411304309d"
+  }
+},
+{
+  "model": "vng_api_common.jwtsecret",
+  "pk": 2,
+  "fields": {
+    "identifier": "opennotificaties",
+    "secret": "opennotificaties"
+  }
+},
+{
+  "model": "vng_api_common.jwtsecret",
+  "pk": 3,
+  "fields": {
+    "identifier": "openformulieren",
+    "secret": "openformulieren"
+  }
+},
+{
+  "model": "zgw_consumers.service",
+  "pk": 1,
+  "fields": {
+    "label": "Authorization API service",
+    "uuid": "07d79dcb-3156-479c-b6b1-f27e3b155556",
+    "slug": "authorization-api-service",
+    "api_type": "ac",
+    "api_root": "https://autorisaties-api.vng.cloud/api/v1",
+    "api_connection_check_path": "",
+    "auth_type": "zgw",
+    "client_id": "",
+    "secret": "",
+    "jwt_valid_for": 43200,
+    "header_key": "",
+    "header_value": "",
+    "nlx": "",
+    "user_id": "",
+    "user_representation": "",
+    "client_certificate": null,
+    "server_certificate": null,
+    "timeout": 10
+  }
+},
+{
+  "model": "zgw_consumers.service",
+  "pk": 2,
+  "fields": {
+    "label": "VNG Selectielijst",
+    "uuid": "6dac108b-218a-4f60-a8ed-f1d09464ce55",
+    "slug": "",
+    "api_type": "orc",
+    "api_root": "https://selectielijst.openzaak.nl/api/v1/",
+    "api_connection_check_path": "",
+    "auth_type": "no_auth",
+    "client_id": "",
+    "secret": "",
+    "jwt_valid_for": 43200,
+    "header_key": "",
+    "header_value": "",
+    "nlx": "",
+    "user_id": "",
+    "user_representation": "",
+    "client_certificate": null,
+    "server_certificate": null,
+    "timeout": 10
+  }
+},
+{
+  "model": "zgw_consumers.service",
+  "pk": 11,
+  "fields": {
+    "label": "Notificaties API",
+    "uuid": "5c867a14-2ff4-4574-9451-5c23cc3f75a0",
+    "slug": "notificaties-api",
+    "api_type": "nrc",
+    "api_root": "http://host.docker.internal:8002/api/v1/",
+    "api_connection_check_path": "",
+    "auth_type": "zgw",
+    "client_id": "openzaak",
+    "secret": "openzaak",
+    "jwt_valid_for": 43200,
+    "header_key": "",
+    "header_value": "",
+    "nlx": "",
+    "user_id": "",
+    "user_representation": "",
+    "client_certificate": null,
+    "server_certificate": null,
+    "timeout": 10
+  }
+}
+]
