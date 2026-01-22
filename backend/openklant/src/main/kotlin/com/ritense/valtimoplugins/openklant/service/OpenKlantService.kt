@@ -14,10 +14,8 @@ interface OpenKlantService {
 
     suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact>
 
-    suspend fun getAllKlantcontactenByBsn(properties: KlantcontactOptions): List<Klantcontact>
-
     suspend fun postKlantcontact(
         properties: OpenKlantProperties,
-        klantcontactCreationInformation: KlantcontactCreationInformation
+        klantcontactCreationInformation: KlantcontactCreationInformation,
     )
 }

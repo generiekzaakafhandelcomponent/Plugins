@@ -34,9 +34,6 @@ class DefaultOpenKlantService(
     override suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
         openKlantClient.getKlantcontacten(properties).results
 
-    override suspend fun getAllKlantcontactenByBsn(properties: KlantcontactOptions): List<Klantcontact> =
-        openKlantClient.getKlantcontactenByBsn(properties).results
-
     override suspend fun postKlantcontact(
         properties: OpenKlantProperties,
         klantcontactCreationInformation: KlantcontactCreationInformation,

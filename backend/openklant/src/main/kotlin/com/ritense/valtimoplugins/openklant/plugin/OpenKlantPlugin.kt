@@ -117,7 +117,7 @@ class OpenKlantPlugin(
                 execution = execution,
                 resultPvName = resultPvName,
                 pluginProperties = pluginProperties,
-                fetcher = openKlantPluginService::getAllKlantcontactenByBsn,
+                fetcher = openKlantPluginService::getAllKlantcontacten,
             )
         }
 
