@@ -1,8 +1,8 @@
 import { PluginSpecification } from "@valtimo/plugin";
 import { OpenKlantPluginConfigurationComponent } from "./components/open-klant-plugin-configuration/open-klant-plugin-configuration.component";
-import { StoreContactInfoComponent } from "./components/store-contact-info/store-contact-info.component";
+import { StoreContactInfoComponent } from "./components/open-klant-store-contact-info/open-klant-store-contact-info.component";
 import { OPEN_KLANT_PLUGIN_LOGO_BASE64 } from "./assets/open-klant-plugin-logo";
-import { GetContactMomentsByCaseUuidComponent } from "./components/get-contact-moments-by-case-uuid/get-contact-moments-by-case-uuid.component";
+import { GetContactMomentsByCaseUuidComponent } from "./components/open-klant-get-contact-moments-by-case-uuid/open-klant-get-contact-moments-by-case-uuid.component";
 import { GetContactMomentsByBsnComponent } from "./components/get-contact-moments-by-bsn/get-contact-moments-by-bsn.component";
 import { RegisterKlantcontactComponent } from "./components/open-klant-register-klantcontact/open-klant-register-klantcontact.component";
 

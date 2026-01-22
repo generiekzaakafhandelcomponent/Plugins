@@ -21,8 +21,7 @@ import { StoreContactInfoConfig } from "../../models/store-contact-info-config";
 
 @Component({
   selector: "store-contact-info",
-  templateUrl: "./store-contact-info.component.html",
-  styleUrls: ["./store-contact-info.component.scss"],
+  templateUrl: "./open-klant-store-contact-info.component.html"
 })
 export class StoreContactInfoComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy
