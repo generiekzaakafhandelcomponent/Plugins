@@ -62,7 +62,7 @@ export class ContactHistoryTabComponent implements OnInit {
     this._isFailed = isFailed;
   }
 
-  private _contactHistory: KlantContact[] | null = null;
+  private _contactHistory: KlantContact[] = [];
   get contactHistory() {
     return this._contactHistory;
   }
@@ -79,7 +79,7 @@ export class ContactHistoryTabComponent implements OnInit {
     private processPollingService: ProcessPollingService,
     private contactHistoryService: ContactHistoryService,
     private readonly logger: NGXLogger
-  ) {}
+  ) { }
 
   ngOnInit() {
     const snapshot = this.route.snapshot.paramMap;
