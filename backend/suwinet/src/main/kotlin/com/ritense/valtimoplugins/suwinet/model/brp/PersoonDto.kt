@@ -17,14 +17,14 @@ data class PersoonDto(
     val nationaliteiten: List<NationaliteitDto>?,
     @JsonInclude(JsonInclude.Include.NON_NULL) val kinderenBsns: List<String>?,
     val partnerBsn: String? = "",
-//    val geslachtsnaamPartner: String?,
+    val geslachtsnaamPartner: String?,
     val datumOverlijden: String? = "",
 
-  //  val codeBrpGegevensGeheim:  BrpGegevensGeheim?,
-  //  val aNummer: String?,
+    val codeBrpGegevensGeheim:  BrpGegevensGeheim?,
+    val aNummer: String?,
 
-  //  val naamgebruik: String?,
-  //  val geslachtsAanduiding: String?,
+    val naamgebruik: String?,
+    val geslachtsAanduiding: String?,
     ){
     data class Verblijfstitel(
         val codeVerblijfstitel: CodeVerblijfstitel,
