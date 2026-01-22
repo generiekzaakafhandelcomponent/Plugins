@@ -1,6 +1,6 @@
 import { ProcessInstance } from "@valtimo/process";
 import { ProcessInstanceStartResponse } from "./process-instance.model";
-import { KlantcontactDTO } from "./customer-contact.model";
+import { KlantcontactDTO } from "./klantcontact.model";
 
 export const mockKlantcontactDTO: KlantcontactDTO = {
   nummer: "CC-2024-0001",

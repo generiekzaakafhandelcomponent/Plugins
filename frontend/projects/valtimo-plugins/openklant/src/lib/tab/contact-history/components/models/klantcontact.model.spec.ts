@@ -4,7 +4,7 @@ import {
   KlantcontactDTO,
   mapDtoToModel,
   mapModelToDto,
-} from "./customer-contact.model";
+} from "./klantcontact.model";
 
 describe("mapModelToDto", () => {
   it("should correctly map all fields from DTO to model", () => {
