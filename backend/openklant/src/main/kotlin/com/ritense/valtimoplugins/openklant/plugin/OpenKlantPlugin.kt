@@ -5,7 +5,6 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
-import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
@@ -89,7 +88,6 @@ class OpenKlantPlugin(
             execution = execution,
             resultPvName = resultPvName,
             pluginProperties = pluginProperties,
-            fetcher = openKlantPluginService::getAllKlantcontacten,
         )
     }
 
@@ -117,7 +115,6 @@ class OpenKlantPlugin(
                 execution = execution,
                 resultPvName = resultPvName,
                 pluginProperties = pluginProperties,
-                fetcher = openKlantPluginService::getAllKlantcontacten,
             )
         }
 
@@ -172,9 +169,8 @@ class OpenKlantPlugin(
         execution: DelegateExecution,
         resultPvName: String,
         pluginProperties: KlantcontactOptions,
-        fetcher: suspend (KlantcontactOptions) -> List<Klantcontact>,
     ) {
-        val klantcontacten = fetcher(pluginProperties)
+        val klantcontacten = openKlantPluginService.getAllKlantcontacten(pluginProperties)
         val contactenMaps = klantcontacten.map { reflectionUtil.deepReflectedMapOf(it) }
         execution.setVariable(resultPvName, contactenMaps)
     }
