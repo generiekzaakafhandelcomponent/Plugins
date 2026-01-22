@@ -23,7 +23,7 @@ dependencies {
     implementation(project(":backend:mTLS-SSLContext"))
     implementation(project(":backend:notify-nl"))
     implementation(project(":backend:object-management"))
-    implementation(project(":backend:open-klant"))
+    implementation(project(":backend:openklant"))
     implementation(project(":backend:publictask"))
     implementation(project(":backend:rotterdam-oracle-ebs"))
     implementation(project(":backend:sample-plugin"))
@@ -50,7 +50,7 @@ apply(from = "../../gradle/environment.gradle.kts")
 val configureEnvironment = extra["configureEnvironment"] as (task: ProcessForkOptions) -> Unit
 
 tasks.bootRun {
-    //dependsOn("composeUp")
+    // dependsOn("composeUp")
     systemProperty("spring.profiles.include", "dev")
     val t = this
     doFirst {
