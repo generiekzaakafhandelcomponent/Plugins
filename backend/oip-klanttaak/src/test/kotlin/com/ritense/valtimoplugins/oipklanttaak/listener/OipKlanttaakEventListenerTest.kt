@@ -155,7 +155,10 @@ class OipKlanttaakEventListenerTest {
         doReturn(documentId())
             .whenever(processDocumentServiceMock).getDocumentId(any(), any())
 
-        doReturn(oipKlanttaakPlugin(caseDefinitionVersion = "$caseType:$caseVersion"))
+        doReturn(oipKlanttaakPlugin(
+            finalizerProcessIsCaseSpecific = true,
+            caseDefinitionVersion = "$caseType:$caseVersion"
+        ))
             .whenever(pluginServiceMock).createInstance<OipKlanttaakPlugin>(eq(oipKlanttaakPluginConfigurationId()))
 
         // when
@@ -307,7 +310,11 @@ class OipKlanttaakEventListenerTest {
         pluginDefinition = mock()
     )
 
-    private fun oipKlanttaakPlugin(caseDefinitionVersion: String? = null) = mock<OipKlanttaakPlugin> {
+    private fun oipKlanttaakPlugin(
+        finalizerProcessIsCaseSpecific: Boolean = false,
+        caseDefinitionVersion: String? = null
+    ) = mock<OipKlanttaakPlugin> {
+        on { this.finalizerProcessIsCaseSpecific } doReturn finalizerProcessIsCaseSpecific
         on { this.caseDefinitionVersion } doReturn caseDefinitionVersion
         on { this.finalizerProcess } doReturn "finalizer-process"
     }

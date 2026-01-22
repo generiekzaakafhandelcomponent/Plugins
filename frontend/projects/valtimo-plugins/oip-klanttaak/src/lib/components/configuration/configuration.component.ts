@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {BehaviorSubject, combineLatest, map, Observable, shareReplay, Subscription, take, tap} from 'rxjs';
 import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from '@valtimo/plugin';
 import {PluginConfig, PluginConfigFormValue} from '../../models';
@@ -7,6 +7,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {ObjectManagementService} from '@valtimo/object-management';
 import {NGXLogger} from 'ngx-logger';
 import {ProcessService} from '@valtimo/process';
+import {Toggle} from 'carbon-components-angular';
 
 @Component({
   standalone: false,
@@ -111,13 +112,16 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
   }
 
   private pluginConfigFrom(formValue: PluginConfigFormValue): PluginConfig {
+    let finalizerProcessIsCaseSpecific: boolean = false;
     let finalizerProcess: string = '';
     let caseDefinitionVersion: string | null = null;
     if (formValue?.systemFinalizerProcess.trim().length > 0) {
+      finalizerProcessIsCaseSpecific = false;
       finalizerProcess = formValue.systemFinalizerProcess;
       caseDefinitionVersion = null;
     }
     if (formValue?.caseFinalizerProcess.trim().length > 0) {
+      finalizerProcessIsCaseSpecific = true;
       finalizerProcess = formValue.caseFinalizerProcess.substring(formValue.caseFinalizerProcess.indexOf('|') + 1);
       caseDefinitionVersion = formValue.caseFinalizerProcess.substring(0, formValue.caseFinalizerProcess.indexOf('|')).substring(3)
     }
@@ -126,6 +130,7 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
       configurationTitle: formValue.configurationTitle,
       notificatiesApiPluginConfiguration: formValue.notificatiesApiPluginConfiguration,
       objectManagementConfigurationId: formValue.objectManagementConfigurationId,
+      finalizerProcessIsCaseSpecific: finalizerProcessIsCaseSpecific,
       finalizerProcess: finalizerProcess,
       caseDefinitionVersion: caseDefinitionVersion
     }
@@ -134,8 +139,8 @@ export class ConfigurationComponent implements PluginConfigurationComponent, OnI
   private pluginConfigFormValueFrom(config: PluginConfig): PluginConfigFormValue {
     return {
       ...config,
-      caseFinalizerProcess: (config.caseDefinitionVersion !== null) ? this.formatCaseFinalizerProcessFrom(config) : null,
-      systemFinalizerProcess: (config.caseDefinitionVersion === null) ? config.finalizerProcess : null,
+      caseFinalizerProcess: (config.finalizerProcessIsCaseSpecific) ? this.formatCaseFinalizerProcessFrom(config) : null,
+      systemFinalizerProcess: (!config.finalizerProcessIsCaseSpecific) ? config.finalizerProcess : null,
     }
   }
 
