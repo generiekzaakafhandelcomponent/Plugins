@@ -32,8 +32,8 @@ import { GetContactMomentsByCaseUuidConfig } from "../../models/get-contact-mome
     NgIf,
     PluginTranslatePipeModule,
   ],
-  templateUrl: "./get-contact-moments-by-case-uuid.component.html",
-  styleUrl: "./get-contact-moments-by-case-uuid.component.scss",
+  templateUrl: "./open-klant-get-contact-moments-by-case-uuid.component.html",
+  styleUrl: "./open-klant-get-contact-moments-by-case-uuid.component.scss",
 })
 export class GetContactMomentsByCaseUuidComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy
