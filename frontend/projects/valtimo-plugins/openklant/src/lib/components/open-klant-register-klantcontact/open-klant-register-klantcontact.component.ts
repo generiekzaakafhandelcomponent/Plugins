@@ -76,10 +76,7 @@ export class RegisterKlantcontactComponent
   }
 
   formValueChange(formValue: RegisterKlantcontactConfig): void {
-    this.formValue$.next({
-      hasBetrokkene: this.hasBetrokkene.checked,
-      ...formValue,
-    });
+    this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
