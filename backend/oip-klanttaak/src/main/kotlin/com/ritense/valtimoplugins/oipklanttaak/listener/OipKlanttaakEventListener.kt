@@ -132,14 +132,9 @@ open class OipKlanttaakEventListener(
             }
             logger.debug { "Starting finalizer process for Klanttaak with verwerker-taak-id '${operatonTask.id}'" }
             startFinalizerProcess(
+                caseDefinitionId = caseDefinitionIdFrom(oipKlanttaakPlugin),
                 processDefinitionKey = oipKlanttaakPlugin.finalizerProcess,
                 businessKey = documentId.id.toString(),
-                caseDefinitionId = oipKlanttaakPlugin.caseDefinitionVersion?.let {
-                    CaseDefinitionId.of(
-                        key = it.substringBefore(":"),
-                        versionTag = it.substringAfter(":")
-                    )
-                },
                 variables = mapOf(
                     ProcessVariables.VERWERKER_TAAK_ID to operatonTask.id,
                     ProcessVariables.KLANTTAAK_OBJECT_URL to resourceUrl
@@ -149,9 +144,9 @@ open class OipKlanttaakEventListener(
     }
 
     private fun startFinalizerProcess(
+        caseDefinitionId: CaseDefinitionId? = null,
         processDefinitionKey: String,
         businessKey: String,
-        caseDefinitionId: CaseDefinitionId? = null,
         variables: Map<String, Any>
     ) {
         try {
@@ -191,6 +186,17 @@ open class OipKlanttaakEventListener(
             )
         }
     }
+
+    private fun caseDefinitionIdFrom(plugin: OipKlanttaakPlugin): CaseDefinitionId? =
+        if (plugin.finalizerProcessIsCaseSpecific) {
+            requireNotNull(plugin.caseDefinitionVersion) { "Case definition version is required." }
+            plugin.caseDefinitionVersion.let {
+                CaseDefinitionId.of(
+                    key = it!!.substringBefore(":"),
+                    versionTag = it.substringAfter(":")
+                )
+            }
+        } else null
 
     private fun objectManagementFor(event: NotificatiesApiNotificationReceivedEvent): ObjectManagement? =
         objectTypeFrom(event).let { objectType ->

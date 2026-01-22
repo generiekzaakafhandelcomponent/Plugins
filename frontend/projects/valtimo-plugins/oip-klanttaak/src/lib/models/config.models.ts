@@ -19,6 +19,7 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 interface PluginConfig extends PluginConfigurationData {
   notificatiesApiPluginConfiguration: string;
   objectManagementConfigurationId: string;
+  finalizerProcessIsCaseSpecific: boolean;
   finalizerProcess: string;
   caseDefinitionVersion?: string | null;
 }

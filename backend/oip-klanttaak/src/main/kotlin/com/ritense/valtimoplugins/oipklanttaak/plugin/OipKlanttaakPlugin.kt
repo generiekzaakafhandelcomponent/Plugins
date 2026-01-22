@@ -60,10 +60,13 @@ class OipKlanttaakPlugin(
     @PluginProperty(key = "objectManagementConfigurationId", secret = false)
     lateinit var objectManagementConfigurationId: UUID
 
+    @PluginProperty(key = "finalizerProcessIsCaseSpecific", secret = false)
+    var finalizerProcessIsCaseSpecific: Boolean = false
+
     @PluginProperty(key = "finalizerProcess", secret = false)
     lateinit var finalizerProcess: String
 
-    @PluginProperty(key = "caseDefinitionVersion", secret = false)
+    @PluginProperty(key = "caseDefinitionVersion", secret = false, required = false)
     var caseDefinitionVersion: String? = null
 
     @PluginAction(
