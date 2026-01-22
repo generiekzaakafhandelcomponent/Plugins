@@ -230,11 +230,11 @@ In de frontend moet de volgende waarden toegevoegd worden:
 
 Zie [toevoegen van plugins](https://docs.valtimo.nl/features/plugins/plugins/custom-plugin-definition#adding-the-plugin-module-to-the-ngmodule) en [toevoegen van case tabs](https://docs.valtimo.nl/features/case/for-developers/case-tabs) in de Valtimo docs.
 
-#### Using a custom theme for the Contact History tab
+#### Een custom theme gebruiken voor het Contactgeschiedenis tabblad
 
-By default, the `contact-history-tab.component.scss` uses Carbon's theme. If you would like to use your own override of this theme, simply uncomment the `@use '/my/carbon/theme/override` line, and point to the correct location. 
+Per default wordt er in `contact-history-tab.component.scss` het thema van Carbon gebruikt. Als je jouw eigen override van dit thema wilt gebruiken, uncomment dan simpelweg de regel `@use '/my/carbon/theme/override`, en zorg dat de path naar jouw thema wijst. 
 
-Extract from the file `openklant/src/lib/tab/contact-history/components/contact-history-tab/contact-history-tab.component.spec.ts`:
+Het onderstaande codefragment is te vinden in `openklant/src/lib/tab/contact-history/components/contact-history-tab/contact-history-tab.component.spec.ts`:
 ```scss
 @use '@carbon/styles/scss/themes';
 
