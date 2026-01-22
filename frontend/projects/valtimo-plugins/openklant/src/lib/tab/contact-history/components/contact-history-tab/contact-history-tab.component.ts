@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import _ from "lodash";
 import { CommonModule, NgClass, NgForOf, NgIf } from "@angular/common";
 import {
   finalize,
