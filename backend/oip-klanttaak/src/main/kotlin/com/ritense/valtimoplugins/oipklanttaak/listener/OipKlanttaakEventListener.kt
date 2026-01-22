@@ -45,7 +45,6 @@ import org.springframework.context.event.EventListener
 import org.springframework.transaction.annotation.Transactional
 import java.net.URI
 import java.util.UUID
-import kotlin.text.substringAfter
 
 open class OipKlanttaakEventListener(
     private val pluginService: PluginService,
