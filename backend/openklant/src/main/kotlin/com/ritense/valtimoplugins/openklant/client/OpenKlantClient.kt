@@ -23,20 +23,13 @@ import java.net.URI
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
-    private val webClientFactory: (OpenKlantProperties) -> WebClient = { props ->
-        openKlantWebClientBuilder
-            .clone()
-            .baseUrl(props.klantinteractiesUrl.toASCIIString())
-            .defaultHeader("Authorization", "Token ${props.token}")
-            .build()
-    },
 ) {
     suspend fun getPartijByBsn(
         bsn: String,
         properties: OpenKlantProperties,
     ): Partij? =
         try {
-            webClientFactory(properties)
+            webClient(properties)
                 .get()
                 .uri { uriBuilder ->
                     uriBuilder
@@ -60,7 +53,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): Partij =
         try {
-            webClientFactory(properties)
+            webClient(properties)
                 .post()
                 .uri(OK_PARTIJEN_PATH)
                 .bodyValue(request)
@@ -78,7 +71,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): Partij =
         try {
-            webClientFactory(properties)
+            webClient(properties)
                 .patch()
                 .uri("$OK_PARTIJEN_PATH/$id")
                 .bodyValue(patchData)
@@ -95,7 +88,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): List<DigitaalAdres> =
         try {
-            webClientFactory(properties)
+            webClient(properties)
                 .get()
                 .uri { uriBuilder ->
                     uriBuilder
@@ -116,7 +109,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): DigitaalAdres =
         try {
-            webClientFactory(properties)
+            webClient(properties)
                 .get()
                 .uri("$OK_DIGITALE_ADRESSEN_PATH/$uuid")
                 .retrieve()
@@ -132,7 +125,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ): DigitaalAdres =
         try {
-            webClientFactory(properties)
+            webClient(properties)
                 .post()
                 .uri(OK_DIGITALE_ADRESSEN_PATH)
                 .bodyValue(request)
@@ -146,21 +139,7 @@ class OpenKlantClient(
 
     suspend fun getKlantcontacten(klantContactOptions: KlantcontactOptions): Page<Klantcontact> =
         try {
-            webClientFactory(klantContactOptions)
-                .get()
-                .uri { uriBuilder ->
-                    buildOpenKlantUri(uriBuilder, klantContactOptions)
-                }.retrieve()
-                .awaitBody<Page<Klantcontact>>()
-        } catch (e: WebClientResponseException.InternalServerError) {
-            handleInternalServerError(e)
-        } catch (e: WebClientResponseException) {
-            handleResponseException(e, "Error fetching Klantcontacts")
-        }
-
-    suspend fun getKlantcontactenByBsn(klantContactOptions: KlantcontactOptions): Page<Klantcontact> =
-        try {
-            webClientFactory(klantContactOptions)
+            webClient(klantContactOptions)
                 .get()
                 .uri { uriBuilder ->
                     buildOpenKlantUri(uriBuilder, klantContactOptions)
@@ -177,7 +156,7 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ) {
         try {
-            webClientFactory(properties)
+            webClient(properties)
                 .post()
                 .uri(OK_MAAK_KLANTCONTACT_PATH)
                 .bodyValue(request)
@@ -189,6 +168,13 @@ class OpenKlantClient(
             handleResponseException(e, "Error creating Klantcontact")
         }
     }
+
+    private fun webClient(properties: OpenKlantProperties): WebClient =
+        openKlantWebClientBuilder
+            .clone()
+            .baseUrl(properties.klantinteractiesUrl.toASCIIString())
+            .defaultHeader("Authorization", "Token ${properties.token}")
+            .build()
 
     @VisibleForTesting
     internal fun buildOpenKlantUri(
