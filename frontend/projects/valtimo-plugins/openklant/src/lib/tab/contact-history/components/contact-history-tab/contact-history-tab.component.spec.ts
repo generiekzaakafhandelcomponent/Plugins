@@ -15,7 +15,7 @@ import { mapDtoToModel } from "../models/customer-contact.model";
 import { ContactHistoryService } from "../../services/contact-history.service";
 import { ProcessPollingService } from "../../services/process-polling.service";
 import {
-  mockCustomerContactDTO,
+  mockKlantcontactDTO,
   mockProcessInstance,
   mockProcessInstanceStartResponse,
 } from "../models/mocks";
@@ -50,7 +50,7 @@ describe("ContactHistoryTabComponent", () => {
           useValue: {
             load: jasmine
               .createSpy("load")
-              .and.returnValue(of([mapDtoToModel(mockCustomerContactDTO)])),
+              .and.returnValue(of([mapDtoToModel(mockKlantcontactDTO)])),
           },
         },
         ProcessPollingService,
@@ -105,7 +105,7 @@ describe("ContactHistoryTabComponent", () => {
     expect(component.isFailed).toBeFalse();
     expect(component.contactHistory)
       .withContext("contactHistory was different than expected: ")
-      .toEqual([mapDtoToModel(mockCustomerContactDTO)]);
+      .toEqual([mapDtoToModel(mockKlantcontactDTO)]);
   });
 
   it("should do nothing and go into isFailed state if no documentId is available in the route snapshot paramMap", () => {
