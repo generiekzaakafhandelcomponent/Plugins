@@ -128,6 +128,15 @@ export class ContactHistoryTabComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    this.retrievedFreshContactHistory$.next();
+    this.retrievedFreshContactHistory$.complete();
+  }
+
+
   private pollUntilStoppedWrapper(
     processId: string
   ): Observable<ProcessInstance> {
