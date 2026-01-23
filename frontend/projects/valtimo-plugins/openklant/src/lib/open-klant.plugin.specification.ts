@@ -32,7 +32,7 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Pad van de variabele waaruit het BSN (burgerservicenummer) opgehaald kan worden",
 
       // Store contact info
-      "store-contact-info": "Maak digitaal adres (en Partij) aan",
+      "store-contact-info": "Maak Digitaal Adres (en Partij) aan",
       firstName: "Voornaam",
       firstNameTooltip: "Variabele waaruit de voornaam opgehaald kan worden",
       inFix: "Tussenvoegsel",
@@ -90,7 +90,7 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Path of the variable from which the Dutch BSN (citizen service number) can be retrieved",
 
       // Store contact info
-      "store-contact-info": "Create digital address (and Partij)",
+      "store-contact-info": "Create 'Digitaal Adres' (digital address) (and Partij)",
       firstName: "First name",
       firstNameTooltip: "Variable from which the first name can be retrieved",
       inFix: "Name infix",
@@ -144,7 +144,7 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Pfad der Variable, aus der die niederländische BSN (Bürgerservicenummer) abgerufen wird",
 
       // Store contact info
-      "store-contact-info": "Digitale Adresse (und Partij) erstellen",
+      "store-contact-info": "'Digitaal Adres' (Digitale Adresse) (und Partij) erstellen",
       firstName: "Vorname",
       firstNameTooltip: "Variable, aus der der Vorname abgerufen wird",
       inFix: "Namenszusatz",
