@@ -33,12 +33,10 @@ import { GetContactMomentsByBsnConfig } from "../../models/get-contact-moments-b
     PluginTranslatePipeModule,
     TooltipModule,
   ],
-  templateUrl: "./get-contact-moments-by-bsn.component.html",
-  styleUrl: "./get-contact-moments-by-bsn.component.scss",
+  templateUrl: "./get-contact-moments-by-bsn.component.html"
 })
 export class GetContactMomentsByBsnComponent
-  implements FunctionConfigurationComponent, OnInit, OnDestroy
-{
+  implements FunctionConfigurationComponent, OnInit, OnDestroy {
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
