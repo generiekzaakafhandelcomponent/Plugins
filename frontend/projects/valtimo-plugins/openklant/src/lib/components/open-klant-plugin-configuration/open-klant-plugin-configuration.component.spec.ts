@@ -1,8 +1,8 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {EMPTY, of} from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { EMPTY, of } from 'rxjs';
 
-import {OpenKlantPluginConfigurationComponent} from './open-klant-plugin-configuration.component';
-import {Config} from '../../models/config';
+import { OpenKlantPluginConfigurationComponent } from './open-klant-plugin-configuration.component';
+import { Config } from '../../models/config';
 
 describe('OpenKlantPluginConfigurationComponent', () => {
     let component: OpenKlantPluginConfigurationComponent;
@@ -34,6 +34,6 @@ describe('OpenKlantPluginConfigurationComponent', () => {
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(component instanceof OpenKlantPluginConfigurationComponent).toBeTrue();
     });
 });
