@@ -128,61 +128,7 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Does the contact moment involve an individual or is it anonymous?",
       "heeftBetrokkene.betrokkene": "Has an individual",
       "heeftBetrokkene.anoniem": "Is anonymous",
-    },
-
-    de: {
-      title: "Open Klant",
-      configurationTitle: "Konfiguration des Open-Klant-Plugins",
-      description: "Ein Plugin zum Abrufen und Versenden von Open-Klant-Daten.",
-      configurationTitleTooltip:
-        "In diesem Abschnitt konfigurieren Sie das Open-Klant-Plugin, um Daten einfach zu senden und abzurufen.",
-
-      // Common
-      resultPvName: "Name der Ergebnis-Prozessvariablen",
-      bsn: "BSN-Variable",
-      bsnTooltip:
-        "Pfad der Variable, aus der die niederländische BSN (Bürgerservicenummer) abgerufen wird",
-
-      // Store contact info
-      "store-contact-info": "'Digitaal Adres' (Digitale Adresse) (und Partij) erstellen",
-      firstName: "Vorname",
-      firstNameTooltip: "Variable, aus der der Vorname abgerufen wird",
-      inFix: "Namenszusatz",
-      inFixTooltip: "Variable, aus der der Namenszusatz abgerufen wird",
-      lastName: "Nachname",
-      lastNameTooltip: "Variable, aus der der Nachname abgerufen wird",
-      emailAddress: "E-Mail-Adresse",
-      emailAddressTooltip:
-        "Variable, aus der die E-Mail-Adresse abgerufen wird",
-      caseUuid: "Open-Zaak-Nummer",
-      caseUuidTooltip: "Variable, aus der das Open-Zaak-Nummer abgerufen wird",
-
-      // Get contact moments by BSN
-      "get-contact-moments-by-bsn": "Kontaktverlauf basierend auf BSN abrufen",
-
-      // Get contact moments by case UUID
-      "get-contact-moments-by-case-uuid":
-        "Kontaktverlauf basierend auf Open-Zaak-Nummer abrufen",
-
-      // Register contact moment
-      "register-klantcontact":
-        "Neuen Klantcontact (Kundenkontakt) registrieren",
-      kanaal: "Kommunikationskanal",
-      onderwerp: "Betreff",
-      inhoud: "Inhalt",
-      vertrouwelijk: "Vertraulich (true/false)",
-      taal: "Sprache (ISO 639-2/B-Format)",
-      plaatsgevondenOp: "Stattgefunden am (ISO 8601)",
-      partijUuid: "Partij-UUID",
-      voorletters: "Initialen",
-      voornaam: "Vorname",
-      voorvoegselAchternaam: "Namenszusatz",
-      achternaam: "Nachname",
-      heeftBetrokkene:
-        "Enthält der Kundenkontakt eine betroffene Person oder ist er anonym?",
-      "heeftBetrokkene.betrokkene": "Hat eine betroffene Person",
-      "heeftBetrokkene.anoniem": "Ist anonym",
-    },
+    }
   },
 };
 
