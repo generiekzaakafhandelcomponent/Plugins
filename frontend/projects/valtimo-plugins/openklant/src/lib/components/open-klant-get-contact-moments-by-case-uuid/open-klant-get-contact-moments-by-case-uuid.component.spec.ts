@@ -32,6 +32,6 @@ describe("OpenKlantGetContactMomentsByCaseUuidComponent", () => {
   });
 
   it("should create", () => {
-    expect(component).toBeTruthy();
+    expect(component instanceof GetContactMomentsByCaseUuidComponent).toBeTrue();
   });
 });
