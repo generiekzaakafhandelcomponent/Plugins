@@ -11,14 +11,12 @@ import { ActivatedRoute } from "@angular/router";
 import { TranslateModule } from "@ngx-translate/core";
 import { of } from "rxjs";
 import { PollingService } from "../../services/polling.service";
-import { mapDtoToModel } from "../models/klantcontact.model";
+import { mapDtoToModel } from "../../models/klantcontact.model";
 import { ContactHistoryService } from "../../services/contact-history.service";
 import { ProcessPollingService } from "../../services/process-polling.service";
-import {
-  mockKlantcontactDTO,
-  mockProcessInstance,
-  mockProcessInstanceStartResponse,
-} from "../models/mocks";
+import { mockKlantcontactDTO } from "../../testing/mocks/mockKlantcontactDto";
+import { mockProcessInstance } from "../../testing/mocks/mockProcessInstance"
+import { mockProcessInstanceStartResponse } from "../../testing/mocks/mockProcessInstanceStartResponse";
 
 describe("ContactHistoryTabComponent", () => {
   let component: ContactHistoryTabComponent;
