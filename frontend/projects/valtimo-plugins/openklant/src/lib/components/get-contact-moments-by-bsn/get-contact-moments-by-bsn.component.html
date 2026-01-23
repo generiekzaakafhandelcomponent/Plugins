@@ -10,7 +10,7 @@
         [title]="'bsn' | pluginTranslate: pluginId | async"
         [tooltip]="'bsnTooltip' | pluginTranslate: pluginId | async"
         [margin]="true"
-        [defaultValue]="obs.prefill?.message"
+        [defaultValue]="obs.prefill?.bsn"
         [disabled]="obs.disabled"
         [required]="true"
     >
@@ -20,7 +20,7 @@
         name="resultPvName"
         [title]="'resultPvName' | pluginTranslate: pluginId | async"
         [margin]="true"
-        [defaultValue]="obs.prefill?.message"
+        [defaultValue]="obs.prefill?.resultPvName"
         [disabled]="obs.disabled"
         [required]="true"
     >
