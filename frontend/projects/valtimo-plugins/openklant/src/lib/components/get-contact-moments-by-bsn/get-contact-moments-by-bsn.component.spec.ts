@@ -1,8 +1,8 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {EMPTY, of} from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { EMPTY, of } from 'rxjs';
 
-import {GetContactMomentsByBsnComponent} from './get-contact-moments-by-bsn.component';
-import {GetContactMomentsByBsnConfig} from '../../models/get-contact-moments-by-bsn-config';
+import { GetContactMomentsByBsnComponent } from './get-contact-moments-by-bsn.component';
+import { GetContactMomentsByBsnConfig } from '../../models/get-contact-moments-by-bsn-config';
 
 describe('OpenKlantGetContactMomentsByCaseUuidComponent', () => {
     let component: GetContactMomentsByBsnComponent;
@@ -32,6 +32,6 @@ describe('OpenKlantGetContactMomentsByCaseUuidComponent', () => {
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(component instanceof GetContactMomentsByBsnComponent).toBeTrue();
     });
 });
