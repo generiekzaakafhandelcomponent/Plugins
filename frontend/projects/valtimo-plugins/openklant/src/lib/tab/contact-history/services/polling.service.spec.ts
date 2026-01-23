@@ -1,8 +1,7 @@
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import {PollingService} from './polling.service';
-import {Subject} from 'rxjs';
-import exp from 'constants';
+import { PollingService } from './polling.service';
+import { Subject } from 'rxjs';
 
 describe('PollingService', () => {
     let service: PollingService;
