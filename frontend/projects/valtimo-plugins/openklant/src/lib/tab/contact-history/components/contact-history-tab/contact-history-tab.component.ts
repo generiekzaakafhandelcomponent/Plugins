@@ -91,6 +91,20 @@ export class ContactHistoryTabComponent implements OnInit {
       return;
     }
 
+    this.fetchLocalContactHistoryFromDocument()
+
+    this.fetchFreshContactHistory()
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    this.retrievedFreshContactHistory$.next();
+    this.retrievedFreshContactHistory$.complete();
+  }
+
+  private fetchLocalContactHistoryFromDocument() {
     this.contactHistoryService
       .load(this.documentId)
       .pipe(
@@ -98,8 +112,9 @@ export class ContactHistoryTabComponent implements OnInit {
         takeUntil(this.retrievedFreshContactHistory$)
       )
       .subscribe((contacts) => (this.contactHistory = contacts));
+  }
 
-    // Start fetching fresh contactHistory
+  private fetchFreshContactHistory() {
     this.processService
       .startProcesInstance(this.PROCESS_KEY, this.documentId, new Map())
       ?.pipe(
@@ -126,14 +141,6 @@ export class ContactHistoryTabComponent implements OnInit {
           this.isFailed = true;
         },
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-
-    this.retrievedFreshContactHistory$.next();
-    this.retrievedFreshContactHistory$.complete();
   }
 
 
