@@ -45,11 +45,9 @@ import { Toggle } from "carbon-components-angular";
     ToggleModule,
   ],
   templateUrl: "./open-klant-register-klantcontact.component.html",
-  styleUrl: "./open-klant-register-klantcontact.component.css",
 })
 export class RegisterKlantcontactComponent
-  implements FunctionConfigurationComponent, OnInit, OnDestroy
-{
+  implements FunctionConfigurationComponent, OnInit, OnDestroy {
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
