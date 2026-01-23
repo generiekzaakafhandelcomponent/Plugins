@@ -10,7 +10,7 @@
     [title]="'caseUuid' | pluginTranslate : pluginId | async"
     [tooltip]="'caseUuidTooltip' | pluginTranslate : pluginId | async"
     [margin]="true"
-    [defaultValue]="obs.prefill?.message"
+    [defaultValue]="obs.prefill?.caseUuid"
     [disabled]="obs.disabled"
     [required]="true"
   >
@@ -20,7 +20,7 @@
     name="resultPvName"
     [title]="'resultPvName' | pluginTranslate : pluginId | async"
     [margin]="true"
-    [defaultValue]="obs.prefill?.message"
+    [defaultValue]="obs.prefill?.resultPvName"
     [disabled]="obs.disabled"
     [required]="true"
   >
