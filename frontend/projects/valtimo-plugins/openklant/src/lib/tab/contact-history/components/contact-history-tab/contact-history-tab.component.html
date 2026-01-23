@@ -1,9 +1,9 @@
 <div
-  [ngClass]="[
-    'contact-history-spinner',
-    'refresh-container',
-    !isLoading ? 'no-height' : ''
-  ]"
+  [ngClass]="{ 
+    'contact-history-spinner': true, 
+    'refresh-container': true, 
+    'no-height': !isLoading 
+  }"
 >
   <span class="loading-description mr-2">{{
     isLoading ? "Verversen..." : "Opgehaald"
