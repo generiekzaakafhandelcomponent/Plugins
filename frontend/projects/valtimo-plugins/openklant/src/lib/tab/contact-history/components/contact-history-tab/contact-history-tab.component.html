@@ -36,7 +36,7 @@
         <p class="timeline-author">
           <em class="klantcontact-number">{{ customerContact.id }}:</em>
           {{ customerContact.channel | titlecase }} -
-          {{ getOutcomeLabel(customerContact.outcome) }}
+          {{ getOutcomeTranslationKey(customerContact.outcome) | translate }}
         </p>
 
         <details>
@@ -50,16 +50,14 @@
 
 <valtimo-no-results
   *ngIf="contactHistory === null"
-  [description]="
-    'Er bestaat geen \'contactgeschiedenis\'-property in de dossierdefinitie. Voeg deze toe aan het dossierdefinitie.'
-  "
-  [title]="'Geen contactgeschiedenis property'"
+  [title]="'contactHistory.messages.noProperty.title' | translate"
+  [description]="'contactHistory.messages.noProperty.description' | translate"
   illustration="valtimo-layout/img/emptystate-no-result.svg"
 ></valtimo-no-results>
 
 <valtimo-no-results
   *ngIf="contactHistory?.length === 0"
-  [description]="'Er bestaat nog geen contactgeschiedenis voor dit dossier.'"
-  [title]="'Geen contactgeschiedenis'"
+  [title]="'contactHistory.messages.emptyHistory.title' | translate"
+  [description]="'contactHistory.messages.emptyHistory.description' | translate"
   illustration="valtimo-layout/img/emptystate-no-result.svg"
 ></valtimo-no-results>

@@ -17,14 +17,18 @@ import { NGXLogger } from "ngx-logger";
 import {
   ContactOutcome,
   Klantcontact as KlantContact,
-} from "../models/klantcontact.model";
+} from "../../models/klantcontact.model";
 import { ProcessPollingService } from "../../services/process-polling.service";
 import { ContactHistoryService } from "../../services/contact-history.service";
+import { getOutcomeTranslationKey } from "../../presenters/contact-outcome.presenter";
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { ConfigService } from "@valtimo/config";
+import { HttpBackend, HttpClient } from "@angular/common/http";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 @Component({
   selector: "generieke-contactgeschiedenis",
   standalone: true,
-  templateUrl: "./contact-history-tab.component.html",
   imports: [
     NgForOf,
     TimelineModule,
@@ -33,7 +37,15 @@ import { ContactHistoryService } from "../../services/contact-history.service";
     CarbonListModule,
     LoadingModule,
     CommonModule,
+    TranslateModule // Note: the path to Open Klant's non-plugin translations was added in 'environments.ts' under 'translationResources'
+  ], providers: [
+    {
+      provide: TranslateLoader,
+      useFactory: (http: HttpClient) => new TranslateHttpLoader(http, '/assets/i18n/open-klant/', '.json'),
+      deps: [HttpBackend, ConfigService],
+    },
   ],
+  templateUrl: "./contact-history-tab.component.html",
   styleUrl: "./contact-history-tab.component.scss",
 })
 export class ContactHistoryTabComponent implements OnInit {
@@ -70,8 +82,12 @@ export class ContactHistoryTabComponent implements OnInit {
     this._contactHistory = contactHistory;
   }
 
-  // Expose enum for use in template
-  ContactOutcome = ContactOutcome;
+  // Expose presenter function for use in template
+  readonly getOutcomeTranslationKey = getOutcomeTranslationKey;
+
+  // Expose ContactOutcome enum for use in template
+  readonly ContactOutcome = ContactOutcome;
+
 
   constructor(
     private route: ActivatedRoute,
