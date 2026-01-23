@@ -1,11 +1,11 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {ProcessPollingService} from './process-polling.service';
-import {PollingService} from './polling.service';
-import {of} from 'rxjs';
-import {ProcessService} from '@valtimo/process';
-import {NGXLogger} from 'ngx-logger';
-import {mockProcessInstance} from '../components/models/mocks';
+import { ProcessPollingService } from './process-polling.service';
+import { PollingService } from './polling.service';
+import { of } from 'rxjs';
+import { ProcessService } from '@valtimo/process';
+import { NGXLogger } from 'ngx-logger';
+import { mockProcessInstance } from '../testing/mocks/mockProcessInstance';
 
 describe('ProcessPollingService', () => {
     let service: ProcessPollingService;
@@ -24,7 +24,7 @@ describe('ProcessPollingService', () => {
                 },
                 {
                     provide: ProcessService,
-                    useValue: {getProcessInstance: jasmine.createSpy('getProcessInstance')}
+                    useValue: { getProcessInstance: jasmine.createSpy('getProcessInstance') }
                 },
                 {
                     provide: NGXLogger,
@@ -45,7 +45,7 @@ describe('ProcessPollingService', () => {
         const processService = TestBed.inject(ProcessService);
         (processService.getProcessInstance as jasmine.Spy).and.returnValues(
             of(mockProcessInstance),
-            of({...mockProcessInstance, endTime: '2025-12-18T15:15:00Z'})
+            of({ ...mockProcessInstance, endTime: '2025-12-18T15:15:00Z' })
         );
 
         service.pollUntilStopped('mock-process-instance-id', 100, 800, of()).subscribe(process => {

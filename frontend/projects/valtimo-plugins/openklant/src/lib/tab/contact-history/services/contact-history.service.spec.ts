@@ -1,10 +1,10 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { ContactHistoryService } from './contact-history.service';
 import { DocumentService } from '@valtimo/document';
 import { of } from 'rxjs';
-import { mockKlantcontactDTO } from '../components/models/mocks';
-import { mapDtoToModel } from '../components/models/klantcontact.model';
+import { mockKlantcontactDTO } from '../testing/mocks/mockKlantcontactDto';
+import { mapDtoToModel } from '../models/klantcontact.model';
 
 describe('ContactHistoryService', () => {
     let service: ContactHistoryService;
