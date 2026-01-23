@@ -121,7 +121,7 @@ describe("ContactHistoryTabComponent", () => {
     expect(startProcessInstanceSpy).not.toHaveBeenCalled();
     expect(component.isLoading).toBeFalse();
     expect(component.isFailed).toBeTrue();
-    expect(component.contactHistory).toBeNull();
+    expect(component.contactHistory).toEqual([]);
   });
 
   it(`should retrieve the document's contactHistory twice (at init and after finishing the called process)`, fakeAsync(() => {
