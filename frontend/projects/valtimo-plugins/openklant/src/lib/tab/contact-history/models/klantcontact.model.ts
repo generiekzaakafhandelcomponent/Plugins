@@ -12,7 +12,7 @@ export interface Klantcontact {
 export enum ContactOutcome {
   SUCCESS = "success",
   FAILURE = "failure",
-  NOT_APPLICABLE = "not_applicable",
+  NOT_APPLICABLE = "notApplicable",
   UNKNOWN = "unknown",
 }
 
