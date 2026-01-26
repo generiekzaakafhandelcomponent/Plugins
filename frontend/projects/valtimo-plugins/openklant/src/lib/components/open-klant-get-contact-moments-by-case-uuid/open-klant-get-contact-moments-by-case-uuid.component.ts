@@ -36,8 +36,7 @@ import { GetContactMomentsByCaseUuidConfig } from "../../models/get-contact-mome
   styleUrl: "./open-klant-get-contact-moments-by-case-uuid.component.scss",
 })
 export class GetContactMomentsByCaseUuidComponent
-  implements FunctionConfigurationComponent, OnInit, OnDestroy
-{
+  implements FunctionConfigurationComponent, OnInit, OnDestroy {
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
@@ -78,9 +77,7 @@ export class GetContactMomentsByCaseUuidComponent
       combineLatest([this.formValue$, this.valid$])
         .pipe(take(1))
         .subscribe(([formValue, valid]) => {
-          if (valid) {
-            this.configuration.emit(formValue);
-          }
+          if (valid) this.configuration.emit(formValue);
         });
     });
   }
