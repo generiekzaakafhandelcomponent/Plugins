@@ -14,7 +14,7 @@ import { Injectable } from "@angular/core";
 export class ContactHistoryService {
     constructor(private documentService: DocumentService) { }
 
-    load(documentId: string): Observable<Klantcontact[]> {
+    fetchFromDocument(documentId: string): Observable<Klantcontact[]> {
         return this.documentService.getDocument(documentId).pipe(
             map((doc) => {
                 const valtimoDoc = doc as ValtimoDocument;

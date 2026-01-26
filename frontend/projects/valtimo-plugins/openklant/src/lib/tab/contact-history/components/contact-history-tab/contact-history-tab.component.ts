@@ -122,7 +122,7 @@ export class ContactHistoryTabComponent implements OnInit {
 
   private fetchLocalContactHistoryFromDocument() {
     this.contactHistoryService
-      .load(this.documentId)
+      .fetchFromDocument(this.documentId)
       .pipe(
         takeUntil(this.destroy$),
         takeUntil(this.retrievedFreshContactHistory$)
@@ -139,7 +139,7 @@ export class ContactHistoryTabComponent implements OnInit {
             ? of(null)
             : this.pollUntilStoppedWrapper(process.id);
         }),
-        switchMap(() => this.contactHistoryService.load(this.documentId)),
+        switchMap(() => this.contactHistoryService.fetchFromDocument(this.documentId)),
         tap(() => this.retrievedFreshContactHistory$.next()),
         takeUntil(this.destroy$),
         finalize(() => {
