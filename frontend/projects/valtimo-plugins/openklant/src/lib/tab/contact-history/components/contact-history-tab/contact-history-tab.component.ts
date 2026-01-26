@@ -171,10 +171,10 @@ export class ContactHistoryTabComponent implements OnInit {
     );
   }
 
-  formatAsTime(dateTime: Date): string {
+  protected formatAsTime(dateTime: Date): string {
     return dateTime.toLocaleTimeString("nl-NL");
   }
-  formatAsDate(dateTime: Date): string {
+  protected formatAsDate(dateTime: Date): string {
     return dateTime.toLocaleDateString("nl-NL");
   }
 }
