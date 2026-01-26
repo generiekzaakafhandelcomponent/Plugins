@@ -27,24 +27,17 @@ const openKlantPluginSpecification: PluginSpecification = {
 
       // Common
       resultPvName: "Naam van resultaat-procesvariabele",
-      bsn: "BSN-variabele",
-      bsnTooltip:
-        "Pad van de variabele waaruit het BSN (burgerservicenummer) opgehaald kan worden",
+      bsn: "BSN",
+      variableFieldTooltip:
+        "Dit veld kan zowel de letterlijke waarde, of het pad naar een (proces)variabele bevatten welke de waarde bevat (b.v. 'pv:/resultaat')",
 
       // Store contact info
       "store-contact-info": "Maak Digitaal Adres (en Partij) aan",
       firstName: "Voornaam",
-      firstNameTooltip: "Variabele waaruit de voornaam opgehaald kan worden",
       inFix: "Tussenvoegsel",
-      inFixTooltip: "Variabele waaruit het tussenvoegsel opgehaald kan worden",
       lastName: "Achternaam",
-      lastNameTooltip: "Variabele waaruit de achternaam opgehaald kan worden",
       emailAddress: "E-mailadres",
-      emailAddressTooltip:
-        "Variabele waaruit het e-mailadres opgehaald kan worden",
       caseUuid: "Open Zaak-nummer",
-      caseUuidTooltip:
-        "Variabele waaruit het Open Zaak-nummer opgehaald kan worden",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn":
@@ -85,24 +78,17 @@ const openKlantPluginSpecification: PluginSpecification = {
 
       // Common
       resultPvName: "Result process variable name",
-      bsn: "BSN variable",
-      bsnTooltip:
-        "Path of the variable from which the Dutch BSN (citizen service number) can be retrieved",
+      bsn: "BSN (citizen service number)",
+      variableFieldTooltip:
+        "This field accepts either a literal value or a path to a (process) variable containing the value (e.g. 'pv:/result')",
 
       // Store contact info
       "store-contact-info": "Create 'Digitaal Adres' (digital address) (and Partij)",
       firstName: "First name",
-      firstNameTooltip: "Variable from which the first name can be retrieved",
       inFix: "Name infix",
-      inFixTooltip: "Variable from which the name infix can be retrieved",
       lastName: "Last name",
-      lastNameTooltip: "Variable from which the last name can be retrieved",
       emailAddress: "Email address",
-      emailAddressTooltip:
-        "Variable from which the email address can be retrieved",
       caseUuid: "Open Zaak case number",
-      caseUuidTooltip:
-        "Variable from which the Open Zaak number can be retrieved",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn": "Retrieve contact history based on BSN",
