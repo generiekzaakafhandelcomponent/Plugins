@@ -45,7 +45,7 @@ class OpenKlantPlugin(
         @PluginActionProperty inFix: String,
         @PluginActionProperty lastName: String,
         @PluginActionProperty emailAddress: String,
-        @PluginActionProperty caseNumber: String,
+        @PluginActionProperty caseUuid: String,
     ) = runBlocking {
         logger.info { "Store Contactinformation in Open Klant - ${execution.processBusinessKey}" }
 
@@ -56,7 +56,7 @@ class OpenKlantPlugin(
                 inFix = inFix,
                 lastName = lastName,
                 emailAddress = emailAddress,
-                caseNumber = caseNumber,
+                caseNumber = caseUuid,
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)

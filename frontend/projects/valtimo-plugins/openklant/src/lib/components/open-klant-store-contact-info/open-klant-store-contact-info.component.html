@@ -46,10 +46,10 @@
     [required]="true"
   ></v-input>
   <v-input
-    name="caseNumber"
-    [title]="'caseNumber' | pluginTranslate : pluginId | async"
+    name="caseUuid"
+    [title]="'caseUuid' | pluginTranslate : pluginId | async"
     [tooltip]="'variableFieldTooltip' | pluginTranslate : pluginId | async"
-    [defaultValue]="obs.prefill?.caseNumber"
+    [defaultValue]="obs.prefill?.caseUuid"
     [disabled]="obs.disabled"
     [required]="true"
   ></v-input>

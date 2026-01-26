@@ -30,7 +30,7 @@ describe("StoreContactInfoComponent", () => {
       inFix: "",
       lastName: "",
       emailAddress: "",
-      caseNumber: "",
+      caseUuid: "",
     } as StoreContactInfoConfig);
 
     fixture.detectChanges();

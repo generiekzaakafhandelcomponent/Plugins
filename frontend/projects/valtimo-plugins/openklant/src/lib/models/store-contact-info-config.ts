@@ -4,5 +4,5 @@ export interface StoreContactInfoConfig {
   inFix: String;
   lastName: String;
   emailAddress: string;
-  caseNumber: string;
+  caseUuid: string;
 }

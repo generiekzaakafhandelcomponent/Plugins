@@ -22,6 +22,7 @@ const openKlantPluginSpecification: PluginSpecification = {
       configurationTitle: "Configuratie van de Open Klant-plugin",
       description:
         "Een plugin voor het ophalen en versturen van Open Klant-gegevens.",
+      caseUuid: "Open-Zaak-UUID",
       configurationTitleTooltip:
         "In dit onderdeel configureer je de Open Klant-plugin om eenvoudig gegevens te kunnen verzenden en ophalen.",
 
@@ -37,7 +38,6 @@ const openKlantPluginSpecification: PluginSpecification = {
       inFix: "Tussenvoegsel",
       lastName: "Achternaam",
       emailAddress: "E-mailadres",
-      caseUuid: "Open Zaak-nummer",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn":
@@ -45,13 +45,11 @@ const openKlantPluginSpecification: PluginSpecification = {
 
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
-        "Contactgeschiedenis ophalen op basis van Open Zaak-nummer",
+        "Contactgeschiedenis ophalen op basis van Open-Zaak-UUID",
 
       // Register contact moment
       "register-klantcontact": "Registreer nieuw klantcontact",
       objectTypeId: "Type van het object, bijvoorbeeld: 'zaak'",
-      objectUuid: "Zaak-UUID",
-      caseNumber: "Zaaknummer",
       kanaal: "Communicatiekanaal",
       onderwerp: "Onderwerp",
       inhoud: "Inhoud",
@@ -79,6 +77,7 @@ const openKlantPluginSpecification: PluginSpecification = {
       // Common
       resultPvName: "Result process variable name",
       bsn: "BSN (citizen service number)",
+      caseUuid: "Open Zaak case UUID",
       variableFieldTooltip:
         "This field accepts either a literal value or a path to a (process) variable containing the value (e.g. 'pv:/result')",
 
@@ -88,17 +87,17 @@ const openKlantPluginSpecification: PluginSpecification = {
       inFix: "Name infix",
       lastName: "Last name",
       emailAddress: "Email address",
-      caseUuid: "Open Zaak case number",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn": "Retrieve contact history based on BSN",
 
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
-        "Retrieve contact history based on Open Zaak case number",
+        "Retrieve contact history based on Open Zaak case UUID",
 
       // Register contact moment
       "register-klantcontact": "Register new klantcontact (customer contact)",
+      objectTypeId: "Type van het object, bijvoorbeeld: 'zaak'",
       kanaal: "Communication channel",
       onderwerp: "Subject",
       inhoud: "Message content",

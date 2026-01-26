@@ -24,8 +24,7 @@ import { StoreContactInfoConfig } from "../../models/store-contact-info-config";
   templateUrl: "./open-klant-store-contact-info.component.html"
 })
 export class StoreContactInfoComponent
-  implements FunctionConfigurationComponent, OnInit, OnDestroy
-{
+  implements FunctionConfigurationComponent, OnInit, OnDestroy {
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
@@ -59,7 +58,7 @@ export class StoreContactInfoComponent
       !!formValue.inFix &&
       !!formValue.lastName &&
       !!formValue.emailAddress &&
-      !!formValue.caseNumber;
+      !!formValue.caseUuid;
 
     this.valid$.next(valid);
     this.valid.emit(valid);
