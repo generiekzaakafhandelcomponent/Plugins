@@ -33,6 +33,8 @@ class OpenKlantServiceTest {
 
     @MockK
     lateinit var partijFactory: PartijFactory
+
+    @MockK
     lateinit var klantContactFactory: KlantcontactFactory
     lateinit var service: OpenKlantService
     private val defaultDigitaalAdres =

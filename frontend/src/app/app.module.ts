@@ -101,7 +101,8 @@ import {ObjectManagementPluginModule, objectManagementPluginSpecification} from 
 import {
     OpenKlantPluginModule,
     openKlantPluginSpecification,
-    KlantcontactTabComponent
+    KlantcontactTabComponent,
+    ContactHistoryTabComponent
 } from '@valtimo-plugins/openklant';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {
@@ -314,6 +315,7 @@ export function tabsFactory() {
         provide: CASE_TAB_TOKEN,
         useValue: {
             'klantcontact-tab': KlantcontactTabComponent,
+            'generieke-contactgeschiedenis': ContactHistoryTabComponent,
         }
     }],
     bootstrap: [AppComponent]

@@ -1196,7 +1196,7 @@
         }
       }
     }
-},
+  },
   "cli": {
     "analytics": false
   }

@@ -1,8 +1,8 @@
 {
-  "changesetId": "open-klant-plugin.case-tabs.1768575551235",
+  "changesetId": "open-klant.case-tabs.1768982327099",
   "case-definitions": [
     {
-      "key": "open-klant-plugin",
+      "key": "open-klant",
       "tabs": [
         {
           "key": "summary",
@@ -33,6 +33,12 @@
           "name": null,
           "type": "standard",
           "contentKey": "notes"
+        },
+        {
+          "key": "contactgeschiedenis",
+          "name": "Contactgeschiedenis",
+          "type": "custom",
+          "contentKey": "generieke-contactgeschiedenis"
         }
       ]
     }

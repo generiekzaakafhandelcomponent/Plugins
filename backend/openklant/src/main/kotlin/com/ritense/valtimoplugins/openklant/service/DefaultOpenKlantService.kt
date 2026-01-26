@@ -3,18 +3,18 @@ package com.ritense.valtimoplugins.openklant.service
 import com.ritense.valtimoplugins.openklant.client.OpenKlantClient
 import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
 import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
-import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 
 class DefaultOpenKlantService(
     private val openKlantClient: OpenKlantClient,
     private val partijFactory: PartijFactory,
-    private val klantContactFactory: KlantcontactFactory,
+    private val klantcontactFactory: KlantcontactFactory,
 ) : OpenKlantService {
     override suspend fun storeContactInformation(
         properties: OpenKlantProperties,
@@ -31,17 +31,17 @@ class DefaultOpenKlantService(
         }
     }
 
-    override suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact> =
-        openKlantClient.getKlantContacten(properties).results
+    override suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
+        openKlantClient.getKlantcontacten(properties).results
 
     override suspend fun postKlantcontact(
         properties: OpenKlantProperties,
-        klantContactCreationInformation: KlantcontactCreationInformation,
+        klantcontactCreationInformation: KlantcontactCreationInformation,
     ) {
-        val klantContactRequest = klantContactFactory.createKlantcontactRequest(klantContactCreationInformation)
+        val klantContactRequest = klantcontactFactory.createKlantcontactRequest(klantcontactCreationInformation)
         openKlantClient.postKlantcontact(
             request = klantContactRequest,
-            properties = properties
+            properties = properties,
         )
     }
 
