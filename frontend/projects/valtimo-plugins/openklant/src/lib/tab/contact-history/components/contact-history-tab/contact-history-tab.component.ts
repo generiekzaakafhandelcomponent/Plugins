@@ -171,19 +171,6 @@ export class ContactHistoryTabComponent implements OnInit {
     );
   }
 
-  getOutcomeLabel(outcome: ContactOutcome): string {
-    switch (outcome) {
-      case ContactOutcome.SUCCESS:
-        return "Succesvol";
-      case ContactOutcome.FAILURE:
-        return "Mislukt";
-      case ContactOutcome.NOT_APPLICABLE:
-        return "Status niet van toepassing";
-      case ContactOutcome.UNKNOWN:
-        return "Status onbekend";
-    }
-  }
-
   formatAsTime(dateTime: Date): string {
     return dateTime.toLocaleTimeString("nl-NL");
   }
