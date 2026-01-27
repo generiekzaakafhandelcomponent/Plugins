@@ -16,8 +16,11 @@ data class PersoonDto(
     val verblijfplaatsHistorisch: List<VerblijfplaatsHistorisch>,
     val nationaliteiten: List<NationaliteitDto>?,
     @JsonInclude(JsonInclude.Include.NON_NULL) val kinderenBsns: List<String>?,
+
     val partnerBsn: String? = "",
     val geslachtsnaamPartner: String? = "",
+    val ingangsdatumHuwelijk: String? = "",
+
     val datumOverlijden: String? = "",
 
     val codeBrpGegevensGeheim:  BrpGegevensGeheim?,
