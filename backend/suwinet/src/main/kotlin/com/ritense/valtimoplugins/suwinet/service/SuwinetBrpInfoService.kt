@@ -131,6 +131,11 @@ class SuwinetBrpInfoService(
                                         ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner
                                         ?.significantDeelVanDeAchternaam
                                         ?: "",
+                    ingangsdatumHuwelijk = persoon.huwelijk
+                        ?.firstOrNull()
+                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }
+                        ?.datHuwelijkssluiting
+                        ?: "",
                 )
             }
 
