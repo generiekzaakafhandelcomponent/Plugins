@@ -128,7 +128,9 @@ class SuwinetBrpInfoService(
                     geslachtsAanduiding = persoon.geslacht,
                     geslachtsnaamPartner = persoon.huwelijk
                                         ?.firstOrNull()
-                                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner?.significantDeelVanDeAchternaam,
+                                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner
+                                        ?.significantDeelVanDeAchternaam
+                                        ?: "",
                 )
             }
 
