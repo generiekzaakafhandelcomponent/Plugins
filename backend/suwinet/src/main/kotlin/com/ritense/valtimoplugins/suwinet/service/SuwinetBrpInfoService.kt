@@ -108,7 +108,7 @@ class SuwinetBrpInfoService(
 
                 PersoonDto(
                     bsn = persoon.burgerservicenr,
-                    aNummer = persoon.aNr,
+                    anummer = persoon.aNr,
                     voornamen = persoon.voornamen ?: "",
                     achternaam = persoon.significantDeelVanDeAchternaam ?: "",
                     voorvoegsel = persoon.voorvoegsel ?: "",

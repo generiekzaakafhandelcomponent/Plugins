@@ -21,7 +21,7 @@ data class PersoonDto(
     val datumOverlijden: String? = "",
 
     val codeBrpGegevensGeheim:  BrpGegevensGeheim?,
-    val aNummer: String? = "",
+    val anummer: String? = "",
 
     val naamgebruik: String? = "",
     val geslachtsAanduiding: String? = "",
