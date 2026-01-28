@@ -121,21 +121,22 @@ class SuwinetBrpInfoService(
                     kinderenBsns = getKinderen(persoon.kind),
                     partnerBsn = getPartnerBsn(persoon.huwelijk),
                     datumOverlijden = dateTimeService.fromSuwinetToDateString(persoon.overlijden?.datOverlijden),
-                    codeBrpGegevensGeheim = persoon.cdBrpGegevensGeheim?.let{
+                    codeBrpGegevensGeheim = persoon.cdBrpGegevensGeheim?.let {
                         BrpGegevensGeheim.fromCode(persoon.cdBrpGegevensGeheim)
                     },
                     naamgebruik = persoon.aanduidingNaamgebruik,
                     geslachtsAanduiding = persoon.geslacht,
                     geslachtsnaamPartner = persoon.huwelijk
-                                        ?.firstOrNull()
-                                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner
-                                        ?.significantDeelVanDeAchternaam
-                                        ?: "",
-                    ingangsdatumHuwelijk = persoon.huwelijk
                         ?.firstOrNull()
-                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }
-                        ?.datHuwelijkssluiting
+                        ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }?.partner
+                        ?.significantDeelVanDeAchternaam
                         ?: "",
+                    ingangsdatumHuwelijk = dateTimeService.fromSuwinetToDateString(
+                        persoon.huwelijk
+                            ?.firstOrNull()
+                            ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }
+                            ?.datHuwelijkssluiting
+                    )
                 )
             }
 
