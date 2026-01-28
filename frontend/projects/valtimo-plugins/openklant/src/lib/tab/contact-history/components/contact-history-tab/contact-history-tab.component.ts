@@ -22,7 +22,7 @@ import { ProcessPollingService } from "../../services/process-polling.service";
 import { ContactHistoryService } from "../../services/contact-history.service";
 import { getOutcomeTranslationKey } from "../../presenters/contact-outcome.presenter";
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { ConfigService } from "@valtimo/config";
+import { ConfigService } from "@valtimo/shared";
 import { HttpBackend, HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 

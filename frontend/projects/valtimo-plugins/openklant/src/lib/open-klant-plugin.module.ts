@@ -6,11 +6,8 @@ import { FormModule, InputModule } from "@valtimo/components";
 import { PluginTranslatePipeModule } from "@valtimo/plugin";
 
 @NgModule({
-  declarations: [
-    OpenKlantPluginConfigurationComponent,
-    StoreContactInfoComponent,
-  ],
-  imports: [CommonModule, InputModule, PluginTranslatePipeModule, FormModule],
+  declarations: [],
+  imports: [CommonModule, InputModule, PluginTranslatePipeModule, FormModule, OpenKlantPluginConfigurationComponent, StoreContactInfoComponent],
   exports: [OpenKlantPluginConfigurationComponent, StoreContactInfoComponent],
 })
-export class OpenKlantPluginModule {}
+export class OpenKlantPluginModule { }
