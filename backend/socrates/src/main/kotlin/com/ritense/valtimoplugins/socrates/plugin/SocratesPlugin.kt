@@ -17,7 +17,7 @@
 package com.ritense.valtimoplugins.socrates.plugin
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
@@ -28,11 +28,10 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
 import com.ritense.valtimoplugins.socrates.error.SocratesError
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
-
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
-import java.net.URI
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import java.net.URI
 
 @Plugin(
     key = "socrates",
@@ -69,15 +68,15 @@ open class SocratesPlugin(
         logger.debug { "dienst-aanmaken start" }
 
         try {
-            var requestString = execution.getVariable(inputProcessVariable) as String
-            var request = mapper.readValue<LoBehandeld>(requestString)
+            val input = execution.getVariable(inputProcessVariable)
+            val request = mapper.convertValue<LoBehandeld>(input)
 
-            var respons  = socratesClient.dienstAanmaken(zaakId, request)
+            val respons  = socratesClient.dienstAanmaken(zaakId, request)
 
             execution.setVariable(processVariableName, respons)
         } catch (e: Exception) {
             if(e is SocratesError) {
-                throw BpmnError(e.errorCode)
+                throw BpmnError(e.errorCode, e.message)
             }
             else {
                 throw e
