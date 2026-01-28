@@ -80,7 +80,7 @@ class SocratesClient(
                 throw SocratesError(e,  msg,"SOCRATES_ERROR")
             }
             else if (e.cause is HttpClientErrorException) {
-                var excep = e.cause as HttpClientErrorException
+                val excep = e.cause as HttpClientErrorException
                 val errorResponse = excep.getResponseBodyAs(ErrorResponse::class.java)
                 logger.error(e) { "error request to Socrates" }
                 throw SocratesError(e, errorResponse,"SOCRATES_ERROR")
