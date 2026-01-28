@@ -24,6 +24,7 @@ import {LayoutModule, TranslationManagementModule} from '@valtimo/layout';
 import {TaskModule} from '@valtimo/task';
 import {environment} from '../environments/environment';
 import {SecurityModule} from '@valtimo/security';
+import {BuildingBlockManagementModule} from '@valtimo/building-block-management';
 import {
     BpmnJsDiagramModule,
     enableCustomFormioComponents,
@@ -136,6 +137,7 @@ export function tabsFactory() {
         BootstrapModule,
         BpmnJsDiagramModule,
         BrowserModule,
+        BuildingBlockManagementModule,
         CaseManagementModule,
         CaseMigrationModule,
         CaseModule.forRoot(tabsFactory),

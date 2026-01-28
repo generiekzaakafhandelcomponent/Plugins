@@ -27,6 +27,7 @@ val kotlinLoggingVersion: String by project
 val mockitoKotlinVersion: String by project
 val flyingSaucerPdfVersion: String by project
 val apacheCommonsCsvVersion: String by project
+val valtimoVersion: String by project
 
 dependencies {
     implementation("com.ritense.valtimo:case")
@@ -49,6 +50,7 @@ dependencies {
     implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
     // Testing
+    testImplementation("com.ritense.valtimo:building-block:$valtimoVersion")
     testImplementation("com.ritense.valtimo:local-resource")
     testImplementation("com.ritense.valtimo:test-utils-common")
 
