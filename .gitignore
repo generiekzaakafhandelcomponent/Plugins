@@ -163,6 +163,8 @@ Desktop.ini
 **/*.d.ts
 /.env.properties
 dist
+backend/.idea/
+frontend/package-lock.json
 .kotlin
 .idea
 migration

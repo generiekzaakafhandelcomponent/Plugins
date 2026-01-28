@@ -1,0 +1,63 @@
+<div
+  [ngClass]="{ 
+    'contact-history-spinner': true, 
+    'refresh-container': true, 
+    'no-height': !isLoading 
+  }"
+>
+  <span class="loading-description mr-2">{{
+    isLoading ? "Verversen..." : "Opgehaald"
+  }}</span>
+  <cds-loading
+    [size]="'sm'"
+    [isActive]="isLoading"
+    [overlay]="false"
+  ></cds-loading>
+</div>
+
+<section
+  class="valtimo-timeline ng-star-inserted"
+  *ngIf="contactHistory?.length > 0"
+>
+  <ul class="timeline mb-0 py-5">
+    <li
+      *ngFor="let customerContact of contactHistory"
+      class="timeline-item"
+      [ngClass]="{
+        failed: customerContact.outcome === ContactOutcome.FAILURE
+      }"
+    >
+      <div class="timeline-date">
+        <p>{{ formatAsDate(customerContact.occurredAt) }}</p>
+        <p>{{ formatAsTime(customerContact.occurredAt) }}</p>
+      </div>
+
+      <div class="timeline-content">
+        <p class="timeline-author">
+          <em class="klantcontact-number">{{ customerContact.id }}:</em>
+          {{ customerContact.channel | titlecase }} -
+          {{ getOutcomeTranslationKey(customerContact.outcome) | translate }}
+        </p>
+
+        <details>
+          <summary>{{ customerContact.subject }}</summary>
+          <p>{{ customerContact.content }}</p>
+        </details>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<valtimo-no-results
+  *ngIf="contactHistory === null"
+  [title]="'contactHistory.messages.noProperty.title' | translate"
+  [description]="'contactHistory.messages.noProperty.description' | translate"
+  illustration="valtimo-layout/img/emptystate-no-result.svg"
+></valtimo-no-results>
+
+<valtimo-no-results
+  *ngIf="contactHistory?.length === 0"
+  [title]="'contactHistory.messages.emptyHistory.title' | translate"
+  [description]="'contactHistory.messages.emptyHistory.description' | translate"
+  illustration="valtimo-layout/img/emptystate-no-result.svg"
+></valtimo-no-results>
