@@ -467,12 +467,12 @@ class TemplateService(
         }
     }
 
-    private fun streamDocuments(caseDefinitionKey: String?): Stream<JsonSchemaDocument> {
-        return if (caseDefinitionKey == null) {
+    private fun streamDocuments(blueprintKey: String?): Stream<JsonSchemaDocument> {
+        return if (blueprintKey == null) {
             emptyList<JsonSchemaDocument>().stream()
         } else {
             jsonSchemaDocumentRepositoryStreaming
-                .streamAllByCaseDefinitionKey(caseDefinitionKey)
+                .streamAllByBluePrintKey(blueprintKey)
         }
     }
 
