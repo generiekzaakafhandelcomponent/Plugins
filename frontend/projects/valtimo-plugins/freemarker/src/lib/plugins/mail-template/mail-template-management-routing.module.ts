@@ -31,6 +31,16 @@ const routes: Routes = [
             customPageTitle: true,
         },
     },
+    {
+        path: 'building-block-management/building-block/:buildingBlockDefinitionKey/version/:buildingBlockDefinitionVersionTag/mail-template/:templateKey',
+        component: MailTemplateEditorComponent,
+        canActivate: [AuthGuardService],
+        data: {
+            title: 'Mail Template Editor',
+            templates: [ROLE_ADMIN],
+            customPageTitle: true,
+        },
+    },
 ];
 
 @NgModule({

@@ -39,13 +39,14 @@ import {
     NotificationModule,
     TabsModule,
 } from 'carbon-components-angular';
-import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
+import {BUILDING_BLOCK_MANAGEMENT_TAB_TOKEN, CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {DocumentTemplateListComponent} from './components/document-template-list/document-template-list.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TemplateManagementRoutingModule} from './document-generator-management-routing.module';
 import {GenerateCsvComponent} from './components/generate-csv/generate-csv.component';
 import {GeneratePdfComponent} from './components/generate-pdf/generate-pdf.component';
+import {MailTemplateListComponent} from '../mail-template/components/mail-template-list/mail-template-list.component';
 
 @NgModule({
     declarations: [
@@ -82,14 +83,24 @@ import {GeneratePdfComponent} from './components/generate-pdf/generate-pdf.compo
         GeneratePdfComponent,
     ],
     providers: [
-        {
-            provide: CASE_MANAGEMENT_TAB_TOKEN,
-            useValue: {
-                translationKey: 'document-template',
-                component: DocumentTemplateListComponent,
-            },
-            multi: true,
-        }
+      {
+        provide: CASE_MANAGEMENT_TAB_TOKEN,
+        useValue: {
+          translationKey: 'Document template',
+          component: DocumentTemplateListComponent,
+          tabRoute: 'document-template',
+        },
+        multi: true,
+      },
+      {
+        provide: BUILDING_BLOCK_MANAGEMENT_TAB_TOKEN,
+        useValue: {
+          translationKey: 'Mail template',
+          component: MailTemplateListComponent,
+          tabRoute: 'mail-template',
+        },
+        multi: true,
+      }
     ]
 })
 export class DocumentGeneratorPluginModule {

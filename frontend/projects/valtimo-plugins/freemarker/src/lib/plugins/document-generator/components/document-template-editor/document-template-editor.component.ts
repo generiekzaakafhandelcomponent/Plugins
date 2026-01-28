@@ -15,7 +15,7 @@
  */
 
 import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, combineLatest, filter, map, Observable, of, startWith, switchMap, take, tap} from 'rxjs';
+import {BehaviorSubject, combineLatest, combineLatestWith, filter, map, merge, Observable, of, startWith, Subject, switchMap, take, takeUntil, tap} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {
     BreadcrumbService,
@@ -29,7 +29,13 @@ import {ButtonModule, DialogModule, NotificationService, TabsModule} from 'carbo
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse, TemplateType} from '../../../../models';
-import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
+import {
+  BuildingBlockManagementParams,
+  CaseManagementParams,
+  EnvironmentService,
+  getBuildingBlockManagementRouteParams,
+  getCaseManagementRouteParams
+} from '@valtimo/shared';
 import {CommonModule} from '@angular/common';
 import {DocumentTemplateDeleteModalComponent} from '../document-template-delete-modal/document-template-delete-modal.component';
 
@@ -59,9 +65,19 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
     public readonly moreDisabled$ = new BehaviorSubject<boolean>(true);
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
+    private readonly _destroy$ = new Subject<void>();
 
     private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
         filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
+    );
+
+    private readonly _buildingBlockDefinitionId$: Observable<BuildingBlockManagementParams> = getBuildingBlockManagementRouteParams(this.route).pipe(
+        filter((params: BuildingBlockManagementParams | undefined) => !!params?.buildingBlockDefinitionKey),
+    );
+
+    private readonly _params$: Observable<{case?: CaseManagementParams, buildingBlock?: BuildingBlockManagementParams}> = merge(
+        this._caseDefinitionId$.pipe(map(params => ({case: params}))),
+        this._buildingBlockDefinitionId$.pipe(map(params => ({buildingBlock: params})))
     );
 
     public readonly templateKey$: Observable<string> = combineLatest([this.route.params, this.route.parent.params]).pipe(
@@ -74,10 +90,10 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         filter(templateType => !!templateType)
     );
 
-    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
-        switchMap(caseDefinitionId => combineLatest([
+    public readonly readOnly$: Observable<boolean> = this._params$.pipe(
+        switchMap(({case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}) => combineLatest([
                 this.environmentService.canUpdateGlobalConfiguration(),
-                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
+                this.isFinal(caseDefinitionId, buildingBlockDefinitionId)
             ]).pipe(
                 map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
                 startWith(true)
@@ -109,6 +125,8 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         this.pageTitleService.enableReset();
         this.breadcrumbService.clearThirdBreadcrumb();
         this.breadcrumbService.clearFourthBreadcrumb();
+        this._destroy$.next();
+        this._destroy$.complete();
     }
 
     public onValid(valid: boolean): void {
@@ -124,19 +142,22 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         this.disableSave();
         this.disableMore();
 
-        combineLatest([this.updatedModelValue$, this._caseDefinitionId$, this.templateKey$, this.templateType$]).pipe(
-            switchMap(([updatedModelValue, caseDefinitionId, templateKey, templateType]) =>
+        combineLatest([this.updatedModelValue$, this._params$, this.templateKey$, this.templateType$]).pipe(
+            take(1),
+            switchMap(([updatedModelValue, {case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}, templateKey, templateType]) =>
                 this.templateService.updateTemplate(
                     {
                         key: templateKey,
-                        caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
-                        caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                        caseDefinitionKey: caseDefinitionId?.caseDefinitionKey,
+                        caseDefinitionVersionTag: caseDefinitionId?.caseDefinitionVersionTag,
+                        buildingBlockDefinitionKey: buildingBlockDefinitionId?.buildingBlockDefinitionKey,
+                        buildingBlockDefinitionVersionTag: buildingBlockDefinitionId?.buildingBlockDefinitionVersionTag,
                         type: templateType,
                         content: updatedModelValue,
                     }
                 )
             ),
-            take(1)
+            takeUntil(this._destroy$)
         ).subscribe({
             next: result => {
                 this.enableMore();
@@ -155,20 +176,31 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
     }
 
     public onDelete(templates: Array<any>): void {
-        console.log(templates);
         this.disableEditor();
         this.disableSave();
         this.disableMore();
 
-        this._caseDefinitionId$.pipe(take(1)).subscribe(caseDefinitionId =>
-            this.templateService.deleteTemplates({
-                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
-                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
-                templates
-            }).pipe(take(1)).subscribe(_ =>
-                this.router.navigate([`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`])
-            )
-        );
+        this._params$.pipe(
+            take(1),
+            switchMap(({case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}) => {
+                if (caseDefinitionId?.caseDefinitionKey) {
+                    return this.templateService.deleteTemplates({
+                        caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
+                        caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                        templates
+                    }).pipe(map(() => `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`));
+                } else {
+                    return this.templateService.deleteTemplates({
+                        buildingBlockDefinitionKey: buildingBlockDefinitionId.buildingBlockDefinitionKey,
+                        buildingBlockDefinitionVersionTag: buildingBlockDefinitionId.buildingBlockDefinitionVersionTag,
+                        templates
+                    }).pipe(map(() => `/building-block-management/building-block/${buildingBlockDefinitionId.buildingBlockDefinitionKey}/version/${buildingBlockDefinitionId.buildingBlockDefinitionVersionTag}/document-template`));
+                }
+            }),
+            takeUntil(this._destroy$)
+        ).subscribe(targetUrl => {
+            this.router.navigate([targetUrl]);
+        });
     }
 
     public showDeleteModal(): void {
@@ -176,13 +208,20 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
     }
 
     private loadTemplate(): void {
-        combineLatest([this._caseDefinitionId$, this.templateKey$, this.templateType$]).pipe(
-            tap(([_, key, type]) => {
-                this.pageTitleService.setCustomPageTitle(`Document: ${key}.${type}`, true);
+        this._params$.pipe(
+            combineLatestWith(this.templateKey$, this.templateType$),
+            switchMap(([{case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}, key, type]) => {
+                return this.templateService.getTemplate(
+                    caseDefinitionId,
+                    buildingBlockDefinitionId,
+                    type,
+                    key
+                ).pipe(map(result => ({result, key, type})));
             }),
-            switchMap(([caseDefinitionId, key, type]) => this.templateService.getTemplate(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag, type, key)),
             take(1),
-        ).subscribe(result => {
+            takeUntil(this._destroy$)
+        ).subscribe(({result, key, type}) => {
+            this.pageTitleService.setCustomPageTitle(`Document: ${key}.${type}`, true);
             this.enableMore();
             this.enableSave();
             this.enableEditor();
@@ -256,18 +295,35 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         }, 100);
     }
 
+    private isFinal(caseDefinitionId: CaseManagementParams | undefined, buildingBlockDefinitionId: BuildingBlockManagementParams | undefined): Observable<boolean> {
+        return this.templateService.isFinal(caseDefinitionId, buildingBlockDefinitionId);
+    }
+
     private initBreadcrumb(): void {
-        this._caseDefinitionId$.subscribe(caseDefinitionId => {
-            this.breadcrumbService.setThirdBreadcrumb({
-                route: [`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}`],
-                content: `${caseDefinitionId.caseDefinitionKey}:${caseDefinitionId.caseDefinitionVersionTag}`,
-                href: `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}`,
-            });
-            this.breadcrumbService.setFourthBreadcrumb({
-                route: [`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`],
-                content: 'Document template',
-                href: `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`,
-            });
+        this._params$.pipe(takeUntil(this._destroy$)).subscribe(({case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}) => {
+            if (caseDefinitionId) {
+                this.breadcrumbService.setThirdBreadcrumb({
+                    route: [`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}`],
+                    content: `${caseDefinitionId.caseDefinitionKey}:${caseDefinitionId.caseDefinitionVersionTag}`,
+                    href: `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}`,
+                });
+                this.breadcrumbService.setFourthBreadcrumb({
+                    route: [`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`],
+                    content: 'Document template',
+                    href: `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`,
+                });
+            } else if (buildingBlockDefinitionId) {
+                this.breadcrumbService.setThirdBreadcrumb({
+                    route: [`/building-block-management/building-block/${buildingBlockDefinitionId.buildingBlockDefinitionKey}/version/${buildingBlockDefinitionId.buildingBlockDefinitionVersionTag}`],
+                    content: `${buildingBlockDefinitionId.buildingBlockDefinitionKey}:${buildingBlockDefinitionId.buildingBlockDefinitionVersionTag}`,
+                    href: `/building-block-management/building-block/${buildingBlockDefinitionId.buildingBlockDefinitionKey}/version/${buildingBlockDefinitionId.buildingBlockDefinitionVersionTag}`,
+                });
+                this.breadcrumbService.setFourthBreadcrumb({
+                    route: [`/building-block-management/building-block/${buildingBlockDefinitionId.buildingBlockDefinitionKey}/version/${buildingBlockDefinitionId.buildingBlockDefinitionVersionTag}/document-template`],
+                    content: 'Document template',
+                    href: `/building-block-management/building-block/${buildingBlockDefinitionId.buildingBlockDefinitionKey}/version/${buildingBlockDefinitionId.buildingBlockDefinitionVersionTag}/document-template`,
+                });
+            }
         });
     }
 

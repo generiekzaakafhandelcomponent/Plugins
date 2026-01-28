@@ -41,7 +41,7 @@ import {
     NotificationModule, TabsModule,
 }
 from 'carbon-components-angular';
-import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
+import {BUILDING_BLOCK_MANAGEMENT_TAB_TOKEN, CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {MailTemplateListComponent} from './components/mail-template-list/mail-template-list.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -85,14 +85,24 @@ import {MailTemplateDeleteModalComponent} from './components/mail-template-delet
         GenerateMailContentComponent,
     ],
     providers: [
-        {
-            provide: CASE_MANAGEMENT_TAB_TOKEN,
-            useValue: {
-                translationKey: 'mail-template',
-                component: MailTemplateListComponent,
-            },
-            multi: true,
-        }
+      {
+        provide: CASE_MANAGEMENT_TAB_TOKEN,
+        useValue: {
+          translationKey: 'Mail template',
+          component: MailTemplateListComponent,
+          tabRoute: 'mail-template',
+        },
+        multi: true,
+      },
+      {
+        provide: BUILDING_BLOCK_MANAGEMENT_TAB_TOKEN,
+        useValue: {
+          translationKey: 'Mail template',
+          component: MailTemplateListComponent,
+          tabRoute: 'mail-template',
+        },
+        multi: true,
+      }
     ]
 })
 export class MailTemplatePluginModule {

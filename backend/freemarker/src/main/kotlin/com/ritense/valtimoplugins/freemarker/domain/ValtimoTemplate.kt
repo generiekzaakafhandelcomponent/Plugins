@@ -16,6 +16,7 @@
 
 package com.ritense.valtimoplugins.freemarker.domain
 
+import com.ritense.valtimo.contract.buildingblock.BuildingBlockDefinitionId
 import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import io.hypersistence.utils.hibernate.type.json.JsonType
 import jakarta.persistence.Column
@@ -40,6 +41,9 @@ class ValtimoTemplate(
     @Embedded
     val caseDefinitionId: CaseDefinitionId? = null,
 
+    @Embedded
+    val buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
+
     @Column(name = "template_type")
     val type: String,
 
@@ -51,5 +55,5 @@ class ValtimoTemplate(
     val content: String = ""
 ) {
 
-    override fun toString(): String = "$caseDefinitionId/$type/$key"
+    override fun toString(): String = "$caseDefinitionId/$buildingBlockDefinitionId/$type/$key"
 }

@@ -56,6 +56,8 @@ class TemplateCaseEventListener(
     @RunWithoutAuthorization
     @EventListener(CaseDefinitionPreDeleteEvent::class)
     fun handleCaseDefinitionPreDeleteEvent(event: CaseDefinitionPreDeleteEvent) {
-        service.deleteTemplatesByCaseDefinitionId(event.caseDefinitionId)
+        service.deleteTemplatesByCaseDefinitionId(
+            caseDefinitionId = event.caseDefinitionId,
+        )
     }
 }

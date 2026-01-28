@@ -39,12 +39,13 @@ import {
     NotificationModule,
     TabsModule,
 } from 'carbon-components-angular';
-import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
+import {BUILDING_BLOCK_MANAGEMENT_TAB_TOKEN, CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {TextTemplateListComponent} from './components/text-template-list/text-template-list.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TemplateManagementRoutingModule} from './text-template-management-routing.module';
 import {GenerateTextFileComponent} from './components/generate-text-file/generate-text-file.component';
+import {MailTemplateListComponent} from '../mail-template/components/mail-template-list/mail-template-list.component';
 
 @NgModule({
     declarations: [
@@ -79,14 +80,24 @@ import {GenerateTextFileComponent} from './components/generate-text-file/generat
         GenerateTextFileComponent,
     ],
     providers: [
-        {
-            provide: CASE_MANAGEMENT_TAB_TOKEN,
-            useValue: {
-                translationKey: 'text-template',
-                component: TextTemplateListComponent,
-            },
-            multi: true,
-        }
+      {
+        provide: CASE_MANAGEMENT_TAB_TOKEN,
+        useValue: {
+          translationKey: 'Text template',
+          component: TextTemplateListComponent,
+          tabRoute: 'text-template',
+        },
+        multi: true,
+      },
+      {
+        provide: BUILDING_BLOCK_MANAGEMENT_TAB_TOKEN,
+        useValue: {
+          translationKey: 'Text template',
+          component: MailTemplateListComponent,
+          tabRoute: 'text-template',
+        },
+        multi: true,
+      }
     ]
 })
 export class TextTemplatePluginModule {
