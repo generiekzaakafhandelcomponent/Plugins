@@ -1,8 +1,8 @@
 name: Ritense PR examinator
 
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request:
+    types: [opened]
 
 jobs:
   PR_Ritense:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write
       issues: read
       id-token: write
     steps:
@@ -22,10 +22,11 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Run Claude Code
+      - name: PR Review with Progress Tracking
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: "/review-pr REPO: ${{ github.repository }} PR_NUMBER: ${{ github.event.pull_request.number }}"
           claude_args: "--model claude-sonnet-4-5-20250929"
 
