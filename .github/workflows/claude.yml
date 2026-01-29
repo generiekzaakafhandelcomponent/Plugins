@@ -1,0 +1,31 @@
+name: Ritense PR examinator
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  PR_Ritense:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@ritense')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@ritense')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@ritense')) ||
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: "--model claude-sonnet-4-5-20250929"
+
