@@ -1,7 +1,7 @@
 package com.ritense.valtimoplugins.openklant.resolver
 
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
-import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
+import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
@@ -16,7 +16,7 @@ import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
 import io.mockk.verify
-import org.camunda.bpm.engine.delegate.VariableScope
+import org.operaton.bpm.engine.delegate.VariableScope
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -177,7 +177,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
         every {
             processDocumentService.getDocument(
-                CamundaProcessInstanceId(processInstanceId),
+                OperatonProcessInstanceId(processInstanceId),
                 variableScope,
             )
         } returns mockDocument
@@ -215,7 +215,7 @@ class OpenKlantValueResolverFactoryTest {
 
         // Assert
         assertEquals(reflectedResult, result)
-        verify { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) }
+        verify { processDocumentService.getDocument(OperatonProcessInstanceId(processInstanceId), variableScope) }
         verify { zaakDocumentService.getZaakByDocumentIdOrThrow(documentId) }
         coVerify { openKlantService.getAllKlantcontacten(any()) }
     }
@@ -231,7 +231,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
         every {
             processDocumentService.getDocument(
-                CamundaProcessInstanceId(processInstanceId),
+                OperatonProcessInstanceId(processInstanceId),
                 variableScope,
             )
         } returns mockDocument
@@ -281,7 +281,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
         every {
             processDocumentService.getDocument(
-                CamundaProcessInstanceId(processInstanceId),
+                OperatonProcessInstanceId(processInstanceId),
                 variableScope,
             )
         } returns mockDocument
