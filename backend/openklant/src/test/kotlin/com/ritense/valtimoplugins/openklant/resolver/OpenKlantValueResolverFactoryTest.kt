@@ -1,26 +1,33 @@
 package com.ritense.valtimoplugins.openklant.resolver
 
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
-import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
+import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.zakenapi.domain.ZaakResponse
 import com.ritense.zakenapi.service.ZaakDocumentService
-import io.mockk.*
+import io.mockk.clearAllMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.junit5.MockKExtension
-import org.camunda.bpm.engine.delegate.VariableScope
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import io.mockk.mockk
+import io.mockk.verify
+import org.operaton.bpm.engine.delegate.VariableScope
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import java.net.URI
-import java.util.*
+import java.util.UUID
 
 @ExtendWith(MockKExtension::class)
 class OpenKlantValueResolverFactoryTest {
-
     private lateinit var factory: OpenKlantValueResolverFactory
     private lateinit var processDocumentService: ProcessDocumentService
     private lateinit var zaakDocumentService: ZaakDocumentService
@@ -38,13 +45,14 @@ class OpenKlantValueResolverFactoryTest {
         variableScope = mockk()
         properties = OpenKlantProperties(URI.create("https://test.klantinteracties.org"), "openklant-token")
 
-        factory = OpenKlantValueResolverFactory(
-            processDocumentService = processDocumentService,
-            zaakDocumentService = zaakDocumentService,
-            openKlantService = openKlantService,
-            reflectionUtil = reflectionUtil,
-            properties = properties,
-        )
+        factory =
+            OpenKlantValueResolverFactory(
+                processDocumentService = processDocumentService,
+                zaakDocumentService = zaakDocumentService,
+                openKlantService = openKlantService,
+                reflectionUtil = reflectionUtil,
+                properties = properties,
+            )
     }
 
     @AfterEach
@@ -66,7 +74,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockZaak.uuid } returns zaakUuid
         every { zaakDocumentService.getZaakByDocumentIdOrThrow(UUID.fromString(documentId)) } returns mockZaak
 
-        val klantContact = mockk<KlantContact>()
+        val klantContact = mockk<Klantcontact>()
         every { klantContact.uuid } returns "test-uuid"
         every { klantContact.url } returns "test-url"
         every { klantContact.kanaal } returns "test-kanaal"
@@ -84,9 +92,9 @@ class OpenKlantValueResolverFactoryTest {
         every { klantContact.plaatsgevondenOp } returns null
         every { klantContact.expand } returns null
 
-        val expectedKlantContacten = listOf(klantContact)
+        val expectedKlantcontacten = listOf(klantContact)
         val reflectedResult = mapOf("reflected" to "data")
-        coEvery { openKlantService.getAllKlantContacten(any()) } returns expectedKlantContacten
+        coEvery { openKlantService.getAllKlantcontacten(any()) } returns expectedKlantcontacten
         every { reflectionUtil.deepReflectedMapOf(any()) } returns reflectedResult
 
         // Act
@@ -96,7 +104,7 @@ class OpenKlantValueResolverFactoryTest {
         // Assert
         assertEquals(reflectedResult, result)
         verify { zaakDocumentService.getZaakByDocumentIdOrThrow(UUID.fromString(documentId)) }
-        coVerify { openKlantService.getAllKlantContacten(any()) }
+        coVerify { openKlantService.getAllKlantcontacten(any()) }
         verify { reflectionUtil.deepReflectedMapOf(any()) }
     }
 
@@ -109,7 +117,7 @@ class OpenKlantValueResolverFactoryTest {
         every { mockZaak.uuid } returns zaakUuid
         every { zaakDocumentService.getZaakByDocumentIdOrThrow(UUID.fromString(documentId)) } returns mockZaak
 
-        val klantContact = mockk<KlantContact>()
+        val klantContact = mockk<Klantcontact>()
         every { klantContact.uuid } returns "test-uuid"
         every { klantContact.url } returns "test-url"
         every { klantContact.kanaal } returns "test-kanaal"
@@ -127,9 +135,9 @@ class OpenKlantValueResolverFactoryTest {
         every { klantContact.plaatsgevondenOp } returns null
         every { klantContact.expand } returns null
 
-        val expectedKlantContacten = listOf(klantContact)
+        val expectedKlantcontacten = listOf(klantContact)
         val reflectedResult = mapOf("reflected" to "data")
-        coEvery { openKlantService.getAllKlantContacten(any()) } returns expectedKlantContacten
+        coEvery { openKlantService.getAllKlantcontacten(any()) } returns expectedKlantcontacten
         every { reflectionUtil.deepReflectedMapOf(any()) } returns reflectedResult
 
         // Act
@@ -151,10 +159,11 @@ class OpenKlantValueResolverFactoryTest {
 
         // Act & Assert
         val resolver = factory.createResolver(documentId)
-        val exception = assertThrows<IllegalArgumentException> {
-            resolver.apply("unknownValue")
-        }
-        assertEquals("Unknown openklant column with name: unknownValue", exception.message)
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                resolver.apply("unknownValue")
+            }
+        assertEquals("Unknown Open Klant column with name: unknownValue", exception.message)
     }
 
     @Test
@@ -166,13 +175,18 @@ class OpenKlantValueResolverFactoryTest {
 
         val mockDocument = mockk<com.ritense.document.domain.Document>()
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
-        every { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) } returns mockDocument
+        every {
+            processDocumentService.getDocument(
+                OperatonProcessInstanceId(processInstanceId),
+                variableScope,
+            )
+        } returns mockDocument
 
         val mockZaak = mockk<ZaakResponse>()
         every { mockZaak.uuid } returns zaakUuid
         every { zaakDocumentService.getZaakByDocumentIdOrThrow(documentId) } returns mockZaak
 
-        val klantContact = mockk<KlantContact>()
+        val klantContact = mockk<Klantcontact>()
         every { klantContact.uuid } returns "test-uuid"
         every { klantContact.url } returns "test-url"
         every { klantContact.kanaal } returns "test-kanaal"
@@ -190,9 +204,9 @@ class OpenKlantValueResolverFactoryTest {
         every { klantContact.plaatsgevondenOp } returns null
         every { klantContact.expand } returns null
 
-        val expectedKlantContacten = listOf(klantContact)
+        val expectedKlantcontacten = listOf(klantContact)
         val reflectedResult = mapOf("reflected" to "data")
-        coEvery { openKlantService.getAllKlantContacten(any()) } returns expectedKlantContacten
+        coEvery { openKlantService.getAllKlantcontacten(any()) } returns expectedKlantcontacten
         every { reflectionUtil.deepReflectedMapOf(any()) } returns reflectedResult
 
         // Act
@@ -201,9 +215,9 @@ class OpenKlantValueResolverFactoryTest {
 
         // Assert
         assertEquals(reflectedResult, result)
-        verify { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) }
+        verify { processDocumentService.getDocument(OperatonProcessInstanceId(processInstanceId), variableScope) }
         verify { zaakDocumentService.getZaakByDocumentIdOrThrow(documentId) }
-        coVerify { openKlantService.getAllKlantContacten(any()) }
+        coVerify { openKlantService.getAllKlantcontacten(any()) }
     }
 
     @Test
@@ -215,13 +229,18 @@ class OpenKlantValueResolverFactoryTest {
 
         val mockDocument = mockk<com.ritense.document.domain.Document>()
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
-        every { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) } returns mockDocument
+        every {
+            processDocumentService.getDocument(
+                OperatonProcessInstanceId(processInstanceId),
+                variableScope,
+            )
+        } returns mockDocument
 
         val mockZaak = mockk<ZaakResponse>()
         every { mockZaak.uuid } returns zaakUuid
         every { zaakDocumentService.getZaakByDocumentIdOrThrow(documentId) } returns mockZaak
 
-        val klantContact = mockk<KlantContact>()
+        val klantContact = mockk<Klantcontact>()
         every { klantContact.uuid } returns "test-uuid"
         every { klantContact.url } returns "test-url"
         every { klantContact.kanaal } returns "test-kanaal"
@@ -239,9 +258,9 @@ class OpenKlantValueResolverFactoryTest {
         every { klantContact.plaatsgevondenOp } returns null
         every { klantContact.expand } returns null
 
-        val expectedKlantContacten = listOf(klantContact)
+        val expectedKlantcontacten = listOf(klantContact)
         val reflectedResult = mapOf("reflected" to "data")
-        coEvery { openKlantService.getAllKlantContacten(any()) } returns expectedKlantContacten
+        coEvery { openKlantService.getAllKlantcontacten(any()) } returns expectedKlantcontacten
         every { reflectionUtil.deepReflectedMapOf(any()) } returns reflectedResult
 
         // Act
@@ -260,7 +279,12 @@ class OpenKlantValueResolverFactoryTest {
 
         val mockDocument = mockk<com.ritense.document.domain.Document>()
         every { mockDocument.id() } returns JsonSchemaDocumentId.newId(documentId)
-        every { processDocumentService.getDocument(CamundaProcessInstanceId(processInstanceId), variableScope) } returns mockDocument
+        every {
+            processDocumentService.getDocument(
+                OperatonProcessInstanceId(processInstanceId),
+                variableScope,
+            )
+        } returns mockDocument
 
         val mockZaak = mockk<ZaakResponse>()
         every { mockZaak.uuid } returns UUID.randomUUID()
@@ -268,10 +292,11 @@ class OpenKlantValueResolverFactoryTest {
 
         // Act & Assert
         val resolver = factory.createResolver(processInstanceId, variableScope)
-        val exception = assertThrows<IllegalArgumentException> {
-            resolver.apply("unknownValue")
-        }
-        assertEquals("Unknown openklant column with name: unknownValue", exception.message)
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                resolver.apply("unknownValue")
+            }
+        assertEquals("Unknown Open Klant column with name: unknownValue", exception.message)
     }
 
     @Test

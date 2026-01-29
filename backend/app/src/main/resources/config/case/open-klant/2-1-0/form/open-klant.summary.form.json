@@ -1,0 +1,41 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "selectedDemo",
+      "key": "selectedDemo",
+      "type": "hidden",
+      "input": true,
+      "tableView": false
+    },
+    {
+      "key": "bsn",
+      "type": "container",
+      "input": true,
+      "label": "BSN-nummer",
+      "components": [
+        {
+          "key": "html",
+          "tag": "div",
+          "type": "htmlelement",
+          "attrs": [
+            {
+              "attr": "",
+              "value": ""
+            }
+          ],
+          "input": false,
+          "label": "HTML",
+          "content": "<section>\n<p><span><strong>BSN-nummer: </strong>{{{ data?.bsn }}}</span></p>\n</section>\n",
+          "tableView": false,
+          "refreshOnChange": false,
+          "conditional": {
+            "when": "selectedDemo",
+            "eq": "contactgeschiedenisOphalenBsn",
+            "show": true
+          }
+        }
+      ]
+    }
+  ]
+}

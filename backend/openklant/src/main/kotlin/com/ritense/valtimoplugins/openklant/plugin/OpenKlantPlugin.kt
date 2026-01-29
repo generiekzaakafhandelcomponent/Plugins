@@ -7,7 +7,7 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
-import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
@@ -17,7 +17,7 @@ import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(
-    key = "openklant",
+    key = "open-klant",
     title = "Open Klant 2 Plugin",
     description = "Open Klant 2 plugin",
 )
@@ -33,9 +33,9 @@ class OpenKlantPlugin(
     lateinit var token: String
 
     @PluginAction(
-        key = "store-contactinfo",
+        key = "store-contact-info",
         title = "Store Contactinfo",
-        description = "Store contact info in OpenKlant",
+        description = "Store contact info in Open Klant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun storeContactInformation(
@@ -45,9 +45,9 @@ class OpenKlantPlugin(
         @PluginActionProperty inFix: String,
         @PluginActionProperty lastName: String,
         @PluginActionProperty emailAddress: String,
-        @PluginActionProperty caseNumber: String,
+        @PluginActionProperty caseUuid: String,
     ) = runBlocking {
-        logger.info { "Store Contactinformation in OpenKlant - ${execution.processBusinessKey}" }
+        logger.info { "Store Contactinformation in Open Klant - ${execution.processBusinessKey}" }
 
         val contactInformation =
             ContactInformation(
@@ -56,7 +56,7 @@ class OpenKlantPlugin(
                 inFix = inFix,
                 lastName = lastName,
                 emailAddress = emailAddress,
-                caseNumber = caseNumber,
+                caseNumber = caseUuid,
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)
@@ -65,27 +65,58 @@ class OpenKlantPlugin(
     }
 
     @PluginAction(
-        key = "get-contact-moments-by-case",
-        title = "Get contact moments by case UUID",
-        description = "Get contact moments by case UUID from OpenKlant",
+        key = "get-contact-moments-by-case-uuid",
+        title = "Get contact history by case UUID",
+        description = "Get contact history by case UUID from Open Klant",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun getContactMoments(
-        @PluginActionProperty objectUuid: String,
+        @PluginActionProperty caseUuid: String,
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
     ) = runBlocking {
-        logger.info { "Fetch Contactmomenten from OpenKlant by case UUID: $objectUuid - ${execution.processBusinessKey}" }
+        logger.info { "Fetching contact history from Open Klant by case UUID: $caseUuid - ${execution.processBusinessKey}" }
 
         val pluginProperties =
-            KlantContactOptions(
+            KlantcontactOptions(
                 klantinteractiesUrl,
                 token = token,
-                objectUuid = objectUuid,
+                objectUuid = caseUuid,
             )
 
-        fetchAndStoreKlantContacts(execution, resultPvName, pluginProperties)
+        fetchKlantcontactenAndStore(
+            execution = execution,
+            resultPvName = resultPvName,
+            pluginProperties = pluginProperties,
+        )
     }
+
+    @PluginAction(
+        key = "get-contact-moments-by-bsn",
+        title = "Get contact history by BSN",
+        description = "Get contact history by BSN from Open Klant. Queries the API using the 'partij-identificator object-ID' parameter.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun getContactMomentsByBsn(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultPvName: String,
+        execution: DelegateExecution,
+    ): Unit =
+        runBlocking {
+            logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
+            val pluginProperties =
+                KlantcontactOptions(
+                    klantinteractiesUrl,
+                    token = token,
+                    bsn = bsn,
+                )
+
+            fetchKlantcontactenAndStore(
+                execution = execution,
+                resultPvName = resultPvName,
+                pluginProperties = pluginProperties,
+            )
+        }
 
     @PluginAction(
         key = "register-klantcontact",
@@ -107,38 +138,39 @@ class OpenKlantPlugin(
         @PluginActionProperty voorvoegselAchternaam: String?,
         @PluginActionProperty achternaam: String?,
         execution: DelegateExecution,
-        ) = runBlocking {
-        logger.info { "Registering klantcontact: - ${execution.processBusinessKey}" }
+    ) = runBlocking {
+        logger.info { "Registering klantcontact - ${execution.processBusinessKey}" }
 
-        val klantcontactCreationInformation = KlantcontactCreationInformation(
-            kanaal = kanaal,
-            onderwerp = onderwerp,
-            inhoud = inhoud,
-            vertrouwelijk = vertrouwelijk.toBoolean(),
-            taal = taal,
-            plaatsgevondenOp = plaatsgevondenOp,
-            hasBetrokkene = hasBetrokkene,
-            partijUuid = partijUuid,
-            voorletters = voorletters,
-            voornaam = voornaam,
-            voorvoegselAchternaam = voorvoegselAchternaam,
-            achternaam = achternaam
-        )
+        val klantcontactCreationInformation =
+            KlantcontactCreationInformation(
+                kanaal = kanaal,
+                onderwerp = onderwerp,
+                inhoud = inhoud,
+                vertrouwelijk = vertrouwelijk.toBoolean(),
+                taal = taal,
+                plaatsgevondenOp = plaatsgevondenOp,
+                hasBetrokkene = hasBetrokkene,
+                partijUuid = partijUuid,
+                voorletters = voorletters,
+                voornaam = voornaam,
+                voorvoegselAchternaam = voorvoegselAchternaam,
+                achternaam = achternaam,
+            )
 
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
 
         openKlantPluginService.postKlantcontact(
             properties,
-            klantcontactCreationInformation
+            klantcontactCreationInformation,
         )
     }
 
-    private suspend fun fetchAndStoreKlantContacts(
+    private suspend fun fetchKlantcontactenAndStore(
         execution: DelegateExecution,
         resultPvName: String,
-        pluginProperties: KlantContactOptions,
+        pluginProperties: KlantcontactOptions,
     ) {
-        val klantcontacten = openKlantPluginService.getAllKlantContacten(pluginProperties)
+        val klantcontacten = openKlantPluginService.getAllKlantcontacten(pluginProperties)
         val contactenMaps = klantcontacten.map { reflectionUtil.deepReflectedMapOf(it) }
         execution.setVariable(resultPvName, contactenMaps)
     }

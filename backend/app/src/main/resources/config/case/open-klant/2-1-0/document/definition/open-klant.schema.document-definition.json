@@ -1,0 +1,69 @@
+{
+    "$id": "open-klant.schema",
+    "type": "object",
+    "title": "Open Klant",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "bsn": {
+            "type": "string",
+            "default": null
+        },
+        "contactgeschiedenis": {
+            "type": "array",
+            "items": {
+                "properties": {}
+            },
+            "default": []
+        },
+        "klantcontact": {
+            "type": "object",
+            "properties": {
+                "taal": {
+                    "type": "string"
+                },
+                "inhoud": {
+                    "type": "string"
+                },
+                "kanaal": {
+                    "type": "string"
+                },
+                "onderwerp": {
+                    "type": "string"
+                },
+                "betrokkene": {
+                    "type": "object",
+                    "properties": {
+                        "voornaam": {
+                            "type": "string"
+                        },
+                        "achternaam": {
+                            "type": "string"
+                        },
+                        "partijUuid": {
+                            "type": "string"
+                        },
+                        "voorletters": {
+                            "type": "string"
+                        },
+                        "voorvoegselAchternaam": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "hasBetrokkene": {
+                    "type": "boolean"
+                },
+                "vertrouwelijk": {
+                    "type": "boolean"
+                },
+                "plaatsgevondenOp": {
+                    "type": "string"
+                }
+            }
+        },
+        "selectedDemo": {
+            "type": "string"
+        }
+    },
+    "additionalProperties": false
+}
