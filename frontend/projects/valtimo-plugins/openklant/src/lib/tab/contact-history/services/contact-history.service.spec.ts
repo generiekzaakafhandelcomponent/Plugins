@@ -30,7 +30,7 @@ describe('ContactHistoryService', () => {
     });
 
     it('should return the contact history from the correct path in the document', done => {
-        service.load('mock-business-key').subscribe(contactHistoryResult => {
+        service.fetchFromDocument('mock-business-key').subscribe(contactHistoryResult => {
             expect(contactHistoryResult).toEqual([mapDtoToModel(mockKlantcontactDTO)]);
         });
         const getDocumentSpy = TestBed.inject(DocumentService).getDocument as jasmine.Spy;
