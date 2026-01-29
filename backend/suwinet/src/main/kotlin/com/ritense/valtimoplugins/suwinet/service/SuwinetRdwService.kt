@@ -129,10 +129,6 @@ class SuwinetRdwService(
     fun mapToSimpleMotorvoertuig(rdwAansprakelijke: KentekenInfoResponse.ClientSuwi.Aansprakelijke?, properties: List<String>): MotorvoertuigDynamicDto.MotorvoertuigDynamic {
 
         val rdwVoertuig = rdwAansprakelijke?.voertuig
-//        val soortVoertuig = rdwVoertuig?.cdSrtVoertuig?.let { SoortVoertuig.findByCode(it) }
-//        val soortVoertuigNode = objectMapper.createObjectNode()
-//        soortVoertuigNode.put("name", soortVoertuig?.naam ?: "Onbekend")
-//        soortVoertuigNode.put("code", soortVoertuig?.code ?: rdwVoertuig?.cdSrtVoertuig)
         return MotorvoertuigDynamicDto.MotorvoertuigDynamic(
            propertiesMap = getDynamicProperties(rdwVoertuig as Any , properties),
             properties = getAvailableProperties(rdwVoertuig)
