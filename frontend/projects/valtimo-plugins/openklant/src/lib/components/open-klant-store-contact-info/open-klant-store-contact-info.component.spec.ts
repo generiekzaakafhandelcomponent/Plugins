@@ -10,7 +10,7 @@ describe("StoreContactInfoComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StoreContactInfoComponent],
+      imports: [StoreContactInfoComponent],
     })
       .overrideTemplate(StoreContactInfoComponent, "")
       .compileComponents();

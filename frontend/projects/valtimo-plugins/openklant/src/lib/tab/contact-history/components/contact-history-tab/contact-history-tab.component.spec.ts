@@ -46,8 +46,8 @@ describe("ContactHistoryTabComponent", () => {
         {
           provide: ContactHistoryService,
           useValue: {
-            load: jasmine
-              .createSpy("load")
+            fetchFromDocument: jasmine
+              .createSpy("fetchFromDocument")
               .and.returnValue(of([mapDtoToModel(mockKlantcontactDTO)])),
           },
         },
@@ -91,7 +91,7 @@ describe("ContactHistoryTabComponent", () => {
   it("should load the document and map the contact history", () => {
     const { component } = setupTestBed();
     const loadContactHistorySpy = TestBed.inject(ContactHistoryService)
-      .load as jasmine.Spy;
+        .fetchFromDocument as jasmine.Spy;
 
     fixture.detectChanges();
 
@@ -109,7 +109,7 @@ describe("ContactHistoryTabComponent", () => {
   it("should do nothing and go into isFailed state if no documentId is available in the route snapshot paramMap", () => {
     const { component } = setupTestBed(new Map()); // pass empty map as routeParamMap -> no documentId
     const loadContactHistorySpy = TestBed.inject(ContactHistoryService)
-      .load as jasmine.Spy;
+      .fetchFromDocument as jasmine.Spy;
     const startProcessInstanceSpy = TestBed.inject(ProcessService)
       .startProcesInstance as jasmine.Spy;
 
@@ -125,7 +125,7 @@ describe("ContactHistoryTabComponent", () => {
   it(`should retrieve the document's contactHistory twice (at init and after finishing the called process)`, fakeAsync(() => {
     const { component } = setupTestBed();
     const loadContactHistorySpy = TestBed.inject(ContactHistoryService)
-      .load as jasmine.Spy;
+      .fetchFromDocument as jasmine.Spy;
     const startProcessInstanceSpy = TestBed.inject(ProcessService)
       .startProcesInstance as jasmine.Spy;
     // with `ended: true`, simulating that the document has been now populated with fresh contactHistory data

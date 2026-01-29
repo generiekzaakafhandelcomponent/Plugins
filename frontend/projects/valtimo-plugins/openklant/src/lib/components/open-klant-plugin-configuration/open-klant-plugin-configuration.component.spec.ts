@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
 
 import { OpenKlantPluginConfigurationComponent } from './open-klant-plugin-configuration.component';
-import { Config } from '../../models/config';
+import { Config } from '../../models';
 
 describe('OpenKlantPluginConfigurationComponent', () => {
     let component: OpenKlantPluginConfigurationComponent;
@@ -10,7 +10,7 @@ describe('OpenKlantPluginConfigurationComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [OpenKlantPluginConfigurationComponent]
+            imports: [OpenKlantPluginConfigurationComponent]
         })
             .overrideTemplate(OpenKlantPluginConfigurationComponent, '')
             .compileComponents();
