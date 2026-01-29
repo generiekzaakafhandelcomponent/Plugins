@@ -138,8 +138,6 @@
   "devDependencies": {
     "@types/jasmine": "^5.1.7",
     "@types/jasminewd2": "2.0.13",
-    "@types/jest": "^30.0.0",
-    "@types/mocha": "^10.0.10",
     "@types/node": "22.1.0",
     "@valtimo-plugins/externe-klanttaak": "file:dist/valtimo-plugins/externe-klanttaak",
     "@valtimo-plugins/freemarker": "file:dist/valtimo-plugins/freemarker",
