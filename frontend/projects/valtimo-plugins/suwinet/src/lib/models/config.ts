@@ -42,6 +42,7 @@ export interface BrpPartnerInfoConfig extends BaseActionConfig {
 
 export interface BijstandsRegelingenInfoConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
@@ -66,6 +67,7 @@ export interface KadasterobjectenConfig extends BaseActionConfig {
 
 export interface RdwVoertuigenConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
