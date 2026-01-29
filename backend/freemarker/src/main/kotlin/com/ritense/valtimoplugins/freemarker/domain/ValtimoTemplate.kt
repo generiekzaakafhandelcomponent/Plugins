@@ -55,5 +55,11 @@ class ValtimoTemplate(
     val content: String = ""
 ) {
 
-    override fun toString(): String = "$caseDefinitionId/$buildingBlockDefinitionId/$type/$key"
+    override fun toString(): String {
+        return if (caseDefinitionId != null) {
+            "$caseDefinitionId/$type/$key"
+        } else {
+            "$buildingBlockDefinitionId/$type/$key"
+        }
+    }
 }

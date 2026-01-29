@@ -277,6 +277,7 @@ class TemplateService(
                 buildingBlockDefinitionId = buildingBlockDefinitionId,
                 type = templateType,
                 metadata = metadata,
+                content = defaultTemplateContent(templateType),
             )
         )
     }
@@ -539,6 +540,56 @@ class TemplateService(
         }
     }
 
+    private fun defaultTemplateContent(templateType: String): String {
+        return when(templateType) {
+            "mail"-> """
+                |<!DOCTYPE html>
+                |<html lang="en">
+                |  <head>
+                |    <meta charset="utf-8" />
+                |    <title>Email</title>
+                |  </head>
+                |  <body>
+                |    <p>Hi ${'$'}{doc.fullName},</p>
+                |
+                |    <p><b>This is an example mail</b></p>
+                |  </body>
+                |</html>
+            |""".trimMargin()
+
+            "text"-> """
+                |<#if doc.firstName == ''>
+                |  Mr. ${'$'}{doc.lastName}
+                |<#else>
+                |    ${'$'}{doc.firstName} ${'$'}{doc.lastName}
+                |</#if>
+            |""".trimMargin()
+
+            "pdf" -> """
+                |<!DOCTYPE html>
+                |<html lang="en">
+                |  <head>
+                |    <meta charset="UTF-8" />
+                |    <title>Example PDF</title>
+                |  </head>
+                |  <body>
+                |    <div class="header">
+                |      <p>This is an example PDF</p>
+                |    </div>
+                |  </body>
+                |</html>
+            |""".trimMargin()
+
+            "csv"-> """
+                |Example;First name;Last name
+                |<#list docs as doc>
+                |  This is an example;${'$'}{doc.firstName};${'$'}{doc.lastName}
+                |</#list>
+            |""".trimMargin()
+
+            else -> ""
+        }
+    }
 
     companion object {
         private val logger = KotlinLogging.logger {}

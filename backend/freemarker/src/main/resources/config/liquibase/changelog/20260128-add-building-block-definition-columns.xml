@@ -19,11 +19,22 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="20260128-add-building-block-definition-columns" author="Ritense">
+    <changeSet id="1" author="Ritense">
         <addColumn tableName="valtimo_template">
             <column name="building_block_definition_key" type="VARCHAR(256)"/>
             <column name="building_block_definition_version_tag" type="VARCHAR(256)"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="2" author="Ritense">
+        <dropNotNullConstraint
+            tableName="valtimo_template"
+            columnName="case_definition_key"
+            columnDataType="VARCHAR(256)"/>
+        <dropNotNullConstraint
+            tableName="valtimo_template"
+            columnName="case_definition_version_tag"
+            columnDataType="VARCHAR(200)"/>
     </changeSet>
 
 </databaseChangeLog>
