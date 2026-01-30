@@ -1,4 +1,5 @@
 package com.ritense.valtimoplugins.openklant.service
+
 import com.ritense.valtimoplugins.openklant.client.OpenKlantClient
 import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
 import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
@@ -9,12 +10,14 @@ import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
 import com.ritense.valtimoplugins.openklant.dto.UuidReference
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.model.PartijInformationImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -243,5 +246,63 @@ class OpenKlantServiceTest {
                 )
             }
             coVerify(exactly = 0) { client.getDigitaalAdresByUuid(any(), testProperties) }
+        }
+
+    @Test
+    fun `getOrCreatePartij should return existing partij when there is a partij for supplied bsn`() =
+        runBlocking {
+            // ARRANGE:
+            val partijInformation =
+                PartijInformationImpl(
+                    bsn = "123456789",
+                    voorletters = "J.",
+                    voornaam = "John",
+                    voorvoegselAchternaam = "",
+                    lastName = "Doe",
+                )
+            val existingPartij = defaultPartij.copy(uuid = "existing-partij-uuid")
+            coEvery { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns existingPartij
+
+            val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
+            coEvery { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
+
+            // ACT:
+            val resultPartij =
+                service.getOrCreatePartij(
+                    properties = testProperties,
+                    partijInformation = partijInformation,
+                )
+
+            // ASSERT:
+            assertEquals("existing-partij-uuid", resultPartij.uuid)
+        }
+
+    @Test
+    fun `getOrCreatePartij should create a new partij when no partij exists for supplied bsn`() =
+        runBlocking {
+            // ARRANGE:
+            val partijInformation =
+                PartijInformationImpl(
+                    bsn = "123456789",
+                    voorletters = "J.",
+                    voornaam = "John",
+                    voorvoegselAchternaam = "",
+                    lastName = "Doe",
+                )
+            coEvery { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns null
+
+            val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
+            coEvery { partijFactory.createFromBsn(partijInformation) } returns defaultCreatePartijRequest
+            coEvery { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
+
+            // ACT:
+            val resultPartij =
+                service.getOrCreatePartij(
+                    properties = testProperties,
+                    partijInformation = partijInformation,
+                )
+
+            // ASSERT:
+            assertEquals("new-partij-uuid", resultPartij.uuid)
         }
 }
