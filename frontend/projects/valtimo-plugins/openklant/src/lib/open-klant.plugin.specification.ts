@@ -41,6 +41,9 @@ const openKlantPluginSpecification: PluginSpecification = {
       lastName: "Achternaam",
       emailAddress: "E-mailadres",
 
+      // Get or create Partij
+      "get-or-create-partij": "Haal Partij op of maak een Partij aan",
+
       // Get contact moments by BSN
       "get-contact-moments-by-bsn":
         "Contactgeschiedenis ophalen op basis van BSN",
@@ -89,6 +92,9 @@ const openKlantPluginSpecification: PluginSpecification = {
       inFix: "Name infix",
       lastName: "Last name",
       emailAddress: "Email address",
+
+      // Get or create Partij
+      "get-or-create-partij": "Get Partij or create a Partij",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn": "Retrieve contact history based on BSN",
