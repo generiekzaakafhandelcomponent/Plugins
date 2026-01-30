@@ -1,11 +1,9 @@
 package com.ritense.valtimoplugins.openklant.model
 
-data class ContactInformation(
+data class PartijInformationImpl(
     override val bsn: String,
-    override val voorletters: String = "",
+    override val voorletters: String,
     override val voornaam: String,
     override val voorvoegselAchternaam: String,
     override val lastName: String,
-    val emailAddress: String,
-    val caseNumber: String,
 ) : PartijInformation

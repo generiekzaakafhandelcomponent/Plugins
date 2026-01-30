@@ -9,6 +9,7 @@ import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.model.PartijInformationImpl
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import kotlinx.coroutines.runBlocking
@@ -52,14 +53,45 @@ class OpenKlantPlugin(
         val contactInformation =
             ContactInformation(
                 bsn = bsn,
-                firstName = firstName,
-                inFix = inFix,
+                voornaam = firstName,
+                voorvoegselAchternaam = inFix,
                 lastName = lastName,
                 emailAddress = emailAddress,
                 caseNumber = caseUuid,
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)
+
+        execution.setVariable(OUTPUT_PARTIJ_UUID, partijUuid)
+    }
+
+    @PluginAction(
+        key = "get-or-create-partij",
+        title = "Get or create Partij",
+        description = "Create partij in Open Klant or gets the partij if already exists",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun getOrCreatePartij(
+        execution: DelegateExecution,
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty voorletters: String,
+        @PluginActionProperty voornaam: String,
+        @PluginActionProperty voorvoegselAchternaam: String,
+        @PluginActionProperty achternaam: String,
+    ) = runBlocking {
+        logger.info { "Get or Create partij in Open Klant - ${execution.processBusinessKey}" }
+
+        val partijInformation =
+            PartijInformationImpl(
+                bsn = bsn,
+                voorletters = voorletters,
+                voornaam = voornaam,
+                voorvoegselAchternaam = voorvoegselAchternaam,
+                lastName = achternaam,
+            )
+
+        val properties = OpenKlantProperties(klantinteractiesUrl, token)
+        val partijUuid = ""
 
         execution.setVariable(OUTPUT_PARTIJ_UUID, partijUuid)
     }

@@ -109,8 +109,8 @@ class OpenKlantServiceTest {
                     emailAddress = "email@adres.nl",
                     caseNumber = "ZAAK-1234",
                     lastName = "Oe",
-                    inFix = "D",
-                    firstName = "John",
+                    voorvoegselAchternaam = "D",
+                    voornaam = "John",
                     bsn = "123456789",
                 )
             coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
@@ -144,8 +144,8 @@ class OpenKlantServiceTest {
                     emailAddress = "email@adres.nl",
                     caseNumber = "ZAAK-1234",
                     lastName = "Oe",
-                    inFix = "D",
-                    firstName = "John",
+                    voorvoegselAchternaam = "D",
+                    voornaam = "John",
                     bsn = "123456789",
                 )
             coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
@@ -201,8 +201,8 @@ class OpenKlantServiceTest {
                     emailAddress = "email@adres.nl",
                     caseNumber = "ZAAK-1234",
                     lastName = "Oe",
-                    inFix = "D",
-                    firstName = "John",
+                    voorvoegselAchternaam = "D",
+                    voornaam = "John",
                     bsn = "123456789",
                 )
             coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns null
