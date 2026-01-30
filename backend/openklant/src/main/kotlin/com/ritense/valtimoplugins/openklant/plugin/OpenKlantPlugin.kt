@@ -89,9 +89,11 @@ class OpenKlantPlugin(
                 voorvoegselAchternaam = voorvoegselAchternaam,
                 lastName = achternaam,
             )
-
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
-        val partijUuid = ""
+        val partijUuid =
+            openKlantPluginService
+                .getOrCreatePartij(properties, partijInformation)
+                .uuid
 
         execution.setVariable(OUTPUT_PARTIJ_UUID, partijUuid)
     }
