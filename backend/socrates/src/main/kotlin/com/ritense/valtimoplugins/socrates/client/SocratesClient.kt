@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class SocratesClient(
         val response = try {
             restClientBuilder
                 .clone()
-                .requestInterceptor{ request, body, execution ->
+                .requestInterceptor { request, body, execution ->
                     logRequest(request, body)
                     val response = execution.execute(request, body)
                     logResponse(request, response)
@@ -74,26 +74,31 @@ class SocratesClient(
                 .retrieve()
                 .body<LOBehandeldRespons>()
         } catch (e: Exception) {
-            if (e.cause is IOException) {
-                val msg = "error connecting to Socrates"
-                logger.error(e) { msg }
-                throw SocratesError(e,  msg,"SOCRATES_ERROR")
-            }
-            else if (e.cause is HttpClientErrorException) {
-                val excep = e.cause as HttpClientErrorException
-                val errorResponse = excep.getResponseBodyAs(ErrorResponse::class.java)
-                logger.error(e) { "error request to Socrates" }
-                throw SocratesError(e, errorResponse,"SOCRATES_ERROR")
-            }
-            else if (e.cause is HttpServerErrorException) {
-                val msg = "error connecting to Socrates"
-                logger.error(e) {msg}
-                throw SocratesError(e, msg,"SOCRATES_ERROR")
-            }
-            else {
-                val msg =  "unknown error met aanmaken dienst in Socrates"
-                logger.error(e) { msg }
-                throw SocratesError(e, msg,"SOCRATES_ERROR")
+            when (e.cause) {
+                is IOException -> {
+                    val msg = "error connecting to Socrates"
+                    logger.error(e) { msg }
+                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                }
+
+                is HttpClientErrorException -> {
+                    val excep = e.cause as HttpClientErrorException
+                    val errorResponse = excep.getResponseBodyAs(ErrorResponse::class.java)
+                    logger.error(e) { "error request to Socrates" }
+                    throw SocratesError(e, null, errorResponse, "SOCRATES_ERROR")
+                }
+
+                is HttpServerErrorException -> {
+                    val msg = "error connecting to Socrates"
+                    logger.error(e) { msg }
+                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                }
+
+                else -> {
+                    val msg = "unknown error met het aanmaken dienst in Socrates"
+                    logger.error(e) { msg }
+                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                }
             }
         }
 
@@ -129,7 +134,6 @@ class SocratesClient(
             logger.debug { "$key: $value" }
         }
     }
-
 
     companion object {
         private val logger = KotlinLogging.logger {}
