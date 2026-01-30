@@ -1,1 +1,48 @@
-<p>get-or-create-partij works!</p>
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
+>
+    <v-input
+            name="bsn"
+            [title]="'bsn' | pluginTranslate : pluginId | async"
+            [tooltip]="'variableFieldTooltip' | pluginTranslate : pluginId | async"
+            [defaultValue]="obs.prefill?.bsn"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="voorletters"
+            [title]="'voorletters' | pluginTranslate : pluginId | async"
+            [tooltip]="'variableFieldTooltip' | pluginTranslate : pluginId | async"
+            [defaultValue]="obs.prefill?.voorletters"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="voornaam"
+            [title]="'voornaam' | pluginTranslate : pluginId | async"
+            [tooltip]="'variableFieldTooltip' | pluginTranslate : pluginId | async"
+            [defaultValue]="obs.prefill?.voornaam"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="voorvoegselAchternaam"
+            [title]="'voorvoegselAchternaam' | pluginTranslate : pluginId | async"
+            [tooltip]="'variableFieldTooltip' | pluginTranslate : pluginId | async"
+            [defaultValue]="obs.prefill?.voorvoegselAchternaam"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
+            name="achternaam"
+            [title]="'achternaam' | pluginTranslate : pluginId | async"
+            [tooltip]="'variableFieldTooltip' | pluginTranslate : pluginId | async"
+            [defaultValue]="obs.prefill?.achternaam"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+</v-form>
