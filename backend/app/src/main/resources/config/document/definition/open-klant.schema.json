@@ -15,6 +15,26 @@
             },
             "default": []
         },
+        "partij": {
+            "type": "object",
+            "properties": {
+                "bsn": {
+                    "type": "number"
+                },
+                "voorletters": {
+                    "type": "string"
+                },
+                "voornaam": {
+                    "type": "string"
+                },
+                "voorvoegselAchternaam": {
+                    "type": "string"
+                },
+                "achternaam": {
+                    "type": "string"
+                }
+            }
+        },
         "klantcontact": {
             "type": "object",
             "properties": {
