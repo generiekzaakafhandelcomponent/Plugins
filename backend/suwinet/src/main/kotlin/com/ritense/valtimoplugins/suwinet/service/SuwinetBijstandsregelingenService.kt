@@ -9,7 +9,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.ObjectFactory
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.PartnerBijstand
-import com.ritense.valtimoplugins.suwinet.error.SuwinetError
+import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.AanvraagUitkeringDto
@@ -30,6 +30,7 @@ import java.time.LocalDate
 
 class SuwinetBijstandsregelingenService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val flattener: ObjectFlattener,
 ) {
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
@@ -57,42 +58,26 @@ class SuwinetBijstandsregelingenService(
 
     fun getBijstandsregelingenByBsn(
         bsn: String,
-        infoService: BijstandsregelingenInfo
+        infoService: BijstandsregelingenInfo,
+        dynamicProperties: List<String>,
     ): BijstandsRegelingenDto? {
         logger.info { "Getting Bijstandsregelingen from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
-        try {
-            /* retrieve Bijstandsregeling info by bsn */
+
+        /* retrieve Bijstandsregeling info by bsn */
+        val result = runCatching {
+
             val bijstandsregelingenInfoRequest = ObjectFactory().createBijstandsregelingenInfo_Type()
                 .apply {
                     burgerservicenr = bsn
                 }
             val response = infoService.bijstandsregelingenInfo(bijstandsregelingenInfoRequest)
-            return response.unwrapResponse()
-
-            // SOAPFaultException occur when something is wrong with the request/response
-        } catch (e: SOAPFaultException) {
-            logger.error(e) { "SOAPFaultException - Error getting Bijstandsregelingen" }
-            throw SuwinetError(
-                e,
-                "SUWINET_CONNECT_ERROR"
-            )
-            // WebServiceExceptions occur when the service is down
-        } catch (e: WebServiceException) {
-            logger.error(e) { "WebServiceException - Error getting Bijstandsregelingen" }
-            throw SuwinetError(
-                e,
-                "SUWINET_CONNECT_ERROR"
-            )
-        } catch (e: Exception) {
-            logger.error(e) { "Other Exception - Error getting Bijstandsregelingen" }
-            throw SuwinetError(
-                e,
-                "SUWINET_CONNECT_ERROR"
-            )
+            response.unwrapResponse(dynamicProperties)
         }
+
+        return result.getOrThrow()
     }
 
-    private fun BijstandsregelingenInfoResponse.unwrapResponse(): BijstandsRegelingenDto? {
+    private fun BijstandsregelingenInfoResponse.unwrapResponse(dynamicProperties: List<String>): BijstandsRegelingenDto? {
         val responseValue =
             content.firstOrNull() ?: throw IllegalStateException("BijstandsregelingenInfoResponse contains no value")
 
@@ -103,7 +88,9 @@ class SuwinetBijstandsregelingenService(
                     burgerservicenr = bijstandsRegelingenInfo.burgerservicenr,
                     aanvraagUitkeringen = getAanvraagUitkeringen(bijstandsRegelingenInfo.aanvraagUitkering),
                     specifiekeGegevensBijzBijstandList = getSpeciekeGegevensBijzBijstand(bijstandsRegelingenInfo.specifiekeGegevensBijzBijstand),
-                    vorderingen = getVorderingen(bijstandsRegelingenInfo.vordering)
+                    vorderingen = getVorderingen(bijstandsRegelingenInfo.vordering),
+                    propertiesMap = getDynamicProperties(bijstandsRegelingenInfo, dynamicProperties),
+                    properties = getAvailableProperties(bijstandsRegelingenInfo)
                 )
             }
 
@@ -121,6 +108,41 @@ class SuwinetBijstandsregelingenService(
                 }
             }
         }
+    }
+
+    private fun getAvailableProperties(bijstandsRegelingenInfo: ClientSuwi): List<String> {
+        val flatMap = flattener.toFlatMap(bijstandsRegelingenInfo)
+        return flatMap.keys.toList()
+    }
+
+    private fun getDynamicProperties(
+        bijstandsRegelingenInfo: ClientSuwi,
+        dynamicProperties: List<String>
+    ): Map<String, Any?> {
+        var propertiesMap: MutableMap<String, Any?> = mutableMapOf<String, Any?>()
+
+        val flatMap = flattener.toFlatMap(bijstandsRegelingenInfo)
+
+        // exact matching
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) {
+                propertiesMap[prop] = flatMap[prop]
+            }
+
+            // do wildcards
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd(
+                    '*'
+                )
+                flatMap.keys.forEach {
+                    if (it.startsWith(prefixValue)) {
+                        propertiesMap[it] = flatMap[it]
+                    }
+                }
+            }
+        }
+
+        return propertiesMap
     }
 
     private fun getVorderingen(vorderingen: MutableList<ClientSuwi.Vordering>): List<VorderingDto> =

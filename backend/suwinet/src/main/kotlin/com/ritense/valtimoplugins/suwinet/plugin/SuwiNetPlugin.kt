@@ -294,10 +294,17 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String>? = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
         logger.info { "Getting voertuigen for case ${execution.businessKey}" }
+
+        var props = dynamicProperties
+
+        if(dynamicProperties == null) {
+            props = listOf()
+        }
 
         try {
             suwinetRdwService.setConfig(
@@ -306,7 +313,9 @@ class SuwiNetPlugin(
             )
 
             suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(
-                bsn = bsn, suwinetRdwService.getRDWService()
+                bsn = bsn,
+                dynamicProperties = props,
+                rdwService = suwinetRdwService.getRDWService()
             ).let {
                 if(it.motorVoertuigen.isNotEmpty()) {
                     execution.processInstance.setVariable(
@@ -315,7 +324,8 @@ class SuwiNetPlugin(
                 }
             }
         } catch (e: Exception) {
-            handleSuwinetException(e)
+            logger.info("Exiting scope due to nested error.", e)
+            return
         }
 
     }
@@ -403,6 +413,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String>? = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting Bijstandsregelingen for case ${execution.businessKey}" }
@@ -414,10 +425,18 @@ class SuwiNetPlugin(
             suffix
         )
 
+        var props = dynamicProperties
+
+        if(dynamicProperties == null) {
+            props = listOf()
+        }
+
         try {
             suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(bsn,
-                suwinetBijstandsregelingenService.createBijstandsregelingenService())
+                suwinetBijstandsregelingenService.createBijstandsregelingenService(),
+                props)
                 ?.let {
+                    logger.debug { objectMapper.writeValueAsString(it)  }
                     execution.processInstance.setVariable(
                         resultProcessVariableName, objectMapper.convertValue(it)
                     )
