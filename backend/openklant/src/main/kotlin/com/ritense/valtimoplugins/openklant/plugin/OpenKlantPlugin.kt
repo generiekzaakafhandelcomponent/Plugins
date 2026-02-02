@@ -56,8 +56,8 @@ class OpenKlantPlugin(
                 voornaam = firstName,
                 voorvoegselAchternaam = inFix,
                 achternaam = lastName,
-                emailAddress = emailAddress,
-                caseNumber = caseUuid,
+                emailadres = emailAddress,
+                zaaknummer = caseUuid,
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)

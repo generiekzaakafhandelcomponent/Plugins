@@ -109,8 +109,8 @@ class OpenKlantServiceTest {
             // ARRANGE:
             val contactInformation =
                 ContactInformation(
-                    emailAddress = "email@adres.nl",
-                    caseNumber = "ZAAK-1234",
+                    emailadres = "email@adres.nl",
+                    zaaknummer = "ZAAK-1234",
                     achternaam = "Oe",
                     voorvoegselAchternaam = "D",
                     voornaam = "John",
@@ -144,8 +144,8 @@ class OpenKlantServiceTest {
             // ARRANGE:
             val contactInformation =
                 ContactInformation(
-                    emailAddress = "email@adres.nl",
-                    caseNumber = "ZAAK-1234",
+                    emailadres = "email@adres.nl",
+                    zaaknummer = "ZAAK-1234",
                     achternaam = "Oe",
                     voorvoegselAchternaam = "D",
                     voornaam = "John",
@@ -159,7 +159,7 @@ class OpenKlantServiceTest {
                     soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
                 )
             coEvery { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) } returns listOf()
-            val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailAddress)
+            val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailadres)
             coEvery { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
             coEvery { client.patchPartij(any(), any(), any()) } returns defaultPartij
 
@@ -175,9 +175,9 @@ class OpenKlantServiceTest {
             coVerify {
                 client.createDigitaalAdres(
                     match<CreateDigitaalAdresRequest> {
-                        it.adres == contactInformation.emailAddress &&
+                        it.adres == contactInformation.emailadres &&
                             it.soortDigitaalAdres == SoortDigitaalAdres.EMAIL &&
-                            it.referentie == contactInformation.caseNumber
+                            it.referentie == contactInformation.zaaknummer
                     },
                     testProperties,
                 )
@@ -201,8 +201,8 @@ class OpenKlantServiceTest {
             // ARRANGE:
             val contactInformation =
                 ContactInformation(
-                    emailAddress = "email@adres.nl",
-                    caseNumber = "ZAAK-1234",
+                    emailadres = "email@adres.nl",
+                    zaaknummer = "ZAAK-1234",
                     achternaam = "Oe",
                     voorvoegselAchternaam = "D",
                     voornaam = "John",
@@ -212,7 +212,7 @@ class OpenKlantServiceTest {
             val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
             coEvery { partijFactory.createFromBsn(contactInformation) } returns defaultCreatePartijRequest
             coEvery { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
-            val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailAddress)
+            val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailadres)
             coEvery { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
             coEvery { client.patchPartij(any(), any(), any()) } returns newPartij
 
@@ -228,9 +228,9 @@ class OpenKlantServiceTest {
             coVerify {
                 client.createDigitaalAdres(
                     match<CreateDigitaalAdresRequest> {
-                        it.adres == contactInformation.emailAddress &&
+                        it.adres == contactInformation.emailadres &&
                             it.soortDigitaalAdres == SoortDigitaalAdres.EMAIL &&
-                            it.referentie == contactInformation.caseNumber
+                            it.referentie == contactInformation.zaaknummer
                     },
                     testProperties,
                 )

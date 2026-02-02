@@ -23,7 +23,7 @@ class DefaultOpenKlantService(
     ): String {
         val partij = openKlantClient.getPartijByBsn(contactInformation.bsn, properties)
         return if (partij != null) {
-            if (!isPreferredAddress(contactInformation.emailAddress, partij, properties)) {
+            if (!isPreferredAddress(contactInformation.emailadres, partij, properties)) {
                 updateExistingPartij(partij, contactInformation, properties)
             }
             partij.uuid
@@ -71,9 +71,9 @@ class DefaultOpenKlantService(
         openKlantClient.createDigitaalAdres(
             CreateDigitaalAdresRequest(
                 verstrektDoorPartij = partij.makeUuidReference(),
-                adres = contactInformation.emailAddress,
+                adres = contactInformation.emailadres,
                 soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
-                referentie = contactInformation.caseNumber,
+                referentie = contactInformation.zaaknummer,
             ),
             properties,
         )
