@@ -23,6 +23,7 @@
       "components": [
         {
           "key": "html",
+          "tag": "div",
           "type": "htmlelement",
           "attrs": [
             {
@@ -34,7 +35,7 @@
           "label": "HTML",
           "content": "<section>\n<p><span><strong>BSN-nummer: </strong>{{{ data?.bsn }}}</span></p>\n</section>\n",
           "tableView": false,
-          "refreshOnChange": false,
+          "refreshOnChange": false
         }
       ]
     },
@@ -42,7 +43,7 @@
       "label": "Partij",
       "tableView": false,
       "validateWhenHidden": false,
-      "key": "bsn1",
+      "key": "partij",
       "conditional": {
         "show": true,
         "when": "selectedDemo",
@@ -53,6 +54,7 @@
       "components": [
         {
           "label": "HTML",
+          "tag": "div",
           "attrs": [
             {
               "attr": "",
@@ -67,14 +69,6 @@
           "tableView": false
         }
       ]
-    },
-    {
-      "type": "button",
-      "label": "Submit",
-      "key": "submit",
-      "disableOnInvalid": true,
-      "input": true,
-      "tableView": false
     }
   ]
 }

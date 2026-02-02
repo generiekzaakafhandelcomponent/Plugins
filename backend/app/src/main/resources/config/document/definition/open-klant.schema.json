@@ -6,7 +6,7 @@
     "properties": {
         "bsn": {
             "type": "string",
-            "default": null
+            "default": ""
         },
         "contactgeschiedenis": {
             "type": "array",
