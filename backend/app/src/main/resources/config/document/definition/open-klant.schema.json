@@ -19,7 +19,7 @@
             "type": "object",
             "properties": {
                 "bsn": {
-                    "type": "number"
+                    "type": "string"
                 },
                 "voorletters": {
                     "type": "string"

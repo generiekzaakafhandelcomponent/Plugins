@@ -21,13 +21,13 @@
                     "shortcut": ""
                 },
                 {
-                    "label": "Nieuw klantcontact registreren",
-                    "value": "nieuwKlantcontactRegistreren",
+                    "label": "Partij ophalen of aanmaken",
+                    "value": "partijOphalenOfMaken",
                     "shortcut": ""
                 },
                 {
-                    "label": "Partij ophalen of aanmaken",
-                    "value": "partijOphalenOfMaken",
+                    "label": "Nieuw klantcontact registreren",
+                    "value": "nieuwKlantcontactRegistreren",
                     "shortcut": ""
                 }
             ],
@@ -89,12 +89,9 @@
                 },
                 {
                     "label": "Voorletters",
-                    "placeholder": "J.D.",
+                    "defaultValue": "J.D.",
                     "applyMaskOn": "change",
                     "tableView": true,
-                    "validate": {
-                        "required": true
-                    },
                     "validateWhenHidden": false,
                     "key": "partij.voorletters",
                     "type": "textfield",
@@ -102,12 +99,9 @@
                 },
                 {
                     "label": "Voornaam",
-                    "placeholder": "Jan",
+                    "defaultValue": "Jan",
                     "applyMaskOn": "change",
                     "tableView": true,
-                    "validate": {
-                        "required": true
-                    },
                     "validateWhenHidden": false,
                     "key": "partij.voornaam",
                     "type": "textfield",
@@ -117,9 +111,6 @@
                     "label": "Voorvoegsel achternaam",
                     "applyMaskOn": "change",
                     "tableView": true,
-                    "validate": {
-                        "required": true
-                    },
                     "validateWhenHidden": false,
                     "key": "partij.voorvoegselAchternaam",
                     "type": "textfield",
@@ -127,12 +118,9 @@
                 },
                 {
                     "label": "Achternaam",
-                    "placeholder": "Jansen",
+                    "defaultValue": "Jansen",
                     "applyMaskOn": "change",
                     "tableView": true,
-                    "validate": {
-                        "required": true
-                    },
                     "validateWhenHidden": false,
                     "key": "partij.achternaam",
                     "type": "textfield",
