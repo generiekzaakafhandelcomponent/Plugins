@@ -162,7 +162,7 @@ class SuwinetSvbPersoonsInfoService(
     private fun toDate(date: String) = toDateString(LocalDate.parse(date, dateInFormatter))
 
     companion object {
-        private const val SERVICE_PATH = "SVBDossierPersoonGSD-v0200/v1"
+        private const val SERVICE_PATH = "SVBDossierPersoonGSD-v0200"
         private const val suwinetDateInPattern = "yyyyMMdd"
         private val dateInFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(suwinetDateInPattern)
 
