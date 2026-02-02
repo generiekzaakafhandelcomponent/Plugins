@@ -78,7 +78,8 @@
       <bpmn:incoming>Flow_0v73k3m</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1dy3wjd" sourceRef="haalPartijOpOfMaakNieuwe" targetRef="Activity_07k2g6k"/>
-    <bpmn:serviceTask id="haalPartijOpOfMaakNieuwe" name="Haal partij op of maak een nieuwe">
+    <bpmn:serviceTask id="haalPartijOpOfMaakNieuwe" name="Haal partij op of maak een nieuwe"
+                      camunda:expression="{true]">
       <bpmn:incoming>Flow_01e4b7b</bpmn:incoming>
       <bpmn:outgoing>Flow_1dy3wjd</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -200,7 +201,7 @@
         <di:waypoint x="280" y="-120"/>
         <di:waypoint x="610" y="-120"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="371" y="-170" width="78" height="40"/>
+          <dc:Bounds x="402" y="-170" width="78" height="40"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1dy3wjd_di" bpmnElement="Flow_1dy3wjd">
