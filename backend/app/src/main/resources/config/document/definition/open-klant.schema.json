@@ -32,6 +32,9 @@
                 },
                 "achternaam": {
                     "type": "string"
+                },
+                "partijUuid": {
+                    "type": "string"
                 }
             }
         },
