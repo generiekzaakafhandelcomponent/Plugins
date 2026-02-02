@@ -40,6 +40,7 @@ class OpenKlantServiceTest {
     @MockK
     lateinit var klantContactFactory: KlantcontactFactory
     lateinit var service: OpenKlantService
+
     private val defaultDigitaalAdres =
         DigitaalAdres(
             uuid = "ded28f8e-7da9-4ca6-96d5-2955f5641fd6",
@@ -97,6 +98,25 @@ class OpenKlantServiceTest {
             partijIdentificatie = null,
         )
 
+    private val contactInformation =
+        ContactInformation(
+            emailadres = "email@adres.nl",
+            zaaknummer = "ZAAK-1234",
+            achternaam = "Oe",
+            voorvoegselAchternaam = "D",
+            voornaam = "John",
+            bsn = "123456789",
+        )
+
+    private val partijInformation =
+        PartijInformationImpl(
+            bsn = "123456789",
+            voorletters = "J.",
+            voornaam = "John",
+            voorvoegselAchternaam = "",
+            achternaam = "Doe",
+        )
+
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
@@ -107,15 +127,6 @@ class OpenKlantServiceTest {
     fun `storeContactInformation should do nothing when supplied email is preferred address`() =
         runBlocking {
             // ARRANGE:
-            val contactInformation =
-                ContactInformation(
-                    emailadres = "email@adres.nl",
-                    zaaknummer = "ZAAK-1234",
-                    achternaam = "Oe",
-                    voorvoegselAchternaam = "D",
-                    voornaam = "John",
-                    bsn = "123456789",
-                )
             coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
             coEvery { client.getDigitaalAdresByUuid(any(), testProperties) } returns
                 defaultDigitaalAdres.copy(
@@ -142,15 +153,6 @@ class OpenKlantServiceTest {
     fun `storeContactInformation should update existing partij if email is not preferred address`() =
         runBlocking {
             // ARRANGE:
-            val contactInformation =
-                ContactInformation(
-                    emailadres = "email@adres.nl",
-                    zaaknummer = "ZAAK-1234",
-                    achternaam = "Oe",
-                    voorvoegselAchternaam = "D",
-                    voornaam = "John",
-                    bsn = "123456789",
-                )
             coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
             coEvery { client.getDigitaalAdresByUuid(any(), testProperties) } returns
                 defaultDigitaalAdres.copy(
@@ -199,15 +201,6 @@ class OpenKlantServiceTest {
     fun `storeContactInformation should create a new partij when no partij exists for supplied bsn`() =
         runBlocking {
             // ARRANGE:
-            val contactInformation =
-                ContactInformation(
-                    emailadres = "email@adres.nl",
-                    zaaknummer = "ZAAK-1234",
-                    achternaam = "Oe",
-                    voorvoegselAchternaam = "D",
-                    voornaam = "John",
-                    bsn = "123456789",
-                )
             coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns null
             val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
             coEvery { partijFactory.createFromBsn(contactInformation) } returns defaultCreatePartijRequest
@@ -252,14 +245,6 @@ class OpenKlantServiceTest {
     fun `getOrCreatePartij should return existing partij when there is a partij for supplied bsn`() =
         runBlocking {
             // ARRANGE:
-            val partijInformation =
-                PartijInformationImpl(
-                    bsn = "123456789",
-                    voorletters = "J.",
-                    voornaam = "John",
-                    voorvoegselAchternaam = "",
-                    achternaam = "Doe",
-                )
             val existingPartij = defaultPartij.copy(uuid = "existing-partij-uuid")
             coEvery { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns existingPartij
 
@@ -281,14 +266,6 @@ class OpenKlantServiceTest {
     fun `getOrCreatePartij should create a new partij when no partij exists for supplied bsn`() =
         runBlocking {
             // ARRANGE:
-            val partijInformation =
-                PartijInformationImpl(
-                    bsn = "123456789",
-                    voorletters = "J.",
-                    voornaam = "John",
-                    voorvoegselAchternaam = "",
-                    achternaam = "Doe",
-                )
             coEvery { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns null
 
             val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
