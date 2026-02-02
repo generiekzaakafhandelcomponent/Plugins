@@ -24,6 +24,11 @@
                     "label": "Nieuw klantcontact registreren",
                     "value": "nieuwKlantcontactRegistreren",
                     "shortcut": ""
+                },
+                {
+                    "label": "Partij ophalen of aanmaken",
+                    "value": "partijOphalenOfMaken",
+                    "shortcut": ""
                 }
             ],
             "tableView": false,
@@ -55,6 +60,85 @@
                 "eq": "contactgeschiedenisOphalenBsn",
                 "show": true
             }
+        },
+        {
+            "title": "Partij ophalen of aanmaken nieuw Partij",
+            "collapsible": false,
+            "key": "panel1",
+            "conditional": {
+                "show": true,
+                "when": "selectedDemo",
+                "eq": "partijOphalenOfMaken"
+            },
+            "type": "panel",
+            "label": "Panel",
+            "input": false,
+            "tableView": false,
+            "components": [
+                {
+                    "label": "BSN-nummer",
+                    "applyMaskOn": "change",
+                    "tableView": true,
+                    "validate": {
+                        "required": true
+                    },
+                    "validateWhenHidden": false,
+                    "key": "partij.bsn",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Voorletters",
+                    "placeholder": "J.D.",
+                    "applyMaskOn": "change",
+                    "tableView": true,
+                    "validate": {
+                        "required": true
+                    },
+                    "validateWhenHidden": false,
+                    "key": "partij.voorletters",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Voornaam",
+                    "placeholder": "Jan",
+                    "applyMaskOn": "change",
+                    "tableView": true,
+                    "validate": {
+                        "required": true
+                    },
+                    "validateWhenHidden": false,
+                    "key": "partij.voornaam",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Voorvoegsel achternaam",
+                    "applyMaskOn": "change",
+                    "tableView": true,
+                    "validate": {
+                        "required": true
+                    },
+                    "validateWhenHidden": false,
+                    "key": "partij.voorvoegselAchternaam",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Achternaam",
+                    "placeholder": "Jansen",
+                    "applyMaskOn": "change",
+                    "tableView": true,
+                    "validate": {
+                        "required": true
+                    },
+                    "validateWhenHidden": false,
+                    "key": "partij.achternaam",
+                    "type": "textfield",
+                    "input": true
+                }
+            ]
         },
         {
             "key": "klantcontact",
