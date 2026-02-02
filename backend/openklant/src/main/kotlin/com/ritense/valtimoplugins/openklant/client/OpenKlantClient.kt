@@ -23,7 +23,6 @@ import java.net.URI
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
-    isDevProfile: Boolean = true,
 ) {
     suspend fun getPartijByBsn(
         bsn: String,
