@@ -9,48 +9,22 @@ import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.zgw.Page
-import io.netty.handler.ssl.SslContextBuilder
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory
-import io.netty.resolver.DefaultAddressResolverGroup
 import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.jetbrains.annotations.VisibleForTesting
 import org.springframework.http.HttpStatus
-import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriBuilder
-import reactor.netty.http.client.HttpClient
 import java.net.URI
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
     isDevProfile: Boolean = true,
 ) {
-    private val defaultConnector: ReactorClientHttpConnector
-
-    init {
-        val sslContext =
-            SslContextBuilder
-                .forClient()
-                .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                .build()
-
-        val baseClient = HttpClient.create()
-        val clientWithResolver =
-            if (isDevProfile) {
-                baseClient.resolver(DefaultAddressResolverGroup.INSTANCE)
-            } else {
-                baseClient
-            }
-
-        val securedClient = clientWithResolver.secure { it.sslContext(sslContext) }
-        defaultConnector = ReactorClientHttpConnector(securedClient)
-    }
-
     suspend fun getPartijByBsn(
         bsn: String,
         properties: OpenKlantProperties,
@@ -198,7 +172,6 @@ class OpenKlantClient(
 
     private fun webClient(properties: OpenKlantProperties): WebClient =
         openKlantWebClientBuilder
-            .clientConnector(defaultConnector)
             .clone()
             .baseUrl(properties.klantinteractiesUrl.toASCIIString())
             .defaultHeader("Authorization", "Token ${properties.token}")
