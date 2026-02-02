@@ -5,37 +5,37 @@ import {EMPTY, of} from "rxjs";
 import {GetOrCreatePartijConfig} from "../../models/get-or-create-partij-config";
 
 describe('GetOrCreatePartijComponent', () => {
-    let component: GetOrCreatePartijComponent;
-    let fixture: ComponentFixture<GetOrCreatePartijComponent>;
+  let component: GetOrCreatePartijComponent;
+  let fixture: ComponentFixture<GetOrCreatePartijComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [GetOrCreatePartijComponent]
-        })
-            .overrideTemplate(GetOrCreatePartijComponent, "")
-            .compileComponents();
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [GetOrCreatePartijComponent]
+    })
+      .overrideTemplate(GetOrCreatePartijComponent, "")
+      .compileComponents();
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(GetOrCreatePartijComponent);
-        component = fixture.componentInstance;
+  beforeEach(() => {
+    fixture = TestBed.createComponent(GetOrCreatePartijComponent);
+    component = fixture.componentInstance;
 
-        component.save$ = EMPTY;
-        component.disabled$ = of(false);
-        component.pluginId = "test-plugin";
+    component.save$ = EMPTY;
+    component.disabled$ = of(false);
+    component.pluginId = "test-plugin";
 
-        component.prefillConfiguration$ = of({
-            bsn: "",
-            voorletters: "",
-            voornaam: "",
-            voorvoegselAchternaam: "",
-            achternaam: "",
-        } as GetOrCreatePartijConfig);
+    component.prefillConfiguration$ = of({
+      bsn: "",
+      voorletters: "",
+      voornaam: "",
+      voorvoegselAchternaam: "",
+      achternaam: "",
+    } as GetOrCreatePartijConfig);
 
-        fixture.detectChanges();
-    });
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });
