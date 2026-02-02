@@ -1,7 +1,9 @@
 package com.ritense.valtimoplugins.suwinet.autoconfigure
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
 import com.ritense.valtimoplugins.suwinet.service.UwvCodeService
 import com.ritense.valtimoplugins.suwinet.service.UwvSoortIkvService
 import com.ritense.valtimo.contract.annotation.ProcessBean
@@ -44,6 +46,11 @@ class SuwinetAutoConfiguration {
     }
 
     @Bean
+    fun objectFlattener(objectMapper: ObjectMapper): ObjectFlattener {
+        return ObjectFlattener(objectMapper)
+    }
+
+    @Bean
     @ProcessBean
     fun dateTimeService(): DateTimeService {
         return DateTimeService()
@@ -63,11 +70,13 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBrpInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        objectFlattener: ObjectFlattener
     ): SuwinetBrpInfoService {
         return SuwinetBrpInfoService(
             suwinetSOAPClient,
             nationaliteitenService(),
             DateTimeService(),
+            objectFlattener
         )
     }
 
@@ -75,9 +84,11 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetRdwService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        objectFlattener: ObjectFlattener
     ): SuwinetRdwService {
         return SuwinetRdwService(
-            suwinetSOAPClient
+            suwinetSOAPClient,
+            objectFlattener
         )
     }
 
@@ -163,9 +174,11 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBijstandsRegelingenInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        objectFlattener: ObjectFlattener
     ): SuwinetBijstandsregelingenService {
         return SuwinetBijstandsregelingenService(
-            suwinetSOAPClient
+            suwinetSOAPClient,
+            objectFlattener
         )
     }
 

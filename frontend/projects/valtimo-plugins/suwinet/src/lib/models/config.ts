@@ -32,11 +32,13 @@ export interface BaseActionConfig {
 
 export interface BrpPersoonInfoConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface BrpPartnerInfoConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
@@ -48,6 +50,7 @@ export interface BijstandsRegelingenInfoConfig extends BaseActionConfig {
 
 export interface BrpKinderenInfoConfig extends BaseActionConfig {
     kinderenBsns: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 export interface DUOPersoonsInfoComponent extends BaseActionConfig{

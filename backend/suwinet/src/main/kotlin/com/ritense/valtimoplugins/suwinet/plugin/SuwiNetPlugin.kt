@@ -63,6 +63,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String>? = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP info for case ${execution.businessKey}" }
@@ -70,13 +71,19 @@ class SuwiNetPlugin(
         try {
             require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
+            var props = dynamicProperties
+
+            if (dynamicProperties == null) {
+                props = listOf()
+            }
+
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig(),
                 suffix
             )
 
             suwinetBrpInfoService.getPersoonsgegevensByBsn(
-                bsn, suwinetBrpInfoService.getBRPInfo()
+                bsn, suwinetBrpInfoService.getBRPInfo(), props
             )?.also {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -108,18 +115,25 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String>? = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP partner info for case ${execution.businessKey}" }
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
         try {
+            var props = dynamicProperties
+
+            if (dynamicProperties == null) {
+                props = listOf()
+            }
+
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig(),
                 suffix
             )
 
             suwinetBrpInfoService.getPersoonsgegevensByBsn(
-                bsn, suwinetBrpInfoService.getBRPInfo()
+                bsn, suwinetBrpInfoService.getBRPInfo(), props
             )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -148,10 +162,17 @@ class SuwiNetPlugin(
         @PluginActionProperty kinderenBsns: List<String>,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String>? = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP Kinderen info for case ${execution.businessKey}" }
         try {
+            var props = dynamicProperties
+
+            if (dynamicProperties == null) {
+                props = listOf()
+            }
+
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig(),
                 suffix
@@ -160,7 +181,7 @@ class SuwiNetPlugin(
             val kinderen = kinderenBsns.mapNotNull {
                 require(it.isValidBsn()) { "Provided BSN does not pass elfproef" }
                 suwinetBrpInfoService.getPersoonsgegevensByBsn(
-                    it, suwinetBrpInfoService.getBRPInfo()
+                    it, suwinetBrpInfoService.getBRPInfo(), props
                 )
             }
             kinderen.let {

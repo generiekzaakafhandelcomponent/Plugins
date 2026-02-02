@@ -16,7 +16,7 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {BrpPartnerInfoConfig} from '../../models';
 
 @Component({
@@ -38,8 +38,15 @@ export class BrpPartnerInfoComponent
     private readonly formValue$ = new BehaviorSubject<BrpPartnerInfoConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    defaultValues$;
+
     ngOnInit(): void {
         this.openSaveSubscription();
+        this.defaultValues$ = this.prefillConfiguration$.pipe(
+            map(config => {
+                return config.dynamicProperties.map(value => ({key: value, value: value}))
+            })
+        )
     }
 
     ngOnDestroy(): void {

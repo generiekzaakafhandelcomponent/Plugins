@@ -15,6 +15,7 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.VerblijfplaatsHistori
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Verblijfstitel
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
@@ -33,7 +34,8 @@ import java.time.YearMonth
 class SuwinetBrpInfoService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
     private val nationaliteitenService: NationaliteitenService,
-    private val dateTimeService: DateTimeService
+    private val dateTimeService: DateTimeService,
+    private val flattener: ObjectFlattener
 ) {
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
@@ -61,7 +63,7 @@ class SuwinetBrpInfoService(
     }
 
     fun getPersoonsgegevensByBsn(
-        bsn: String, brpService: BRPInfo
+        bsn: String, brpService: BRPInfo, dynamicProperties: List<String>
     ): PersoonDto? {
 
         logger.info { "Getting BRP personal info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
@@ -72,7 +74,7 @@ class SuwinetBrpInfoService(
             }
             val person = brpService.aanvraagPersoon(request)
 
-            return person.unwrapResponse()
+            return person.unwrapResponse(dynamicProperties)
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -97,7 +99,7 @@ class SuwinetBrpInfoService(
         }
     }
 
-    private fun AanvraagPersoonResponse.unwrapResponse(): PersoonDto? {
+    private fun AanvraagPersoonResponse.unwrapResponse(dynamicProperties: List<String>): PersoonDto? {
 
         val responseValue =
             content.firstOrNull() ?: throw IllegalStateException("AanvraagPersoonResponse contains no value")
@@ -106,7 +108,7 @@ class SuwinetBrpInfoService(
             is ClientSuwi -> {
                 val persoon = responseValue.value as ClientSuwi
 
-                PersoonDto(
+               return PersoonDto(
                     bsn = persoon.burgerservicenr,
                     anummer = persoon.aNr ?: "",
                     voornamen = persoon.voornamen ?: "",
@@ -136,7 +138,9 @@ class SuwinetBrpInfoService(
                             ?.firstOrNull()
                             ?.takeIf { it.datOntbindingHuwelijk == null && it.datHuwelijkssluiting != null }
                             ?.datHuwelijkssluiting
-                    )
+                    ),
+                    propertiesMap = getDynamicProperties(persoon, dynamicProperties),
+                    properties = getAvailableProperties(persoon)
                 )
             }
 
@@ -255,6 +259,39 @@ class SuwinetBrpInfoService(
             .coerceIn(1, YearMonth.of(year, month).lengthOfMonth())
 
         return LocalDate.of(year, month, day)
+    }
+
+    private fun getAvailableProperties(info: Any): List<String> {
+        val flatMap = flattener.toFlatMap(info)
+        return flatMap.keys.toList()
+    }
+
+    private fun getDynamicProperties(
+        info: Any,
+        dynamicProperties: List<String>
+    ): Map<String, Any?> {
+        val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
+
+        val flatMap = flattener.toFlatMap(info)
+
+        // exact matching
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) {
+                propertiesMap[prop] = flatMap[prop]
+            }
+
+            // do wildcards
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd('*')
+                flatMap.keys.forEach {
+                    if (it.startsWith(prefixValue)) {
+                        propertiesMap[it] = flatMap[it]
+                    }
+                }
+            }
+        }
+
+        return propertiesMap
     }
 
     companion object {
