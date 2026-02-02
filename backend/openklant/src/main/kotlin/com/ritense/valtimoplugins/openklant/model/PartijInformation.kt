@@ -5,5 +5,5 @@ interface PartijInformation {
     val voorletters: String
     val voornaam: String
     val voorvoegselAchternaam: String
-    val lastName: String
+    val achternaam: String
 }

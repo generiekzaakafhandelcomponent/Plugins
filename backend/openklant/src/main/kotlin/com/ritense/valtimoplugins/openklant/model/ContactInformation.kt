@@ -5,7 +5,7 @@ data class ContactInformation(
     override val voorletters: String = "",
     override val voornaam: String,
     override val voorvoegselAchternaam: String,
-    override val lastName: String,
+    override val achternaam: String,
     val emailAddress: String,
     val caseNumber: String,
 ) : PartijInformation

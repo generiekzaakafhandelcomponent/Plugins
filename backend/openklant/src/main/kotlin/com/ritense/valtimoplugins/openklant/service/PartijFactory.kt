@@ -42,7 +42,7 @@ class PartijFactory {
                 voorletters = partijInformation.voorletters,
                 voornaam = partijInformation.voornaam,
                 voorvoegselAchternaam = partijInformation.voorvoegselAchternaam,
-                achternaam = partijInformation.lastName,
+                achternaam = partijInformation.achternaam,
             )
         return Partij.PartijIdentificatie(contactnaam)
     }

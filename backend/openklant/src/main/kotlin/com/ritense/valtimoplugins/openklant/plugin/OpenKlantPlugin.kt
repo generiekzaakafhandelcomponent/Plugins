@@ -55,7 +55,7 @@ class OpenKlantPlugin(
                 bsn = bsn,
                 voornaam = firstName,
                 voorvoegselAchternaam = inFix,
-                lastName = lastName,
+                achternaam = lastName,
                 emailAddress = emailAddress,
                 caseNumber = caseUuid,
             )
@@ -87,7 +87,7 @@ class OpenKlantPlugin(
                 voorletters = voorletters,
                 voornaam = voornaam,
                 voorvoegselAchternaam = voorvoegselAchternaam,
-                lastName = achternaam,
+                achternaam = achternaam,
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid =

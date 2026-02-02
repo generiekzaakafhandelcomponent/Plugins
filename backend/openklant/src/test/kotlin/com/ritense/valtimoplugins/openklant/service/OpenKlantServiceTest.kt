@@ -111,7 +111,7 @@ class OpenKlantServiceTest {
                 ContactInformation(
                     emailAddress = "email@adres.nl",
                     caseNumber = "ZAAK-1234",
-                    lastName = "Oe",
+                    achternaam = "Oe",
                     voorvoegselAchternaam = "D",
                     voornaam = "John",
                     bsn = "123456789",
@@ -146,7 +146,7 @@ class OpenKlantServiceTest {
                 ContactInformation(
                     emailAddress = "email@adres.nl",
                     caseNumber = "ZAAK-1234",
-                    lastName = "Oe",
+                    achternaam = "Oe",
                     voorvoegselAchternaam = "D",
                     voornaam = "John",
                     bsn = "123456789",
@@ -203,7 +203,7 @@ class OpenKlantServiceTest {
                 ContactInformation(
                     emailAddress = "email@adres.nl",
                     caseNumber = "ZAAK-1234",
-                    lastName = "Oe",
+                    achternaam = "Oe",
                     voorvoegselAchternaam = "D",
                     voornaam = "John",
                     bsn = "123456789",
@@ -258,7 +258,7 @@ class OpenKlantServiceTest {
                     voorletters = "J.",
                     voornaam = "John",
                     voorvoegselAchternaam = "",
-                    lastName = "Doe",
+                    achternaam = "Doe",
                 )
             val existingPartij = defaultPartij.copy(uuid = "existing-partij-uuid")
             coEvery { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns existingPartij
@@ -287,7 +287,7 @@ class OpenKlantServiceTest {
                     voorletters = "J.",
                     voornaam = "John",
                     voorvoegselAchternaam = "",
-                    lastName = "Doe",
+                    achternaam = "Doe",
                 )
             coEvery { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns null
 
