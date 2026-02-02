@@ -46,8 +46,33 @@ Voorbeeld `.env.properties`:
 AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL=https://openklant.gemeente.nl/klantinteracties/api/v1/
 AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN=AAAAAAAAAAAAAAAAAA
 ```
+### Haal Partij op of maak een Partij aan
+- Haalt partij op of maakt een Partij aan als er nog geen bestaat op de aangegeven bsn
 
-### Opslaan partij:
+![haal partij op of maak een partij aan](img/haal-partij-op-of-maak-nieuw-partij.png)
+
+Voorbeeld `*.processlink.json`:
+
+```json
+{
+  "activityId": "haalPartijOpOfMaakNieuwe",
+  "activityType": "bpmn:ServiceTask:start",
+  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+  "pluginActionDefinitionKey": "get-or-create-partij",
+  "actionProperties": {
+    "bsn": "doc:/partij/bsn",
+    "voorletters": "doc:/partij/voorletters",
+    "voornaam": "doc:/partij/voornaam",
+    "voorvoegselAchternaam": "doc:/partij/voorvoegselAchternaam",
+    "achternaam": "doc:/partij/achternaam"
+  },
+  "processLinkType": "plugin"
+}
+```
+
+### Opslaan partij met nieuw digitaal adres:
+- Haalt partij op of maakt een Partij aan als er nog geen bestaat op de aangegeven bsn
+- Voegt een digitaal adres met zaak-koppeling toe aan de partij
 
 ![opslaan partij configuratie](img/opslaan-contactinfo-in-openklant.png)
 
