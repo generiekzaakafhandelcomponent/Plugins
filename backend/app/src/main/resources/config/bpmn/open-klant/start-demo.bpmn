@@ -73,7 +73,11 @@
       </bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_01e4b7b" name="Haal partij op of maak nieuwe partij" sourceRef="Gateway_0unxpx3"
-                       targetRef="haalPartijOpOfMaakNieuwe"/>
+                       targetRef="haalPartijOpOfMaakNieuwe">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">
+        ${valueResolverDelegateService.resolveValue(execution, "doc:selectedDemo") == "partijOphalenOfMaken"}
+      </bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_1571h52">
       <bpmn:incoming>Flow_0v73k3m</bpmn:incoming>
     </bpmn:endEvent>
