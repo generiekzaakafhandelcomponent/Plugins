@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - v13
-      - bugfix/151647-Suwinet-path-DH-missing-suffix-voor-WSGateway
+      - bugfix/151810-DateTimeParseException-bij-het-ophalen-van-bijstandsregelingen
 jobs:
   # -------------------------------------------------------------
   # Using GitHub's API is not supported for push events

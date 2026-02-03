@@ -147,15 +147,15 @@ class SuwinetBijstandsregelingenService(
     private fun getSpeciekeGegevensBijzBijstand(specifiekeGegevensBijzBijstand: MutableList<ClientSuwi.SpecifiekeGegevensBijzBijstand>): List<SpecifiekeGegevensBijzBijstandDto> =
         specifiekeGegevensBijzBijstand.map { specifiekeGegevensBijzBijstandItem ->
             SpecifiekeGegevensBijzBijstandDto(
-                cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand,
-                omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand,
+                cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand.orEmpty(),
+                omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand.orEmpty(),
                 datBetaalbaarBijzBijstand = SuwinetUtil.parseSuwinetN8Date(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
                 partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
-                szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet.cdSzWet),
+                szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
                 bron = BronDto(
-                    cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron.cdKolomSuwi,
-                    cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi,
-                    cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi,
+                    cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron?.cdKolomSuwi ?: 0,
+                    cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi.orEmpty(),
+                    cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi.orEmpty(),
                 )
 
             )
@@ -165,32 +165,32 @@ class SuwinetBijstandsregelingenService(
         aanvraagUitkering
             .map { aanvraag ->
                 AanvraagUitkeringDto(
-                    datAanvraagUitkering = LocalDate.parse(aanvraag.datAanvraagUitkering),
-                    szWet = SzWetDto(aanvraag.szWet.cdSzWet),
+                    datAanvraagUitkering = SuwinetUtil.parseSuwinetN8Date(aanvraag.datAanvraagUitkering),
+                    szWet = SzWetDto(aanvraag.szWet.cdSzWet.orEmpty()),
                     beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
                     partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
                     bron = getBron(aanvraag.bron)
                 )
             }
 
-    private fun getBron(bron: Bron): BronDto? = BronDto(
-        cdKolomSuwi = bron.cdKolomSuwi,
-        cdPartijSuwi = bron.cdPartijSuwi,
-        cdVestigingSuwi = bron.cdVestigingSuwi,
+    private fun getBron(bron: Bron?): BronDto = BronDto(
+        cdKolomSuwi = bron?.cdKolomSuwi ?: 0,
+        cdPartijSuwi = bron?.cdPartijSuwi.orEmpty(),
+        cdVestigingSuwi = bron?.cdVestigingSuwi.orEmpty(),
     )
 
     private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand): PartnerBijstandDto =
         PartnerBijstandDto(
             burgerservicenr = partnerAanvraagUitkering.burgerservicenr,
-            voorletters = partnerAanvraagUitkering.voorletters,
-            voorvoegsel = partnerAanvraagUitkering.voorvoegsel,
+            voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
+            voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
             significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
             geboortedat = SuwinetUtil.parseSuwinetN8Date(partnerAanvraagUitkering.geboortedat),
         )
 
     private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
         BeslissingOpAanvraagUitkeringDto(
-            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering,
+            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering.orEmpty(),
             datDagtekeningBeslisOpAanvrUitk = SuwinetUtil.parseSuwinetN8Date(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
         )
 
