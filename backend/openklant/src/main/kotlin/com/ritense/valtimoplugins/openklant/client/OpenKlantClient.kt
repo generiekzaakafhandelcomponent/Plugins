@@ -137,25 +137,26 @@ class OpenKlantClient(
             handleResponseException(e, "Error creating DigitaalAdres")
         }
 
-    suspend fun getKlantcontacten(klantContactOptions: KlantcontactOptions): Page<Klantcontact> =
+    suspend fun getKlantcontacten(klantContactOptions: KlantcontactOptions): Page<Klantcontact> {
         if (klantContactOptions.bsn.isNullOrBlank() &&
             klantContactOptions.objectUuid.isNullOrBlank()
         ) {
-            Page(count = 0, results = emptyList())
-        } else {
-            try {
-                webClient(klantContactOptions)
-                    .get()
-                    .uri { uriBuilder ->
-                        buildOpenKlantUri(uriBuilder, klantContactOptions)
-                    }.retrieve()
-                    .awaitBody<Page<Klantcontact>>()
-            } catch (e: WebClientResponseException.InternalServerError) {
-                handleInternalServerError(e)
-            } catch (e: WebClientResponseException) {
-                handleResponseException(e, "Error fetching Klantcontacten")
-            }
+            return Page(count = 0, results = emptyList())
         }
+
+        try {
+            return webClient(klantContactOptions)
+                .get()
+                .uri { uriBuilder ->
+                    buildOpenKlantUri(uriBuilder, klantContactOptions)
+                }.retrieve()
+                .awaitBody<Page<Klantcontact>>()
+        } catch (e: WebClientResponseException.InternalServerError) {
+            handleInternalServerError(e)
+        } catch (e: WebClientResponseException) {
+            handleResponseException(e, "Error fetching Klantcontacten")
+        }
+    }
 
     suspend fun postKlantcontact(
         @Valid @RequestBody request: KlantcontactCreationRequest,
