@@ -125,4 +125,4 @@ const openKlantPluginSpecification: PluginSpecification = {
   },
 };
 
-export {openKlantPluginSpecification};
+export { openKlantPluginSpecification };
