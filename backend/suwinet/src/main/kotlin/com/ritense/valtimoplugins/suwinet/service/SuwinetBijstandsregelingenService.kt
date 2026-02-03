@@ -149,7 +149,7 @@ class SuwinetBijstandsregelingenService(
             SpecifiekeGegevensBijzBijstandDto(
                 cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand.orEmpty(),
                 omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand.orEmpty(),
-                datBetaalbaarBijzBijstand = dateTimeService.fromSuwinetToDateString(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
+                datBetaalbaarBijzBijstand = dateTimeService.toLocalDate(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand, SUWINET_DATEIN_PATTERN),
                 partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
                 szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
                 bron = BronDto(
@@ -165,7 +165,7 @@ class SuwinetBijstandsregelingenService(
         aanvraagUitkering
             .map { aanvraag ->
                 AanvraagUitkeringDto(
-                    datAanvraagUitkering = dateTimeService.fromSuwinetToDateString(aanvraag.datAanvraagUitkering),
+                    datAanvraagUitkering = dateTimeService.toLocalDate(aanvraag.datAanvraagUitkering, SUWINET_DATEIN_PATTERN),
                     szWet = SzWetDto(aanvraag.szWet.cdSzWet.orEmpty()),
                     beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
                     partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
@@ -185,18 +185,19 @@ class SuwinetBijstandsregelingenService(
             voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
             voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
             significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
-            geboortedat = dateTimeService.fromSuwinetToDateString(partnerAanvraagUitkering.geboortedat),
+            geboortedat = dateTimeService.toLocalDate(partnerAanvraagUitkering.geboortedat, SUWINET_DATEIN_PATTERN),
         )
 
     private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
         BeslissingOpAanvraagUitkeringDto(
             cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering.orEmpty(),
-            datDagtekeningBeslisOpAanvrUitk = dateTimeService.fromSuwinetToDateString(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
+            datDagtekeningBeslisOpAanvrUitk = dateTimeService.toLocalDate(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk, SUWINET_DATEIN_PATTERN)
         )
 
 
     companion object {
         private const val SERVICE_PATH = "Bijstandsregelingen-v0500"
+        const val SUWINET_DATEIN_PATTERN = "yyyyMMdd"
         private val objectFactory = ObjectFactory()
         private val logger = KotlinLogging.logger {}
     }
