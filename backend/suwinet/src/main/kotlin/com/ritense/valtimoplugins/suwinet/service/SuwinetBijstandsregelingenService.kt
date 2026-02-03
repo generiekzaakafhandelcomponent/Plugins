@@ -132,7 +132,7 @@ class SuwinetBijstandsregelingenService(
                     cdPartijSuwi = vordering.bron.cdPartijSuwi
                 ),
                 cdRedenVordering = vordering.cdRedenVordering,
-                datBesluitVordering = vordering.datBesluitVordering,
+                datBesluitVordering = SuwinetUtil.parseSuwinetN8Date(vordering.datBesluitVordering),
                 identificatienrVordering = vordering.identificatienrVordering,
                 partnersVordering = getPartners(vordering.partnerVordering),
                 szWet = SzWetDto(cdSzWet = vordering.szWet.cdSzWet)
@@ -149,7 +149,7 @@ class SuwinetBijstandsregelingenService(
             SpecifiekeGegevensBijzBijstandDto(
                 cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand,
                 omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand,
-                datBetaalbaarBijzBijstand = LocalDate.parse(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
+                datBetaalbaarBijzBijstand = SuwinetUtil.parseSuwinetN8Date(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
                 partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
                 szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet.cdSzWet),
                 bron = BronDto(
@@ -185,13 +185,13 @@ class SuwinetBijstandsregelingenService(
             voorletters = partnerAanvraagUitkering.voorletters,
             voorvoegsel = partnerAanvraagUitkering.voorvoegsel,
             significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
-            geboortedat = LocalDate.parse(partnerAanvraagUitkering.geboortedat),
+            geboortedat = SuwinetUtil.parseSuwinetN8Date(partnerAanvraagUitkering.geboortedat),
         )
 
     private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
         BeslissingOpAanvraagUitkeringDto(
             cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering,
-            datDagtekeningBeslisOpAanvrUitk = LocalDate.parse(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
+            datDagtekeningBeslisOpAanvrUitk = SuwinetUtil.parseSuwinetN8Date(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
         )
 
 
