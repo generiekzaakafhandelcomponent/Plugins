@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 data class VorderingDto(
     val identificatienrVordering: String?,
-    val datBesluitVordering: LocalDate?,
+    val datBesluitVordering: String?,
     val cdRedenVordering: String?,
     val szWet: SzWetDto?,
     val partnersVordering: MutableList<PartnerDto>,

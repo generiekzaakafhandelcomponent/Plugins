@@ -13,7 +13,7 @@ data class AanvraagUitkeringDto(
      *  De datum van de dag waarop de AANVRAAG UITKERING door het
      * UITVOERINGSORGAAN is ontvangen.
      */
-    val datAanvraagUitkering: LocalDate?,
+    val datAanvraagUitkering: String?,
     val szWet: SzWetDto?,
     val beslissingOpAanvraagUitkering: BeslissingOpAanvraagUitkeringDto?,
     val partnerAanvraagUitkering: PartnerBijstandDto,

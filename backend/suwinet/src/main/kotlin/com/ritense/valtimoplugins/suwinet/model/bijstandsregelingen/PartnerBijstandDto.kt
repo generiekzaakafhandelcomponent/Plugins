@@ -7,5 +7,5 @@ data class PartnerBijstandDto(
     val voorletters: String?,
     val voorvoegsel: String?,
     val significantDeelVanDeAchternaam: String?,
-    val geboortedat: LocalDate?,
+    val geboortedat: String?,
 )

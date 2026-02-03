@@ -19,7 +19,7 @@ data class SpecifiekeGegevensBijzBijstandDto(
     /**
      *  Datum betaalbaarstelling Bijzondere Bijstand
      */
-    val datBetaalbaarBijzBijstand: LocalDate?,
+    val datBetaalbaarBijzBijstand: String?,
 
     val partnerBijzBijstand: PartnerBijstandDto?,
     val szWet: SzWetDto?,

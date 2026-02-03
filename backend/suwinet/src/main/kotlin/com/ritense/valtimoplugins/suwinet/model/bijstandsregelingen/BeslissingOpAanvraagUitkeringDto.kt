@@ -15,5 +15,5 @@ data class BeslissingOpAanvraagUitkeringDto(
      * aan CLIENT SUWI waarin de beslissing op zijn/haar AANVRAAG
      * UITKERING kenbaar wordt gemaakt.
      */
-    val datDagtekeningBeslisOpAanvrUitk: LocalDate?
+    val datDagtekeningBeslisOpAanvrUitk: String?
 )

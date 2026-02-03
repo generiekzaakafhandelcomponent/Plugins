@@ -26,10 +26,10 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
-import java.time.LocalDate
 
 class SuwinetBijstandsregelingenService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val dateTimeService: DateTimeService
 ) {
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
@@ -132,7 +132,7 @@ class SuwinetBijstandsregelingenService(
                     cdPartijSuwi = vordering.bron.cdPartijSuwi
                 ),
                 cdRedenVordering = vordering.cdRedenVordering,
-                datBesluitVordering = SuwinetUtil.parseSuwinetN8Date(vordering.datBesluitVordering),
+                datBesluitVordering = dateTimeService.fromSuwinetToDateString(vordering.datBesluitVordering),
                 identificatienrVordering = vordering.identificatienrVordering,
                 partnersVordering = getPartners(vordering.partnerVordering),
                 szWet = SzWetDto(cdSzWet = vordering.szWet.cdSzWet)
@@ -149,7 +149,7 @@ class SuwinetBijstandsregelingenService(
             SpecifiekeGegevensBijzBijstandDto(
                 cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand.orEmpty(),
                 omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand.orEmpty(),
-                datBetaalbaarBijzBijstand = SuwinetUtil.parseSuwinetN8Date(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
+                datBetaalbaarBijzBijstand = dateTimeService.fromSuwinetToDateString(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
                 partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
                 szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
                 bron = BronDto(
@@ -165,7 +165,7 @@ class SuwinetBijstandsregelingenService(
         aanvraagUitkering
             .map { aanvraag ->
                 AanvraagUitkeringDto(
-                    datAanvraagUitkering = SuwinetUtil.parseSuwinetN8Date(aanvraag.datAanvraagUitkering),
+                    datAanvraagUitkering = dateTimeService.fromSuwinetToDateString(aanvraag.datAanvraagUitkering),
                     szWet = SzWetDto(aanvraag.szWet.cdSzWet.orEmpty()),
                     beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
                     partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
@@ -185,13 +185,13 @@ class SuwinetBijstandsregelingenService(
             voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
             voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
             significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
-            geboortedat = SuwinetUtil.parseSuwinetN8Date(partnerAanvraagUitkering.geboortedat),
+            geboortedat = dateTimeService.fromSuwinetToDateString(partnerAanvraagUitkering.geboortedat),
         )
 
     private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
         BeslissingOpAanvraagUitkeringDto(
             cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering.orEmpty(),
-            datDagtekeningBeslisOpAanvrUitk = SuwinetUtil.parseSuwinetN8Date(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
+            datDagtekeningBeslisOpAanvrUitk = dateTimeService.fromSuwinetToDateString(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
         )
 
 
