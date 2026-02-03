@@ -181,7 +181,7 @@ werken.
 
 ### Ophalen klantcontacten (contactgeschiedenis) via BSN: plugin-actie:
 
-Vul in de process het pad de variabele in waar het BSN gevonden kan worden in onder `bsn`, en geef bij `resultPvName` aan onder welke procesvariabelenaam de lijst van contactmomenten (de volledige contactgeschiedenis voor dit BSN) weggeschreven kan worden. Zie ook het voorbeeldbestand, `bpmn/open-klant/contactgeschiedenis-ophalen-bsn.bpmn`, om een vollediger beeld te krijgen. 
+Vul in de process het pad de variabele in waar het BSN gevonden kan worden in onder `bsn`, en geef bij `resultPvName` aan onder welke procesvariabelenaam de lijst van contactmomenten (de volledige contactgeschiedenis voor dit BSN) weggeschreven kan worden. Zie ook het voorbeeldbestand, `bpmn/open-klant/contactgeschiedenis-ophalen.bpmn`, om een vollediger beeld te krijgen. 
 
 Voorbeeld-`[...].processlink.json`-bestand:
 
