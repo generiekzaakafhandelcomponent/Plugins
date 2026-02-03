@@ -119,6 +119,33 @@ class OpenKlantPlugin(
         }
 
     @PluginAction(
+        key = "get-contact-moments-by-partij-uuid",
+        title = "Get contact history by Partij UUID",
+        description = "Get contact history by Partij UUID from Open Klant.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun getContactMomentsByPartijUuid(
+        @PluginActionProperty partijUuid: String,
+        @PluginActionProperty resultPvName: String,
+        execution: DelegateExecution,
+    ): Unit =
+        runBlocking {
+            logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
+            val pluginProperties =
+                KlantcontactOptions(
+                    klantinteractiesUrl,
+                    token = token,
+                    partijUuid = partijUuid,
+                )
+
+            fetchKlantcontactenAndStore(
+                execution = execution,
+                resultPvName = resultPvName,
+                pluginProperties = pluginProperties,
+            )
+        }
+
+    @PluginAction(
         key = "register-klantcontact",
         title = "Register klantcontact",
         description = "Registers a new klantcontact to OpenKlant",

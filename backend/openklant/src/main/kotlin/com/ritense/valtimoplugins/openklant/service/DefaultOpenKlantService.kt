@@ -32,7 +32,14 @@ class DefaultOpenKlantService(
     }
 
     override suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
-        openKlantClient.getKlantcontacten(properties).results
+        if (properties.bsn.isNullOrBlank() &&
+            properties.partijUuid.isNullOrBlank() &&
+            properties.objectTypeId.isNullOrBlank()
+        ) {
+            emptyList()
+        } else {
+            openKlantClient.getKlantcontacten(properties).results
+        }
 
     override suspend fun postKlantcontact(
         properties: OpenKlantProperties,
