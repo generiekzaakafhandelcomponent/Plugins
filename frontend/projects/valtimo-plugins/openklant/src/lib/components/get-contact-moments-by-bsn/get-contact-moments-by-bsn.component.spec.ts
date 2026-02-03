@@ -4,7 +4,7 @@ import { EMPTY, of } from 'rxjs';
 import { GetContactMomentsByBsnComponent } from './get-contact-moments-by-bsn.component';
 import { GetContactMomentsByBsnConfig } from '../../models/get-contact-moments-by-bsn-config';
 
-describe('OpenKlantGetContactMomentsByCaseUuidComponent', () => {
+describe('OpenKlantGetContactMomentsByBsnComponent', () => {
     let component: GetContactMomentsByBsnComponent;
     let fixture: ComponentFixture<GetContactMomentsByBsnComponent>;
 
