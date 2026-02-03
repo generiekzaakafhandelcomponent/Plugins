@@ -139,7 +139,8 @@ class OpenKlantClient(
 
     suspend fun getKlantcontacten(klantContactOptions: KlantcontactOptions): Page<Klantcontact> {
         if (klantContactOptions.bsn.isNullOrBlank() &&
-            klantContactOptions.objectUuid.isNullOrBlank()
+            klantContactOptions.objectUuid.isNullOrBlank() &&
+            klantContactOptions.partijUuid.isNullOrBlank()
         ) {
             return Page(count = 0, results = emptyList())
         }
