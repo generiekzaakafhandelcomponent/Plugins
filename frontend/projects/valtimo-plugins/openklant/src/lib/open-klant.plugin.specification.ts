@@ -7,7 +7,7 @@ import { GetContactMomentsByBsnComponent } from "./components/get-contact-moment
 import { RegisterKlantcontactComponent } from "./components/open-klant-register-klantcontact/open-klant-register-klantcontact.component";
 import { GetOrCreatePartijComponent } from "./components/get-or-create-partij/get-or-create-partij.component";
 
-const  openKlantPluginSpecification: PluginSpecification = {
+const openKlantPluginSpecification: PluginSpecification = {
   pluginId: "open-klant",
   pluginConfigurationComponent: OpenKlantPluginConfigurationComponent,
   pluginLogoBase64: OPEN_KLANT_PLUGIN_LOGO_BASE64,
