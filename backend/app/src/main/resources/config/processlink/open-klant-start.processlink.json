@@ -52,7 +52,7 @@
         "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
         "pluginActionDefinitionKey": "get-or-create-partij",
         "actionProperties": {
-            "bsn": "doc:/partij/bsn",
+            "bsn": "doc:/bsn",
             "voorletters": "doc:/partij/voorletters",
             "voornaam": "doc:/partij/voornaam",
             "voorvoegselAchternaam": "doc:/partij/voorvoegselAchternaam",

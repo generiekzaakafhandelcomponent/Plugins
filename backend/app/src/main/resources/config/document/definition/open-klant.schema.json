@@ -22,9 +22,6 @@
         "partij": {
             "type": "object",
             "properties": {
-                "bsn": {
-                    "type": "string"
-                },
                 "voorletters": {
                     "type": "string"
                 },
