@@ -238,7 +238,7 @@ _Zie [toevoegen van plugins](https://docs.valtimo.nl/features/plugins/plugins/cu
 
 #### Tabblad BPMN
 Wanneer het tabblad wordt ingeladen, wordt het process met de id `contactgeschiedenis-ophalen` opgestart. 
-Dit process is zelf in te delen, wel is het belangrijk dat de contactgeschiedenis in een dossiervariabele wordt geplaatst genaamd: `doc:/contactgeschiedenis`.
+Dit process moet zelf in de configuratie gemaakt worden. Het is belangrijk dat in het process, de contactgeschiedenis in een dossiervariabele wordt geplaatst onder: `doc:/contactgeschiedenis`.
 Deze moet ook worden toegevoegd aan de dossierdefinitie: 
 ```json
 {
