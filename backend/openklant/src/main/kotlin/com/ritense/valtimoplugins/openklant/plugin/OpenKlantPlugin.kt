@@ -51,12 +51,12 @@ class OpenKlantPlugin(
 
         val contactInformation =
             ContactInformation(
-                bsn = bsn,
-                firstName = firstName,
-                inFix = inFix,
-                lastName = lastName,
-                emailAddress = emailAddress,
-                caseNumber = caseUuid,
+                bsn = bsn.trim(),
+                firstName = firstName.trim(),
+                inFix = inFix.trim(),
+                lastName = lastName.trim(),
+                emailAddress = emailAddress.trim(),
+                caseNumber = caseUuid.trim(),
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)
@@ -81,7 +81,7 @@ class OpenKlantPlugin(
             KlantcontactOptions(
                 klantinteractiesUrl,
                 token = token,
-                objectUuid = caseUuid,
+                objectUuid = caseUuid.trim(),
             )
 
         fetchKlantcontactenAndStore(
@@ -108,7 +108,7 @@ class OpenKlantPlugin(
                 KlantcontactOptions(
                     klantinteractiesUrl,
                     token = token,
-                    bsn = bsn,
+                    bsn = bsn.trim(),
                 )
 
             fetchKlantcontactenAndStore(
@@ -135,7 +135,7 @@ class OpenKlantPlugin(
                 KlantcontactOptions(
                     klantinteractiesUrl,
                     token = token,
-                    partijUuid = partijUuid,
+                    partijUuid = partijUuid.trim(),
                 )
 
             fetchKlantcontactenAndStore(
@@ -170,18 +170,18 @@ class OpenKlantPlugin(
 
         val klantcontactCreationInformation =
             KlantcontactCreationInformation(
-                kanaal = kanaal,
+                kanaal = kanaal.trim(),
                 onderwerp = onderwerp,
                 inhoud = inhoud,
-                vertrouwelijk = vertrouwelijk.toBoolean(),
-                taal = taal,
-                plaatsgevondenOp = plaatsgevondenOp,
+                vertrouwelijk = vertrouwelijk.trim().toBoolean(),
+                taal = taal.trim(),
+                plaatsgevondenOp = plaatsgevondenOp.trim(),
                 hasBetrokkene = hasBetrokkene,
-                partijUuid = partijUuid,
-                voorletters = voorletters,
-                voornaam = voornaam,
-                voorvoegselAchternaam = voorvoegselAchternaam,
-                achternaam = achternaam,
+                partijUuid = partijUuid?.trim(),
+                voorletters = voorletters?.trim(),
+                voornaam = voornaam?.trim(),
+                voorvoegselAchternaam = voorvoegselAchternaam?.trim(),
+                achternaam = achternaam?.trim(),
             )
 
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
