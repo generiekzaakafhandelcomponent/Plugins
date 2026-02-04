@@ -1,13 +1,13 @@
 <v-form
-        (valueChange)="formValueChange($event)"
-        *ngIf="{
-        disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
-        fileFormats: fileFormats$ | async,
-        firstLevelGroupSelectItems: firstLevelGroupSelectItems$ | async,
-        secondLevelGroupSelectItems: secondLevelGroupSelectItems$ | async,
-        thirdLevelGroupSelectItems: thirdLevelGroupSelectItems$ | async
-    } as obs"
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+    fileFormats: fileFormats$ | async,
+    firstLevelGroupSelectItems: firstLevelGroupSelectItems$ | async,
+    secondLevelGroupSelectItems: secondLevelGroupSelectItems$ | async,
+    thirdLevelGroupSelectItems: thirdLevelGroupSelectItems$ | async
+  } as obs"
 >
   <div>
     <v-input-label
