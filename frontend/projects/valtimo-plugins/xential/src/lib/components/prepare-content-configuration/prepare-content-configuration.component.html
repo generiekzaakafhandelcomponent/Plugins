@@ -25,9 +25,9 @@
   />
 
   <v-select
+    name="firstTemplateGroupId"
     [items]="obs?.firstLevelGroupSelectItems || []"
     [margin]="true"
-    name="firstTemplateGroupId"
     [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
     [disabled]="obs.disabled"
     [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
@@ -36,9 +36,9 @@
   ></v-select>
 
   <v-select
+    name="secondTemplateGroupId"
     [items]="obs?.secondLevelGroupSelectItems || []"
     [margin]="true"
-    name="secondTemplateGroupId"
     [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
     [disabled]="obs.disabled || (obs?.secondLevelGroupSelectItems || [])?.length === 0"
     [required]="true"
@@ -46,9 +46,9 @@
   ></v-select>
 
   <v-select
+    name="thirdTemplateGroupId"
     [items]="obs?.thirdLevelGroupSelectItems || []"
     [margin]="true"
-    name="thirdTemplateGroupId"
     [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
     [disabled]="obs.disabled || (obs?.thirdLevelGroupSelectItems || [])?.length === 0"
     [required]="true"
