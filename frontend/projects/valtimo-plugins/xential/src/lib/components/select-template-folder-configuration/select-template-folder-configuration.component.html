@@ -1,0 +1,59 @@
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+    firstLevelGroupSelectItems: firstLevelGroupSelectItems$ | async,
+    secondLevelGroupSelectItems: secondLevelGroupSelectItems$ | async,
+    thirdLevelGroupSelectItems: thirdLevelGroupSelectItems$ | async
+  } as obs"
+>
+  <v-input
+    name="resultProcessVariable"
+    [title]="'resultProcessVariable' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.resultProcessVariable"
+    [disabled]="obs.disabled"
+    [required]="true"
+  />
+
+  <v-select
+    name="firstTemplateGroupId"
+    [items]="obs?.firstLevelGroupSelectItems || []"
+    [margin]="true"
+    [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
+    [disabled]="obs.disabled"
+    [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
+    [required]="true"
+    [loading]="!obs?.firstLevelGroupSelectItems"
+  ></v-select>
+
+  <v-select
+    name="secondTemplateGroupId"
+    [items]="obs?.secondLevelGroupSelectItems || []"
+    [margin]="true"
+    [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
+    [disabled]="obs.disabled || (obs?.secondLevelGroupSelectItems || [])?.length === 0"
+    [required]="true"
+    [loading]="!obs?.secondLevelGroupSelectItems"
+  ></v-select>
+
+  <v-select
+    name="thirdTemplateGroupId"
+    [items]="obs?.thirdLevelGroupSelectItems || []"
+    [margin]="true"
+    [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
+    [disabled]="obs.disabled || (obs?.thirdLevelGroupSelectItems || [])?.length === 0"
+    [required]="true"
+    [loading]="!obs?.thirdLevelGroupSelectItems"
+  ></v-select>
+
+  <v-input
+    name="eventMessageName"
+    [title]="'eventMessageName' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.eventMessageName"
+    [disabled]="obs.disabled"
+    [required]="true"
+  />
+</v-form>

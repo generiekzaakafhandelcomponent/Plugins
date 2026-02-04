@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2025 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-export * from './xential-config';
-export * from './generate-document-config';
-export * from './prepare-content-config';
-export * from './validate-access-config';
-export * from './select-template-folder-config';
+export interface SelectTemplateFolderConfig {
+  resultProcessVariable: string;
+  firstTemplateGroupId: string;
+  secondTemplateGroupId: string;
+  thirdTemplateGroupId: string;
+  eventMessageName: string;
+}

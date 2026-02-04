@@ -16,6 +16,7 @@
 
 package com.ritense.valtimoplugins.xential.plugin
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
@@ -29,13 +30,13 @@ class XentialPluginFactory(
     private val documentGenerationService: DocumentGenerationService,
     private val valueResolverService: ValueResolverService,
     private val xentialSjablonenService: XentialSjablonenService,
+    private val objectMapper: ObjectMapper,
 ) : PluginFactory<XentialPlugin>(pluginService) {
-    override fun create(): XentialPlugin {
-        return XentialPlugin(
-            esbClient,
-            documentGenerationService,
-            valueResolverService,
-            xentialSjablonenService,
-        )
-    }
+    override fun create() = XentialPlugin(
+        esbClient,
+        documentGenerationService,
+        valueResolverService,
+        xentialSjablonenService,
+        objectMapper,
+    )
 }

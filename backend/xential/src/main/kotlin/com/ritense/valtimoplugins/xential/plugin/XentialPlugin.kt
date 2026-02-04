@@ -16,8 +16,8 @@
 
 package com.ritense.valtimoplugins.xential.plugin
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
@@ -26,6 +26,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.ritense.valtimoplugins.xential.domain.FileFormat
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
+import com.ritense.valtimoplugins.xential.domain.XentialTemplateFolder
 import com.ritense.valtimoplugins.xential.plugin.XentialPlugin.Companion.PLUGIN_KEY
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
 import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
@@ -48,6 +49,7 @@ class XentialPlugin(
     private val documentGenerationService: DocumentGenerationService,
     private val valueResolverService: ValueResolverService,
     private val xentialSjablonenService: XentialSjablonenService,
+    private val objectMapper: ObjectMapper,
 ) {
     @PluginProperty(key = "applicationName", secret = false, required = true)
     lateinit var applicationName: String
@@ -60,46 +62,6 @@ class XentialPlugin(
 
     @PluginProperty(key = "mTlsSslContextAutoConfigurationId", secret = false, required = true)
     private lateinit var mTlsSslContextAutoConfigurationId: MTlsSslContext
-
-    private fun isResolvableValue(value: String): Boolean =
-        value.isNotBlank() && (
-            value.startsWith("case:") ||
-                value.startsWith("doc:") ||
-                value.startsWith("template:") ||
-                value.startsWith("pv:")
-        )
-
-    private fun resolveValuesFor(
-        execution: DelegateExecution,
-        params: Map<String, Any?>,
-    ): Map<String, Any?> {
-        val resolvedValues =
-            params.filter {
-                if (it.value is String) {
-                    isResolvableValue(it.value as String)
-                } else {
-                    false
-                }
-            }
-                .let { filteredParams ->
-                    logger.debug { "Trying to resolve values for: $filteredParams" }
-                    valueResolverService.resolveValues(
-                        execution.processInstanceId,
-                        execution,
-                        filteredParams.map { it.value as String },
-                    ).let { resolvedValues ->
-                        logger.debug { "Resolved values: $resolvedValues" }
-                        filteredParams.toMutableMap().apply {
-                            this.entries.forEach { (key, value) ->
-                                this.put(key, resolvedValues[value])
-                            }
-                        }
-                    }
-                }
-        return params.toMutableMap().apply {
-            this.putAll(resolvedValues)
-        }.toMap()
-    }
 
     @PluginAction(
         key = "generate-document",
@@ -130,12 +92,12 @@ class XentialPlugin(
 
         props.content = resolvedValues["content"] as String
         documentGenerationService.generateDocument(
-            esbClient.documentApi(restClient(mTlsSslContextAutoConfigurationId)),
-            UUID.fromString(execution.processInstanceId),
-            xentialGebruikersId,
-            xentialSjabloonId,
-            props,
-            execution,
+            api = esbClient.documentApi(restClient(mTlsSslContextAutoConfigurationId)),
+            processId = UUID.fromString(execution.processInstanceId),
+            xentialGebruikersId = xentialGebruikersId,
+            sjabloonId = xentialSjabloonId,
+            xentialDocumentProperties = props,
+            execution = execution,
         )
     }
 
@@ -184,13 +146,13 @@ class XentialPlugin(
         try {
             val xentialDocumentProperties =
                 XentialDocumentProperties(
-                    thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
-                    fileFormat,
-                    documentFilename,
-                    informationObjectType,
-                    "documentId",
-                    eventMessageName,
-                    null,
+                    xentialGroupId = thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
+                    fileFormat = fileFormat,
+                    documentFilename = documentFilename,
+                    informationObjectType = informationObjectType,
+                    documentId = "documentId",
+                    messageName = eventMessageName,
+                    content = null
                 )
 
             execution.processInstance.setVariable(
@@ -203,17 +165,86 @@ class XentialPlugin(
         }
     }
 
+    @PluginAction(
+        key = "select-template-folder",
+        title = "Select template folder",
+        description = "Select a template folder for xential document generation.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun selectTemplateFolder(
+        @PluginActionProperty firstTemplateGroupId: UUID,
+        @PluginActionProperty secondTemplateGroupId: UUID?,
+        @PluginActionProperty thirdTemplateGroupId: UUID?,
+        @PluginActionProperty eventMessageName: String,
+        @PluginActionProperty resultProcessVariable: String,
+        execution: DelegateExecution,
+    ) {
+        try {
+            val xentialTemplateFolder = XentialTemplateFolder(
+                templateGroupId = thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
+                eventMessageName = eventMessageName,
+            )
+
+            execution.processInstance.setVariable(
+                resultProcessVariable,
+                objectMapper.convertValue(xentialTemplateFolder),
+            )
+        } catch (e: Exception) {
+            logger.error { "Exiting scope due to nested error. $e" }
+            return
+        }
+    }
+
+    private fun isResolvableValue(value: String): Boolean =
+        value.isNotBlank() && (
+            value.startsWith("case:") ||
+                value.startsWith("doc:") ||
+                value.startsWith("template:") ||
+                value.startsWith("pv:")
+        )
+
+    private fun resolveValuesFor(
+        execution: DelegateExecution,
+        params: Map<String, Any?>,
+    ): Map<String, Any?> {
+        val resolvedValues =
+            params.filter {
+                if (it.value is String) {
+                    isResolvableValue(it.value as String)
+                } else {
+                    false
+                }
+            }
+            .let { filteredParams ->
+                logger.debug { "Trying to resolve values for: $filteredParams" }
+                valueResolverService.resolveValues(
+                    execution.processInstanceId,
+                    execution,
+                    filteredParams.map { it.value as String },
+                ).let { resolvedValues ->
+                    logger.debug { "Resolved values: $resolvedValues" }
+                    filteredParams.toMutableMap().apply {
+                        this.entries.forEach { (key, value) ->
+                            this.put(key, resolvedValues[value])
+                        }
+                    }
+                }
+            }
+        return params.toMutableMap().apply {
+            this.putAll(resolvedValues)
+        }.toMap()
+    }
+
     private fun restClient(mTlsSslContextAutoConfiguration: MTlsSslContext?): RestClient =
         esbClient.createRestClient(
             baseUrl = baseUrl.toString(),
             applicationName = applicationName,
             applicationPassword = applicationPassword,
-            mTlsSslContextAutoConfiguration?.createSslContext(),
+            sslContext = mTlsSslContextAutoConfiguration?.createSslContext(),
         )
 
     companion object {
         private val logger = KotlinLogging.logger { }
-        private val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         const val PLUGIN_KEY = "xential"
     }
 }

@@ -26,6 +26,9 @@ import {
 import {
   ValidateAccessConfigurationComponent
 } from './components/validate-access-configuration/validate-access-configuration.component';
+import {
+  SelectTemplateFolderConfigurationComponent
+} from './components/select-template-folder-configuration/select-template-folder-configuration.component';
 
 const XentialPluginSpecification: PluginSpecification = {
   pluginId: 'xential',
@@ -34,7 +37,8 @@ const XentialPluginSpecification: PluginSpecification = {
   functionConfigurationComponents: {
     'generate-document': GenerateDocumentConfigurationComponent,
     'prepare-content': PrepareContentConfigurationComponent,
-    'validate-xential-toegang': ValidateAccessConfigurationComponent
+    'validate-xential-toegang': ValidateAccessConfigurationComponent,
+    'select-template-folder': SelectTemplateFolderConfigurationComponent
   },
   pluginTranslations: {
     nl: {
@@ -72,7 +76,9 @@ const XentialPluginSpecification: PluginSpecification = {
       mTlsSslContextAutoConfigurationId: 'mTLS SSL context plugin configuratie',
       firstTemplateGroupId: 'Eerste sjabloongroep',
       secondTemplateGroupId: 'Tweede sjabloongroep',
-      thirdTemplateGroupId: 'Derde sjabloongroep'
+      thirdTemplateGroupId: 'Derde sjabloongroep',
+      'select-template-folder': 'Selecteer sjabloonmap',
+      resultProcessVariable: 'Geselecteerde sjabloonmap proces variabele'
     },
     en: {
       title: 'Xential',
@@ -109,7 +115,9 @@ const XentialPluginSpecification: PluginSpecification = {
       mTlsSslContextAutoConfigurationId: 'mTLS SSL context plugin configuration',
       firstTemplateGroupId: 'First template group',
       secondTemplateGroupId: 'Second template group',
-      thirdTemplateGroupId: 'Third template group'
+      thirdTemplateGroupId: 'Third template group',
+      'select-template-folder': 'Select template folder',
+      resultProcessVariable: 'Selected template folder process variable'
     },
     de: {
       title: 'Xential',

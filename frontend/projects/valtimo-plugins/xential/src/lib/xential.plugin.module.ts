@@ -35,13 +35,17 @@ import {
 import {
   ValidateAccessConfigurationComponent
 } from './components/validate-access-configuration/validate-access-configuration.component';
+import {
+  SelectTemplateFolderConfigurationComponent
+} from './components/select-template-folder-configuration/select-template-folder-configuration.component';
 
 @NgModule({
   declarations: [
     XentialConfigurationComponent,
     GenerateDocumentConfigurationComponent,
     PrepareContentConfigurationComponent,
-    ValidateAccessConfigurationComponent
+    ValidateAccessConfigurationComponent,
+    SelectTemplateFolderConfigurationComponent
   ],
   imports: [
     CommonModule,
@@ -58,7 +62,8 @@ import {
     XentialConfigurationComponent,
     GenerateDocumentConfigurationComponent,
     PrepareContentConfigurationComponent,
-    ValidateAccessConfigurationComponent
+    ValidateAccessConfigurationComponent,
+    SelectTemplateFolderConfigurationComponent
   ],
 })
 export class XentialPluginModule {
