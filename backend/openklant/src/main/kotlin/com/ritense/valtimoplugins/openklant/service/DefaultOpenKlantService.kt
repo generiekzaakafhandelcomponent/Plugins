@@ -10,6 +10,7 @@ import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.model.PartijInformation
 
 class DefaultOpenKlantService(
     private val openKlantClient: OpenKlantClient,
@@ -22,7 +23,7 @@ class DefaultOpenKlantService(
     ): String {
         val partij = openKlantClient.getPartijByBsn(contactInformation.bsn, properties)
         return if (partij != null) {
-            if (!isPreferredAddress(contactInformation.emailAddress, partij, properties)) {
+            if (!isPreferredAddress(contactInformation.emailadres, partij, properties)) {
                 updateExistingPartij(partij, contactInformation, properties)
             }
             partij.uuid
@@ -30,6 +31,13 @@ class DefaultOpenKlantService(
             createAndStoreNewPartij(contactInformation, properties)
         }
     }
+
+    override suspend fun getOrCreatePartij(
+        properties: OpenKlantProperties,
+        partijInformation: PartijInformation,
+    ): Partij =
+        openKlantClient.getPartijByBsn(partijInformation.bsn, properties)
+            ?: createNewPartij(partijInformation, properties)
 
     override suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
         openKlantClient.getKlantcontacten(properties).results
@@ -63,18 +71,18 @@ class DefaultOpenKlantService(
         openKlantClient.createDigitaalAdres(
             CreateDigitaalAdresRequest(
                 verstrektDoorPartij = partij.makeUuidReference(),
-                adres = contactInformation.emailAddress,
+                adres = contactInformation.emailadres,
                 soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
-                referentie = contactInformation.caseNumber,
+                referentie = contactInformation.zaaknummer,
             ),
             properties,
         )
 
     private suspend fun createNewPartij(
-        contactInformation: ContactInformation,
+        partijInformation: PartijInformation,
         properties: OpenKlantProperties,
     ): Partij {
-        val newPartij = partijFactory.createFromBsn(contactInformation)
+        val newPartij = partijFactory.createFromBsn(partijInformation)
         return openKlantClient.createPartij(newPartij, properties)
     }
 
