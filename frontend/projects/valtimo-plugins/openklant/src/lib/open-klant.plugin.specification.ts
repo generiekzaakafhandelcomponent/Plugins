@@ -5,6 +5,7 @@ import { OPEN_KLANT_PLUGIN_LOGO_BASE64 } from "./assets/open-klant-plugin-logo";
 import { GetContactMomentsByCaseUuidComponent } from "./components/open-klant-get-contact-moments-by-case-uuid/open-klant-get-contact-moments-by-case-uuid.component";
 import { GetContactMomentsByBsnComponent } from "./components/get-contact-moments-by-bsn/get-contact-moments-by-bsn.component";
 import { RegisterKlantcontactComponent } from "./components/open-klant-register-klantcontact/open-klant-register-klantcontact.component";
+import { GetOrCreatePartijComponent } from "./components/get-or-create-partij/get-or-create-partij.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
   pluginId: "open-klant",
@@ -14,6 +15,7 @@ const openKlantPluginSpecification: PluginSpecification = {
     "get-contact-moments-by-bsn": GetContactMomentsByBsnComponent,
     "get-contact-moments-by-case-uuid": GetContactMomentsByCaseUuidComponent,
     "store-contact-info": StoreContactInfoComponent,
+    "get-or-create-partij": GetOrCreatePartijComponent,
     "register-klantcontact": RegisterKlantcontactComponent,
   },
   pluginTranslations: {
@@ -39,6 +41,9 @@ const openKlantPluginSpecification: PluginSpecification = {
       inFix: "Tussenvoegsel",
       lastName: "Achternaam",
       emailAddress: "E-mailadres",
+
+      // Get or create Partij
+      "get-or-create-partij": "Haal Partij op of maak een Partij aan",
 
       // Get contact moments by BSN
       "get-contact-moments-by-bsn":
@@ -93,6 +98,9 @@ const openKlantPluginSpecification: PluginSpecification = {
       lastName: "Last name",
       emailAddress: "Email address",
 
+      // Get or create Partij
+      "get-or-create-partij": "Get Partij or create a Partij",
+
       // Get contact moments by BSN
       "get-contact-moments-by-bsn": "Retrieve contact history based on BSN",
 
@@ -125,4 +133,4 @@ const openKlantPluginSpecification: PluginSpecification = {
   },
 };
 
-export { openKlantPluginSpecification };
+export {openKlantPluginSpecification};
