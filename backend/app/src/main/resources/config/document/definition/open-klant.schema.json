@@ -8,6 +8,10 @@
             "type": "string",
             "default": ""
         },
+        "partijUuid": {
+            "type": "string",
+            "default": ""
+        },
         "contactgeschiedenis": {
             "type": "array",
             "items": {
@@ -37,9 +41,6 @@
                             "type": "string"
                         },
                         "achternaam": {
-                            "type": "string"
-                        },
-                        "partijUuid": {
                             "type": "string"
                         },
                         "voorletters": {

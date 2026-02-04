@@ -208,7 +208,7 @@
                     "tableView": false,
                     "components": [
                         {
-                            "key": "klantcontact.betrokkene.partijUuid",
+                            "key": "partijUuid",
                             "type": "textfield",
                             "input": true,
                             "label": "partijUuid",
