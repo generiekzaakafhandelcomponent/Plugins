@@ -20,22 +20,22 @@ import {Observable} from 'rxjs';
 import {XentialApiSjabloon} from '../models/xential-api-sjabloon.model';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class XentialApiSjabloonService extends BaseApiService {
-    constructor(
-        private http: HttpClient,
-        configService: ConfigService
-    ) {
-        super(http, configService);
-    }
+  constructor(
+    private http: HttpClient,
+    configService: ConfigService
+  ) {
+    super(http, configService);
+  }
 
-    public getTemplates(gebruikersId: string, sjabloonGroupId?: string): Observable<XentialApiSjabloon> {
-        return this.http.get<XentialApiSjabloon>(
-            this.getApiUrl(!sjabloonGroupId
-                ? `/v1/xential/sjablonen?gebruikersId=${gebruikersId}`
-                : `/v1/xential/sjablonen?gebruikersId=${gebruikersId}&sjabloonGroupId=${sjabloonGroupId}`
-            )
-        );
-    }
+  public getTemplates(gebruikersId: string, sjabloonGroupId?: string): Observable<XentialApiSjabloon> {
+    return this.http.get<XentialApiSjabloon>(
+      this.getApiUrl(!sjabloonGroupId
+        ? `/v1/xential/sjablonen?gebruikersId=${gebruikersId}`
+        : `/v1/xential/sjablonen?gebruikersId=${gebruikersId}&sjabloonGroupId=${sjabloonGroupId}`
+      )
+    );
+  }
 }

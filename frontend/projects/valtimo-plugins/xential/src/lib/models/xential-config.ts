@@ -17,9 +17,9 @@
 import {PluginConfigurationData} from '@valtimo/plugin';
 
 export interface XentialConfig extends PluginConfigurationData {
-    applicationName: string;
-    applicationPassword: string;
-    baseUrl: string;
-    gebruikersId: string;
-    mTlsSslContextAutoConfigurationId: string;
+  applicationName: string;
+  applicationPassword: string;
+  baseUrl: string;
+  gebruikersId: string;
+  mTlsSslContextAutoConfigurationId: string;
 }

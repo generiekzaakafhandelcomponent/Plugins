@@ -1,47 +1,47 @@
 <v-form
-        (valueChange)="formValueChange($event)"
-        *ngIf="{
-        disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
-    } as obs"
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
 >
 
-    <div>
-        <v-input-label
-                [title]="'generate doc'"
-        ></v-input-label>
-    </div>
+  <div>
+    <v-input-label
+      [title]="'generate doc'"
+    ></v-input-label>
+  </div>
 
-    <v-input
-            name="xentialDocumentProperties"
-            [title]="'xentialDocumentProperties' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialDocumentProperties"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
-    <v-input
-            name="xentialData"
-            [title]="'xentialData' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialData"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
-    <v-input
-            name="xentialSjabloonId"
-            [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialSjabloonId"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
-    <v-input
-            name="xentialGebruikersId"
-            [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialGebruikersId"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
+  <v-input
+    name="xentialDocumentProperties"
+    [title]="'xentialDocumentProperties' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.xentialDocumentProperties"
+    [disabled]="obs.disabled"
+    [required]="true"
+  />
+  <v-input
+    name="xentialData"
+    [title]="'xentialData' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.xentialData"
+    [disabled]="obs.disabled"
+    [required]="true"
+  />
+  <v-input
+    name="xentialSjabloonId"
+    [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.xentialSjabloonId"
+    [disabled]="obs.disabled"
+    [required]="true"
+  />
+  <v-input
+    name="xentialGebruikersId"
+    [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.xentialGebruikersId"
+    [disabled]="obs.disabled"
+    [required]="true"
+  />
 </v-form>

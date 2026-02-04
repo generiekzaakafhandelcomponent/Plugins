@@ -9,81 +9,81 @@
         thirdLevelGroupSelectItems: thirdLevelGroupSelectItems$ | async
     } as obs"
 >
-    <div>
-        <v-input-label
-                [title]="'preparing doc creation with template'"
-        ></v-input-label>
-    </div>
+  <div>
+    <v-input-label
+            [title]="'preparing doc creation with template'"
+    ></v-input-label>
+  </div>
 
-    <v-input
-            name="xentialDocumentPropertiesId"
-            [title]="'xentialDocumentPropertiesId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialDocumentPropertiesId"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
-    <v-select
-            [items]="obs?.firstLevelGroupSelectItems || []"
-            [margin]="true"
-            name="firstTemplateGroupId"
-            [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled"
-            [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
-            [required]="true"
-            [loading]="!obs?.firstLevelGroupSelectItems"
+  <v-input
+          name="xentialDocumentPropertiesId"
+          [title]="'xentialDocumentPropertiesId' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.xentialDocumentPropertiesId"
+          [disabled]="obs.disabled"
+          [required]="true"
+  />
+  <v-select
+          [items]="obs?.firstLevelGroupSelectItems || []"
+          [margin]="true"
+          name="firstTemplateGroupId"
+          [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
+          [disabled]="obs.disabled"
+          [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
+          [required]="true"
+          [loading]="!obs?.firstLevelGroupSelectItems"
 
-    ></v-select>
-    <v-select
-            [items]="obs?.secondLevelGroupSelectItems || []"
-            [margin]="true"
-            name="secondTemplateGroupId"
-            [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled || (obs?.secondLevelGroupSelectItems || [])?.length === 0"
-            [required]="true"
-            [loading]="!obs?.secondLevelGroupSelectItems"
-    ></v-select>
+  ></v-select>
+  <v-select
+          [items]="obs?.secondLevelGroupSelectItems || []"
+          [margin]="true"
+          name="secondTemplateGroupId"
+          [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
+          [disabled]="obs.disabled || (obs?.secondLevelGroupSelectItems || [])?.length === 0"
+          [required]="true"
+          [loading]="!obs?.secondLevelGroupSelectItems"
+  ></v-select>
 
-    <v-select
-            [items]="obs?.thirdLevelGroupSelectItems || []"
-            [margin]="true"
-            name="thirdTemplateGroupId"
-            [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
-            [disabled]="obs.disabled || (obs?.thirdLevelGroupSelectItems || [])?.length === 0"
-            [required]="true"
-            [loading]="!obs?.thirdLevelGroupSelectItems"
-    ></v-select>
-    <v-select
-            name="fileFormat"
-            [title]="'fileFormat' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultSelectionId]="obs.prefill?.fileFormat"
-            [disabled]="obs.disabled"
-            [required]="true"
-            [items]="obs.fileFormats"
-    />
-    <v-input
-            name="documentFilename"
-            [title]="'documentFilename' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.documentFilename"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
-    <v-input
-            name="informationObjectType"
-            [title]="'informationObjectType' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.informationObjectType"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
-    <v-input
-            name="eventMessageName"
-            [title]="'eventMessageName' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.eventMessageName"
-            [disabled]="obs.disabled"
-            [required]="true"
-    />
+  <v-select
+          [items]="obs?.thirdLevelGroupSelectItems || []"
+          [margin]="true"
+          name="thirdTemplateGroupId"
+          [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
+          [disabled]="obs.disabled || (obs?.thirdLevelGroupSelectItems || [])?.length === 0"
+          [required]="true"
+          [loading]="!obs?.thirdLevelGroupSelectItems"
+  ></v-select>
+  <v-select
+          name="fileFormat"
+          [title]="'fileFormat' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultSelectionId]="obs.prefill?.fileFormat"
+          [disabled]="obs.disabled"
+          [required]="true"
+          [items]="obs.fileFormats"
+  />
+  <v-input
+          name="documentFilename"
+          [title]="'documentFilename' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.documentFilename"
+          [disabled]="obs.disabled"
+          [required]="true"
+  />
+  <v-input
+          name="informationObjectType"
+          [title]="'informationObjectType' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.informationObjectType"
+          [disabled]="obs.disabled"
+          [required]="true"
+  />
+  <v-input
+          name="eventMessageName"
+          [title]="'eventMessageName' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [defaultValue]="obs.prefill?.eventMessageName"
+          [disabled]="obs.disabled"
+          [required]="true"
+  />
 </v-form>

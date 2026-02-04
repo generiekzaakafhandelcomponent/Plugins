@@ -1,64 +1,64 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {GenerateDocumentConfig} from "../../models";
-import {SelectItem, ValuePathSelectorPrefix} from "@valtimo/components";
+import {GenerateDocumentConfig} from '../../models';
+import {SelectItem, ValuePathSelectorPrefix} from '@valtimo/components';
 
 @Component({
-    standalone: false,
-    selector: 'xential-generate-document-configuration',
-    templateUrl: './generate-document-configuration.component.html'
+  standalone: false,
+  selector: 'xential-generate-document-configuration',
+  templateUrl: './generate-document-configuration.component.html'
 })
 export class GenerateDocumentConfigurationComponent implements FunctionConfigurationComponent, OnInit, OnDestroy {
-    @Input() save$: Observable<void>;
-    @Input() disabled$: Observable<boolean>;
-    @Input() pluginId: string;
-    @Input() prefillConfiguration$: Observable<GenerateDocumentConfig>;
-    @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<GenerateDocumentConfig> =
-        new EventEmitter<GenerateDocumentConfig>();
+  @Input() save$: Observable<void>;
+  @Input() disabled$: Observable<boolean>;
+  @Input() pluginId: string;
+  @Input() prefillConfiguration$: Observable<GenerateDocumentConfig>;
+  @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() configuration: EventEmitter<GenerateDocumentConfig> =
+    new EventEmitter<GenerateDocumentConfig>();
 
-    private saveSubscription!: Subscription;
+  private saveSubscription!: Subscription;
 
-    private readonly formValue$ = new BehaviorSubject<GenerateDocumentConfig | null>(null);
-    private readonly valid$ = new BehaviorSubject<boolean>(false);
+  private readonly formValue$ = new BehaviorSubject<GenerateDocumentConfig | null>(null);
+  private readonly valid$ = new BehaviorSubject<boolean>(false);
 
-    ngOnInit(): void {
-        this.openSaveSubscription();
-    }
+  ngOnInit(): void {
+    this.openSaveSubscription();
+  }
 
-    ngOnDestroy() {
-        this.saveSubscription?.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.saveSubscription?.unsubscribe();
+  }
 
-    formValueChange(formValue: GenerateDocumentConfig): void {
-        this.formValue$.next(formValue);
-        this.handleValid(formValue);
-    }
+  formValueChange(formValue: GenerateDocumentConfig): void {
+    this.formValue$.next(formValue);
+    this.handleValid(formValue);
+  }
 
-    private handleValid(formValue: GenerateDocumentConfig): void {
-        const valid = !!(
-            formValue.xentialDocumentProperties &&
-            formValue.xentialData &&
-            formValue.xentialSjabloonId &&
-            formValue.xentialGebruikersId
-        );
+  private handleValid(formValue: GenerateDocumentConfig): void {
+    const valid = !!(
+      formValue.xentialDocumentProperties &&
+      formValue.xentialData &&
+      formValue.xentialSjabloonId &&
+      formValue.xentialGebruikersId
+    );
 
-        this.valid$.next(valid);
-        this.valid.emit(valid);
-    }
+    this.valid$.next(valid);
+    this.valid.emit(valid);
+  }
 
-    private openSaveSubscription(): void {
-        this.saveSubscription = this.save$?.subscribe(save => {
-            combineLatest([this.formValue$, this.valid$])
-                .pipe(take(1))
-                .subscribe(([formValue, valid]) => {
-                    if (valid) {
-                        this.configuration.emit(formValue);
-                    }
-                });
+  private openSaveSubscription(): void {
+    this.saveSubscription = this.save$?.subscribe(save => {
+      combineLatest([this.formValue$, this.valid$])
+        .pipe(take(1))
+        .subscribe(([formValue, valid]) => {
+          if (valid) {
+            this.configuration.emit(formValue);
+          }
         });
-    }
+    });
+  }
 
-    protected readonly ValuePathSelectorPrefix = ValuePathSelectorPrefix;
+  protected readonly ValuePathSelectorPrefix = ValuePathSelectorPrefix;
 }
