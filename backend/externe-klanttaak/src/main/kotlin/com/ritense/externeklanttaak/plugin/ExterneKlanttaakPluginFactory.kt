@@ -19,17 +19,21 @@ package com.ritense.externeklanttaak.plugin
 
 import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
+import com.ritense.objectmanagement.service.ObjectManagementService
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
 
 open class ExterneKlanttaakPluginFactory(
     pluginService: PluginService,
+    private val objectManagementService: ObjectManagementService,
     private val externeKlanttaakService: ExterneKlanttaakService,
     private val externeKlanttaakVersions: List<IExterneKlanttaakVersion>
 ) : PluginFactory<ExterneKlanttaakPlugin>(pluginService) {
 
     override fun create(): ExterneKlanttaakPlugin {
         return ExterneKlanttaakPlugin(
+            pluginService,
+            objectManagementService,
             externeKlanttaakService,
             externeKlanttaakVersions
         )

@@ -20,12 +20,19 @@ import com.ritense.externeklanttaak.domain.IExterneKlanttaakVersion
 import com.ritense.externeklanttaak.domain.IPluginActionConfig
 import com.ritense.externeklanttaak.domain.Version
 import com.ritense.externeklanttaak.service.ExterneKlanttaakService
+import com.ritense.notificatiesapi.NotificatiesApiListener
 import com.ritense.notificatiesapi.NotificatiesApiPlugin
+import com.ritense.notificatiesapi.domain.Abonnement
+import com.ritense.objectmanagement.service.ObjectManagementService
+import com.ritense.objecttypenapi.ObjecttypenApiPlugin
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
+import com.ritense.plugin.domain.PluginConfigurationId
+import com.ritense.plugin.service.PluginService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.github.oshai.kotlinlogging.withLoggingContext
 import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.operaton.bpm.engine.delegate.DelegateTask
@@ -37,9 +44,11 @@ import java.util.UUID
     description = "Lets you create and handle Externe Klanttaak specification compliant Objects"
 )
 class ExterneKlanttaakPlugin(
+    private val pluginService: PluginService,
+    private val objectManagementService: ObjectManagementService,
     private val externeKlanttaakService: ExterneKlanttaakService,
     private val availableExterneKlanttaakVersions: List<IExterneKlanttaakVersion>,
-) {
+) : NotificatiesApiListener {
     @PluginProperty(key = "pluginVersion", secret = false)
     internal lateinit var pluginVersion: Version
 
@@ -100,6 +109,29 @@ class ExterneKlanttaakPlugin(
         }
     }
 
+    override fun getNotificatiesApiPlugin(): NotificatiesApiPlugin {
+        return notificatiesApiPluginConfiguration
+    }
+
+    override fun getKanaalFilters(): List<Abonnement.Kanaal> {
+        val objectManagement = objectManagementService.getById(objectManagementConfigurationId)
+            ?: throw IllegalStateException("Object management not found for externe klanttaak")
+
+        val objecttypenApiPlugin = pluginService.createInstance(
+            PluginConfigurationId.existingId(objectManagement.objecttypenApiPluginConfigurationId)
+        ) as ObjecttypenApiPlugin
+
+        return listOf(
+            Abonnement.Kanaal(
+                naam = KANAAL_OBJECTEN,
+                filters = mapOf(
+                    OBJECT_TYPE to "${objecttypenApiPlugin.url}objecttypes/${objectManagement.objecttypeId}",
+                    ACTIE to UPDATE
+                )
+            )
+        )
+    }
+
     private fun getExterneKlanttaakVersion(): IExterneKlanttaakVersion {
         val matchedVersions = availableExterneKlanttaakVersions.filter { it supports pluginVersion }
         return requireNotNull(
@@ -107,5 +139,14 @@ class ExterneKlanttaakPlugin(
         ) {
             "Could not get Externe Klanttaak Version. Expected exactly 1 ExterneKlanttaakVersion bean to match the configured version [$pluginVersion], but found ${matchedVersions.joinToString { it.javaClass.simpleName }}]"
         }
+    }
+
+    companion object {
+        private val logger = KotlinLogging.logger {}
+
+        private const val KANAAL_OBJECTEN = "objecten"
+        private const val OBJECT_TYPE = "objectType"
+        private const val ACTIE = "actie"
+        private const val UPDATE = "update"
     }
 }

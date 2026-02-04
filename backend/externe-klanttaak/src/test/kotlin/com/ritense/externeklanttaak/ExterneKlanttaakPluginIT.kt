@@ -301,11 +301,13 @@ class ExterneKlanttaakPluginIT : BaseIntegrationTest() {
         val externeKlanttaakSubmittedEvent =
             NotificatiesApiNotificationReceivedEvent(
                 kanaal = "objecten",
+                hoofdObject = null,
+                resourceUrl = "${server.url("/")}objects/completed",
                 actie = "update",
+                aanmaakdatum = null,
                 kenmerken = mapOf(
                     "objectType" to "https://example.com/object-type-id"
                 ),
-                resourceUrl = "${server.url("/")}objects/completed"
             )
 
         externeKlanttaakEventListener.handle(externeKlanttaakSubmittedEvent)
