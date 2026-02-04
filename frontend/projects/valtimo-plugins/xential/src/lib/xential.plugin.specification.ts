@@ -68,7 +68,11 @@ const XentialPluginSpecification: PluginSpecification = {
             xentialSjabloonId: 'Sjabloon id van het te genereren document',
             toegangResultaatId: 'Toegang tot xential test resultaat proces variabele',
             documentFilename: 'document bestandsnaam',
-            informationObjectType: 'Informatie ObjectType'
+            informationObjectType: 'Informatie ObjectType',
+            mTlsSslContextAutoConfigurationId: 'mTLS SSL context plugin configuratie',
+            firstTemplateGroupId: 'Eerste sjabloongroep',
+            secondTemplateGroupId: 'Tweede sjabloongroep',
+            thirdTemplateGroupId: 'Derde sjabloongroep'
         },
         en: {
             title: 'Xential',
@@ -102,6 +106,10 @@ const XentialPluginSpecification: PluginSpecification = {
             xentialData: 'content for generating the document',
             xentialSjabloonId: 'Template ID of the document to be generated',
             toegangResultaatId: 'Access to xential test result process variable',
+            mTlsSslContextAutoConfigurationId: 'mTLS SSL context plugin configuration',
+            firstTemplateGroupId: 'First template group',
+            secondTemplateGroupId: 'Second template group',
+            thirdTemplateGroupId: 'Third template group'
         },
         de: {
             title: 'Xential',
@@ -129,7 +137,11 @@ const XentialPluginSpecification: PluginSpecification = {
             xentialData: 'Inhalt zur Generierung des Dokuments',
             xentialSjabloonId: 'Vorlagen-ID des zu generierenden Dokuments',
             toegangResultaatId: 'Zugriff auf die Prozessvariable Xential Test Results',
-            'prepare-content': 'Inhalte basierend auf einer Vorlage auswählen'
+            'prepare-content': 'Inhalte basierend auf einer Vorlage auswählen',
+            mTlsSslContextAutoConfigurationId: 'mTLS SSL-Kontext Plugin Konfiguration',
+            firstTemplateGroupId: 'Erste Vorlagengruppe',
+            secondTemplateGroupId: 'Zweite Vorlagengruppe',
+            thirdTemplateGroupId: 'Dritte Vorlagengruppe'
         },
     },
 };
