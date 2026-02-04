@@ -30,43 +30,43 @@
     [required]="true"
   >
   </v-input>
+
   <v-input
     name="applicationName"
     [title]="'applicationName' | pluginTranslate: pluginId | async"
     [margin]="true"
-    [fullWidth]="true"
     [defaultValue]="obs.prefill?.applicationName"
     [disabled]="obs.disabled"
     [required]="true"
   ></v-input>
+
   <v-input
     name="applicationPassword"
     type="password"
     [title]="'applicationPassword' | pluginTranslate: pluginId | async"
     [margin]="true"
-    [fullWidth]="true"
     [defaultValue]="obs.prefill?.applicationPassword"
     [disabled]="obs.disabled"
     [required]="true"
   ></v-input>
+
   <v-input
     name="baseUrl"
     [title]="'baseUrl' | pluginTranslate: pluginId | async"
     [margin]="true"
-    [fullWidth]="true"
     [defaultValue]="obs.prefill?.baseUrl"
     [disabled]="obs.disabled"
     [required]="true"
   >
   </v-input>
-  <hr/>
+
   <ng-container
     *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
   >
     <v-select
+      name="mTlsSslContextAutoConfigurationId"
       [items]="authObs.authenticationPluginSelectItems"
       [margin]="true"
-      name="mTlsSslContextAutoConfigurationId"
       [title]="'mTlsSslContextAutoConfigurationId' | pluginTranslate: pluginId | async"
       [disabled]="obs.disabled"
       [defaultSelectionId]="obs.prefill?.mTlsSslContextAutoConfigurationId"

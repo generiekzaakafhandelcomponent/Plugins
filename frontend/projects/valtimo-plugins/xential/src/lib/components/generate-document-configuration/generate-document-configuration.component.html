@@ -5,7 +5,6 @@
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
   } as obs"
 >
-
   <div>
     <v-input-label
       [title]="'generate doc'"
@@ -20,6 +19,7 @@
     [disabled]="obs.disabled"
     [required]="true"
   />
+
   <v-input
     name="xentialData"
     [title]="'xentialData' | pluginTranslate: pluginId | async"
@@ -28,6 +28,7 @@
     [disabled]="obs.disabled"
     [required]="true"
   />
+
   <v-input
     name="xentialSjabloonId"
     [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
@@ -36,6 +37,7 @@
     [disabled]="obs.disabled"
     [required]="true"
   />
+
   <v-input
     name="xentialGebruikersId"
     [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"

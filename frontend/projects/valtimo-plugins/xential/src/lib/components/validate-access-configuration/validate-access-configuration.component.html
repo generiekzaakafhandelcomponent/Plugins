@@ -5,12 +5,12 @@
     prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
   } as obs"
 >
-
   <div>
     <v-input-label
         [title]="'preparing access validation'"
     ></v-input-label>
   </div>
+
   <v-input
     name="toegangResultaatId"
     [title]="'toegangResultaatId' | pluginTranslate: pluginId | async"
@@ -19,6 +19,7 @@
     [disabled]="obs.disabled"
     [required]="true"
   />
+
   <v-input
     name="xentialGebruikersId"
     [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
@@ -27,6 +28,7 @@
     [disabled]="obs.disabled"
     [required]="true"
   />
+
   <v-input
     name="xentialDocumentProperties"
     [title]="'xentialDocumentProperties' | pluginTranslate: pluginId | async"
