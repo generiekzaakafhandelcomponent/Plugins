@@ -26,10 +26,10 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
-import java.time.LocalDate
 
 class SuwinetBijstandsregelingenService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val dateTimeService: DateTimeService
 ) {
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
@@ -132,7 +132,7 @@ class SuwinetBijstandsregelingenService(
                     cdPartijSuwi = vordering.bron.cdPartijSuwi
                 ),
                 cdRedenVordering = vordering.cdRedenVordering,
-                datBesluitVordering = vordering.datBesluitVordering,
+                datBesluitVordering = dateTimeService.fromSuwinetToDateString(vordering.datBesluitVordering),
                 identificatienrVordering = vordering.identificatienrVordering,
                 partnersVordering = getPartners(vordering.partnerVordering),
                 szWet = SzWetDto(cdSzWet = vordering.szWet.cdSzWet)
@@ -147,15 +147,15 @@ class SuwinetBijstandsregelingenService(
     private fun getSpeciekeGegevensBijzBijstand(specifiekeGegevensBijzBijstand: MutableList<ClientSuwi.SpecifiekeGegevensBijzBijstand>): List<SpecifiekeGegevensBijzBijstandDto> =
         specifiekeGegevensBijzBijstand.map { specifiekeGegevensBijzBijstandItem ->
             SpecifiekeGegevensBijzBijstandDto(
-                cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand,
-                omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand,
-                datBetaalbaarBijzBijstand = LocalDate.parse(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
+                cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand.orEmpty(),
+                omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand.orEmpty(),
+                datBetaalbaarBijzBijstand = dateTimeService.toLocalDate(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand, SUWINET_DATEIN_PATTERN),
                 partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
-                szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet.cdSzWet),
+                szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
                 bron = BronDto(
-                    cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron.cdKolomSuwi,
-                    cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi,
-                    cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi,
+                    cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron?.cdKolomSuwi ?: 0,
+                    cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi.orEmpty(),
+                    cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi.orEmpty(),
                 )
 
             )
@@ -165,38 +165,39 @@ class SuwinetBijstandsregelingenService(
         aanvraagUitkering
             .map { aanvraag ->
                 AanvraagUitkeringDto(
-                    datAanvraagUitkering = LocalDate.parse(aanvraag.datAanvraagUitkering),
-                    szWet = SzWetDto(aanvraag.szWet.cdSzWet),
+                    datAanvraagUitkering = dateTimeService.toLocalDate(aanvraag.datAanvraagUitkering, SUWINET_DATEIN_PATTERN),
+                    szWet = SzWetDto(aanvraag.szWet.cdSzWet.orEmpty()),
                     beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
                     partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
                     bron = getBron(aanvraag.bron)
                 )
             }
 
-    private fun getBron(bron: Bron): BronDto? = BronDto(
-        cdKolomSuwi = bron.cdKolomSuwi,
-        cdPartijSuwi = bron.cdPartijSuwi,
-        cdVestigingSuwi = bron.cdVestigingSuwi,
+    private fun getBron(bron: Bron?): BronDto = BronDto(
+        cdKolomSuwi = bron?.cdKolomSuwi ?: 0,
+        cdPartijSuwi = bron?.cdPartijSuwi.orEmpty(),
+        cdVestigingSuwi = bron?.cdVestigingSuwi.orEmpty(),
     )
 
     private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand): PartnerBijstandDto =
         PartnerBijstandDto(
             burgerservicenr = partnerAanvraagUitkering.burgerservicenr,
-            voorletters = partnerAanvraagUitkering.voorletters,
-            voorvoegsel = partnerAanvraagUitkering.voorvoegsel,
+            voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
+            voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
             significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
-            geboortedat = LocalDate.parse(partnerAanvraagUitkering.geboortedat),
+            geboortedat = dateTimeService.toLocalDate(partnerAanvraagUitkering.geboortedat, SUWINET_DATEIN_PATTERN),
         )
 
     private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
         BeslissingOpAanvraagUitkeringDto(
-            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering,
-            datDagtekeningBeslisOpAanvrUitk = LocalDate.parse(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
+            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering.orEmpty(),
+            datDagtekeningBeslisOpAanvrUitk = dateTimeService.toLocalDate(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk, SUWINET_DATEIN_PATTERN)
         )
 
 
     companion object {
         private const val SERVICE_PATH = "Bijstandsregelingen-v0500"
+        const val SUWINET_DATEIN_PATTERN = "yyyyMMdd"
         private val objectFactory = ObjectFactory()
         private val logger = KotlinLogging.logger {}
     }
