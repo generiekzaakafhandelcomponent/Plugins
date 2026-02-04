@@ -61,7 +61,7 @@
               "value": ""
             }
           ],
-          "content": "<section>\n<p><span><strong>Partij UUID: </strong>{{{ data?.partij.partijUuid }}}</span></p>\n</section>\n",
+          "content": "<section>\n<p><span><strong>Partij UUID: </strong>{{{ data?.partijUuid }}}</span></p>\n</section>\n",
           "refreshOnChange": false,
           "key": "html",
           "type": "htmlelement",
