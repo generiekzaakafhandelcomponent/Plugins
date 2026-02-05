@@ -1,5 +1,6 @@
 package com.ritense.valtimoplugins.openklant.dto
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Partij(
@@ -69,10 +70,11 @@ data class Partij(
         EXPAND_PARTIJ,
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     data class PartijIdentificatie(
         @JsonProperty("contactnaam")
         val contactnaam: Contactnaam?,
         @JsonProperty("volledigeNaam")
-        val volledigeNaam: String?,
+        val volledigeNaam: String? = null,
     )
 }

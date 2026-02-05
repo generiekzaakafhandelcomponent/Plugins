@@ -6,7 +6,7 @@
     "properties": {
         "bsn": {
             "type": "string",
-            "default": null
+            "default": ""
         },
         "contactgeschiedenis": {
             "type": "array",
@@ -14,6 +14,29 @@
                 "properties": {}
             },
             "default": []
+        },
+        "partij": {
+            "type": "object",
+            "properties": {
+                "bsn": {
+                    "type": "string"
+                },
+                "voorletters": {
+                    "type": "string"
+                },
+                "voornaam": {
+                    "type": "string"
+                },
+                "voorvoegselAchternaam": {
+                    "type": "string"
+                },
+                "achternaam": {
+                    "type": "string"
+                },
+                "partijUuid": {
+                    "type": "string"
+                }
+            }
         },
         "klantcontact": {
             "type": "object",
