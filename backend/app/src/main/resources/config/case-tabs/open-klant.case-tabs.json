@@ -1,14 +1,20 @@
 {
-  "changesetId": "open-klant.case-tabs.1768982327099",
+  "changesetId": "open-klant.case-tabs.1768982327100",
   "case-definitions": [
     {
       "key": "open-klant",
       "tabs": [
         {
-          "key": "summary",
-          "name": null,
-          "type": "standard",
-          "contentKey": "summary"
+          "key": "open-klant-widget-tab",
+          "name": "Summary",
+          "type": "widgets",
+          "contentKey": "-"
+        },
+        {
+          "key": "contactgeschiedenis",
+          "name": "Contactgeschiedenis",
+          "type": "custom",
+          "contentKey": "generieke-contactgeschiedenis"
         },
         {
           "key": "progress",
@@ -21,24 +27,6 @@
           "name": null,
           "type": "standard",
           "contentKey": "audit"
-        },
-        {
-          "key": "documents",
-          "name": null,
-          "type": "standard",
-          "contentKey": "documents"
-        },
-        {
-          "key": "notes",
-          "name": null,
-          "type": "standard",
-          "contentKey": "notes"
-        },
-        {
-          "key": "contactgeschiedenis",
-          "name": "Contactgeschiedenis",
-          "type": "custom",
-          "contentKey": "generieke-contactgeschiedenis"
         }
       ]
     }

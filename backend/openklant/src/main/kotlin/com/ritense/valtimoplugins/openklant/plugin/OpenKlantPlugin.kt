@@ -52,12 +52,12 @@ class OpenKlantPlugin(
 
         val contactInformation =
             ContactInformation(
-                bsn = bsn,
-                voornaam = firstName,
-                voorvoegselAchternaam = inFix,
-                achternaam = lastName,
-                emailadres = emailAddress,
-                zaaknummer = caseUuid,
+                bsn = bsn.trim(),
+                voornaam = firstName.trim(),
+                voorvoegselAchternaam = inFix.trim(),
+                achternaam = lastName.trim(),
+                emailadres = emailAddress.trim(),
+                zaaknummer = caseUuid.trim(),
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)
@@ -83,11 +83,11 @@ class OpenKlantPlugin(
 
         val partijInformation =
             PartijInformationImpl(
-                bsn = bsn,
-                voorletters = voorletters,
-                voornaam = voornaam,
-                voorvoegselAchternaam = voorvoegselAchternaam,
-                achternaam = achternaam,
+                bsn = bsn.trim(),
+                voorletters = voorletters.trim(),
+                voornaam = voornaam.trim(),
+                voorvoegselAchternaam = voorvoegselAchternaam.trim(),
+                achternaam = achternaam.trim(),
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid =
@@ -115,7 +115,7 @@ class OpenKlantPlugin(
             KlantcontactOptions(
                 klantinteractiesUrl,
                 token = token,
-                objectUuid = caseUuid,
+                objectUuid = caseUuid.trim(),
             )
 
         fetchKlantcontactenAndStore(
@@ -142,7 +142,34 @@ class OpenKlantPlugin(
                 KlantcontactOptions(
                     klantinteractiesUrl,
                     token = token,
-                    bsn = bsn,
+                    bsn = bsn.trim(),
+                )
+
+            fetchKlantcontactenAndStore(
+                execution = execution,
+                resultPvName = resultPvName,
+                pluginProperties = pluginProperties,
+            )
+        }
+
+    @PluginAction(
+        key = "get-contact-moments-by-partij-uuid",
+        title = "Get contact history by Partij UUID",
+        description = "Get contact history by Partij UUID from Open Klant.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun getContactMomentsByPartijUuid(
+        @PluginActionProperty partijUuid: String,
+        @PluginActionProperty resultPvName: String,
+        execution: DelegateExecution,
+    ): Unit =
+        runBlocking {
+            logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
+            val pluginProperties =
+                KlantcontactOptions(
+                    klantinteractiesUrl,
+                    token = token,
+                    partijUuid = partijUuid.trim(),
                 )
 
             fetchKlantcontactenAndStore(
@@ -177,18 +204,18 @@ class OpenKlantPlugin(
 
         val klantcontactCreationInformation =
             KlantcontactCreationInformation(
-                kanaal = kanaal,
+                kanaal = kanaal.trim(),
                 onderwerp = onderwerp,
                 inhoud = inhoud,
-                vertrouwelijk = vertrouwelijk.toBoolean(),
-                taal = taal,
-                plaatsgevondenOp = plaatsgevondenOp,
+                vertrouwelijk = vertrouwelijk.trim().toBoolean(),
+                taal = taal.trim(),
+                plaatsgevondenOp = plaatsgevondenOp.trim(),
                 hasBetrokkene = hasBetrokkene,
-                partijUuid = partijUuid,
-                voorletters = voorletters,
-                voornaam = voornaam,
-                voorvoegselAchternaam = voorvoegselAchternaam,
-                achternaam = achternaam,
+                partijUuid = partijUuid?.trim(),
+                voorletters = voorletters?.trim(),
+                voornaam = voornaam?.trim(),
+                voorvoegselAchternaam = voorvoegselAchternaam?.trim(),
+                achternaam = achternaam?.trim(),
             )
 
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
