@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - v13
-      - bugfix/151810-DateTimeParseException-bij-het-ophalen-van-bijstandsregelingen
+      - bugfix/151824-como-wegschrijven-output-gaat-fout-in-ophalen-brongegevens-proces
 jobs:
   # -------------------------------------------------------------
   # Using GitHub's API is not supported for push events

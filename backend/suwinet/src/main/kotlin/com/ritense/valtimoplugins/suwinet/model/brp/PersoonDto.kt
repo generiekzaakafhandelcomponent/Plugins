@@ -10,7 +10,7 @@ data class PersoonDto(
     val achternaam: String,
     val geboortedatum: String,
     val bsn: String,
-    val adresBrp: AdresDto?,
+    @JsonInclude(JsonInclude.Include.NON_NULL) val adresBrp: AdresDto?,
     @JsonInclude(JsonInclude.Include.NON_NULL) val postadresBrp: AdresDto?,
     val verblijfstitel: Verblijfstitel?,
     val verblijfplaatsHistorisch: List<VerblijfplaatsHistorisch>,
