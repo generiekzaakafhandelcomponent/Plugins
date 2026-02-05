@@ -1,42 +1,38 @@
-{
-  "changesetId": "open-klant.case-widget-tab.1237117910928",
-  "tabs": [
-    {
-      "caseDefinitionName": "open-klant",
-      "key": "open-klant-widget-tab",
-      "widgets": [
-        {
-          "type": "fields",
-          "key": "klant-informatie",
-          "title": "Klant Informatie",
-          "width": 1,
-          "highContrast": false,
-          "properties": {
-            "columns": [
-              [
-                {
-                  "key": "bsn",
-                  "title": "BSN",
-                  "value": "doc:bsn",
-                  "displayProperties": {
-                    "type": "text",
-                    "hideWhenEmpty": true
-                  }
-                },
-                {
-                  "key": "partij-uuid",
-                  "title": "Partij Uuid",
-                  "value": "doc:partijUuid",
-                  "displayProperties": {
-                    "type": "text",
-                    "hideWhenEmpty": true
-                  }
+[
+  {
+    "key": "open-klant-widget-tab",
+    "widgets": [
+      {
+        "type": "fields",
+        "key": "klant-informatie",
+        "title": "Klant Informatie",
+        "width": 1,
+        "highContrast": false,
+        "properties": {
+          "columns": [
+            [
+              {
+                "key": "bsn",
+                "title": "BSN",
+                "value": "doc:bsn",
+                "displayProperties": {
+                  "type": "text",
+                  "hideWhenEmpty": true
                 }
-              ]
+              },
+              {
+                "key": "partij-uuid",
+                "title": "Partij Uuid",
+                "value": "doc:partijUuid",
+                "displayProperties": {
+                  "type": "text",
+                  "hideWhenEmpty": true
+                }
+              }
             ]
-          }
+          ]
         }
-      ]
-    }
-  ]
-}
+      }
+    ]
+  }
+]
