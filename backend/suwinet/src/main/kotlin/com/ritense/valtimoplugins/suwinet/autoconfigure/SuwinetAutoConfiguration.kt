@@ -175,10 +175,13 @@ class SuwinetAutoConfiguration {
     fun suwinetBijstandsRegelingenInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
         objectFlattener: ObjectFlattener
+        dateTimeService: DateTimeService,
     ): SuwinetBijstandsregelingenService {
         return SuwinetBijstandsregelingenService(
             suwinetSOAPClient,
             objectFlattener
+            suwinetSOAPClient,
+            dateTimeService,
         )
     }
 
