@@ -174,13 +174,12 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBijstandsRegelingenInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        objectFlattener: ObjectFlattener
+        objectFlattener: ObjectFlattener,
         dateTimeService: DateTimeService,
     ): SuwinetBijstandsregelingenService {
         return SuwinetBijstandsregelingenService(
             suwinetSOAPClient,
-            objectFlattener
-            suwinetSOAPClient,
+            objectFlattener,
             dateTimeService,
         )
     }
