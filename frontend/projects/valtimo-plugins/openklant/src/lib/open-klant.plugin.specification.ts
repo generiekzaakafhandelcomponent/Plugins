@@ -24,13 +24,14 @@ const openKlantPluginSpecification: PluginSpecification = {
       configurationTitle: "Configuratie van de Open Klant-plugin",
       description:
         "Een plugin voor het ophalen en versturen van Open Klant-gegevens.",
-      caseUuid: "Open-Zaak-UUID",
       configurationTitleTooltip:
         "In dit onderdeel configureer je de Open Klant-plugin om eenvoudig gegevens te kunnen verzenden en ophalen.",
 
       // Common
       resultPvName: "Naam van resultaat-procesvariabele",
       bsn: "BSN",
+      partijUuid: "Partij UUID",
+      caseUuid: "Open Zaak zaak UUID",
       variableFieldTooltip:
         "Dit veld kan zowel de letterlijke waarde, of het pad naar een (proces)variabele bevatten welke de waarde bevat (b.v. 'pv:/resultaat')",
 
@@ -48,6 +49,10 @@ const openKlantPluginSpecification: PluginSpecification = {
       "get-contact-moments-by-bsn":
         "Contactgeschiedenis ophalen op basis van BSN",
 
+      // Get contact moments by Partij UUID
+      "get-contact-moments-by-partij-uuid":
+        "Contactgeschiedenis ophalen op basis van Partij UUID",
+
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
         "Contactgeschiedenis ophalen op basis van Open-Zaak-UUID",
@@ -61,7 +66,6 @@ const openKlantPluginSpecification: PluginSpecification = {
       vertrouwelijk: "Vertrouwelijk (true/false)",
       taal: "Taal (ISO 639-2/B-formaat)",
       plaatsgevondenOp: "Plaatsgevonden op (ISO 8601)",
-      partijUuid: "Partij-UUID",
       voorletters: "Voorletters",
       voornaam: "Voornaam",
       voorvoegselAchternaam: "Voorvoegsel achternaam",
@@ -82,6 +86,7 @@ const openKlantPluginSpecification: PluginSpecification = {
       // Common
       resultPvName: "Result process variable name",
       bsn: "BSN (citizen service number)",
+      partijUuid: "Partij UUID",
       caseUuid: "Open Zaak case UUID",
       variableFieldTooltip:
         "This field accepts either a literal value or a path to a (process) variable containing the value (e.g. 'pv:/result')",
@@ -99,6 +104,10 @@ const openKlantPluginSpecification: PluginSpecification = {
       // Get contact moments by BSN
       "get-contact-moments-by-bsn": "Retrieve contact history based on BSN",
 
+      // Get contact moments by Partij UUID
+      "get-contact-moments-by-partij-uuid":
+        "Retrieve contact history based on Partij UUID",
+
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
         "Retrieve contact history based on Open Zaak case UUID",
@@ -112,7 +121,6 @@ const openKlantPluginSpecification: PluginSpecification = {
       vertrouwelijk: "Confidential (true/false)",
       taal: "Language (ISO 639-2/B format)",
       plaatsgevondenOp: "Occurred on (ISO 8601)",
-      partijUuid: "Partij UUID",
       voorletters: "Initials",
       voornaam: "First name",
       voorvoegselAchternaam: "Name infix",

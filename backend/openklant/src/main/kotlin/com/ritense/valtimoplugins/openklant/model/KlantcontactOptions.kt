@@ -8,4 +8,5 @@ data class KlantcontactOptions(
     val objectTypeId: String? = null,
     val objectUuid: String? = null,
     val bsn: String? = null,
+    val partijUuid: String? = null,
 ) : OpenKlantProperties(klantinteractiesUrl, token)
