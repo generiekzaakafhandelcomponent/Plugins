@@ -81,7 +81,7 @@ Voorbeeld `*.processlink.json`:
   "activityId": "Activity_OpslaanPartij",
   "activityType": "bpmn:ServiceTask:start",
   "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
-  "pluginActionDefinitionKey": "store-contactinfo",
+  "pluginActionDefinitionKey": "store-contact-info",
   "actionProperties": {
     "bsn": "doc:/persoonsgegevens/bsn",
     "firstName": "doc:/persoonsgegevens/voornaam",
