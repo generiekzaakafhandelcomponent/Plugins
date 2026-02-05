@@ -2,6 +2,7 @@ package com.ritense.valtimoplugins.suwinet.client
 
 import com.ritense.valtimoplugins.suwinetauth.plugin.SuwinetAuth
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.soap.AddressingFeature
 import org.apache.cxf.ext.logging.LoggingFeature
 import org.apache.cxf.frontend.ClientProxy
 import org.apache.cxf.interceptor.LoggingInInterceptor
@@ -11,6 +12,7 @@ import org.apache.cxf.message.Message
 import org.apache.cxf.transport.http.HTTPConduit
 import org.apache.cxf.transports.http.configuration.ConnectionType
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy
+import org.apache.cxf.ws.addressing.WSAddressingFeature
 
 
 class SuwinetSOAPClient {
@@ -21,6 +23,11 @@ class SuwinetSOAPClient {
         val soapService = with(JaxWsProxyFactoryBean()) {
             this.serviceClass = clazz
             address = url
+
+            // address feature for inclusion SOAPAction in tag
+            val addressingFeature = WSAddressingFeature().apply {
+                isAddressingRequired = false
+            }
 
             val loggingFeature: LoggingFeature = LoggingFeature()
             loggingFeature.setPrettyLogging(true)
@@ -45,6 +52,7 @@ class SuwinetSOAPClient {
                     "x-opentunnel-api-key"
                 )
             )
+            this.features.add(addressingFeature)
             this.features.add(loggingFeature)
 
             create() as T
@@ -57,6 +65,27 @@ class SuwinetSOAPClient {
 
     fun setDefaultPolicies(service: Any, authConfig: SuwinetAuth, connectionTimeout: Int?, receiveTimeout: Int?) {
         val client = ClientProxy.getClient(service)
+        with(client.requestContext) {
+            // Disable strict action checking
+            this["ws-addressing.strict.action.checking"] = false
+
+            // Disable validation
+            this["ws-addressing.validation.enabled"] = false
+
+            // Use default action
+            this["ws-addressing.using.default.action"] = true
+
+            // Disable message ID requirement
+            this["ws-addressing.messageId.required"] = false
+
+            // Disable checks
+            this["ws-addressing.disable.addressing.checks"] = true
+
+            // Allow anonymous RelatesTo
+            this["allow.anonymous"] = true
+
+            this["org.apache.cxf.ws.addressing.MAPAggregator.addressingDisabled"] = true
+        }
 
         if(logger.isDebugEnabled()) {
             // deprecated loggers do log RAW messages
