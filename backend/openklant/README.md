@@ -214,7 +214,7 @@ In de frontend moet de volgende waarden toegevoegd worden:
 ```
 
 #### Tabblad Config
-Onder `config/case-tabs/[...].case-tabs.json` kan het tabblad worden gekoppeld aan het dossier
+Onder `config/case/[...]/case/tab/[...].case-tab.json` kan het tabblad worden gekoppeld aan het dossier
 ```json
 {
   "changesetId": "open-klant.case-tabs.1768982327099",
@@ -260,7 +260,7 @@ Deze moet ook worden toegevoegd aan de dossierdefinitie:
 
 ```
 
-`config/bpmn/open-klant/contactgeschiedenis-ophalen.bpmn` is een voorbeeld hoe de BPMN eruit kan zien.
+`config/case/[...]/case/bpmn/contactgeschiedenis-ophalen.bpmn` is een voorbeeld hoe de BPMN eruit kan zien.
 
 ![ophalen klantcontacten configuratie](img/contactgeschiedenis-ophalen.png)
 
