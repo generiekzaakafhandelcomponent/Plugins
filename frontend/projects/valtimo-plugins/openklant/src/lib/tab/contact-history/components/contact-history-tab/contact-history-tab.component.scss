@@ -39,29 +39,38 @@
 
   .timeline-item:before {
     border: 2px solid var(--cds-border-strong-01);
-    background-color: var(--cds-layer-01);
+    background-color: var(--cds-layer-02);
   }
 
   .timeline-content {
-    background-color: var(--cds-layer-01);
+    background-color: var(--cds-layer-02);
     color: var(--cds-text-secondary);
+    position: relative;
 
     &:before {
-      background-color: var(--cds-layer-01);
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      left: -6px;
+      top: 2.25rem;
+      transform: rotate(45deg);
+      background-color: var(--cds-layer-02);
     }
 
     .timeline-author {
       font-size: var(--cds-text-base);
       font-weight: var(--cds-font-weight-normal);
-      padding-bottom: 0.2em;
+      padding: 2em 2em 0 2em;
     }
 
     summary {
-      font-weight: 700;
+      color: black;
+      padding: 0 2em 1em 2em;
     }
 
     details p {
-      padding-top: 0.5em;
+      padding: 0 2em 2em 2em;
     }
   }
 
