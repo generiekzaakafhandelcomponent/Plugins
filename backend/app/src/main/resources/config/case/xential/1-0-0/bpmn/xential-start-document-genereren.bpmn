@@ -27,7 +27,7 @@
           
     </bpmn:startEvent>
         
-    <bpmn:endEvent id="Event_0r4spjj" name="Start xential document creeren">
+    <bpmn:endEvent id="Event_0r4spjj" name="Start genereer document '$generateDocumentEventMessage'">
             
       <bpmn:extensionElements>
                 
@@ -49,7 +49,7 @@
             
       <bpmn:incoming>Flow_1r41u16</bpmn:incoming>
             
-      <bpmn:messageEventDefinition camunda:expression="${correlationService.sendCatchEventMessage(&quot;DOCUMENT_CREEREN_MESSAGE&quot;, execution.businessKey, variablesMap)}" id="MessageEventDefinition_0apn54m"/>
+      <bpmn:messageEventDefinition camunda:expression="${correlationService.sendCatchEventMessage(generateDocumentEventMessage, execution.businessKey, variablesMap)}" id="MessageEventDefinition_0apn54m"/>
           
     </bpmn:endEvent>
       
@@ -93,7 +93,7 @@
                 
         <bpmndi:BPMNLabel>
                     
-          <dc:Bounds height="27" width="89" x="476" y="215"/>
+          <dc:Bounds height="66" width="89" x="480" y="215"/>
                   
         </bpmndi:BPMNLabel>
               

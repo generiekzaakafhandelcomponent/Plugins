@@ -2,7 +2,7 @@
   {
     "activityId" : "XentialDocumentGenererenAnnulerenStarten",
     "activityType" : "bpmn:StartEvent:start",
-    "formDefinitionName" : "xential-document-genereren-annuleren.start",
+    "formDefinitionName" : "xential-document-genereren-annuleren.start-form",
     "viewModelEnabled" : false,
     "formDisplayType" : "modal",
     "formSize" : "medium",

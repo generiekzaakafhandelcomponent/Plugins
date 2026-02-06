@@ -1,7 +1,12 @@
 [
   {
-    "processDefinitionKey" : "xential-document-genereren-en-koppelen",
+    "processDefinitionKey" : "xential-start-document-genereren",
     "canInitializeDocument" : false,
+    "startableByUser" : true
+  },
+  {
+    "processDefinitionKey" : "xential",
+    "canInitializeDocument" : true,
     "startableByUser" : false
   },
   {
@@ -10,18 +15,8 @@
     "startableByUser" : true
   },
   {
-    "processDefinitionKey" : "xential-start-document-genereren",
+    "processDefinitionKey" : "xential-document-genereren",
     "canInitializeDocument" : false,
-    "startableByUser" : true
-  },
-  {
-    "processDefinitionKey" : "xential-genereren-document-voorbereiden",
-    "canInitializeDocument" : false,
-    "startableByUser" : true
-  },
-  {
-    "processDefinitionKey" : "xential",
-    "canInitializeDocument" : true,
     "startableByUser" : false
   }
 ]

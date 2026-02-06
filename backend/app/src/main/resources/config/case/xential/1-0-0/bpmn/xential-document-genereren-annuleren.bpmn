@@ -11,15 +11,15 @@
     
   <bpmn:process id="xential-document-genereren-annuleren" isClosed="false" isExecutable="true" name="Xential: Document genereren annuleren" operaton:versionTag="CD:xential:1.0.0" processType="None">
         
+    <bpmn:sequenceFlow id="Flow_0dqwgm6" sourceRef="XentialDocumentGenererenAnnulerenStarten" targetRef="Event_0f5hgl8"/>
+        
     <bpmn:startEvent id="XentialDocumentGenererenAnnulerenStarten" isInterrupting="true" name="start" parallelMultiple="false">
             
       <bpmn:outgoing>Flow_0dqwgm6</bpmn:outgoing>
           
     </bpmn:startEvent>
         
-    <bpmn:sequenceFlow id="Flow_0dqwgm6" sourceRef="XentialDocumentGenererenAnnulerenStarten" targetRef="Event_0f5hgl8"/>
-        
-    <bpmn:endEvent id="Event_0f5hgl8" name="doc genereren annuleren even sturen">
+    <bpmn:endEvent id="Event_0f5hgl8" name="doc genereren annuleren event sturen">
             
       <bpmn:incoming>Flow_0dqwgm6</bpmn:incoming>
             
@@ -35,7 +35,7 @@
             
       <bpmndi:BPMNShape bpmnElement="Participant_0pp7dyu" id="Participant_0pp7dyu_di" isHorizontal="true">
                 
-        <dc:Bounds height="250" width="400" x="160" y="52"/>
+        <dc:Bounds height="218" width="340" x="160" y="70"/>
                 
         <bpmndi:BPMNLabel/>
               
@@ -43,11 +43,11 @@
             
       <bpmndi:BPMNShape bpmnElement="XentialDocumentGenererenAnnulerenStarten" id="_BPMNShape_StartEvent_2">
                 
-        <dc:Bounds height="36" width="36" x="279" y="159"/>
+        <dc:Bounds height="36" width="36" x="252" y="152"/>
                 
         <bpmndi:BPMNLabel>
                     
-          <dc:Bounds height="14" width="22" x="286" y="202"/>
+          <dc:Bounds height="14" width="22" x="259" y="195"/>
                   
         </bpmndi:BPMNLabel>
               
@@ -55,11 +55,11 @@
             
       <bpmndi:BPMNShape bpmnElement="Event_0f5hgl8" id="Event_0bwnukj_di">
                 
-        <dc:Bounds height="36" width="36" x="412" y="159"/>
+        <dc:Bounds height="36" width="36" x="372" y="152"/>
                 
         <bpmndi:BPMNLabel>
                     
-          <dc:Bounds height="40" width="79" x="393" y="202"/>
+          <dc:Bounds height="40" width="82" x="352" y="195"/>
                   
         </bpmndi:BPMNLabel>
               
@@ -67,9 +67,9 @@
             
       <bpmndi:BPMNEdge bpmnElement="Flow_0dqwgm6" id="Flow_0dqwgm6_di">
                 
-        <di:waypoint x="315" y="177"/>
+        <di:waypoint x="288" y="170"/>
                 
-        <di:waypoint x="412" y="177"/>
+        <di:waypoint x="372" y="170"/>
               
       </bpmndi:BPMNEdge>
           

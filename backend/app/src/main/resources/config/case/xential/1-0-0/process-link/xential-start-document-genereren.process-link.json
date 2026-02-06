@@ -2,7 +2,7 @@
   {
     "activityId" : "CreeerDocumentStartEvent",
     "activityType" : "bpmn:StartEvent:start",
-    "formDefinitionName" : "xential-document-maken.start",
+    "formDefinitionName" : "xential-document-genereren.start-form",
     "viewModelEnabled" : false,
     "formDisplayType" : "modal",
     "formSize" : "medium",

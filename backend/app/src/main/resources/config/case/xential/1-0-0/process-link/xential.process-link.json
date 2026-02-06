@@ -1,12 +1,44 @@
 [
   {
+    "activityId" : "XentialSelectTemplateFolder",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
+    "pluginActionDefinitionKey" : "prepare-content",
+    "actionProperties" : {
+      "xentialDocumentPropertiesId" : "xentialDocumentProperties",
+      "eventMessageName" : "XENTIAL_DOC_RECEIVED",
+      "firstTemplateGroupId" : "415cf276-2af0-4192-923d-4391c4d7b2a8",
+      "secondTemplateGroupId" : null,
+      "thirdTemplateGroupId" : null
+    },
+    "referenceType" : "FIXED",
+    "pluginDefinitionKey" : null,
+    "processLinkType" : "plugin"
+  },
+  {
+    "activityId" : "Activity_1fmnabf",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
+    "pluginActionDefinitionKey" : "prepare-content",
+    "actionProperties" : {
+      "xentialDocumentPropertiesId" : "xentialDocumentProperties",
+      "eventMessageName" : "XENTIAL_DOC_RECEIVED",
+      "firstTemplateGroupId" : "a9b8c7d6-e5f4-3210-fedc-ba9876543210",
+      "secondTemplateGroupId" : null,
+      "thirdTemplateGroupId" : null
+    },
+    "referenceType" : "FIXED",
+    "pluginDefinitionKey" : null,
+    "processLinkType" : "plugin"
+  },
+  {
     "activityId" : "XentialStarten",
     "activityType" : "bpmn:StartEvent:start",
     "formDefinitionName" : "xential.start",
     "viewModelEnabled" : false,
     "formDisplayType" : "modal",
     "formSize" : "medium",
-    "subtitles" : null,
+    "subtitles" : [],
     "processLinkType" : "form"
   },
   {
@@ -16,21 +48,7 @@
     "viewModelEnabled" : false,
     "formDisplayType" : "modal",
     "formSize" : "medium",
-    "subtitles" : null,
+    "subtitles" : [],
     "processLinkType" : "form"
-  },
-  {
-    "activityId" : "XentialSelectTemplateFolder",
-    "activityType" : "bpmn:ServiceTask:start",
-    "pluginConfigurationId" : "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
-    "pluginActionDefinitionKey" : "select-template-folder",
-    "actionProperties": {
-      "resultProcessVariable": "xentialTemplateProperties",
-      "firstTemplateGroupId": "415cf276-2af0-4192-923d-4391c4d7b2a8",
-      "eventMessageName": "XENTIAL_DOC_RECEIVED"
-    },
-    "referenceType" : "FIXED",
-    "pluginDefinitionKey" : null,
-    "processLinkType" : "plugin"
   }
 ]
