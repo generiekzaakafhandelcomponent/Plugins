@@ -1,8 +1,12 @@
 {
-    "key": "xential",
-    "name": "Xential",
-    "versionTag": "1.0.0",
-    "final": false,
-    "canHaveAssignee": true,
-    "autoAssignTasks": true
+  "key" : "xential",
+  "versionTag" : "1.0.0",
+  "name" : "Xential",
+  "description" : null,
+  "createdBy" : null,
+  "createdDate" : null,
+  "basedOnVersionTag" : null,
+  "final" : false,
+  "canHaveAssignee" : true,
+  "autoAssignTasks" : true
 }

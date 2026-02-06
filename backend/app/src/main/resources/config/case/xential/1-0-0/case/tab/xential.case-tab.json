@@ -1,20 +1,23 @@
 [
   {
-    "key": "summary",
-    "name": "Overzicht",
-    "type": "standard",
-    "contentKey": "summary"
+    "key" : "summary",
+    "name" : "Overzicht",
+    "type" : "standard",
+    "contentKey" : "summary",
+    "showTasks" : false
   },
   {
-    "key": "progress",
-    "name": "Voortgang",
-    "type": "standard",
-    "contentKey": "progress"
+    "key" : "progress",
+    "name" : "Voortgang",
+    "type" : "standard",
+    "contentKey" : "progress",
+    "showTasks" : false
   },
   {
-    "key": "documents",
-    "name": "docs",
-    "type": "standard",
-    "contentKey": "documents"
+    "key" : "documents",
+    "name" : "docs",
+    "type" : "standard",
+    "contentKey" : "documents",
+    "showTasks" : false
   }
 ]

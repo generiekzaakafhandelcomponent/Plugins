@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1011ila" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+    
+  <bpmn:collaboration id="Collaboration_0m1e6al" isClosed="false">
+        
+    <bpmn:participant id="Participant_1e7okwv" name="Document genereren document voorbereiden" processRef="xential-genereren-document-voorbereiden"/>
+      
+  </bpmn:collaboration>
+    
+  <bpmn:process id="xential-genereren-document-voorbereiden" isClosed="false" isExecutable="true" name="Xential: Document genereren voorbereiden" operaton:versionTag="CD:xential:1.0.0" processType="None">
+        
+    <bpmn:startEvent id="XentialDocMakenStarten" isInterrupting="true" name="start " parallelMultiple="false">
+            
+      <bpmn:extensionElements/>
+            
+      <bpmn:outgoing>Flow_1cvybt6</bpmn:outgoing>
+          
+    </bpmn:startEvent>
+        
+    <bpmn:sequenceFlow id="Flow_1cvybt6" sourceRef="XentialDocMakenStarten" targetRef="XentialSjabloonMapSelecteren"/>
+        
+    <bpmn:sequenceFlow id="Flow_1unhpvg" sourceRef="Activity_1g4qq7z" targetRef="Event_0qaoxcg"/>
+        
+    <bpmn:sequenceFlow id="Flow_15i8eql" sourceRef="XentialSjabloonMapSelecteren" targetRef="Activity_1g4qq7z"/>
+        
+    <bpmn:endEvent id="Event_0qaoxcg">
+            
+      <bpmn:incoming>Flow_1unhpvg</bpmn:incoming>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:asyncBefore="true" camunda:expression="${true}" completionQuantity="1" id="XentialSjabloonMapSelecteren" implementation="##WebService" isForCompensation="false" name="sjabloon map selecteren" startQuantity="1">
+            
+      <bpmn:extensionElements/>
+            
+      <bpmn:incoming>Flow_1cvybt6</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_15i8eql</bpmn:outgoing>
+          
+    </bpmn:serviceTask>
+        
+    <bpmn:callActivity calledElement="xential-document-genereren-en-koppelen" camunda:asyncAfter="true" camunda:asyncBefore="true" completionQuantity="1" id="Activity_1g4qq7z" isForCompensation="false" name="doc genereren" operaton:calledElementBinding="versionTag" operaton:calledElementVersionTag="CD:xential:1.0.0" startQuantity="1">
+            
+      <bpmn:extensionElements>
+                
+        <camunda:in businessKey="#{execution.processBusinessKey}"/>
+                
+        <camunda:in source="xentialDocumentProperties" target="xentialDocumentProperties"/>
+                
+        <camunda:in source="xentialGebruikersId" target="xentialGebruikersId"/>
+              
+      </bpmn:extensionElements>
+            
+      <bpmn:incoming>Flow_15i8eql</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_1unhpvg</bpmn:outgoing>
+          
+    </bpmn:callActivity>
+      
+  </bpmn:process>
+    
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_0m1e6al" id="BPMNPlane_1">
+            
+      <bpmndi:BPMNShape bpmnElement="Participant_1e7okwv" id="Participant_1e7okwv_di" isHorizontal="true">
+                
+        <dc:Bounds height="210" width="511" x="129" y="80"/>
+                
+        <bpmndi:BPMNLabel/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="XentialDocMakenStarten" id="_BPMNShape_StartEvent_2">
+                
+        <dc:Bounds height="36" width="36" x="179" y="169"/>
+                
+        <bpmndi:BPMNLabel>
+                    
+          <dc:Bounds height="14" width="22" x="189" y="212"/>
+                  
+        </bpmndi:BPMNLabel>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Event_0qaoxcg" id="Event_0qaoxcg_di">
+                
+        <dc:Bounds height="36" width="36" x="572" y="169"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="XentialSjabloonMapSelecteren" id="BPMNShape_15si283">
+                
+        <dc:Bounds height="80" width="100" x="270" y="147"/>
+                
+        <bpmndi:BPMNLabel/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Activity_1g4qq7z" id="BPMNShape_0e9k9bl">
+                
+        <dc:Bounds height="80" width="100" x="430" y="147"/>
+                
+        <bpmndi:BPMNLabel/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_1cvybt6" id="Flow_1cvybt6_di">
+                
+        <di:waypoint x="215" y="187"/>
+                
+        <di:waypoint x="270" y="187"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_1unhpvg" id="Flow_1unhpvg_di">
+                
+        <di:waypoint x="530" y="187"/>
+                
+        <di:waypoint x="572" y="187"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_15i8eql" id="Flow_15i8eql_di">
+                
+        <di:waypoint x="370" y="187"/>
+                
+        <di:waypoint x="430" y="187"/>
+              
+      </bpmndi:BPMNEdge>
+          
+    </bpmndi:BPMNPlane>
+      
+  </bpmndi:BPMNDiagram>
+  
+</bpmn:definitions>

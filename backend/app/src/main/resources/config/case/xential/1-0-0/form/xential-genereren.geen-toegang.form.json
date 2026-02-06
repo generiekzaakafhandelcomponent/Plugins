@@ -1,42 +1,51 @@
 {
-    "display": "form",
-    "components": [
-        {
-            "label": "pv toegang resultaat",
-            "tableView": false,
-            "key": "pv.toegangResultaat",
-            "type": "hidden",
-            "input": true
-        },
-        {
-            "key": "statusCode",
-            "type": "textfield",
-            "input": true,
-            "label": "statusCode",
-            "tableView": true,
-            "persistent": "client-only",
-            "applyMaskOn": "change",
-            "calculateValue": "value = data.pv.toegangResultaat.statusCode;"
-        },
-        {
-            "key": "statusMessage",
-            "type": "textarea",
-            "input": true,
-            "label": "statusMessage",
-            "tableView": true,
-            "applyMaskOn": "change",
-            "rows": 12,
-            "persistent": "client-only",
-            "calculateValue": "value = data.pv.toegangResultaat.statusMessage;"
-        },
-        {
-            "type": "button",
-            "label": "Resultaat tot toegang",
-            "showValidations": false,
-            "disableOnInvalid": true,
-            "tableView": false,
-            "key": "submit",
-            "input": true
-        }
-    ]
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "pv.toegangResultaat",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "pv toegang resultaat",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "xential-genereren.geen-toegang-pv.toegangResultaat"
+      }
+    },
+    {
+      "key" : "statusCode",
+      "type" : "textfield",
+      "input" : true,
+      "label" : "statusCode",
+      "tableView" : true,
+      "persistent" : "client-only",
+      "applyMaskOn" : "change",
+      "calculateValue" : "value = data.pv.toegangResultaat.statusCode;",
+      "attributes" : {
+        "data-testid" : "xential-genereren.geen-toegang-statusCode"
+      }
+    },
+    {
+      "key" : "statusMessage",
+      "rows" : 12,
+      "type" : "textarea",
+      "input" : true,
+      "label" : "statusMessage",
+      "tableView" : true,
+      "persistent" : "client-only",
+      "applyMaskOn" : "change",
+      "calculateValue" : "value = data.pv.toegangResultaat.statusMessage;",
+      "attributes" : {
+        "data-testid" : "xential-genereren.geen-toegang-statusMessage"
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Resultaat tot toegang",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
 }

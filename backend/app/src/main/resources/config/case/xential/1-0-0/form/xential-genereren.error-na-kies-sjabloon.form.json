@@ -1,13 +1,13 @@
 {
-    "components": [
-        {
-            "type": "button",
-            "label": "error na kies sjabloon",
-            "showValidations": false,
-            "disableOnInvalid": true,
-            "tableView": false,
-            "key": "submit",
-            "input": true
-        }
-    ]
+  "components" : [
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "error na kies sjabloon",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
 }

@@ -1,21 +1,24 @@
 {
-    "display": "form",
-    "components": [
-        {
-            "label": "resumeUrl",
-            "key": "pv.resumeUrl",
-            "defaultValue": null,
-            "type": "hidden",
-            "input": true
-        },
-        {
-            "type": "button",
-            "label": "Open External Page",
-            "key": "openExternalPage",
-            "action": "custom",
-            "custom": "window.open(data.pv.resumeUrl, '_blank');",
-            "theme": "primary",
-            "input": true
-        }
-    ]
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "pv.resumeUrl",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "resumeUrl",
+      "defaultValue" : null,
+      "attributes" : {
+        "data-testid" : "xential-genereren.wizard-pv.resumeUrl"
+      }
+    },
+    {
+      "key" : "openExternalPage",
+      "type" : "button",
+      "input" : true,
+      "label" : "Open External Page",
+      "theme" : "primary",
+      "action" : "custom",
+      "custom" : "window.open(data.pv.resumeUrl, '_blank');"
+    }
+  ]
 }

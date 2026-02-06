@@ -1,28 +1,28 @@
 {
-    "$id": "xential.schema",
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Xential flow",
-    "type": "object",
-    "properties": {
-        "openzaak": {
-            "$ref": "openzaak.schema.json#/definitions/openzaakgegevens"
+  "$id" : "xential.schema",
+  "type" : "object",
+  "title" : "Xential flow",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "properties" : {
+    "persoon" : {
+      "type" : "object",
+      "properties" : {
+        "voornaam" : {
+          "type" : "string"
         },
-        "persoon": {
-            "type": "object",
-            "properties": {
-                "voornaam": {
-                    "type": "string"
-                },
-                "achternaam": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false
-        },
-        "kvkNummer": {
-            "type": "string"
+        "achternaam" : {
+          "type" : "string"
         }
+      },
+      "additionalProperties" : false
     },
-    "additionalProperties": false,
-    "definitions": {}
+    "openzaak" : {
+      "$ref" : "openzaak.schema.json#/definitions/openzaakgegevens"
+    },
+    "kvkNummer" : {
+      "type" : "string"
+    }
+  },
+  "definitions" : {},
+  "additionalProperties" : false
 }

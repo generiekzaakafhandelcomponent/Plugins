@@ -1,52 +1,49 @@
 [
-    {
-        "title": "",
-        "key": "zaaknummer",
-        "path": "doc:openzaak.identificatie",
-        "displayType": {
-            "type": "string",
-            "displayTypeParameters": {}
-        },
-        "sortable": true,
-        "defaultSort": null,
-        "order": 0
+  {
+    "key" : "zaaknummer",
+    "path" : "doc:openzaak.identificatie",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
     },
-    {
-        "title": "",
-        "key": "createdOn",
-        "path": "case:createdOn",
-        "displayType": {
-            "type": "date",
-            "displayTypeParameters": {
-                "dateFormat": "DD-MM-yyyy"
-            }
-        },
-        "sortable": true,
-        "defaultSort": "DESC",
-        "order": 1
+    "sortable" : true,
+    "order" : 0,
+    "exportable" : false
+  },
+  {
+    "key" : "createdOn",
+    "path" : "case:createdOn",
+    "displayType" : {
+      "type" : "date",
+      "displayTypeParameters" : {
+        "dateFormat" : "DD-MM-yyyy"
+      }
     },
-    {
-        "title": "",
-        "key": "assigneeFullName",
-        "path": "case:assigneeFullName",
-        "displayType": {
-            "type": "string",
-            "displayTypeParameters": {}
-        },
-        "sortable": true,
-        "defaultSort": null,
-        "order": 2
+    "sortable" : true,
+    "defaultSort" : "DESC",
+    "order" : 1,
+    "exportable" : false
+  },
+  {
+    "key" : "assigneeFullName",
+    "path" : "case:assigneeFullName",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
     },
-    {
-        "title": "",
-        "key": "zaakstatus",
-        "path": "doc:openzaak.statusOmschrijving",
-        "displayType": {
-            "type": "string",
-            "displayTypeParameters": {}
-        },
-        "sortable": true,
-        "defaultSort": null,
-        "order": 3
-    }
+    "sortable" : true,
+    "order" : 2,
+    "exportable" : false
+  },
+  {
+    "key" : "zaakstatus",
+    "path" : "doc:openzaak.statusOmschrijving",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 3,
+    "exportable" : false
+  }
 ]

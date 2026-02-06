@@ -1,14 +1,36 @@
 [
   {
-    "activityId": "XentialStarten",
-    "activityType": "bpmn:StartEvent:start",
-    "processLinkType": "form",
-    "formDefinitionName": "xential.start"
+    "activityId" : "XentialStarten",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "xential.start",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : null,
+    "processLinkType" : "form"
   },
   {
-    "activityId": "XentialFlowEindigen",
-    "activityType": "bpmn:UserTask:create",
-    "processLinkType": "form",
-    "formDefinitionName": "xential.end"
+    "activityId" : "XentialFlowEindigen",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "xential.end",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : null,
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "XentialSelectTemplateFolder",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
+    "pluginActionDefinitionKey" : "select-template-folder",
+    "actionProperties": {
+      "resultProcessVariable": "xentialTemplateProperties",
+      "firstTemplateGroupId": "415cf276-2af0-4192-923d-4391c4d7b2a8",
+      "eventMessageName": "XENTIAL_DOC_RECEIVED"
+    },
+    "referenceType" : "FIXED",
+    "pluginDefinitionKey" : null,
+    "processLinkType" : "plugin"
   }
 ]

@@ -1,41 +1,80 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1jg9i6j" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
-  <bpmn:message id="Message_33raevl" name="Message_33raevl" />
-  <bpmn:collaboration id="Collaboration_0v8u43x">
-    <bpmn:participant id="Participant_0pp7dyu" name="Xential document genereren annuleren" processRef="xential-document-genereren-annuleren" />
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1jg9i6j" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+    
+  <bpmn:message id="Message_33raevl" name="Message_33raevl"/>
+    
+  <bpmn:collaboration id="Collaboration_0v8u43x" isClosed="false">
+        
+    <bpmn:participant id="Participant_0pp7dyu" name="Document genereren annuleren" processRef="xential-document-genereren-annuleren"/>
+      
   </bpmn:collaboration>
-  <bpmn:process id="xential-document-genereren-annuleren" name="Xential: document genereren annuleren" isExecutable="true">
-    <bpmn:startEvent id="XentialDocumentGenererenAnnulerenStarten" name="start">
+    
+  <bpmn:process id="xential-document-genereren-annuleren" isClosed="false" isExecutable="true" name="Xential: Document genereren annuleren" operaton:versionTag="CD:xential:1.0.0" processType="None">
+        
+    <bpmn:startEvent id="XentialDocumentGenererenAnnulerenStarten" isInterrupting="true" name="start" parallelMultiple="false">
+            
       <bpmn:outgoing>Flow_0dqwgm6</bpmn:outgoing>
+          
     </bpmn:startEvent>
+        
+    <bpmn:sequenceFlow id="Flow_0dqwgm6" sourceRef="XentialDocumentGenererenAnnulerenStarten" targetRef="Event_0f5hgl8"/>
+        
     <bpmn:endEvent id="Event_0f5hgl8" name="doc genereren annuleren even sturen">
+            
       <bpmn:incoming>Flow_0dqwgm6</bpmn:incoming>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0rfp0gp" messageRef="Message_33raevl" camunda:expression="${correlationService.sendCatchEventMessage(&#34;XENTIAL_TEST_DOC_CANCELLED&#34;, execution.businessKey)}" />
+            
+      <bpmn:messageEventDefinition camunda:expression="${correlationService.sendCatchEventMessage(&quot;XENTIAL_TEST_DOC_CANCELLED&quot;, execution.businessKey)}" id="MessageEventDefinition_0rfp0gp" messageRef="Message_33raevl"/>
+          
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0dqwgm6" sourceRef="XentialDocumentGenererenAnnulerenStarten" targetRef="Event_0f5hgl8" />
+      
   </bpmn:process>
+    
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0v8u43x">
-      <bpmndi:BPMNShape id="Participant_0pp7dyu_di" bpmnElement="Participant_0pp7dyu" isHorizontal="true">
-        <dc:Bounds x="160" y="52" width="600" height="250" />
-        <bpmndi:BPMNLabel />
+        
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_0v8u43x" id="BPMNPlane_1">
+            
+      <bpmndi:BPMNShape bpmnElement="Participant_0pp7dyu" id="Participant_0pp7dyu_di" isHorizontal="true">
+                
+        <dc:Bounds height="250" width="400" x="160" y="52"/>
+                
+        <bpmndi:BPMNLabel/>
+              
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="XentialDocumentGenererenAnnulerenStarten">
-        <dc:Bounds x="279" y="159" width="36" height="36" />
+            
+      <bpmndi:BPMNShape bpmnElement="XentialDocumentGenererenAnnulerenStarten" id="_BPMNShape_StartEvent_2">
+                
+        <dc:Bounds height="36" width="36" x="279" y="159"/>
+                
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="286" y="202" width="22" height="14" />
+                    
+          <dc:Bounds height="14" width="22" x="286" y="202"/>
+                  
         </bpmndi:BPMNLabel>
+              
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0bwnukj_di" bpmnElement="Event_0f5hgl8">
-        <dc:Bounds x="542" y="159" width="36" height="36" />
+            
+      <bpmndi:BPMNShape bpmnElement="Event_0f5hgl8" id="Event_0bwnukj_di">
+                
+        <dc:Bounds height="36" width="36" x="412" y="159"/>
+                
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="524" y="202" width="76" height="40" />
+                    
+          <dc:Bounds height="40" width="79" x="393" y="202"/>
+                  
         </bpmndi:BPMNLabel>
+              
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0dqwgm6_di" bpmnElement="Flow_0dqwgm6">
-        <di:waypoint x="315" y="177" />
-        <di:waypoint x="542" y="177" />
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0dqwgm6" id="Flow_0dqwgm6_di">
+                
+        <di:waypoint x="315" y="177"/>
+                
+        <di:waypoint x="412" y="177"/>
+              
       </bpmndi:BPMNEdge>
+          
     </bpmndi:BPMNPlane>
+      
   </bpmndi:BPMNDiagram>
+  
 </bpmn:definitions>
