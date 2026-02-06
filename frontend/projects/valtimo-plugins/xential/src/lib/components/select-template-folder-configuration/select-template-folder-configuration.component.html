@@ -9,6 +9,7 @@
     <v-input
       name="resultProcessVariable"
       [title]="'resultProcessVariable' | pluginTranslate: pluginId | async"
+      [tooltip]="'resultProcessVariableTooltip' | pluginTranslate: pluginId | async"
       [disabled]="obs.disabled"
       [defaultValue]="obs.prefill?.resultProcessVariable"
       [required]="true"
