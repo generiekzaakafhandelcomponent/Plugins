@@ -51,13 +51,13 @@ class OpenKlantPlugin(
         logger.info { "Store Contactinformation in Open Klant - ${execution.processBusinessKey}" }
 
         val contactInformation =
-            ContactInformation(
-                bsn = bsn.trim(),
-                voornaam = firstName.trim(),
-                voorvoegselAchternaam = inFix.trim(),
-                achternaam = lastName.trim(),
-                emailadres = emailAddress.trim(),
-                zaaknummer = caseUuid.trim(),
+            ContactInformation.fromActionProperties(
+                bsn = bsn,
+                voornaam = firstName,
+                voorvoegselAchternaam = inFix,
+                achternaam = lastName,
+                emailadres = emailAddress,
+                zaaknummer = caseUuid,
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
         val partijUuid = openKlantPluginService.storeContactInformation(properties, contactInformation)
@@ -82,7 +82,7 @@ class OpenKlantPlugin(
         logger.info { "Get or Create partij in Open Klant - ${execution.processBusinessKey}" }
 
         val partijInformation =
-            PartijInformationImpl(
+            PartijInformationImpl.fromActionProperties(
                 bsn = bsn.trim(),
                 voorletters = voorletters.trim(),
                 voornaam = voornaam.trim(),
@@ -112,10 +112,10 @@ class OpenKlantPlugin(
         logger.info { "Fetching contact history from Open Klant by case UUID: $caseUuid - ${execution.processBusinessKey}" }
 
         val pluginProperties =
-            KlantcontactOptions(
+            KlantcontactOptions.fromActionProperties(
                 klantinteractiesUrl,
                 token = token,
-                objectUuid = caseUuid.trim(),
+                objectUuid = caseUuid,
             )
 
         fetchKlantcontactenAndStore(
@@ -139,10 +139,10 @@ class OpenKlantPlugin(
         runBlocking {
             logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
             val pluginProperties =
-                KlantcontactOptions(
+                KlantcontactOptions.fromActionProperties(
                     klantinteractiesUrl,
                     token = token,
-                    bsn = bsn.trim(),
+                    bsn = bsn,
                 )
 
             fetchKlantcontactenAndStore(
@@ -166,10 +166,10 @@ class OpenKlantPlugin(
         runBlocking {
             logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
             val pluginProperties =
-                KlantcontactOptions(
+                KlantcontactOptions.fromActionProperties(
                     klantinteractiesUrl,
                     token = token,
-                    partijUuid = partijUuid.trim(),
+                    partijUuid = partijUuid,
                 )
 
             fetchKlantcontactenAndStore(
@@ -203,21 +203,20 @@ class OpenKlantPlugin(
         logger.info { "Registering klantcontact - ${execution.processBusinessKey}" }
 
         val klantcontactCreationInformation =
-            KlantcontactCreationInformation(
-                kanaal = kanaal.trim(),
+            KlantcontactCreationInformation.fromActionProperties(
+                kanaal = kanaal,
                 onderwerp = onderwerp,
                 inhoud = inhoud,
-                vertrouwelijk = vertrouwelijk.trim().toBoolean(),
-                taal = taal.trim(),
-                plaatsgevondenOp = plaatsgevondenOp.trim(),
+                vertrouwelijk = vertrouwelijk,
+                taal = taal,
+                plaatsgevondenOp = plaatsgevondenOp,
                 hasBetrokkene = hasBetrokkene,
-                partijUuid = partijUuid?.trim(),
-                voorletters = voorletters?.trim(),
-                voornaam = voornaam?.trim(),
-                voorvoegselAchternaam = voorvoegselAchternaam?.trim(),
-                achternaam = achternaam?.trim(),
+                partijUuid = partijUuid,
+                voorletters = voorletters,
+                voornaam = voornaam,
+                voorvoegselAchternaam = voorvoegselAchternaam,
+                achternaam = achternaam,
             )
-
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
 
         openKlantPluginService.postKlantcontact(
