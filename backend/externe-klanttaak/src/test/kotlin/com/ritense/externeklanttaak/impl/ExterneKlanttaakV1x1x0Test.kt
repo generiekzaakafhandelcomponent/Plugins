@@ -169,7 +169,7 @@ class ExterneKlanttaakV1x1x0Test {
                 koppelingRegistratie = ZAAK,
                 koppelingUuid = UUID.randomUUID().toString(),
             )
-        whenever(valueResolverService.resolveValues(any(), any()))
+        whenever(valueResolverService.resolveValues(any<String>(), any()))
             .thenReturn(
                 mapOf(
                     "pv:voornaam" to "Jan"

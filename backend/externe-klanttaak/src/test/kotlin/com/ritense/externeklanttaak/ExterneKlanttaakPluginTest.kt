@@ -81,7 +81,7 @@ internal class ExterneKlanttaakPluginTest {
             ExterneKlanttaakVersionV1x1x0(pluginService, valueResolverService, taskService, zaakUrlProvider)
         )
         externeKlanttaakPlugin = ExterneKlanttaakPlugin(
-            externeKlanttaakService, supportedExterneKlanttaakVersions
+            pluginService, objectManagementService, externeKlanttaakService, supportedExterneKlanttaakVersions
         )
         externeKlanttaakPlugin.pluginVersion = Version(1, 1, 0)
         externeKlanttaakPlugin.notificatiesApiPluginConfiguration = mock()
