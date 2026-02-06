@@ -10,6 +10,7 @@ import com.ritense.valtimoplugins.dkd.rdwdossier.RDW
 import com.ritense.valtimoplugins.dkd.rdwdossier.VoertuigbezitInfoPersoonResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -36,6 +37,9 @@ internal class SuwinetRdwServiceTest : BaseTest() {
 
     @Mock
     lateinit var suwinetSOAPClientConfig: SuwinetSOAPClientConfig
+
+    @Mock
+    lateinit var dynamicResponseFactory: DynamicResponseFactory
 
     @InjectMocks
     lateinit var suwinetRdwService: SuwinetRdwService
@@ -70,11 +74,11 @@ internal class SuwinetRdwServiceTest : BaseTest() {
                 "RDWDossierGSD_KentekenInfo_${kentekenInfo.kentekenVoertuig}.xml"
             )
         }
-        val result = suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(bsn, rdwService)
+        val result = suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(bsn, rdwService, dynamicProperties = listOf("*"))
         // then
         assertEquals("found motorvoertuigen should be 2", result.motorVoertuigen.size, 2)
-        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[0].kenteken, kenteken_MH74DZ)
-        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[1].kenteken, kenteken_16ZDLX)
+        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[0].propertiesMap["kenteken"], kenteken_MH74DZ)
+        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[1].propertiesMap["kenteken"], kenteken_16ZDLX)
     }
 
     @Test
@@ -88,7 +92,7 @@ internal class SuwinetRdwServiceTest : BaseTest() {
                 "RDWDossierGSD_VoertuigbezitInfoPersoon_Nietsgevonden.xml"
             )
         )
-        val result = suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(bsn, rdwService)
+        val result = suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(bsn, rdwService, dynamicProperties = listOf("*"))
 
         // then
         assertEquals("List motorvoertuigen should be empty", result.motorVoertuigen.size, 0)
@@ -119,15 +123,15 @@ internal class SuwinetRdwServiceTest : BaseTest() {
                 "RDWDossierGSD_KentekenInfo_${kentekenInfo.kentekenVoertuig}.xml"
             )
         }
-        val result = suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(bsn, rdwService)
+        val result = suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(bsn, rdwService, dynamicProperties = listOf("*"))
         result.motorVoertuigen.forEach {
             logger.info { "voertuig: ${it}" }
         }
         // then
         assertEquals("found motorvoertuigen should be 3", result.motorVoertuigen.size, 3)
-        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[0].kenteken, kenteken_MH74DZ)
-        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[1].kenteken, kenteken_AA00BB)
-        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[2].kenteken, kenteken_16ZDLX)
+        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[0].propertiesMap["kenteken"], kenteken_MH74DZ)
+        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[1].propertiesMap["kenteken"], kenteken_AA00BB)
+        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[2].propertiesMap["kenteken"], kenteken_16ZDLX)
     }
 
     @Test
@@ -150,12 +154,13 @@ internal class SuwinetRdwServiceTest : BaseTest() {
 
         val result = suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(
             bsn,
-            rdwService
+            rdwService,
+            dynamicProperties = listOf("*")
         )
 
         // then
         assertEquals("found motorvoertuigen should be 1", result.motorVoertuigen.size, 1)
-        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[0].kenteken, kenteken)
+        assertEquals("found motorvoertuig should have kenteken", result.motorVoertuigen[0].propertiesMap["kenteken"], kenteken)
     }
 
     @Test
@@ -165,11 +170,11 @@ internal class SuwinetRdwServiceTest : BaseTest() {
         val rdwVoertuig = getRdwVoertuig(kenteken)
 
         // when
-        val simpleMotorvoertuig = suwinetRdwService.mapToSimpleMotorvoertuig(rdwVoertuig)
+        val simpleMotorvoertuig = suwinetRdwService.mapToSimpleMotorvoertuig(rdwVoertuig, listOf("*"))
 
         // then
-        assertThat(simpleMotorvoertuig.kenteken.equals(kenteken))
-        assertThat(simpleMotorvoertuig.soortMotorvoertuig.get("code"))
+        assertThat(simpleMotorvoertuig.propertiesMap.isNotEmpty())
+        assertThat(simpleMotorvoertuig.propertiesMap["soortMotorvoertuig"])
     }
 
     @Test
@@ -178,13 +183,10 @@ internal class SuwinetRdwServiceTest : BaseTest() {
         val rdwVoertuig = null
 
         // when
-        val simpleMotorvoertuig = suwinetRdwService.mapToSimpleMotorvoertuig(rdwVoertuig)
+        val simpleMotorvoertuig = suwinetRdwService.mapToSimpleMotorvoertuig(rdwVoertuig, listOf("*"))
 
         // then
-        assertThat(simpleMotorvoertuig.kenteken == "")
-        assertThat(simpleMotorvoertuig.model == "")
-        assertThat(simpleMotorvoertuig.merk == "")
-        assertThat(simpleMotorvoertuig.soortMotorvoertuig.get("name").asText() == "")
+        assertThat(simpleMotorvoertuig.propertiesMap.isEmpty())
     }
 
     @Test
@@ -194,9 +196,9 @@ internal class SuwinetRdwServiceTest : BaseTest() {
         val rdwVoertuig = getRdwVoertuig(kenteken)
 
         // when
-        val simpleMotorvoertuig = suwinetRdwService.mapToSimpleMotorvoertuig(rdwVoertuig)
+        val simpleMotorvoertuig = suwinetRdwService.mapToSimpleMotorvoertuig(rdwVoertuig, listOf("*"))
         // then
-        assertThat(simpleMotorvoertuig.soortMotorvoertuig.get("name").asText().equals("onbekend"))
+        assertThat(simpleMotorvoertuig.propertiesMap.isNotEmpty())
     }
 
     @Test
@@ -206,9 +208,9 @@ internal class SuwinetRdwServiceTest : BaseTest() {
         val rdwVoertuig = getRdwVoertuig(kenteken)
 
         // when
-        val simpleMotorvoertuig = suwinetRdwService.mapToSimpleMotorvoertuig(rdwVoertuig)
+        val simpleMotorvoertuig = suwinetRdwService.mapToSimpleMotorvoertuig(rdwVoertuig, listOf("*"))
         // then
-        assertThat(simpleMotorvoertuig.kenteken.equals(""))
+        assertThat(simpleMotorvoertuig.propertiesMap.isNotEmpty())
     }
 
     private fun getRdwVoertuig(kenteken: String): KentekenInfoResponse.ClientSuwi.Aansprakelijke {

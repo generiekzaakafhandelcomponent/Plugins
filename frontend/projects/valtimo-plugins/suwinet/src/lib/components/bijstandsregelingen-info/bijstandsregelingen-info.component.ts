@@ -43,8 +43,7 @@ export class BijstandsregelingenInfoComponent
         this.openSaveSubscription();
         this.defaultValues$  = this.prefillConfiguration$.pipe(
         map(config => {
-            console.log(config.dynamicProperties);
-           return config.dynamicProperties.map( value => ( {key: value, value: value}))
+                return config.dynamicProperties?.map( value => ( {key: value, value: value}))
             })
         )
     }

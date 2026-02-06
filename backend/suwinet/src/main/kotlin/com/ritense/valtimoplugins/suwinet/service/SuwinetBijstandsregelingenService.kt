@@ -9,7 +9,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.ObjectFactory
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.PartnerBijstand
-import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.AanvraagUitkeringDto
@@ -23,13 +23,11 @@ import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SzWetDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.VorderingDto
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import jakarta.xml.ws.WebServiceException
-import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
 
 class SuwinetBijstandsregelingenService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
-    private val flattener: ObjectFlattener,
+    private val dynamicResponseFactory: DynamicResponseFactory,
     private val dateTimeService: DateTimeService
 ) {
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
@@ -111,7 +109,7 @@ class SuwinetBijstandsregelingenService(
     }
 
     private fun getAvailableProperties(bijstandsRegelingenInfo: ClientSuwi): List<String> {
-        val flatMap = flattener.toFlatMap(bijstandsRegelingenInfo)
+        val flatMap = dynamicResponseFactory.toFlatMap(bijstandsRegelingenInfo)
         return flatMap.keys.toList()
     }
 
@@ -121,7 +119,7 @@ class SuwinetBijstandsregelingenService(
     ): Map<String, Any?> {
         var propertiesMap: MutableMap<String, Any?> = mutableMapOf<String, Any?>()
 
-        val flatMap = flattener.toFlatMap(bijstandsRegelingenInfo)
+        val flatMap = dynamicResponseFactory.toFlatMap(bijstandsRegelingenInfo)
 
         // exact matching
         dynamicProperties.forEach { prop ->
@@ -142,7 +140,7 @@ class SuwinetBijstandsregelingenService(
             }
         }
 
-        return propertiesMap
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
     }
 
     private fun getVorderingen(vorderingen: MutableList<ClientSuwi.Vordering>): List<VorderingDto> =

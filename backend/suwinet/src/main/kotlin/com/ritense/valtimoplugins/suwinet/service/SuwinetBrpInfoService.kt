@@ -15,7 +15,7 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.VerblijfplaatsHistori
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Verblijfstitel
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
-import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
@@ -35,7 +35,7 @@ class SuwinetBrpInfoService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
     private val nationaliteitenService: NationaliteitenService,
     private val dateTimeService: DateTimeService,
-    private val flattener: ObjectFlattener
+    private val dynamicResponseFactory: DynamicResponseFactory
 ) {
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
@@ -262,7 +262,7 @@ class SuwinetBrpInfoService(
     }
 
     private fun getAvailableProperties(info: Any): List<String> {
-        val flatMap = flattener.toFlatMap(info)
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
         return flatMap.keys.toList()
     }
 
@@ -272,7 +272,7 @@ class SuwinetBrpInfoService(
     ): Map<String, Any?> {
         val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
 
-        val flatMap = flattener.toFlatMap(info)
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
 
         // exact matching
         dynamicProperties.forEach { prop ->
@@ -291,7 +291,7 @@ class SuwinetBrpInfoService(
             }
         }
 
-        return propertiesMap
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
     }
 
     companion object {

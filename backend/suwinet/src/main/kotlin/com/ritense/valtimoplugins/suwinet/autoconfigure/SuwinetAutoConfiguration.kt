@@ -3,7 +3,7 @@ package com.ritense.valtimoplugins.suwinet.autoconfigure
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.service.UwvCodeService
 import com.ritense.valtimoplugins.suwinet.service.UwvSoortIkvService
 import com.ritense.valtimo.contract.annotation.ProcessBean
@@ -46,8 +46,8 @@ class SuwinetAutoConfiguration {
     }
 
     @Bean
-    fun objectFlattener(objectMapper: ObjectMapper): ObjectFlattener {
-        return ObjectFlattener(objectMapper)
+    fun dynamicResponseFactory(objectMapper: ObjectMapper): DynamicResponseFactory {
+        return DynamicResponseFactory(objectMapper)
     }
 
     @Bean
@@ -70,13 +70,13 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBrpInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        objectFlattener: ObjectFlattener
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetBrpInfoService {
         return SuwinetBrpInfoService(
             suwinetSOAPClient,
             nationaliteitenService(),
             DateTimeService(),
-            objectFlattener
+            dynamicResponseFactory
         )
     }
 
@@ -84,11 +84,11 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetRdwService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        objectFlattener: ObjectFlattener
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetRdwService {
         return SuwinetRdwService(
             suwinetSOAPClient,
-            objectFlattener
+            dynamicResponseFactory
         )
     }
 
@@ -174,12 +174,12 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBijstandsRegelingenInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        objectFlattener: ObjectFlattener,
+        dynamicResponseFactory: DynamicResponseFactory,
         dateTimeService: DateTimeService,
     ): SuwinetBijstandsregelingenService {
         return SuwinetBijstandsregelingenService(
             suwinetSOAPClient,
-            objectFlattener,
+            dynamicResponseFactory,
             dateTimeService,
         )
     }

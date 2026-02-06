@@ -9,11 +9,10 @@ import com.ritense.valtimoplugins.dkd.rdwdossier.RDW
 import com.ritense.valtimoplugins.dkd.rdwdossier.VoertuigbezitInfoPersoonResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
-import com.ritense.valtimoplugins.suwinet.dynamic.ObjectFlattener
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.model.MotorvoertuigDynamicDto
-import com.ritense.valtimoplugins.suwinet.model.SoortVoertuig
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
@@ -28,7 +27,7 @@ const val SUWINET_TIME_PATTERN = "HHmmss00"
 
 class SuwinetRdwService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
-    private val flattener: ObjectFlattener,
+    private val dynamicResponseFactory: DynamicResponseFactory,
 ) {
     lateinit var rdwService: RDW
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
@@ -199,7 +198,7 @@ class SuwinetRdwService(
     }
 
     private fun getAvailableProperties(info: Any): List<String> {
-        val flatMap = flattener.toFlatMap(info)
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
         return flatMap.keys.toList()
     }
 
@@ -209,7 +208,7 @@ class SuwinetRdwService(
     ): Map<String, Any?> {
         var propertiesMap: MutableMap<String, Any?> = mutableMapOf<String, Any?>()
 
-        val flatMap = flattener.toFlatMap(info)
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
 
         // exact matching
         dynamicProperties.forEach { prop ->
@@ -230,31 +229,7 @@ class SuwinetRdwService(
             }
         }
 
-        return flatMapToNested(propertiesMap)
-    }
-
-    fun flatMapToNested(flatMap: Map<String, Any?>): Map<String, Any?> {
-        val result = mutableMapOf<String, Any?>()
-
-        flatMap.forEach { (key, value) ->
-            val parts = key.split(".")
-            var current = result
-
-            parts.forEachIndexed { index, part ->
-                if (index == parts.lastIndex) {
-                    // Last part - assign the value
-                    current[part] = value
-                } else {
-                    // Not the last part - create or navigate to nested map
-                    @Suppress("UNCHECKED_CAST")
-                    current = current.getOrPut(part) {
-                        mutableMapOf<String, Any?>()
-                    } as MutableMap<String, Any?>
-                }
-            }
-        }
-
-        return result
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
     }
 
     private fun toDateString(date: LocalDate) = date.format(dateOutFormatter)

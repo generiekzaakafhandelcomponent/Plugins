@@ -7,6 +7,7 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.BRPInfo
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Request
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.model.brp.NationaliteitDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
@@ -42,13 +43,16 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
 
     lateinit var dateTimeService: DateTimeService
 
+    @Mock
+    lateinit var dynamicResponseFactory: DynamicResponseFactory
+
     @BeforeEach
     fun setup() {
         testHelper = TestHelper
         dateTimeService = DateTimeService()
         suwinetSOAPClient = Mockito.mock()
       //  nationaliteitenService = NationaliteitenService()
-        suwinetBrpInfoService = SuwinetBrpInfoService(suwinetSOAPClient, nationaliteitenService, dateTimeService)
+        suwinetBrpInfoService = SuwinetBrpInfoService(suwinetSOAPClient, nationaliteitenService, dateTimeService, dynamicResponseFactory)
         suwinetBrpInfoService.setConfig(suwinetSOAPClientConfig, "")
     }
 
@@ -85,7 +89,8 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
 
         // then
@@ -117,7 +122,8 @@ internal class SuwinetBrpInfoServiceTest2 : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
 
         // then
