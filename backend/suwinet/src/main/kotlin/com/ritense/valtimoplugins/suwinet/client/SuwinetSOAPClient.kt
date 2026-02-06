@@ -84,7 +84,8 @@ class SuwinetSOAPClient {
             // Allow anonymous RelatesTo
             this["allow.anonymous"] = true
 
-            //disable WSAddress mapping request and response message-id because external parties do not support this.
+            // Suwinet service does not properly implement WS-Addressing and requires relaxed validation.
+            // All checks disabled to prevent request failures.
             this["org.apache.cxf.ws.addressing.MAPAggregator.addressingDisabled"] = true
         }
 
