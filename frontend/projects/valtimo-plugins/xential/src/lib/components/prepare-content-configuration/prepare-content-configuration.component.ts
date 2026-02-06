@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
+ *
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
 import {
@@ -8,7 +24,7 @@ import {
   Subscription,
   take,
 } from 'rxjs';
-import {PrepareContent} from '../../models';
+import {PrepareContentConfig} from '../../models';
 import {SelectItem} from '@valtimo/components';
 import {XentialApiSjabloonService} from '../../modules/xential-api/services/xential-api-sjabloon.service';
 import {KeycloakUserService} from '@valtimo/keycloak';
@@ -22,108 +38,63 @@ export class PrepareContentConfigurationComponent implements FunctionConfigurati
   @Input() save$: Observable<void>;
   @Input() disabled$: Observable<boolean>;
   @Input() pluginId: string;
-  @Input() prefillConfiguration$: Observable<PrepareContent>;
+  @Input() prefillConfiguration$: Observable<PrepareContentConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() configuration: EventEmitter<PrepareContent> = new EventEmitter<PrepareContent>();
+  @Output() configuration: EventEmitter<PrepareContentConfig> = new EventEmitter<PrepareContentConfig>();
 
-  protected readonly username$ = new BehaviorSubject<string>('');
-  firstLevelGroupSelectItems$: BehaviorSubject<Array<{ id: string; text: string }>> = new BehaviorSubject<Array<{
-    id: string;
-    text: string
-  }>>([]);
-  secondLevelGroupSelectItems$: BehaviorSubject<Array<{ id: string; text: string }>> = new BehaviorSubject<Array<{
-    id: string;
-    text: string
-  }>>([]);
-  thirdLevelGroupSelectItems$: BehaviorSubject<Array<{ id: string; text: string }>> = new BehaviorSubject<Array<{
-    id: string;
-    text: string
-  }>>([]);
+  public readonly firstLevelGroupSelectItems$: BehaviorSubject<Array<SelectItem>> = new BehaviorSubject<Array<SelectItem>>([]);
+  public readonly secondLevelGroupSelectItems$: BehaviorSubject<Array<SelectItem>> = new BehaviorSubject<Array<SelectItem>>([]);
+  public readonly thirdLevelGroupSelectItems$: BehaviorSubject<Array<SelectItem>> = new BehaviorSubject<Array<SelectItem>>([]);
+
+  private saveSubscription!: Subscription;
+
+  private readonly formValue$ = new BehaviorSubject<PrepareContentConfig | null>(null);
+  private readonly valid$ = new BehaviorSubject<boolean>(false);
+  private readonly username$ = new BehaviorSubject<string>('');
+  private readonly firstGroupId$ = new BehaviorSubject<string>('');
+  private readonly secondGroupId$ = new BehaviorSubject<string>('');
+
+  private currentFirstTemplateGroupId: string = 'notset';
+  private currentSecondTemplateGroupId: string = 'notset';
 
   constructor(
     private readonly xentialApiSjabloonService: XentialApiSjabloonService,
     private readonly keycloakUserService: KeycloakUserService
   ) {
     this.getFirstLevelTemplate();
-    this.keycloakUserService.getUserSubject()
-      .subscribe(
-        userIdentity => {
+    this.keycloakUserService.getUserSubject().subscribe(userIdentity => {
           this.username$.next(userIdentity.username);
-        }
-      );
+    });
   }
 
-  private saveSubscription!: Subscription;
-
-  private readonly formValue$ = new BehaviorSubject<PrepareContent | null>(null);
-  private readonly valid$ = new BehaviorSubject<boolean>(false);
-
-  readonly firstGroupId$ = new BehaviorSubject<string>('');
-  readonly secondGroupId$ = new BehaviorSubject<string>('');
-
-  public fileFormats$ = new BehaviorSubject<SelectItem[]>(
-    ['WORD', 'PDF']
-      .map(format => {
-        return {
-          id: format,
-          text: format
-        };
-      })
-  );
-
-  private currentFirstTemplateGroupId: string = 'notset';
-  private currentSecondTemplateGroupId: string = 'notset';
-
-  handleLevelSelected(groupId$: BehaviorSubject<string>, levelGroupSelectItems$: BehaviorSubject<Array<{
-    id: string;
-    text: string
-  }>>) {
-    combineLatest([
-      this.username$,
-      this.xentialApiSjabloonService.getTemplates(this.username$.getValue(), groupId$.getValue()),
-    ])
-      .pipe(
-        map(([username, sjablonenList]) => {
-            levelGroupSelectItems$.next(
-              sjablonenList.sjabloongroepen.map(configuration => ({
-                    id: configuration.id,
-                    text: configuration.naam
-                  }
-                )
-              )
-            );
-          }
-        )
-      ).subscribe();
-  }
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.openSaveSubscription();
   }
 
-  getFirstLevelTemplate() {
-    this.username$
-      .pipe(
-        filter(gebruikersId => !!gebruikersId) // Filters out empty strings, null, or undefined
-      )
-      .subscribe(gebruikersId => {
+  public ngOnDestroy(): void {
+    this.saveSubscription?.unsubscribe();
+  }
+
+  public getFirstLevelTemplate(): void {
+    this.username$.pipe(filter(gebruikersId => !!gebruikersId))
+      .subscribe(() => {
         this.handleLevelSelected(this.firstGroupId$, this.firstLevelGroupSelectItems$);
       });
   }
 
-  ngOnDestroy() {
-    this.saveSubscription?.unsubscribe();
-  }
-
-  formValueChange(formValue: PrepareContent): void {
-    if (formValue.firstTemplateGroupId &&
-      formValue.firstTemplateGroupId != this.currentFirstTemplateGroupId) {
+  public formValueChange(formValue: PrepareContentConfig): void {
+    if (
+      formValue.firstTemplateGroupId &&
+      formValue.firstTemplateGroupId != this.currentFirstTemplateGroupId
+    ) {
       this.currentFirstTemplateGroupId = formValue.firstTemplateGroupId;
       this.firstGroupId$.next(formValue.firstTemplateGroupId);
       this.handleLevelSelected(this.firstGroupId$, this.secondLevelGroupSelectItems$);
     }
-    if (formValue.secondTemplateGroupId &&
-      formValue.secondTemplateGroupId != this.currentSecondTemplateGroupId) {
+    if (
+      formValue.secondTemplateGroupId &&
+      formValue.secondTemplateGroupId != this.currentSecondTemplateGroupId
+    ) {
       this.currentSecondTemplateGroupId = formValue.secondTemplateGroupId;
       this.secondGroupId$.next(formValue.secondTemplateGroupId);
       this.handleLevelSelected(this.secondGroupId$, this.thirdLevelGroupSelectItems$);
@@ -133,13 +104,31 @@ export class PrepareContentConfigurationComponent implements FunctionConfigurati
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: PrepareContent): void {
+  private handleLevelSelected(
+    groupId$: BehaviorSubject<string>,
+    levelGroupSelectItems$: BehaviorSubject<Array<SelectItem>>
+  ): void {
+    combineLatest([
+      this.username$,
+      this.xentialApiSjabloonService.getTemplates(this.username$.getValue(), groupId$.getValue()),
+    ]).pipe(
+      map(([_, sjablonenList]) => {
+          levelGroupSelectItems$.next(
+            sjablonenList.sjabloongroepen.map(configuration => ({
+                id: configuration.id,
+                text: configuration.naam
+              })
+            )
+          );
+        }
+      )
+    ).subscribe();
+  }
+
+  private handleValid(formValue: PrepareContentConfig): void {
     const valid = !!(
       formValue.xentialDocumentPropertiesId &&
       formValue.firstTemplateGroupId &&
-      formValue.fileFormat &&
-      formValue.documentFilename &&
-      formValue.informationObjectType &&
       formValue.eventMessageName
     );
 
@@ -148,7 +137,7 @@ export class PrepareContentConfigurationComponent implements FunctionConfigurati
   }
 
   private openSaveSubscription(): void {
-    this.saveSubscription = this.save$?.subscribe(save => {
+    this.saveSubscription = this.save$.subscribe(save => {
       combineLatest([this.formValue$, this.valid$])
         .pipe(take(1))
         .subscribe(([formValue, valid]) => {

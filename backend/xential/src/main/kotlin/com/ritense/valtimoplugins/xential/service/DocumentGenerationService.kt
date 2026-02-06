@@ -60,16 +60,15 @@ class DocumentGenerationService(
                         sjabloonVulData = xentialDocumentProperties.content.toString(),
                     ),
             )
-        logger.info { "found something: $result" }
-        val xentialToken =
-            XentialToken(
-                token = UUID.fromString(result.documentCreatieSessieId),
-                processId = processId,
-                messageName = xentialDocumentProperties.messageName,
-                resumeUrl = result.resumeUrl.toString(),
-            )
+        logger.debug { "found something: $result" }
+        val xentialToken = XentialToken(
+            token = UUID.fromString(result.documentCreatieSessieId),
+            processId = processId,
+            messageName = xentialDocumentProperties.messageName,
+            resumeUrl = result.resumeUrl.toString(),
+        )
 
-        logger.info { "token: ${xentialToken.token}" }
+        logger.debug { "token: ${xentialToken.token}" }
         xentialTokenRepository.save(xentialToken)
 
         execution.setVariable("xentialStatus", result.status)

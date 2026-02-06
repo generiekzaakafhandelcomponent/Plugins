@@ -58,9 +58,8 @@ class DocumentGenerationServiceTest {
 
         val xentialDocumentProperties =
             XentialDocumentProperties(
-                xentialGroupId = UUID.randomUUID(),
+                xentialTemplateGroupId = UUID.randomUUID(),
                 fileFormat = com.ritense.valtimoplugins.xential.domain.FileFormat.PDF,
-                documentFilename = "documentNaam",
                 informationObjectType = "object-type",
                 documentId = "mijn-kenmerk",
                 messageName = "messageName",
