@@ -10,6 +10,7 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.BRPInfo
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Request
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.model.brp.NationaliteitDto
 import com.ritense.valtimoplugins.suwinet.model.brp.PersoonDto
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -41,6 +42,9 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
     @Mock
     lateinit var nationaliteitenService: NationaliteitenService
 
+    @Mock
+    lateinit var dynamicResponseFactory: DynamicResponseFactory
+
     private lateinit var suwinetBrpInfoService: SuwinetBrpInfoService
 
     lateinit var testHelper: TestHelper
@@ -53,7 +57,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
         dateTimeService = DateTimeService()
         suwinetSOAPClient = Mockito.mock()
         nationaliteitenService = Mockito.mock()
-        suwinetBrpInfoService = SuwinetBrpInfoService(suwinetSOAPClient, nationaliteitenService, dateTimeService)
+        dynamicResponseFactory = Mockito.mock()
+        suwinetBrpInfoService = SuwinetBrpInfoService(suwinetSOAPClient, nationaliteitenService, dateTimeService, dynamicResponseFactory)
         suwinetBrpInfoService.setConfig(suwinetSOAPClientConfig, "")
     }
 
@@ -75,7 +80,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
 
         // then
@@ -117,7 +123,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
 
         // then
@@ -150,7 +157,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
 
         // then
@@ -180,7 +188,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
 
         // then
@@ -208,7 +217,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
 
         // then
@@ -230,7 +240,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
         // then
         assertEquals("found brp bsn should be as input", bsn, result?.bsn)
@@ -251,7 +262,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
         // then
         assertEquals("found brp bsn should be as input", bsn, result?.bsn)
@@ -273,7 +285,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
         // then
         assertEquals("found brp bsn should be as input", bsn, result?.bsn)
@@ -302,7 +315,8 @@ internal class SuwinetBrpInfoServiceTest : BaseTest() {
 
         val result = suwinetBrpInfoService.getPersoonsgegevensByBsn(
             bsn,
-            brpService
+            brpService,
+            dynamicProperties = listOf("*")
         )
         // then
         assertEquals("person not found", null, result)

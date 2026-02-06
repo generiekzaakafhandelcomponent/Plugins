@@ -1,7 +1,9 @@
 package com.ritense.valtimoplugins.suwinet.autoconfigure
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.service.UwvCodeService
 import com.ritense.valtimoplugins.suwinet.service.UwvSoortIkvService
 import com.ritense.valtimo.contract.annotation.ProcessBean
@@ -44,6 +46,11 @@ class SuwinetAutoConfiguration {
     }
 
     @Bean
+    fun dynamicResponseFactory(objectMapper: ObjectMapper): DynamicResponseFactory {
+        return DynamicResponseFactory(objectMapper)
+    }
+
+    @Bean
     @ProcessBean
     fun dateTimeService(): DateTimeService {
         return DateTimeService()
@@ -63,11 +70,13 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBrpInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetBrpInfoService {
         return SuwinetBrpInfoService(
             suwinetSOAPClient,
             nationaliteitenService(),
             DateTimeService(),
+            dynamicResponseFactory
         )
     }
 
@@ -75,9 +84,11 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetRdwService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetRdwService {
         return SuwinetRdwService(
-            suwinetSOAPClient
+            suwinetSOAPClient,
+            dynamicResponseFactory
         )
     }
 
@@ -163,10 +174,12 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBijstandsRegelingenInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory,
         dateTimeService: DateTimeService,
     ): SuwinetBijstandsregelingenService {
         return SuwinetBijstandsregelingenService(
             suwinetSOAPClient,
+            dynamicResponseFactory,
             dateTimeService,
         )
     }
