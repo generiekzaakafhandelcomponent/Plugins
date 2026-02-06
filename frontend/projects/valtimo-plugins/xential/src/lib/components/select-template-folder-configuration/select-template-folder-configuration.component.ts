@@ -55,12 +55,9 @@ export class SelectTemplateFolderConfigurationComponent implements FunctionConfi
     private readonly keycloakUserService: KeycloakUserService
   ) {
     this.getFirstLevelTemplate();
-    this.keycloakUserService.getUserSubject()
-      .subscribe(
-        userIdentity => {
-          this.username$.next(userIdentity.username);
-        }
-      );
+    this.keycloakUserService.getUserSubject().subscribe(userIdentity => {
+      this.username$.next(userIdentity.username);
+    });
   }
 
   public ngOnInit(): void {
@@ -72,11 +69,8 @@ export class SelectTemplateFolderConfigurationComponent implements FunctionConfi
   }
 
   public getFirstLevelTemplate(): void {
-    this.username$
-      .pipe(
-        filter(gebruikersId => !!gebruikersId)
-      )
-      .subscribe(gebruikersId => {
+    this.username$.pipe(filter(gebruikersId => !!gebruikersId))
+      .subscribe(() => {
         this.handleLevelSelected(this.firstGroupId$, this.firstLevelGroupSelectItems$);
       });
   }
@@ -103,23 +97,25 @@ export class SelectTemplateFolderConfigurationComponent implements FunctionConfi
     this.handleValid(formValue);
   }
 
-  private handleLevelSelected(groupId$: BehaviorSubject<string>, levelGroupSelectItems$: BehaviorSubject<Array<SelectItem>>): void {
+  private handleLevelSelected(
+    groupId$: BehaviorSubject<string>,
+    levelGroupSelectItems$: BehaviorSubject<Array<SelectItem>>
+  ): void {
     combineLatest([
       this.username$,
       this.xentialApiSjabloonService.getTemplates(this.username$.getValue(), groupId$.getValue()),
-    ])
-      .pipe(
-        map(([username, sjablonenList]) => {
-            levelGroupSelectItems$.next(
-              sjablonenList.sjabloongroepen.map(configuration => ({
-                  id: configuration.id,
-                  text: configuration.naam
-                })
-              )
-            );
-          }
-        )
-      ).subscribe();
+    ]).pipe(
+      map(([_, sjablonenList]) => {
+          levelGroupSelectItems$.next(
+            sjablonenList.sjabloongroepen.map(configuration => ({
+                id: configuration.id,
+                text: configuration.naam
+              })
+            )
+          );
+        }
+      )
+    ).subscribe();
   }
 
   private handleValid(formValue: SelectTemplateFolderConfig): void {
@@ -134,7 +130,7 @@ export class SelectTemplateFolderConfigurationComponent implements FunctionConfi
   }
 
   private openSaveSubscription(): void {
-    this.saveSubscription = this.save$?.subscribe(save => {
+    this.saveSubscription = this.save$.subscribe(save => {
       combineLatest([this.formValue$, this.valid$])
         .pipe(take(1))
         .subscribe(([formValue, valid]) => {
