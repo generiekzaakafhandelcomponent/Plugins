@@ -15,18 +15,12 @@
  */
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
-import {
-  BehaviorSubject,
-  combineLatest, filter,
-  map,
-  Observable,
-  Subscription,
-  take,
-} from 'rxjs';
+import {FunctionConfigurationComponent} from '@valtimo/plugin';
+import {BehaviorSubject, combineLatest, filter, map, Observable, Subscription, take,} from 'rxjs';
 import {SelectTemplateFolderConfig} from '../../models';
 import {XentialApiSjabloonService} from '../../modules/xential-api/services/xential-api-sjabloon.service';
 import {KeycloakUserService} from '@valtimo/keycloak';
+import {SelectItem} from '@valtimo/components';
 
 @Component({
   standalone: false,
@@ -41,19 +35,20 @@ export class SelectTemplateFolderConfigurationComponent implements FunctionConfi
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() configuration: EventEmitter<SelectTemplateFolderConfig> = new EventEmitter<SelectTemplateFolderConfig>();
 
-  protected readonly username$ = new BehaviorSubject<string>('');
-  firstLevelGroupSelectItems$: BehaviorSubject<Array<{ id: string; text: string }>> = new BehaviorSubject<Array<{
-    id: string;
-    text: string
-  }>>([]);
-  secondLevelGroupSelectItems$: BehaviorSubject<Array<{ id: string; text: string }>> = new BehaviorSubject<Array<{
-    id: string;
-    text: string
-  }>>([]);
-  thirdLevelGroupSelectItems$: BehaviorSubject<Array<{ id: string; text: string }>> = new BehaviorSubject<Array<{
-    id: string;
-    text: string
-  }>>([]);
+  public readonly firstLevelGroupSelectItems$: BehaviorSubject<Array<SelectItem>> = new BehaviorSubject<Array<SelectItem>>([]);
+  public readonly secondLevelGroupSelectItems$: BehaviorSubject<Array<SelectItem>> = new BehaviorSubject<Array<SelectItem>>([]);
+  public readonly thirdLevelGroupSelectItems$: BehaviorSubject<Array<SelectItem>> = new BehaviorSubject<Array<SelectItem>>([]);
+
+  private saveSubscription!: Subscription;
+
+  private readonly formValue$ = new BehaviorSubject<SelectTemplateFolderConfig | null>(null);
+  private readonly valid$ = new BehaviorSubject<boolean>(false);
+  private readonly username$ = new BehaviorSubject<string>('');
+  private readonly firstGroupId$ = new BehaviorSubject<string>('');
+  private readonly secondGroupId$ = new BehaviorSubject<string>('');
+
+  private currentFirstTemplateGroupId: string = 'notset';
+  private currentSecondTemplateGroupId: string = 'notset';
 
   constructor(
     private readonly xentialApiSjabloonService: XentialApiSjabloonService,
@@ -68,21 +63,47 @@ export class SelectTemplateFolderConfigurationComponent implements FunctionConfi
       );
   }
 
-  private saveSubscription!: Subscription;
+  public ngOnInit(): void {
+    this.openSaveSubscription();
+  }
 
-  private readonly formValue$ = new BehaviorSubject<SelectTemplateFolderConfig | null>(null);
-  private readonly valid$ = new BehaviorSubject<boolean>(false);
+  public ngOnDestroy(): void {
+    this.saveSubscription?.unsubscribe();
+  }
 
-  readonly firstGroupId$ = new BehaviorSubject<string>('');
-  readonly secondGroupId$ = new BehaviorSubject<string>('');
+  public getFirstLevelTemplate(): void {
+    this.username$
+      .pipe(
+        filter(gebruikersId => !!gebruikersId)
+      )
+      .subscribe(gebruikersId => {
+        this.handleLevelSelected(this.firstGroupId$, this.firstLevelGroupSelectItems$);
+      });
+  }
 
-  private currentFirstTemplateGroupId: string = 'notset';
-  private currentSecondTemplateGroupId: string = 'notset';
+  public formValueChange(formValue: SelectTemplateFolderConfig): void {
+    if (
+      formValue.firstTemplateGroupId &&
+      formValue.firstTemplateGroupId != this.currentFirstTemplateGroupId
+    ) {
+      this.currentFirstTemplateGroupId = formValue.firstTemplateGroupId;
+      this.firstGroupId$.next(formValue.firstTemplateGroupId);
+      this.handleLevelSelected(this.firstGroupId$, this.secondLevelGroupSelectItems$);
+    }
+    if (
+      formValue.secondTemplateGroupId &&
+      formValue.secondTemplateGroupId != this.currentSecondTemplateGroupId
+    ) {
+      this.currentSecondTemplateGroupId = formValue.secondTemplateGroupId;
+      this.secondGroupId$.next(formValue.secondTemplateGroupId);
+      this.handleLevelSelected(this.secondGroupId$, this.thirdLevelGroupSelectItems$);
+    }
 
-  handleLevelSelected(groupId$: BehaviorSubject<string>, levelGroupSelectItems$: BehaviorSubject<Array<{
-    id: string;
-    text: string
-  }>>): void {
+    this.formValue$.next(formValue);
+    this.handleValid(formValue);
+  }
+
+  private handleLevelSelected(groupId$: BehaviorSubject<string>, levelGroupSelectItems$: BehaviorSubject<Array<SelectItem>>): void {
     combineLatest([
       this.username$,
       this.xentialApiSjabloonService.getTemplates(this.username$.getValue(), groupId$.getValue()),
@@ -99,42 +120,6 @@ export class SelectTemplateFolderConfigurationComponent implements FunctionConfi
           }
         )
       ).subscribe();
-  }
-
-  ngOnInit(): void {
-    this.openSaveSubscription();
-  }
-
-  getFirstLevelTemplate(): void {
-    this.username$
-      .pipe(
-        filter(gebruikersId => !!gebruikersId)
-      )
-      .subscribe(gebruikersId => {
-        this.handleLevelSelected(this.firstGroupId$, this.firstLevelGroupSelectItems$);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.saveSubscription?.unsubscribe();
-  }
-
-  formValueChange(formValue: SelectTemplateFolderConfig): void {
-    if (formValue.firstTemplateGroupId &&
-      formValue.firstTemplateGroupId != this.currentFirstTemplateGroupId) {
-      this.currentFirstTemplateGroupId = formValue.firstTemplateGroupId;
-      this.firstGroupId$.next(formValue.firstTemplateGroupId);
-      this.handleLevelSelected(this.firstGroupId$, this.secondLevelGroupSelectItems$);
-    }
-    if (formValue.secondTemplateGroupId &&
-      formValue.secondTemplateGroupId != this.currentSecondTemplateGroupId) {
-      this.currentSecondTemplateGroupId = formValue.secondTemplateGroupId;
-      this.secondGroupId$.next(formValue.secondTemplateGroupId);
-      this.handleLevelSelected(this.secondGroupId$, this.thirdLevelGroupSelectItems$);
-    }
-
-    this.formValue$.next(formValue);
-    this.handleValid(formValue);
   }
 
   private handleValid(formValue: SelectTemplateFolderConfig): void {

@@ -1,59 +1,58 @@
-<v-form
-  (valueChange)="formValueChange($event)"
-  *ngIf="{
-    disabled: disabled$ | async,
-    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
-    firstLevelGroupSelectItems: firstLevelGroupSelectItems$ | async,
-    secondLevelGroupSelectItems: secondLevelGroupSelectItems$ | async,
-    thirdLevelGroupSelectItems: thirdLevelGroupSelectItems$ | async
-  } as obs"
->
-  <v-input
-    name="resultProcessVariable"
-    [title]="'resultProcessVariable' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [defaultValue]="obs.prefill?.resultProcessVariable"
-    [disabled]="obs.disabled"
-    [required]="true"
-  />
+@if ({
+  disabled: disabled$ | async,
+  prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+  firstLevelGroupSelectItems: firstLevelGroupSelectItems$ | async,
+  secondLevelGroupSelectItems: secondLevelGroupSelectItems$ | async,
+  thirdLevelGroupSelectItems: thirdLevelGroupSelectItems$ | async
+}; as obs) {
+  <v-form (valueChange)="formValueChange($event)">
+    <v-input
+      name="resultProcessVariable"
+      [title]="'resultProcessVariable' | pluginTranslate: pluginId | async"
+      [disabled]="obs.disabled"
+      [defaultValue]="obs.prefill?.resultProcessVariable"
+      [required]="true"
+      [margin]="true"
+    />
 
-  <v-select
-    name="firstTemplateGroupId"
-    [items]="obs?.firstLevelGroupSelectItems || []"
-    [margin]="true"
-    [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
-    [disabled]="obs.disabled"
-    [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
-    [required]="true"
-    [loading]="!obs?.firstLevelGroupSelectItems"
-  ></v-select>
+    <v-select
+      name="firstTemplateGroupId"
+      [title]="'firstTemplateGroupId' | pluginTranslate: pluginId | async"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
+      [items]="obs?.firstLevelGroupSelectItems || []"
+      [defaultSelectionId]="obs.prefill?.firstTemplateGroupId"
+      [loading]="!obs?.firstLevelGroupSelectItems"
+    ></v-select>
 
-  <v-select
-    name="secondTemplateGroupId"
-    [items]="obs?.secondLevelGroupSelectItems || []"
-    [margin]="true"
-    [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
-    [disabled]="obs.disabled || (obs?.secondLevelGroupSelectItems || [])?.length === 0"
-    [required]="true"
-    [loading]="!obs?.secondLevelGroupSelectItems"
-  ></v-select>
+    <v-select
+      name="secondTemplateGroupId"
+      [title]="'secondTemplateGroupId' | pluginTranslate: pluginId | async"
+      [disabled]="obs.disabled || (obs?.secondLevelGroupSelectItems || [])?.length === 0"
+      [required]="true"
+      [margin]="true"
+      [loading]="!obs?.secondLevelGroupSelectItems"
+      [items]="obs?.secondLevelGroupSelectItems || []"
+    ></v-select>
 
-  <v-select
-    name="thirdTemplateGroupId"
-    [items]="obs?.thirdLevelGroupSelectItems || []"
-    [margin]="true"
-    [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
-    [disabled]="obs.disabled || (obs?.thirdLevelGroupSelectItems || [])?.length === 0"
-    [required]="true"
-    [loading]="!obs?.thirdLevelGroupSelectItems"
-  ></v-select>
+    <v-select
+      name="thirdTemplateGroupId"
+      [title]="'thirdTemplateGroupId' | pluginTranslate: pluginId | async"
+      [disabled]="obs.disabled || (obs?.thirdLevelGroupSelectItems || [])?.length === 0"
+      [required]="true"
+      [margin]="true"
+      [items]="obs?.thirdLevelGroupSelectItems || []"
+      [loading]="!obs?.thirdLevelGroupSelectItems"
+    ></v-select>
 
-  <v-input
-    name="eventMessageName"
-    [title]="'eventMessageName' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [defaultValue]="obs.prefill?.eventMessageName"
-    [disabled]="obs.disabled"
-    [required]="true"
-  />
-</v-form>
+    <v-input
+      name="eventMessageName"
+      [title]="'eventMessageName' | pluginTranslate: pluginId | async"
+      [disabled]="obs.disabled"
+      [defaultValue]="obs.prefill?.eventMessageName"
+      [required]="true"
+      [margin]="true"
+    />
+  </v-form>
+}
