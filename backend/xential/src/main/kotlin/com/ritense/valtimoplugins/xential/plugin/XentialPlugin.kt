@@ -145,7 +145,8 @@ class XentialPlugin(
                 fileFormat = fileFormat,
                 documentId = "documentId",
                 messageName = eventMessageName,
-                content = null
+                content = null,
+                xentialTemplateName = null
             )
 
             execution.processInstance.setVariable(

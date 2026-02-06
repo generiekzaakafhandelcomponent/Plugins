@@ -47,7 +47,12 @@ class DocumentGenerationService(
         execution: DelegateExecution,
     ) {
         logger.info { "Generating xential document" }
-
+        requireNotNull(xentialDocumentProperties.fileFormat) {
+            "fileFormat is required"
+        }
+        requireNotNull(xentialDocumentProperties.content) {
+            "content is required"
+        }
         val result = api.creeerDocument(
             gebruikersId = xentialGebruikersId,
             accepteerOnbekend = false,
@@ -55,7 +60,7 @@ class DocumentGenerationService(
                 sjabloonId = sjabloonId,
                 bestandsFormaat = Sjabloondata.BestandsFormaat.valueOf(xentialDocumentProperties.fileFormat.name),
                 documentkenmerk = xentialDocumentProperties.documentId,
-                sjabloonVulData = xentialDocumentProperties.content.toString(),
+                sjabloonVulData = xentialDocumentProperties.content,
             ),
         )
         logger.debug { "found something: $result" }

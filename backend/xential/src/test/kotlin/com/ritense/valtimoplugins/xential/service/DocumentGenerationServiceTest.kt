@@ -56,22 +56,20 @@ class DocumentGenerationServiceTest {
 
         whenever(esbClient.documentApi(any<RestClient>())).thenReturn(defaultApi)
 
-        val xentialDocumentProperties =
-            XentialDocumentProperties(
-                xentialTemplateGroupId = UUID.randomUUID(),
-                fileFormat = com.ritense.valtimoplugins.xential.domain.FileFormat.PDF,
-                informationObjectType = "object-type",
-                documentId = "mijn-kenmerk",
-                messageName = "messageName",
-                content = "voorbeeld data",
-            )
+        val xentialDocumentProperties = XentialDocumentProperties(
+            xentialTemplateGroupId = UUID.randomUUID(),
+            fileFormat = com.ritense.valtimoplugins.xential.domain.FileFormat.PDF,
+            documentId = "mijn-kenmerk",
+            messageName = "messageName",
+            content = "voorbeeld data",
+            xentialTemplateName = "xentialTemplateName"
+        )
 
-        val creatieResultaat =
-            DocumentCreatieResultaat(
-                documentCreatieSessieId = UUID.randomUUID().toString(),
-                status = DocumentCreatieResultaat.Status.VOLTOOID,
-                resumeUrl = null,
-            )
+        val creatieResultaat = DocumentCreatieResultaat(
+            documentCreatieSessieId = UUID.randomUUID().toString(),
+            status = DocumentCreatieResultaat.Status.VOLTOOID,
+            resumeUrl = null,
+        )
         whenever(defaultApi.creeerDocument(any(), any(), any())).thenReturn(creatieResultaat)
 
         documentGenerationService.generateDocument(

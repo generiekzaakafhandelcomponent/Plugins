@@ -20,7 +20,8 @@ import java.util.UUID
 
 data class XentialDocumentProperties(
     val xentialTemplateGroupId: UUID,
-    val fileFormat: FileFormat,
+    val xentialTemplateName: String?,
+    val fileFormat: FileFormat?,
     val documentId: String,
     val messageName: String,
     val content: String?,

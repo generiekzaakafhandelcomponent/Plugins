@@ -18,17 +18,13 @@ package com.ritense.valtimoplugins.xential.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.zakenapi.service.ZaakDocumentService
 import org.operaton.bpm.engine.delegate.DelegateExecution
 import com.ritense.documentenapi.web.rest.dto.DocumentSearchRequest
 import com.ritense.valtimoplugins.xential.domain.FileFormat
-import com.ritense.valtimoplugins.xential.plugin.XentialPlugin
-import com.ritense.valtimoplugins.xential.plugin.XentialPlugin.Companion
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import java.util.UUID
 
 @Suppress("UNUSED")
@@ -41,23 +37,27 @@ class XentialDocumentHelper(
         documentPropertiesMap: MutableMap<String, Any>,
     ) {
         val documentProperties: XentialDocumentProperties = objectMapper.convertValue(documentPropertiesMap)
-
+        requireNotNull(documentProperties.xentialTemplateName) {
+            "xentialTemplateName is required"
+        }
+        requireNotNull(documentProperties.fileFormat) {
+            "fileFormat is required"
+        }
         val docs = zaakDocumentService.getInformatieObjectenAsRelatedFilesPage(
             UUID.fromString(execution.processBusinessKey),
             DocumentSearchRequest(),
             PageRequest.of(0, 1000)
         )
 
-        val over = docs.filter {
-            it.bestandsnaam == documentProperties.informationObjectType
-        }.toList()
-
-        val extention = if (documentProperties.fileFormat.equals(FileFormat.WORD)) {
+        val totalExisting = docs.count {
+            it.bestandsnaam!!.startsWith(documentProperties.xentialTemplateName)
+        }
+        val extension = if (documentProperties.fileFormat == FileFormat.WORD) {
             "docx"
         } else {
             "pdf"
         }
-        documentPropertiesMap["documentFilename"] = "${documentProperties.documentFilename}-${over.size + 1}.$extention"
+        documentPropertiesMap["documentFilename"] = "${documentProperties.xentialTemplateName}-${totalExisting + 1}.$extension"
     }
 
     companion object {
