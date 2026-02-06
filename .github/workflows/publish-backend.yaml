@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - v13
-      - bugfix/151824-como-wegschrijven-output-gaat-fout-in-ophalen-brongegevens-proces
+      - feature/suwinet-1.13.x
 jobs:
   # -------------------------------------------------------------
   # Using GitHub's API is not supported for push events
