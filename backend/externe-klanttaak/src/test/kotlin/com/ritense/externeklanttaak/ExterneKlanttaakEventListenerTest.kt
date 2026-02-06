@@ -65,6 +65,8 @@ class ExterneKlanttaakEventListenerTest {
 
         externeKlanttaakPlugin =
             ExterneKlanttaakPlugin(
+                pluginService = pluginService,
+                objectManagementService = objectManagementService,
                 externeKlanttaakService = externeKlanttaakService,
                 availableExterneKlanttaakVersions = mock<List<IExterneKlanttaakVersion>>()
             )
@@ -85,10 +87,12 @@ class ExterneKlanttaakEventListenerTest {
         val externeKlanttaakPluginId = UUID.randomUUID()
         val finalizerProcess = "test-finalizer-process"
         val event = NotificatiesApiNotificationReceivedEvent(
-            "objecten",
-            objectUrl,
-            "update",
-            mapOf(
+            kanaal = "objecten",
+            hoofdObject = null,
+            resourceUrl = objectUrl,
+            actie = "update",
+            aanmaakdatum = null,
+            kenmerken = mapOf(
                 "objectType" to objecttypeUrl,
             )
         )
