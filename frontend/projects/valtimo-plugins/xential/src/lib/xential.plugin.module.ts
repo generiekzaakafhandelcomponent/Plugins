@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,6 @@ import {
 import {
   ValidateAccessConfigurationComponent
 } from './components/validate-access-configuration/validate-access-configuration.component';
-import {
-  SelectTemplateFolderConfigurationComponent
-} from './components/select-template-folder-configuration/select-template-folder-configuration.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +42,6 @@ import {
     GenerateDocumentConfigurationComponent,
     PrepareContentConfigurationComponent,
     ValidateAccessConfigurationComponent,
-    SelectTemplateFolderConfigurationComponent
   ],
   imports: [
     CommonModule,
@@ -63,8 +59,6 @@ import {
     GenerateDocumentConfigurationComponent,
     PrepareContentConfigurationComponent,
     ValidateAccessConfigurationComponent,
-    SelectTemplateFolderConfigurationComponent
   ],
 })
-export class XentialPluginModule {
-}
+export class XentialPluginModule {}

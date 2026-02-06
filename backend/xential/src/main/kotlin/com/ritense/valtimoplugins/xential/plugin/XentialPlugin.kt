@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.mtlssslcontext.MTlsSslContext
 import com.ritense.valtimoplugins.xential.domain.FileFormat
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
-import com.ritense.valtimoplugins.xential.domain.XentialTemplateFolder
 import com.ritense.valtimoplugins.xential.plugin.XentialPlugin.Companion.PLUGIN_KEY
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
 import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
@@ -115,10 +114,10 @@ class XentialPlugin(
     ) {
         val props = objectMapper.convertValue(xentialDocumentProperties) as XentialDocumentProperties
 
-        logger.info { "----------------------------- validate access for !! $xentialGebruikersId op map ${props.xentialGroupId}" }
+        logger.info { "----------------------------- validate access for !! $xentialGebruikersId op map ${props.xentialTemplateGroupId}" }
 
         val accessResult =
-            xentialSjablonenService.testAccessToSjabloongroep(xentialGebruikersId, props.xentialGroupId.toString())
+            xentialSjablonenService.testAccessToSjabloongroep(xentialGebruikersId, props.xentialTemplateGroupId.toString())
 
         execution.processInstance.setVariable(
             toegangResultaatId,
@@ -134,8 +133,6 @@ class XentialPlugin(
     )
     fun prepareContent(
         @PluginActionProperty fileFormat: FileFormat,
-        @PluginActionProperty documentFilename: String,
-        @PluginActionProperty informationObjectType: String,
         @PluginActionProperty eventMessageName: String,
         @PluginActionProperty xentialDocumentPropertiesId: String,
         @PluginActionProperty firstTemplateGroupId: UUID,
@@ -144,50 +141,17 @@ class XentialPlugin(
         execution: DelegateExecution,
     ) {
         try {
-            val xentialDocumentProperties =
-                XentialDocumentProperties(
-                    xentialGroupId = thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
-                    fileFormat = fileFormat,
-                    documentFilename = documentFilename,
-                    informationObjectType = informationObjectType,
-                    documentId = "documentId",
-                    messageName = eventMessageName,
-                    content = null
-                )
+            val xentialDocumentProperties = XentialDocumentProperties(
+                xentialTemplateGroupId = thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
+                fileFormat = fileFormat,
+                documentId = "documentId",
+                messageName = eventMessageName,
+                content = null
+            )
 
             execution.processInstance.setVariable(
                 xentialDocumentPropertiesId,
                 objectMapper.convertValue(xentialDocumentProperties),
-            )
-        } catch (e: Exception) {
-            logger.error { "Exiting scope due to nested error. $e" }
-            return
-        }
-    }
-
-    @PluginAction(
-        key = "select-template-folder",
-        title = "Select template folder",
-        description = "Select a template folder for xential document generation.",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
-    )
-    fun selectTemplateFolder(
-        @PluginActionProperty firstTemplateGroupId: UUID,
-        @PluginActionProperty secondTemplateGroupId: UUID?,
-        @PluginActionProperty thirdTemplateGroupId: UUID?,
-        @PluginActionProperty eventMessageName: String,
-        @PluginActionProperty resultProcessVariable: String,
-        execution: DelegateExecution,
-    ) {
-        try {
-            val xentialTemplateFolder = XentialTemplateFolder(
-                templateGroupId = thirdTemplateGroupId ?: secondTemplateGroupId ?: firstTemplateGroupId,
-                eventMessageName = eventMessageName,
-            )
-
-            execution.processInstance.setVariable(
-                resultProcessVariable,
-                objectMapper.convertValue(xentialTemplateFolder),
             )
         } catch (e: Exception) {
             logger.error { "Exiting scope due to nested error. $e" }

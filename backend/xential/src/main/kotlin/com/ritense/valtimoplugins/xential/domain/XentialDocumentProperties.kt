@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,8 @@ package com.ritense.valtimoplugins.xential.domain
 import java.util.UUID
 
 data class XentialDocumentProperties(
-    val xentialGroupId: UUID,
+    val xentialTemplateGroupId: UUID,
     val fileFormat: FileFormat,
-    var documentFilename: String,
-    val informationObjectType: String,
     val documentId: String,
     val messageName: String,
     var content: String?,

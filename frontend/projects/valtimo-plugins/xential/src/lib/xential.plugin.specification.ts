@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,6 @@ import {
 import {
   ValidateAccessConfigurationComponent
 } from './components/validate-access-configuration/validate-access-configuration.component';
-import {
-  SelectTemplateFolderConfigurationComponent
-} from './components/select-template-folder-configuration/select-template-folder-configuration.component';
 
 const xentialPluginSpecification: PluginSpecification = {
   pluginId: 'xential',
@@ -38,7 +35,6 @@ const xentialPluginSpecification: PluginSpecification = {
     'generate-document': GenerateDocumentConfigurationComponent,
     'prepare-content': PrepareContentConfigurationComponent,
     'validate-xential-toegang': ValidateAccessConfigurationComponent,
-    'select-template-folder': SelectTemplateFolderConfigurationComponent
   },
   pluginTranslations: {
     nl: {
@@ -52,21 +48,16 @@ const xentialPluginSpecification: PluginSpecification = {
       mTlsSslContextAutoConfigurationId: 'mTLS SSL context plugin configuratie',
       'validate-xential-toegang': 'Valideer toegang tot Xential Sjablonen',
       xentialDocumentPropertiesId: 'Document genereren Properties proces variabele',
-      xentialGebruikersId: 'Default Xential gebruiker Id',
+      xentialGebruikersId: 'Xential gebruiker Id',
       toegangResultaatId: 'Toegang tot xential test resultaat proces variabele',
-      'prepare-content': 'kies inhoud op basis van een template',
-      fileFormat: 'Bestandsformaat',
-      informationObjectType: 'Informatie ObjectType',
+      'prepare-content': 'Document inhoud voorbereiden',
       firstTemplateGroupId: 'Eerste sjabloongroep',
       secondTemplateGroupId: 'Tweede sjabloongroep',
       thirdTemplateGroupId: 'Derde sjabloongroep',
-      xentialDocumentProperties: 'Document genereren Properties',
       'generate-document': 'Genereer document',
+      xentialDocumentProperties: 'Xential document genereren Properties',
       xentialData: 'De inhoud voor het genereren van het document',
       xentialSjabloonId: 'Sjabloon id van het te genereren document',
-      'select-template-folder': 'Sjabloonmap selecteren',
-      resultProcessVariable: 'Resultaat proces variabele',
-      resultProcessVariableTooltip: 'Proces variabele waar het resultaat van de deze plugin actie onder wordt opgeslagen'
     },
     en: {
       title: 'Xential',
@@ -79,21 +70,16 @@ const xentialPluginSpecification: PluginSpecification = {
       mTlsSslContextAutoConfigurationId: 'mTLS SSL context plugin configuration',
       'validate-xential-toegang': 'Validate access to Xential Sjablonen',
       xentialDocumentPropertiesId: 'Generate Document Properties Process Variable',
-      xentialGebruikersId: 'Default Xential user Id',
+      xentialGebruikersId: 'Xential user Id',
       toegangResultaatId: 'Access to xential test result process variable',
-      'prepare-content': 'Generate document content',
-      fileFormat: 'File format',
-      informationObjectType: 'information ObjectType',
+      'prepare-content': 'Prepare document content',
       firstTemplateGroupId: 'First template group',
       secondTemplateGroupId: 'Second template group',
       thirdTemplateGroupId: 'Third template group',
-      xentialDocumentProperties: 'Generate Document Properties',
       'generate-document': 'Generate document',
-      xentialData: 'content for generating the document',
+      xentialDocumentProperties: 'Generate Document Properties',
+      xentialData: 'Content for generating the document',
       xentialSjabloonId: 'Template ID of the document to be generated',
-      'select-template-folder': 'Select template folder',
-      resultProcessVariable: 'Result process variable',
-      resultProcessVariableTooltip: 'Process variable where the result of this plugin action is stored'
     },
   },
 };

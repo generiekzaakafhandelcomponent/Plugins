@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,4 +25,3 @@ export * from './lib/components/xential-configuration/xential-configuration.comp
 export * from './lib/components/generate-document-configuration/generate-document-configuration.component';
 export * from './lib/components/prepare-content-configuration/prepare-content-configuration.component';
 export * from './lib/components/validate-access-configuration/validate-access-configuration.component';
-export * from './lib/components/select-template-folder-configuration/select-template-folder-configuration.component';
