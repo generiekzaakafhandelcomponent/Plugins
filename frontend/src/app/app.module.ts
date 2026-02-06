@@ -113,7 +113,7 @@ import {TokenAuthenticationPluginModule, tokenAuthenticationPluginSpecification}
 import {ValtimoLlmPluginModule, valtimoLlmPluginSpecification} from '@valtimo-plugins/valtimo-llm'
 import {ValtimoOcrPluginModule, valtimoOcrPluginSpecification} from '@valtimo-plugins/valtimo-ocr';
 import {ValtimoS2tPluginModule, valtimoS2tPluginSpecification} from '@valtimo-plugins/valtimo-s2t';
-import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
+import {XentialPluginModule, xentialPluginSpecification} from '@valtimo-plugins/xential';
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -217,7 +217,7 @@ export function tabsFactory() {
     providers: [{
         provide: PLUGINS_TOKEN,
         useValue: [
-            XentialPluginSpecification,
+            xentialPluginSpecification,
             catalogiApiPluginSpecification,
             documentGeneratorPluginSpecification,
             documentenApiPluginSpecification,
