@@ -1,0 +1,80 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/sjablonenlijst",
+      "queryStringParameters": {
+        "gebruikersId": [ "admin" ]
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": [ "application/json" ]
+      },
+      "body": {
+        "sjablonen": [],
+        "sjabloongroepen": [
+          {
+            "id": "415cf276-2af0-4192-923d-4391c4d7b2a8",
+            "naam": "Uitgaande brieven"
+          },
+          {
+            "id": "a9b8c7d6-e5f4-3210-fedc-ba9876543210",
+            "naam": "Besluiten"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/sjablonenlijst",
+      "queryStringParameters": {
+        "gebruikersId": [ "admin" ],
+        "sjabloongroepId": [ "415cf276-2af0-4192-923d-4391c4d7b2a8" ]
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": [ "application/json" ]
+      },
+      "body": {
+        "sjablonen": [
+          {
+            "id": "e0a8ace5-06df-4ef7-bcbb-9d694d25e03b",
+            "naam": "Standaard brief"
+          }
+        ],
+        "sjabloongroepen": []
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/sjablonenlijst",
+      "queryStringParameters": {
+        "gebruikersId": [ "admin" ],
+        "sjabloongroepId": [ "a9b8c7d6-e5f4-3210-fedc-ba9876543210" ]
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": [ "application/json" ]
+      },
+      "body": {
+        "sjablonen": [
+          {
+            "id": "7b3c19a2-44d1-4a5e-b tried-8f2a1c6d9e4b",
+            "naam": "Beschikking"
+          }
+        ],
+        "sjabloongroepen": []
+      }
+    }
+  }
+]
