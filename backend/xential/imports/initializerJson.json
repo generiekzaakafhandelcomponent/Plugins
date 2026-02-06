@@ -4,34 +4,6 @@
       "method": "GET",
       "path": "/sjablonenlijst",
       "queryStringParameters": {
-        "gebruikersId": [ "admin" ]
-      }
-    },
-    "httpResponse": {
-      "statusCode": 200,
-      "headers": {
-        "Content-Type": [ "application/json" ]
-      },
-      "body": {
-        "sjablonen": [],
-        "sjabloongroepen": [
-          {
-            "id": "415cf276-2af0-4192-923d-4391c4d7b2a8",
-            "naam": "Uitgaande brieven"
-          },
-          {
-            "id": "a9b8c7d6-e5f4-3210-fedc-ba9876543210",
-            "naam": "Besluiten"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "httpRequest": {
-      "method": "GET",
-      "path": "/sjablonenlijst",
-      "queryStringParameters": {
         "gebruikersId": [ "admin" ],
         "sjabloongroepId": [ "415cf276-2af0-4192-923d-4391c4d7b2a8" ]
       }
@@ -74,6 +46,34 @@
           }
         ],
         "sjabloongroepen": []
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/sjablonenlijst",
+      "queryStringParameters": {
+        "gebruikersId": [ "admin" ]
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": [ "application/json" ]
+      },
+      "body": {
+        "sjablonen": [],
+        "sjabloongroepen": [
+          {
+            "id": "415cf276-2af0-4192-923d-4391c4d7b2a8",
+            "naam": "Uitgaande brieven"
+          },
+          {
+            "id": "a9b8c7d6-e5f4-3210-fedc-ba9876543210",
+            "naam": "Besluiten"
+          }
+        ]
       }
     }
   }
