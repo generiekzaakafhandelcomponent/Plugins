@@ -24,7 +24,7 @@ class SuwinetSOAPClient {
             this.serviceClass = clazz
             address = url
 
-            // address feature for inclusion SOAPAction in tag
+            // address feature for including SOAPAction in tag
             val addressingFeature = WSAddressingFeature().apply {
                 isAddressingRequired = false
             }
