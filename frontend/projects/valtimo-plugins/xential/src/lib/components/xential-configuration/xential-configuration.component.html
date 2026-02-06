@@ -13,65 +13,62 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+@if ({
+  disabled: disabled$ | async,
+  prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+}; as obs) {
 
-<v-form
-  (valueChange)="formValueChange($event)"
-  *ngIf="{
-    disabled: disabled$ | async,
-    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
-  } as obs"
->
-  <v-input
-    name="configurationTitle"
-    [title]="'configurationTitle' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [defaultValue]="obs.prefill?.configurationTitle"
-    [disabled]="obs.disabled"
-    [required]="true"
-  >
-  </v-input>
-
-  <v-input
-    name="applicationName"
-    [title]="'applicationName' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [defaultValue]="obs.prefill?.applicationName"
-    [disabled]="obs.disabled"
-    [required]="true"
-  ></v-input>
-
-  <v-input
-    name="applicationPassword"
-    type="password"
-    [title]="'applicationPassword' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [defaultValue]="obs.prefill?.applicationPassword"
-    [disabled]="obs.disabled"
-    [required]="true"
-  ></v-input>
-
-  <v-input
-    name="baseUrl"
-    [title]="'baseUrl' | pluginTranslate: pluginId | async"
-    [margin]="true"
-    [defaultValue]="obs.prefill?.baseUrl"
-    [disabled]="obs.disabled"
-    [required]="true"
-  >
-  </v-input>
-
-  <ng-container
-    *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
-  >
-    <v-select
-      name="mTlsSslContextAutoConfigurationId"
-      [items]="authObs.authenticationPluginSelectItems"
-      [margin]="true"
-      [title]="'mTlsSslContextAutoConfigurationId' | pluginTranslate: pluginId | async"
+  <v-form (valueChange)="formValueChange($event)">
+    <v-input
+      name="configurationTitle"
+      [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.configurationTitle"
       [disabled]="obs.disabled"
-      [defaultSelectionId]="obs.prefill?.mTlsSslContextAutoConfigurationId"
       [required]="true"
-      [loading]="!authObs.authenticationPluginSelectItems"
-    ></v-select>
-  </ng-container>
-</v-form>
+      [margin]="true"
+    >
+    </v-input>
+
+    <v-input
+      name="applicationName"
+      [title]="'applicationName' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.applicationName"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
+    ></v-input>
+
+    <v-input
+      name="applicationPassword"
+      type="password"
+      [title]="'applicationPassword' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.applicationPassword"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
+    ></v-input>
+
+    <v-input
+      name="baseUrl"
+      [title]="'baseUrl' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.baseUrl"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
+    >
+    </v-input>
+
+    @if ({authenticationPluginSelectItems: authenticationPluginSelectItems$ | async}; as authObs) {
+      <v-select
+        name="mTlsSslContextAutoConfigurationId"
+        [title]="'mTlsSslContextAutoConfigurationId' | pluginTranslate: pluginId | async"
+        [defaultSelectionId]="obs.prefill?.mTlsSslContextAutoConfigurationId"
+        [disabled]="obs.disabled"
+        [items]="authObs.authenticationPluginSelectItems"
+        [loading]="!authObs.authenticationPluginSelectItems"
+        [margin]="true"
+        [required]="true"
+      ></v-select>
+    }
+  </v-form>
+}
