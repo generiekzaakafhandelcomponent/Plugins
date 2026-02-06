@@ -17,11 +17,12 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 
 import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap, take, tap,} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, merge, Observable, of, Subject, Subscription, switchMap, take, takeUntil, tap,} from 'rxjs';
 import {GenerateMailContentConfig} from '../../models';
 import {SelectItem} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
-import {CaseManagementParams, ManagementContext} from '@valtimo/shared';
+import {CaseManagementParams, getBuildingBlockManagementRouteParams, ManagementContext} from '@valtimo/shared';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     standalone: false,
@@ -38,6 +39,7 @@ export class GenerateMailContentComponent
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
+    private readonly buildingBlockParams$ = getBuildingBlockManagementRouteParams(this.route);
     private readonly formValue$ = new BehaviorSubject<GenerateMailContentConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
     private _subscriptions = new Subscription();
@@ -46,8 +48,11 @@ export class GenerateMailContentComponent
 
     readonly mailTemplateItems$ = new BehaviorSubject<Array<SelectItem>>([]);
 
+    private readonly _destroy$ = new Subject<void>();
+
     constructor(
-        private readonly templateService: FreemarkerTemplateManagementService
+        private readonly templateService: FreemarkerTemplateManagementService,
+        private readonly route: ActivatedRoute
     ) {
     }
 
@@ -58,6 +63,8 @@ export class GenerateMailContentComponent
 
     ngOnDestroy(): void {
         this._subscriptions.unsubscribe();
+        this._destroy$.next();
+        this._destroy$.complete();
     }
 
     formValueChange(formValue: GenerateMailContentConfig): void {
@@ -86,34 +93,37 @@ export class GenerateMailContentComponent
     }
 
     private initContextHandling(): void {
-        if (!this.context$) {
-            return;
-        }
+        const caseParams$ = this.context$ ? this.context$.pipe(
+            filter(([managementContext, caseParams]) => managementContext === 'case' && !!caseParams?.caseDefinitionKey),
+            map(([managementContext, caseParams]) => ({managementContext, caseParams}))
+        ) : of(null);
 
-        const contextSub = this.context$.pipe(
-            switchMap(([managementContext, caseDefinitionId]) => {
-                    if (managementContext == 'case') {
-                        return this.templateService.getAllMailTemplates(
-                            caseDefinitionId?.caseDefinitionKey,
-                            caseDefinitionId?.caseDefinitionVersionTag,
-                        );
-                    } else {
-                        console.error('Freemarker plugin does not support global templates')
-                        return of(null);
-                    }
+        const buildingBlockParams$ = this.buildingBlockParams$.pipe(
+            filter(buildingBlockParams => !!buildingBlockParams?.buildingBlockDefinitionKey),
+            map(buildingBlockParams => ({managementContext: 'buildingBlock' as ManagementContext, buildingBlockParams}))
+        );
+
+        merge(caseParams$, buildingBlockParams$).pipe(
+            filter(params => !!params),
+            switchMap(params => {
+                if (params!.managementContext === 'case') {
+                    return this.templateService.getAllMailTemplates((params as any).caseParams, null);
+                } else if (params!.managementContext === 'buildingBlock') {
+                    return this.templateService.getAllMailTemplates(null, (params as any).buildingBlockParams);
+                } else {
+                    console.error('Freemarker plugin does not support global templates');
+                    return of(null);
                 }
-            ),
+            }),
             map(results =>
                 results?.content.map(template => ({
                     id: template.key,
                     text: template.key,
                 })) || []
             ),
-            tap(() => this.loading$.next(false))
-        )
-            .subscribe(results => this.mailTemplateItems$.next(results));
-
-        this._subscriptions.add(contextSub);
+            tap(() => this.loading$.next(false)),
+            takeUntil(this._destroy$)
+        ).subscribe(results => this.mailTemplateItems$.next(results));
     }
 
 }

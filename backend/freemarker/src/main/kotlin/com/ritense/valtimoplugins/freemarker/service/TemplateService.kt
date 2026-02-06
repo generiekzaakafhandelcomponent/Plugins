@@ -21,6 +21,8 @@ import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.document.domain.Document
 import com.ritense.document.domain.impl.JsonSchemaDocument
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimo.contract.buildingblock.BuildingBlockDefinitionChecker
+import com.ritense.valtimo.contract.buildingblock.BuildingBlockDefinitionId
 import com.ritense.valtimo.contract.case_.CaseDefinitionChecker
 import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
@@ -30,9 +32,9 @@ import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.SH
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.THROW_ERROR_WHEN_MISSING_PLACEHOLDER
 import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
+import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byBuildingBlockDefinitionId
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byCaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKey
-import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byKeyAndCaseDefinitionIdAndType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byType
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byTypes
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.query
@@ -61,6 +63,7 @@ class TemplateService(
     private val valueResolverService: ValueResolverService,
     private val freemarkerConfiguration: Configuration,
     private val caseDefinitionChecker: CaseDefinitionChecker,
+    private val buildingBlockDefinitionChecker: BuildingBlockDefinitionChecker,
     private val jsonSchemaDocumentRepositoryStreaming: JsonSchemaDocumentRepositoryStreaming,
 ) {
 
@@ -81,7 +84,12 @@ class TemplateService(
         processVariables: Map<String, Any?> = emptyMap(),
         missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER,
     ): String {
-        val template = getTemplate(templateKey, document.definitionId().caseDefinitionId(), templateType)
+        val template = getTemplate(
+            templateKey = templateKey,
+            caseDefinitionId = document.definitionId().caseDefinitionId(),
+            buildingBlockDefinitionId = null,
+            templateType = templateType
+        )
         return generate(template, document, processVariables, missingPlaceholderStrategy)
     }
 
@@ -111,7 +119,9 @@ class TemplateService(
     ): String {
         streamDocuments(document?.definitionId()?.caseDefinitionId()?.key).use { documentsStream ->
             val dataModel = mutableMapOf<String, Any?>()
-            document?.let { dataModel["doc"] = objectMapper.convertValue<Map<String, Any?>>(document.content().asJson()) }
+            document?.let {
+                dataModel["doc"] = objectMapper.convertValue<Map<String, Any?>>(document.content().asJson())
+            }
             document?.let { dataModel["docs"] = streamToMap(documentsStream) }
             dataModel["pv"] = processVariables
 
@@ -153,6 +163,7 @@ class TemplateService(
     fun findTemplates(
         templateKey: String? = null,
         caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
         templateType: String? = null,
         templateTypes: List<String>? = null,
         pageable: Pageable,
@@ -160,6 +171,7 @@ class TemplateService(
         val query = buildSpecification(
             templateKey = templateKey,
             caseDefinitionId = caseDefinitionId,
+            buildingBlockDefinitionId = buildingBlockDefinitionId,
             templateType = templateType,
             templateTypes = templateTypes
         )
@@ -169,12 +181,14 @@ class TemplateService(
     fun findTemplates(
         templateKey: String? = null,
         caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
         templateType: String? = null,
         templateTypes: List<String>? = null,
     ): List<ValtimoTemplate> {
         val query = buildSpecification(
             templateKey = templateKey,
             caseDefinitionId = caseDefinitionId,
+            buildingBlockDefinitionId = buildingBlockDefinitionId,
             templateType = templateType,
             templateTypes = templateTypes
         )
@@ -183,41 +197,50 @@ class TemplateService(
 
     fun findTemplate(
         templateKey: String,
-        caseDefinitionId: CaseDefinitionId?,
+        caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
         templateType: String,
     ): ValtimoTemplate? {
         return templateRepository.findOne(
-            byKeyAndCaseDefinitionIdAndType(templateKey, caseDefinitionId, templateType)
+            byKey(templateKey)
+                .and(byCaseDefinitionId(caseDefinitionId))
+                .and(byBuildingBlockDefinitionId(buildingBlockDefinitionId))
+                .and(byType(templateType))
         ).orElse(null)
     }
 
     fun getTemplate(
         templateKey: String,
-        caseDefinitionId: CaseDefinitionId?,
+        caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
         templateType: String,
     ): ValtimoTemplate {
-        return findTemplate(templateKey, caseDefinitionId, templateType)
+        return findTemplate(templateKey, caseDefinitionId, buildingBlockDefinitionId, templateType)
             ?: throw IllegalStateException("No Template found for '$templateType/$caseDefinitionId/$templateKey'")
     }
 
     fun saveTemplate(
         templateKey: String,
-        caseDefinitionId: CaseDefinitionId?,
+        caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
         templateType: String,
         metadata: Map<String, Any?>,
         content: String,
     ): ValtimoTemplate {
-        if (caseDefinitionId == null) {
-            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
-        } else {
+        if (caseDefinitionId != null) {
             caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        } else if (buildingBlockDefinitionId != null) {
+            buildingBlockDefinitionChecker.assertCanUpdateBuildingBlockDefinition(buildingBlockDefinitionId)
+        } else {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
         }
-        val existingTemplate = findTemplate(templateKey, caseDefinitionId, templateType)
+        val existingTemplate = findTemplate(templateKey, caseDefinitionId, buildingBlockDefinitionId, templateType)
         return templateRepository.save(
             ValtimoTemplate(
                 id = existingTemplate?.id ?: UUID.randomUUID(),
                 key = templateKey,
                 caseDefinitionId = caseDefinitionId,
+                buildingBlockDefinitionId = buildingBlockDefinitionId,
                 type = templateType,
                 metadata = metadata,
                 content = content,
@@ -228,68 +251,95 @@ class TemplateService(
     fun createTemplate(
         templateKey: String,
         caseDefinitionId: CaseDefinitionId?,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId?,
         templateType: String,
         metadata: Map<String, Any?>,
     ): ValtimoTemplate {
-        if (caseDefinitionId == null) {
-            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
-        } else {
+        if (caseDefinitionId != null) {
             caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        } else if (buildingBlockDefinitionId != null) {
+            buildingBlockDefinitionChecker.assertCanUpdateBuildingBlockDefinition(buildingBlockDefinitionId)
+        } else {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
         }
         require(
             !templateRepository.exists(
-                byKeyAndCaseDefinitionIdAndType(templateKey, caseDefinitionId, templateType)
+                byKey(templateKey)
+                    .and(byCaseDefinitionId(caseDefinitionId))
+                    .and(byBuildingBlockDefinitionId(buildingBlockDefinitionId))
+                    .and(byType(templateType))
             )
         ) { "Template '$templateKey' already exists" }
         return templateRepository.save(
             ValtimoTemplate(
                 key = templateKey,
                 caseDefinitionId = caseDefinitionId,
+                buildingBlockDefinitionId = buildingBlockDefinitionId,
                 type = templateType,
                 metadata = metadata,
+                content = defaultTemplateContent(templateType),
             )
         )
     }
 
     fun deleteTemplates(
-        caseDefinitionId: CaseDefinitionId?,
+        caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
         templates: List<TemplateKeyType>,
     ) {
-        if (caseDefinitionId == null) {
-            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
-        } else {
+        if (caseDefinitionId != null) {
             caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        } else if (buildingBlockDefinitionId != null) {
+            buildingBlockDefinitionChecker.assertCanUpdateBuildingBlockDefinition(buildingBlockDefinitionId)
+        } else {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
         }
         templates.forEach { template ->
-            deleteTemplate(template.key, caseDefinitionId, template.type)
+            deleteTemplate(template.key, caseDefinitionId, buildingBlockDefinitionId, template.type)
         }
     }
 
     fun deleteTemplate(
         templateKey: String,
-        caseDefinitionId: CaseDefinitionId?,
+        caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
         templateType: String,
     ) {
-        if (caseDefinitionId == null) {
-            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
-        } else {
+        if (caseDefinitionId != null) {
             caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        } else if (buildingBlockDefinitionId != null) {
+            buildingBlockDefinitionChecker.assertCanUpdateBuildingBlockDefinition(buildingBlockDefinitionId)
+        } else {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
         }
-        templateRepository.delete(byKeyAndCaseDefinitionIdAndType(templateKey, caseDefinitionId, templateType))
+        templateRepository.delete(
+            byKey(templateKey)
+                .and(byCaseDefinitionId(caseDefinitionId))
+                .and(byBuildingBlockDefinitionId(buildingBlockDefinitionId))
+                .and(byType(templateType))
+        )
     }
 
-    fun deleteTemplatesByCaseDefinitionId(caseDefinitionId: CaseDefinitionId?) {
-        if (caseDefinitionId == null) {
-            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
-        } else {
+    fun deleteTemplatesByCaseDefinitionId(
+        caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
+    ) {
+        if (caseDefinitionId != null) {
             caseDefinitionChecker.assertCanUpdateCaseDefinition(caseDefinitionId)
+        } else if (buildingBlockDefinitionId != null) {
+            buildingBlockDefinitionChecker.assertCanUpdateBuildingBlockDefinition(buildingBlockDefinitionId)
+        } else {
+            caseDefinitionChecker.assertCanUpdateGlobalConfiguration()
         }
-        templateRepository.delete(byCaseDefinitionId(caseDefinitionId))
+        templateRepository.delete(
+            byCaseDefinitionId(caseDefinitionId).and(byBuildingBlockDefinitionId(buildingBlockDefinitionId))
+        )
     }
 
     private fun buildSpecification(
         templateKey: String? = null,
         caseDefinitionId: CaseDefinitionId? = null,
+        buildingBlockDefinitionId: BuildingBlockDefinitionId? = null,
         templateType: String? = null,
         templateTypes: List<String>? = null,
     ): Specification<ValtimoTemplate> {
@@ -299,6 +349,9 @@ class TemplateService(
         }
         if (caseDefinitionId != null) {
             query = query.and(byCaseDefinitionId(caseDefinitionId))
+        }
+        if (buildingBlockDefinitionId != null) {
+            query = query.and(byBuildingBlockDefinitionId(buildingBlockDefinitionId))
         }
         if (!templateType.isNullOrEmpty()) {
             query = query.and(byType(templateType))
@@ -487,6 +540,56 @@ class TemplateService(
         }
     }
 
+    private fun defaultTemplateContent(templateType: String): String {
+        return when(templateType) {
+            "mail"-> """
+                |<!DOCTYPE html>
+                |<html lang="en">
+                |  <head>
+                |    <meta charset="utf-8" />
+                |    <title>Email</title>
+                |  </head>
+                |  <body>
+                |    <p>Hi ${'$'}{doc.fullName},</p>
+                |
+                |    <p><b>This is an example mail</b></p>
+                |  </body>
+                |</html>
+            |""".trimMargin()
+
+            "text"-> """
+                |<#if doc.firstName == ''>
+                |  Mr. ${'$'}{doc.lastName}
+                |<#else>
+                |    ${'$'}{doc.firstName} ${'$'}{doc.lastName}
+                |</#if>
+            |""".trimMargin()
+
+            "pdf" -> """
+                |<!DOCTYPE html>
+                |<html lang="en">
+                |  <head>
+                |    <meta charset="UTF-8" />
+                |    <title>Example PDF</title>
+                |  </head>
+                |  <body>
+                |    <div class="header">
+                |      <p>This is an example PDF</p>
+                |    </div>
+                |  </body>
+                |</html>
+            |""".trimMargin()
+
+            "csv"-> """
+                |Example;First name;Last name
+                |<#list docs as doc>
+                |  This is an example;${'$'}{doc.firstName};${'$'}{doc.lastName}
+                |</#list>
+            |""".trimMargin()
+
+            else -> ""
+        }
+    }
 
     companion object {
         private val logger = KotlinLogging.logger {}

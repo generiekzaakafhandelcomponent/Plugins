@@ -14,5 +14,4 @@
  * limitations under the License.
  */
 
-export * from './freemarker-template-management.service';
-
+export * from "./freemarker-template-management.service";

@@ -16,11 +16,12 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, switchMap, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, merge, Observable, of, Subject, Subscription, switchMap, take, takeUntil, tap} from 'rxjs';
 import {GeneratePdfFileConfig} from '../../models';
 import {FreemarkerTemplateManagementService} from '../../../../services';
-import {CaseManagementParams, ManagementContext} from '@valtimo/shared';
+import {CaseManagementParams, getBuildingBlockManagementRouteParams, ManagementContext} from '@valtimo/shared';
 import {SelectItem} from '@valtimo/components';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     standalone: false,
@@ -37,26 +38,32 @@ export class GeneratePdfComponent
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
-    private saveSubscription!: Subscription;
+    private readonly buildingBlockParams$ = getBuildingBlockManagementRouteParams(this.route);
     private readonly formValue$ = new BehaviorSubject<GeneratePdfFileConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
+    private _subscriptions = new Subscription();
 
     readonly loading$ = new BehaviorSubject<boolean>(true);
 
-    readonly templateListItems$ = new BehaviorSubject<Array<SelectItem>>(undefined);
+    readonly templateListItems$ = new BehaviorSubject<Array<SelectItem>>([]);
+
+    private readonly _destroy$ = new Subject<void>();
 
     constructor(
-        private readonly templateService: FreemarkerTemplateManagementService
+        private readonly templateService: FreemarkerTemplateManagementService,
+        private readonly route: ActivatedRoute
     ) {
     }
 
     ngOnInit(): void {
-        this.loadTemplateListItems();
         this.openSaveSubscription();
+        this.initContextHandling();
     }
 
     ngOnDestroy(): void {
-        this.saveSubscription?.unsubscribe();
+        this._subscriptions.unsubscribe();
+        this._destroy$.next();
+        this._destroy$.complete();
     }
 
     formValueChange(formValue: GeneratePdfFileConfig): void {
@@ -64,22 +71,38 @@ export class GeneratePdfComponent
         this.handleValid(formValue);
     }
 
-    private loadTemplateListItems() {
-        this.context$.pipe(
-            switchMap(([_, params]) => this.templateService.getAllTemplates(
-                params.caseDefinitionKey,
-                params.caseDefinitionVersionTag,
-                'pdf'
-            )),
-            map(results => results.content.map(template => ({
-                id: template.key,
-                text: template.key,
-            })))
-        ).subscribe(templateListItems => {
-                this.templateListItems$.next(templateListItems);
-                this.loading$.next(false);
-            }
+    private initContextHandling(): void {
+        const caseParams$ = this.context$ ? this.context$.pipe(
+            filter(([managementContext, caseParams]) => managementContext === 'case' && !!caseParams?.caseDefinitionKey),
+            map(([managementContext, caseParams]) => ({managementContext, caseParams}))
+        ) : of(null);
+
+        const buildingBlockParams$ = this.buildingBlockParams$.pipe(
+            filter(buildingBlockParams => !!buildingBlockParams?.buildingBlockDefinitionKey),
+            map(buildingBlockParams => ({managementContext: 'buildingBlock' as ManagementContext, buildingBlockParams}))
         );
+
+        merge(caseParams$, buildingBlockParams$).pipe(
+            filter(params => !!params),
+            switchMap(params => {
+                if (params!.managementContext === 'case') {
+                    return this.templateService.getAllTemplates((params as any).caseParams, null, 'pdf');
+                } else if (params!.managementContext === 'buildingBlock') {
+                    return this.templateService.getAllTemplates(null, (params as any).buildingBlockParams, 'pdf');
+                } else {
+                    console.error(`Freemarker plugin does not support '${params!.managementContext}' templates`);
+                    return of(null);
+                }
+            }),
+            map(results =>
+                results?.content.map(template => ({
+                    id: template.key,
+                    text: template.key,
+                })) || []
+            ),
+            tap(() => this.loading$.next(false)),
+            takeUntil(this._destroy$)
+        ).subscribe(results => this.templateListItems$.next(results));
     }
 
     private handleValid(formValue: GeneratePdfFileConfig): void {
@@ -90,7 +113,7 @@ export class GeneratePdfComponent
     }
 
     private openSaveSubscription(): void {
-        this.saveSubscription = this.save$?.subscribe(save => {
+        const saveSubscription = this.save$?.subscribe(save => {
             combineLatest([this.formValue$, this.valid$])
                 .pipe(take(1))
                 .subscribe(([formValue, valid]) => {
@@ -99,5 +122,6 @@ export class GeneratePdfComponent
                     }
                 });
         });
+        this._subscriptions.add(saveSubscription);
     }
 }

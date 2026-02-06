@@ -21,7 +21,7 @@ import com.ritense.exporter.ExportFile
 import com.ritense.exporter.ExportPrettyPrinter
 import com.ritense.exporter.ExportResult
 import com.ritense.exporter.Exporter
-import com.ritense.exporter.request.DocumentDefinitionExportRequest
+import com.ritense.exporter.request.BuildingBlockDefinitionExportRequest
 import com.ritense.valtimoplugins.freemarker.model.TemplateDeploymentMetadata
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import org.springframework.stereotype.Component
@@ -30,27 +30,32 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 @SkipComponentScan
 @Transactional(readOnly = true)
-class TemplateExporter(
+class BuildingBlockDefinitionTemplateExporter(
     private val objectMapper: ObjectMapper,
     private val templateService: TemplateService
-) : Exporter<DocumentDefinitionExportRequest> {
+) : Exporter<BuildingBlockDefinitionExportRequest> {
 
-    override fun supports() = DocumentDefinitionExportRequest::class.java
+    override fun supports() = BuildingBlockDefinitionExportRequest::class.java
 
-    override fun export(request: DocumentDefinitionExportRequest): ExportResult {
-        val templates = templateService.findTemplates(caseDefinitionId = request.caseDefinitionId)
+    override fun export(request: BuildingBlockDefinitionExportRequest): ExportResult {
+        val templates = templateService.findTemplates(buildingBlockDefinitionId = request.buildingBlockDefinitionId)
 
         if (templates.isEmpty()) {
             return ExportResult()
         }
 
-        val formattedCaseDefinitionVersion = request.caseDefinitionId.versionTag.let {
+        val formattedBuildingBlockDefinitionVersion = request.buildingBlockDefinitionId.versionTag.let {
             "${it.major}-${it.minor}-${it.patch}"
         }
 
         val exportFiles = templates.map { template ->
             ExportFile(
-                PATH.format(request.caseDefinitionId.key, formattedCaseDefinitionVersion, template.key, template.type),
+                PATH.format(
+                    request.buildingBlockDefinitionId.key,
+                    formattedBuildingBlockDefinitionVersion,
+                    template.key,
+                    template.type
+                ),
                 objectMapper.writer(ExportPrettyPrinter()).writeValueAsBytes(TemplateDeploymentMetadata.of(template))
             )
         }
@@ -59,6 +64,6 @@ class TemplateExporter(
     }
 
     companion object {
-        private const val PATH = "config/case/%s/%s/template/%s-%s.template.json"
+        private const val PATH = "config/building-block/%s/%s/template/%s-%s.template.json"
     }
 }

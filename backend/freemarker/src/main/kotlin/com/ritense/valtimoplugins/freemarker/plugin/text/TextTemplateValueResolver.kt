@@ -20,7 +20,9 @@ import com.ritense.document.domain.Document
 import com.ritense.document.service.DocumentService
 import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
+import com.ritense.valtimo.contract.BlueprintId
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimo.contract.buildingblock.BuildingBlockDefinitionId
 import com.ritense.valtimo.contract.case_.CaseDefinitionId
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_TEXT
@@ -81,6 +83,14 @@ class TextTemplateValueResolver(
     override fun getResolvableKeyOptions(caseDefinitionId: CaseDefinitionId): List<ValueResolverOption> {
         val templateKeys = templateService.findTemplates(
             caseDefinitionId = caseDefinitionId,
+            templateType = TEMPLATE_TYPE_TEXT,
+        ).map { it.key }
+        return createFieldList(templateKeys)
+    }
+
+    override fun getResolvableKeyOptions(blueprintId: BlueprintId): List<ValueResolverOption> {
+        val templateKeys = templateService.findTemplates(
+            buildingBlockDefinitionId = BuildingBlockDefinitionId(blueprintId.getIdKey(), blueprintId.getTagPrefix()),
             templateType = TEMPLATE_TYPE_TEXT,
         ).map { it.key }
         return createFieldList(templateKeys)
