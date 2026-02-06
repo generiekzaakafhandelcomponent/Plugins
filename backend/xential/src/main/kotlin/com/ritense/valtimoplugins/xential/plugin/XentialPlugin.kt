@@ -75,27 +75,25 @@ class XentialPlugin(
         @PluginActionProperty xentialGebruikersId: String,
         execution: DelegateExecution,
     ) {
-        logger.info { "generating document with XentialContent: $xentialDocumentProperties" }
+        logger.info { "Generating document with from template: $xentialSjabloonId for user: $xentialGebruikersId" }
+        logger.debug { "> XentialContent: $xentialDocumentProperties" }
+        logger.debug { "> XentialDate: $xentialData" }
 
-        val props = objectMapper.convertValue(xentialDocumentProperties) as XentialDocumentProperties
+        val resolvedValues = resolveValuesFor(
+            execution,
+            mapOf(
+                "content" to xentialData
+            ),
+        )
+        val originalProps: XentialDocumentProperties = objectMapper.convertValue(xentialDocumentProperties)
+        val modifiedProps = originalProps.copy(content = resolvedValues["content"] as String)
 
-        props.content = xentialData
-
-        val resolvedValues =
-            resolveValuesFor(
-                execution,
-                mapOf(
-                    "content" to props.content,
-                ),
-            )
-
-        props.content = resolvedValues["content"] as String
         documentGenerationService.generateDocument(
             api = esbClient.documentApi(restClient(mTlsSslContextAutoConfigurationId)),
             processId = UUID.fromString(execution.processInstanceId),
             xentialGebruikersId = xentialGebruikersId,
             sjabloonId = xentialSjabloonId,
-            xentialDocumentProperties = props,
+            xentialDocumentProperties = modifiedProps,
             execution = execution,
         )
     }
@@ -112,9 +110,10 @@ class XentialPlugin(
         @PluginActionProperty xentialDocumentProperties: Map<String, Any>,
         execution: DelegateExecution,
     ) {
-        val props = objectMapper.convertValue(xentialDocumentProperties) as XentialDocumentProperties
-
-        logger.info { "----------------------------- validate access for !! $xentialGebruikersId op map ${props.xentialTemplateGroupId}" }
+        val props: XentialDocumentProperties = objectMapper.convertValue(xentialDocumentProperties)
+        logger.info {
+            "Validate access for user: $xentialGebruikersId on template group: ${props.xentialTemplateGroupId}"
+        }
 
         val accessResult =
             xentialSjablonenService.testAccessToSjabloongroep(xentialGebruikersId, props.xentialTemplateGroupId.toString())
