@@ -1,11 +1,19 @@
 {
-  "changesetId": "allow-all-v9",
+  "changesetId": "allow-all-v10",
   "permissions": [
     {
       "resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
       "actions": [
         "view",
         "view_list"
+      ],
+      "roleKey": "ROLE_USER",
+      "conditions": []
+    },
+    {
+      "resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
+      "actions": [
+        "view"
       ],
       "roleKey": "ROLE_USER",
       "conditions": []

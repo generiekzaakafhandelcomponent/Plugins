@@ -51,7 +51,7 @@ class OpenKlantPlugin(
         logger.info { "Store Contactinformation in Open Klant - ${execution.processBusinessKey}" }
 
         val contactInformation =
-            ContactInformation(
+            ContactInformation.fromActionProperties(
                 bsn = bsn,
                 voornaam = firstName,
                 voorvoegselAchternaam = inFix,
@@ -82,7 +82,7 @@ class OpenKlantPlugin(
         logger.info { "Get or Create partij in Open Klant - ${execution.processBusinessKey}" }
 
         val partijInformation =
-            PartijInformationImpl(
+            PartijInformationImpl.fromActionProperties(
                 bsn = bsn,
                 voorletters = voorletters,
                 voornaam = voornaam,
@@ -112,7 +112,7 @@ class OpenKlantPlugin(
         logger.info { "Fetching contact history from Open Klant by case UUID: $caseUuid - ${execution.processBusinessKey}" }
 
         val pluginProperties =
-            KlantcontactOptions(
+            KlantcontactOptions.fromActionProperties(
                 klantinteractiesUrl,
                 token = token,
                 objectUuid = caseUuid,
@@ -139,10 +139,37 @@ class OpenKlantPlugin(
         runBlocking {
             logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
             val pluginProperties =
-                KlantcontactOptions(
+                KlantcontactOptions.fromActionProperties(
                     klantinteractiesUrl,
                     token = token,
                     bsn = bsn,
+                )
+
+            fetchKlantcontactenAndStore(
+                execution = execution,
+                resultPvName = resultPvName,
+                pluginProperties = pluginProperties,
+            )
+        }
+
+    @PluginAction(
+        key = "get-contact-moments-by-partij-uuid",
+        title = "Get contact history by Partij UUID",
+        description = "Get contact history by Partij UUID from Open Klant.",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun getContactMomentsByPartijUuid(
+        @PluginActionProperty partijUuid: String,
+        @PluginActionProperty resultPvName: String,
+        execution: DelegateExecution,
+    ): Unit =
+        runBlocking {
+            logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
+            val pluginProperties =
+                KlantcontactOptions.fromActionProperties(
+                    klantinteractiesUrl,
+                    token = token,
+                    partijUuid = partijUuid,
                 )
 
             fetchKlantcontactenAndStore(
@@ -176,11 +203,11 @@ class OpenKlantPlugin(
         logger.info { "Registering klantcontact - ${execution.processBusinessKey}" }
 
         val klantcontactCreationInformation =
-            KlantcontactCreationInformation(
+            KlantcontactCreationInformation.fromActionProperties(
                 kanaal = kanaal,
                 onderwerp = onderwerp,
                 inhoud = inhoud,
-                vertrouwelijk = vertrouwelijk.toBoolean(),
+                vertrouwelijk = vertrouwelijk,
                 taal = taal,
                 plaatsgevondenOp = plaatsgevondenOp,
                 hasBetrokkene = hasBetrokkene,
@@ -190,7 +217,6 @@ class OpenKlantPlugin(
                 voorvoegselAchternaam = voorvoegselAchternaam,
                 achternaam = achternaam,
             )
-
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
 
         openKlantPluginService.postKlantcontact(
@@ -211,7 +237,6 @@ class OpenKlantPlugin(
 
     companion object {
         private const val OUTPUT_PARTIJ_UUID = "partijUuid"
-        private const val OUTPUT_FAILED_WITH_EXCEPTION = "failedWithException"
         private val logger = KotlinLogging.logger { }
     }
 }

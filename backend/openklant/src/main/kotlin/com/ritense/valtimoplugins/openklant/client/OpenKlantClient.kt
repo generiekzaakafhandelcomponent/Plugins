@@ -139,7 +139,8 @@ class OpenKlantClient(
 
     suspend fun getKlantcontacten(klantContactOptions: KlantcontactOptions): Page<Klantcontact> {
         if (klantContactOptions.bsn.isNullOrBlank() &&
-            klantContactOptions.objectUuid.isNullOrBlank()
+            klantContactOptions.objectUuid.isNullOrBlank() &&
+            klantContactOptions.partijUuid.isNullOrBlank()
         ) {
             return Page(count = 0, results = emptyList())
         }
@@ -197,6 +198,9 @@ class OpenKlantClient(
         options.objectUuid?.let {
             builder.queryParam(OK_OBJECT_ID_PARAM, it)
         }
+        options.partijUuid?.let {
+            builder.queryParam(OK_PARTIJ_UUID_PARAM, it)
+        }
         return builder
             .path(OK_KLANTCONTACTEN_PATH)
             .build()
@@ -238,6 +242,7 @@ class OpenKlantClient(
         private const val OK_OBJECTTYPE_PARAM = "onderwerpobject__onderwerpobjectidentificatorCodeObjecttype"
         private const val OK_OBJECT_ID_PARAM = "onderwerpobject__onderwerpobjectidentificatorObjectId"
         private const val OK_BSN_PARAM = "hadBetrokkene__wasPartij__partijIdentificator__objectId"
+        private const val OK_PARTIJ_UUID_PARAM = "hadBetrokkene__wasPartij__uuid"
 
         private val logger = KotlinLogging.logger { }
     }

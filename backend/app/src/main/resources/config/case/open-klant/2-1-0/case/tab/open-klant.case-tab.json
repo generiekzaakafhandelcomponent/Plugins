@@ -1,9 +1,9 @@
 [
   {
-    "key": "summary",
-    "name": null,
-    "type": "standard",
-    "contentKey": "summary"
+    "key": "open-klant-widget-tab",
+    "name": "Summary",
+    "type": "widgets",
+    "contentKey": "-"
   },
   {
     "key": "contactgeschiedenis",

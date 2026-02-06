@@ -83,7 +83,7 @@
                         "required": true
                     },
                     "validateWhenHidden": false,
-                    "key": "partij.bsn",
+                    "key": "bsn",
                     "type": "textfield",
                     "input": true
                 },
@@ -280,7 +280,7 @@
                     "tableView": false,
                     "components": [
                         {
-                            "key": "klantcontact.betrokkene.partijUuid",
+                            "key": "partijUuid",
                             "type": "textfield",
                             "input": true,
                             "label": "partijUuid",

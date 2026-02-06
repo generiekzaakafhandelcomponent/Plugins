@@ -9,6 +9,17 @@
             "bsn": "pv:/bsn",
             "resultPvName": "contactgeschiedenis"
         }
+    },
+    {
+        "activityId": "Activity_HaalContactgeschiedenisOpTaskViaPartijUuid",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+        "pluginActionDefinitionKey": "get-contact-moments-by-partij-uuid",
+        "actionProperties": {
+            "partijUuid": "pv:/partijUuid",
+            "resultPvName": "contactgeschiedenis"
+        }
     }
 ]
 
