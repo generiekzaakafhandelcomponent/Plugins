@@ -9,4 +9,22 @@ data class KlantcontactOptions(
     val objectUuid: String? = null,
     val bsn: String? = null,
     val partijUuid: String? = null,
-) : OpenKlantProperties(klantinteractiesUrl, token)
+) : OpenKlantProperties(klantinteractiesUrl, token) {
+    companion object {
+        fun fromActionProperties(
+            klantinteractiesUrl: URI,
+            token: String,
+            objectTypeId: String? = null,
+            objectUuid: String? = null,
+            bsn: String? = null,
+            partijUuid: String? = null,
+        ) = KlantcontactOptions(
+            klantinteractiesUrl,
+            token = token,
+            bsn = bsn?.trim(),
+            partijUuid = partijUuid?.trim(),
+            objectTypeId = objectTypeId?.trim(),
+            objectUuid = objectUuid?.trim(),
+        )
+    }
+}
