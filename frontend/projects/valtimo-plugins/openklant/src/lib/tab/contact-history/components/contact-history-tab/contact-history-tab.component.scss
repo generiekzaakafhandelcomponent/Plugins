@@ -91,6 +91,9 @@
       &:before {
         background-color: var(--cds-notification-background-error);
       }
+      summary {
+        color: var(--cds-text-error);
+        }
     }
   }
 
