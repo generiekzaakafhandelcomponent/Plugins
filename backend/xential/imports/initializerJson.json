@@ -1,6 +1,61 @@
 [
   {
     "httpRequest": {
+      "method": "POST",
+      "path": "/documentcreatie",
+      "queryStringParameters": {
+        "gebruikersId": [ "admin" ],
+        "accepteerOnbekend": [ "false" ]
+      },
+      "body": {
+        "type": "json",
+        "json": {
+          "sjabloonId": "e0a8ace5-06df-4ef7-bcbb-9d694d25e03b"
+        },
+        "matchType": "ONLY_MATCHING_FIELDS"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": [ "application/json" ]
+      },
+      "body": {
+        "documentCreatieSessieId": "6d4b2fa2-5d02-4949-ace3-53c9b0ff1e4e",
+        "status": "VOLTOOID"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/documentcreatie",
+      "queryStringParameters": {
+        "gebruikersId": [ "admin" ],
+        "accepteerOnbekend": [ "false" ]
+      },
+      "body": {
+        "type": "json",
+        "json": {
+          "sjabloonId": "1087c976-12ae-41a2-8ef8-94f1a9961252"
+        },
+        "matchType": "ONLY_MATCHING_FIELDS"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": [ "application/json" ]
+      },
+      "body": {
+        "documentCreatieSessieId": "be307ed8-7a6d-4578-b4e6-d4809e063b6b",
+        "status": "ONVOLTOOID",
+        "resumeUrl": "https://demo.xentiallabs.com/xential?resumeApplication=1f951b42-413f-490e-b36b-c747d4af17f4&loginTicketUuid=584cac19-d2b1-48cd-8dbf-fd5d7b7618cc&afterBuildAction=close"
+      }
+    }
+  },
+  {
+    "httpRequest": {
       "method": "GET",
       "path": "/sjablonenlijst",
       "queryStringParameters": {
@@ -41,7 +96,7 @@
       "body": {
         "sjablonen": [
           {
-            "id": "7b3c19a2-44d1-4a5e-b tried-8f2a1c6d9e4b",
+            "id": "1087c976-12ae-41a2-8ef8-94f1a9961252",
             "naam": "Beschikking"
           }
         ],
