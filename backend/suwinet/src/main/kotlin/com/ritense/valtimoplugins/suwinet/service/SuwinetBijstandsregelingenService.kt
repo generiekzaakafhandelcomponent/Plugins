@@ -9,6 +9,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.ObjectFactory
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.PartnerBijstand
+import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.AanvraagUitkeringDto
@@ -22,11 +23,13 @@ import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.SzWetDto
 import com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen.VorderingDto
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.xml.ws.WebServiceException
+import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
-import java.time.LocalDate
 
-class SuwinetBijstandsregelingenService (
+class SuwinetBijstandsregelingenService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val dateTimeService: DateTimeService
 ) {
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
 
@@ -56,20 +59,37 @@ class SuwinetBijstandsregelingenService (
         bsn: String,
         infoService: BijstandsregelingenInfo
     ): BijstandsRegelingenDto? {
-        logger.info { "Getting Bijstandsregelingen from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix?:"")}" }
-
-        /* retrieve Bijstandsregeling info by bsn */
-        val result = runCatching {
-
+        logger.info { "Getting Bijstandsregelingen from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
+        try {
+            /* retrieve Bijstandsregeling info by bsn */
             val bijstandsregelingenInfoRequest = ObjectFactory().createBijstandsregelingenInfo_Type()
                 .apply {
                     burgerservicenr = bsn
                 }
             val response = infoService.bijstandsregelingenInfo(bijstandsregelingenInfoRequest)
-            response.unwrapResponse()
-        }
+            return response.unwrapResponse()
 
-        return result.getOrThrow()
+            // SOAPFaultException occur when something is wrong with the request/response
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting Bijstandsregelingen" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+            // WebServiceExceptions occur when the service is down
+        } catch (e: WebServiceException) {
+            logger.error(e) { "WebServiceException - Error getting Bijstandsregelingen" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting Bijstandsregelingen" }
+            throw SuwinetError(
+                e,
+                "SUWINET_CONNECT_ERROR"
+            )
+        }
     }
 
     private fun BijstandsregelingenInfoResponse.unwrapResponse(): BijstandsRegelingenDto? {
@@ -104,75 +124,80 @@ class SuwinetBijstandsregelingenService (
     }
 
     private fun getVorderingen(vorderingen: MutableList<ClientSuwi.Vordering>): List<VorderingDto> =
-      vorderingen.map {
-          vordering ->
-          VorderingDto(
-              bron = BronDto( cdKolomSuwi = vordering.bron.cdKolomSuwi, cdVestigingSuwi = vordering.bron.cdVestigingSuwi, cdPartijSuwi = vordering.bron.cdPartijSuwi),
-              cdRedenVordering = vordering.cdRedenVordering,
-              datBesluitVordering = vordering.datBesluitVordering,
-              identificatienrVordering = vordering.identificatienrVordering,
-              partnersVordering = getPartners(vordering.partnerVordering),
-              szWet = SzWetDto( cdSzWet = vordering.szWet.cdSzWet)
-          )
-    }
-
-    private fun getPartners(partnerVordering: MutableList<ClientSuwi.Vordering.PartnerVordering>): MutableList<PartnerDto> =
-        partnerVordering.map {
-                partnerVordering -> PartnerDto( burgerservicenr = partnerVordering.burgerservicenr)
-        } as MutableList<PartnerDto>
-
-    private fun getSpeciekeGegevensBijzBijstand(specifiekeGegevensBijzBijstand: MutableList<ClientSuwi.SpecifiekeGegevensBijzBijstand>): List<SpecifiekeGegevensBijzBijstandDto> =
-       specifiekeGegevensBijzBijstand.map {
-           specifiekeGegevensBijzBijstandItem -> SpecifiekeGegevensBijzBijstandDto(
-               cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand,
-                omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand,
-               datBetaalbaarBijzBijstand = LocalDate.parse(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand),
-                partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
-               szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet.cdSzWet),
-               bron = BronDto(
-                   cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron.cdKolomSuwi,
-                   cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi,
-                   cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi,
-                   )
-
-           )
-       }
-
-    private fun getAanvraagUitkeringen(aanvraagUitkering: MutableList<ClientSuwi.AanvraagUitkering>): List<AanvraagUitkeringDto> = aanvraagUitkering
-        .map { aanvraag ->
-            AanvraagUitkeringDto(
-                datAanvraagUitkering = LocalDate.parse(aanvraag.datAanvraagUitkering),
-                szWet = SzWetDto(aanvraag.szWet.cdSzWet),
-                beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
-                partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
-                bron = getBron(aanvraag.bron)
+        vorderingen.map { vordering ->
+            VorderingDto(
+                bron = BronDto(
+                    cdKolomSuwi = vordering.bron.cdKolomSuwi,
+                    cdVestigingSuwi = vordering.bron.cdVestigingSuwi,
+                    cdPartijSuwi = vordering.bron.cdPartijSuwi
+                ),
+                cdRedenVordering = vordering.cdRedenVordering,
+                datBesluitVordering = dateTimeService.fromSuwinetToDateString(vordering.datBesluitVordering),
+                identificatienrVordering = vordering.identificatienrVordering,
+                partnersVordering = getPartners(vordering.partnerVordering),
+                szWet = SzWetDto(cdSzWet = vordering.szWet.cdSzWet)
             )
         }
 
-    private fun getBron(bron: Bron): BronDto? = BronDto(
-        cdKolomSuwi = bron.cdKolomSuwi,
-        cdPartijSuwi = bron.cdPartijSuwi,
-        cdVestigingSuwi = bron.cdVestigingSuwi,
+    private fun getPartners(partnerVordering: MutableList<ClientSuwi.Vordering.PartnerVordering>): MutableList<PartnerDto> =
+        partnerVordering.map { partnerVordering ->
+            PartnerDto(burgerservicenr = partnerVordering.burgerservicenr)
+        } as MutableList<PartnerDto>
+
+    private fun getSpeciekeGegevensBijzBijstand(specifiekeGegevensBijzBijstand: MutableList<ClientSuwi.SpecifiekeGegevensBijzBijstand>): List<SpecifiekeGegevensBijzBijstandDto> =
+        specifiekeGegevensBijzBijstand.map { specifiekeGegevensBijzBijstandItem ->
+            SpecifiekeGegevensBijzBijstandDto(
+                cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand.orEmpty(),
+                omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand.orEmpty(),
+                datBetaalbaarBijzBijstand = dateTimeService.toLocalDate(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand, SUWINET_DATEIN_PATTERN),
+                partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
+                szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
+                bron = BronDto(
+                    cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron?.cdKolomSuwi ?: 0,
+                    cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi.orEmpty(),
+                    cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi.orEmpty(),
+                )
+
+            )
+        }
+
+    private fun getAanvraagUitkeringen(aanvraagUitkering: MutableList<ClientSuwi.AanvraagUitkering>): List<AanvraagUitkeringDto> =
+        aanvraagUitkering
+            .map { aanvraag ->
+                AanvraagUitkeringDto(
+                    datAanvraagUitkering = dateTimeService.toLocalDate(aanvraag.datAanvraagUitkering, SUWINET_DATEIN_PATTERN),
+                    szWet = SzWetDto(aanvraag.szWet.cdSzWet.orEmpty()),
+                    beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
+                    partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
+                    bron = getBron(aanvraag.bron)
+                )
+            }
+
+    private fun getBron(bron: Bron?): BronDto = BronDto(
+        cdKolomSuwi = bron?.cdKolomSuwi ?: 0,
+        cdPartijSuwi = bron?.cdPartijSuwi.orEmpty(),
+        cdVestigingSuwi = bron?.cdVestigingSuwi.orEmpty(),
     )
 
-    private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand): PartnerBijstandDto  =
+    private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand): PartnerBijstandDto =
         PartnerBijstandDto(
             burgerservicenr = partnerAanvraagUitkering.burgerservicenr,
-            voorletters = partnerAanvraagUitkering.voorletters,
-            voorvoegsel = partnerAanvraagUitkering.voorvoegsel,
+            voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
+            voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
             significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
-            geboortedat = LocalDate.parse(partnerAanvraagUitkering.geboortedat),
+            geboortedat = dateTimeService.toLocalDate(partnerAanvraagUitkering.geboortedat, SUWINET_DATEIN_PATTERN),
         )
 
     private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
         BeslissingOpAanvraagUitkeringDto(
-            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering,
-            datDagtekeningBeslisOpAanvrUitk = LocalDate.parse(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk)
+            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering.orEmpty(),
+            datDagtekeningBeslisOpAanvrUitk = dateTimeService.toLocalDate(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk, SUWINET_DATEIN_PATTERN)
         )
 
 
     companion object {
         private const val SERVICE_PATH = "Bijstandsregelingen-v0500"
+        const val SUWINET_DATEIN_PATTERN = "yyyyMMdd"
         private val objectFactory = ObjectFactory()
         private val logger = KotlinLogging.logger {}
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,18 @@ import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.socrates.error.SocratesError
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpRequest
 import org.springframework.http.MediaType
+import org.springframework.http.client.ClientHttpResponse
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import java.io.IOException
 import java.net.URI
+import java.nio.charset.StandardCharsets
 
 
 @Component
@@ -44,14 +50,20 @@ class SocratesClient(
         val response = try {
             restClientBuilder
                 .clone()
+                .requestInterceptor { request, body, execution ->
+                    logRequest(request, body)
+                    val response = execution.execute(request, body)
+                    logResponse(request, response)
+                    response
+                }
                 .build()
                 .post()
                 .uri {
-                    it.scheme(socratesBaseUri!!.scheme)
-                        .host(socratesBaseUri!!.host)
-                        .path(socratesBaseUri!!.path)
+                    it.scheme(socratesBaseUri.scheme)
+                        .host(socratesBaseUri.host)
+                        .path(socratesBaseUri.path)
                         .path(SOCRATES_API_LOBehandeld)
-                        .port(socratesBaseUri!!.port)
+                        .port(socratesBaseUri.port)
                         .build()
                 }
                 .headers {
@@ -62,13 +74,31 @@ class SocratesClient(
                 .retrieve()
                 .body<LOBehandeldRespons>()
         } catch (e: Exception) {
-            if (e.cause is IOException) {
-                logger.error(e) { "error connecting to Socrates" }
-                throw SocratesError(e, "SOCRATES_CONNECT_ERROR")
-            }
-            else {
-                logger.error(e) { "error met aanmaken dienst in Socrates" }
-                throw e
+            when (e.cause) {
+                is IOException -> {
+                    val msg = "error connecting to Socrates"
+                    logger.error(e) { msg }
+                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                }
+
+                is HttpClientErrorException -> {
+                    val excep = e.cause as HttpClientErrorException
+                    val errorResponse = excep.getResponseBodyAs(ErrorResponse::class.java)
+                    logger.error(e) { "error request to Socrates" }
+                    throw SocratesError(e, null, errorResponse, "SOCRATES_ERROR")
+                }
+
+                is HttpServerErrorException -> {
+                    val msg = "error connecting to Socrates"
+                    logger.error(e) { msg }
+                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                }
+
+                else -> {
+                    val msg = "unknown error met het aanmaken dienst in Socrates"
+                    logger.error(e) { msg }
+                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                }
             }
         }
 
@@ -76,9 +106,34 @@ class SocratesClient(
             throw IllegalStateException("no respons")
         }
 
+        logger.debug { response }
+        logger.debug { response.berichtId }
+
         return response
     }
 
+    private fun logRequest(request: HttpRequest, body: ByteArray?) {
+        logger.debug { "${"Request: {} {}"} ${request.getMethod()} ${request.getURI()}" }
+        logHeaders(request.headers)
+        if (body != null && body.size > 0) {
+            logger.info("Request body: {}", String(body, StandardCharsets.UTF_8))
+        }
+    }
+
+    private fun logResponse(request: HttpRequest?, response: ClientHttpResponse) {
+        logger.debug { "${"Response status: {}"} ${response.getStatusCode()}" }
+        logHeaders(response.headers)
+        val responseBody: ByteArray = response.getBody().readAllBytes()
+        if (responseBody.size > 0) {
+            logger.debug { "${"Response body: {}"} ${String(responseBody, StandardCharsets.UTF_8)}" }
+        }
+    }
+
+    private fun logHeaders(headers: HttpHeaders) {
+        headers.forEach { (key, value) ->
+            logger.debug { "$key: $value" }
+        }
+    }
 
     companion object {
         private val logger = KotlinLogging.logger {}
