@@ -20,9 +20,30 @@
 }; as obs) {
   <v-form (valueChange)="formValueChange($event)">
     <v-input
-      name="xentialDocumentProperties"
-      [title]="'xentialDocumentProperties' | pluginTranslate: pluginId | async"
-      [defaultValue]="obs.prefill?.xentialDocumentProperties"
+      name="xentialDocumentPropertiesVariableName"
+      [title]="'xentialDocumentPropertiesVariableName' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialDocumentPropertiesVariableNameTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialDocumentPropertiesVariableName"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
+    />
+
+    <v-input
+      name="xentialGebruikersId"
+      [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialGebruikersIdTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialGebruikersId"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
+    />
+
+    <v-input
+      name="xentialSjabloonId"
+      [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialSjabloonIdTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialSjabloonId"
       [disabled]="obs.disabled"
       [required]="true"
       [margin]="true"
@@ -38,18 +59,10 @@
     />
 
     <v-input
-      name="xentialSjabloonId"
-      [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
-      [defaultValue]="obs.prefill?.xentialSjabloonId"
-      [disabled]="obs.disabled"
-      [required]="true"
-      [margin]="true"
-    />
-
-    <v-input
-      name="xentialGebruikersId"
-      [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
-      [defaultValue]="obs.prefill?.xentialGebruikersId"
+      name="fileFormat"
+      [title]="'fileFormat' | pluginTranslate: pluginId | async"
+      [tooltip]="'fileFormatTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.fileFormat"
       [disabled]="obs.disabled"
       [required]="true"
       [margin]="true"

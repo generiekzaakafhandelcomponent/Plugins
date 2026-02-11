@@ -55,7 +55,7 @@ export class ValidateAccessConfigurationComponent implements FunctionConfigurati
     const valid = !!(
       formValue.toegangResultaatId &&
       formValue.xentialGebruikersId &&
-      formValue.xentialDocumentProperties
+      formValue.xentialDocumentPropertiesVariableName
     );
     this.valid$.next(valid);
     this.valid.emit(valid);

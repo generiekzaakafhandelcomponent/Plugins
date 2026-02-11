@@ -22,6 +22,7 @@
     <v-input
       name="toegangResultaatId"
       [title]="'toegangResultaatId' | pluginTranslate: pluginId | async"
+      [tooltip]="'toegangResultaatIdTooltip' | pluginTranslate: pluginId | async"
       [margin]="true"
       [defaultValue]="obs.prefill?.toegangResultaatId"
       [disabled]="obs.disabled"
@@ -31,6 +32,7 @@
     <v-input
       name="xentialGebruikersId"
       [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialGebruikersIdTooltip' | pluginTranslate: pluginId | async"
       [margin]="true"
       [defaultValue]="obs.prefill?.xentialGebruikersId"
       [disabled]="obs.disabled"
@@ -38,12 +40,13 @@
     />
 
     <v-input
-      name="xentialDocumentProperties"
-      [title]="'xentialDocumentProperties' | pluginTranslate: pluginId | async"
-      [margin]="true"
-      [defaultValue]="obs.prefill?.xentialDocumentProperties"
+      name="xentialDocumentPropertiesVariableName"
+      [title]="'xentialDocumentPropertiesVariableName' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialDocumentPropertiesVariableNameTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialDocumentPropertiesVariableName"
       [disabled]="obs.disabled"
       [required]="true"
+      [margin]="true"
     />
   </v-form>
 }

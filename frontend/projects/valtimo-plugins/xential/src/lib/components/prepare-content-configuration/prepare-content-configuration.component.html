@@ -23,9 +23,10 @@
 }; as obs) {
   <v-form (valueChange)="formValueChange($event)">
     <v-input
-      name="xentialDocumentPropertiesId"
-      [title]="'xentialDocumentPropertiesId' | pluginTranslate: pluginId | async"
-      [defaultValue]="obs.prefill?.xentialDocumentPropertiesId"
+      name="xentialDocumentPropertiesVariableName"
+      [title]="'xentialDocumentPropertiesVariableName' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialDocumentPropertiesVariableNameTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialDocumentPropertiesVariableName"
       [disabled]="obs.disabled"
       [required]="true"
       [margin]="true"

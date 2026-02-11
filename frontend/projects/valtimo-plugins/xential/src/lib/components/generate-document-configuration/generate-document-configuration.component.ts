@@ -18,7 +18,6 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
 import {GenerateDocumentConfig} from '../../models';
-import {ValuePathSelectorPrefix} from '@valtimo/components';
 
 @Component({
   standalone: false,
@@ -31,8 +30,7 @@ export class GenerateDocumentConfigurationComponent implements FunctionConfigura
   @Input() pluginId: string;
   @Input() prefillConfiguration$: Observable<GenerateDocumentConfig>;
   @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() configuration: EventEmitter<GenerateDocumentConfig> =
-    new EventEmitter<GenerateDocumentConfig>();
+  @Output() configuration: EventEmitter<GenerateDocumentConfig> = new EventEmitter<GenerateDocumentConfig>();
 
   private saveSubscription!: Subscription;
 
@@ -54,10 +52,11 @@ export class GenerateDocumentConfigurationComponent implements FunctionConfigura
 
   private handleValid(formValue: GenerateDocumentConfig): void {
     const valid = !!(
-      formValue.xentialDocumentProperties &&
-      formValue.xentialData &&
+      formValue.xentialDocumentPropertiesVariableName &&
+      formValue.xentialGebruikersId &&
       formValue.xentialSjabloonId &&
-      formValue.xentialGebruikersId
+      formValue.xentialData &&
+      formValue.fileFormat
     );
 
     this.valid$.next(valid);
@@ -75,6 +74,4 @@ export class GenerateDocumentConfigurationComponent implements FunctionConfigura
         });
     });
   }
-
-  protected readonly ValuePathSelectorPrefix = ValuePathSelectorPrefix;
 }

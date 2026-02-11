@@ -1,5 +1,5 @@
 export interface PrepareContentConfig {
-  xentialDocumentPropertiesId: string;
+  xentialDocumentPropertiesVariableName: string;
   firstTemplateGroupId: string;
   secondTemplateGroupId: string;
   thirdTemplateGroupId: string;

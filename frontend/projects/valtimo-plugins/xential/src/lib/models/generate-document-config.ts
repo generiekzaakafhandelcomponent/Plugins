@@ -15,8 +15,9 @@
  */
 
 export interface GenerateDocumentConfig {
-  xentialDocumentProperties: string;
-  xentialData: string;
-  xentialSjabloonId: string;
+  xentialDocumentPropertiesVariableName: string;
   xentialGebruikersId: string;
+  xentialSjabloonId: string;
+  xentialData: string;
+  fileFormat: string;
 }
