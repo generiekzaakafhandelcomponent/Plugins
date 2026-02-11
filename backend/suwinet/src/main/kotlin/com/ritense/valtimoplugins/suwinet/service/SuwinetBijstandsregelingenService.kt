@@ -166,7 +166,7 @@ class SuwinetBijstandsregelingenService(
             .map { aanvraag ->
                 AanvraagUitkeringDto(
                     datAanvraagUitkering = dateTimeService.toLocalDate(aanvraag.datAanvraagUitkering, SUWINET_DATEIN_PATTERN),
-                    szWet = SzWetDto(aanvraag.szWet.cdSzWet.orEmpty()),
+                    szWet = SzWetDto(aanvraag.szWet?.cdSzWet),
                     beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
                     partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
                     bron = getBron(aanvraag.bron)
@@ -179,20 +179,24 @@ class SuwinetBijstandsregelingenService(
         cdVestigingSuwi = bron?.cdVestigingSuwi.orEmpty(),
     )
 
-    private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand): PartnerBijstandDto =
-        PartnerBijstandDto(
-            burgerservicenr = partnerAanvraagUitkering.burgerservicenr,
-            voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
-            voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
-            significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
-            geboortedat = dateTimeService.toLocalDate(partnerAanvraagUitkering.geboortedat, SUWINET_DATEIN_PATTERN),
-        )
+    private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand?): PartnerBijstandDto? =
+        partnerAanvraagUitkering?.let { partnerAanvraagUitkering ->
+            PartnerBijstandDto(
+                burgerservicenr = partnerAanvraagUitkering.burgerservicenr,
+                voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
+                voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
+                significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
+                geboortedat = dateTimeService.toLocalDate(partnerAanvraagUitkering.geboortedat, SUWINET_DATEIN_PATTERN),
+            )
+        }
 
-    private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
-        BeslissingOpAanvraagUitkeringDto(
-            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering.orEmpty(),
-            datDagtekeningBeslisOpAanvrUitk = dateTimeService.toLocalDate(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk, SUWINET_DATEIN_PATTERN)
-        )
+    private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering?): BeslissingOpAanvraagUitkeringDto? =
+        beslissingOpAanvraagUitkering?.let { beslissing ->
+            BeslissingOpAanvraagUitkeringDto(
+                cdBeslissingOpAanvraagUitkering = beslissing.cdBeslissingOpAanvraagUitkering.orEmpty(),
+                datDagtekeningBeslisOpAanvrUitk = dateTimeService.toLocalDate(beslissing.datDagtekeningBeslisOpAanvrUitk, SUWINET_DATEIN_PATTERN)
+            )
+        }
 
 
     companion object {
