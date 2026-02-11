@@ -4,6 +4,7 @@ import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInf
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.FWI
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse.ClientSuwi
+import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse.ClientSuwi.AanvraagUitkering.*
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.Bron
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
@@ -150,7 +151,7 @@ class SuwinetBijstandsregelingenService(
                 cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand.orEmpty(),
                 omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand.orEmpty(),
                 datBetaalbaarBijzBijstand = dateTimeService.toLocalDate(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand, SUWINET_DATEIN_PATTERN),
-                partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
+                partnerBijzBijstand = specifiekeGegevensBijzBijstandItem.partnerBijzBijstand?.let {  getPartnerBijstand(it)},
                 szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
                 bron = BronDto(
                     cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron?.cdKolomSuwi ?: 0,
@@ -168,7 +169,7 @@ class SuwinetBijstandsregelingenService(
                     datAanvraagUitkering = dateTimeService.toLocalDate(aanvraag.datAanvraagUitkering, SUWINET_DATEIN_PATTERN),
                     szWet = SzWetDto(aanvraag.szWet?.cdSzWet),
                     beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
-                    partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
+                    partnerAanvraagUitkering = aanvraag.partnerAanvraagUitkering?.let{ getPartnerBijstand(it) },
                     bron = getBron(aanvraag.bron)
                 )
             }
