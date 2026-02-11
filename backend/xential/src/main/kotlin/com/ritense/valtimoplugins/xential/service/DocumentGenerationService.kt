@@ -21,6 +21,7 @@ import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.smartdocuments.domain.DocumentFormatOption
 import com.ritense.valtimoplugins.xential.domain.DocumentCreatedMessage
 import com.ritense.valtimoplugins.xential.domain.FileFormat
+import com.ritense.valtimoplugins.xential.domain.GenerateDocumentResult
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
@@ -28,7 +29,6 @@ import com.rotterdam.esb.xential.api.DefaultApi
 import com.rotterdam.esb.xential.model.Sjabloondata
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.operaton.bpm.engine.RuntimeService
-import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.io.ByteArrayInputStream
 import java.util.Base64
 import java.util.UUID
@@ -43,9 +43,8 @@ class DocumentGenerationService(
         processId: UUID,
         xentialGebruikersId: String,
         sjabloonId: String,
-        xentialDocumentProperties: XentialDocumentProperties,
-        execution: DelegateExecution,
-    ) {
+        xentialDocumentProperties: XentialDocumentProperties
+    ): GenerateDocumentResult {
         logger.info { "Generating xential document" }
         requireNotNull(xentialDocumentProperties.fileFormat) {
             "fileFormat is required"
@@ -73,13 +72,12 @@ class DocumentGenerationService(
         )
         logger.debug { "token: ${xentialToken.token}" }
         xentialTokenRepository.save(xentialToken)
-
-        execution.setVariable("xentialStatus", result.status)
-
-        result.resumeUrl?.let {
-            execution.setVariable("resumeUrl", it)
-        }
         logger.info { "ready" }
+
+        return GenerateDocumentResult(
+            status = result.status.value,
+            resumeUrl = result.resumeUrl?.toString(),
+        )
     }
 
     private fun setMimeType(format: FileFormat): String {

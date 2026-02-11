@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController
 @SkipComponentScan
 @RequestMapping("/api", produces = [ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE])
 class XentialSjablonenResource(
-    val xentialSjablonenService: XentialSjablonenService,
+    private val xentialSjablonenService: XentialSjablonenService,
 ) {
     @GetMapping("/v1/xential/sjablonen")
     fun getSjablonenFromDefaultGroup(
