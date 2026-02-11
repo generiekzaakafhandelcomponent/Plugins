@@ -1,155 +1,160 @@
 {
-  "components" : [
+  "components": [
     {
-      "key" : "pv.xentialDocumentProperties",
-      "type" : "hidden",
-      "input" : true,
-      "label" : "pv sjabloon groep",
-      "tableView" : false,
-      "attributes" : {
-        "data-testid" : "xential-genereren.kies-sjabloon-pv.xentialDocumentProperties"
-      }
+      "key": "xentialDocumentProperties",
+      "type": "hidden",
+      "input": true,
+      "label": "Xential document properties",
+      "properties": {
+        "sourceKey": "pv:xentialDocumentProperties"
+      },
+      "persistent": "client-only"
     },
     {
-      "key" : "pv.xentialGebruikersId",
-      "type" : "hidden",
-      "input" : true,
-      "label" : "pv xential gebruikersid",
-      "tableView" : false,
-      "attributes" : {
-        "data-testid" : "xential-genereren.kies-sjabloon-pv.xentialGebruikersId"
-      }
+      "key": "xentialGebruikersId",
+      "type": "hidden",
+      "input": true,
+      "label": "Xential gebruikersId",
+      "properties": {
+        "sourceKey": "pv:xentialGebruikersId"
+      },
+      "persistent": "client-only"
     },
     {
-      "key" : "html",
-      "type" : "htmlelement",
-      "input" : false,
-      "label" : "HTML",
-      "content" : "<h2 style='font-weight: bold; margin-bottom: 10px;'>Kies Sjabloon</h2>",
-      "tableView" : false,
-      "refreshOnChange" : false
-    },
-    {
-      "key" : "pv.xentialSjabloonId",
-      "data" : {
-        "url" : "../api/v1/xential/sjablonen?gebruikersId={{ data.pv.xentialGebruikersId }}&sjabloonGroupId={{ data.pv.xentialDocumentProperties.xentialGroupId }}",
-        "method" : "GET",
-        "headers" : [
+      "key": "pv:xentialSjabloonId",
+      "data": {
+        "url": "../api/v1/xential/sjablonen?gebruikersId={{ data.xentialGebruikersId }}&sjabloonGroupId={{ data.xentialDocumentProperties.xentialTemplateGroupId }}",
+        "method": "GET",
+        "headers": [
           {
-            "key" : "Content-Type",
-            "value" : "application/json"
+            "key": "Content-Type",
+            "value": "application/json"
           },
           {
-            "key" : "Authorization",
-            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+            "key": "Authorization",
+            "value": "Bearer {{localStorage.getItem('formioToken')}}"
           }
         ]
       },
-      "type" : "select",
-      "input" : true,
-      "label" : "Sjabloon id",
-      "widget" : "choicesjs",
-      "dataSrc" : "url",
-      "lazyLoad" : false,
-      "template" : "<span>{{ item.naam }}</span>",
-      "validate" : {
-        "required" : true
+      "type": "select",
+      "input": true,
+      "label": "Sjabloon id",
+      "widget": "choicesjs",
+      "dataSrc": "url",
+      "lazyLoad": false,
+      "template": "<span>{{ item.naam }}</span>",
+      "validate": {
+        "required": true
       },
-      "tableView" : true,
-      "selectValues" : "sjablonen",
-      "valueProperty" : "id",
-      "attributes" : {
-        "data-testid" : "xential-genereren.kies-sjabloon-pv.xentialSjabloonId"
-      }
+      "tableView": true,
+      "selectValues": "sjablonen",
+      "valueProperty": "id"
     },
     {
-      "key" : "pv.document",
-      "data" : {
-        "url" : "../api/management/v1/document-definition?page=0&size=100",
-        "method" : "GET",
-        "headers" : [
+      "key": "document",
+      "data": {
+        "url": "../api/management/v1/document-definition?page=0&size=100",
+        "method": "GET",
+        "headers": [
           {
-            "key" : "Content-Type",
-            "value" : "application/json"
+            "key": "Content-Type",
+            "value": "application/json"
           },
           {
-            "key" : "Authorization",
-            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+            "key": "Authorization",
+            "value": "Bearer {{localStorage.getItem('formioToken')}}"
           }
         ]
       },
-      "type" : "select",
-      "input" : true,
-      "label" : "document",
-      "widget" : "choicesjs",
-      "dataSrc" : "url",
-      "lazyLoad" : false,
-      "template" : "<span>{{ item.id.name }}</span>",
-      "validate" : {
-        "required" : true
+      "type": "select",
+      "input": true,
+      "label": "Document",
+      "widget": "choicesjs",
+      "dataSrc": "url",
+      "lazyLoad": false,
+      "template": "<span>{{ item.id.name }}</span>",
+      "validate": {
+        "required": true
       },
-      "tableView" : true,
-      "selectValues" : "content",
-      "valueProperty" : "id.name",
-      "attributes" : {
-        "data-testid" : "xential-genereren.kies-sjabloon-pv.document"
+      "tableView": true,
+      "selectValues": "content",
+      "valueProperty": "id.name",
+      "properties": {
+        "targetKey": "pv:document"
       }
     },
     {
-      "key" : "pv.tempcontent",
-      "data" : {
-        "url" : "../api/management/v1/template?caseDefinitionName={{data.pv.document}}&templateType=text&page=0&size=10000",
-        "method" : "GET",
-        "headers" : [
+      "key": "tempcontent",
+      "type": "select",
+      "input": true,
+      "label": "Template",
+      "data": {
+        "url": "../api/management/v1/template?caseDefinitionName={{ data.document }}&templateType=text&page=0&size=10000",
+        "method": "GET",
+        "headers": [
           {
-            "key" : "Content-Type",
-            "value" : "application/json"
+            "key": "Content-Type",
+            "value": "application/json"
           },
           {
-            "key" : "Authorization",
-            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+            "key": "Authorization",
+            "value": "Bearer {{localStorage.getItem('formioToken')}}"
           }
         ]
       },
-      "type" : "select",
-      "input" : true,
-      "label" : "template",
-      "widget" : "choicesjs",
-      "dataSrc" : "url",
-      "lazyLoad" : false,
-      "template" : "<span>{{ item.key }}</span>",
-      "validate" : {
-        "required" : true
+      "widget": "choicesjs",
+      "dataSrc": "url",
+      "lazyLoad": false,
+      "template": "<span>{{ item.key }}</span>",
+      "validate": {
+        "required": true
       },
-      "refreshOn" : "pv.document",
-      "tableView" : true,
-      "selectValues" : "content",
-      "valueProperty" : "key",
-      "clearOnRefresh" : true,
-      "customConditional" : "show = data.pv.document ? true : false;",
-      "attributes" : {
-        "data-testid" : "xential-genereren.kies-sjabloon-pv.tempcontent"
+      "refreshOn": "document",
+      "tableView": true,
+      "selectValues": "content",
+      "valueProperty": "key",
+      "clearOnRefresh": true,
+      "customConditional": "show = data.document ? true : false;",
+      "persistent": "client-only"
+    },
+    {
+      "key": "pv:xentialData",
+      "type": "hidden",
+      "input": true,
+      "label": "Set template",
+      "defaultValue": false,
+      "calculateValue": "value = 'template:' + data.tempcontent"
+    },
+    {
+      "key": "pv:fileFormat",
+      "type": "select",
+      "input": true,
+      "label": "File format",
+      "data": {
+        "values": [
+          {
+            "label": "PDF",
+            "value": "PDF"
+          },
+          {
+            "label": "WORD",
+            "value": "WORD"
+          }
+        ]
+      },
+      "template": "<span>{{ item.label }}</span>",
+      "validate": {
+        "required": true
       }
     },
     {
-      "key" : "pv.xentialData",
-      "type" : "hidden",
-      "input" : true,
-      "label" : "set template",
-      "defaultValue" : false,
-      "calculateValue" : "value = 'template:' + data.pv.tempcontent",
-      "attributes" : {
-        "data-testid" : "xential-genereren.kies-sjabloon-pv.xentialData"
-      }
-    },
-    {
-      "key" : "submit",
-      "type" : "button",
-      "input" : true,
-      "label" : "Afronden",
-      "tableView" : false,
-      "showValidations" : false,
-      "disableOnInvalid" : true
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Afronden",
+      "tableView": false,
+      "showValidations": false,
+      "disableOnInvalid": true
     }
   ]
 }

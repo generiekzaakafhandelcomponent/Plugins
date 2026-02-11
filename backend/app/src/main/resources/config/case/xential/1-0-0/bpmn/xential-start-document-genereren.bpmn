@@ -13,7 +13,7 @@
         
     <bpmn:sequenceFlow id="Flow_1r41u16" sourceRef="Activity_16w1lhl" targetRef="Event_0r4spjj"/>
         
-    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${xentialUserIdHelper.getCurrentUsername()}" camunda:resultVariable="xentialGebruikersId" completionQuantity="1" id="Activity_16w1lhl" implementation="##WebService" isForCompensation="false" name="get username" startQuantity="1">
+    <bpmn:serviceTask camunda:expression="${xentialUserIdHelper.getCurrentUsername()}" camunda:resultVariable="xentialGebruikersId" completionQuantity="1" id="Activity_16w1lhl" implementation="##WebService" isForCompensation="false" name="get username" startQuantity="1">
             
       <bpmn:incoming>Flow_1dsx9q3</bpmn:incoming>
             

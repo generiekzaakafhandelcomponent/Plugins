@@ -49,8 +49,6 @@
           
     </bpmn:sequenceFlow>
         
-    <bpmn:sequenceFlow id="Flow_1ermevp" sourceRef="XentialGeenToegang" targetRef="Gateway_1cu6631"/>
-        
     <bpmn:sequenceFlow id="Flow_0uq8n79" sourceRef="XentialErrorNaSelecteerSjabloon" targetRef="Event_1kff2fs"/>
         
     <bpmn:sequenceFlow id="Flow_1cil6oa" sourceRef="XentialUploadDocument" targetRef="XentialKoppelDocumentAanZaak"/>
@@ -85,7 +83,7 @@
         
     <bpmn:sequenceFlow id="Flow_1xjszof" sourceRef="DocumentNameCounter" targetRef="XentialUploadDocument"/>
         
-    <bpmn:serviceTask camunda:asyncAfter="true" camunda:asyncBefore="true" camunda:expression="${true}" completionQuantity="1" id="XentialTestMapToegang" implementation="##WebService" isForCompensation="false" name="Test toegang" startQuantity="1">
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="XentialTestMapToegang" implementation="##WebService" isForCompensation="false" name="Test toegang" startQuantity="1">
             
       <bpmn:extensionElements/>
             
@@ -96,8 +94,6 @@
     </bpmn:serviceTask>
         
     <bpmn:exclusiveGateway default="Flow_03t6kr1" gatewayDirection="Unspecified" id="Gateway_1cu6631">
-            
-      <bpmn:incoming>Flow_1ermevp</bpmn:incoming>
             
       <bpmn:incoming>Flow_1ygbt8t</bpmn:incoming>
             
@@ -127,7 +123,7 @@
           
     </bpmn:exclusiveGateway>
         
-    <bpmn:serviceTask camunda:asyncAfter="true" camunda:asyncBefore="true" camunda:expression="${true}" completionQuantity="1" id="XentialDocumentCreateTask" implementation="##WebService" isForCompensation="false" name="Genereer xential document" startQuantity="1">
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="XentialDocumentCreateTask" implementation="##WebService" isForCompensation="false" name="Genereer xential document" startQuantity="1">
             
       <bpmn:incoming>Flow_1sqjigl</bpmn:incoming>
             
@@ -135,7 +131,7 @@
           
     </bpmn:serviceTask>
         
-    <bpmn:serviceTask camunda:asyncBefore="true" camunda:expression="${true}" completionQuantity="1" id="XentialKoppelDocumentAanZaak" implementation="##WebService" isForCompensation="false" name="Koppel document aan zaak" startQuantity="1">
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="XentialKoppelDocumentAanZaak" implementation="##WebService" isForCompensation="false" name="Koppel document aan zaak" startQuantity="1">
             
       <bpmn:incoming>Flow_1cil6oa</bpmn:incoming>
             
@@ -143,7 +139,7 @@
           
     </bpmn:serviceTask>
         
-    <bpmn:serviceTask camunda:asyncBefore="true" camunda:expression="${true}" completionQuantity="1" id="XentialUploadDocument" implementation="##WebService" isForCompensation="false" name="Upload Document to Documenten API" startQuantity="1">
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${true}" completionQuantity="1" id="XentialUploadDocument" implementation="##WebService" isForCompensation="false" name="Upload Document to Documenten API" startQuantity="1">
             
       <bpmn:incoming>Flow_1xjszof</bpmn:incoming>
             
@@ -151,7 +147,7 @@
           
     </bpmn:serviceTask>
         
-    <bpmn:serviceTask camunda:asyncBefore="true" camunda:expression="${xentialDocumentHelper.nextDocument(execution,xentialDocumentProperties)}" completionQuantity="1" id="DocumentNameCounter" implementation="##WebService" isForCompensation="false" name="increase document name counter" startQuantity="1">
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${xentialDocumentHelper.nextDocument(execution,xentialDocumentProperties)}" completionQuantity="1" id="DocumentNameCounter" implementation="##WebService" isForCompensation="false" name="increase document name counter" startQuantity="1">
             
       <bpmn:incoming>Flow_1k7te96</bpmn:incoming>
             
@@ -205,7 +201,7 @@
           
     </bpmn:parallelGateway>
         
-    <bpmn:parallelGateway gatewayDirection="Unspecified" id="Gateway_0s6m9yq">
+    <bpmn:parallelGateway camunda:asyncAfter="true" gatewayDirection="Unspecified" id="Gateway_0s6m9yq">
             
       <bpmn:incoming>Flow_1jxownj</bpmn:incoming>
             
@@ -215,7 +211,7 @@
           
     </bpmn:parallelGateway>
         
-    <bpmn:intermediateCatchEvent camunda:asyncAfter="true" camunda:asyncBefore="true" id="Event_1fk7r3m" name="Xential document ontvangen" parallelMultiple="false">
+    <bpmn:intermediateCatchEvent id="Event_1fk7r3m" name="Xential document ontvangen" parallelMultiple="false">
             
       <bpmn:incoming>Flow_0k8yaq6</bpmn:incoming>
             
@@ -238,8 +234,6 @@
     <bpmn:userTask completionQuantity="1" id="XentialGeenToegang" implementation="##unspecified" isForCompensation="false" name="Geen toegang: ${execution.getVariable('toegangResultaat').statusCode}" startQuantity="1">
             
       <bpmn:incoming>Flow_15hwqes</bpmn:incoming>
-            
-      <bpmn:outgoing>Flow_1ermevp</bpmn:outgoing>
             
       <bpmn:outgoing>Flow_0lr63tb</bpmn:outgoing>
           
@@ -265,7 +259,7 @@
           
     </bpmn:userTask>
         
-    <bpmn:boundaryEvent attachedToRef="OpenXentialWizardTask" camunda:asyncAfter="true" camunda:asyncBefore="true" cancelActivity="true" id="Event_1ad785s" name="Xential document ontvangen" parallelMultiple="false">
+    <bpmn:boundaryEvent attachedToRef="OpenXentialWizardTask" cancelActivity="true" id="Event_1ad785s" name="Xential document ontvangen" parallelMultiple="false">
             
       <bpmn:outgoing>Flow_1l6uflp</bpmn:outgoing>
             
@@ -298,48 +292,6 @@
       <bpmndi:BPMNShape bpmnElement="StartEvent_1" id="_BPMNShape_StartEvent_2">
                 
         <dc:Bounds height="36" width="36" x="253" y="169"/>
-              
-      </bpmndi:BPMNShape>
-            
-      <bpmndi:BPMNShape bpmnElement="XentialErrorNaSelecteerSjabloon" id="Activity_0irmq9x_di">
-                
-        <dc:Bounds height="80" width="100" x="970" y="460"/>
-                
-        <bpmndi:BPMNLabel/>
-              
-      </bpmndi:BPMNShape>
-            
-      <bpmndi:BPMNShape bpmnElement="XentialGeenToegang" id="BPMNShape_1wag8jt">
-                
-        <dc:Bounds height="80" width="100" x="680" y="580"/>
-                
-        <bpmndi:BPMNLabel/>
-              
-      </bpmndi:BPMNShape>
-            
-      <bpmndi:BPMNShape bpmnElement="Event_1eagg87" id="Event_1eagg87_di">
-                
-        <dc:Bounds height="36" width="36" x="842" y="602"/>
-              
-      </bpmndi:BPMNShape>
-            
-      <bpmndi:BPMNShape bpmnElement="Event_1kff2fs" id="Event_1kff2fs_di">
-                
-        <dc:Bounds height="36" width="36" x="1142" y="482"/>
-              
-      </bpmndi:BPMNShape>
-            
-      <bpmndi:BPMNShape bpmnElement="OpenXentialWizardTask" id="Activity_0gj74jm_di">
-                
-        <dc:Bounds height="80" width="100" x="1270" y="350"/>
-                
-        <bpmndi:BPMNLabel/>
-              
-      </bpmndi:BPMNShape>
-            
-      <bpmndi:BPMNShape bpmnElement="Event_1rmwrsr" id="Event_1rmwrsr_di">
-                
-        <dc:Bounds height="36" width="36" x="1442" y="462"/>
               
       </bpmndi:BPMNShape>
             
@@ -473,6 +425,48 @@
               
       </bpmndi:BPMNShape>
             
+      <bpmndi:BPMNShape bpmnElement="XentialErrorNaSelecteerSjabloon" id="Activity_0irmq9x_di">
+                
+        <dc:Bounds height="80" width="100" x="970" y="460"/>
+                
+        <bpmndi:BPMNLabel/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="XentialGeenToegang" id="BPMNShape_1wag8jt">
+                
+        <dc:Bounds height="80" width="100" x="680" y="580"/>
+                
+        <bpmndi:BPMNLabel/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Event_1eagg87" id="Event_1eagg87_di">
+                
+        <dc:Bounds height="36" width="36" x="842" y="602"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Event_1kff2fs" id="Event_1kff2fs_di">
+                
+        <dc:Bounds height="36" width="36" x="1142" y="482"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="OpenXentialWizardTask" id="Activity_0gj74jm_di">
+                
+        <dc:Bounds height="80" width="100" x="1270" y="350"/>
+                
+        <bpmndi:BPMNLabel/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Event_1rmwrsr" id="Event_1rmwrsr_di">
+                
+        <dc:Bounds height="36" width="36" x="1442" y="462"/>
+              
+      </bpmndi:BPMNShape>
+            
       <bpmndi:BPMNShape bpmnElement="Event_1ad785s" id="Event_1qiucql_di">
                 
         <dc:Bounds height="36" width="36" x="1352" y="412"/>
@@ -602,16 +596,6 @@
           <dc:Bounds height="27" width="64" x="578" y="236"/>
                   
         </bpmndi:BPMNLabel>
-              
-      </bpmndi:BPMNEdge>
-            
-      <bpmndi:BPMNEdge bpmnElement="Flow_1ermevp" id="Flow_1ermevp_di">
-                
-        <di:waypoint x="680" y="620"/>
-                
-        <di:waypoint x="560" y="620"/>
-                
-        <di:waypoint x="560" y="212"/>
               
       </bpmndi:BPMNEdge>
             

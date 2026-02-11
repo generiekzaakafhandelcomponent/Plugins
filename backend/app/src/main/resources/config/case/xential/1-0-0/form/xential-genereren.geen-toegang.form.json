@@ -2,14 +2,15 @@
   "display" : "form",
   "components" : [
     {
-      "key" : "pv.toegangResultaat",
+      "key" : "toegangResultaat",
       "type" : "hidden",
       "input" : true,
       "label" : "pv toegang resultaat",
       "tableView" : false,
-      "attributes" : {
-        "data-testid" : "xential-genereren.geen-toegang-pv.toegangResultaat"
-      }
+      "properties": {
+          "sourceKey": "pv:toegangResultaat"
+      },
+      "persistent": "client-only"
     },
     {
       "key" : "statusCode",
@@ -19,10 +20,7 @@
       "tableView" : true,
       "persistent" : "client-only",
       "applyMaskOn" : "change",
-      "calculateValue" : "value = data.pv.toegangResultaat.statusCode;",
-      "attributes" : {
-        "data-testid" : "xential-genereren.geen-toegang-statusCode"
-      }
+      "calculateValue" : "value = data.toegangResultaat.statusCode;"
     },
     {
       "key" : "statusMessage",
@@ -33,10 +31,7 @@
       "tableView" : true,
       "persistent" : "client-only",
       "applyMaskOn" : "change",
-      "calculateValue" : "value = data.pv.toegangResultaat.statusMessage;",
-      "attributes" : {
-        "data-testid" : "xential-genereren.geen-toegang-statusMessage"
-      }
+      "calculateValue" : "value = data.toegangResultaat.statusMessage;"
     },
     {
       "key" : "submit",

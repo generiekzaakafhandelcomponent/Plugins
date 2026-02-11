@@ -21,8 +21,6 @@ import org.springframework.web.client.RestClient
 import java.util.UUID
 
 class DocumentGenerationServiceTest {
-    @Mock
-    lateinit var execution: DelegateExecution
 
     @Mock
     lateinit var defaultApi: DefaultApi
@@ -52,9 +50,11 @@ class DocumentGenerationServiceTest {
 
     @Test
     fun shouldGenerateDocument() {
-        whenever(userManagementService.currentUserId).thenReturn("1234456")
+        whenever(userManagementService.currentUserId)
+            .thenReturn("1234456")
 
-        whenever(esbClient.documentApi(any<RestClient>())).thenReturn(defaultApi)
+        whenever(esbClient.documentApi(any<RestClient>()))
+            .thenReturn(defaultApi)
 
         val xentialDocumentProperties = XentialDocumentProperties(
             xentialTemplateGroupId = UUID.randomUUID(),
@@ -70,15 +70,15 @@ class DocumentGenerationServiceTest {
             status = DocumentCreatieResultaat.Status.VOLTOOID,
             resumeUrl = null,
         )
-        whenever(defaultApi.creeerDocument(any(), any(), any())).thenReturn(creatieResultaat)
+        whenever(defaultApi.creeerDocument(any(), any(), any()))
+            .thenReturn(creatieResultaat)
 
         documentGenerationService.generateDocument(
-            defaultApi,
-            UUID.randomUUID(),
-            "xentialGebruikersId",
-            UUID.randomUUID().toString(),
-            xentialDocumentProperties,
-            execution,
+            api = defaultApi,
+            processId = UUID.randomUUID(),
+            xentialGebruikersId = "xentialGebruikersId",
+            sjabloonId = UUID.randomUUID().toString(),
+            xentialDocumentProperties = xentialDocumentProperties
         )
 
         verify(xentialTokenRepository).save(any<XentialToken>())

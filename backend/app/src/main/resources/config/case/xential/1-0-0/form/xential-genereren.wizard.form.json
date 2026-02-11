@@ -2,14 +2,15 @@
   "display" : "form",
   "components" : [
     {
-      "key" : "pv.resumeUrl",
+      "key" : "resumeUrl",
       "type" : "hidden",
       "input" : true,
       "label" : "resumeUrl",
       "defaultValue" : null,
-      "attributes" : {
-        "data-testid" : "xential-genereren.wizard-pv.resumeUrl"
-      }
+      "properties": {
+        "sourceKey": "pv:xentialResumeUrl"
+      },
+      "persistent": "client-only"
     },
     {
       "key" : "openExternalPage",
@@ -18,7 +19,7 @@
       "label" : "Open External Page",
       "theme" : "primary",
       "action" : "custom",
-      "custom" : "window.open(data.pv.resumeUrl, '_blank');"
+      "custom" : "window.open(data.resumeUrl, '_blank');"
     }
   ]
 }

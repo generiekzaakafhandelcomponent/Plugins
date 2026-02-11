@@ -55,10 +55,11 @@
     "pluginConfigurationId" : "6e034748-8ed5-43de-a5f2-f80e1a4b60dd",
     "pluginActionDefinitionKey" : "generate-document",
     "actionProperties" : {
-      "xentialDocumentProperties" : "pv:xentialDocumentProperties",
+      "xentialDocumentPropertiesVariableName" : "xentialDocumentProperties",
       "xentialData" : "pv:xentialData",
       "xentialSjabloonId" : "pv:xentialSjabloonId",
-      "xentialGebruikersId" : "pv:xentialGebruikersId"
+      "xentialGebruikersId" : "pv:xentialGebruikersId",
+      "fileFormat" : "pv:fileFormat"
     },
     "referenceType" : "FIXED",
     "pluginDefinitionKey" : null,
@@ -82,7 +83,7 @@
     "actionProperties" : {
       "toegangResultaatId" : "toegangResultaat",
       "xentialGebruikersId" : "pv:xentialGebruikersId",
-      "xentialDocumentProperties" : "pv:xentialDocumentProperties"
+      "xentialDocumentPropertiesVariableName" : "xentialDocumentProperties"
     },
     "referenceType" : "FIXED",
     "pluginDefinitionKey" : null,
