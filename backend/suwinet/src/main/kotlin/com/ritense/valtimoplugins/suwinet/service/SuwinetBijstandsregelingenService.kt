@@ -135,7 +135,7 @@ class SuwinetBijstandsregelingenService(
                 cdRedenVordering = vordering.cdRedenVordering,
                 datBesluitVordering = dateTimeService.fromSuwinetToDateString(vordering.datBesluitVordering),
                 identificatienrVordering = vordering.identificatienrVordering,
-                partnersVordering = getPartners(vordering.partnerVordering),
+                partnersVordering = vordering.partnerVordering?.let{ getPartners(vordering.partnerVordering) } ?: mutableListOf() ,
                 szWet = SzWetDto(cdSzWet = vordering.szWet.cdSzWet)
             )
         }
