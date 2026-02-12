@@ -151,7 +151,7 @@ class SuwinetBijstandsregelingenService(
                 cdClusterBijzBijstand = specifiekeGegevensBijzBijstandItem.cdClusterBijzBijstand.orEmpty(),
                 omsSrtKostenBijzBijstand = specifiekeGegevensBijzBijstandItem.omsSrtKostenBijzBijstand.orEmpty(),
                 datBetaalbaarBijzBijstand = dateTimeService.toLocalDate(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand, SUWINET_DATEIN_PATTERN),
-                partnerBijzBijstand = specifiekeGegevensBijzBijstandItem.partnerBijzBijstand?.let {  getPartnerBijstand(it)},
+                partnerBijzBijstand =  getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
                 szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
                 bron = BronDto(
                     cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron?.cdKolomSuwi ?: 0,
@@ -169,7 +169,7 @@ class SuwinetBijstandsregelingenService(
                     datAanvraagUitkering = dateTimeService.toLocalDate(aanvraag.datAanvraagUitkering, SUWINET_DATEIN_PATTERN),
                     szWet = SzWetDto(aanvraag.szWet?.cdSzWet),
                     beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
-                    partnerAanvraagUitkering = aanvraag.partnerAanvraagUitkering?.let{ getPartnerBijstand(it) },
+                    partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
                     bron = getBron(aanvraag.bron)
                 )
             }
