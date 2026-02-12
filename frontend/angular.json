@@ -62,6 +62,7 @@
               "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css",
               "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css",
               "node_modules/@bpmn-io/properties-panel/dist/assets/properties-panel.css",
+              "node_modules/ol/ol.css",
               "node_modules/@valtimo/components/assets/css/ng-multiselect-dropdown.theme.scss",
               "node_modules/@valtimo/layout/assets/css/app.css",
               "src/styles.scss",
@@ -69,7 +70,8 @@
               "node_modules/@valtimo/components/assets/css/carbon.scss",
               "node_modules/@valtimo/components/assets/css/color.scss",
               "node_modules/@valtimo/components/assets/css/compatibility.scss",
-              "node_modules/@valtimo/components/assets/css/design-tokens.css"
+              "node_modules/@valtimo/components/assets/css/design-tokens.css",
+              "node_modules/@valtimo/components/assets/css/formio-carbon.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -263,6 +265,47 @@
             "lintFilePatterns": [
               "projects/valtimo-plugins/object-management/src/**/*.ts",
               "projects/valtimo-plugins/object-management/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/open-product": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/open-product",
+      "sourceRoot": "projects/valtimo-plugins/open-product/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/open-product/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/open-product/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/open-product/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/open-product/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/open-product/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/open-product/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/open-product/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/open-product/src/**/*.ts",
+              "projects/valtimo-plugins/open-product/src/**/*.html"
             ]
           }
         }
@@ -509,6 +552,39 @@
             "lintFilePatterns": [
               "projects/valtimo-plugins/mtls-sslcontext/src/**/*.ts",
               "projects/valtimo-plugins/mtls-sslcontext/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/oip-klanttaak": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/oip-klanttaak",
+      "sourceRoot": "projects/valtimo-plugins/oip-klanttaak/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/valtimo-plugins/oip-klanttaak/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/oip-klanttaak/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/oip-klanttaak/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/oip-klanttaak/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
             ]
           }
         }
@@ -796,6 +872,47 @@
             "lintFilePatterns": [
               "projects/valtimo-plugins/suwinet/src/**/*.ts",
               "projects/valtimo-plugins/suwinet/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "@valtimo-plugins/token-authentication": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/token-authentication",
+      "sourceRoot": "projects/valtimo-plugins/token-authentication/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/token-authentication/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/token-authentication/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/token-authentication/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/token-authentication/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/token-authentication/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/token-authentication/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/token-authentication/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/token-authentication/src/**/*.ts",
+              "projects/valtimo-plugins/token-authentication/src/**/*.html"
             ]
           }
         }

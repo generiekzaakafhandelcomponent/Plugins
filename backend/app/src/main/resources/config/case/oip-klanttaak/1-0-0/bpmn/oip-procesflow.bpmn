@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:operaton="http://operaton.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+    
+  <bpmn:process id="oip-procesflow" isClosed="false" isExecutable="true" name="OIP Procesflow" operaton:versionTag="CD:oip-klanttaak:1.0.0" processType="None">
+        
+    <bpmn:startEvent id="StartEvent_1" isInterrupting="true" parallelMultiple="false">
+            
+      <bpmn:outgoing>Flow_021kyyh</bpmn:outgoing>
+          
+    </bpmn:startEvent>
+        
+    <bpmn:endEvent id="Event_02mo0hs">
+            
+      <bpmn:incoming>Flow_0sl3ak5</bpmn:incoming>
+          
+    </bpmn:endEvent>
+        
+    <bpmn:sequenceFlow id="Flow_0sl3ak5" sourceRef="ut-oip-gegevens-aanleveren" targetRef="Event_02mo0hs"/>
+        
+    <bpmn:sequenceFlow id="Flow_021kyyh" sourceRef="StartEvent_1" targetRef="ut-oip-gegevens-aanleveren"/>
+        
+    <bpmn:userTask completionQuantity="1" id="ut-oip-gegevens-aanleveren" implementation="##unspecified" isForCompensation="false" name="OIP: Gegevens aanleveren" startQuantity="1">
+            
+      <bpmn:incoming>Flow_021kyyh</bpmn:incoming>
+            
+      <bpmn:outgoing>Flow_0sl3ak5</bpmn:outgoing>
+          
+    </bpmn:userTask>
+      
+  </bpmn:process>
+    
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        
+    <bpmndi:BPMNPlane bpmnElement="oip-procesflow" id="BPMNPlane_1">
+            
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1" id="_BPMNShape_StartEvent_2">
+                
+        <dc:Bounds height="36" width="36" x="173" y="102"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="Event_02mo0hs" id="Event_02mo0hs_di">
+                
+        <dc:Bounds height="36" width="36" x="422" y="102"/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNShape bpmnElement="ut-oip-gegevens-aanleveren" id="Activity_187lx4t_di">
+                
+        <dc:Bounds height="80" width="100" x="270" y="80"/>
+                
+        <bpmndi:BPMNLabel/>
+              
+      </bpmndi:BPMNShape>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_0sl3ak5" id="Flow_0sl3ak5_di">
+                
+        <di:waypoint x="370" y="120"/>
+                
+        <di:waypoint x="422" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+            
+      <bpmndi:BPMNEdge bpmnElement="Flow_021kyyh" id="Flow_021kyyh_di">
+                
+        <di:waypoint x="209" y="120"/>
+                
+        <di:waypoint x="270" y="120"/>
+              
+      </bpmndi:BPMNEdge>
+          
+    </bpmndi:BPMNPlane>
+      
+  </bpmndi:BPMNDiagram>
+  
+</bpmn:definitions>

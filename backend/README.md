@@ -10,10 +10,16 @@ This project also contains a working example application which is meant to showc
 
 ### Start docker
 
-Make sure docker is running. Then use the following commands:
+Make sure docker is running.
+
+Start with gradle script:
+
+`Plugins -> backend -> app -> Tasks -> docker -> composeUp`
+
+Or use commend line:
 
 ```shell
-cd backend
+cd backend/app
 docker compose up
 ```
 

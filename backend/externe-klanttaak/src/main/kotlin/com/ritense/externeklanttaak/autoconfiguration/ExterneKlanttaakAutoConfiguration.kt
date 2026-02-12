@@ -75,11 +75,13 @@ class ExterneKlanttaakAutoConfiguration {
     @ConditionalOnMissingBean(ExterneKlanttaakPluginFactory::class)
     fun externeKlanttaakPluginFactory(
         pluginService: PluginService,
+        objectManagementService: ObjectManagementService,
         externeKlanttaakService: ExterneKlanttaakService,
         externeKlanttaakVersions: List<IExterneKlanttaakVersion>,
     ): ExterneKlanttaakPluginFactory {
         return ExterneKlanttaakPluginFactory(
             pluginService,
+            objectManagementService,
             externeKlanttaakService,
             externeKlanttaakVersions,
         )

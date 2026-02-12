@@ -24,6 +24,7 @@ import {LayoutModule, TranslationManagementModule} from '@valtimo/layout';
 import {TaskModule} from '@valtimo/task';
 import {environment} from '../environments/environment';
 import {SecurityModule} from '@valtimo/security';
+import {BuildingBlockManagementModule} from '@valtimo/building-block-management';
 import {
     BpmnJsDiagramModule,
     enableCustomFormioComponents,
@@ -33,7 +34,6 @@ import {
     registerFormioValueResolverSelectorComponent,
     WidgetModule,
     ValuePathSelectorComponent
-
 } from '@valtimo/components';
 import {
     DefaultTabs,
@@ -41,9 +41,10 @@ import {
     CaseDetailTabDocumentsComponent,
     CaseDetailTabProgressComponent,
     CaseDetailTabSummaryComponent,
-    CaseModule, CASE_TAB_TOKEN,
-} from '@valtimo/Case';
-import {CaseMigrationModule} from "@valtimo/case-migration";
+    CaseModule,
+    CASE_TAB_TOKEN
+} from '@valtimo/case';
+import {CaseMigrationModule} from '@valtimo/case-migration';
 import {ProcessModule} from '@valtimo/process';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DocumentModule} from '@valtimo/document';
@@ -59,95 +60,60 @@ import {MilestoneModule} from '@valtimo/milestone';
 import {LoggerModule} from 'ngx-logger';
 import {FormManagementModule} from '@valtimo/form-management';
 import {MigrationModule} from '@valtimo/migration';
-import {CaseManagementModule} from '@valtimo/Case-management';
+import {CaseManagementModule} from '@valtimo/case-management';
 import {BootstrapModule} from '@valtimo/bootstrap';
 import {ConfigModule, ConfigService, CustomMultiTranslateHttpLoaderFactory, LocalizationService} from '@valtimo/shared';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {PluginManagementModule} from '@valtimo/plugin-management';
 import {AccessControlManagementModule} from '@valtimo/access-control-management';
-import {
-    CatalogiApiPluginModule,
-    catalogiApiPluginSpecification,
-    DocumentenApiPluginModule,
-    documentenApiPluginSpecification,
-    OpenZaakPluginModule,
-    openZaakPluginSpecification,
-    ZakenApiPluginModule,
-    zakenApiPluginSpecification,
-    ObjectenApiPluginModule,
-    objectenApiPluginSpecification,
-    ObjectTokenAuthenticationPluginModule,
-    objectTokenAuthenticationPluginSpecification,
-    ObjecttypenApiPluginModule,
-    objecttypenApiPluginSpecification,
-    PLUGINS_TOKEN
-} from '@valtimo/plugin';
 import {ZgwModule} from '@valtimo/zgw';
 import {ProcessLinkModule} from '@valtimo/process-link';
 import {ObjectManagementModule} from '@valtimo/object-management'
-import {ObjectModule} from "@valtimo/object";
+import {ObjectModule} from '@valtimo/object';
+import {LoggingModule} from '@valtimo/logging';
+import {DashboardModule} from '@valtimo/dashboard';
+import {DashboardManagementModule} from '@valtimo/dashboard-management';
+import {SseModule} from '@valtimo/sse';
+import {
+    PLUGINS_TOKEN,
+    CatalogiApiPluginModule,catalogiApiPluginSpecification,
+    DocumentenApiPluginModule, documentenApiPluginSpecification,
+    OpenZaakPluginModule, openZaakPluginSpecification,
+    ZakenApiPluginModule, zakenApiPluginSpecification,
+    ObjectenApiPluginModule, objectenApiPluginSpecification,
+    ObjectTokenAuthenticationPluginModule, objectTokenAuthenticationPluginSpecification,
+    ObjecttypenApiPluginModule, objecttypenApiPluginSpecification,
+} from '@valtimo/plugin';
 
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
+import {HaalCentraalBrpAuthPluginModule, haalCentraalBrpAuthPluginSpecification} from '@valtimo-plugins/haal-centraal-auth';
 import {
-    DocumentGeneratorPluginModule,
-    documentGeneratorPluginSpecification,
-    MailTemplatePluginModule,
-    mailTemplatePluginSpecification,
-    TextTemplatePluginModule,
-    textTemplatePluginSpecification
+    HaalCentraalBagPluginModule, haalCentraalBagPluginSpecification,
+    HaalCentraalBrpPluginModule, haalCentraalBrpPluginSpecification
+} from '@valtimo-plugins/haal-centraal';
+import {
+    DocumentGeneratorPluginModule, documentGeneratorPluginSpecification,
+    MailTemplatePluginModule, mailTemplatePluginSpecification,
+    TextTemplatePluginModule, textTemplatePluginSpecification
 } from '@valtimo-plugins/freemarker';
+import {KvkPluginModule, kvkPluginSpecification} from '@valtimo-plugins/kvk-handelsregister';
+import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
-import {
-    OpenKlantPluginModule,
-    openKlantPluginSpecification,
-    KlantcontactTabComponent,
-    ContactHistoryTabComponent
-} from '@valtimo-plugins/openklant';
+import {OipKlanttaakPluginModule, oipKlanttaakPluginSpecification} from '@valtimo-plugins/oip-klanttaak';
+import {OpenKlantPluginModule, openKlantPluginSpecification, KlantcontactTabComponent} from '@valtimo-plugins/openklant';
+import {OpenProductPluginModule, openProductPluginSpecification} from '@valtimo-plugins/open-product';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
-import {
-    RotterdamOracleEbsPluginModule,
-    rotterdamOracleEbsPluginSpecification
-} from "@valtimo-plugins/rotterdam-oracle-ebs";
+import {RotterdamOracleEbsPluginModule, rotterdamOracleEbsPluginSpecification} from '@valtimo-plugins/rotterdam-oracle-ebs';
 import {SlackPluginModule, slackPluginSpecification} from '@valtimo-plugins/slack';
 import {SmtpMailPluginModule, smtpmailPluginSpecification} from '@valtimo-plugins/smtpmail';
 import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/spotler';
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
+import {TokenAuthenticationPluginModule, tokenAuthenticationPluginSpecification} from '@valtimo-plugins/token-authentication';
+import {ValtimoLlmPluginModule, valtimoLlmPluginSpecification} from '@valtimo-plugins/valtimo-llm'
+import {ValtimoOcrPluginModule, valtimoOcrPluginSpecification} from '@valtimo-plugins/valtimo-ocr';
+import {ValtimoS2tPluginModule, valtimoS2tPluginSpecification} from '@valtimo-plugins/valtimo-s2t';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
-import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@valtimo-plugins/mtls-sslcontext';
-import {ValtimoLlmPluginModule} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin-module"
-import {
-    valtimoLlmPluginSpecification
-} from "../../projects/valtimo-plugins/valtimo-llm/src/lib/valtimo-llm-plugin.specification"
-import {
-    HaalCentraalBrpAuthPluginModule,
-    haalCentraalBrpAuthPluginSpecification,
-} from "@valtimo-plugins/haal-centraal-auth";
-import {
-    HaalCentraalBrpPluginModule,
-    haalCentraalBrpPluginSpecification,
-} from "@valtimo-plugins/haal-centraal";
-import {
-    haalCentraalBagPluginSpecification
-} from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/bag/haal-centraal-bag-plugin.specification";
-import {
-    HaalCentraalBagPluginModule
-} from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/bag/haal-centraal-bag-plugin.module";
-
-import {LoggingModule} from '@valtimo/logging';
-import {DashboardModule} from "@valtimo/dashboard";
-import {DashboardManagementModule} from "@valtimo/dashboard-management";
-import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
-import {SseModule} from '@valtimo/sse';
-import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin-module";
-import {
-    valtimoOcrPluginSpecification
-} from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin.specification";
-import {ValtimoS2tPluginModule} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin-module";
-import {
-    valtimoS2tPluginSpecification
-} from "../../projects/valtimo-plugins/valtimo-s2t/src/lib/valtimo-s2t-plugin.specification";
-
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -171,6 +137,7 @@ export function tabsFactory() {
         BootstrapModule,
         BpmnJsDiagramModule,
         BrowserModule,
+        BuildingBlockManagementModule,
         CaseManagementModule,
         CaseMigrationModule,
         CaseModule.forRoot(tabsFactory),
@@ -208,6 +175,8 @@ export function tabsFactory() {
         ObjectModule,
         ObjectTokenAuthenticationPluginModule,
         ObjecttypenApiPluginModule,
+        OipKlanttaakPluginModule,
+        OpenProductPluginModule,
         OpenKlantPluginModule,
         OpenZaakPluginModule,
         PluginManagementModule,
@@ -225,6 +194,7 @@ export function tabsFactory() {
         SseModule,
         SuwinetPluginModule,
         SwaggerModule,
+        TokenAuthenticationPluginModule,
         TaskModule,
         TextTemplatePluginModule,
         TranslateModule.forRoot({
@@ -242,7 +212,6 @@ export function tabsFactory() {
         WidgetModule,
         XentialPluginModule,
         ZakenApiPluginModule,
-        ZgwModule,
         ZgwModule
     ],
     providers: [{
@@ -264,6 +233,8 @@ export function tabsFactory() {
             objectTokenAuthenticationPluginSpecification,
             objectenApiPluginSpecification,
             objecttypenApiPluginSpecification,
+            oipKlanttaakPluginSpecification,
+            openProductPluginSpecification,
             openKlantPluginSpecification,
             openZaakPluginSpecification,
             publictaskPluginSpecification,
@@ -273,6 +244,7 @@ export function tabsFactory() {
             spotlerPluginSpecification,
             suwinetPluginSpecification,
             textTemplatePluginSpecification,
+            tokenAuthenticationPluginSpecification,
             valtimoOcrPluginSpecification,
             valtimoS2tPluginSpecification,
             valtimoLlmPluginSpecification,

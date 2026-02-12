@@ -40,7 +40,7 @@ internal class ExterneKlanttaakPluginFactoryTest {
         val notificatiesApiPluginMock = mock<NotificatiesApiPlugin>()
         whenever(pluginService.createInstance(any<PluginConfigurationId>())).thenReturn(notificatiesApiPluginMock)
 
-        val factory = ExterneKlanttaakPluginFactory(pluginService, mock(), mock())
+        val factory = ExterneKlanttaakPluginFactory(pluginService, mock(), mock(), mock())
 
         val externeKlanttaakPluginProperties: String = """
             {

@@ -1,7 +1,7 @@
 [
     {
         "id": "744533ea-28c9-434c-80bb-542967b477eb",
-        "title": "Suwinet lokaal",
+        "title": "Suwinet lokaal (Autodeployed)",
         "pluginDefinitionKey": "suwinet",
         "properties": {
             "baseUrl": "http://localhost:8090/ws/",
