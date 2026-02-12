@@ -1,7 +1,5 @@
 package com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen
 
-import java.time.LocalDate
-
 
 data class VorderingDto(
     val identificatienrVordering: String?,
