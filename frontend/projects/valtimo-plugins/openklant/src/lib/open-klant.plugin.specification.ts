@@ -8,7 +8,7 @@ import { RegisterKlantcontactComponent } from "./components/open-klant-register-
 import { GetOrCreatePartijComponent } from "./components/get-or-create-partij/get-or-create-partij.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
-  pluginId: "open-klant",
+  pluginId: "openklant",
   pluginConfigurationComponent: OpenKlantPluginConfigurationComponent,
   pluginLogoBase64: OPEN_KLANT_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
