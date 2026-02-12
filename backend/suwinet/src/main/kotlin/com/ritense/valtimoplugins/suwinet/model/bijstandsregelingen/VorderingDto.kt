@@ -6,6 +6,6 @@ data class VorderingDto(
     val datBesluitVordering: String?, // datepattern yyyy-MM-dd
     val cdRedenVordering: String?,
     val szWet: SzWetDto?,
-    val partnersVordering: MutableList<PartnerDto>,
+    val partnersVordering: MutableList<PartnerDto>?,
     val bron: BronDto?
 )

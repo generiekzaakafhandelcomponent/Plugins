@@ -16,6 +16,6 @@ data class AanvraagUitkeringDto(
     val datAanvraagUitkering: LocalDate?,
     val szWet: SzWetDto?,
     val beslissingOpAanvraagUitkering: BeslissingOpAanvraagUitkeringDto?,
-    val partnerAanvraagUitkering: PartnerBijstandDto,
+    val partnerAanvraagUitkering: PartnerBijstandDto?,
     val bron: BronDto?
 )
