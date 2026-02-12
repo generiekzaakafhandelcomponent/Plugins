@@ -4,6 +4,7 @@ import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInf
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.FWI
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse.ClientSuwi
+import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse.ClientSuwi.AanvraagUitkering.*
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.Bron
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
