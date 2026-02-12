@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - v13
-      - bugfix/151824-como-wegschrijven-output-gaat-fout-in-ophalen-brongegevens-proces
+      - bugfix/152336-hotfix-como-suwinet-partnerbijstand
 jobs:
   # -------------------------------------------------------------
   # Using GitHub's API is not supported for push events

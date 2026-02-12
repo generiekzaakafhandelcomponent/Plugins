@@ -4,6 +4,7 @@ import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInf
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.FWI
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse.ClientSuwi
+import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfoResponse.ClientSuwi.AanvraagUitkering.*
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.Bron
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
@@ -126,15 +127,11 @@ class SuwinetBijstandsregelingenService(
     private fun getVorderingen(vorderingen: MutableList<ClientSuwi.Vordering>): List<VorderingDto> =
         vorderingen.map { vordering ->
             VorderingDto(
-                bron = BronDto(
-                    cdKolomSuwi = vordering.bron.cdKolomSuwi,
-                    cdVestigingSuwi = vordering.bron.cdVestigingSuwi,
-                    cdPartijSuwi = vordering.bron.cdPartijSuwi
-                ),
-                cdRedenVordering = vordering.cdRedenVordering,
+                bron = getBron(vordering.bron),
+                cdRedenVordering = vordering.cdRedenVordering.orEmpty(),
                 datBesluitVordering = dateTimeService.fromSuwinetToDateString(vordering.datBesluitVordering),
-                identificatienrVordering = vordering.identificatienrVordering,
-                partnersVordering = getPartners(vordering.partnerVordering),
+                identificatienrVordering = vordering.identificatienrVordering.orEmpty(),
+                partnersVordering = vordering.partnerVordering?.let{ getPartners(vordering.partnerVordering) } ?: mutableListOf() ,
                 szWet = SzWetDto(cdSzWet = vordering.szWet.cdSzWet)
             )
         }
@@ -152,11 +149,7 @@ class SuwinetBijstandsregelingenService(
                 datBetaalbaarBijzBijstand = dateTimeService.toLocalDate(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand, SUWINET_DATEIN_PATTERN),
                 partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
                 szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
-                bron = BronDto(
-                    cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron?.cdKolomSuwi ?: 0,
-                    cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi.orEmpty(),
-                    cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi.orEmpty(),
-                )
+                bron = getBron(specifiekeGegevensBijzBijstandItem.bron),
 
             )
         }
@@ -166,7 +159,7 @@ class SuwinetBijstandsregelingenService(
             .map { aanvraag ->
                 AanvraagUitkeringDto(
                     datAanvraagUitkering = dateTimeService.toLocalDate(aanvraag.datAanvraagUitkering, SUWINET_DATEIN_PATTERN),
-                    szWet = SzWetDto(aanvraag.szWet.cdSzWet.orEmpty()),
+                    szWet = SzWetDto(aanvraag.szWet?.cdSzWet),
                     beslissingOpAanvraagUitkering = getBeslissingOpAanvraagUitkering(aanvraag.beslissingOpAanvraagUitkering),
                     partnerAanvraagUitkering = getPartnerBijstand(aanvraag.partnerAanvraagUitkering),
                     bron = getBron(aanvraag.bron)
@@ -179,20 +172,24 @@ class SuwinetBijstandsregelingenService(
         cdVestigingSuwi = bron?.cdVestigingSuwi.orEmpty(),
     )
 
-    private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand): PartnerBijstandDto =
-        PartnerBijstandDto(
-            burgerservicenr = partnerAanvraagUitkering.burgerservicenr,
-            voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
-            voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
-            significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
-            geboortedat = dateTimeService.toLocalDate(partnerAanvraagUitkering.geboortedat, SUWINET_DATEIN_PATTERN),
-        )
+    private fun getPartnerBijstand(partnerAanvraagUitkering: PartnerBijstand?): PartnerBijstandDto? =
+        partnerAanvraagUitkering?.let { partnerAanvraagUitkering ->
+            PartnerBijstandDto(
+                burgerservicenr = partnerAanvraagUitkering.burgerservicenr,
+                voorletters = partnerAanvraagUitkering.voorletters.orEmpty(),
+                voorvoegsel = partnerAanvraagUitkering.voorvoegsel.orEmpty(),
+                significantDeelVanDeAchternaam = partnerAanvraagUitkering.significantDeelVanDeAchternaam,
+                geboortedat = dateTimeService.toLocalDate(partnerAanvraagUitkering.geboortedat, SUWINET_DATEIN_PATTERN),
+            )
+        }
 
-    private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering): BeslissingOpAanvraagUitkeringDto =
-        BeslissingOpAanvraagUitkeringDto(
-            cdBeslissingOpAanvraagUitkering = beslissingOpAanvraagUitkering.cdBeslissingOpAanvraagUitkering.orEmpty(),
-            datDagtekeningBeslisOpAanvrUitk = dateTimeService.toLocalDate(beslissingOpAanvraagUitkering.datDagtekeningBeslisOpAanvrUitk, SUWINET_DATEIN_PATTERN)
-        )
+    private fun getBeslissingOpAanvraagUitkering(beslissingOpAanvraagUitkering: ClientSuwi.AanvraagUitkering.BeslissingOpAanvraagUitkering?): BeslissingOpAanvraagUitkeringDto? =
+        beslissingOpAanvraagUitkering?.let { beslissing ->
+            BeslissingOpAanvraagUitkeringDto(
+                cdBeslissingOpAanvraagUitkering = beslissing.cdBeslissingOpAanvraagUitkering.orEmpty(),
+                datDagtekeningBeslisOpAanvrUitk = dateTimeService.toLocalDate(beslissing.datDagtekeningBeslisOpAanvrUitk, SUWINET_DATEIN_PATTERN)
+            )
+        }
 
 
     companion object {
