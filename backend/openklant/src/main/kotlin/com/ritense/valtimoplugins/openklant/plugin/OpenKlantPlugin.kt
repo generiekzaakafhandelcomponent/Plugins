@@ -18,7 +18,7 @@ import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(
-    key = "open-klant",
+    key = "openklant",
     title = "Open Klant 2 Plugin",
     description = "Open Klant 2 plugin",
 )
