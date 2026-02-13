@@ -6,6 +6,7 @@ import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.FWI
 import com.ritense.valtimoplugins.dkd.duodossierpersoongsd.ObjectFactory
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
@@ -18,7 +19,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class SuwinetDuoPersoonsInfoService(
-    private val suwinetSOAPClient: SuwinetSOAPClient
+    private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val dynamicResponseFactory: DynamicResponseFactory
 ) {
 
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
@@ -47,7 +49,8 @@ class SuwinetDuoPersoonsInfoService(
 
     fun getPersoonsInfoByBsn(
         bsn: String,
-        duoInfo: DUOInfo
+        duoInfo: DUOInfo,
+        dynamicProperties: List<String> = listOf()
     ): DuoPersoonsInfoDto {
         logger.info { "Getting duo persoons Onderwijsovereenkomst from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
@@ -58,7 +61,7 @@ class SuwinetDuoPersoonsInfoService(
                     burgerservicenr = bsn
                 }
             val response = duoInfo.duoPersoonsInfo(persoonsInfoRequest)
-            return response.unwrapResponse(bsn)
+            return response.unwrapResponse(bsn, dynamicProperties)
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -110,7 +113,7 @@ class SuwinetDuoPersoonsInfoService(
         }
     }
 
-    private fun DUOPersoonsInfoResponse.unwrapResponse(bsn: String): DuoPersoonsInfoDto {
+    private fun DUOPersoonsInfoResponse.unwrapResponse(bsn: String, dynamicProperties: List<String>): DuoPersoonsInfoDto {
 
         val responseValue = content
             .firstOrNull()
@@ -123,7 +126,9 @@ class SuwinetDuoPersoonsInfoService(
                     responseValue.burgerservicenr,
                     responseValue.indStartkwalificatieDuo ?: "",
                     getOnderwijsOvereenkomsten(responseValue.onderwijsovereenkomst),
-                    getResultaatOpleidingGeregistrDuo(responseValue.resultaatOpleidingGeregistrDuo)
+                    getResultaatOpleidingGeregistrDuo(responseValue.resultaatOpleidingGeregistrDuo),
+                    propertiesMap = getDynamicProperties(responseValue, dynamicProperties),
+                    properties = getAvailableProperties(responseValue)
                 )
             }
 
@@ -171,6 +176,36 @@ class SuwinetDuoPersoonsInfoService(
                 )
             )
         }
+    }
+
+    private fun getAvailableProperties(info: Any): List<String> {
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+        return flatMap.keys.toList()
+    }
+
+    private fun getDynamicProperties(
+        info: Any,
+        dynamicProperties: List<String>
+    ): Map<String, Any?> {
+        val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) {
+                propertiesMap[prop] = flatMap[prop]
+            }
+
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd('*')
+                flatMap.keys.forEach {
+                    if (it.startsWith(prefixValue)) {
+                        propertiesMap[it] = flatMap[it]
+                    }
+                }
+            }
+        }
+
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
     }
 
     private fun toDateString(date: LocalDate) = date.format(dateOutFormatter)

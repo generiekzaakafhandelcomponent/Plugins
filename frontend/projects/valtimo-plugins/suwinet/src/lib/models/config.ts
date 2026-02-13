@@ -55,16 +55,19 @@ export interface BrpKinderenInfoConfig extends BaseActionConfig {
 }
 export interface DUOPersoonsInfoComponent extends BaseActionConfig{
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface DUOStudiefinancieringInfoComponent extends BaseActionConfig{
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface KadasterobjectenConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
@@ -76,12 +79,14 @@ export interface RdwVoertuigenConfig extends BaseActionConfig {
 
 export interface SVBPersoonsInfoComponent extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
     maxPeriods: number;
 }
 
 export interface UwvInkomstenPersoonInfoConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
     maxPeriods: number;
 }

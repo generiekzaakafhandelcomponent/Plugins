@@ -95,26 +95,29 @@ class SuwinetAutoConfiguration {
     @Bean
     @ProcessBean
     fun suwinetDUOPersoonsInfoService(
-        suwinetSOAPClient: SuwinetSOAPClient
+        suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetDuoPersoonsInfoService {
-        return SuwinetDuoPersoonsInfoService(suwinetSOAPClient)
+        return SuwinetDuoPersoonsInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
     @ProcessBean
     fun suwinetDuoStudiefinancieringInfoService(
-        suwinetSOAPClient: SuwinetSOAPClient
+        suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetDuoStudiefinancieringInfoService {
-        return SuwinetDuoStudiefinancieringInfoService(suwinetSOAPClient)
+        return SuwinetDuoStudiefinancieringInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
     @ProcessBean
     fun suwinetSvbPersoonsInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        codesUitkeringsPeriodeService: CodesUitkeringsperiodeService
+        codesUitkeringsPeriodeService: CodesUitkeringsperiodeService,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetSvbPersoonsInfoService {
-        return SuwinetSvbPersoonsInfoService(suwinetSOAPClient, codesUitkeringsPeriodeService)
+        return SuwinetSvbPersoonsInfoService(suwinetSOAPClient, codesUitkeringsPeriodeService, dynamicResponseFactory)
     }
 
     @Bean
@@ -135,13 +138,15 @@ class SuwinetAutoConfiguration {
         suwinetSOAPClient: SuwinetSOAPClient,
         dateTimeService: DateTimeService,
         uwvCodeService: UwvCodeService,
-        uwvSoortIkvService: UwvSoortIkvService
+        uwvSoortIkvService: UwvSoortIkvService,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetUwvPersoonsIkvService {
         return SuwinetUwvPersoonsIkvService(
             suwinetSOAPClient,
             dateTimeService,
             uwvCodeService,
-            uwvSoortIkvService
+            uwvSoortIkvService,
+            dynamicResponseFactory
         )
     }
 
@@ -149,9 +154,11 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetKadasterInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetKadasterInfoService {
         return SuwinetKadasterInfoService(
-            suwinetSOAPClient
+            suwinetSOAPClient,
+            dynamicResponseFactory
         )
     }
 

@@ -6,6 +6,7 @@ import com.ritense.valtimoplugins.dkd.svbdossierpersoongsd.SVBInfo
 import com.ritense.valtimoplugins.dkd.svbdossierpersoongsd.SVBPersoonsInfoResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
@@ -21,7 +22,8 @@ import kotlin.properties.Delegates
 
 class SuwinetSvbPersoonsInfoService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
-    private val codesUitkeringsPeriodeService: CodesUitkeringsperiodeService
+    private val codesUitkeringsPeriodeService: CodesUitkeringsperiodeService,
+    private val dynamicResponseFactory: DynamicResponseFactory
 ) {
 
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
@@ -52,7 +54,8 @@ class SuwinetSvbPersoonsInfoService(
     fun getPersoonsgegevensByBsn(
         bsn: String,
         svbInfo: SVBInfo,
-        maxPeriods: Int
+        maxPeriods: Int,
+        dynamicProperties: List<String> = listOf()
     ): UitkeringenDto? {
         this.maxPeriods = maxPeriods
 
@@ -66,7 +69,7 @@ class SuwinetSvbPersoonsInfoService(
                 }
             val response = svbInfo.svbPersoonsInfo(svbInfoRequest)
             // retrieve svb info by bsn
-            return response.unwrapResponse()
+            return response.unwrapResponse(dynamicProperties)
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -91,7 +94,7 @@ class SuwinetSvbPersoonsInfoService(
         }
     }
 
-    private fun SVBPersoonsInfoResponse.unwrapResponse(): UitkeringenDto? {
+    private fun SVBPersoonsInfoResponse.unwrapResponse(dynamicProperties: List<String>): UitkeringenDto? {
 
         val responseValue = content
             .firstOrNull()
@@ -101,7 +104,9 @@ class SuwinetSvbPersoonsInfoService(
         return when (responseValue) {
             is SVBPersoonsInfoResponse.ClientSuwi ->
                 UitkeringenDto(
-                    svbUitkeringen = getUitkeringen(responseValue.uitkeringsverhouding)
+                    svbUitkeringen = getUitkeringen(responseValue.uitkeringsverhouding),
+                    propertiesMap = getDynamicProperties(responseValue, dynamicProperties),
+                    properties = getAvailableProperties(responseValue)
                 )
 
             is FWI -> {
@@ -119,6 +124,36 @@ class SuwinetSvbPersoonsInfoService(
                 }
             }
         }
+    }
+
+    private fun getAvailableProperties(info: Any): List<String> {
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+        return flatMap.keys.toList()
+    }
+
+    private fun getDynamicProperties(
+        info: Any,
+        dynamicProperties: List<String>
+    ): Map<String, Any?> {
+        val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) {
+                propertiesMap[prop] = flatMap[prop]
+            }
+
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd('*')
+                flatMap.keys.forEach {
+                    if (it.startsWith(prefixValue)) {
+                        propertiesMap[it] = flatMap[it]
+                    }
+                }
+            }
+        }
+
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
     }
 
     private fun selectMaxPeriods(

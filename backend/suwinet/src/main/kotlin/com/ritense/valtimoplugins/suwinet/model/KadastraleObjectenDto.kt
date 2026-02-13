@@ -4,6 +4,8 @@ import java.math.BigInteger
 
 data class KadastraleObjectenDto(
     val onroerendeGoederen: List<KadastraalObjectDto>,
+    val propertiesMap: Map<String, Any?> = mapOf(),
+    val properties: List<String> = listOf()
 ) {
     data class KadastraalObjectDto(
         val codeTypeOnroerendeZaak: String,

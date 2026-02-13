@@ -9,6 +9,7 @@ import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfo
 import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfoResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
@@ -24,7 +25,8 @@ class SuwinetUwvPersoonsIkvService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
     private val dateTimeService: DateTimeService,
     private val uwvCodeService: UwvCodeService,
-    private val uwvSoortIkvService: UwvSoortIkvService
+    private val uwvSoortIkvService: UwvSoortIkvService,
+    private val dynamicResponseFactory: DynamicResponseFactory
 ) {
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
     private var maxPeriods by Delegates.notNull<Int>()
@@ -55,7 +57,8 @@ class SuwinetUwvPersoonsIkvService(
     fun getUWVInkomstenInfoByBsn(
         bsn: String,
         uwvIkvInfoService: UWVIkvInfo,
-        maxPeriods: Int
+        maxPeriods: Int,
+        dynamicProperties: List<String> = listOf()
     ): UwvPersoonsIkvDto? {
         logger.info { "Getting UWV inkomsten info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
         this.maxPeriods = maxPeriods
@@ -68,7 +71,7 @@ class SuwinetUwvPersoonsIkvService(
 
             val uwvPersoonsIkvInfoResponse: UWVPersoonsIkvInfoResponse =
                 uwvIkvInfoService.uwvPersoonsIkvInfo(uwvPersoonsIkvInfo)
-            return uwvPersoonsIkvInfoResponse.unwrapResponse()
+            return uwvPersoonsIkvInfoResponse.unwrapResponse(dynamicProperties)
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -93,7 +96,7 @@ class SuwinetUwvPersoonsIkvService(
         }
     }
 
-    private fun UWVPersoonsIkvInfoResponse.unwrapResponse(): UwvPersoonsIkvDto? {
+    private fun UWVPersoonsIkvInfoResponse.unwrapResponse(dynamicProperties: List<String>): UwvPersoonsIkvDto? {
 
         val responseValue = content
             .firstOrNull()
@@ -102,7 +105,9 @@ class SuwinetUwvPersoonsIkvService(
 
         return when (responseValue) {
             is UWVPersoonsIkvInfoResponse.ClientSuwi -> UwvPersoonsIkvDto(
-                getInkomsten(responseValue.inkomstenverhouding)
+                getInkomsten(responseValue.inkomstenverhouding),
+                propertiesMap = getDynamicProperties(responseValue, dynamicProperties),
+                properties = getAvailableProperties(responseValue)
             )
 
             is FWI -> {
@@ -224,6 +229,36 @@ class SuwinetUwvPersoonsIkvService(
             }
 
         )
+
+    private fun getAvailableProperties(info: Any): List<String> {
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+        return flatMap.keys.toList()
+    }
+
+    private fun getDynamicProperties(
+        info: Any,
+        dynamicProperties: List<String>
+    ): Map<String, Any?> {
+        val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) {
+                propertiesMap[prop] = flatMap[prop]
+            }
+
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd('*')
+                flatMap.keys.forEach {
+                    if (it.startsWith(prefixValue)) {
+                        propertiesMap[it] = flatMap[it]
+                    }
+                }
+            }
+        }
+
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
+    }
 
     private fun getAdres(adres: Straatadres?) = AdresDto(
         straatnaam = adres?.straatnaam ?: "",

@@ -14,6 +14,7 @@ import com.ritense.valtimo.implementation.dkd.KadasterInfo.PubliekrechtelijkeBep
 import com.ritense.valtimo.implementation.dkd.KadasterInfo.ZakelijkRecht
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.AdresDto
@@ -26,7 +27,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class SuwinetKadasterInfoService(
-    private val suwinetSOAPClient: SuwinetSOAPClient
+    private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val dynamicResponseFactory: DynamicResponseFactory
 ) {
 
     lateinit var kadasterService: KadasterInfo
@@ -56,7 +58,8 @@ class SuwinetKadasterInfoService(
 
     fun getPersoonsinfoByBsn(
         bsn: String,
-        kadasterService: KadasterInfo
+        kadasterService: KadasterInfo,
+        dynamicProperties: List<String> = listOf()
     ): KadastraleObjectenDto {
         logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
@@ -64,8 +67,12 @@ class SuwinetKadasterInfoService(
             this.kadasterService = kadasterService
 
             val kadastraleAanduidingen = retrieveKadasterPersoonsInfo(bsn)
+            val result = getKadastraleObjects(kadastraleAanduidingen)
 
-            return getKadastraleObjects(kadastraleAanduidingen)
+            return result.copy(
+                propertiesMap = getDynamicProperties(result, dynamicProperties),
+                properties = getAvailableProperties(result)
+            )
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -227,6 +234,36 @@ class SuwinetKadasterInfoService(
                 throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
             }
         }
+    }
+
+    private fun getAvailableProperties(info: Any): List<String> {
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+        return flatMap.keys.toList()
+    }
+
+    private fun getDynamicProperties(
+        info: Any,
+        dynamicProperties: List<String>
+    ): Map<String, Any?> {
+        val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) {
+                propertiesMap[prop] = flatMap[prop]
+            }
+
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd('*')
+                flatMap.keys.forEach {
+                    if (it.startsWith(prefixValue)) {
+                        propertiesMap[it] = flatMap[it]
+                    }
+                }
+            }
+        }
+
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
     }
 
     private fun toDateString(date: LocalDate) = date.format(dateOutFormatter)

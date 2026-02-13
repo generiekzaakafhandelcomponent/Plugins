@@ -199,6 +199,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -211,7 +212,9 @@ class SuwiNetPlugin(
             )
 
             suwinetDuoPersoonsInfoService.getPersoonsInfoByBsn(
-                bsn = bsn, suwinetDuoPersoonsInfoService.createDuoService()
+                bsn = bsn,
+                duoInfo = suwinetDuoPersoonsInfoService.createDuoService(),
+                dynamicProperties = dynamicProperties
             ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName,objectMapper.convertValue(it)
@@ -232,6 +235,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -245,7 +249,8 @@ class SuwiNetPlugin(
 
             suwinetDuoStudiefinancieringInfoService.getStudiefinancieringInfoByBsn(
                 bsn = bsn,
-                suwinetDuoStudiefinancieringInfoService.createDuoStudiefinancieringService()
+                duoStudiefinancieringInfo = suwinetDuoStudiefinancieringInfoService.createDuoStudiefinancieringService(),
+                dynamicProperties = dynamicProperties
             ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -266,6 +271,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -278,7 +284,9 @@ class SuwiNetPlugin(
             )
 
             suwinetKadasterInfoService.getPersoonsinfoByBsn(
-                bsn, suwinetKadasterInfoService.createKadasterService()
+                bsn = bsn,
+                kadasterService = suwinetKadasterInfoService.createKadasterService(),
+                dynamicProperties = dynamicProperties
             ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -342,6 +350,7 @@ class SuwiNetPlugin(
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty maxPeriods: Int,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting SVB info for case ${execution.businessKey}" }
@@ -353,9 +362,10 @@ class SuwiNetPlugin(
             )
 
             suwinetSvbPersoonsInfoService.getPersoonsgegevensByBsn(
-                bsn,
-                suwinetSvbPersoonsInfoService.createSvbInfo(),
-                maxPeriods
+                bsn = bsn,
+                svbInfo = suwinetSvbPersoonsInfoService.createSvbInfo(),
+                maxPeriods = maxPeriods,
+                dynamicProperties = dynamicProperties
             )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -378,6 +388,7 @@ class SuwiNetPlugin(
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty maxPeriods: Int,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -391,8 +402,9 @@ class SuwiNetPlugin(
         try {
             suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
                 bsn = bsn,
-                suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
-                maxPeriods
+                uwvIkvInfoService = suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
+                maxPeriods = maxPeriods,
+                dynamicProperties = dynamicProperties
             )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)

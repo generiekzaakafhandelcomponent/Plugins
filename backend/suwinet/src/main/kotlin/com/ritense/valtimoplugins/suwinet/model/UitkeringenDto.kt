@@ -3,7 +3,9 @@ package com.ritense.valtimoplugins.suwinet.model
 import java.math.BigDecimal
 
 data class UitkeringenDto(
-    val svbUitkeringen: List<Uitkering>
+    val svbUitkeringen: List<Uitkering>,
+    val propertiesMap: Map<String, Any?> = mapOf(),
+    val properties: List<String> = listOf()
 ) {
     data class Uitkering(
         val codeSzWet: String,

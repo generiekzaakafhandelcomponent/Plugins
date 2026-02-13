@@ -4,7 +4,9 @@ data class DuoPersoonsInfoDto(
     val burgerservicenummer: String,
     val indicatieStartkwalificatieDuo: String,
     val onderwijsOvereenkomst: List<DuoOnderwijsOvereenkomst>,
-    val resultaatOpleiding: List<ResultaatOpleidingGeregistrDuo>
+    val resultaatOpleiding: List<ResultaatOpleidingGeregistrDuo>,
+    val propertiesMap: Map<String, Any?> = mapOf(),
+    val properties: List<String> = listOf()
 ) {
     data class DuoOnderwijsOvereenkomst(
         val brin: String,
