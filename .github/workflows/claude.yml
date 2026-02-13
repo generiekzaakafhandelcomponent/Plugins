@@ -3,6 +3,8 @@ name: Ritense PR examinator
 on:
   pull_request_review:
     types: [ submitted ]
+  pull_request_review_comment:
+    types: [ created ]
 
 jobs:
   PR_Ritense:
@@ -35,5 +37,4 @@ jobs:
             Please review this pull request with plugin-pr-reviewer agent.
 
             Note: The PR branch is already checked out in the current working directory.
-          claude_args: |
-            --max-turns 10
+            
