@@ -215,9 +215,9 @@ class SuwiNetPlugin(
                 bsn = bsn,
                 duoInfo = suwinetDuoPersoonsInfoService.createDuoService(),
                 dynamicProperties = dynamicProperties
-            ).let {
+            )?.let {
                 execution.processInstance.setVariable(
-                    resultProcessVariableName,objectMapper.convertValue(it)
+                    resultProcessVariableName, objectMapper.convertValue(it)
                 )
             }
         } catch (e: Exception) {
@@ -326,11 +326,9 @@ class SuwiNetPlugin(
                 dynamicProperties = dynamicProperties,
                 rdwService = suwinetRdwService.getRDWService()
             ).let {
-                if(it.motorVoertuigen.isNotEmpty()) {
-                    execution.processInstance.setVariable(
-                        resultProcessVariableName, objectMapper.convertValue(it)
-                    )
-                }
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
             }
         } catch (e: Exception) {
             logger.info("Exiting scope due to nested error.", e)
@@ -348,7 +346,6 @@ class SuwiNetPlugin(
     fun getSvbPersoonsInfo(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
-        @PluginActionProperty maxPeriods: Int,
         @PluginActionProperty suffix: String? = "",
         @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
@@ -364,9 +361,8 @@ class SuwiNetPlugin(
             suwinetSvbPersoonsInfoService.getPersoonsgegevensByBsn(
                 bsn = bsn,
                 svbInfo = suwinetSvbPersoonsInfoService.createSvbInfo(),
-                maxPeriods = maxPeriods,
                 dynamicProperties = dynamicProperties
-            )?.let {
+            ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
@@ -403,7 +399,7 @@ class SuwiNetPlugin(
                 bsn = bsn,
                 uwvIkvInfoService = suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
                 dynamicProperties = dynamicProperties
-            )?.let {
+            ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )

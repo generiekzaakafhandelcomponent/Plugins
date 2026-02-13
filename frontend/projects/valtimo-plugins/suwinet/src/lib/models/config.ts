@@ -81,7 +81,6 @@ export interface SVBPersoonsInfoComponent extends BaseActionConfig {
     bsn: string;
     dynamicProperties: Array<string>;
     resultProcessVariableName: string;
-    maxPeriods: number;
 }
 
 export interface UwvInkomstenPersoonInfoConfig extends BaseActionConfig {

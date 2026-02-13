@@ -7,10 +7,8 @@ import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.plugin.SuwiNetPluginFactory
-import com.ritense.valtimoplugins.suwinet.service.CodesUitkeringsperiodeService
 import com.ritense.valtimoplugins.suwinet.service.DateTimeService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDocumentWriterService
-import com.ritense.valtimoplugins.suwinet.service.NationaliteitenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBijstandsregelingenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpStoreToDocService
@@ -27,15 +25,12 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SuwinetAutoConfiguration {
 
-
     @Bean
     @ProcessBean
     fun suwinetDocumentWriterService(
         documentService: DocumentService
     ): SuwinetDocumentWriterService {
-        return SuwinetDocumentWriterService(
-            documentService
-        )
+        return SuwinetDocumentWriterService(documentService)
     }
 
     @Bean
@@ -55,27 +50,12 @@ class SuwinetAutoConfiguration {
     }
 
     @Bean
-    fun nationaliteitenService(): NationaliteitenService {
-        return NationaliteitenService()
-    }
-
-    @Bean
-    fun codesUitkeringsService(): CodesUitkeringsperiodeService {
-        return CodesUitkeringsperiodeService()
-    }
-
-    @Bean
     @ProcessBean
     fun suwinetBrpInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
         dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetBrpInfoService {
-        return SuwinetBrpInfoService(
-            suwinetSOAPClient,
-            nationaliteitenService(),
-            DateTimeService(),
-            dynamicResponseFactory
-        )
+        return SuwinetBrpInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
@@ -84,10 +64,7 @@ class SuwinetAutoConfiguration {
         suwinetSOAPClient: SuwinetSOAPClient,
         dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetRdwService {
-        return SuwinetRdwService(
-            suwinetSOAPClient,
-            dynamicResponseFactory
-        )
+        return SuwinetRdwService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
@@ -112,10 +89,9 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetSvbPersoonsInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        codesUitkeringsPeriodeService: CodesUitkeringsperiodeService,
         dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetSvbPersoonsInfoService {
-        return SuwinetSvbPersoonsInfoService(suwinetSOAPClient, codesUitkeringsPeriodeService, dynamicResponseFactory)
+        return SuwinetSvbPersoonsInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
@@ -133,10 +109,7 @@ class SuwinetAutoConfiguration {
         suwinetSOAPClient: SuwinetSOAPClient,
         dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetKadasterInfoService {
-        return SuwinetKadasterInfoService(
-            suwinetSOAPClient,
-            dynamicResponseFactory
-        )
+        return SuwinetKadasterInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
@@ -158,14 +131,9 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBijstandsRegelingenInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        dynamicResponseFactory: DynamicResponseFactory,
-        dateTimeService: DateTimeService,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetBijstandsregelingenService {
-        return SuwinetBijstandsregelingenService(
-            suwinetSOAPClient,
-            dynamicResponseFactory,
-            dateTimeService,
-        )
+        return SuwinetBijstandsregelingenService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
