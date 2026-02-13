@@ -386,7 +386,6 @@ class SuwiNetPlugin(
     fun getUWVInkomsteninfo(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
-        @PluginActionProperty maxPeriods: Int,
         @PluginActionProperty suffix: String? = "",
         @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
@@ -403,7 +402,6 @@ class SuwiNetPlugin(
             suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
                 bsn = bsn,
                 uwvIkvInfoService = suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
-                maxPeriods = maxPeriods,
                 dynamicProperties = dynamicProperties
             )?.let {
                 execution.processInstance.setVariable(

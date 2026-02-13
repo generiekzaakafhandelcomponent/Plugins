@@ -59,8 +59,7 @@ export class UwvInkomstenInfoComponent
     private handleValid(formValue: UwvInkomstenPersoonInfoConfig): void {
         const valid = !!(
             formValue.bsn &&
-            formValue.resultProcessVariableName &&
-            formValue.maxPeriods
+            formValue.resultProcessVariableName
         );
 
         this.valid$.next(valid);

@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
-import com.ritense.valtimoplugins.suwinet.service.UwvCodeService
-import com.ritense.valtimoplugins.suwinet.service.UwvSoortIkvService
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.plugin.SuwiNetPluginFactory
@@ -122,32 +120,11 @@ class SuwinetAutoConfiguration {
 
     @Bean
     @ProcessBean
-    fun uwvCodeService() : UwvCodeService {
-        return UwvCodeService()
-    }
-
-    @Bean
-    @ProcessBean
-    fun uwvSoortIkvService() : UwvSoortIkvService {
-        return UwvSoortIkvService()
-    }
-
-    @Bean
-    @ProcessBean
     fun suwinetUwvPersoonsIkvService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        dateTimeService: DateTimeService,
-        uwvCodeService: UwvCodeService,
-        uwvSoortIkvService: UwvSoortIkvService,
         dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetUwvPersoonsIkvService {
-        return SuwinetUwvPersoonsIkvService(
-            suwinetSOAPClient,
-            dateTimeService,
-            uwvCodeService,
-            uwvSoortIkvService,
-            dynamicResponseFactory
-        )
+        return SuwinetUwvPersoonsIkvService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean

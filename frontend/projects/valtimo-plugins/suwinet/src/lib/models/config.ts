@@ -88,6 +88,5 @@ export interface UwvInkomstenPersoonInfoConfig extends BaseActionConfig {
     bsn: string;
     dynamicProperties: Array<string>;
     resultProcessVariableName: string;
-    maxPeriods: number;
 }
 
