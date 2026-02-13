@@ -37,5 +37,4 @@ jobs:
             Please review this pull request with plugin-pr-reviewer agent.
 
             Note: The PR branch is already checked out in the current working directory.
-          claude_args: |
-            --max-turns 10
+            
