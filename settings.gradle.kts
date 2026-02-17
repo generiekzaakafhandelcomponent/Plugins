@@ -24,6 +24,7 @@ include(
     "backend:xential",
     "backend:valtimo-llm",
     "backend:kvk-handelsregister",
+    "backend:coworker",
     "frontend",
 )
 

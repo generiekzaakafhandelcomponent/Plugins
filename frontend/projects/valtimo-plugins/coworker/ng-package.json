@@ -1,0 +1,17 @@
+{
+  "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../dist/valtimo-plugins/coworker",
+  "assets": ["./assets"],
+  "lib": {
+    "entryFile": "src/public_api.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "@angular/common",
+    "@angular/core",
+    "@angular/forms",
+    "@valtimo/components",
+    "@valtimo/plugin",
+    "rxjs",
+    "tslib"
+  ]
+}

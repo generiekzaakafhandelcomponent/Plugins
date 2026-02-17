@@ -1,0 +1,159 @@
+<!--
+  ~ Copyright 2015-2025 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
+>
+  <v-input
+    name="configurationTitle"
+    [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.configurationTitle"
+    [required]="true"
+    [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
+    [widthPx]="350"
+    placeholder="Coworker Plugin"
+  >
+  </v-input>
+
+  <v-paragraph
+    [title]="'RabbitMQ'"
+    [margin]="true"
+  ></v-paragraph>
+
+  <v-input
+    name="rabbitHost"
+    [title]="'rabbitHost' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.rabbitHost"
+    [required]="true"
+    [tooltip]="'rabbitHostTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+    placeholder="localhost"
+  >
+  </v-input>
+  <v-input
+    name="rabbitPort"
+    [title]="'rabbitPort' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.rabbitPort || '5672'"
+    [tooltip]="'rabbitPortTooltip' | pluginTranslate: pluginId | async"
+    [widthPx]="150"
+    placeholder="5672"
+  >
+  </v-input>
+  <v-input
+    name="rabbitUsername"
+    [title]="'rabbitUsername' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.rabbitUsername"
+    [required]="true"
+    [tooltip]="'rabbitUsernameTooltip' | pluginTranslate: pluginId | async"
+    [widthPx]="350"
+    placeholder="guest"
+  >
+  </v-input>
+  <v-input
+    name="rabbitPassword"
+    type="password"
+    [title]="'rabbitPassword' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.rabbitPassword"
+    [required]="true"
+    [tooltip]="'rabbitPasswordTooltip' | pluginTranslate: pluginId | async"
+    [widthPx]="350"
+  >
+  </v-input>
+  <v-input
+    name="rabbitVirtualHost"
+    [title]="'rabbitVirtualHost' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.rabbitVirtualHost || '/'"
+    [tooltip]="'rabbitVirtualHostTooltip' | pluginTranslate: pluginId | async"
+    [widthPx]="250"
+    placeholder="/"
+  >
+  </v-input>
+
+  <v-paragraph
+    [title]="'CloudEvents'"
+    [margin]="true"
+  ></v-paragraph>
+
+  <v-input
+    name="sourceUrn"
+    [title]="'sourceUrn' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.sourceUrn"
+    [required]="true"
+    [tooltip]="'sourceUrnTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+    placeholder="urn:nld:oin:00000001234567890000:systeem:app"
+  >
+  </v-input>
+
+  <v-paragraph
+    [title]="'Messaging'"
+    [margin]="true"
+  ></v-paragraph>
+
+  <v-input
+    name="exchange"
+    [title]="'exchange' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.exchange || ''"
+    [tooltip]="'exchangeTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+    placeholder=""
+  >
+  </v-input>
+  <v-input
+    name="routingKey"
+    [title]="'routingKey' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.routingKey"
+    [required]="true"
+    [tooltip]="'routingKeyTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+    placeholder="vcs.chat.in"
+  >
+  </v-input>
+  <v-input
+    name="replyToQueue"
+    [title]="'replyToQueue' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [disabled]="obs.disabled"
+    [defaultValue]="obs.prefill?.replyToQueue"
+    [required]="true"
+    [tooltip]="'replyToQueueTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+    placeholder="vcs.chat.out"
+  >
+  </v-input>
+</v-form>

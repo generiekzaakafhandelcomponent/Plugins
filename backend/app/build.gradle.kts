@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":backend:valtimo-s2t"))
     implementation(project(":backend:xential"))
     implementation(project(":backend:valtimo-llm"))
+    implementation(project(":backend:coworker"))
 }
 
 tasks.jar {

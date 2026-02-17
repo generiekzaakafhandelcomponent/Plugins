@@ -114,6 +114,7 @@ import {ValtimoLlmPluginModule, valtimoLlmPluginSpecification} from '@valtimo-pl
 import {ValtimoOcrPluginModule, valtimoOcrPluginSpecification} from '@valtimo-plugins/valtimo-ocr';
 import {ValtimoS2tPluginModule, valtimoS2tPluginSpecification} from '@valtimo-plugins/valtimo-s2t';
 import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
+import {CoworkerPluginModule, coworkerPluginSpecification} from '@valtimo-plugins/coworker';
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -144,6 +145,7 @@ export function tabsFactory() {
         CatalogiApiPluginModule,
         ChoiceFieldModule,
         CommonModule,
+        CoworkerPluginModule,
         ConfigModule.forRoot(environment),
         DashboardManagementModule,
         DashboardModule,
@@ -219,6 +221,7 @@ export function tabsFactory() {
         useValue: [
             XentialPluginSpecification,
             catalogiApiPluginSpecification,
+            coworkerPluginSpecification,
             documentGeneratorPluginSpecification,
             documentenApiPluginSpecification,
             externeKlanttaakPluginSpecification,

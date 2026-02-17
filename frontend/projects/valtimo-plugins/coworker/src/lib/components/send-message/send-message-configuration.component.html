@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2015-2025 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+  } as obs"
+>
+  <v-input
+    name="coworkerId"
+    [title]="'coworkerId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.coworkerId"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'coworkerIdTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+  ></v-input>
+  <v-input
+    name="userPrompt"
+    [title]="'userPrompt' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.userPrompt"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [tooltip]="'userPromptTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+  ></v-input>
+  <v-input
+    name="expertiseId"
+    [title]="'expertiseId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.expertiseId"
+    [disabled]="obs.disabled"
+    [tooltip]="'expertiseIdTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+  ></v-input>
+  <v-input
+    name="expertiseInput"
+    [title]="'expertiseInput' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.expertiseInput"
+    [disabled]="obs.disabled"
+    [tooltip]="'expertiseInputTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+  ></v-input>
+  <v-input
+    name="sessionId"
+    [title]="'sessionId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.sessionId"
+    [disabled]="obs.disabled"
+    [tooltip]="'sessionIdTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+  ></v-input>
+  <v-input
+    name="callbackUrl"
+    [title]="'callbackUrl' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.callbackUrl"
+    [disabled]="obs.disabled"
+    [tooltip]="'callbackUrlTooltip' | pluginTranslate: pluginId | async"
+    [fullWidth]="true"
+  ></v-input>
+</v-form>

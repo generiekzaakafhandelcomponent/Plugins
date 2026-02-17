@@ -1024,6 +1024,39 @@
           }
         }
       }
+    },
+    "@valtimo-plugins/coworker": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/coworker",
+      "sourceRoot": "projects/valtimo-plugins/coworker/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/coworker/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/coworker/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/coworker/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/coworker/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/coworker/src/**/*.ts",
+              "projects/valtimo-plugins/coworker/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {
