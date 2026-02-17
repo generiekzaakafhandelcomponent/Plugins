@@ -1,0 +1,27 @@
+[
+  {
+    "activityId": "StartEvent_1",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "brongegevens.start",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
+  },
+  {
+    "actionProperties": {
+      "codeGemeente": "0518",
+      "gemeentenaam": "Den Haag",
+      "sectie": "A",
+      "perceelnr": "2545",
+      "volgnrAppartementsrecht": "1",
+      "resultProcessVariableName": "kadasterObject"
+    },
+    "activityId": "SuwinetOphalenKadasterObject",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "0ca7c957-8fef-4f4c-b487-6913b79a2a61",
+    "pluginActionDefinitionKey": "get-kadastrale-object",
+    "processLinkType": "plugin"
+  }
+]

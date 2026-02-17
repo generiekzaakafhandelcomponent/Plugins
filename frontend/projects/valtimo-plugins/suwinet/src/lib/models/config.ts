@@ -66,7 +66,11 @@ export interface DUOStudiefinancieringInfoComponent extends BaseActionConfig{
 }
 
 export interface KadasterobjectenConfig extends BaseActionConfig {
-    bsn: string;
+    codeGemeente: string;
+    gemeentenaam: string;
+    sectie: string;
+    perceelnr: string;
+    volgnrAppartementsrecht: string;
     dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }

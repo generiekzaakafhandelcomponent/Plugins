@@ -24,14 +24,54 @@
   } as obs"
 >
     <v-input
-            name="kadastraleAanduiding"
-            [title]="'bsn' | pluginTranslate : pluginId | async"
+            name="codeGemeente"
+            [title]="'codeGemeente' | pluginTranslate : pluginId | async"
             [margin]="true"
             [fullWidth]="true"
-            [defaultValue]="obs.prefill?.bsn"
+            [defaultValue]="obs.prefill?.codeGemeente"
             [disabled]="obs.disabled"
             [required]="true"
-            [tooltip]="'bsnTooltip' | pluginTranslate : pluginId | async"
+            [tooltip]="'codeGemeenteTooltip' | pluginTranslate : pluginId | async"
+    ></v-input>
+    <v-input
+            name="gemeentenaam"
+            [title]="'gemeentenaam' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.gemeentenaam"
+            [disabled]="obs.disabled"
+            [required]="true"
+            [tooltip]="'gemeentenaamTooltip' | pluginTranslate : pluginId | async"
+    ></v-input>
+    <v-input
+            name="sectie"
+            [title]="'sectie' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.sectie"
+            [disabled]="obs.disabled"
+            [required]="true"
+            [tooltip]="'sectieTooltip' | pluginTranslate : pluginId | async"
+    ></v-input>
+    <v-input
+            name="perceelnr"
+            [title]="'perceelnr' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.perceelnr"
+            [disabled]="obs.disabled"
+            [required]="true"
+            [tooltip]="'perceelnrTooltip' | pluginTranslate : pluginId | async"
+    ></v-input>
+    <v-input
+            name="volgnrAppartementsrecht"
+            [title]="'volgnrAppartementsrecht' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.volgnrAppartementsrecht"
+            [disabled]="obs.disabled"
+            [required]="false"
+            [tooltip]="'volgnrAppartementsrechtTooltip' | pluginTranslate : pluginId | async"
     ></v-input>
     <valtimo-carbon-multi-input
             name="dynamicProperties"

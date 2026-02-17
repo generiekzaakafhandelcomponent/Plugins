@@ -20,7 +20,7 @@ import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} fro
 import {KadasterobjectenConfig} from '../../models';
 
 @Component({
-    selector: 'kadaster-persoon-info',
+    selector: 'kadaster-object-info',
     templateUrl: './kadastrale-objecten.component.html',
     styleUrls: ['./kadastrale-objecten.component.scss'],
 })
