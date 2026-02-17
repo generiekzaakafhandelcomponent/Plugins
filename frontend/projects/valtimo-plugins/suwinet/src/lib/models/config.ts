@@ -71,6 +71,12 @@ export interface KadasterobjectenConfig extends BaseActionConfig {
     resultProcessVariableName: string;
 }
 
+export interface KadastraleAanduidingenConfig extends BaseActionConfig {
+    bsn: string;
+    dynamicProperties: Array<string>;
+    resultProcessVariableName: string;
+}
+
 export interface RdwVoertuigenConfig extends BaseActionConfig {
     bsn: string;
     dynamicProperties: Array<string>;

@@ -15,6 +15,8 @@ import com.ritense.valtimoplugins.suwinet.service.SuwinetBijstandsregelingenServ
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
+import com.fasterxml.jackson.module.kotlin.convertValue
+import com.ritense.valtimoplugins.suwinet.model.KadastraleAanduidingDto
 import com.ritense.valtimoplugins.suwinet.service.SuwinetKadasterInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
@@ -262,20 +264,19 @@ class SuwiNetPlugin(
     }
 
     @PluginAction(
-        key = "get-kadastrale-objecten",
-        title = "SuwiNet kadaster info",
-        description = "SuwiNet Kadaster info",
+        key = "get-kadastrale-aanduidingen",
+        title = "SuwiNet kadastrale aanduidingen",
+        description = "SuwiNet Kadastrale aanduidingen ophalen op basis van BSN",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-    fun getKadastraleObjecten(
+    fun getKadastraleAanduidingen(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
-        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
-        logger.info { "Getting kadastrale objecten for case ${execution.businessKey}" }
+        logger.info { "Getting kadastrale aanduidingen for case ${execution.businessKey}" }
 
         try {
             suwinetKadasterInfoService.setConfig(
@@ -283,8 +284,43 @@ class SuwiNetPlugin(
                 suffix
             )
 
-            suwinetKadasterInfoService.getPersoonsinfoByBsn(
+            suwinetKadasterInfoService.getKadastraleAanduidingenByBsn(
                 bsn = bsn,
+                kadasterService = suwinetKadasterInfoService.createKadasterService()
+            ).let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue<Any>(it)
+                )
+            }
+
+        } catch (e: Exception) {
+            handleSuwinetException(e)
+        }
+    }
+
+    @PluginAction(
+        key = "get-kadastrale-object",
+        title = "SuwiNet kadastrale object",
+        description = "SuwiNet Kadastrale object ophalen op basis van kadastrale aanduiding",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getKadastraleObject(
+        @PluginActionProperty kadastraleAanduiding: KadastraleAanduidingDto,
+        @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
+        execution: DelegateExecution
+    ) {
+        logger.info { "Getting kadastrale object for case ${execution.businessKey}" }
+
+        try {
+            suwinetKadasterInfoService.setConfig(
+                getSuwinetSOAPClientConfig(),
+                suffix
+            )
+
+            suwinetKadasterInfoService.getKadastraleObjectByAanduiding(
+                kadastraleAanduiding = kadastraleAanduiding,
                 kadasterService = suwinetKadasterInfoService.createKadasterService(),
                 dynamicProperties = dynamicProperties
             ).let {

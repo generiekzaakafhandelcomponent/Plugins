@@ -36,6 +36,7 @@ import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastr
 import {
     BijstandsregelingenInfoComponent
 } from "./components/bijstandsregelingen-info/bijstandsregelingen-info.component";
+import {KadastraleAanduidingenComponent} from "./components/kadastrale-aanduidingen/kadastrale-aanduidingen.component";
 
 @NgModule({
     declarations: [
@@ -46,6 +47,7 @@ import {
         DuoPersoonsInfoComponent,
         DuoStudiefinancieringComponent,
         KadastraleObjectenComponent,
+        KadastraleAanduidingenComponent,
         RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
         UwvInkomstenInfoComponent,
@@ -60,6 +62,7 @@ import {
         DuoPersoonsInfoComponent,
         DuoStudiefinancieringComponent,
         KadastraleObjectenComponent,
+        KadastraleAanduidingenComponent,
         RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
         UwvInkomstenInfoComponent,
