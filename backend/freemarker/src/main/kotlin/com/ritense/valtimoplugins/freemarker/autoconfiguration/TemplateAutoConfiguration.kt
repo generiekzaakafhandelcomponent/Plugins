@@ -17,15 +17,19 @@
 package com.ritense.valtimoplugins.freemarker.autoconfiguration
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.ritense.valtimo.contract.buildingblock.BuildingBlockDefinitionChecker
 import com.ritense.valtimo.contract.case_.CaseDefinitionChecker
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
 import com.ritense.valtimoplugins.freemarker.config.TemplateHttpSecurityConfigurer
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
+import com.ritense.valtimoplugins.freemarker.listener.TemplateBuildingBlockEventListener
 import com.ritense.valtimoplugins.freemarker.listener.TemplateCaseEventListener
 import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
-import com.ritense.valtimoplugins.freemarker.service.TemplateExporter
-import com.ritense.valtimoplugins.freemarker.service.TemplateImporter
+import com.ritense.valtimoplugins.freemarker.service.BuildingBlockDefinitionTemplateExporter
+import com.ritense.valtimoplugins.freemarker.service.BuildingBlockDefinitionTemplateImporter
+import com.ritense.valtimoplugins.freemarker.service.DocumentDefinitionTemplateExporter
+import com.ritense.valtimoplugins.freemarker.service.DocumentDefinitionTemplateImporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valtimoplugins.freemarker.web.rest.TemplateManagementResource
 import com.ritense.valueresolver.ValueResolverService
@@ -67,6 +71,7 @@ class TemplateAutoConfiguration {
         valueResolverService: ValueResolverService,
         freemarkerConfiguration: Configuration,
         caseDefinitionChecker: CaseDefinitionChecker,
+        buildingBlockDefinitionChecker: BuildingBlockDefinitionChecker,
         jsonSchemaDocumentRepositoryStreaming: JsonSchemaDocumentRepositoryStreaming,
     ): TemplateService {
         return TemplateService(
@@ -75,29 +80,54 @@ class TemplateAutoConfiguration {
             valueResolverService,
             freemarkerConfiguration,
             caseDefinitionChecker,
+            buildingBlockDefinitionChecker,
             jsonSchemaDocumentRepositoryStreaming,
         )
     }
 
     @Bean
-    @ConditionalOnMissingBean(TemplateExporter::class)
-    fun templateExporter(
+    @ConditionalOnMissingBean(DocumentDefinitionTemplateExporter::class)
+    fun documentDefinitionTemplateExporter(
         objectMapper: ObjectMapper,
         templateService: TemplateService
-    ): TemplateExporter {
-        return TemplateExporter(
+    ): DocumentDefinitionTemplateExporter {
+        return DocumentDefinitionTemplateExporter(
             objectMapper,
             templateService,
         )
     }
 
     @Bean
-    @ConditionalOnMissingBean(TemplateImporter::class)
-    fun templateImporter(
+    @ConditionalOnMissingBean(DocumentDefinitionTemplateImporter::class)
+    fun documentDefinitionTemplateImporter(
         templateService: TemplateService,
         objectMapper: ObjectMapper,
-    ): TemplateImporter {
-        return TemplateImporter(
+    ): DocumentDefinitionTemplateImporter {
+        return DocumentDefinitionTemplateImporter(
+            templateService,
+            objectMapper,
+        )
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(BuildingBlockDefinitionTemplateExporter::class)
+    fun buildingBlockDefinitionTemplateExporter(
+        objectMapper: ObjectMapper,
+        templateService: TemplateService
+    ): BuildingBlockDefinitionTemplateExporter {
+        return BuildingBlockDefinitionTemplateExporter(
+            objectMapper,
+            templateService,
+        )
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(BuildingBlockDefinitionTemplateImporter::class)
+    fun buildingBlockDefinitionTemplateImporter(
+        templateService: TemplateService,
+        objectMapper: ObjectMapper,
+    ): BuildingBlockDefinitionTemplateImporter {
+        return BuildingBlockDefinitionTemplateImporter(
             templateService,
             objectMapper,
         )
@@ -110,6 +140,18 @@ class TemplateAutoConfiguration {
         templateRepository: TemplateRepository,
     ): TemplateCaseEventListener {
         return TemplateCaseEventListener(
+            templateService,
+            templateRepository,
+        )
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(TemplateBuildingBlockEventListener::class)
+    fun templateBuildingBlockEventListener(
+        templateService: TemplateService,
+        templateRepository: TemplateRepository,
+    ): TemplateBuildingBlockEventListener {
+        return TemplateBuildingBlockEventListener(
             templateService,
             templateRepository,
         )

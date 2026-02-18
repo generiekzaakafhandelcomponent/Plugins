@@ -28,5 +28,6 @@
 
     <include file="changelog/20241009-create-template-table.xml" relativeToChangelogFile="true"/>
     <include file="changelog/20250605-upgrade-major13.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/20260128-add-building-block-definition-columns.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -33,7 +33,7 @@ class TemplateHttpSecurityConfigurer : HttpSecurityConfigurer {
             http.authorizeHttpRequests { requests ->
                 requests
                     .requestMatchers(antMatcher(GET, "/api/management/v1/template")).hasAuthority(ADMIN)
-                    .requestMatchers(antMatcher(GET, "/api/management/v1/case-definition/{caseDefinitionKey}/version/{caseDefinitionVersionTag}/template-type/{templateType}/template/{key}")).hasAuthority(ADMIN)
+                    .requestMatchers(antMatcher(GET, "/api/management/v1/template-type/{templateType}/template/{key}")).hasAuthority(ADMIN)
                     .requestMatchers(antMatcher(POST, "/api/management/v1/template")).hasAuthority(ADMIN)
                     .requestMatchers(antMatcher(PUT, "/api/management/v1/template")).hasAuthority(ADMIN)
                     .requestMatchers(antMatcher(DELETE, "/api/management/v1/template")).hasAuthority(ADMIN)

@@ -18,8 +18,7 @@ package com.ritense.valtimoplugins.freemarker.listener
 
 import com.ritense.authorization.annotation.RunWithoutAuthorization
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimo.contract.event.CaseDefinitionCreatedEvent
-import com.ritense.valtimo.contract.event.CaseDefinitionPreDeleteEvent
+import com.ritense.valtimo.contract.event.BuildingBlockDefinitionCreatedEvent
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
@@ -30,20 +29,20 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Component
 @SkipComponentScan
-class TemplateCaseEventListener(
+class TemplateBuildingBlockEventListener(
     private val service: TemplateService,
     private val repository: TemplateRepository,
 ) {
 
     @RunWithoutAuthorization
-    @EventListener(CaseDefinitionCreatedEvent::class)
-    fun handleCaseDefinitionCreatedEvent(event: CaseDefinitionCreatedEvent) {
+    @EventListener(BuildingBlockDefinitionCreatedEvent::class)
+    fun handleBuildingBlockDefinitionCreatedEvent(event: BuildingBlockDefinitionCreatedEvent) {
         if (event.duplicate) {
-            service.findTemplates(caseDefinitionId = event.basedOnCaseDefinitionId!!).forEach { oldTemplate ->
+            service.findTemplates(buildingBlockDefinitionId = event.basedOnBuildingBlockDefinitionId!!).forEach { oldTemplate ->
                 repository.save(
                     ValtimoTemplate(
                         key = oldTemplate.key,
-                        caseDefinitionId = event.caseDefinitionId,
+                        buildingBlockDefinitionId = event.buildingBlockDefinitionId,
                         type = oldTemplate.type,
                         metadata = oldTemplate.metadata,
                         content = oldTemplate.content,
@@ -51,13 +50,5 @@ class TemplateCaseEventListener(
                 )
             }
         }
-    }
-
-    @RunWithoutAuthorization
-    @EventListener(CaseDefinitionPreDeleteEvent::class)
-    fun handleCaseDefinitionPreDeleteEvent(event: CaseDefinitionPreDeleteEvent) {
-        service.deleteTemplatesByCaseDefinitionId(
-            caseDefinitionId = event.caseDefinitionId,
-        )
     }
 }

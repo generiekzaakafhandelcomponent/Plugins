@@ -14,21 +14,55 @@
  * limitations under the License.
  */
 
-import {NgModule} from '@angular/core';
-import {DocumentGeneratorConfigurationComponent} from './components/document-generator-configuration/document-generator-configuration.component';
-import {CommonModule} from '@angular/common';
-import {PluginTranslatePipeModule} from '@valtimo/plugin';
+import { NgModule } from "@angular/core";
+import { DocumentGeneratorConfigurationComponent } from "./components/document-generator-configuration/document-generator-configuration.component";
+import { CommonModule } from "@angular/common";
+import { PluginManagementService, PluginTranslatePipeModule } from "@valtimo/plugin";
 import {
-    CarbonListModule,
-    ConfirmationModalModule,
-    EditorModule,
+  CarbonListModule,
+  ConfirmationModalModule,
+  EditorModule,
+  FormModule,
+  InputModule as ValtimoInputModule,
+  ParagraphModule,
+  RenderInPageHeaderDirective,
+  SelectModule,
+} from "@valtimo/components";
+import {
+  ButtonModule,
+  DialogModule,
+  DropdownModule,
+  IconModule,
+  InputModule,
+  LoadingModule,
+  ModalModule,
+  NotificationModule,
+  TabsModule,
+} from "carbon-components-angular";
+import { BUILDING_BLOCK_MANAGEMENT_TAB_TOKEN, CASE_MANAGEMENT_TAB_TOKEN } from "@valtimo/shared";
+import { DocumentTemplateListComponent } from "./components/document-template-list/document-template-list.component";
+import { TranslateModule } from "@ngx-translate/core";
+import { ReactiveFormsModule } from "@angular/forms";
+import { TemplateManagementRoutingModule } from "./document-generator-management-routing.module";
+import { GenerateCsvComponent } from "./components/generate-csv/generate-csv.component";
+import { GeneratePdfComponent } from "./components/generate-pdf/generate-pdf.component";
+import { catchError, map, of } from "rxjs";
+
+@NgModule({
+  declarations: [GenerateCsvComponent, GeneratePdfComponent, DocumentGeneratorConfigurationComponent],
+  imports: [
+    CommonModule,
+    PluginTranslatePipeModule,
+    TemplateManagementRoutingModule,
     FormModule,
-    InputModule as ValtimoInputModule,
     ParagraphModule,
-    RenderInPageHeaderDirective,
     SelectModule,
-} from '@valtimo/components';
-import {
+    ConfirmationModalModule,
+    TranslateModule,
+    ReactiveFormsModule,
+    CarbonListModule,
+    EditorModule,
+    ValtimoInputModule,
     ButtonModule,
     DialogModule,
     DropdownModule,
@@ -37,60 +71,39 @@ import {
     LoadingModule,
     ModalModule,
     NotificationModule,
+    RenderInPageHeaderDirective,
     TabsModule,
-} from 'carbon-components-angular';
-import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
-import {DocumentTemplateListComponent} from './components/document-template-list/document-template-list.component';
-import {TranslateModule} from '@ngx-translate/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {TemplateManagementRoutingModule} from './document-generator-management-routing.module';
-import {GenerateCsvComponent} from './components/generate-csv/generate-csv.component';
-import {GeneratePdfComponent} from './components/generate-pdf/generate-pdf.component';
-
-@NgModule({
-    declarations: [
-        GenerateCsvComponent,
-        GeneratePdfComponent,
-        DocumentGeneratorConfigurationComponent,
-    ],
-    imports: [
-        CommonModule,
-        PluginTranslatePipeModule,
-        TemplateManagementRoutingModule,
-        FormModule,
-        ParagraphModule,
-        SelectModule,
-        ConfirmationModalModule,
-        TranslateModule,
-        ReactiveFormsModule,
-        CarbonListModule,
-        EditorModule,
-        ValtimoInputModule,
-        ButtonModule,
-        DialogModule,
-        DropdownModule,
-        IconModule,
-        InputModule,
-        LoadingModule,
-        ModalModule,
-        NotificationModule,
-        RenderInPageHeaderDirective,
-        TabsModule,
-    ],
-    exports: [
-        GenerateCsvComponent,
-        GeneratePdfComponent,
-    ],
-    providers: [
-        {
-            provide: CASE_MANAGEMENT_TAB_TOKEN,
-            useValue: {
-                translationKey: 'document-template',
-                component: DocumentTemplateListComponent,
-            },
-            multi: true,
-        }
-    ]
+  ],
+  exports: [GenerateCsvComponent, GeneratePdfComponent],
+  providers: [
+    {
+      provide: CASE_MANAGEMENT_TAB_TOKEN,
+      useFactory: (pluginManagementService: PluginManagementService) => ({
+        translationKey: "Document template",
+        component: DocumentTemplateListComponent,
+        tabRoute: "document-template",
+        enabled$: pluginManagementService.getAllPluginConfigurations().pipe(
+          map((pluginConfigs) => pluginConfigs.find((pluginConfig) => pluginConfig.pluginDefinition?.key === "document-generator")),
+          catchError(() => of(false)),
+        ),
+      }),
+      deps: [PluginManagementService],
+      multi: true,
+    },
+    {
+      provide: BUILDING_BLOCK_MANAGEMENT_TAB_TOKEN,
+      useFactory: (pluginManagementService: PluginManagementService) => ({
+        translationKey: "Document template",
+        component: DocumentTemplateListComponent,
+        tabRoute: "document-template",
+        enabled$: pluginManagementService.getAllPluginConfigurations().pipe(
+          map((pluginConfigs) => pluginConfigs.find((pluginConfig) => pluginConfig.pluginDefinition?.key === "document-generator")),
+          catchError(() => of(false)),
+        ),
+      }),
+      deps: [PluginManagementService],
+      multi: true,
+    },
+  ],
 })
-export class DocumentGeneratorPluginModule {
-}
+export class DocumentGeneratorPluginModule {}
