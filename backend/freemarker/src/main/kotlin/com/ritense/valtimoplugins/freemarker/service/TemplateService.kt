@@ -87,7 +87,7 @@ class TemplateService(
         val template = getTemplate(
             templateKey = templateKey,
             caseDefinitionId = document.definitionId().caseDefinitionId(),
-            buildingBlockDefinitionId = null,
+            buildingBlockDefinitionId = document.definitionId().buildingBlockDefinitionId(),
             templateType = templateType
         )
         return generate(template, document, processVariables, missingPlaceholderStrategy)
@@ -117,7 +117,7 @@ class TemplateService(
         document: Document? = null,
         missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER,
     ): String {
-        streamDocuments(document?.definitionId()?.caseDefinitionId()?.key).use { documentsStream ->
+        streamDocuments((document as JsonSchemaDocument?)?.definitionId()?.blueprintId()?.blueprintKey).use { documentsStream ->
             val dataModel = mutableMapOf<String, Any?>()
             document?.let {
                 dataModel["doc"] = objectMapper.convertValue<Map<String, Any?>>(document.content().asJson())
