@@ -3,22 +3,23 @@ package com.ritense.valtimoplugins.openklant.client
 import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
 import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
 import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
+import com.ritense.valtimoplugins.openklant.dto.KlantcontactCreationRequest
 import com.ritense.valtimoplugins.openklant.dto.Partij
-import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.zgw.Page
-import io.netty.handler.ssl.SslContextBuilder
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory
-import io.netty.resolver.DefaultAddressResolverGroup
+import jakarta.validation.Valid
 import mu.KotlinLogging
+import org.jetbrains.annotations.VisibleForTesting
 import org.springframework.http.HttpStatus
-import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.server.ResponseStatusException
-import reactor.netty.http.client.HttpClient
+import org.springframework.web.util.UriBuilder
+import java.net.URI
 
 class OpenKlantClient(
     private val openKlantWebClientBuilder: WebClient.Builder,
@@ -136,25 +137,45 @@ class OpenKlantClient(
             handleResponseException(e, "Error creating DigitaalAdres")
         }
 
-    suspend fun getKlantContacten(klantContactOptions: KlantContactOptions): Page<KlantContact> =
+    suspend fun getKlantcontacten(klantContactOptions: KlantcontactOptions): Page<Klantcontact> {
+        if (klantContactOptions.bsn.isNullOrBlank() &&
+            klantContactOptions.objectUuid.isNullOrBlank() &&
+            klantContactOptions.partijUuid.isNullOrBlank()
+        ) {
+            return Page(count = 0, results = emptyList())
+        }
+
         try {
-            webClient(klantContactOptions)
+            return webClient(klantContactOptions)
                 .get()
                 .uri { uriBuilder ->
-                    klantContactOptions.objectTypeId?.let {
-                        uriBuilder.queryParam(OK_OBJECTTYPE_PARAM, it)
-                    }
-                    klantContactOptions.objectUuid?.let {
-                        uriBuilder.queryParam(OK_OBJECT_ID_PARAM, it)
-                    }
-                    uriBuilder.path(OK_KLANTCONTACTEN_PATH).build()
+                    buildOpenKlantUri(uriBuilder, klantContactOptions)
                 }.retrieve()
-                .awaitBody<Page<KlantContact>>()
+                .awaitBody<Page<Klantcontact>>()
         } catch (e: WebClientResponseException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: WebClientResponseException) {
-            handleResponseException(e, "Error fetching KlantContacts")
+            handleResponseException(e, "Error fetching Klantcontacten")
         }
+    }
+
+    suspend fun postKlantcontact(
+        @Valid @RequestBody request: KlantcontactCreationRequest,
+        properties: OpenKlantProperties,
+    ) {
+        try {
+            webClient(properties)
+                .post()
+                .uri(OK_MAAK_KLANTCONTACT_PATH)
+                .bodyValue(request)
+                .retrieve()
+                .awaitBody<Unit>()
+        } catch (e: WebClientResponseException.InternalServerError) {
+            handleInternalServerError(e)
+        } catch (e: WebClientResponseException) {
+            handleResponseException(e, "Error creating Klantcontact")
+        }
+    }
 
     private fun webClient(properties: OpenKlantProperties): WebClient =
         openKlantWebClientBuilder
@@ -163,9 +184,31 @@ class OpenKlantClient(
             .defaultHeader("Authorization", "Token ${properties.token}")
             .build()
 
+    @VisibleForTesting
+    internal fun buildOpenKlantUri(
+        builder: UriBuilder,
+        options: KlantcontactOptions,
+    ): URI {
+        options.objectTypeId?.let {
+            builder.queryParam(OK_OBJECTTYPE_PARAM, it)
+        }
+        options.bsn?.let {
+            builder.queryParam(OK_BSN_PARAM, it)
+        }
+        options.objectUuid?.let {
+            builder.queryParam(OK_OBJECT_ID_PARAM, it)
+        }
+        options.partijUuid?.let {
+            builder.queryParam(OK_PARTIJ_UUID_PARAM, it)
+        }
+        return builder
+            .path(OK_KLANTCONTACTEN_PATH)
+            .build()
+    }
+
     private fun handleInternalServerError(e: WebClientResponseException.InternalServerError): Nothing {
         logger.warn { "Response body:  ${e.responseBodyAsString}" }
-        logger.error(e) { "Internal Server Error calling OpenKlant" }
+        logger.error(e) { "Internal Server Error calling Open Klant" }
         throw ResponseStatusException(
             HttpStatus.INTERNAL_SERVER_ERROR,
             "Internal Server Error calling OpenKlant",
@@ -177,7 +220,7 @@ class OpenKlantClient(
         e: WebClientResponseException,
         reason: String,
     ): Nothing {
-        logger.warn(e) { "Client error calling OpenKlant" }
+        logger.warn(e) { "Client error calling Open Klant" }
         logger.warn { "Response body:  ${e.responseBodyAsString}" }
         throw ResponseStatusException(
             e.statusCode,
@@ -190,6 +233,7 @@ class OpenKlantClient(
         private const val OK_PARTIJEN_PATH = "partijen"
         private const val OK_KLANTCONTACTEN_PATH = "klantcontacten"
         private const val OK_DIGITALE_ADRESSEN_PATH = "digitaleadressen"
+        private const val OK_MAAK_KLANTCONTACT_PATH = "maak-klantcontact"
 
         private const val OK_VERSTREKT_DOOR_PARTIJ_ID_PARAM = "verstrektDoorPartij__uuid"
         private const val OK_SOORT_PARTIJ_IDENTIFICATOR_PARAM = "partijIdentificator__codeSoortObjectId"
@@ -197,6 +241,8 @@ class OpenKlantClient(
         private const val OK_SOORT_PARTIJ_PARAM = "soortPartij"
         private const val OK_OBJECTTYPE_PARAM = "onderwerpobject__onderwerpobjectidentificatorCodeObjecttype"
         private const val OK_OBJECT_ID_PARAM = "onderwerpobject__onderwerpobjectidentificatorObjectId"
+        private const val OK_BSN_PARAM = "hadBetrokkene__wasPartij__partijIdentificator__objectId"
+        private const val OK_PARTIJ_UUID_PARAM = "hadBetrokkene__wasPartij__uuid"
 
         private val logger = KotlinLogging.logger { }
     }
