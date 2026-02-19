@@ -127,14 +127,10 @@ class SuwinetBijstandsregelingenService(
     private fun getVorderingen(vorderingen: MutableList<ClientSuwi.Vordering>): List<VorderingDto> =
         vorderingen.map { vordering ->
             VorderingDto(
-                bron = BronDto(
-                    cdKolomSuwi = vordering.bron.cdKolomSuwi,
-                    cdVestigingSuwi = vordering.bron.cdVestigingSuwi,
-                    cdPartijSuwi = vordering.bron.cdPartijSuwi
-                ),
-                cdRedenVordering = vordering.cdRedenVordering,
+                bron = getBron(vordering.bron),
+                cdRedenVordering = vordering.cdRedenVordering.orEmpty(),
                 datBesluitVordering = dateTimeService.fromSuwinetToDateString(vordering.datBesluitVordering),
-                identificatienrVordering = vordering.identificatienrVordering,
+                identificatienrVordering = vordering.identificatienrVordering.orEmpty(),
                 partnersVordering = vordering.partnerVordering?.let{ getPartners(vordering.partnerVordering) } ?: mutableListOf() ,
                 szWet = SzWetDto(cdSzWet = vordering.szWet.cdSzWet)
             )
@@ -153,11 +149,7 @@ class SuwinetBijstandsregelingenService(
                 datBetaalbaarBijzBijstand = dateTimeService.toLocalDate(specifiekeGegevensBijzBijstandItem.datBetaalbaarBijzBijstand, SUWINET_DATEIN_PATTERN),
                 partnerBijzBijstand = getPartnerBijstand(specifiekeGegevensBijzBijstandItem.partnerBijzBijstand),
                 szWet = SzWetDto(specifiekeGegevensBijzBijstandItem.szWet?.cdSzWet),
-                bron = BronDto(
-                    cdKolomSuwi = specifiekeGegevensBijzBijstandItem.bron?.cdKolomSuwi ?: 0,
-                    cdPartijSuwi = specifiekeGegevensBijzBijstandItem.bron.cdPartijSuwi.orEmpty(),
-                    cdVestigingSuwi = specifiekeGegevensBijzBijstandItem.bron.cdVestigingSuwi.orEmpty(),
-                )
+                bron = getBron(specifiekeGegevensBijzBijstandItem.bron),
 
             )
         }
