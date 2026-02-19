@@ -1,7 +1,9 @@
 package com.ritense.valtimoplugins.openklant.dto
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class CreatePartijRequest(
     @JsonProperty("nummer")
     val nummer: String,
@@ -26,9 +28,9 @@ data class CreatePartijRequest(
     @JsonProperty("indicatieActief")
     val indicatieActief: Boolean,
     @JsonProperty("bezoekadres")
-    val bezoekadres: Partij.Adres?,
+    val bezoekadres: Adres?,
     @JsonProperty("correspondentieAdres")
-    val correspondentieAdres: Partij.Adres?,
+    val correspondentieAdres: Adres?,
     @JsonProperty("partijIdentificatie")
     val partijIdentificatie: Partij.PartijIdentificatie?,
 )

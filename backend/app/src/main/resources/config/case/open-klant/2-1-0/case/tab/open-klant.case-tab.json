@@ -1,0 +1,26 @@
+[
+  {
+    "key": "open-klant-widget-tab",
+    "name": "Summary",
+    "type": "widgets",
+    "contentKey": "-"
+  },
+  {
+    "key": "contactgeschiedenis",
+    "name": "Contactgeschiedenis",
+    "type": "custom",
+    "contentKey": "generieke-contactgeschiedenis"
+  },
+  {
+    "key": "progress",
+    "name": null,
+    "type": "standard",
+    "contentKey": "progress"
+  },
+  {
+    "key": "audit",
+    "name": null,
+    "type": "standard",
+    "contentKey": "audit"
+  }
+]

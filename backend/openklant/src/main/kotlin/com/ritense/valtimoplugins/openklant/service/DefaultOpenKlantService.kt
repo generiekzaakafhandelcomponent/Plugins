@@ -3,16 +3,19 @@ package com.ritense.valtimoplugins.openklant.service
 import com.ritense.valtimoplugins.openklant.client.OpenKlantClient
 import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
 import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
-import com.ritense.valtimoplugins.openklant.dto.KlantContact
+import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
-import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.model.PartijInformation
 
 class DefaultOpenKlantService(
     private val openKlantClient: OpenKlantClient,
     private val partijFactory: PartijFactory,
+    private val klantcontactFactory: KlantcontactFactory,
 ) : OpenKlantService {
     override suspend fun storeContactInformation(
         properties: OpenKlantProperties,
@@ -20,7 +23,7 @@ class DefaultOpenKlantService(
     ): String {
         val partij = openKlantClient.getPartijByBsn(contactInformation.bsn, properties)
         return if (partij != null) {
-            if (!isPreferredAddress(contactInformation.emailAddress, partij, properties)) {
+            if (!isPreferredAddress(contactInformation.emailadres, partij, properties)) {
                 updateExistingPartij(partij, contactInformation, properties)
             }
             partij.uuid
@@ -29,8 +32,26 @@ class DefaultOpenKlantService(
         }
     }
 
-    override suspend fun getAllKlantContacten(properties: KlantContactOptions): List<KlantContact> =
-        openKlantClient.getKlantContacten(properties).results
+    override suspend fun getOrCreatePartij(
+        properties: OpenKlantProperties,
+        partijInformation: PartijInformation,
+    ): Partij =
+        openKlantClient.getPartijByBsn(partijInformation.bsn, properties)
+            ?: createNewPartij(partijInformation, properties)
+
+    override suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
+        openKlantClient.getKlantcontacten(properties).results
+
+    override suspend fun postKlantcontact(
+        properties: OpenKlantProperties,
+        klantcontactCreationInformation: KlantcontactCreationInformation,
+    ) {
+        val klantContactRequest = klantcontactFactory.createKlantcontactRequest(klantcontactCreationInformation)
+        openKlantClient.postKlantcontact(
+            request = klantContactRequest,
+            properties = properties,
+        )
+    }
 
     private suspend fun isPreferredAddress(
         emailAddress: String,
@@ -50,18 +71,18 @@ class DefaultOpenKlantService(
         openKlantClient.createDigitaalAdres(
             CreateDigitaalAdresRequest(
                 verstrektDoorPartij = partij.getUuidReference(),
-                adres = contactInformation.emailAddress,
+                adres = contactInformation.emailadres,
                 soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
-                referentie = contactInformation.caseNumber,
+                referentie = contactInformation.zaaknummer,
             ),
             properties,
         )
 
     private suspend fun createNewPartij(
-        contactInformation: ContactInformation,
+        partijInformation: PartijInformation,
         properties: OpenKlantProperties,
     ): Partij {
-        val newPartij = partijFactory.createFromBsn(contactInformation)
+        val newPartij = partijFactory.createFromBsn(partijInformation)
         return openKlantClient.createPartij(newPartij, properties)
     }
 
@@ -83,7 +104,7 @@ class DefaultOpenKlantService(
             }
 
         // Maak alleen nieuwe aan wanneer deze uniek is (niet bestaat)
-        if ("${partij.getUuidReference().uuid},${contactInformation.caseNumber},${SoortDigitaalAdres.EMAIL}" !in
+        if ("${partij.getUuidReference().uuid},${contactInformation.zaaknummer},${SoortDigitaalAdres.EMAIL}" !in
             digitaleUniekeReferenties
         ) {
             digitaleAdressen.add(createDigitalAddress(partij, contactInformation, properties))
@@ -98,7 +119,7 @@ class DefaultOpenKlantService(
     ): String {
         val partij = openKlantClient.getPartijByBsn(contactInformation.bsn, properties)
         return if (partij != null) {
-            if (!isPreferredAddress(contactInformation.emailAddress, partij, properties)) {
+            if (!isPreferredAddress(contactInformation.emailadres, partij, properties)) {
                 updateExistingPartij(partij, contactInformation, properties)
             }
             partij.uuid

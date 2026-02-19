@@ -1,0 +1,104 @@
+@use '@carbon/styles/scss/themes';
+
+// Optionally use your own, custom theme:
+// @use '/my/carbon/theme/override';
+
+// See: https://docs.valtimo.nl/customizing-valtimo/front-end-customization/customizing-carbon-theme
+
+
+.refresh-container {
+  height: 3rem;
+  transition: height 0.6s cubic-bezier(.08, .82, .17, 1);
+  transition-delay: 1200ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.no-height {
+  height: 0;
+  transition: height 0.6s cubic-bezier(.08, .82, .17, 1);
+  transition-delay: 1200ms;
+}
+
+.valtimo-timeline {
+  background-color: var(--cds-layer-01);
+
+  p {
+    font-size: var(--cds-font-size-normal);
+  }
+
+  .timeline:before {
+    background-color: var(--cds-border-strong-01);
+  }
+
+  .timeline-date>p {
+    line-height: 1;
+  }
+
+  .timeline-item:before {
+    border: 2px solid var(--cds-border-strong-01);
+    background-color: var(--cds-layer-02);
+  }
+
+  .timeline-content {
+    background-color: var(--cds-layer-02);
+    color: var(--cds-text-secondary);
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      left: -6px;
+      top: 2.25rem;
+      transform: rotate(45deg);
+      background-color: var(--cds-layer-02);
+    }
+
+    .timeline-author {
+      font-size: var(--cds-text-base);
+      font-weight: var(--cds-font-weight-normal);
+      padding: 2em 2em 0 2em;
+    }
+
+    summary {
+      color: black;
+      padding: 0 2em 1em 2em;
+    }
+
+    details p {
+      padding: 0 2em 2em 2em;
+    }
+  }
+
+  .klantcontact-number {
+    font-size: 0.9em;
+    font-style: normal;
+  }
+
+  .failed {
+    .timeline-date {
+      color: var(--cds-text-error);
+    }
+
+    .timeline-content {
+      background-color: var(--cds-notification-background-error);
+      color: var(--cds-text-error);
+
+      &:before {
+        background-color: var(--cds-notification-background-error);
+      }
+      summary {
+        color: var(--cds-text-error);
+        }
+    }
+  }
+
+  .failed.timeline-item:before {
+    background-color: var(--cds-notification-background-error);
+    border: 2px solid var(--cds-text-error);
+  }
+}
