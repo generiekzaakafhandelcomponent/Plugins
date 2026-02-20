@@ -324,7 +324,8 @@ class SuwiNetPlugin(
                 kadasterService = suwinetKadasterInfoService.createKadasterService(),
                 dynamicProperties = dynamicProperties
             ).let {
-                execution.processInstance.setVariable(
+                // for use in a multi instance task
+                execution.processInstance.setVariableLocal(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
             }
