@@ -16,7 +16,7 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take, tap} from 'rxjs';
 import {BijstandsRegelingenInfoConfig} from '../../models';
 
 @Component({
@@ -37,9 +37,15 @@ export class BijstandsregelingenInfoComponent
     private saveSubscription!: Subscription;
     private readonly formValue$ = new BehaviorSubject<BijstandsRegelingenInfoConfig| null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
+    defaultValues$;
 
     ngOnInit(): void {
         this.openSaveSubscription();
+        this.defaultValues$  = this.prefillConfiguration$.pipe(
+        map(config => {
+                return config.dynamicProperties?.map( value => ( {key: value, value: value}))
+            })
+        )
     }
 
     ngOnDestroy(): void {

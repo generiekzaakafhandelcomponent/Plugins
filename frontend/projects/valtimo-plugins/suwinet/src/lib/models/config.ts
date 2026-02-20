@@ -32,52 +32,70 @@ export interface BaseActionConfig {
 
 export interface BrpPersoonInfoConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface BrpPartnerInfoConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface BijstandsRegelingenInfoConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface BrpKinderenInfoConfig extends BaseActionConfig {
     kinderenBsns: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 export interface DUOPersoonsInfoComponent extends BaseActionConfig{
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface DUOStudiefinancieringInfoComponent extends BaseActionConfig{
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface KadasterobjectenConfig extends BaseActionConfig {
+    codeGemeente: string;
+    gemeentenaam: string;
+    sectie: string;
+    perceelnr: string;
+    volgnrAppartementsrecht: string;
+    dynamicProperties: Array<string>;
+    resultProcessVariableName: string;
+}
+
+export interface KadastraleAanduidingenConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface RdwVoertuigenConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
 }
 
 export interface SVBPersoonsInfoComponent extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
-    maxPeriods: number;
 }
 
 export interface UwvInkomstenPersoonInfoConfig extends BaseActionConfig {
     bsn: string;
+    dynamicProperties: Array<string>;
     resultProcessVariableName: string;
-    maxPeriods: number;
 }
 

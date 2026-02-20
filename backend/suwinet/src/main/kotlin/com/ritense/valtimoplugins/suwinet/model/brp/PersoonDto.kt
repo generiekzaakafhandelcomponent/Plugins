@@ -28,6 +28,9 @@ data class PersoonDto(
 
     val naamgebruik: String? = "",
     val geslachtsAanduiding: String? = "",
+
+    val propertiesMap: Map<String, Any?> = mapOf(),
+    val properties: List<String> = listOf()
     ){
     data class Verblijfstitel(
         val codeVerblijfstitel: CodeVerblijfstitel,

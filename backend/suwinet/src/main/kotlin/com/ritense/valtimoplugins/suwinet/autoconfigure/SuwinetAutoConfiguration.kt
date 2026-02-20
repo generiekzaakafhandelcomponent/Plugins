@@ -1,16 +1,14 @@
 package com.ritense.valtimoplugins.suwinet.autoconfigure
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.service.PluginService
-import com.ritense.valtimoplugins.suwinet.service.UwvCodeService
-import com.ritense.valtimoplugins.suwinet.service.UwvSoortIkvService
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimo.contract.annotation.ProcessBean
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.plugin.SuwiNetPluginFactory
-import com.ritense.valtimoplugins.suwinet.service.CodesUitkeringsperiodeService
 import com.ritense.valtimoplugins.suwinet.service.DateTimeService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDocumentWriterService
-import com.ritense.valtimoplugins.suwinet.service.NationaliteitenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBijstandsregelingenService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpStoreToDocService
@@ -27,20 +25,22 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SuwinetAutoConfiguration {
 
-
     @Bean
     @ProcessBean
     fun suwinetDocumentWriterService(
         documentService: DocumentService
     ): SuwinetDocumentWriterService {
-        return SuwinetDocumentWriterService(
-            documentService
-        )
+        return SuwinetDocumentWriterService(documentService)
     }
 
     @Bean
     fun suwinetSOAPClient(): SuwinetSOAPClient {
         return SuwinetSOAPClient()
+    }
+
+    @Bean
+    fun dynamicResponseFactory(objectMapper: ObjectMapper): DynamicResponseFactory {
+        return DynamicResponseFactory(objectMapper)
     }
 
     @Bean
@@ -50,98 +50,66 @@ class SuwinetAutoConfiguration {
     }
 
     @Bean
-    fun nationaliteitenService(): NationaliteitenService {
-        return NationaliteitenService()
-    }
-
-    @Bean
-    fun codesUitkeringsService(): CodesUitkeringsperiodeService {
-        return CodesUitkeringsperiodeService()
-    }
-
-    @Bean
     @ProcessBean
     fun suwinetBrpInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetBrpInfoService {
-        return SuwinetBrpInfoService(
-            suwinetSOAPClient,
-            nationaliteitenService(),
-            DateTimeService(),
-        )
+        return SuwinetBrpInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
     @ProcessBean
     fun suwinetRdwService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetRdwService {
-        return SuwinetRdwService(
-            suwinetSOAPClient
-        )
+        return SuwinetRdwService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
     @ProcessBean
     fun suwinetDUOPersoonsInfoService(
-        suwinetSOAPClient: SuwinetSOAPClient
+        suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetDuoPersoonsInfoService {
-        return SuwinetDuoPersoonsInfoService(suwinetSOAPClient)
+        return SuwinetDuoPersoonsInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
     @ProcessBean
     fun suwinetDuoStudiefinancieringInfoService(
-        suwinetSOAPClient: SuwinetSOAPClient
+        suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetDuoStudiefinancieringInfoService {
-        return SuwinetDuoStudiefinancieringInfoService(suwinetSOAPClient)
+        return SuwinetDuoStudiefinancieringInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
     @ProcessBean
     fun suwinetSvbPersoonsInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        codesUitkeringsPeriodeService: CodesUitkeringsperiodeService
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetSvbPersoonsInfoService {
-        return SuwinetSvbPersoonsInfoService(suwinetSOAPClient, codesUitkeringsPeriodeService)
-    }
-
-    @Bean
-    @ProcessBean
-    fun uwvCodeService() : UwvCodeService {
-        return UwvCodeService()
-    }
-
-    @Bean
-    @ProcessBean
-    fun uwvSoortIkvService() : UwvSoortIkvService {
-        return UwvSoortIkvService()
+        return SuwinetSvbPersoonsInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
     @ProcessBean
     fun suwinetUwvPersoonsIkvService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        dateTimeService: DateTimeService,
-        uwvCodeService: UwvCodeService,
-        uwvSoortIkvService: UwvSoortIkvService
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetUwvPersoonsIkvService {
-        return SuwinetUwvPersoonsIkvService(
-            suwinetSOAPClient,
-            dateTimeService,
-            uwvCodeService,
-            uwvSoortIkvService
-        )
+        return SuwinetUwvPersoonsIkvService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
     @ProcessBean
     fun suwinetKadasterInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetKadasterInfoService {
-        return SuwinetKadasterInfoService(
-            suwinetSOAPClient
-        )
+        return SuwinetKadasterInfoService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean
@@ -163,12 +131,9 @@ class SuwinetAutoConfiguration {
     @ProcessBean
     fun suwinetBijstandsRegelingenInfoService(
         suwinetSOAPClient: SuwinetSOAPClient,
-        dateTimeService: DateTimeService,
+        dynamicResponseFactory: DynamicResponseFactory
     ): SuwinetBijstandsregelingenService {
-        return SuwinetBijstandsregelingenService(
-            suwinetSOAPClient,
-            dateTimeService,
-        )
+        return SuwinetBijstandsregelingenService(suwinetSOAPClient, dynamicResponseFactory)
     }
 
     @Bean

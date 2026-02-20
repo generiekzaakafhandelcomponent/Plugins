@@ -9,7 +9,7 @@ import com.ritense.valtimo.implementation.dkd.KadasterInfo.*
 import com.ritense.valtimoplugins.BaseTest
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
-import com.ritense.valtimoplugins.suwinet.model.KadastraleObjectenDto
+import com.ritense.valtimoplugins.suwinet.model.KadastraleObjectDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -99,7 +99,7 @@ internal class SuwinetKadasterInfoServiceTest : BaseTest() {
     }
 
 
-    private fun printResult(result: KadastraleObjectenDto) {
+    private fun printResult(result: KadastraleObjectDto) {
         val mapper = jacksonObjectMapper().enable(SerializationFeature.INDENT_OUTPUT)
         val json = mapper.valueToTree<JsonNode>(result)
         val jout = mapper.writeValueAsString(json)

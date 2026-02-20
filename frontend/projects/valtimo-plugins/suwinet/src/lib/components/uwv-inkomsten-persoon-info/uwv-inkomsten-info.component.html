@@ -33,6 +33,12 @@
             [required]="true"
             [tooltip]="'bsnTooltip' | pluginTranslate : pluginId | async"
     ></v-input>
+    <valtimo-carbon-multi-input
+            name="dynamicProperties"
+            [title]="'dynamicProperties' | pluginTranslate : pluginId | async"
+            [defaultValues]="defaultValues$ | async"
+            [fullWidth]="true"
+    ></valtimo-carbon-multi-input>
     <v-input
             name="resultProcessVariableName"
             [title]="'resultProcessVariableName' | pluginTranslate : pluginId | async"
@@ -41,17 +47,6 @@
             [defaultValue]="obs.prefill?.resultProcessVariableName"
             [disabled]="obs.disabled"
             [tooltip]="'resultProcessVariableNameTooltip' | pluginTranslate : pluginId | async"
-            [required]="true"
-    >
-    </v-input>
-    <v-input
-            name="maxPeriods"
-            [title]="'maxPeriods' | pluginTranslate : pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.maxPeriods"
-            [disabled]="obs.disabled"
-            [tooltip]="'maxPeriodsTooltip' | pluginTranslate : pluginId | async"
             [required]="true"
     >
     </v-input>

@@ -17,25 +17,25 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
-import {BrpPartnerInfoConfig} from '../../models';
+import {KadasterobjectenConfig, KadastraleAanduidingenConfig} from '../../models';
 
 @Component({
-    selector: 'brp-partner-info',
-    templateUrl: './brp-partner-info.component.html',
-    styleUrls: ['./brp-partner-info.component.scss'],
+    selector: 'kadaster-aanduidingen-info',
+    templateUrl: './kadastrale-aanduidingen.component.html',
+    styleUrls: ['./kadastrale-aanduidingen.component.scss'],
 })
 
-export class BrpPartnerInfoComponent
+export class KadastraleAanduidingenComponent
     implements FunctionConfigurationComponent, OnInit, OnDestroy {
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
-    @Input() prefillConfiguration$: Observable<BrpPartnerInfoConfig>;
+    @Input() prefillConfiguration$: Observable<KadastraleAanduidingenConfig>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<BrpPartnerInfoConfig> = new EventEmitter<BrpPartnerInfoConfig>();
+    @Output() configuration: EventEmitter<KadasterobjectenConfig> = new EventEmitter<KadasterobjectenConfig>();
 
     private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<BrpPartnerInfoConfig | null>(null);
+    private readonly formValue$ = new BehaviorSubject<KadasterobjectenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
     defaultValues$;
@@ -43,22 +43,20 @@ export class BrpPartnerInfoComponent
     ngOnInit(): void {
         this.openSaveSubscription();
         this.defaultValues$ = this.prefillConfiguration$.pipe(
-            map(config => {
-                return config?.dynamicProperties?.map(value => ({key: value, value: value}))
-            })
-        )
+            map(config => config?.dynamicProperties?.map(value => ({key: value, value: value})))
+        );
     }
 
     ngOnDestroy(): void {
         this.saveSubscription?.unsubscribe();
     }
 
-    formValueChange(formValue: BrpPartnerInfoConfig): void {
+    formValueChange(formValue: KadasterobjectenConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
     }
 
-    private handleValid(formValue: BrpPartnerInfoConfig): void {
+    private handleValid(formValue: KadasterobjectenConfig): void {
         const valid = !!(
             formValue.bsn &&
             formValue.resultProcessVariableName

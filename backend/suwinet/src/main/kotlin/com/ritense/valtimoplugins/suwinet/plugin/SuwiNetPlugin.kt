@@ -15,6 +15,8 @@ import com.ritense.valtimoplugins.suwinet.service.SuwinetBijstandsregelingenServ
 import com.ritense.valtimoplugins.suwinet.service.SuwinetBrpInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetDuoStudiefinancieringInfoService
+import com.fasterxml.jackson.module.kotlin.convertValue
+import com.ritense.valtimoplugins.suwinet.model.KadastraleAanduidingDto
 import com.ritense.valtimoplugins.suwinet.service.SuwinetKadasterInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
@@ -63,6 +65,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP info for case ${execution.businessKey}" }
@@ -70,13 +73,14 @@ class SuwiNetPlugin(
         try {
             require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
+
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig(),
                 suffix
             )
 
             suwinetBrpInfoService.getPersoonsgegevensByBsn(
-                bsn, suwinetBrpInfoService.getBRPInfo()
+                bsn, suwinetBrpInfoService.getBRPInfo(), dynamicProperties
             )?.also {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -108,18 +112,20 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP partner info for case ${execution.businessKey}" }
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
         try {
+
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig(),
                 suffix
             )
 
             suwinetBrpInfoService.getPersoonsgegevensByBsn(
-                bsn, suwinetBrpInfoService.getBRPInfo()
+                bsn, suwinetBrpInfoService.getBRPInfo(), dynamicProperties
             )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -148,10 +154,12 @@ class SuwiNetPlugin(
         @PluginActionProperty kinderenBsns: List<String>,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting BRP Kinderen info for case ${execution.businessKey}" }
         try {
+
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig(),
                 suffix
@@ -160,7 +168,7 @@ class SuwiNetPlugin(
             val kinderen = kinderenBsns.mapNotNull {
                 require(it.isValidBsn()) { "Provided BSN does not pass elfproef" }
                 suwinetBrpInfoService.getPersoonsgegevensByBsn(
-                    it, suwinetBrpInfoService.getBRPInfo()
+                    it, suwinetBrpInfoService.getBRPInfo(), dynamicProperties
                 )
             }
             kinderen.let {
@@ -193,6 +201,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -205,10 +214,12 @@ class SuwiNetPlugin(
             )
 
             suwinetDuoPersoonsInfoService.getPersoonsInfoByBsn(
-                bsn = bsn, suwinetDuoPersoonsInfoService.createDuoService()
-            ).let {
+                bsn = bsn,
+                duoInfo = suwinetDuoPersoonsInfoService.createDuoService(),
+                dynamicProperties = dynamicProperties
+            )?.let {
                 execution.processInstance.setVariable(
-                    resultProcessVariableName,objectMapper.convertValue(it)
+                    resultProcessVariableName, objectMapper.convertValue(it)
                 )
             }
         } catch (e: Exception) {
@@ -226,6 +237,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -239,7 +251,8 @@ class SuwiNetPlugin(
 
             suwinetDuoStudiefinancieringInfoService.getStudiefinancieringInfoByBsn(
                 bsn = bsn,
-                suwinetDuoStudiefinancieringInfoService.createDuoStudiefinancieringService()
+                duoStudiefinancieringInfo = suwinetDuoStudiefinancieringInfoService.createDuoStudiefinancieringService(),
+                dynamicProperties = dynamicProperties
             ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -251,19 +264,19 @@ class SuwiNetPlugin(
     }
 
     @PluginAction(
-        key = "get-kadastrale-objecten",
-        title = "SuwiNet kadaster info",
-        description = "SuwiNet Kadaster info",
+        key = "get-kadastrale-aanduidingen",
+        title = "SuwiNet kadastrale aanduidingen",
+        description = "SuwiNet Kadastrale aanduidingen ophalen op basis van BSN",
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
-    fun getKadastraleObjecten(
+    fun getKadastraleAanduidingen(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
-        logger.info { "Getting kadastrale objecten for case ${execution.businessKey}" }
+        logger.info { "Getting kadastrale aanduidingen for case ${execution.businessKey}" }
 
         try {
             suwinetKadasterInfoService.setConfig(
@@ -271,10 +284,48 @@ class SuwiNetPlugin(
                 suffix
             )
 
-            suwinetKadasterInfoService.getPersoonsinfoByBsn(
-                bsn, suwinetKadasterInfoService.createKadasterService()
+            suwinetKadasterInfoService.getKadastraleAanduidingenByBsn(
+                bsn = bsn,
+                kadasterService = suwinetKadasterInfoService.createKadasterService()
             ).let {
                 execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue<Any>(it)
+                )
+            }
+
+        } catch (e: Exception) {
+            handleSuwinetException(e)
+        }
+    }
+
+    @PluginAction(
+        key = "get-kadastrale-object",
+        title = "SuwiNet kadastrale object",
+        description = "SuwiNet Kadastrale object ophalen op basis van kadastrale aanduiding",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getKadastraleObject(
+        @PluginActionProperty kadastraleAanduiding: KadastraleAanduidingDto,
+        @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
+        execution: DelegateExecution
+    ) {
+        logger.info { "Getting kadastrale object for case ${execution.businessKey}" }
+
+        try {
+            suwinetKadasterInfoService.setConfig(
+                getSuwinetSOAPClientConfig(),
+                suffix
+            )
+
+            suwinetKadasterInfoService.getKadastraleObjectByAanduiding(
+                kadastraleAanduiding = kadastraleAanduiding,
+                kadasterService = suwinetKadasterInfoService.createKadasterService(),
+                dynamicProperties = dynamicProperties
+            ).let {
+                // for use in a multi instance task
+                execution.processInstance.setVariableLocal(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
             }
@@ -294,10 +345,12 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
         logger.info { "Getting voertuigen for case ${execution.businessKey}" }
+
 
         try {
             suwinetRdwService.setConfig(
@@ -306,16 +359,17 @@ class SuwiNetPlugin(
             )
 
             suwinetRdwService.getVoertuigbezitInfoPersoonByBsn(
-                bsn = bsn, suwinetRdwService.getRDWService()
+                bsn = bsn,
+                dynamicProperties = dynamicProperties,
+                rdwService = suwinetRdwService.getRDWService()
             ).let {
-                if(it.motorVoertuigen.isNotEmpty()) {
-                    execution.processInstance.setVariable(
-                        resultProcessVariableName, objectMapper.convertValue(it)
-                    )
-                }
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
             }
         } catch (e: Exception) {
-            handleSuwinetException(e)
+            logger.info("Exiting scope due to nested error.", e)
+            return
         }
 
     }
@@ -329,8 +383,8 @@ class SuwiNetPlugin(
     fun getSvbPersoonsInfo(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
-        @PluginActionProperty maxPeriods: Int,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting SVB info for case ${execution.businessKey}" }
@@ -342,10 +396,10 @@ class SuwiNetPlugin(
             )
 
             suwinetSvbPersoonsInfoService.getPersoonsgegevensByBsn(
-                bsn,
-                suwinetSvbPersoonsInfoService.createSvbInfo(),
-                maxPeriods
-            )?.let {
+                bsn = bsn,
+                svbInfo = suwinetSvbPersoonsInfoService.createSvbInfo(),
+                dynamicProperties = dynamicProperties
+            ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
@@ -365,8 +419,8 @@ class SuwiNetPlugin(
     fun getUWVInkomsteninfo(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
-        @PluginActionProperty maxPeriods: Int,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -380,9 +434,9 @@ class SuwiNetPlugin(
         try {
             suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
                 bsn = bsn,
-                suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
-                maxPeriods
-            )?.let {
+                uwvIkvInfoService = suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
+                dynamicProperties = dynamicProperties
+            ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
@@ -403,6 +457,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         logger.info { "Getting Bijstandsregelingen for case ${execution.businessKey}" }
@@ -416,8 +471,10 @@ class SuwiNetPlugin(
 
         try {
             suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(bsn,
-                suwinetBijstandsregelingenService.createBijstandsregelingenService())
+                suwinetBijstandsregelingenService.createBijstandsregelingenService(),
+                dynamicProperties)
                 ?.let {
+                    logger.debug { objectMapper.writeValueAsString(it)  }
                     execution.processInstance.setVariable(
                         resultProcessVariableName, objectMapper.convertValue(it)
                     )

@@ -6,18 +6,18 @@ import com.ritense.valtimoplugins.dkd.duodossierstudiefinancieringgsd.FWI
 import com.ritense.valtimoplugins.dkd.duodossierstudiefinancieringgsd.ObjectFactory
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
-import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
-import com.ritense.valtimoplugins.suwinet.model.DuoStudiefinancieringInfoDto
+import com.ritense.valtimoplugins.suwinet.model.DynamicResponseDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
 
-
 class SuwinetDuoStudiefinancieringInfoService(
-    private val suwinetSOAPClient: SuwinetSOAPClient
+    private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val dynamicResponseFactory: DynamicResponseFactory
 ) {
 
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
@@ -47,11 +47,11 @@ class SuwinetDuoStudiefinancieringInfoService(
 
     fun getStudiefinancieringInfoByBsn(
         bsn: String,
-        duoStudiefinancieringInfo: DUOInfo
-    ): DuoStudiefinancieringInfoDto {
+        duoStudiefinancieringInfo: DUOInfo,
+        dynamicProperties: List<String> = listOf()
+    ): DynamicResponseDto {
         logger.info { "Getting DUO studiefinanciering from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
-        /* retrieve duo studiefinanciering info by bsn */
         try {
             val studiefinancieringInfoRequest = objectFactory
                 .createDUOStudiefinancieringInfo()
@@ -61,7 +61,7 @@ class SuwinetDuoStudiefinancieringInfoService(
 
             val response: DUOStudiefinancieringInfoResponse =
                 duoStudiefinancieringInfo.duoStudiefinancieringInfo(studiefinancieringInfoRequest)
-            return response.unwrapResponse(bsn)
+            return response.unwrapResponse(dynamicProperties)
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -86,7 +86,7 @@ class SuwinetDuoStudiefinancieringInfoService(
         }
     }
 
-    private fun DUOStudiefinancieringInfoResponse.unwrapResponse(bsn: String): DuoStudiefinancieringInfoDto {
+    private fun DUOStudiefinancieringInfoResponse.unwrapResponse(dynamicProperties: List<String>): DynamicResponseDto {
 
         val responseValue = content
             .firstOrNull()
@@ -95,9 +95,9 @@ class SuwinetDuoStudiefinancieringInfoService(
 
         return when (responseValue) {
             is DUOStudiefinancieringInfoResponse.ClientSuwi -> {
-                DuoStudiefinancieringInfoDto(
-                    responseValue.burgerservicenr,
-                    getStudiefinancieringen(responseValue.studiefinanciering)
+                DynamicResponseDto(
+                    properties = getAvailableProperties(responseValue),
+                    dynamicProperties = getDynamicProperties(responseValue, dynamicProperties)
                 )
             }
 
@@ -107,29 +107,24 @@ class SuwinetDuoStudiefinancieringInfoService(
                 )
             }
 
-            else -> {
-                val nietsGevonden = objectFactory.createNietsGevonden("test")
-                if (nietsGevonden.name.equals(content[0].name)) {
-                    return DuoStudiefinancieringInfoDto(bsn, listOf())
-                } else {
-                    throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
-                }
-            }
+            else -> DynamicResponseDto(emptyList(), emptyMap())
         }
     }
 
-    private fun getStudiefinancieringen(studiefinancieringen: List<DUOStudiefinancieringInfoResponse.ClientSuwi.Studiefinanciering>): List<DuoStudiefinancieringInfoDto.Studiefinanciering> {
-        return studiefinancieringen.map {
-            DuoStudiefinancieringInfoDto.Studiefinanciering(
-                it.datBToekenningsperiodeStufi ?: "",
-                it.datEToekenningsperiodeStufi ?: "",
-                it.cdToekenningBasisbeursStufi ?: "",
-                it.indAanvullendeBeursStufi ?: "",
-                it.cdStatusPartnertoeslagStufi ?: "",
-                it.cdStatusEenOudertoeslagStufi ?: "",
-                it.indToekenningWtosVo18 ?: ""
-            )
+    private fun getAvailableProperties(info: Any): List<String> =
+        dynamicResponseFactory.toFlatMap(info).keys.toList()
+
+    private fun getDynamicProperties(info: Any, dynamicProperties: List<String>): Map<String, Any?> {
+        val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) propertiesMap[prop] = flatMap[prop]
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd('*')
+                flatMap.keys.forEach { if (it.startsWith(prefixValue)) propertiesMap[it] = flatMap[it] }
+            }
         }
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
     }
 
     companion object {

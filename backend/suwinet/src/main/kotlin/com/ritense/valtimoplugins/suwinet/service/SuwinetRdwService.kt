@@ -1,6 +1,5 @@
 package com.ritense.valtimoplugins.suwinet.service
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.valtimoplugins.dkd.rdwdossier.FWI
 import com.ritense.valtimoplugins.dkd.rdwdossier.KentekenInfo
 import com.ritense.valtimoplugins.dkd.rdwdossier.KentekenInfoResponse
@@ -9,10 +8,10 @@ import com.ritense.valtimoplugins.dkd.rdwdossier.RDW
 import com.ritense.valtimoplugins.dkd.rdwdossier.VoertuigbezitInfoPersoonResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
-import com.ritense.valtimoplugins.suwinet.model.MotorvoertuigDto
-import com.ritense.valtimoplugins.suwinet.model.SoortVoertuig
+import com.ritense.valtimoplugins.suwinet.model.DynamicResponseDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
@@ -26,7 +25,8 @@ const val SUWINET_DATE_PATTERN = "yyyyMMdd"
 const val SUWINET_TIME_PATTERN = "HHmmss00"
 
 class SuwinetRdwService(
-    private val suwinetSOAPClient: SuwinetSOAPClient
+    private val suwinetSOAPClient: SuwinetSOAPClient,
+    private val dynamicResponseFactory: DynamicResponseFactory,
 ) {
     lateinit var rdwService: RDW
     lateinit var soapClientConfig: SuwinetSOAPClientConfig
@@ -55,20 +55,24 @@ class SuwinetRdwService(
 
     fun getVoertuigbezitInfoPersoonByBsn(
         bsn: String,
-        rdwService: RDW
-    ): MotorvoertuigDto {
+        rdwService: RDW,
+        dynamicProperties: List<String>,
+    ): DynamicResponseDto {
 
-        /* configure soap service */
         this.rdwService = rdwService
 
         logger.info { "retrieving RDW Voertuigen info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         return try {
-            // retrieve voertuigen bezit by bsn
             val kentekens = retrieveVoertuigenBezitInfo(bsn)
 
-            // retrieve voertuigen details from kenteken list
-            getVoertuigenDetails(kentekens)
+            val aansprakelijken = kentekens.mapNotNull { retrieveAansprakelijkeInfoFromSuwi(it) }
+            if (aansprakelijken.isEmpty()) return DynamicResponseDto(emptyList(), emptyMap())
+            val wrapper = VoertuigenWrapper(aansprakelijken)
+            DynamicResponseDto(
+                properties = getAvailableProperties(wrapper),
+                dynamicProperties = getDynamicProperties(wrapper, dynamicProperties)
+            )
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -94,7 +98,6 @@ class SuwinetRdwService(
     }
 
     private fun retrieveVoertuigenBezitInfo(bsn: String): List<String> {
-
         val voertuigbezitInfoPersoonRequest = objectFactory.createVoertuigbezitInfoPersoon()
         voertuigbezitInfoPersoonRequest.burgerservicenr = bsn
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
@@ -102,41 +105,6 @@ class SuwinetRdwService(
         voertuigbezitInfoPersoonRequest.datBPeilperiodeAansprakelijkheid = currentDate
         val response = rdwService.voertuigbezitInfoPersoon(voertuigbezitInfoPersoonRequest)
         return response.unwrapResponse()
-    }
-
-    private fun getVoertuigenDetails(kentekens: List<String>) =
-        MotorvoertuigDto(
-            kentekens.mapNotNull {
-                getMotorvoertuigDetails(it)
-            }
-        )
-
-
-    private fun getMotorvoertuigDetails(
-        kenteken: String
-    ) = try {
-        retrieveAansprakelijkeInfoFromSuwi(kenteken)?.let { mapToSimpleMotorvoertuig(it) }
-    } catch (e: Error) {
-        logger.error { "error retrieving: $e" }
-        null
-    }
-
-    fun mapToSimpleMotorvoertuig(rdwAansprakelijke: KentekenInfoResponse.ClientSuwi.Aansprakelijke?): MotorvoertuigDto.Motorvoertuig {
-
-        val rdwVoertuig = rdwAansprakelijke?.voertuig
-        val soortVoertuig = rdwVoertuig?.cdSrtVoertuig?.let { SoortVoertuig.findByCode(it) }
-        val soortVoertuigNode = objectMapper.createObjectNode()
-        soortVoertuigNode.put("name", soortVoertuig?.naam ?: "Onbekend")
-        soortVoertuigNode.put("code", soortVoertuig?.code ?: rdwVoertuig?.cdSrtVoertuig)
-        return MotorvoertuigDto.Motorvoertuig(
-            kenteken = rdwVoertuig?.kentekenVoertuig ?: "",
-            soortMotorvoertuig = soortVoertuigNode,
-            merk = rdwVoertuig?.merkVoertuig ?: "",
-            model = rdwVoertuig?.typeVoertuig ?: "",
-            datumEersteInschrijving = rdwVoertuig?.datEersteInschrijvingVoertuigNat?.let { toDate(it) } ?: "",
-            datumRegistratieAansprakelijkheid = rdwAansprakelijke?.datRegistratieAansprakelijkheid?.let { toDate(it) }
-                ?: ""
-        )
     }
 
     private fun retrieveAansprakelijkeInfoFromSuwi(
@@ -170,7 +138,6 @@ class SuwinetRdwService(
     }
 
     private fun KentekenInfoResponse.unwrapKentekenInfoResponse(): List<Any> {
-
         if (content.isNullOrEmpty()) {
             throw IllegalStateException("KentekenInfoResponse contains no value")
         }
@@ -188,7 +155,6 @@ class SuwinetRdwService(
     }
 
     private fun VoertuigbezitInfoPersoonResponse.unwrapResponse(): List<String> {
-
         return if (!clientSuwi.isNullOrEmpty()) {
             clientSuwi[0].aansprakelijke.map {
                 it.voertuig.kentekenVoertuig
@@ -198,20 +164,30 @@ class SuwinetRdwService(
                 fwi.foutOrWaarschuwingOrInformatie.joinToString { "${it.name} / ${it.value}\n" }
             )
         } else {
-            listOf<String>()
+            listOf()
         }
     }
 
-    private fun toDateString(date: LocalDate) = date.format(dateOutFormatter)
-    private fun toDate(date: String) = toDateString(LocalDate.parse(date, dateInFormatter))
+    private fun getAvailableProperties(info: Any): List<String> =
+        dynamicResponseFactory.toFlatMap(info).keys.toList()
+
+    private fun getDynamicProperties(info: Any, dynamicProperties: List<String>): Map<String, Any?> {
+        val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
+        val flatMap = dynamicResponseFactory.toFlatMap(info)
+        dynamicProperties.forEach { prop ->
+            if (flatMap.containsKey(prop)) propertiesMap[prop] = flatMap[prop]
+            if (prop.endsWith('*')) {
+                val prefixValue = prop.trimEnd('*')
+                flatMap.keys.forEach { if (it.startsWith(prefixValue)) propertiesMap[it] = flatMap[it] }
+            }
+        }
+        return dynamicResponseFactory.flatMapToNested(propertiesMap)
+    }
+
+    private data class VoertuigenWrapper(val aansprakelijken: List<KentekenInfoResponse.ClientSuwi.Aansprakelijke>)
 
     companion object {
         private const val SERVICE_PATH = "RDWDossierGSD-v0200"
-        private const val SUWINET_DATE_IN_PATTERN = "yyyyMMdd"
-        private const val DATE_OUT_PATTERN = "yyyy-MM-dd"
-        private val dateInFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(SUWINET_DATE_IN_PATTERN)
-        private val dateOutFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_OUT_PATTERN)
-        private val objectMapper = jacksonObjectMapper()
         private val objectFactory = ObjectFactory()
         private val logger = KotlinLogging.logger {}
     }
