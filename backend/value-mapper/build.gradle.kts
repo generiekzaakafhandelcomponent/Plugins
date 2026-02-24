@@ -24,6 +24,7 @@ dockerCompose {
 }
 
 dependencies {
+    implementation("com.ritense.valtimo:case")
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:exporter")
     implementation("com.ritense.valtimo:importer")
