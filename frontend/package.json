@@ -36,6 +36,7 @@
     "libs:build:token-authentication": "ng build @valtimo-plugins/token-authentication",
     "libs:build:xential": "ng build @valtimo-plugins/xential",
     "libs:build:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm",
+    "libs:build:value-mapper": "ng build @valtimo-plugins/value-mapper",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "libs:watch:mtls-sslcontext": "ng build @valtimo-plugins/mtls-sslcontext --watch",
@@ -57,7 +58,8 @@
     "libs:watch:suwinet": "ng build @valtimo-plugins/suwinet --watch",
     "libs:watch:token-authentication": "ng build @valtimo-plugins/token-authentication --watch",
     "libs:watch:xential": "ng build @valtimo-plugins/xential --watch",
-    "libs:watch:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm --watch"
+    "libs:watch:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm --watch",
+    "libs:watch:value-mapper": "ng build @valtimo-plugins/value-mapper --watch"
   },
   "private": true,
   "dependencies": {
@@ -221,6 +223,7 @@
     "@valtimo-plugins/valtimo-ocr": "file:dist/valtimo-plugins/valtimo-ocr",
     "@valtimo-plugins/valtimo-s2t": "file:dist/valtimo-plugins/valtimo-s2t",
     "@valtimo-plugins/xential": "file:dist/valtimo-plugins/xential",
+    "@valtimo-plugins/value-mapper": "file:dist/valtimo-plugins/value-mapper",
     "chokidar": "4.0.3",
     "chokidar-cli": "3.0.0",
     "cross-env": "7.0.3",
