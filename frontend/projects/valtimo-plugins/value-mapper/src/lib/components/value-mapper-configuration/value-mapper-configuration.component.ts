@@ -24,7 +24,6 @@ import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rx
 @Component({
   selector: 'valtimo-valuemapper-configuration',
   templateUrl: './value-mapper-configuration.component.html',
-  styleUrls: ['./value-mapper-configuration.component.scss'],
   standalone: false,
 })
 export class ValueMapperConfigurationComponent
