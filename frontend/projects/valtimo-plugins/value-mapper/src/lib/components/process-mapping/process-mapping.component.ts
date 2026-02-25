@@ -23,7 +23,6 @@ import {ValueMapperService} from "../../service/value-mapper.service";
 @Component({
     selector: 'valtimo-process-mapping',
     templateUrl: './process-mapping.component.html',
-    styleUrls: ['./process-mapping.component.scss'],
     standalone: false,
 })
 export class ProcessMappingComponent
