@@ -5,6 +5,7 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.openklant.model.AdresInformation
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
@@ -96,6 +97,37 @@ class OpenKlantPlugin(
                 .uuid
 
         execution.setVariable(OUTPUT_PARTIJ_UUID, partijUuid)
+    }
+
+    @PluginAction(
+        key = "set-default-digitaal-adres",
+        title = "Set default Digitaal Adres",
+        description = "Sets a default digitaal adres in Open Klant",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun setDefaultDigitaalAdres(
+        execution: DelegateExecution,
+        @PluginActionProperty resultPvName: String,
+        @PluginActionProperty partijUuid: String,
+        @PluginActionProperty adres: String,
+        @PluginActionProperty soortDigitaalAdres: String,
+        @PluginActionProperty verificatieDatum: String,
+    ) = runBlocking {
+        logger.info { "Sets a default Digitaal Adres in Open Klant - ${execution.processBusinessKey}" }
+
+        val adresInformation =
+            AdresInformation.fromActionProperties(
+                partijUuid = partijUuid,
+                adres = adres,
+                soortDigitaalAdres = soortDigitaalAdres,
+                referentie = DEFAULT_DIGITALE_ADRES_REFERENCE,
+                verificatieDatum = verificatieDatum,
+            )
+        val properties = OpenKlantProperties(klantinteractiesUrl, token)
+
+        val digitaalAdres = openKlantPluginService.setDefaultDigitaalAdres(properties, adresInformation)
+
+        execution.setVariable(resultPvName, digitaalAdres.uuid)
     }
 
     @PluginAction(
@@ -237,6 +269,7 @@ class OpenKlantPlugin(
 
     companion object {
         private const val OUTPUT_PARTIJ_UUID = "partijUuid"
+        private const val DEFAULT_DIGITALE_ADRES_REFERENCE = "portaalvoorkeur"
         private val logger = KotlinLogging.logger { }
     }
 }

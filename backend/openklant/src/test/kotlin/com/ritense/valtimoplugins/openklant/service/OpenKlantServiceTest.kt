@@ -8,6 +8,7 @@ import com.ritense.valtimoplugins.openklant.dto.ObjectReference
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
 import com.ritense.valtimoplugins.openklant.dto.UuidReference
+import com.ritense.valtimoplugins.openklant.model.AdresInformation
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.model.PartijInformationImpl
@@ -17,6 +18,7 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -106,6 +108,7 @@ class OpenKlantServiceTest {
             voorvoegselAchternaam = "D",
             voornaam = "John",
             bsn = "123456789",
+            voorletters = "",
         )
 
     private val partijInformation =
@@ -115,6 +118,15 @@ class OpenKlantServiceTest {
             voornaam = "John",
             voorvoegselAchternaam = "",
             achternaam = "Doe",
+        )
+
+    private val adresInformation =
+        AdresInformation(
+            partijUuid = "partij-123",
+            adres = "test@example.com",
+            soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
+            referentie = "ref-1",
+            verificatieDatum = "2024-01-01",
         )
 
     @BeforeEach
@@ -281,5 +293,58 @@ class OpenKlantServiceTest {
 
             // ASSERT:
             assertEquals("new-partij-uuid", resultPartij.uuid)
+        }
+
+    @Test
+    fun `setDefaultDigitaalAdres clears existing defaults and creates new one`() =
+        runTest {
+            // ARRANGE
+            val existingAdres =
+                DigitaalAdres(
+                    uuid = "uuid-1",
+                    url = "url1",
+                    verstrektDoorBetrokkene = null,
+                    verstrektDoorPartij = null,
+                    adres = "old@test.com",
+                    soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
+                    isStandaardAdres = true,
+                    omschrijving = null,
+                    referentie = "old-ref",
+                    expand = null,
+                )
+
+            coEvery {
+                client.getDefaultAdressenBySoort(any(), any(), any(), any())
+            } returns listOf(existingAdres)
+
+            val createdResult = existingAdres.copy(uuid = "new-uuid")
+            coEvery {
+                client.createDigitaalAdres(any(), any())
+            } returns createdResult
+
+            val adjustedAdres = existingAdres.copy(referentie = "")
+            coEvery {
+                client.patchDigitaalAdres(any(), any(), any())
+            } returns adjustedAdres
+
+            // ACT
+            val result = service.setDefaultDigitaalAdres(testProperties, adresInformation)
+
+            // ASSERT
+            coVerify {
+                client.createDigitaalAdres(
+                    request =
+                        match {
+                            it.verstrektDoorPartij?.uuid == adresInformation.partijUuid &&
+                                it.adres == adresInformation.adres &&
+                                it.soortDigitaalAdres == adresInformation.soortDigitaalAdres &&
+                                it.isStandaardAdres == true &&
+                                it.referentie == adresInformation.referentie
+                        },
+                    properties = testProperties,
+                )
+            }
+
+            assertEquals("new-uuid", result.uuid)
         }
 }

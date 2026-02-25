@@ -6,6 +6,8 @@ import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
 import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
+import com.ritense.valtimoplugins.openklant.dto.UuidReference
+import com.ritense.valtimoplugins.openklant.model.AdresInformation
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
@@ -39,6 +41,28 @@ class DefaultOpenKlantService(
         openKlantClient.getPartijByBsn(partijInformation.bsn, properties)
             ?: createNewPartij(partijInformation, properties)
 
+    override suspend fun setDefaultDigitaalAdres(
+        properties: OpenKlantProperties,
+        adresInformation: AdresInformation,
+    ): DigitaalAdres {
+        clearDefaultForCurrentDigitaalAdressen(adresInformation, properties)
+
+        val request =
+            CreateDigitaalAdresRequest(
+                verstrektDoorPartij = UuidReference(adresInformation.partijUuid),
+                adres = adresInformation.adres,
+                soortDigitaalAdres = adresInformation.soortDigitaalAdres,
+                isStandaardAdres = true,
+                referentie = adresInformation.referentie,
+                verificatieDatum = adresInformation.verificatieDatum,
+            )
+
+        return openKlantClient.createDigitaalAdres(
+            request = request,
+            properties = properties,
+        )
+    }
+
     override suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
         openKlantClient.getKlantcontacten(properties).results
 
@@ -51,6 +75,25 @@ class DefaultOpenKlantService(
             request = klantContactRequest,
             properties = properties,
         )
+    }
+
+    private suspend fun clearDefaultForCurrentDigitaalAdressen(
+        adresInformation: AdresInformation,
+        properties: OpenKlantProperties,
+    ) {
+        openKlantClient
+            .getDefaultAdressenBySoort(
+                partijUuid = adresInformation.partijUuid,
+                soortDigitaalAdres = adresInformation.soortDigitaalAdres,
+                referentie = adresInformation.referentie,
+                properties = properties,
+            ).forEach {
+                openKlantClient.patchDigitaalAdres(
+                    digitaalAdresUuid = it.uuid,
+                    patchData = mapOf("referentie" to ""),
+                    properties = properties,
+                )
+            }
     }
 
     private suspend fun isPreferredAddress(

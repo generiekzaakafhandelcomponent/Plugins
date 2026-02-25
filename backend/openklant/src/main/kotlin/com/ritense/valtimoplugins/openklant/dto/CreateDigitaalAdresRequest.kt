@@ -1,7 +1,9 @@
 package com.ritense.valtimoplugins.openklant.dto
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class CreateDigitaalAdresRequest(
     @JsonProperty("verstrektDoorBetrokkene")
     val verstrektDoorBetrokkene: UuidReference? = null,
@@ -17,4 +19,6 @@ data class CreateDigitaalAdresRequest(
     val omschrijving: String = "",
     @JsonProperty("referentie")
     val referentie: String?,
+    @JsonProperty("verificatieDatum")
+    val verificatieDatum: String? = null,
 )

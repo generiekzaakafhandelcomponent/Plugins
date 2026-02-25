@@ -28,6 +28,15 @@
                   "type": "text",
                   "hideWhenEmpty": true
                 }
+              },
+              {
+                "key": "digitaal-adres-uuid",
+                "title": "Digitaal adres Uuid",
+                "value": "doc:digitaalAdres.uuid",
+                "displayProperties": {
+                  "type": "text",
+                  "hideWhenEmpty": true
+                }
               }
             ]
           ]
