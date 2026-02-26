@@ -1,4 +1,5 @@
 package com.ritense.valtimoplugins.openklant.client
+
 import com.ritense.valtimoplugins.openklant.dto.CreateDigitaalAdresRequest
 import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
 import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
@@ -40,9 +41,9 @@ class OpenKlantClient(
                         .queryParam(OK_SOORT_PARTIJ_PARAM, "persoon")
                         .build()
                 }.retrieve()
-                .body<Page<Partij>>()!!
-                .results
-                .firstOrNull()
+                .body<Page<Partij>>()
+                ?.results
+                ?.firstOrNull()
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
@@ -59,7 +60,7 @@ class OpenKlantClient(
                 .uri(OK_PARTIJEN_PATH)
                 .body(request)
                 .retrieve()
-                .body<Partij>() ? : throw IllegalStateException("Error creating Partij: response body was null")
+                .body<Partij>() ?: throw IllegalStateException("Error creating Partij: response body was null")
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
@@ -77,7 +78,7 @@ class OpenKlantClient(
                 .uri("$OK_PARTIJEN_PATH/$id")
                 .body(patchData)
                 .retrieve()
-                .body<Partij>() ? : throw IllegalStateException("Error patching Partij: response body was null")
+                .body<Partij>() ?: throw IllegalStateException("Error patching Partij: response body was null")
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
@@ -97,8 +98,9 @@ class OpenKlantClient(
                         .queryParam(OK_VERSTREKT_DOOR_PARTIJ_ID_PARAM, uuid)
                         .build()
                 }.retrieve()
-                .body<Page<DigitaalAdres>>() ?: throw IllegalStateException( "Error fetching DigitaalAdres: response body was null")
-                .results
+                .body<Page<DigitaalAdres>>()
+                ?.results
+                ?: throw IllegalStateException("Error fetching DigitaalAdres: response body was null")
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
@@ -114,7 +116,8 @@ class OpenKlantClient(
                 .get()
                 .uri("$OK_DIGITALE_ADRESSEN_PATH/$digitaalAdresUuid")
                 .retrieve()
-                .body<DigitaalAdres>() ? : throw IllegalStateException("Error fetching DigitaalAdres: response body was null")
+                .body<DigitaalAdres>()
+                ?: throw IllegalStateException("Error fetching DigitaalAdres: response body was null")
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
@@ -138,12 +141,17 @@ class OpenKlantClient(
                         .queryParam(OK_REFERENTIE_PARAM, referentie)
                         .build()
                 }.retrieve()
-                .body<Page<DigitaalAdres>>() ?: throw IllegalStateException( "Error fetching DigitaalAdres: response body was null")
-                .results
+                .body<Page<DigitaalAdres>>()
+                ?.results
+                ?: throw IllegalStateException("Error fetching DigitaalAdres: response body was null")
+
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
-            handleResponseException(e, "Error fetching Default ${soortDigitaalAdres.value} Adressen for partij: $partijUuid")
+            handleResponseException(
+                e,
+                "Error fetching Default ${soortDigitaalAdres.value} Adressen for partij: $partijUuid"
+            )
         }
 
     fun patchDigitaalAdres(
@@ -156,7 +164,8 @@ class OpenKlantClient(
             .uri("$OK_DIGITALE_ADRESSEN_PATH/$digitaalAdresUuid")
             .body(patchData)
             .retrieve()
-            .body<DigitaalAdres>() ? : throw IllegalStateException("Error patching DigitaalAdres: response body was null")
+            .body<DigitaalAdres>()
+            ?: throw IllegalStateException("Error patching DigitaalAdres: response body was null")
     } catch (e: HttpServerErrorException.InternalServerError) {
         handleInternalServerError(e)
     } catch (e: RestClientResponseException) {
@@ -173,7 +182,8 @@ class OpenKlantClient(
                 .uri(OK_DIGITALE_ADRESSEN_PATH)
                 .body(request)
                 .retrieve()
-                .body<DigitaalAdres>() ? : throw IllegalStateException("Error creating DigitaalAdres: response body was null")
+                .body<DigitaalAdres>()
+                ?: throw IllegalStateException("Error creating DigitaalAdres: response body was null")
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
@@ -194,7 +204,8 @@ class OpenKlantClient(
                 .uri { uriBuilder ->
                     buildOpenKlantUri(uriBuilder, klantContactOptions)
                 }.retrieve()
-                .body<Page<Klantcontact>>() ? : throw IllegalStateException("Error fetching Klantcontacten: response body was null")
+                .body<Page<Klantcontact>>()
+                ?: throw IllegalStateException("Error fetching Klantcontacten: response body was null")
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
@@ -207,12 +218,12 @@ class OpenKlantClient(
         properties: OpenKlantProperties,
     ) {
         try {
-          restClient(properties)
-              .post()
-              .uri(OK_MAAK_KLANTCONTACT_PATH)
-              .body(request)
-              .retrieve()
-              .toBodilessEntity()
+            restClient(properties)
+                .post()
+                .uri(OK_MAAK_KLANTCONTACT_PATH)
+                .body(request)
+                .retrieve()
+                .toBodilessEntity()
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
