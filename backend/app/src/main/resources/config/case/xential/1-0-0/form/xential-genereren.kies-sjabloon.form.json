@@ -21,6 +21,16 @@
       "persistent": "client-only"
     },
     {
+      "key": "documentDefinitionName",
+      "type": "hidden",
+      "input": true,
+      "label": "Document definition name",
+      "properties": {
+        "sourceKey": "case:documentDefinitionId.name",
+        "targetKey": "pv:document"
+      }
+    },
+    {
       "key": "pv:xentialSjabloonId",
       "data": {
         "url": "../api/v1/xential/sjablonen?gebruikersId={{ data.xentialGebruikersId }}&sjabloonGroupId={{ data.xentialDocumentProperties.xentialTemplateGroupId }}",
@@ -51,45 +61,12 @@
       "valueProperty": "id"
     },
     {
-      "key": "document",
-      "data": {
-        "url": "../api/management/v1/document-definition?page=0&size=100",
-        "method": "GET",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer {{localStorage.getItem('formioToken')}}"
-          }
-        ]
-      },
-      "type": "select",
-      "input": true,
-      "label": "Document",
-      "widget": "choicesjs",
-      "dataSrc": "url",
-      "lazyLoad": false,
-      "template": "<span>{{ item.id.name }}</span>",
-      "validate": {
-        "required": true
-      },
-      "tableView": true,
-      "selectValues": "content",
-      "valueProperty": "id.name",
-      "properties": {
-        "targetKey": "pv:document"
-      }
-    },
-    {
       "key": "tempcontent",
       "type": "select",
       "input": true,
       "label": "Template",
       "data": {
-        "url": "../api/management/v1/template?caseDefinitionName={{ data.document }}&templateType=text&page=0&size=10000",
+        "url": "../api/management/v1/template?caseDefinitionName={{ data.documentDefinitionName }}&templateType=text&page=0&size=10000",
         "method": "GET",
         "headers": [
           {
@@ -114,7 +91,6 @@
       "selectValues": "content",
       "valueProperty": "key",
       "clearOnRefresh": true,
-      "customConditional": "show = data.document ? true : false;",
       "persistent": "client-only"
     },
     {
