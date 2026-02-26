@@ -78,7 +78,8 @@ class OpenKlantClient(
                 .uri("$OK_PARTIJEN_PATH/$id")
                 .body(patchData)
                 .retrieve()
-                .body<Partij>() ?: throw IllegalStateException("Error patching Partij: response body was null")
+                .body<Partij>()
+                ?: throw IllegalStateException("Error patching Partij: response body was null")
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {

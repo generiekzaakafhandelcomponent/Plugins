@@ -27,9 +27,9 @@ internal class OpenKlantClientIntegrationTest {
 
         assertEquals(
             "https://example.com/klantcontacten?" +
-                "onderwerpobject__onderwerpobjectidentificatorCodeObjecttype=type123&" +
-                "hadBetrokkene__wasPartij__partijIdentificator__objectId=bsn456&" +
-                "onderwerpobject__onderwerpobjectidentificatorObjectId=uuid789",
+                    "onderwerpobject__onderwerpobjectidentificatorCodeObjecttype=type123&" +
+                    "hadBetrokkene__wasPartij__partijIdentificator__objectId=bsn456&" +
+                    "onderwerpobject__onderwerpobjectidentificatorObjectId=uuid789",
             result.toString(),
         )
     }
@@ -50,7 +50,7 @@ internal class OpenKlantClientIntegrationTest {
 
         assertEquals(
             "https://example.com/klantcontacten?" +
-                "hadBetrokkene__wasPartij__partijIdentificator__objectId=bsn456",
+                    "hadBetrokkene__wasPartij__partijIdentificator__objectId=bsn456",
             result.toString(),
         )
     }

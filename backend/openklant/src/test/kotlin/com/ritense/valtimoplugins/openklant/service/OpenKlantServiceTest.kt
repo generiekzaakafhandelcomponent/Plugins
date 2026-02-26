@@ -135,208 +135,208 @@ class OpenKlantServiceTest {
 
     @Test
     fun `storeContactInformation should do nothing when supplied email is preferred address`() {
-            // ARRANGE:
-            every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
-            every { client.getDigitaalAdresByUuid(any(), testProperties) } returns
+        // ARRANGE:
+        every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
+        every { client.getDigitaalAdresByUuid(any(), testProperties) } returns
                 defaultDigitaalAdres.copy(
                     adres = "email@adres.nl",
                     isStandaardAdres = true,
                     soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
                 )
 
-            // ACT:
-            service.storeContactInformation(
-                testProperties,
-                contactInformation,
-            )
+        // ACT:
+        service.storeContactInformation(
+            testProperties,
+            contactInformation,
+        )
 
-            // ASSERT:
-            verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
-            verify { client.getDigitaalAdresByUuid(defaultPartij.voorkeursDigitaalAdres!!.uuid, testProperties) }
-            verify(exactly = 0) { client.createDigitaalAdres(any(), testProperties) }
-            verify(exactly = 0) { client.patchPartij(any(), any(), any()) }
-            verify(exactly = 0) { client.createPartij(any(), any()) }
-        }
+        // ASSERT:
+        verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
+        verify { client.getDigitaalAdresByUuid(defaultPartij.voorkeursDigitaalAdres!!.uuid, testProperties) }
+        verify(exactly = 0) { client.createDigitaalAdres(any(), testProperties) }
+        verify(exactly = 0) { client.patchPartij(any(), any(), any()) }
+        verify(exactly = 0) { client.createPartij(any(), any()) }
+    }
 
     @Test
     fun `storeContactInformation should update existing partij if email is not preferred address`() {
-            // ARRANGE:
-            every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
-            every { client.getDigitaalAdresByUuid(any(), testProperties) } returns
+        // ARRANGE:
+        every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
+        every { client.getDigitaalAdresByUuid(any(), testProperties) } returns
                 defaultDigitaalAdres.copy(
                     adres = "email2@adres.nl",
                     isStandaardAdres = true,
                     soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
                 )
-            every { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) } returns listOf()
-            val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailadres)
-            every { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
-            every { client.patchPartij(any(), any(), any()) } returns defaultPartij
+        every { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) } returns listOf()
+        val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailadres)
+        every { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
+        every { client.patchPartij(any(), any(), any()) } returns defaultPartij
 
-            // ACT:
-            service.storeContactInformation(
-                testProperties,
-                contactInformation,
-            )
-            // ASSERT:
-            verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
-            verify { client.getDigitaalAdresByUuid(defaultPartij.voorkeursDigitaalAdres!!.uuid, testProperties) }
-            verify { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) }
-            verify {
-                client.createDigitaalAdres(
-                    match<CreateDigitaalAdresRequest> {
-                        it.adres == contactInformation.emailadres &&
+        // ACT:
+        service.storeContactInformation(
+            testProperties,
+            contactInformation,
+        )
+        // ASSERT:
+        verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
+        verify { client.getDigitaalAdresByUuid(defaultPartij.voorkeursDigitaalAdres!!.uuid, testProperties) }
+        verify { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) }
+        verify {
+            client.createDigitaalAdres(
+                match<CreateDigitaalAdresRequest> {
+                    it.adres == contactInformation.emailadres &&
                             it.soortDigitaalAdres == SoortDigitaalAdres.EMAIL &&
                             it.referentie == contactInformation.zaaknummer
-                    },
-                    testProperties,
-                )
-            }
-            verify {
-                client.patchPartij(
-                    defaultPartij.uuid,
-                    match<Map<String, Any>> { partij ->
-                        val digitaleAdressen = partij["digitaleAdressen"] as List<UuidReference>
-                        digitaleAdressen.any { it.uuid == newDigitaalAdres.uuid }
-                    },
-                    testProperties,
-                )
-            }
-            verify(exactly = 0) { client.createPartij(any(), any()) }
+                },
+                testProperties,
+            )
         }
+        verify {
+            client.patchPartij(
+                defaultPartij.uuid,
+                match<Map<String, Any>> { partij ->
+                    val digitaleAdressen = partij["digitaleAdressen"] as List<UuidReference>
+                    digitaleAdressen.any { it.uuid == newDigitaalAdres.uuid }
+                },
+                testProperties,
+            )
+        }
+        verify(exactly = 0) { client.createPartij(any(), any()) }
+    }
 
     @Test
     fun `storeContactInformation should create a new partij when no partij exists for supplied bsn`() {
-            // ARRANGE:
-            every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns null
-            val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
-            every { partijFactory.createFromBsn(contactInformation) } returns defaultCreatePartijRequest
-            every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
-            val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailadres)
-            every { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
-            every { client.patchPartij(any(), any(), any()) } returns newPartij
+        // ARRANGE:
+        every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns null
+        val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
+        every { partijFactory.createFromBsn(contactInformation) } returns defaultCreatePartijRequest
+        every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
+        val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailadres)
+        every { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
+        every { client.patchPartij(any(), any(), any()) } returns newPartij
 
-            // ACT:
-            service.storeContactInformation(
-                testProperties,
-                contactInformation,
-            )
-            // ASSERT:
-            verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
-            verify { partijFactory.createFromBsn(contactInformation) }
-            verify { client.createPartij(defaultCreatePartijRequest, testProperties) }
-            verify {
-                client.createDigitaalAdres(
-                    match<CreateDigitaalAdresRequest> {
-                        it.adres == contactInformation.emailadres &&
+        // ACT:
+        service.storeContactInformation(
+            testProperties,
+            contactInformation,
+        )
+        // ASSERT:
+        verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
+        verify { partijFactory.createFromBsn(contactInformation) }
+        verify { client.createPartij(defaultCreatePartijRequest, testProperties) }
+        verify {
+            client.createDigitaalAdres(
+                match<CreateDigitaalAdresRequest> {
+                    it.adres == contactInformation.emailadres &&
                             it.soortDigitaalAdres == SoortDigitaalAdres.EMAIL &&
                             it.referentie == contactInformation.zaaknummer
-                    },
-                    testProperties,
-                )
-            }
-            verify {
-                client.patchPartij(
-                    newPartij.uuid,
-                    match<Map<String, Any>> { partij ->
-                        val digitaleAdressen = partij["digitaleAdressen"] as List<UuidReference>
-                        digitaleAdressen.any { it.uuid == newDigitaalAdres.uuid }
-                    },
-                    testProperties,
-                )
-            }
-            verify(exactly = 0) { client.getDigitaalAdresByUuid(any(), testProperties) }
+                },
+                testProperties,
+            )
         }
+        verify {
+            client.patchPartij(
+                newPartij.uuid,
+                match<Map<String, Any>> { partij ->
+                    val digitaleAdressen = partij["digitaleAdressen"] as List<UuidReference>
+                    digitaleAdressen.any { it.uuid == newDigitaalAdres.uuid }
+                },
+                testProperties,
+            )
+        }
+        verify(exactly = 0) { client.getDigitaalAdresByUuid(any(), testProperties) }
+    }
 
     @Test
     fun `getOrCreatePartij should return existing partij when there is a partij for supplied bsn`() {
-            // ARRANGE:
-            val existingPartij = defaultPartij.copy(uuid = "existing-partij-uuid")
-            every { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns existingPartij
+        // ARRANGE:
+        val existingPartij = defaultPartij.copy(uuid = "existing-partij-uuid")
+        every { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns existingPartij
 
-            val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
-            every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
+        val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
+        every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
 
-            // ACT:
-            val resultPartij =
-                service.getOrCreatePartij(
-                    properties = testProperties,
-                    partijInformation = partijInformation,
-                )
+        // ACT:
+        val resultPartij =
+            service.getOrCreatePartij(
+                properties = testProperties,
+                partijInformation = partijInformation,
+            )
 
-            // ASSERT:
-            assertEquals("existing-partij-uuid", resultPartij.uuid)
-        }
+        // ASSERT:
+        assertEquals("existing-partij-uuid", resultPartij.uuid)
+    }
 
     @Test
     fun `getOrCreatePartij should create a new partij when no partij exists for supplied bsn`() {
-            // ARRANGE:
-            every { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns null
+        // ARRANGE:
+        every { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns null
 
-            val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
-            every { partijFactory.createFromBsn(partijInformation) } returns defaultCreatePartijRequest
-            every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
+        val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
+        every { partijFactory.createFromBsn(partijInformation) } returns defaultCreatePartijRequest
+        every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
 
-            // ACT:
-            val resultPartij =
-                service.getOrCreatePartij(
-                    properties = testProperties,
-                    partijInformation = partijInformation,
-                )
+        // ACT:
+        val resultPartij =
+            service.getOrCreatePartij(
+                properties = testProperties,
+                partijInformation = partijInformation,
+            )
 
-            // ASSERT:
-            assertEquals("new-partij-uuid", resultPartij.uuid)
-        }
+        // ASSERT:
+        assertEquals("new-partij-uuid", resultPartij.uuid)
+    }
 
     @Test
     fun `setDefaultDigitaalAdres clears existing defaults and creates new one`() {
-            // ARRANGE
-            val existingAdres =
-                DigitaalAdres(
-                    uuid = "uuid-1",
-                    url = "url1",
-                    verstrektDoorBetrokkene = null,
-                    verstrektDoorPartij = null,
-                    adres = "old@test.com",
-                    soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
-                    isStandaardAdres = true,
-                    omschrijving = null,
-                    referentie = "old-ref",
-                    expand = null,
-                )
+        // ARRANGE
+        val existingAdres =
+            DigitaalAdres(
+                uuid = "uuid-1",
+                url = "url1",
+                verstrektDoorBetrokkene = null,
+                verstrektDoorPartij = null,
+                adres = "old@test.com",
+                soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
+                isStandaardAdres = true,
+                omschrijving = null,
+                referentie = "old-ref",
+                expand = null,
+            )
 
-            every {
-                client.getDefaultAdressenBySoort(any(), any(), any(), any())
-            } returns listOf(existingAdres)
+        every {
+            client.getDefaultAdressenBySoort(any(), any(), any(), any())
+        } returns listOf(existingAdres)
 
-            val createdResult = existingAdres.copy(uuid = "new-uuid")
-            every {
-                client.createDigitaalAdres(any(), any())
-            } returns createdResult
+        val createdResult = existingAdres.copy(uuid = "new-uuid")
+        every {
+            client.createDigitaalAdres(any(), any())
+        } returns createdResult
 
-            val adjustedAdres = existingAdres.copy(referentie = "")
-            every {
-                client.patchDigitaalAdres(any(), any(), any())
-            } returns adjustedAdres
+        val adjustedAdres = existingAdres.copy(referentie = "")
+        every {
+            client.patchDigitaalAdres(any(), any(), any())
+        } returns adjustedAdres
 
-            // ACT
-            val result = service.setDefaultDigitaalAdres(testProperties, adresInformation)
+        // ACT
+        val result = service.setDefaultDigitaalAdres(testProperties, adresInformation)
 
-            // ASSERT
-            verify {
-                client.createDigitaalAdres(
-                    request =
-                        match {
-                            it.verstrektDoorPartij?.uuid == adresInformation.partijUuid &&
+        // ASSERT
+        verify {
+            client.createDigitaalAdres(
+                request =
+                    match {
+                        it.verstrektDoorPartij?.uuid == adresInformation.partijUuid &&
                                 it.adres == adresInformation.adres &&
                                 it.soortDigitaalAdres == adresInformation.soortDigitaalAdres &&
                                 it.isStandaardAdres == true &&
                                 it.referentie == adresInformation.referentie
-                        },
-                    properties = testProperties,
-                )
-            }
-
-            assertEquals("new-uuid", result.uuid)
+                    },
+                properties = testProperties,
+            )
         }
+
+        assertEquals("new-uuid", result.uuid)
+    }
 }

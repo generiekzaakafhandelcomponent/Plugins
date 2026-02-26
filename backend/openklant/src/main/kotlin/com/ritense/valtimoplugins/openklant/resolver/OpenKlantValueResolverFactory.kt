@@ -26,7 +26,7 @@ class OpenKlantValueResolverFactory(
 
         return Function { requestedValue ->
             when (requestedValue) {
-                "klantcontacten" ->  getKlantcontacten(zaakUuid)
+                "klantcontacten" -> getKlantcontacten(zaakUuid)
                 "klantcontactenOrNull" -> getKlantcontactenOrNull(zaakUuid)
 
                 else -> throw IllegalArgumentException("Unknown Open Klant column with name: $requestedValue")

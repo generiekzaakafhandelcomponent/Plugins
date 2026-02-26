@@ -167,20 +167,20 @@ class OpenKlantPlugin(
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
     ): Unit {
-            logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
-            val pluginProperties =
-                KlantcontactOptions.fromActionProperties(
-                    klantinteractiesUrl,
-                    token = token,
-                    bsn = bsn,
-                )
-
-            fetchKlantcontactenAndStore(
-                execution = execution,
-                resultPvName = resultPvName,
-                pluginProperties = pluginProperties,
+        logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
+        val pluginProperties =
+            KlantcontactOptions.fromActionProperties(
+                klantinteractiesUrl,
+                token = token,
+                bsn = bsn,
             )
-        }
+
+        fetchKlantcontactenAndStore(
+            execution = execution,
+            resultPvName = resultPvName,
+            pluginProperties = pluginProperties,
+        )
+    }
 
     @PluginAction(
         key = "get-contact-moments-by-partij-uuid",
@@ -193,20 +193,20 @@ class OpenKlantPlugin(
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
     ): Unit {
-            logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
-            val pluginProperties =
-                KlantcontactOptions.fromActionProperties(
-                    klantinteractiesUrl,
-                    token = token,
-                    partijUuid = partijUuid,
-                )
-
-            fetchKlantcontactenAndStore(
-                execution = execution,
-                resultPvName = resultPvName,
-                pluginProperties = pluginProperties,
+        logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
+        val pluginProperties =
+            KlantcontactOptions.fromActionProperties(
+                klantinteractiesUrl,
+                token = token,
+                partijUuid = partijUuid,
             )
-        }
+
+        fetchKlantcontactenAndStore(
+            execution = execution,
+            resultPvName = resultPvName,
+            pluginProperties = pluginProperties,
+        )
+    }
 
     @PluginAction(
         key = "register-klantcontact",

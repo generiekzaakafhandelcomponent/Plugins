@@ -24,7 +24,8 @@ import java.net.URI
 @EnableConfigurationProperties
 class OpenKlantAutoConfiguration {
     @Bean
-    fun openKlantPluginClient(openKlantRestClientBuilder: RestClient.Builder): OpenKlantClient = OpenKlantClient(openKlantRestClientBuilder)
+    fun openKlantPluginClient(openKlantRestClientBuilder: RestClient.Builder): OpenKlantClient =
+        OpenKlantClient(openKlantRestClientBuilder)
 
     @Bean
     fun partijFactory(): PartijFactory = PartijFactory()
