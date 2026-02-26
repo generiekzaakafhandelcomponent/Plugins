@@ -22,7 +22,7 @@ import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from '@angular/forms';
-import {FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
+import {CarbonMultiInputModule, FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
 import {SuwinetPluginConfigurationComponent} from './components/plugin-configuration/suwinet-plugin-configuration.component';
 import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon-info.component';
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
@@ -36,6 +36,7 @@ import {KadastraleObjectenComponent} from "./components/kadasterobjecten/kadastr
 import {
     BijstandsregelingenInfoComponent
 } from "./components/bijstandsregelingen-info/bijstandsregelingen-info.component";
+import {KadastraleAanduidingenComponent} from "./components/kadastrale-aanduidingen/kadastrale-aanduidingen.component";
 
 @NgModule({
     declarations: [
@@ -46,12 +47,13 @@ import {
         DuoPersoonsInfoComponent,
         DuoStudiefinancieringComponent,
         KadastraleObjectenComponent,
+        KadastraleAanduidingenComponent,
         RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
         UwvInkomstenInfoComponent,
         BijstandsregelingenInfoComponent
     ],
-    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, FormModule, FormModule, FormModule, ParagraphModule, SelectModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, CarbonMultiInputModule,  ParagraphModule, SelectModule],
     exports: [
         SuwinetPluginConfigurationComponent,
         BrpPersoonInfoComponent,
@@ -60,6 +62,7 @@ import {
         DuoPersoonsInfoComponent,
         DuoStudiefinancieringComponent,
         KadastraleObjectenComponent,
+        KadastraleAanduidingenComponent,
         RdwVoertuigenComponent,
         SvbPersoonsInfoComponent,
         UwvInkomstenInfoComponent,

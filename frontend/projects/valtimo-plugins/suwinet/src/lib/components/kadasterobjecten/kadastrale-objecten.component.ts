@@ -16,11 +16,11 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from 'rxjs';
 import {KadasterobjectenConfig} from '../../models';
 
 @Component({
-    selector: 'kadaster-persoon-info',
+    selector: 'kadaster-object-info',
     templateUrl: './kadastrale-objecten.component.html',
     styleUrls: ['./kadastrale-objecten.component.scss'],
 })
@@ -38,8 +38,13 @@ export class KadastraleObjectenComponent
     private readonly formValue$ = new BehaviorSubject<KadasterobjectenConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    defaultValues$;
+
     ngOnInit(): void {
         this.openSaveSubscription();
+        this.defaultValues$ = this.prefillConfiguration$.pipe(
+            map(config => config?.dynamicProperties?.map(value => ({key: value, value: value})))
+        );
     }
 
     ngOnDestroy(): void {
