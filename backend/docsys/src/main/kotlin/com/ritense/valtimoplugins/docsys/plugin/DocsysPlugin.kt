@@ -107,9 +107,9 @@ open class DocsysPlugin(
     private fun storeDocument(fileResponse: DownloadResponse, format: String): String {
         val content = Base64.getDecoder().decode(fileResponse.Content)
         val mutableMetaData = mutableMapOf<String, Any>()
-        mutableMetaData.put("bestandsomvang", content.size)
-        mutableMetaData.put(MetadataType.CONTENT_TYPE.key, format)
-        mutableMetaData.put("author", "Gegenereerd door Docsys")
+        mutableMetaData["bestandsomvang"] = content.size
+        mutableMetaData[MetadataType.CONTENT_TYPE.key] = format
+        mutableMetaData["author"] = "Gegenereerd door Docsys"
 
         val resourceId = storageService.store( content.inputStream(), mutableMetaData)
 
