@@ -3,13 +3,13 @@ import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.client.RestClient
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 internal class OpenKlantClientTest {
-    private val webClientBuilder = mockk<WebClient.Builder>(relaxed = true)
-    private val client = OpenKlantClient(webClientBuilder)
+    private val restClientBuilder = mockk<RestClient.Builder>(relaxed = true)
+    private val client = OpenKlantClient(restClientBuilder)
 
     @Test
     fun `buildOpenKlantUri builds correct URI with all options`() {

@@ -13,12 +13,10 @@ import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.model.PartijInformationImpl
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.verify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -136,11 +134,10 @@ class OpenKlantServiceTest {
     }
 
     @Test
-    fun `storeContactInformation should do nothing when supplied email is preferred address`() =
-        runBlocking {
+    fun `storeContactInformation should do nothing when supplied email is preferred address`() {
             // ARRANGE:
-            coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
-            coEvery { client.getDigitaalAdresByUuid(any(), testProperties) } returns
+            every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
+            every { client.getDigitaalAdresByUuid(any(), testProperties) } returns
                 defaultDigitaalAdres.copy(
                     adres = "email@adres.nl",
                     isStandaardAdres = true,
@@ -154,28 +151,27 @@ class OpenKlantServiceTest {
             )
 
             // ASSERT:
-            coVerify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
-            coVerify { client.getDigitaalAdresByUuid(defaultPartij.voorkeursDigitaalAdres!!.uuid, testProperties) }
-            coVerify(exactly = 0) { client.createDigitaalAdres(any(), testProperties) }
-            coVerify(exactly = 0) { client.patchPartij(any(), any(), any()) }
-            coVerify(exactly = 0) { client.createPartij(any(), any()) }
+            verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
+            verify { client.getDigitaalAdresByUuid(defaultPartij.voorkeursDigitaalAdres!!.uuid, testProperties) }
+            verify(exactly = 0) { client.createDigitaalAdres(any(), testProperties) }
+            verify(exactly = 0) { client.patchPartij(any(), any(), any()) }
+            verify(exactly = 0) { client.createPartij(any(), any()) }
         }
 
     @Test
-    fun `storeContactInformation should update existing partij if email is not preferred address`() =
-        runBlocking {
+    fun `storeContactInformation should update existing partij if email is not preferred address`() {
             // ARRANGE:
-            coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
-            coEvery { client.getDigitaalAdresByUuid(any(), testProperties) } returns
+            every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns defaultPartij
+            every { client.getDigitaalAdresByUuid(any(), testProperties) } returns
                 defaultDigitaalAdres.copy(
                     adres = "email2@adres.nl",
                     isStandaardAdres = true,
                     soortDigitaalAdres = SoortDigitaalAdres.EMAIL,
                 )
-            coEvery { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) } returns listOf()
+            every { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) } returns listOf()
             val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailadres)
-            coEvery { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
-            coEvery { client.patchPartij(any(), any(), any()) } returns defaultPartij
+            every { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
+            every { client.patchPartij(any(), any(), any()) } returns defaultPartij
 
             // ACT:
             service.storeContactInformation(
@@ -183,10 +179,10 @@ class OpenKlantServiceTest {
                 contactInformation,
             )
             // ASSERT:
-            coVerify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
-            coVerify { client.getDigitaalAdresByUuid(defaultPartij.voorkeursDigitaalAdres!!.uuid, testProperties) }
-            coVerify { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) }
-            coVerify {
+            verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
+            verify { client.getDigitaalAdresByUuid(defaultPartij.voorkeursDigitaalAdres!!.uuid, testProperties) }
+            verify { client.getDigitaleAdressenByPartijByUuid(defaultPartij.uuid, testProperties) }
+            verify {
                 client.createDigitaalAdres(
                     match<CreateDigitaalAdresRequest> {
                         it.adres == contactInformation.emailadres &&
@@ -196,7 +192,7 @@ class OpenKlantServiceTest {
                     testProperties,
                 )
             }
-            coVerify {
+            verify {
                 client.patchPartij(
                     defaultPartij.uuid,
                     match<Map<String, Any>> { partij ->
@@ -206,20 +202,19 @@ class OpenKlantServiceTest {
                     testProperties,
                 )
             }
-            coVerify(exactly = 0) { client.createPartij(any(), any()) }
+            verify(exactly = 0) { client.createPartij(any(), any()) }
         }
 
     @Test
-    fun `storeContactInformation should create a new partij when no partij exists for supplied bsn`() =
-        runBlocking {
+    fun `storeContactInformation should create a new partij when no partij exists for supplied bsn`() {
             // ARRANGE:
-            coEvery { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns null
+            every { client.getPartijByBsn(contactInformation.bsn, testProperties) } returns null
             val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
-            coEvery { partijFactory.createFromBsn(contactInformation) } returns defaultCreatePartijRequest
-            coEvery { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
+            every { partijFactory.createFromBsn(contactInformation) } returns defaultCreatePartijRequest
+            every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
             val newDigitaalAdres = defaultDigitaalAdres.copy(adres = contactInformation.emailadres)
-            coEvery { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
-            coEvery { client.patchPartij(any(), any(), any()) } returns newPartij
+            every { client.createDigitaalAdres(any(), testProperties) } returns newDigitaalAdres
+            every { client.patchPartij(any(), any(), any()) } returns newPartij
 
             // ACT:
             service.storeContactInformation(
@@ -227,10 +222,10 @@ class OpenKlantServiceTest {
                 contactInformation,
             )
             // ASSERT:
-            coVerify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
-            coVerify { partijFactory.createFromBsn(contactInformation) }
-            coVerify { client.createPartij(defaultCreatePartijRequest, testProperties) }
-            coVerify {
+            verify { client.getPartijByBsn(contactInformation.bsn, testProperties) }
+            verify { partijFactory.createFromBsn(contactInformation) }
+            verify { client.createPartij(defaultCreatePartijRequest, testProperties) }
+            verify {
                 client.createDigitaalAdres(
                     match<CreateDigitaalAdresRequest> {
                         it.adres == contactInformation.emailadres &&
@@ -240,7 +235,7 @@ class OpenKlantServiceTest {
                     testProperties,
                 )
             }
-            coVerify {
+            verify {
                 client.patchPartij(
                     newPartij.uuid,
                     match<Map<String, Any>> { partij ->
@@ -250,18 +245,17 @@ class OpenKlantServiceTest {
                     testProperties,
                 )
             }
-            coVerify(exactly = 0) { client.getDigitaalAdresByUuid(any(), testProperties) }
+            verify(exactly = 0) { client.getDigitaalAdresByUuid(any(), testProperties) }
         }
 
     @Test
-    fun `getOrCreatePartij should return existing partij when there is a partij for supplied bsn`() =
-        runBlocking {
+    fun `getOrCreatePartij should return existing partij when there is a partij for supplied bsn`() {
             // ARRANGE:
             val existingPartij = defaultPartij.copy(uuid = "existing-partij-uuid")
-            coEvery { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns existingPartij
+            every { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns existingPartij
 
             val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
-            coEvery { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
+            every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
 
             // ACT:
             val resultPartij =
@@ -275,14 +269,13 @@ class OpenKlantServiceTest {
         }
 
     @Test
-    fun `getOrCreatePartij should create a new partij when no partij exists for supplied bsn`() =
-        runBlocking {
+    fun `getOrCreatePartij should create a new partij when no partij exists for supplied bsn`() {
             // ARRANGE:
-            coEvery { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns null
+            every { client.getPartijByBsn(partijInformation.bsn, testProperties) } returns null
 
             val newPartij = defaultPartij.copy(uuid = "new-partij-uuid")
-            coEvery { partijFactory.createFromBsn(partijInformation) } returns defaultCreatePartijRequest
-            coEvery { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
+            every { partijFactory.createFromBsn(partijInformation) } returns defaultCreatePartijRequest
+            every { client.createPartij(defaultCreatePartijRequest, testProperties) } returns newPartij
 
             // ACT:
             val resultPartij =
@@ -296,8 +289,7 @@ class OpenKlantServiceTest {
         }
 
     @Test
-    fun `setDefaultDigitaalAdres clears existing defaults and creates new one`() =
-        runTest {
+    fun `setDefaultDigitaalAdres clears existing defaults and creates new one`() {
             // ARRANGE
             val existingAdres =
                 DigitaalAdres(
@@ -313,17 +305,17 @@ class OpenKlantServiceTest {
                     expand = null,
                 )
 
-            coEvery {
+            every {
                 client.getDefaultAdressenBySoort(any(), any(), any(), any())
             } returns listOf(existingAdres)
 
             val createdResult = existingAdres.copy(uuid = "new-uuid")
-            coEvery {
+            every {
                 client.createDigitaalAdres(any(), any())
             } returns createdResult
 
             val adjustedAdres = existingAdres.copy(referentie = "")
-            coEvery {
+            every {
                 client.patchDigitaalAdres(any(), any(), any())
             } returns adjustedAdres
 
@@ -331,7 +323,7 @@ class OpenKlantServiceTest {
             val result = service.setDefaultDigitaalAdres(testProperties, adresInformation)
 
             // ASSERT
-            coVerify {
+            verify {
                 client.createDigitaalAdres(
                     request =
                         match {
