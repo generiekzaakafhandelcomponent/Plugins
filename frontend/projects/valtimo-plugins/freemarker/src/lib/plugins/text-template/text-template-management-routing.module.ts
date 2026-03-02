@@ -31,6 +31,16 @@ const routes: Routes = [
             customPageTitle: true,
         },
     },
+    {
+        path: 'building-block-management/building-block/:buildingBlockDefinitionKey/version/:buildingBlockDefinitionVersionTag/text-template/:templateKey',
+        component: TextTemplateEditorComponent,
+        canActivate: [AuthGuardService],
+        data: {
+            title: 'Text Template Editor',
+            templates: [ROLE_ADMIN],
+            customPageTitle: true,
+        },
+    },
 ];
 
 @NgModule({

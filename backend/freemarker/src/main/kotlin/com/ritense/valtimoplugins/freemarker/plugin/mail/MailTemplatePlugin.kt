@@ -22,6 +22,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
+import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_MAIL
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
@@ -49,7 +50,12 @@ open class MailTemplatePlugin(
         @PluginActionProperty processVariableName: String
     ) {
         val mailContent = generateMailContent(execution, mailTemplateKey)
-        val resourceId = storageService.store(mailContent.byteInputStream())
+        val resourceId = storageService.store(
+            mailContent.byteInputStream(), mapOf(
+                MetadataType.FILE_NAME.key to "$mailTemplateKey.html",
+                MetadataType.CONTENT_TYPE.key to "html"
+            )
+        )
         execution.setVariable(processVariableName, resourceId)
     }
 

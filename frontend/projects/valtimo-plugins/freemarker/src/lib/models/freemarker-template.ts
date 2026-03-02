@@ -23,6 +23,8 @@ interface CreateTemplateRequest {
     key: string,
     caseDefinitionKey?: string,
     caseDefinitionVersionTag?: string;
+    buildingBlockDefinitionKey?: string,
+    buildingBlockDefinitionVersionTag?: string;
     type: string,
     metadata?: any,
 }
@@ -30,6 +32,8 @@ interface CreateTemplateRequest {
 interface DeleteTemplatesRequest {
     caseDefinitionKey?: string;
     caseDefinitionVersionTag?: string;
+    buildingBlockDefinitionKey?: string;
+    buildingBlockDefinitionVersionTag?: string;
     templates: Array<any>;
 }
 
@@ -37,6 +41,8 @@ interface UpdateTemplateRequest {
     key: string;
     caseDefinitionKey?: string;
     caseDefinitionVersionTag?: string;
+    buildingBlockDefinitionKey?: string;
+    buildingBlockDefinitionVersionTag?: string;
     type: TemplateType;
     metadata?: any;
     content: string;
@@ -46,6 +52,8 @@ interface Template {
     key: string;
     caseDefinitionKey?: string;
     caseDefinitionVersionTag?: string;
+    buildingBlockDefinitionKey?: string;
+    buildingBlockDefinitionVersionTag?: string;
     type: TemplateType;
     metadata?: any;
     content: string;
@@ -55,6 +63,8 @@ interface TemplateResponse {
     key: string;
     caseDefinitionKey?: string;
     caseDefinitionVersionTag?: string;
+    buildingBlockDefinitionKey?: string;
+    buildingBlockDefinitionVersionTag?: string;
     type: TemplateType;
     metadata: any;
     content: string;

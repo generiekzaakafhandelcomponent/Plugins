@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component
 
 @Component
 @SkipComponentScan
-class TemplateImporter(
+class DocumentDefinitionTemplateImporter(
     private val templateService: TemplateService,
     private val objectMapper: ObjectMapper,
 ) : Importer {

@@ -15,7 +15,7 @@
  */
 
 import {ChangeDetectionStrategy, Component, OnInit, ViewChild,} from '@angular/core';
-import {BehaviorSubject, combineLatest, filter, map, Observable, startWith, switchMap, take, tap} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, merge, Observable, startWith, switchMap, take, tap} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CarbonListComponent, CarbonListModule, ColumnConfig, ViewType} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
@@ -24,7 +24,13 @@ import {CommonModule} from '@angular/common';
 import {TranslateModule} from '@ngx-translate/core';
 import {MailTemplateDeleteModalComponent} from '../mail-template-delete-modal/mail-template-delete-modal.component';
 import {MailTemplateAddEditModalComponent} from '../mail-template-add-edit-modal/mail-template-add-edit-modal.component';
-import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
+import {
+    BuildingBlockManagementParams,
+    CaseManagementParams,
+    EnvironmentService,
+    getBuildingBlockManagementRouteParams,
+    getCaseManagementRouteParams
+} from '@valtimo/shared';
 import {ButtonModule} from 'carbon-components-angular';
 
 @Component({
@@ -55,10 +61,19 @@ export class MailTemplateListComponent implements OnInit {
         filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
     );
 
-    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
-        switchMap(caseDefinitionId => combineLatest([
+    private readonly _buildingBlockDefinitionId$: Observable<BuildingBlockManagementParams> = getBuildingBlockManagementRouteParams(this.route).pipe(
+        filter((params: BuildingBlockManagementParams | undefined) => !!params?.buildingBlockDefinitionKey),
+    );
+
+    private readonly _params$: Observable<{case?: CaseManagementParams, buildingBlock?: BuildingBlockManagementParams}> = merge(
+        this._caseDefinitionId$.pipe(map(params => ({case: params}))),
+        this._buildingBlockDefinitionId$.pipe(map(params => ({buildingBlock: params})))
+    );
+
+    public readonly readOnly$: Observable<boolean> = this._params$.pipe(
+        switchMap(({case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}) => combineLatest([
                 this.environmentService.canUpdateGlobalConfiguration(),
-                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
+                this.templateService.isFinal(caseDefinitionId, buildingBlockDefinitionId)
             ]).pipe(
                 map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
                 startWith(true)
@@ -94,16 +109,24 @@ export class MailTemplateListComponent implements OnInit {
             return;
         }
 
-        this._caseDefinitionId$.pipe(
+        this._params$.pipe(
             take(1),
-            switchMap(caseDefinitionId => this.templateService.addTemplate({
-                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
-                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+            switchMap(({case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}) => this.templateService.addTemplate({
+                caseDefinitionKey: caseDefinitionId?.caseDefinitionKey,
+                caseDefinitionVersionTag: caseDefinitionId?.caseDefinitionVersionTag,
+                buildingBlockDefinitionKey: buildingBlockDefinitionId?.buildingBlockDefinitionKey,
+                buildingBlockDefinitionVersionTag: buildingBlockDefinitionId?.buildingBlockDefinitionVersionTag,
                 type: 'mail', ...data
             }))
         ).subscribe(template => {
             this.showAddModal$.next(false);
-            this.gotoMailTemplateEditor(template.caseDefinitionKey, template.caseDefinitionVersionTag, template.key);
+            this.gotoMailTemplateEditor(
+                template.caseDefinitionKey,
+                template.caseDefinitionVersionTag,
+                template.buildingBlockDefinitionKey,
+                template.buildingBlockDefinitionVersionTag,
+                template.key
+            );
         });
     }
 
@@ -114,11 +137,13 @@ export class MailTemplateListComponent implements OnInit {
 
     public onDelete(templates: Array<any>): void {
         this.loading$.next(true);
-        this._caseDefinitionId$.pipe(
+        this._params$.pipe(
             take(1),
-            switchMap(caseDefinitionId => this.templateService.deleteTemplates({
-                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
-                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+            switchMap(({case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}) => this.templateService.deleteTemplates({
+                caseDefinitionKey: caseDefinitionId?.caseDefinitionKey,
+                caseDefinitionVersionTag: caseDefinitionId?.caseDefinitionVersionTag,
+                buildingBlockDefinitionKey: buildingBlockDefinitionId?.buildingBlockDefinitionKey,
+                buildingBlockDefinitionVersionTag: buildingBlockDefinitionId?.buildingBlockDefinitionVersionTag,
                 templates
             })),
         ).subscribe(_ => {
@@ -127,19 +152,35 @@ export class MailTemplateListComponent implements OnInit {
     }
 
     public onRowClick(template: TemplateListItem): void {
-        this._caseDefinitionId$.pipe(take(1)).subscribe(caseDefinitionId =>
-            this.gotoMailTemplateEditor(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag, template.key)
+        this._params$.pipe(take(1)).subscribe(({case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}) =>
+            this.gotoMailTemplateEditor(
+                caseDefinitionId?.caseDefinitionKey,
+                caseDefinitionId?.caseDefinitionVersionTag,
+                buildingBlockDefinitionId?.buildingBlockDefinitionKey,
+                buildingBlockDefinitionId?.buildingBlockDefinitionVersionTag,
+                template.key
+            )
         );
     }
 
-    private gotoMailTemplateEditor(caseDefinitionKey: string, caseDefinitionVersionTag: string, key: string): void {
-        this.router.navigate([`/case-management/case/${caseDefinitionKey}/version/${caseDefinitionVersionTag}/mail-template/${key}`]);
+    private gotoMailTemplateEditor(
+        caseDefinitionKey: string,
+        caseDefinitionVersionTag: string,
+        buildingBlockDefinitionKey: string,
+        buildingBlockDefinitionVersionTag: string,
+        key: string
+    ): void {
+        if (caseDefinitionKey) {
+            this.router.navigate([`/case-management/case/${caseDefinitionKey}/version/${caseDefinitionVersionTag}/mail-template/${key}`]);
+        } else {
+            this.router.navigate([`/building-block-management/building-block/${buildingBlockDefinitionKey}/version/${buildingBlockDefinitionVersionTag}/mail-template/${key}`]);
+        }
     }
 
     private reloadTemplateList(): void {
         this.loading$.next(true);
-        this._caseDefinitionId$.pipe(
-            switchMap((caseDefinitionId) => this.templateService.getAllMailTemplates(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)),
+        this._params$.pipe(
+            switchMap(({case: caseDefinitionId, buildingBlock: buildingBlockDefinitionId}) => this.templateService.getAllMailTemplates(caseDefinitionId, buildingBlockDefinitionId)),
             map(templatePage => templatePage.content),
             take(1)
         ).subscribe(templateListItems => {

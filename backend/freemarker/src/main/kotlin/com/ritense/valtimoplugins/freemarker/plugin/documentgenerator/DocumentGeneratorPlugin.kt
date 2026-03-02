@@ -22,6 +22,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
+import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_CSV
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_PDF
@@ -62,7 +63,13 @@ open class DocumentGeneratorPlugin(
         val htmlString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_PDF)
         val outputStream = ByteArrayOutputStream()
         generatePdf(htmlString, outputStream)
-        val resourceId = storageService.store(ByteArrayInputStream(outputStream.toByteArray()))
+        val resourceId = storageService.store(
+            ByteArrayInputStream(outputStream.toByteArray()),
+            mapOf(
+                MetadataType.FILE_NAME.key to "$templateKey.pdf",
+                MetadataType.CONTENT_TYPE.key to "pdf"
+            )
+        )
         execution.setVariable(processVariableName, resourceId)
     }
 
@@ -80,7 +87,13 @@ open class DocumentGeneratorPlugin(
         val csvString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_CSV)
         val outputStream = ByteArrayOutputStream()
         generateCsv(csvString, outputStream)
-        val resourceId = storageService.store(ByteArrayInputStream(outputStream.toByteArray()))
+        val resourceId = storageService.store(
+            ByteArrayInputStream(outputStream.toByteArray()),
+            mapOf(
+                MetadataType.FILE_NAME.key to "$templateKey.csv",
+                MetadataType.CONTENT_TYPE.key to "csv"
+            )
+        )
         execution.setVariable(processVariableName, resourceId)
     }
 
