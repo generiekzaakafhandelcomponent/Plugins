@@ -1,4 +1,4 @@
-# Open Klant
+# OpenKlant
 
 ## Omschrijving
 
@@ -30,7 +30,7 @@ Voorbeeld `*.pluginconfig.json`:
 {
   "id": "12023724-a4bd-431d-93c0-5ba52049e9cd",
   "title": "Open Klant",
-  "pluginDefinitionKey": "open-klant",
+  "pluginDefinitionKey": "openklant",
   "properties": {
     "klantinteractiesUrl": "${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL}",
     "token": "${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN}"
@@ -271,7 +271,7 @@ Onder `config/case-tabs/[...].case-tabs.json` kan het tabblad worden gekoppeld a
   "changesetId": "open-klant.case-tabs.1768982327099",
   "case-definitions": [
     {
-      "key": "open-klant",
+      "key": "openklant",
       "tabs": [
         {
           "key": "contactgeschiedenis",

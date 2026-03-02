@@ -16,6 +16,7 @@ import com.ritense.valtimoplugins.suwinet.model.UwvPersoonsIkvDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
+import org.springframework.util.StringUtils
 import java.math.BigDecimal
 import kotlin.properties.Delegates
 
@@ -27,6 +28,7 @@ class SuwinetUwvPersoonsIkvService(
 ) {
     private lateinit var soapClientConfig: SuwinetSOAPClientConfig
     private var maxPeriods by Delegates.notNull<Int>()
+
     var suffix: String? = ""
 
     fun setConfig(soapClientConfig: SuwinetSOAPClientConfig, suffix: String?) {
@@ -35,7 +37,11 @@ class SuwinetUwvPersoonsIkvService(
     }
 
     fun getUWVIkvInfoService(): UWVIkvInfo {
-        val completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+        var completeUrl = this.soapClientConfig.baseUrl + SERVICE_PATH
+
+        if (StringUtils.hasText(suffix)) {
+            completeUrl = completeUrl.plus(suffix)
+        }
 
         return suwinetSOAPClient
             .getService<UWVIkvInfo>(

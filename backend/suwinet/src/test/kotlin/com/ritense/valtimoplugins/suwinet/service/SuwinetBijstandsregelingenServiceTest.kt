@@ -31,6 +31,9 @@ class SuwinetBijstandsregelingenServiceTest: BaseTest() {
     @Mock
     lateinit var info: BijstandsregelingenInfo
 
+    @Mock
+    lateinit var dateTimeService: DateTimeService
+
     @InjectMocks
     private lateinit var service: SuwinetBijstandsregelingenService
 

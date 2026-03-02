@@ -1195,6 +1195,47 @@
           }
         }
       }
+    },
+    "@valtimo-plugins/printstraat": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/printstraat",
+      "sourceRoot": "projects/valtimo-plugins/printstraat/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/printstraat/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/printstraat/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/printstraat/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/printstraat/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/printstraat/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/printstraat/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/printstraat/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/printstraat/src/**/*.ts",
+              "projects/valtimo-plugins/printstraat/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

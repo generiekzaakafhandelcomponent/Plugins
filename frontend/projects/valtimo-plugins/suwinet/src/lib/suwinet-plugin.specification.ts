@@ -61,9 +61,11 @@ const suwinetPluginSpecification: PluginSpecification = {
             description: 'Plugin om data uit Suwinet op te halen',
             url: 'URL',
             bsn: 'Burgerservicenummer',
+            kinderenBsns: 'Kinderen Burgerservicenummers',
+            bsnTooltip: 'De burgerservice nummer waarop een zoek gedaan wordt',
+            kinderenBsnsTooltip: 'De burgerservicenummers van de kinderen waarop een zoek gedaan wordt',
             suffixTooltip: 'Indien er een suffix na de service naam is, vul die hier in. Bijvoorbeeld /v1',
             kenteken: 'Kenteken',
-            bsnTooltip: 'De burgerservice nummer waarop een zoek gedaan wordt',
             pluginActionWarning: 'Fill in the required fields for this plugin action',
             resultProcessVariableName: 'Naam van de proces variabele voor het opslaan van de respons',
             resultProcessVariableNameTooltip:
@@ -72,12 +74,20 @@ const suwinetPluginSpecification: PluginSpecification = {
             authenticationPluginConfigurationTooltip:
                 'Selecteer de plugin die de authenticatie kan afhandelen. Wanneer de selectiebox leeg blijft zal de authenticatie plugin eerst aangemaakt moeten worden',
             baseUrl: 'Base URL',
+            suffix: 'Achtervoegsel',
+            maxPeriods: 'Maximale perioden',
             connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
             receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
             'get-brp-persoonsgegevens': 'Ophalen BRP Persoonsgegevens',
             'get-brp-partner-persoonsgegevens': 'Ophalen BRP Partner info',
             'get-brp-kinderen-persoonsgegevens': 'Ophalen BRP Kinderen info',
-            'ophalen-bijstandsregelingen': 'Ophalen bijstandsregelingen'
+            'ophalen-bijstandsregelingen': 'Ophalen bijstandsregelingen',
+            'get-kadastrale-objecten': 'Ophalen kadastrale objecten',
+            'get-rdw-voertuigen': 'Ophalen RDW voertuigen',
+            'get-duo-persoonsinfo': 'Ophalen DUO persoonsinfo',
+            'get-duo-studiefinanciering': 'Ophalen DUO studiefinanciering',
+            'get-svb-persoonsinfo': 'Ophalen SVB persoonsinfo',
+            'get-uwv-inkomsten-info': 'Ophalen UWV inkomsten info'
         },
         en: {
             configurationTitle: 'Configuration name',
@@ -87,7 +97,9 @@ const suwinetPluginSpecification: PluginSpecification = {
             description: 'This plugin makes it possible to communicate with SuwiNet.',
             url: 'URL',
             bsn: 'BSN',
+            kinderenBsns: 'Childrens BSNs',
             bsnTooltip: 'The burgerservicenummer for which the request should be made',
+            kinderenBsnsTooltip: 'The burgerservicenummers of the children for which the request should be made',
             resultProcessVariableName: 'Process variable name for storing the response',
             resultProcessVariableNameTooltip:
                 'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
@@ -95,12 +107,20 @@ const suwinetPluginSpecification: PluginSpecification = {
             authenticationPluginConfigurationTooltip:
                 'Select the plugin that can handle the authentication. If the selection box remains empty, the authentication plugin will have to be created first',
             baseUrl: 'Base URL',
+            suffix: 'Suffix',
+            maxPeriods: 'Maximum periods',
             connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
             receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
             'get-brp-persoonsgegevens': 'Retrieve BRP Personal info',
             'get-brp-partner-persoonsgegevens': 'Retrieve BRP Partner info',
             'get-brp-kinderen-persoonsgegevens': 'Retrieve BRP children info',
-            'ophalen-bijstandsregelingen': 'Retrieve welfare schemes'
+            'ophalen-bijstandsregelingen': 'Retrieve welfare schemes',
+            'get-kadastrale-objecten': 'Retrieve cadastral objects',
+            'get-rdw-voertuigen': 'Retrieve RDW vehicles',
+            'get-duo-persoonsinfo': 'Retrieve DUO personal information',
+            'get-duo-studiefinanciering': 'Retrieve DUO student finance information',
+            'get-svb-persoonsinfo': 'Retrieve SVB personal information',
+            'get-uwv-inkomsten-info': 'Retrieve UWV income information'
         },
         de: {
             configurationTitle: 'Configuration name',
@@ -110,7 +130,9 @@ const suwinetPluginSpecification: PluginSpecification = {
             description: 'This plugin makes it possible to communicate with SuwiNet.',
             url: 'URL',
             bsn: 'BSN',
-            bsnTooltip: 'The burgerservicenummer for which the request should be made',
+            kinderenBsns: 'Steueridentifikationsnummer der Kinder',
+            bsnTooltip: 'Die Bürgerservicenummer, für die die Anfrage gestellt werden soll',
+            kinderenBsnsTooltip: 'Die Bürgerservicenummer der Kinder, nach denen gesucht wird',
             resultProcessVariableName: 'Process variable name for storing the response',
             resultProcessVariableNameTooltip:
                 'The name of the process variable that the response should be saved to. This process variable can be used to access the response in another BPMN task.',
@@ -118,12 +140,20 @@ const suwinetPluginSpecification: PluginSpecification = {
             authenticationPluginConfigurationTooltip:
                 'Wählen Sie das Plugin aus, das die Authentifizierung verarbeiten kann. Bleibt das Auswahlfeld leer, muss zunächst das Authentifizierungs-Plugin erstellt werden',
             baseUrl: 'Base URL',
+            suffix: 'Suffix',
+            maxPeriods: 'Maximale Perioden',
             connectionTimeout: 'connectionTimeout: Specifies the amount of time, in seconds, that the consumer will attempt to establish a connection before it times out. 0 is infinite',
             receiveTimeout: 'receiveTimeout: Specifies the amount of time, in seconds, that the consumer will wait for a response before it times out. 0 is infinite.',
             'get-brp-persoonsgegevens': 'Abrufen BRP Personal info',
             'get-brp-partner-persoonsgegevens': 'Abrufen BRP Partner info',
             'get-brp-kinderen-persoonsgegevens': 'Abrufen BRP kinder info',
-            'ophalen-bijstandsregelingen': 'Abrufen Wohlfahrtssysteme'
+            'ophalen-bijstandsregelingen': 'Abrufen Wohlfahrtssysteme',
+            'get-kadastrale-objecten': 'Abrufen von Katasterobjekten',
+            'get-rdw-voertuigen': 'Abrufen von RDW-Fahrzeugen',
+            'get-duo-persoonsinfo': 'Abrufen von DUO-Personeninformationen',
+            'get-duo-studiefinanciering': 'Abrufen von DUO-Studienfinanzierungsinformationen',
+            'get-svb-persoonsinfo': 'Abrufen von SVB-Personeninformationen',
+            'get-uwv-inkomsten-info': 'Abrufen von UWV-Einkommensinformationen'
         },
     },
 };

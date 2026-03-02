@@ -7,7 +7,7 @@ import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.BRPInfo
 import com.ritense.valtimoplugins.dkd.brpdossierpersoongsd.Request
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
-import com.ritense.valtimoplugins.suwinet.model.NationaliteitDto
+import com.ritense.valtimoplugins.suwinet.model.brp.NationaliteitDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

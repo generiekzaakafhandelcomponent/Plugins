@@ -1,0 +1,11 @@
+[
+  {
+    "id": "3e35b830-a98a-4246-bf62-64c74de1335a",
+    "title": "Printstraat (autodeployed)",
+    "pluginDefinitionKey": "printstraat",
+    "properties": {
+      "url": "http://localhost:8989",
+      "token": "TOKEN"
+    }
+  }
+]

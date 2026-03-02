@@ -28,6 +28,7 @@ include(
     "backend:kvk-handelsregister",
     "backend:value-mapper",
     "backend:document-search",
+    "backend:printstraat",
     "frontend",
 )
 

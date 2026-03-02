@@ -1,0 +1,18 @@
+{
+    "name": "printstraat",
+    "version": 1,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins:printstraat"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/printstraat",
+        "codeAdditions": [
+            {
+                "spec": "printstraatPluginSpecification",
+                "module": "printstraatPluginModule"
+            }
+        ]
+    }
+}

@@ -1,0 +1,55 @@
+name: Ritense PR examinator
+
+on:
+  pull_request_review:
+    types: [ submitted ]
+  pull_request_review_comment:
+    types: [ created ]
+
+jobs:
+  PR_Ritense:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@ritense')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@ritense')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@ritense'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read # Required for Claude to read CI results on PRs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+     # workaround for bug  https://github.com/anthropics/claude-code/issues/22973
+      - name: Install Claude Code v2.1.18
+        run: |
+          # Remove any existing claude installation
+          sudo rm -f /usr/local/bin/claude
+          # Install specific version via npm
+          npm install -g @anthropic-ai/claude-code@2.1.18
+          # Verify the path and version
+          CLAUDE_BIN=$(which claude)
+          echo "CLAUDE_PATH=$CLAUDE_BIN" >> $GITHUB_ENV
+          echo "Claude binary location: $CLAUDE_BIN"
+          echo "Installed Claude Code version:"
+          claude --version
+
+      - name: PR Review with Progress Tracking
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          path_to_claude_code_executable: ${{ env.CLAUDE_PATH }}
+          track_progress: true
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+            
+            Please review this pull request with plugin-pr-reviewer agent.
+
+            Note: The PR branch is already checked out in the current working directory.
+            

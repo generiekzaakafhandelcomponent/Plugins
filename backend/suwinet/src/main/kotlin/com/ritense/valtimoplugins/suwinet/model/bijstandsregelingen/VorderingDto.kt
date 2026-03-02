@@ -3,9 +3,9 @@ package com.ritense.valtimoplugins.suwinet.model.bijstandsregelingen
 
 data class VorderingDto(
     val identificatienrVordering: String?,
-    val datBesluitVordering: String?,
+    val datBesluitVordering: String?, // datepattern yyyy-MM-dd
     val cdRedenVordering: String?,
     val szWet: SzWetDto?,
-    val partnersVordering: MutableList<PartnerDto>,
+    val partnersVordering: MutableList<PartnerDto>?,
     val bron: BronDto?
 )

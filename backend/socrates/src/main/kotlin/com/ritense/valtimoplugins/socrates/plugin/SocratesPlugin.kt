@@ -17,7 +17,7 @@
 package com.ritense.valtimoplugins.socrates.plugin
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
@@ -26,13 +26,14 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
+import com.ritense.valtimoplugins.socrates.error.ProcessErrorPayload
 import com.ritense.valtimoplugins.socrates.error.SocratesError
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
-
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
-import java.net.URI
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.springframework.web.ErrorResponse
+import java.net.URI
 
 @Plugin(
     key = "socrates",
@@ -69,20 +70,49 @@ open class SocratesPlugin(
         logger.debug { "dienst-aanmaken start" }
 
         try {
-            var requestString = execution.getVariable(inputProcessVariable) as String
-            var request = mapper.readValue<LoBehandeld>(requestString)
+            val input = execution.getVariable(inputProcessVariable)
+            val request = mapper.convertValue<LoBehandeld>(input)
 
-            var respons  = socratesClient.dienstAanmaken(zaakId, request)
+            val response = socratesClient.dienstAanmaken(zaakId, request)
 
-            execution.setVariable(processVariableName, respons)
+            execution.setVariable(processVariableName, response)
         } catch (e: Exception) {
-            if(e is SocratesError) {
-                throw BpmnError(e.errorCode)
-            }
-            else {
+            if (e is SocratesError) {
+                val payload = e.toPayload()
+                execution.setVariable("socratesError", payload)
+                throw BpmnError(e.errorCode, e.message)
+            } else {
                 throw e
             }
         }
+    }
+
+    private fun rootCause(t: Throwable): Throwable {
+        var cur = t
+        while (cur.cause != null && cur.cause !== cur) {
+            cur = cur.cause!!
+        }
+        return cur
+    }
+
+    private fun SocratesError.toPayload(): ProcessErrorPayload {
+        val rc = rootCause(this.exception)
+        val cause = "${rc::class.simpleName}: ${rc.message}"
+
+        val safeBody: Any? = when (val b = this.error) {
+            is ErrorResponse -> b
+            is String -> b
+            is Map<*, *> -> b
+            null -> null
+            else -> b.toString()
+        }
+
+        return ProcessErrorPayload(
+            errorCode = this.errorCode,
+            message = this.exception.message ?: "Socrates call failed",
+            cause = cause,
+            body = safeBody
+        )
     }
 
     companion object {

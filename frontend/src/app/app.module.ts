@@ -168,6 +168,10 @@ import {SocratesPluginModule} from "../../projects/valtimo-plugins/socrates/src/
 import {
     socratesPluginSpecification
 } from "../../projects/valtimo-plugins/socrates/src/lib/socrates-plugin.specification";
+import {PrintstraatPluginModule} from "../../projects/valtimo-plugins/printstraat/src/lib/printstraat-plugin.module";
+import {
+    printstraatPluginSpecification
+} from "../../projects/valtimo-plugins/printstraat/src/lib/printstraat.plugin.specification";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -270,6 +274,7 @@ export function tabsFactory() {
         TokenAuthenticationPluginModule,
         OpenKlantPluginModule,
         SocratesPluginModule,
+        PrintstraatPluginModule
     ],
     providers: [{
         provide: PLUGINS_TOKEN,
@@ -309,7 +314,8 @@ export function tabsFactory() {
             tokenAuthenticationPluginSpecification,
             zakenApiPluginSpecification,
             openKlantPluginSpecification,
-            socratesPluginSpecification
+            socratesPluginSpecification,
+            printstraatPluginSpecification
         ],
     }, {
         provide: CASE_TAB_TOKEN,
