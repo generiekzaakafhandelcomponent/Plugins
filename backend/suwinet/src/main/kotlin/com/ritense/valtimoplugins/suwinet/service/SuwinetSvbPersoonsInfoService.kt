@@ -105,14 +105,14 @@ class SuwinetSvbPersoonsInfoService(
                 )
             }
 
-            else -> DynamicResponseDto(emptyList(), emptyMap())
+            else -> DynamicResponseDto(emptyList(), Any())
         }
     }
 
     private fun getAvailableProperties(info: Any): List<String> =
         dynamicResponseFactory.toFlatMap(info).keys.toList()
 
-    private fun getDynamicProperties(info: Any, dynamicProperties: List<String>): Map<String, Any?> {
+    private fun getDynamicProperties(info: Any, dynamicProperties: List<String>): Any {
         val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
         val flatMap = dynamicResponseFactory.toFlatMap(info)
         dynamicProperties.forEach { prop ->

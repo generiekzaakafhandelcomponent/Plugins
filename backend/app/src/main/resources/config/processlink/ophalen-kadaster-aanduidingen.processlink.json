@@ -12,7 +12,8 @@
   {
     "actionProperties": {
       "bsn": "pv:bsn",
-      "resultProcessVariableName": "kadasterAanduidingen"
+      "resultProcessVariableName": "kadasterAanduidingen",
+      "dynamicProperties":["*"]
     },
     "activityId": "SuwinetOphalenKadasterAanduidingen",
     "activityType": "bpmn:ServiceTask:start",

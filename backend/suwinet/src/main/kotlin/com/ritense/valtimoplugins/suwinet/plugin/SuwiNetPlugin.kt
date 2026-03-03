@@ -275,6 +275,7 @@ class SuwiNetPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
@@ -288,7 +289,8 @@ class SuwiNetPlugin(
 
             suwinetKadasterInfoService.getKadastraleAanduidingenByBsn(
                 bsn = bsn,
-                kadasterService = suwinetKadasterInfoService.createKadasterService()
+                kadasterService = suwinetKadasterInfoService.createKadasterService(),
+                dynamicProperties = dynamicProperties
             ).let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue<Any>(it)
@@ -326,11 +328,11 @@ class SuwiNetPlugin(
 
             val kadastraleAanduidingMap = execution.getVariableLocal(kadastraleAanduidingVariabeleName) as LinkedHashMap<*, *>
             val kadastraleAanduiding = KadastraleAanduidingDto(
-                kadastraleAanduidingMap.get("cdKadastraleGemeente") as String,
-                kadastraleAanduidingMap.get("kadastraleGemeentenaam") as String,
-                kadastraleAanduidingMap.get("kadastraleSectie") as String,
-                kadastraleAanduidingMap.get("kadastraalPerceelnr") as BigInteger,
-                kadastraleAanduidingMap.get("volgnrKadastraalAppartementsrecht") as BigInteger?)
+                kadastraleAanduidingMap.get("CdKadastraleGemeente") as String,
+                kadastraleAanduidingMap.get("KadastraleGemeentenaam") as String,
+                kadastraleAanduidingMap.get("KadastraleSectie") as String,
+                kadastraleAanduidingMap.get("KadastraalPerceelnr") as BigInteger,
+                kadastraleAanduidingMap.get("VolgnrKadastraalAppartementsrecht") as BigInteger?)
 
             suwinetKadasterInfoService.getKadastraleObjectByAanduiding(
                 kadastraleAanduiding = kadastraleAanduiding,

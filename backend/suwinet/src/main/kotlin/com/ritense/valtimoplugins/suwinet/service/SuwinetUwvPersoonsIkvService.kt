@@ -88,13 +88,13 @@ class SuwinetUwvPersoonsIkvService(
 
             is FWI -> {
                 logger.info { "content: ${content[0].name}" }
-                DynamicResponseDto(emptyList(), emptyMap())
+                DynamicResponseDto(emptyList(), Any())
             }
 
             else -> {
                 val nietsGevonden = objectFactory.createNietsGevonden("test")
                 if (nietsGevonden.name.equals(content[0].name)) {
-                    DynamicResponseDto(emptyList(), emptyMap())
+                    DynamicResponseDto(emptyList(), Any())
                 } else {
                     throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
                 }
@@ -106,7 +106,7 @@ class SuwinetUwvPersoonsIkvService(
         return dynamicResponseFactory.toFlatMap(info).keys.toList()
     }
 
-    private fun getDynamicProperties(info: Any, dynamicProperties: List<String>): Map<String, Any?> {
+    private fun getDynamicProperties(info: Any, dynamicProperties: List<String>): Any {
         val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
         val flatMap = dynamicResponseFactory.toFlatMap(info)
 

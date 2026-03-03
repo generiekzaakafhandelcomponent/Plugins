@@ -45,6 +45,10 @@ kadasterObjectList.push(kadasterObject);</camunda:script>
       <bpmn:script>const ArrayList = Java.type("java.util.ArrayList");
 var kadasterObjecten = new ArrayList();
 execution.setVariable('kadasterObjecten', kadasterObjecten);
+
+var kadasterAanduidingen = execution.getVariable('kadasterAanduidingenObject').dynamicProperties
+
+execution.setVariable('kadasterAanduidingen', kadasterAanduidingen);
 </bpmn:script>
     </bpmn:scriptTask>
   </bpmn:process>

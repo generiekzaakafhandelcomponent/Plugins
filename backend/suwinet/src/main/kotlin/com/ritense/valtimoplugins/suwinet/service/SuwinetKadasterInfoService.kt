@@ -60,13 +60,23 @@ class SuwinetKadasterInfoService(
 
     fun getKadastraleAanduidingenByBsn(
         bsn: String,
-        kadasterService: KadasterInfo
-    ): List<KadastraleAanduidingDto> {
+        kadasterService: KadasterInfo,
+        dynamicProperties: List<String> = listOf()
+    ): DynamicResponseDto {
         logger.info { "Getting kadastrale aanduidingen from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
             this.kadasterService = kadasterService
-            return retrieveKadasterAanduidingen(bsn).map { mapToAanduidingDto(it) }
+            val aanduidingen = retrieveKadasterAanduidingen(bsn)
+
+            if (aanduidingen.isEmpty()) {
+                return DynamicResponseDto(emptyList(), Any())
+            }
+
+            return DynamicResponseDto(
+                properties = getAvailableProperties(aanduidingen as Any),
+                dynamicProperties = getDynamicProperties(aanduidingen, dynamicProperties)
+            )
 
         } catch (e: SOAPFaultException) {
             logger.error(e) { "SOAPFaultException - Error getting kadastrale aanduidingen" }
@@ -92,10 +102,14 @@ class SuwinetKadasterInfoService(
 
             val result = getKadastraleObject(kadastraleAanduiding)
 
-            return DynamicResponseDto(
-                properties = result?.let { getAvailableProperties(result as Any)}?: listOf(),
-                dynamicProperties = result?.let { getDynamicProperties(result, dynamicProperties)} ?: mapOf(),
-            )
+            return if (result == null) {
+                DynamicResponseDto(emptyList(), Any())
+            } else {
+                DynamicResponseDto(
+                    properties = getAvailableProperties(result as Any),
+                    dynamicProperties = getDynamicProperties(result, dynamicProperties)
+                )
+            }
 
         } catch (e: SOAPFaultException) {
             logger.error(e) { "SOAPFaultException - Error getting kadastrale objecten" }
@@ -198,7 +212,7 @@ class SuwinetKadasterInfoService(
     private fun getDynamicProperties(
         info: Any,
         dynamicProperties: List<String>
-    ): Map<String, Any?> {
+    ): Any {
         val propertiesMap: MutableMap<String, Any?> = mutableMapOf()
         val flatMap = dynamicResponseFactory.toFlatMap(info)
 
