@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_07cpgfd" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
   <bpmn:collaboration id="Collaboration_1wka7ch">
-    <bpmn:participant id="Participant_1q34tue" name="Suwinet: Ophalen Kadaster Info" processRef="ophalen-kadaster-info" />
+    <bpmn:participant id="Participant_1q34tue" name="Suwinet: Ophalen Kadaster Aanduidingen" processRef="ophalen-kadaster-aanduidingen" />
   </bpmn:collaboration>
-  <bpmn:process id="ophalen-kadaster-info" name="Suwinet: Ophalen Kadaster Info" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1">
+  <bpmn:process id="ophalen-kadaster-aanduidingen" name="Suwinet: Ophalen Kadaster Aanduidingen" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="StartEvent_1">
       <bpmn:outgoing>Flow_1pegrc5</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="Event_1940m36">
@@ -30,6 +30,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_15be5x9" bpmnElement="StartEvent_1">
         <dc:Bounds x="270" y="180" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="256" y="223" width="64" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1940m36_di" bpmnElement="Event_1940m36">
         <dc:Bounds x="730" y="180" width="36" height="36" />

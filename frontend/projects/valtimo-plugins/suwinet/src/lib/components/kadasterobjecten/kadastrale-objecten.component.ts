@@ -58,7 +58,7 @@ export class KadastraleObjectenComponent
 
     private handleValid(formValue: KadasterobjectenConfig): void {
         const valid = !!(
-            formValue.bsn &&
+            formValue.kadastraleAanduidingVariabeleName &&
             formValue.resultProcessVariableName
         );
 

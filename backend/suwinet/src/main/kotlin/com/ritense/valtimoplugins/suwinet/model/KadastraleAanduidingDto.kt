@@ -1,5 +1,6 @@
 package com.ritense.valtimoplugins.suwinet.model
 
+import java.io.Serializable
 import java.math.BigInteger
 
 data class KadastraleAanduidingDto(
@@ -7,5 +8,5 @@ data class KadastraleAanduidingDto(
     val kadastraleGemeentenaam: String = "",
     val kadastraleSectie: String = "",
     val kadastraalPerceelnr: BigInteger = BigInteger.ZERO,
-    val volgnrKadastraalAppartementsrecht: BigInteger = BigInteger.ZERO
-)
+    val volgnrKadastraalAppartementsrecht: BigInteger?
+): Serializable

@@ -246,7 +246,7 @@ services:
 
   suwinet-simulator:
     container_name: valtimo-plugins-local-suwinet-simulator
-    image: ghcr.io/generiekzaakafhandelcomponent/suwinet-simulator:1.1.0-202602061040.main.123f6b0d
+    image: ghcr.io/generiekzaakafhandelcomponent/suwinet-simulator:1.1.0-202603031101.main.f798eeca
     platform: linux/amd64
     environment:
       - SUWINET_USER=user

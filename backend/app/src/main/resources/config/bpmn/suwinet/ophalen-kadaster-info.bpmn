@@ -6,109 +6,94 @@
   <bpmn:process id="ophalen-kadaster-info" name="Suwinet: Ophalen Kadaster Info" isExecutable="true">
     <bpmn:sequenceFlow id="Flow_1pegrc5" sourceRef="StartEvent_1" targetRef="SuwinetOphalenKadasterAanduidingen" />
     <bpmn:sequenceFlow id="Flow_0t2nnmv" sourceRef="Activity_12fdsdf" targetRef="Event_1940m36" />
-    <bpmn:sequenceFlow id="Flow_1eprbn3" sourceRef="SuwinetOphalenKadasterAanduidingen" targetRef="Call_Activity_Ophalen_KadasterObjecten" />
+    <bpmn:sequenceFlow id="Flow_1eprbn3" sourceRef="SuwinetOphalenKadasterAanduidingen" targetRef="Activity_0sfjmnj" />
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1pegrc5</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1d5hfs8" sourceRef="MultiInstance_Activity_Ophalen_KadasterObjecten" targetRef="Activity_12fdsdf" />
     <bpmn:serviceTask id="SuwinetOphalenKadasterAanduidingen" name="Suwinet: Ophalen Kadaster Aanduidingen" camunda:expression="${true}">
       <bpmn:incoming>Flow_1pegrc5</bpmn:incoming>
       <bpmn:outgoing>Flow_1eprbn3</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="StartEvent_1">
-      <bpmn:outgoing>Flow_1pegrc5</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1d5hfs8" sourceRef="Call_Activity_Ophalen_KadasterObjecten" targetRef="Activity_12fdsdf" />
-    <bpmn:subProcess id="Activity_Ophalen_KadasterObjecten" name="Suwinet: Ophalen KadasterObjecten">
-      <bpmn:serviceTask id="Activity_ophalen_kadaster_object" name="Suwinet: Ophalen KadasterObject" camunda:expression="${true}" camunda:resultVariable="kadasterObject">
-        <bpmn:extensionElements />
-        <bpmn:incoming>Flow_1tj4g40</bpmn:incoming>
-        <bpmn:outgoing>Flow_07l90z7</bpmn:outgoing>
-      </bpmn:serviceTask>
-      <bpmn:startEvent id="startEventOphalenKadasterObjecten" name="startEventOphalenKadasterObjecten">
-        <bpmn:outgoing>Flow_1tj4g40</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:endEvent id="endEventOphalenKadasterObjecten" name="endEventOphalenKadasterObjecten">
-        <bpmn:incoming>Flow_07l90z7</bpmn:incoming>
-      </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_1tj4g40" sourceRef="startEventOphalenKadasterObjecten" targetRef="Activity_ophalen_kadaster_object" />
-      <bpmn:sequenceFlow id="Flow_07l90z7" sourceRef="Activity_ophalen_kadaster_object" targetRef="endEventOphalenKadasterObjecten" />
-    </bpmn:subProcess>
-    <bpmn:callActivity id="Call_Activity_Ophalen_KadasterObjecten" name="Suwinet: Ophalen KadasterObjecten" calledElement="">
-      <bpmn:incoming>Flow_1eprbn3</bpmn:incoming>
-      <bpmn:outgoing>Flow_1d5hfs8</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="kadasterAanduidingen" camunda:elementVariable="kadasterAanduiding" />
-    </bpmn:callActivity>
-    <bpmn:serviceTask id="Activity_12fdsdf" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/kadasterInfo&#34;, kadasterInfo)}">
-      <bpmn:incoming>Flow_1d5hfs8</bpmn:incoming>
-      <bpmn:outgoing>Flow_0t2nnmv</bpmn:outgoing>
-    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1fqz1uv" sourceRef="Activity_0sfjmnj" targetRef="MultiInstance_Activity_Ophalen_KadasterObjecten" />
     <bpmn:endEvent id="Event_1940m36">
       <bpmn:incoming>Flow_0t2nnmv</bpmn:incoming>
     </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_12fdsdf" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/kadasterInfo&#34;, kadasterObjecten)}">
+      <bpmn:incoming>Flow_1d5hfs8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t2nnmv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="MultiInstance_Activity_Ophalen_KadasterObjecten" name="Suwinet: Ophalen KadasterObjecten" camunda:expression="${true}">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="javascript">var kadasterObject = execution.getVariable('kadasterObject');
+
+print(kadasterObject);
+
+var kadasterObjectList = execution.getVariable('kadasterObjecten');
+
+kadasterObjectList.push(kadasterObject);</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1fqz1uv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1d5hfs8</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:asyncBefore="true" camunda:collection="kadasterAanduidingen" camunda:elementVariable="kadasterAanduiding" />
+    </bpmn:serviceTask>
+    <bpmn:scriptTask id="Activity_0sfjmnj" name="Initieer KadasterObjecten" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1eprbn3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1fqz1uv</bpmn:outgoing>
+      <bpmn:script>const ArrayList = Java.type("java.util.ArrayList");
+var kadasterObjecten = new ArrayList();
+execution.setVariable('kadasterObjecten', kadasterObjecten);
+</bpmn:script>
+    </bpmn:scriptTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1wka7ch">
       <bpmndi:BPMNShape id="Participant_1q34tue_di" bpmnElement="Participant_1q34tue" isHorizontal="true">
-        <dc:Bounds x="180" y="80" width="990" height="540" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0cn4olx_di" bpmnElement="SuwinetOphalenKadasterAanduidingen">
-        <dc:Bounds x="350" y="185" width="100" height="80" />
+        <dc:Bounds x="180" y="80" width="990" height="360" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_15be5x9" bpmnElement="StartEvent_1">
         <dc:Bounds x="270" y="207" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_027x1w6_di" bpmnElement="Call_Activity_Ophalen_KadasterObjecten">
-        <dc:Bounds x="570" y="185" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_03rxpdx_di" bpmnElement="Activity_12fdsdf">
-        <dc:Bounds x="780" y="185" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_0cn4olx_di" bpmnElement="SuwinetOphalenKadasterAanduidingen">
+        <dc:Bounds x="390" y="185" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1940m36_di" bpmnElement="Event_1940m36">
-        <dc:Bounds x="972" y="207" width="36" height="36" />
+        <dc:Bounds x="1042" y="207" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1kba4oy_di" bpmnElement="Activity_Ophalen_KadasterObjecten" isExpanded="true">
-        <dc:Bounds x="460" y="380" width="360" height="210" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_08p2ygo_di" bpmnElement="Activity_ophalen_kadaster_object">
-        <dc:Bounds x="591" y="442" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_03rxpdx_di" bpmnElement="Activity_12fdsdf">
+        <dc:Bounds x="890" y="185" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0a3pxsq_di" bpmnElement="startEventOphalenKadasterObjecten">
-        <dc:Bounds x="501" y="464" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="480" y="507" width="85" height="40" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Activity_159ke89_di" bpmnElement="MultiInstance_Activity_Ophalen_KadasterObjecten">
+        <dc:Bounds x="720" y="185" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1o7960z_di" bpmnElement="endEventOphalenKadasterObjecten">
-        <dc:Bounds x="736" y="464" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="711" y="507" width="89" height="27" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Activity_1mliip9_di" bpmnElement="Activity_0sfjmnj">
+        <dc:Bounds x="550" y="185" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1tj4g40_di" bpmnElement="Flow_1tj4g40">
-        <di:waypoint x="537" y="482" />
-        <di:waypoint x="591" y="482" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_07l90z7_di" bpmnElement="Flow_07l90z7">
-        <di:waypoint x="691" y="482" />
-        <di:waypoint x="736" y="482" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1pegrc5_di" bpmnElement="Flow_1pegrc5">
         <di:waypoint x="306" y="225" />
-        <di:waypoint x="350" y="225" />
+        <di:waypoint x="390" y="225" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0t2nnmv_di" bpmnElement="Flow_0t2nnmv">
-        <di:waypoint x="880" y="225" />
-        <di:waypoint x="972" y="225" />
+        <di:waypoint x="990" y="225" />
+        <di:waypoint x="1042" y="225" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1eprbn3_di" bpmnElement="Flow_1eprbn3">
-        <di:waypoint x="450" y="225" />
-        <di:waypoint x="570" y="225" />
+        <di:waypoint x="490" y="225" />
+        <di:waypoint x="550" y="225" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1d5hfs8_di" bpmnElement="Flow_1d5hfs8">
-        <di:waypoint x="670" y="225" />
-        <di:waypoint x="780" y="225" />
+        <di:waypoint x="820" y="225" />
+        <di:waypoint x="890" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fqz1uv_di" bpmnElement="Flow_1fqz1uv">
+        <di:waypoint x="650" y="225" />
+        <di:waypoint x="720" y="225" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -135,6 +135,7 @@ class SuwinetKadasterInfoService(
         return kadasterResponse.unwrapResponse()
     }
 
+    //TODO make dynamic
     private fun mapToAanduidingDto(aanduiding: KadastraleAanduiding) =
         KadastraleAanduidingDto(
             cdKadastraleGemeente = aanduiding.cdKadastraleGemeente,

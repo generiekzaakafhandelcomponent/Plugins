@@ -58,8 +58,9 @@ export class KadastraleAanduidingenComponent
 
     private handleValid(formValue: KadasterobjectenConfig): void {
         const valid = !!(
-            formValue.bsn &&
-            formValue.resultProcessVariableName
+            formValue.kadastraleAanduidingVariabeleName &&
+            formValue.resultProcessVariableName &&
+            formValue.dynamicProperties
         );
 
         this.valid$.next(valid);

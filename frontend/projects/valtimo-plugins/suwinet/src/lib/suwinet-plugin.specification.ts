@@ -46,7 +46,7 @@ const suwinetPluginSpecification: PluginSpecification = {
         'get-brp-persoonsgegevens': BrpPersoonInfoComponent,
         'get-brp-partner-persoonsgegevens': BrpPartnerInfoComponent,
         'get-brp-kinderen-persoonsgegevens': BrpKinderenInfoComponent,
-        'get-kadastrale-aanduidigen': KadastraleAanduidingenComponent,
+        'get-kadastrale-aanduidingen': KadastraleAanduidingenComponent,
         'get-kadastrale-object': KadastraleObjectenComponent,
         'get-rdw-voertuigen': RdwVoertuigenComponent,
         'get-duo-persoonsinfo': DuoPersoonsInfoComponent,

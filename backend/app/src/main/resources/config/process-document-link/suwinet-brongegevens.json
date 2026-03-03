@@ -15,6 +15,11 @@
     "startableByUser": false
   },
   {
+    "processDefinitionKey": "ophalen-kadaster-aanduidingen",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
     "processDefinitionKey": "ophalen-kadaster-info",
     "canInitializeDocument": true,
     "startableByUser": false

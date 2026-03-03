@@ -27,6 +27,8 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.exception.NotFoundException
+import java.math.BigInteger
+import java.util.LinkedHashMap
 
 @Plugin(
     key = "suwinet", title = "SuwiNet Plugin", description = "Suwinet plugin description"
@@ -302,10 +304,10 @@ class SuwiNetPlugin(
         key = "get-kadastrale-object",
         title = "SuwiNet kadastrale object",
         description = "SuwiNet Kadastrale object ophalen op basis van kadastrale aanduiding",
-        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+        activityTypes = [SERVICE_TASK_START]
     )
     fun getKadastraleObject(
-        @PluginActionProperty kadastraleAanduiding: KadastraleAanduidingDto,
+        @PluginActionProperty kadastraleAanduidingVariabeleName: String,
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
         @PluginActionProperty dynamicProperties: List<String> = listOf(),
@@ -318,6 +320,17 @@ class SuwiNetPlugin(
                 getSuwinetSOAPClientConfig(),
                 suffix
             )
+
+            //init
+            execution.processInstance.removeVariableLocal(resultProcessVariableName)
+
+            val kadastraleAanduidingMap = execution.getVariableLocal(kadastraleAanduidingVariabeleName) as LinkedHashMap<*, *>
+            val kadastraleAanduiding = KadastraleAanduidingDto(
+                kadastraleAanduidingMap.get("cdKadastraleGemeente") as String,
+                kadastraleAanduidingMap.get("kadastraleGemeentenaam") as String,
+                kadastraleAanduidingMap.get("kadastraleSectie") as String,
+                kadastraleAanduidingMap.get("kadastraalPerceelnr") as BigInteger,
+                kadastraleAanduidingMap.get("volgnrKadastraalAppartementsrecht") as BigInteger?)
 
             suwinetKadasterInfoService.getKadastraleObjectByAanduiding(
                 kadastraleAanduiding = kadastraleAanduiding,
