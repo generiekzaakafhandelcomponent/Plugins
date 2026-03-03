@@ -11,7 +11,7 @@ import {
 } from "./components/set-default-digitaal-adres/set-default-digitaal-adres.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
-  pluginId: "open-klant",
+  pluginId: "openklant",
   pluginConfigurationComponent: OpenKlantPluginConfigurationComponent,
   pluginLogoBase64: OPEN_KLANT_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
