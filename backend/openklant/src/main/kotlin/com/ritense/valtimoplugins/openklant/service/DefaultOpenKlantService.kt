@@ -6,6 +6,8 @@ import com.ritense.valtimoplugins.openklant.dto.DigitaalAdres
 import com.ritense.valtimoplugins.openklant.dto.Klantcontact
 import com.ritense.valtimoplugins.openklant.dto.Partij
 import com.ritense.valtimoplugins.openklant.dto.SoortDigitaalAdres
+import com.ritense.valtimoplugins.openklant.dto.UuidReference
+import com.ritense.valtimoplugins.openklant.model.AdresInformation
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
@@ -17,7 +19,7 @@ class DefaultOpenKlantService(
     private val partijFactory: PartijFactory,
     private val klantcontactFactory: KlantcontactFactory,
 ) : OpenKlantService {
-    override suspend fun storeContactInformation(
+    override fun storeContactInformation(
         properties: OpenKlantProperties,
         contactInformation: ContactInformation,
     ): String {
@@ -32,17 +34,39 @@ class DefaultOpenKlantService(
         }
     }
 
-    override suspend fun getOrCreatePartij(
+    override fun getOrCreatePartij(
         properties: OpenKlantProperties,
         partijInformation: PartijInformation,
     ): Partij =
         openKlantClient.getPartijByBsn(partijInformation.bsn, properties)
             ?: createNewPartij(partijInformation, properties)
 
-    override suspend fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
+    override fun setDefaultDigitaalAdres(
+        properties: OpenKlantProperties,
+        adresInformation: AdresInformation,
+    ): DigitaalAdres {
+        clearDefaultForCurrentDigitaalAdressen(adresInformation, properties)
+
+        val request =
+            CreateDigitaalAdresRequest(
+                verstrektDoorPartij = UuidReference(adresInformation.partijUuid),
+                adres = adresInformation.adres,
+                soortDigitaalAdres = adresInformation.soortDigitaalAdres,
+                isStandaardAdres = true,
+                referentie = adresInformation.referentie,
+                verificatieDatum = adresInformation.verificatieDatum,
+            )
+
+        return openKlantClient.createDigitaalAdres(
+            request = request,
+            properties = properties,
+        )
+    }
+
+    override fun getAllKlantcontacten(properties: KlantcontactOptions): List<Klantcontact> =
         openKlantClient.getKlantcontacten(properties).results
 
-    override suspend fun postKlantcontact(
+    override fun postKlantcontact(
         properties: OpenKlantProperties,
         klantcontactCreationInformation: KlantcontactCreationInformation,
     ) {
@@ -53,7 +77,26 @@ class DefaultOpenKlantService(
         )
     }
 
-    private suspend fun isPreferredAddress(
+    private fun clearDefaultForCurrentDigitaalAdressen(
+        adresInformation: AdresInformation,
+        properties: OpenKlantProperties,
+    ) {
+        openKlantClient
+            .getDefaultAdressenBySoort(
+                partijUuid = adresInformation.partijUuid,
+                soortDigitaalAdres = adresInformation.soortDigitaalAdres,
+                referentie = adresInformation.referentie,
+                properties = properties,
+            ).forEach {
+                openKlantClient.patchDigitaalAdres(
+                    digitaalAdresUuid = it.uuid,
+                    patchData = mapOf("referentie" to ""),
+                    properties = properties,
+                )
+            }
+    }
+
+    private fun isPreferredAddress(
         emailAddress: String,
         partij: Partij,
         properties: OpenKlantProperties,
@@ -63,7 +106,7 @@ class DefaultOpenKlantService(
         return voorkeursAdres.adres == emailAddress
     }
 
-    private suspend fun createDigitalAddress(
+    private fun createDigitalAddress(
         partij: Partij,
         contactInformation: ContactInformation,
         properties: OpenKlantProperties,
@@ -78,7 +121,7 @@ class DefaultOpenKlantService(
             properties,
         )
 
-    private suspend fun createNewPartij(
+    private fun createNewPartij(
         partijInformation: PartijInformation,
         properties: OpenKlantProperties,
     ): Partij {
@@ -86,7 +129,7 @@ class DefaultOpenKlantService(
         return openKlantClient.createPartij(newPartij, properties)
     }
 
-    private suspend fun updateExistingPartij(
+    private fun updateExistingPartij(
         partij: Partij,
         contactInformation: ContactInformation,
         properties: OpenKlantProperties,
@@ -113,7 +156,7 @@ class DefaultOpenKlantService(
         updateDigitaleAdressenForPartij(partij, digitaleAdressen.toList(), properties)
     }
 
-    private suspend fun createAndStoreNewPartij(
+    private fun createAndStoreNewPartij(
         contactInformation: ContactInformation,
         properties: OpenKlantProperties,
     ): String {
@@ -132,7 +175,7 @@ class DefaultOpenKlantService(
         }
     }
 
-    private suspend fun updateDigitaleAdressenForPartij(
+    private fun updateDigitaleAdressenForPartij(
         partij: Partij,
         digitaleAdressen: List<DigitaalAdres>,
         properties: OpenKlantProperties,
@@ -144,7 +187,7 @@ class DefaultOpenKlantService(
         openKlantClient.patchPartij(partij.uuid, patchData, properties)
     }
 
-    private suspend fun updateDigitaleAdressenForPartij(
+    private fun updateDigitaleAdressenForPartij(
         partij: Partij,
         digitaleAdress: DigitaalAdres,
         properties: OpenKlantProperties,

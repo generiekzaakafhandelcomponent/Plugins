@@ -82,6 +82,23 @@
                 }
             }
         },
+        "digitaalAdres": {
+            "type": "object",
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                },
+                "adres": {
+                    "type": "string"
+                },
+                "soortDigitaalAdres": {
+                    "type": "string"
+                },
+                "verificatieDatum": {
+                    "type": "string"
+                }
+            }
+        },
         "selectedDemo": {
             "type": "string"
         }

@@ -18,6 +18,7 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:3.0.5")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.13.9")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 }
 
 apply(from = "gradle/publishing.gradle")

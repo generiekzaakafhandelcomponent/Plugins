@@ -5,6 +5,7 @@ import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.openklant.model.AdresInformation
 import com.ritense.valtimoplugins.openklant.model.ContactInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactCreationInformation
 import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
@@ -12,7 +13,6 @@ import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.model.PartijInformationImpl
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
-import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.net.URI
@@ -47,7 +47,7 @@ class OpenKlantPlugin(
         @PluginActionProperty lastName: String,
         @PluginActionProperty emailAddress: String,
         @PluginActionProperty caseUuid: String,
-    ) = runBlocking {
+    ) {
         logger.info { "Store Contactinformation in Open Klant - ${execution.processBusinessKey}" }
 
         val contactInformation =
@@ -78,7 +78,7 @@ class OpenKlantPlugin(
         @PluginActionProperty voornaam: String,
         @PluginActionProperty voorvoegselAchternaam: String,
         @PluginActionProperty achternaam: String,
-    ) = runBlocking {
+    ) {
         logger.info { "Get or Create partij in Open Klant - ${execution.processBusinessKey}" }
 
         val partijInformation =
@@ -99,6 +99,37 @@ class OpenKlantPlugin(
     }
 
     @PluginAction(
+        key = "set-default-digitaal-adres",
+        title = "Set default Digitaal Adres",
+        description = "Sets a default digitaal adres in Open Klant",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
+    )
+    fun setDefaultDigitaalAdres(
+        execution: DelegateExecution,
+        @PluginActionProperty resultPvName: String,
+        @PluginActionProperty partijUuid: String,
+        @PluginActionProperty adres: String,
+        @PluginActionProperty soortDigitaalAdres: String,
+        @PluginActionProperty verificatieDatum: String,
+    ) {
+        logger.info { "Sets a default Digitaal Adres in Open Klant - ${execution.processBusinessKey}" }
+
+        val adresInformation =
+            AdresInformation.fromActionProperties(
+                partijUuid = partijUuid,
+                adres = adres,
+                soortDigitaalAdres = soortDigitaalAdres,
+                referentie = DEFAULT_DIGITALE_ADRES_REFERENCE,
+                verificatieDatum = verificatieDatum,
+            )
+        val properties = OpenKlantProperties(klantinteractiesUrl, token)
+
+        val digitaalAdres = openKlantPluginService.setDefaultDigitaalAdres(properties, adresInformation)
+
+        execution.setVariable(resultPvName, digitaalAdres.uuid)
+    }
+
+    @PluginAction(
         key = "get-contact-moments-by-case-uuid",
         title = "Get contact history by case UUID",
         description = "Get contact history by case UUID from Open Klant",
@@ -108,7 +139,7 @@ class OpenKlantPlugin(
         @PluginActionProperty caseUuid: String,
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
-    ) = runBlocking {
+    ) {
         logger.info { "Fetching contact history from Open Klant by case UUID: $caseUuid - ${execution.processBusinessKey}" }
 
         val pluginProperties =
@@ -135,22 +166,21 @@ class OpenKlantPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
-    ): Unit =
-        runBlocking {
-            logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
-            val pluginProperties =
-                KlantcontactOptions.fromActionProperties(
-                    klantinteractiesUrl,
-                    token = token,
-                    bsn = bsn,
-                )
-
-            fetchKlantcontactenAndStore(
-                execution = execution,
-                resultPvName = resultPvName,
-                pluginProperties = pluginProperties,
+    ): Unit {
+        logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
+        val pluginProperties =
+            KlantcontactOptions.fromActionProperties(
+                klantinteractiesUrl,
+                token = token,
+                bsn = bsn,
             )
-        }
+
+        fetchKlantcontactenAndStore(
+            execution = execution,
+            resultPvName = resultPvName,
+            pluginProperties = pluginProperties,
+        )
+    }
 
     @PluginAction(
         key = "get-contact-moments-by-partij-uuid",
@@ -162,22 +192,21 @@ class OpenKlantPlugin(
         @PluginActionProperty partijUuid: String,
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
-    ): Unit =
-        runBlocking {
-            logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
-            val pluginProperties =
-                KlantcontactOptions.fromActionProperties(
-                    klantinteractiesUrl,
-                    token = token,
-                    partijUuid = partijUuid,
-                )
-
-            fetchKlantcontactenAndStore(
-                execution = execution,
-                resultPvName = resultPvName,
-                pluginProperties = pluginProperties,
+    ): Unit {
+        logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
+        val pluginProperties =
+            KlantcontactOptions.fromActionProperties(
+                klantinteractiesUrl,
+                token = token,
+                partijUuid = partijUuid,
             )
-        }
+
+        fetchKlantcontactenAndStore(
+            execution = execution,
+            resultPvName = resultPvName,
+            pluginProperties = pluginProperties,
+        )
+    }
 
     @PluginAction(
         key = "register-klantcontact",
@@ -199,7 +228,7 @@ class OpenKlantPlugin(
         @PluginActionProperty voorvoegselAchternaam: String?,
         @PluginActionProperty achternaam: String?,
         execution: DelegateExecution,
-    ) = runBlocking {
+    ) {
         logger.info { "Registering klantcontact - ${execution.processBusinessKey}" }
 
         val klantcontactCreationInformation =
@@ -225,7 +254,7 @@ class OpenKlantPlugin(
         )
     }
 
-    private suspend fun fetchKlantcontactenAndStore(
+    private fun fetchKlantcontactenAndStore(
         execution: DelegateExecution,
         resultPvName: String,
         pluginProperties: KlantcontactOptions,
@@ -237,6 +266,7 @@ class OpenKlantPlugin(
 
     companion object {
         private const val OUTPUT_PARTIJ_UUID = "partijUuid"
+        private const val DEFAULT_DIGITALE_ADRES_REFERENCE = "portaalvoorkeur"
         private val logger = KotlinLogging.logger { }
     }
 }

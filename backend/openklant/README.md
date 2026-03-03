@@ -116,6 +116,32 @@ zonder betrokkene:
   "processLinkType": "plugin"
 }
 ```
+## Instellen van standaard digitaal adres
+![Zet standaard digitaal adres](img/zet-standaard-digitaal-adres.png)
+Bij het instellen van een standaard digitaal adres wordt het volgende gedaan:
+- Er wordt een nieuw digitaal adres aangemaakt
+- Dit adres krijgt de referentie "PortaalVoorkeur"
+- Het adres wordt aangevinkt als standaardadres
+- Bij bestaande adressen van hetzelfde soort wordt de referentie "PortaalVoorkeur" verwijderd
+
+Voorbeeld `*.processlink.json`
+```json
+{
+  "activityId": "zetStandaardDigitaalAdres",
+  "activityType": "bpmn:ServiceTask:start",
+  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+  "pluginActionDefinitionKey": "set-default-digitaal-adres",
+  "actionProperties": {
+    "resultPvName": "digitaalAdresUuid",
+    "partijUuid": "doc:/partijUuid",
+    "adres": "doc:/digitaalAdres/adres",
+    "soortDigitaalAdres": "doc:/digitaalAdres/soortDigitaalAdres",
+    "verificatieDatum": "doc:/digitaalAdres/verificatieDatum"
+  },
+  "processLinkType": "plugin"
+}
+```
+
 ## Contactgeschiedenis
 Contactgeschiedenis kan op drie manieren worden opgehaald:
 - Via de Open Zaak zaaknummer (UUID)

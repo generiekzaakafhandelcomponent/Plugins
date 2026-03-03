@@ -59,5 +59,19 @@
             "achternaam": "doc:/partij/achternaam"
         },
         "processLinkType": "plugin"
+    },
+    {
+        "activityId": "zetStandaardDigitaalAdres",
+        "activityType": "bpmn:ServiceTask:start",
+        "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+        "pluginActionDefinitionKey": "set-default-digitaal-adres",
+        "actionProperties": {
+            "resultPvName": "digitaalAdresUuid",
+            "partijUuid": "doc:/partijUuid",
+            "adres": "doc:/digitaalAdres/adres",
+            "soortDigitaalAdres": "doc:/digitaalAdres/soortDigitaalAdres",
+            "verificatieDatum": "doc:/digitaalAdres/verificatieDatum"
+        },
+        "processLinkType": "plugin"
     }
 ]

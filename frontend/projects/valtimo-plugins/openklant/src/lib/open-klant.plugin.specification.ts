@@ -6,6 +6,9 @@ import { GetContactMomentsByCaseUuidComponent } from "./components/open-klant-ge
 import { GetContactMomentsByBsnComponent } from "./components/get-contact-moments-by-bsn/get-contact-moments-by-bsn.component";
 import { RegisterKlantcontactComponent } from "./components/open-klant-register-klantcontact/open-klant-register-klantcontact.component";
 import { GetOrCreatePartijComponent } from "./components/get-or-create-partij/get-or-create-partij.component";
+import {
+  SetDefaultDigitaalAdresComponent
+} from "./components/set-default-digitaal-adres/set-default-digitaal-adres.component";
 
 const openKlantPluginSpecification: PluginSpecification = {
   pluginId: "openklant",
@@ -17,6 +20,7 @@ const openKlantPluginSpecification: PluginSpecification = {
     "store-contact-info": StoreContactInfoComponent,
     "get-or-create-partij": GetOrCreatePartijComponent,
     "register-klantcontact": RegisterKlantcontactComponent,
+    "set-default-digitaal-adres": SetDefaultDigitaalAdresComponent,
   },
   pluginTranslations: {
     nl: {
@@ -74,6 +78,12 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Bevat het klantcontact een betrokkene of is het anoniem?",
       "heeftBetrokkene.betrokkene": "Heeft betrokkene",
       "heeftBetrokkene.anoniem": "Is anoniem",
+
+      // Set standaard digitaal adres
+      "set-default-digitaal-adres": "Instellen van standaard digitaal adres",
+      digitaalAdres: "Digitaal adres",
+      soortDigitaalAdres: "Soort digitaal adres ('email'/'telefoonnummer'/'overig')",
+      verificatieDatum: "Verificatie datum (YYYY-MM-DD)",
     },
 
     en: {
@@ -129,8 +139,14 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Does the contact moment involve an individual or is it anonymous?",
       "heeftBetrokkene.betrokkene": "Has an individual",
       "heeftBetrokkene.anoniem": "Is anonymous",
+
+      // Set default digital address
+      "set-default-digitaal-adres": "Set default digital address",
+      digitaalAdres: "Digital address",
+      soortDigitaalAdres: "Type of digital address ('email'/'telefoonnummer'/'overig')",
+      verificatieDatum: "Verification datum (YYYY-MM-DD)",
     }
   },
 };
 
-export { openKlantPluginSpecification };
+export {openKlantPluginSpecification};
