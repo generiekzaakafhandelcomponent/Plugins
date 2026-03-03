@@ -3,13 +3,13 @@ import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.client.RestClient
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 internal class OpenKlantClientIntegrationTest {
-    private val webClientBuilder = mockk<WebClient.Builder>(relaxed = true) // needed to instantiate client
-    private val client = OpenKlantClient(webClientBuilder)
+    private val restClientBuilder = mockk<RestClient.Builder>(relaxed = true)
+    private val client = OpenKlantClient(restClientBuilder)
 
     @Test
     fun `buildOpenKlantUri builds correct URI with all options`() {
@@ -27,9 +27,9 @@ internal class OpenKlantClientIntegrationTest {
 
         assertEquals(
             "https://example.com/klantcontacten?" +
-                "onderwerpobject__onderwerpobjectidentificatorCodeObjecttype=type123&" +
-                "hadBetrokkene__wasPartij__partijIdentificator__objectId=bsn456&" +
-                "onderwerpobject__onderwerpobjectidentificatorObjectId=uuid789",
+                    "onderwerpobject__onderwerpobjectidentificatorCodeObjecttype=type123&" +
+                    "hadBetrokkene__wasPartij__partijIdentificator__objectId=bsn456&" +
+                    "onderwerpobject__onderwerpobjectidentificatorObjectId=uuid789",
             result.toString(),
         )
     }
@@ -50,7 +50,7 @@ internal class OpenKlantClientIntegrationTest {
 
         assertEquals(
             "https://example.com/klantcontacten?" +
-                "hadBetrokkene__wasPartij__partijIdentificator__objectId=bsn456",
+                    "hadBetrokkene__wasPartij__partijIdentificator__objectId=bsn456",
             result.toString(),
         )
     }

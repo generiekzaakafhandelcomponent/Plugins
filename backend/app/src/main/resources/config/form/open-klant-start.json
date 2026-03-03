@@ -29,6 +29,11 @@
                     "label": "Nieuw klantcontact registreren",
                     "value": "nieuwKlantcontactRegistreren",
                     "shortcut": ""
+                },
+                {
+                    "label": "Zet standaard digitaal adres",
+                    "value": "zetStandaardDigitaalAdres",
+                    "shortcut": ""
                 }
             ],
             "tableView": false,
@@ -353,6 +358,106 @@
                 "eq": "nieuwKlantcontactRegistreren",
                 "show": true
             }
+        },
+        {
+            "key": "DigitaalAdres",
+            "title": "Zet standaard digitaal adres",
+            "collapsible": false,
+            "conditional": {
+                "show": true,
+                "when": "selectedDemo",
+                "eq": "zetStandaardDigitaalAdres"
+            },
+            "type": "panel",
+            "label": "Panel",
+            "input": false,
+            "tableView": false,
+            "components": [
+                {
+                    "label": "Partij UUID",
+                    "applyMaskOn": "change",
+                    "tableView": true,
+                    "validate": {
+                        "required": true
+                    },
+                    "validateWhenHidden": false,
+                    "key": "partijUuid",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Soort digitaal adres",
+                    "widget": "choicesjs",
+                    "tableView": true,
+                    "defaultValue": "email",
+                    "data": {
+                        "values": [
+                            {
+                                "label": "email",
+                                "value": "email"
+                            },
+                            {
+                                "label": "telefoonnummer",
+                                "value": "telefoonnummer"
+                            },
+                            {
+                                "label": "overig",
+                                "value": "overig"
+                            }
+                        ]
+                    },
+                    "validateWhenHidden": false,
+                    "key": "digitaalAdres.soortDigitaalAdres",
+                    "type": "select",
+                    "input": true
+                },
+                {
+                    "label": "Adres",
+                    "applyMaskOn": "change",
+                    "tableView": true,
+                    "defaultValue": "email@example.com",
+                    "validateWhenHidden": false,
+                    "key": "digitaalAdres.adres",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Verificatie datum",
+                    "format": "yyyy-MM-dd",
+                    "tableView": false,
+                    "datePicker": {
+                        "disableWeekends": false,
+                        "disableWeekdays": false
+                    },
+                    "enableTime": false,
+                    "defaultDate": "moment().format('YYYY-MM-DD')",
+                    "calculateValue": "value = moment(value).format('YYYY-MM-DD');",
+                    "enableMinDateInput": false,
+                    "enableMaxDateInput": false,
+                    "validateWhenHidden": false,
+                    "key": "digitaalAdres.verificatieDatum",
+                    "type": "datetime",
+                    "input": true,
+                    "widget": {
+                        "type": "calendar",
+                        "displayInTimezone": "viewer",
+                        "locale": "en",
+                        "useLocaleSettings": false,
+                        "allowInput": true,
+                        "mode": "single",
+                        "enableTime": false,
+                        "noCalendar": false,
+                        "format": "yyyy-MM-dd",
+                        "hourIncrement": 1,
+                        "minuteIncrement": 1,
+                        "time_24hr": false,
+                        "minDate": null,
+                        "disableWeekends": false,
+                        "disableWeekdays": false,
+                        "maxDate": null
+                    }
+                }
+            ]
         },
         {
             "key": "submit",

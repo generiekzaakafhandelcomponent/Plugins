@@ -8,7 +8,6 @@ import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.valueresolver.ValueResolverFactory
 import com.ritense.zakenapi.service.ZaakDocumentService
-import kotlinx.coroutines.runBlocking
 import org.camunda.bpm.engine.delegate.VariableScope
 import java.util.UUID
 import java.util.function.Function
@@ -27,8 +26,8 @@ class OpenKlantValueResolverFactory(
 
         return Function { requestedValue ->
             when (requestedValue) {
-                "klantcontacten" -> runBlocking { getKlantcontacten(zaakUuid) }
-                "klantcontactenOrNull" -> runBlocking { getKlantcontactenOrNull(zaakUuid) }
+                "klantcontacten" -> getKlantcontacten(zaakUuid)
+                "klantcontactenOrNull" -> getKlantcontactenOrNull(zaakUuid)
 
                 else -> throw IllegalArgumentException("Unknown Open Klant column with name: $requestedValue")
             }
@@ -52,9 +51,9 @@ class OpenKlantValueResolverFactory(
         TODO()
     }
 
-    private suspend fun getKlantcontacten(zaakUuid: UUID) = getKlantcontactenOrNull(zaakUuid) ?: emptyList<Any>()
+    private fun getKlantcontacten(zaakUuid: UUID) = getKlantcontactenOrNull(zaakUuid) ?: emptyList<Any>()
 
-    private suspend fun getKlantcontactenOrNull(zaakUuid: UUID) =
+    private fun getKlantcontactenOrNull(zaakUuid: UUID) =
         runCatching { openKlantService.getAllKlantcontacten(createKlantcontactOptions(zaakUuid)) }
             .getOrNull()
             ?.let { reflectionUtil.deepReflectedMapOf(it) }

@@ -1,5 +1,5 @@
 {
-  "changesetId": "open-klant.case-widget-tab.1237117910928",
+  "changesetId": "open-klant.case-widget-tab.1237117910929",
   "tabs": [
     {
       "caseDefinitionName": "open-klant",
@@ -27,6 +27,15 @@
                   "key": "partij-uuid",
                   "title": "Partij Uuid",
                   "value": "doc:partijUuid",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": true
+                  }
+                },
+                {
+                  "key": "digitaal-adres-uuid",
+                  "title": "Digitaal adres Uuid",
+                  "value": "doc:digitaalAdres.uuid",
                   "displayProperties": {
                     "type": "text",
                     "hideWhenEmpty": true
