@@ -1,0 +1,43 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "html",
+      "type" : "htmlelement",
+      "attrs" : [
+        {
+          "attr" : "",
+          "value" : ""
+        }
+      ],
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Brongegevens ophalen",
+      "tableView" : false,
+      "refreshOnChange" : false
+    },
+    {
+      "key" : "kenteken",
+      "properties": {
+        "targetKey": "pv:kenteken"
+      },
+      "type" : "textfield",
+      "input" : true,
+      "label" : "Kenteken",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "brongegevens.start-kentekenAanvrager"
+      },
+      "applyMaskOn" : "change",
+      "defaultValue" : "0118SK"
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Submit",
+      "tableView" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

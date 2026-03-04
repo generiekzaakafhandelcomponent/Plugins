@@ -28,6 +28,7 @@ import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner
 import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinderen-info.component';
 import {RdwVoertuigenComponent} from "./components/rdw-voertuigen/rdw-voertuigen.component";
 import {RdwKentekenComponent} from "./components/rdw-kenteken/rdw-kenteken.component";
+import {RdwVoertuigComponent} from "./components/rdw-voertuig/rdw-voertuig.component";
 import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-persoons-info.component";
 import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
 import {DuoStudiefinancieringComponent} from "./components/duo-studiefinanciering/duo-studiefinanciering.component";
@@ -51,6 +52,7 @@ const suwinetPluginSpecification: PluginSpecification = {
         'get-kadastrale-object': KadastraleObjectenComponent,
         'get-rdw-voertuigen': RdwVoertuigenComponent,
         'get-rdw-kentekens': RdwKentekenComponent,
+        'get-rdw-voertuig': RdwVoertuigComponent,
         'get-duo-persoonsinfo': DuoPersoonsInfoComponent,
         'get-duo-studiefinanciering': DuoStudiefinancieringComponent,
         'get-svb-persoonsinfo': SvbPersoonsInfoComponent,
@@ -101,6 +103,7 @@ const suwinetPluginSpecification: PluginSpecification = {
             'get-kadastrale-object': 'Ophalen kadastrale object',
             'get-rdw-voertuigen': 'Ophalen RDW voertuigen',
             'get-rdw-kentekens': 'Ophalen RDW kentekens',
+            'get-rdw-voertuig': 'Ophalen RDW voertuig info',
             'get-duo-persoonsinfo': 'Ophalen DUO persoonsinfo',
             'get-duo-studiefinanciering': 'Ophalen DUO studiefinanciering',
             'get-svb-persoonsinfo': 'Ophalen SVB persoonsinfo',
@@ -149,6 +152,7 @@ const suwinetPluginSpecification: PluginSpecification = {
             'get-kadastrale-objecten': 'Retrieve cadastral objects',
             'get-rdw-voertuigen': 'Retrieve RDW vehicles',
             'get-rdw-kentekens': 'Retrieve RDW license plates',
+            'get-rdw-voertuig': 'Retrieve RDW vehicle info',
             'get-duo-persoonsinfo': 'Retrieve DUO personal information',
             'get-duo-studiefinanciering': 'Retrieve DUO student finance information',
             'get-svb-persoonsinfo': 'Retrieve SVB personal information',
@@ -197,6 +201,7 @@ const suwinetPluginSpecification: PluginSpecification = {
             'get-kadastrale-objecten': 'Abrufen von Katasterobjekten',
             'get-rdw-voertuigen': 'Abrufen von RDW-Fahrzeugen',
             'get-rdw-kentekens': 'Abrufen von RDW-Kennzeichen',
+            'get-rdw-voertuig': 'Abrufen von RDW-Fahrzeuginformationen',
             'get-duo-persoonsinfo': 'Abrufen von DUO-Personeninformationen',
             'get-duo-studiefinanciering': 'Abrufen von DUO-Studienfinanzierungsinformationen',
             'get-svb-persoonsinfo': 'Abrufen von SVB-Personeninformationen',

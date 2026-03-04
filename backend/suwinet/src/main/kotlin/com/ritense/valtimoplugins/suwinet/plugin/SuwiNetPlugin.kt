@@ -427,6 +427,42 @@ class SuwiNetPlugin(
     }
 
     @PluginAction(
+        key = "get-rdw-voertuig",
+        title = "SuwiNet RDW voertuig info",
+        description = "SuwiNet RDW voertuig info ophalen op basis van kenteken",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getVoertuig(
+        @PluginActionProperty kenteken: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
+        execution: DelegateExecution
+    ) {
+        logger.info { "Getting voertuig info for kenteken for case ${execution.businessKey}" }
+
+        try {
+            suwinetRdwService.setConfig(
+                getSuwinetSOAPClientConfig(),
+                suffix
+            )
+
+            suwinetRdwService.getVoertuig(
+                kenteken = kenteken,
+                dynamicProperties = dynamicProperties,
+                rdwService = suwinetRdwService.getRDWService()
+            ).let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
+    @PluginAction(
         key = "get-svb-persoonsinfo",
         title = "SuwiNet SVB Persoonsgegevens",
         description = "SuwiNet SVB Persoonsgegevens",

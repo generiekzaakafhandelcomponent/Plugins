@@ -214,6 +214,36 @@ class SuwinetRdwService(
         }
     }
 
+    fun getVoertuig(
+        kenteken: String,
+        rdwService: RDW,
+        dynamicProperties: List<String>,
+    ): DynamicResponseDto {
+
+        this.rdwService = rdwService
+
+        logger.info { "retrieving RDW Voertuig info for kenteken from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
+
+        return try {
+            val aansprakelijke = retrieveAansprakelijkeInfoFromSuwi(kenteken)
+                ?: return DynamicResponseDto(emptyList(), Any())
+            val wrapper = VoertuigenWrapper(listOf(aansprakelijke))
+            DynamicResponseDto(
+                properties = getAvailableProperties(wrapper),
+                dynamicProperties = getDynamicProperties(wrapper, dynamicProperties)
+            )
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting RDW voertuig info" }
+            throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+        } catch (e: WebServiceException) {
+            logger.error(e) { "WebServiceException - Error getting RDW voertuig info" }
+            throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting RDW voertuig info" }
+            throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+        }
+    }
+
     private data class KentekensWrapper(val kentekens: List<String>)
 
     private data class VoertuigenWrapper(val aansprakelijken: List<KentekenInfoResponse.ClientSuwi.Aansprakelijke>)
