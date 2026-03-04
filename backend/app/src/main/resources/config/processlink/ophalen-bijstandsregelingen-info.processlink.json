@@ -12,7 +12,8 @@
   {
     "actionProperties": {
       "bsn": "pv:bsn",
-      "resultProcessVariableName": "bijstandsregelingenInfo"
+      "resultProcessVariableName": "bijstandsregelingenInfo",
+      "dynamicProperties":["*"]
     },
     "activityId": "SuwinetOphalenBijstandsregelingenInfo",
     "activityType": "bpmn:ServiceTask:start",
