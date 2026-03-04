@@ -25,7 +25,7 @@
     "actionProperties": {
       "kadastraleAanduidingVariabeleName": "kadasterAanduiding",
       "resultProcessVariableName": "kadasterObject",
-      "dynamicProperties":["BedrKoopsom*", "KadastraleAanduiding*", "Gerechtigde*" ]
+      "dynamicProperties":["bedrKoopsom*", "kadastraleAanduiding*", "gerechtigde*" ]
     },
     "activityId": "MultiInstance_Activity_Ophalen_KadasterObjecten",
     "activityType": "bpmn:ServiceTask:start",

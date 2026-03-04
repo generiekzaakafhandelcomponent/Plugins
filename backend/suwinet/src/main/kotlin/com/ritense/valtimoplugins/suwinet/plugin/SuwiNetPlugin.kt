@@ -328,11 +328,11 @@ class SuwiNetPlugin(
 
             val kadastraleAanduidingMap = execution.getVariableLocal(kadastraleAanduidingVariabeleName) as LinkedHashMap<*, *>
             val kadastraleAanduiding = KadastraleAanduidingDto(
-                kadastraleAanduidingMap.get("CdKadastraleGemeente") as String,
-                kadastraleAanduidingMap.get("KadastraleGemeentenaam") as String,
-                kadastraleAanduidingMap.get("KadastraleSectie") as String,
-                kadastraleAanduidingMap.get("KadastraalPerceelnr") as BigInteger,
-                kadastraleAanduidingMap.get("VolgnrKadastraalAppartementsrecht") as BigInteger?)
+                kadastraleAanduidingMap.get("cdKadastraleGemeente") as String,
+                kadastraleAanduidingMap.get("kadastraleGemeentenaam") as String,
+                kadastraleAanduidingMap.get("kadastraleSectie") as String,
+                kadastraleAanduidingMap.get("kadastraalPerceelnr") as BigInteger,
+                kadastraleAanduidingMap.get("volgnrKadastraalAppartementsrecht") as BigInteger?)
 
             suwinetKadasterInfoService.getKadastraleObjectByAanduiding(
                 kadastraleAanduiding = kadastraleAanduiding,

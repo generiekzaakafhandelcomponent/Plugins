@@ -30,7 +30,8 @@ class DynamicResponseFactory(val objectMapper: ObjectMapper) {
         val result = mutableMapOf<String, Any?>()
 
         map.forEach { (key, value) ->
-            val path = if (prefix.isEmpty()) key.toString() else "$prefix.$key"
+            val normalizedKey = key.toString().replaceFirstChar { it.lowercase() }
+            val path = if (prefix.isEmpty()) normalizedKey else "$prefix.$normalizedKey"
 
             when (value) {
                 null -> result[path] = null
