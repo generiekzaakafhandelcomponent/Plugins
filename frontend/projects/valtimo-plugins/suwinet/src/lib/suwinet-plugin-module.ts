@@ -28,6 +28,7 @@ import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
 import {BrpKinderenInfoComponent} from './components/brp-kinderen-info/brp-kinderen-info.component';
 import {RdwVoertuigenComponent} from './components/rdw-voertuigen/rdw-voertuigen.component';
+import {RdwKentekenComponent} from './components/rdw-kenteken/rdw-kenteken.component';
 import {DuoPersoonsInfoComponent} from "./components/duo-persoons-info/duo-persoons-info.component";
 import {DuoStudiefinancieringComponent} from "./components/duo-studiefinanciering/duo-studiefinanciering.component";
 import {SvbPersoonsInfoComponent} from "./components/svb-persoons-info/svb-persoons-info.component";
@@ -49,6 +50,7 @@ import {KadastraleAanduidingenComponent} from "./components/kadastrale-aanduidin
         KadastraleObjectenComponent,
         KadastraleAanduidingenComponent,
         RdwVoertuigenComponent,
+        RdwKentekenComponent,
         SvbPersoonsInfoComponent,
         UwvInkomstenInfoComponent,
         BijstandsregelingenInfoComponent
@@ -64,6 +66,7 @@ import {KadastraleAanduidingenComponent} from "./components/kadastrale-aanduidin
         KadastraleObjectenComponent,
         KadastraleAanduidingenComponent,
         RdwVoertuigenComponent,
+        RdwKentekenComponent,
         SvbPersoonsInfoComponent,
         UwvInkomstenInfoComponent,
         BijstandsregelingenInfoComponent

@@ -83,6 +83,12 @@ export interface RdwVoertuigenConfig extends BaseActionConfig {
     resultProcessVariableName: string;
 }
 
+export interface RdwKentekensConfig extends BaseActionConfig {
+    bsn: string;
+    dynamicProperties: Array<string>;
+    resultProcessVariableName: string;
+}
+
 export interface SVBPersoonsInfoComponent extends BaseActionConfig {
     bsn: string;
     dynamicProperties: Array<string>;

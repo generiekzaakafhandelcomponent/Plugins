@@ -184,6 +184,38 @@ class SuwinetRdwService(
         return dynamicResponseFactory.flatMapToNested(propertiesMap)
     }
 
+    fun getKentekens(
+        bsn: String,
+        rdwService: RDW,
+        dynamicProperties: List<String>,
+    ): DynamicResponseDto {
+
+        this.rdwService = rdwService
+
+        logger.info { "retrieving RDW Kentekens from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
+
+        return try {
+            val kentekens = retrieveVoertuigenBezitInfo(bsn)
+            if (kentekens.isEmpty()) return DynamicResponseDto(emptyList(), Any())
+            val wrapper = KentekensWrapper(kentekens)
+            DynamicResponseDto(
+                properties = getAvailableProperties(wrapper),
+                dynamicProperties = getDynamicProperties(wrapper, dynamicProperties)
+            )
+        } catch (e: SOAPFaultException) {
+            logger.error(e) { "SOAPFaultException - Error getting RDW kentekens" }
+            throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+        } catch (e: WebServiceException) {
+            logger.error(e) { "WebServiceException - Error getting RDW kentekens" }
+            throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+        } catch (e: Exception) {
+            logger.error(e) { "Other Exception - Error getting RDW kentekens" }
+            throw SuwinetError(e, "SUWINET_CONNECT_ERROR")
+        }
+    }
+
+    private data class KentekensWrapper(val kentekens: List<String>)
+
     private data class VoertuigenWrapper(val aansprakelijken: List<KentekenInfoResponse.ClientSuwi.Aansprakelijke>)
 
     companion object {

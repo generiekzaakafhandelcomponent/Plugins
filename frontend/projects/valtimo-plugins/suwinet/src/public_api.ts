@@ -33,6 +33,7 @@ export * from './lib/components/duo-studiefinanciering/duo-studiefinanciering.co
 export * from './lib/components/kadastrale-aanduidingen/kadastrale-aanduidingen.component';
 export * from './lib/components/kadasterobjecten/kadastrale-objecten.component'
 export * from './lib/components/rdw-voertuigen/rdw-voertuigen.component';
+export * from './lib/components/rdw-kenteken/rdw-kenteken.component';
 export * from './lib/components/svb-persoons-info/svb-persoons-info.component';
 export * from './lib/components/uwv-inkomsten-persoon-info/uwv-inkomsten-info.component';
 export * from './lib/components/bijstandsregelingen-info/bijstandsregelingen-info.component'

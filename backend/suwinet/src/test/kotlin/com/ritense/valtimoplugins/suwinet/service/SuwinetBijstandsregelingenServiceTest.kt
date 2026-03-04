@@ -64,7 +64,7 @@ class SuwinetBijstandsregelingenServiceTest: BaseTest() {
         val result = service.getBijstandsregelingenByBsn(
             bsn, info,
             dynamicProperties = listOf("*")
-        )
+        ).dynamicProperties
 
         assertEquals(bsn, result?.burgerservicenr)
         assertEquals(2, result?.aanvraagUitkeringen?.size)

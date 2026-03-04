@@ -390,6 +390,43 @@ class SuwiNetPlugin(
     }
 
     @PluginAction(
+        key = "get-rdw-kentekens",
+        title = "SuwiNet RDW kentekens",
+        description = "SuwiNet RDW kentekens plugin action",
+        activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
+    )
+    fun getKentekens(
+        @PluginActionProperty bsn: String,
+        @PluginActionProperty resultProcessVariableName: String,
+        @PluginActionProperty suffix: String? = "",
+        @PluginActionProperty dynamicProperties: List<String> = listOf(),
+        execution: DelegateExecution
+    ) {
+        require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
+        logger.info { "Getting kentekens for case ${execution.businessKey}" }
+
+        try {
+            suwinetRdwService.setConfig(
+                getSuwinetSOAPClientConfig(),
+                suffix
+            )
+
+            suwinetRdwService.getKentekens(
+                bsn = bsn,
+                dynamicProperties = dynamicProperties,
+                rdwService = suwinetRdwService.getRDWService()
+            ).let {
+                execution.processInstance.setVariable(
+                    resultProcessVariableName, objectMapper.convertValue(it)
+                )
+            }
+        } catch (e: Exception) {
+            logger.info("Exiting scope due to nested error.", e)
+            return
+        }
+    }
+
+    @PluginAction(
         key = "get-svb-persoonsinfo",
         title = "SuwiNet SVB Persoonsgegevens",
         description = "SuwiNet SVB Persoonsgegevens",
