@@ -15,11 +15,11 @@
     "pluginConfigurationId" : "5474fe57-532a-4050-8d89-32e62ca3e895",
     "pluginActionDefinitionKey" : "store-temp-document",
     "actionProperties" : {
-      "title" : "pv:xentialDocumentProperties.documentFilename",
+      "title" : "pv:documentTitle",
       "fileName" : "pv:xentialDocumentProperties.documentFilename",
       "localDocumentLocation" : "xentialResourceId",
       "storedDocumentUrl" : "pdfDocumentUrl",
-      "informatieobjecttype" : "pv:xentialDocumentProperties.informationObjectType",
+      "informatieobjecttype" : "pv:informationObjectType",
       "taal" : "nld",
       "status" : "definitief"
     },

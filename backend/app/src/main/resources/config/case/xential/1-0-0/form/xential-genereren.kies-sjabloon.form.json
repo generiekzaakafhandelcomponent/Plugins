@@ -1,6 +1,14 @@
 {
   "components": [
     {
+      "label": "HTML",
+      "refreshOnChange": false,
+      "key": "html",
+      "type": "htmlelement",
+      "input": false,
+      "content": "Fields below are related to Xential document generation"
+    },
+    {
       "key": "xentialDocumentProperties",
       "type": "hidden",
       "input": true,
@@ -32,6 +40,9 @@
     },
     {
       "key": "pv:xentialSjabloonId",
+      "type": "select",
+      "label": "Sjabloon",
+      "input": true,
       "data": {
         "url": "../api/v1/xential/sjablonen?gebruikersId={{ data.xentialGebruikersId }}&sjabloonGroupId={{ data.xentialDocumentProperties.xentialTemplateGroupId }}",
         "method": "GET",
@@ -46,9 +57,6 @@
           }
         ]
       },
-      "type": "select",
-      "input": true,
-      "label": "Sjabloon id",
       "widget": "choicesjs",
       "dataSrc": "url",
       "lazyLoad": false,
@@ -56,15 +64,14 @@
       "validate": {
         "required": true
       },
-      "tableView": true,
       "selectValues": "sjablonen",
       "valueProperty": "id"
     },
     {
       "key": "tempcontent",
       "type": "select",
-      "input": true,
       "label": "Template",
+      "input": true,
       "data": {
         "url": "../api/management/v1/template?caseDefinitionName={{ data.documentDefinitionName }}&templateType=text&page=0&size=10000",
         "method": "GET",
@@ -87,7 +94,6 @@
         "required": true
       },
       "refreshOn": "document",
-      "tableView": true,
       "selectValues": "content",
       "valueProperty": "key",
       "clearOnRefresh": true,
@@ -124,11 +130,49 @@
       }
     },
     {
+      "label": "HTML",
+      "refreshOnChange": false,
+      "key": "html",
+      "type": "htmlelement",
+      "input": false,
+      "content": "Fields below are related to document upload and linking to zaak"
+    },
+    {
+        "key": "pv:documentTitle",
+        "type": "textfield",
+        "label": "Document titel",
+        "validate": {
+            "required": true
+        },
+        "input": true
+    },
+    {
+      "key": "pv:informationObjectType",
+      "type": "select",
+      "label": "Informatieobject type",
+      "input": true,
+      "data": {
+        "values": [
+          {
+            "label": "Brief",
+            "value": "3de97256-1d8d-479b-a476-c7f0f2d0b60a"
+          },
+          {
+            "label": "Besluit",
+            "value": "60012171-7783-4c22-a510-4d258c8229c2"
+          }
+        ]
+      },
+      "template": "<span>{{ item.label }}</span>",
+      "validate": {
+        "required": true
+      }
+    },
+    {
       "key": "submit",
       "type": "button",
       "input": true,
       "label": "Afronden",
-      "tableView": false,
       "showValidations": false,
       "disableOnInvalid": true
     }
