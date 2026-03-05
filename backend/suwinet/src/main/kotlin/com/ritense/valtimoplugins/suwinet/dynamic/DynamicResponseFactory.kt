@@ -1,6 +1,9 @@
 package com.ritense.valtimoplugins.suwinet.dynamic
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class DynamicResponseFactory(val objectMapper: ObjectMapper) {
 
@@ -26,6 +29,17 @@ class DynamicResponseFactory(val objectMapper: ObjectMapper) {
         return flattenMap(nestedMap, prefix)
     }
 
+    private fun convertN8DateToIso(key: String, value: String): String {
+        if (!key.contains("dat", ignoreCase = true)) return value
+        if (!value.matches(Regex("^\\d{8}$"))) return value
+        return try {
+            LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyyMMdd"))
+                .format(DateTimeFormatter.ISO_LOCAL_DATE)
+        } catch (e: DateTimeParseException) {
+            value
+        }
+    }
+
     private fun flattenMap(map: Map<*, *>, prefix: String): Map<String, Any?> {
         val result = mutableMapOf<String, Any?>()
 
@@ -44,6 +58,7 @@ class DynamicResponseFactory(val objectMapper: ObjectMapper) {
                         }
                     }
                 }
+                is String -> result[path] = convertN8DateToIso(normalizedKey, value)
                 else -> result[path] = value
             }
         }

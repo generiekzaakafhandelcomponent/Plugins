@@ -1,6 +1,7 @@
 package com.ritense.valtimoplugins.suwinet.service
 
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.valtimo.TestHelper
 import com.ritense.valtimoplugins.BaseTest
 import com.ritense.valtimoplugins.dkd.Bijstandsregelingen.BijstandsregelingenInfo
@@ -11,7 +12,6 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoSettings
@@ -32,13 +32,6 @@ class SuwinetBijstandsregelingenServiceTest: BaseTest() {
     @Mock
     lateinit var info: BijstandsregelingenInfo
 
-    @Mock
-    lateinit var dateTimeService: DateTimeService
-
-    @Mock
-    lateinit var dynamicResponseFactory: DynamicResponseFactory
-
-    @InjectMocks
     private lateinit var service: SuwinetBijstandsregelingenService
 
     lateinit var testHelper: TestHelper
@@ -46,6 +39,8 @@ class SuwinetBijstandsregelingenServiceTest: BaseTest() {
     @BeforeEach
     fun setup() {
         testHelper = TestHelper
+        val dynamicResponseFactory = DynamicResponseFactory(jacksonObjectMapper())
+        service = SuwinetBijstandsregelingenService(suwinetSOAPClient, dynamicResponseFactory)
         service.setConfig(soapClientConfig, "")
     }
 
@@ -64,11 +59,11 @@ class SuwinetBijstandsregelingenServiceTest: BaseTest() {
         val result = service.getBijstandsregelingenByBsn(
             bsn, info,
             dynamicProperties = listOf("*")
-        )?.dynamicProperties
+        )?.dynamicProperties as Map<*, *>
 
-        assertEquals(bsn, result?.Burgerservicenr)
-        assertEquals(2, result?.aanvraagUitkeringen?.size)
-        assertEquals(2, result?.specifiekeGegevensBijzBijstandList?.size)
-        assertEquals(2, result?.vorderingen?.size)
+        assertEquals(bsn, result["burgerservicenr"])
+        assertEquals(2, (result["aanvraagUitkeringen"] as List<*>).size)
+        assertEquals(2, (result["specifiekeGegevensBijzBijstandList"] as List<*>).size)
+        assertEquals(2, (result["vorderingen"] as List<*>).size)
     }
 }
