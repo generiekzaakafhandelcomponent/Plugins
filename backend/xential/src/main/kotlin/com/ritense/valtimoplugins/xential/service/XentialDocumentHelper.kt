@@ -36,28 +36,31 @@ class XentialDocumentHelper(
         execution: DelegateExecution,
         documentPropertiesMap: MutableMap<String, Any>,
     ) {
-        val documentProperties: XentialDocumentProperties = objectMapper.convertValue(documentPropertiesMap)
-        requireNotNull(documentProperties.xentialTemplateName) {
-            "xentialTemplateName is required"
+        objectMapper.convertValue<XentialDocumentProperties>(documentPropertiesMap).let { documentProperties ->
+            requireNotNull(documentProperties.xentialTemplateName) {
+                "xentialTemplateName is required"
+            }
+            requireNotNull(documentProperties.fileFormat) {
+                "fileFormat is required"
+            }
+            zaakDocumentService.getInformatieObjectenAsRelatedFilesPage(
+                UUID.fromString(execution.processBusinessKey),
+                DocumentSearchRequest(),
+                PageRequest.of(0, 1000)
+            ).let { documents ->
+                documents.count {
+                    it.bestandsnaam!!.startsWith(documentProperties.xentialTemplateName)
+                }.let { totalExisting ->
+                    val extension = if (documentProperties.fileFormat == FileFormat.WORD) {
+                        "docx"
+                    } else {
+                        "pdf"
+                    }
+                    documentPropertiesMap["documentFilename"] =
+                        "${documentProperties.xentialTemplateName}-${totalExisting + 1}.$extension"
+                }
+            }
         }
-        requireNotNull(documentProperties.fileFormat) {
-            "fileFormat is required"
-        }
-        val docs = zaakDocumentService.getInformatieObjectenAsRelatedFilesPage(
-            UUID.fromString(execution.processBusinessKey),
-            DocumentSearchRequest(),
-            PageRequest.of(0, 1000)
-        )
-
-        val totalExisting = docs.count {
-            it.bestandsnaam!!.startsWith(documentProperties.xentialTemplateName)
-        }
-        val extension = if (documentProperties.fileFormat == FileFormat.WORD) {
-            "docx"
-        } else {
-            "pdf"
-        }
-        documentPropertiesMap["documentFilename"] = "${documentProperties.xentialTemplateName}-${totalExisting + 1}.$extension"
     }
 
     companion object {
