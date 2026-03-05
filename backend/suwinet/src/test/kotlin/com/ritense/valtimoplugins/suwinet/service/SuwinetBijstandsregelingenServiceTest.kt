@@ -62,8 +62,8 @@ class SuwinetBijstandsregelingenServiceTest: BaseTest() {
         )?.dynamicProperties as Map<*, *>
 
         assertEquals(bsn, result["burgerservicenr"])
-        assertEquals(2, (result["aanvraagUitkeringen"] as List<*>).size)
-        assertEquals(2, (result["specifiekeGegevensBijzBijstandList"] as List<*>).size)
-        assertEquals(2, (result["vorderingen"] as List<*>).size)
+        assertEquals(2, (result["aanvraagUitkering"] as List<*>).size)
+        assertEquals(2, (result["specifiekeGegevensBijzBijstand"] as List<*>).size)
+        assertEquals(2, (result["vordering"] as List<*>).size)
     }
 }
