@@ -108,6 +108,7 @@ open class DocsysPlugin(
         val content = Base64.getDecoder().decode(fileResponse.Content)
         val mutableMetaData = mutableMapOf<String, Any>()
         mutableMetaData["bestandsomvang"] = content.size
+        mutableMetaData["bestandsnaam"] = fileResponse.FileName
         mutableMetaData[MetadataType.CONTENT_TYPE.key] = format
         mutableMetaData["author"] = "Gegenereerd door Docsys"
 
