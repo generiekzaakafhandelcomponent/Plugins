@@ -68,10 +68,12 @@ class DocumentGenerationService(
             token = UUID.fromString(result.documentCreatieSessieId),
             processId = processId,
             messageName = xentialDocumentProperties.messageName,
-            resumeUrl = result.resumeUrl.toString(),
+            resumeUrl = result.resumeUrl?.toString(),
         )
         logger.debug { "token: ${xentialToken.token}" }
-        xentialTokenRepository.save(xentialToken)
+        xentialTokenRepository.save(xentialToken).also {
+            logger.debug { "persisted token: $it" }
+        }
         logger.info { "ready" }
 
         return GenerateDocumentResult(
@@ -96,19 +98,30 @@ class DocumentGenerationService(
             .orElseThrow {
                 NoSuchElementException("Could not find Xential Token ${message.documentCreatieSessieId}")
             }
-
-        logger.info { "Retrieved content from Xential Callback, token: ${xentialToken.token}, type: ${message.formaat}" }
+        logger.info {
+            "Retrieved content from Xential Callback, token: ${xentialToken.token}, type: ${message.formaat}"
+        }
 
         ByteArrayInputStream(bytes).use { inputStream ->
             val metadata = mapOf(
                 MetadataType.FILE_NAME.key to "${xentialToken.processId}-${xentialToken.messageName}.tmp",
                 MetadataType.CONTENT_TYPE.key to setMimeType(message.formaat)
             )
-            val resourceId = temporaryResourceStorageService.store(inputStream, metadata)
-            runtimeService.createMessageCorrelation(xentialToken.messageName)
-                .processInstanceId(xentialToken.processId.toString())
-                .setVariable("xentialResourceId", resourceId)
-                .correlateAll()
+            temporaryResourceStorageService.store(inputStream, metadata).let { resourceId ->
+                logger.info { "Stored temporary resource with id: $resourceId" }
+                runtimeService.createMessageCorrelation(xentialToken.messageName)
+                    .processInstanceId(xentialToken.processId.toString())
+                    .setVariable("xentialResourceId", resourceId)
+                    .correlateAllWithResult().also { correlationResults ->
+                        logger.info {
+                            "Correlated message '${xentialToken.messageName}' to ${correlationResults.size} execution(s)"
+                        }
+                        if (correlationResults.isNotEmpty()) {
+                            xentialTokenRepository.delete(xentialToken)
+                            logger.debug { "Deleted xential token: ${xentialToken.token}" }
+                        }
+                    }
+            }
         }
     }
 

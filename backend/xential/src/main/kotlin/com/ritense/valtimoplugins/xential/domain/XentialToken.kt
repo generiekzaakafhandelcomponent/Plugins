@@ -20,6 +20,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
@@ -34,4 +35,6 @@ class XentialToken(
     val messageName: String,
     @Column(name = "resume_url", nullable = true, updatable = false)
     val resumeUrl: String?,
+    @Column(name = "created_on", nullable = false, updatable = false)
+    val createdOn: LocalDateTime = LocalDateTime.now(),
 )
