@@ -6,7 +6,6 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.printstraat.service.PrintstraatService
-import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
 
 @Plugin(
@@ -31,16 +30,14 @@ class PrintstraatPlugin(
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START]
     )
     fun sendFileToPrintstraat(
-        execution: DelegateExecution,
         @PluginActionProperty documentenApiPluginConfigurationId: String,
         @PluginActionProperty zaaknummer: String,
-        @PluginActionProperty documentMetadataVariableName: String
+        @PluginActionProperty documentUrl: String
     ) {
         printstraatService.sendFileToPrintstraat(
-            execution,
             documentenApiPluginConfigurationId,
             zaaknummer,
-            documentMetadataVariableName
+            URI(documentUrl)
         )
     }
 }
