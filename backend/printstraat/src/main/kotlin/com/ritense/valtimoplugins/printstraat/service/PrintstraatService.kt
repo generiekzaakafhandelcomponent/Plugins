@@ -34,7 +34,7 @@ class PrintstraatService(
                 documentId = documentId
             )
 
-            val fileName = sanitizeFilename(informatieObject.bestandsnaam) ?: "document-$documentId"
+            val fileName = informatieObject.bestandsnaam ?: "document-$documentId"
 
             printstraatClient.postDocumentToPrintstraat(
                 PrintstraatBodyDto(
@@ -61,13 +61,6 @@ class PrintstraatService(
     private fun throwBpmnError(message: String) {
         throw BpmnError("PRINTSTRAAT_ERROR", message)
     }
-
-    private fun sanitizeFilename(name: String?): String? =
-        name?.trim()
-            ?.substringAfterLast('/')
-            ?.substringAfterLast('\\')
-            ?.replace(Regex("[^\\p{L}\\p{N} ._()-]"), "_")
-            ?.takeIf { it.isNotBlank() }
 
     companion object {
         val logger = KotlinLogging.logger {}
