@@ -24,7 +24,6 @@ import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.resource.domain.MetadataType
-import com.ritense.documentenapi.client.DocumentStatusType
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.docsys.client.DocsysClient
 import com.ritense.valtimoplugins.docsys.client.DownloadResponse
@@ -107,14 +106,16 @@ open class DocsysPlugin(
     private fun storeDocument(fileResponse: DownloadResponse, format: String): String {
         val content = Base64.getDecoder().decode(fileResponse.Content)
         val mutableMetaData = mutableMapOf<String, Any>()
+        val fileName = slugifyFilename(fileResponse.FileName)
+
         mutableMetaData["bestandsomvang"] = content.size
-        mutableMetaData["bestandsnaam"] = fileResponse.FileName
+        mutableMetaData["bestandsnaam"] = fileName
         mutableMetaData[MetadataType.CONTENT_TYPE.key] = format
         mutableMetaData["author"] = "Gegenereerd door Docsys"
 
         val resourceId = storageService.store( content.inputStream(), mutableMetaData)
 
-        return resourceId;
+        return resourceId
     }
 
     private fun resolveValue(execution: DelegateExecution, keyValueList: List<TemplateProperty>?): List<TemplateProperty>? {
@@ -131,6 +132,18 @@ open class DocsysPlugin(
                 TemplateProperty(it.key, resolvedValue)
             }
         }
+    }
+
+    private fun slugifyFilename(name: String): String {
+        val parts = name.trim().split(".", limit = 2)
+        val base = parts[0]
+            .lowercase()
+            .replace(Regex("[^a-z0-9]+"), "-")
+            .trim('-')
+
+        val extension = if (parts.size > 1) ".${parts[1].lowercase()}" else ""
+
+        return "${base.ifBlank { "file" }}$extension"
     }
 
     companion object {
