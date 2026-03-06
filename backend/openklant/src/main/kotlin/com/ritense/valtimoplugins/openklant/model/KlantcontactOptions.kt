@@ -20,7 +20,7 @@ data class KlantcontactOptions(
             partijUuid: String? = null,
         ) = KlantcontactOptions(
             klantinteractiesUrl,
-            token = token,
+            token = token.trim(),
             bsn = bsn?.trim(),
             partijUuid = partijUuid?.trim(),
             objectTypeId = objectTypeId?.trim(),
