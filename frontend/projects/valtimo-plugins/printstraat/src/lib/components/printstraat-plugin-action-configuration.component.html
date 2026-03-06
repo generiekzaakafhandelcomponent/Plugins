@@ -40,14 +40,14 @@
     [required]="true"
   ></v-input>
   <v-input
-    name="documentMetadataVariableName"
-    [title]="'documentMetadataVariableName' | pluginTranslate: pluginId | async"
+    name="documentUrl"
+    [title]="'documentUrl' | pluginTranslate: pluginId | async"
     [margin]="true"
     [fullWidth]="true"
-    [defaultValue]="obs.prefill?.documentMetadataVariableName"
+    [defaultValue]="obs.prefill?.documentUrl"
     [disabled]="obs.disabled"
     [required]="true"
-    [tooltip]="'documentMetadataVariableNameTooltip' | pluginTranslate: pluginId | async"
+    [tooltip]="'documentUrlTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
 
 </v-form>
