@@ -13,7 +13,7 @@ data class KlantcontactOptions(
     companion object {
         fun fromActionProperties(
             klantinteractiesUrl: URI,
-            token: String,
+            token: String.trim(),
             objectTypeId: String? = null,
             objectUuid: String? = null,
             bsn: String? = null,
