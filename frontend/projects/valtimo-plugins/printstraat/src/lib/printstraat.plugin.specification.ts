@@ -38,8 +38,8 @@ const printstraatPluginSpecification: PluginSpecification = {
       'send-file-to-printstraat': 'Stuur bestand naar Printstraat',
       documentenApiPluginConfigurationId: 'Documenten API Plugin configuratie ID',
       zaaknummer: 'Zaaknummer',
-      documentMetadataVariableName: 'Document metadata procesvariabele naam',
-      documentMetadataVariableNameTooltip: 'Naam van de procesvariabele die de metadata van het document bevat.',
+      documentUrl: 'Document URL',
+      documentUrlTooltip: 'De URL van het document.',
     },
     en: {
       configurationTitle: 'Configuration name',
@@ -52,8 +52,8 @@ const printstraatPluginSpecification: PluginSpecification = {
       'send-file-to-printstraat': 'Send file to Printstraat',
       documentenApiPluginConfigurationId: 'Documenten API Plugin configuration ID',
       zaaknummer: 'Case number',
-      documentMetadataVariableName: 'Document metadata variable name',
-      documentMetadataVariableNameTooltip: 'Name of the process variable that contains the metadata of the document',
+      documentUrl: 'Document URL',
+      documentUrlTooltip: 'The URL of the document.',
     }
   }
 };
