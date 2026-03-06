@@ -15,9 +15,9 @@ import mu.KotlinLogging
 import org.jetbrains.annotations.VisibleForTesting
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestClientResponseException
-import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.body
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriBuilder
@@ -145,13 +145,12 @@ class OpenKlantClient(
                 .body<Page<DigitaalAdres>>()
                 ?.results
                 ?: throw IllegalStateException("Error fetching DigitaalAdres: response body was null")
-
         } catch (e: HttpServerErrorException.InternalServerError) {
             handleInternalServerError(e)
         } catch (e: RestClientResponseException) {
             handleResponseException(
                 e,
-                "Error fetching Default ${soortDigitaalAdres.value} Adressen for partij: $partijUuid"
+                "Error fetching Default ${soortDigitaalAdres.value} Adressen for partij: $partijUuid",
             )
         }
 
