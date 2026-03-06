@@ -236,7 +236,7 @@ class OpenKlantClient(
         openKlantRestClientBuilder
             .clone()
             .baseUrl(properties.klantinteractiesUrl.toASCIIString())
-            .defaultHeader("Authorization", "Token ${properties.token}" )
+            .defaultHeader("Authorization", "Token ${properties.token}")
             .build()
 
     @VisibleForTesting
