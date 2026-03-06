@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://bpmn.io/schema/bpmn"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+  <message id="Message_1570bfo" name="Message_FAILURE_ONTVANGEN"/>
+  <collaboration id="Collaboration_1a0h0q2">
+    <participant id="Participant_0vwhxi3" name="Open Klant: Contactgeschiedenis Ophalen"
+                 processRef="contactgeschiedenis-ophalen"/>
+  </collaboration>
+  <process id="contactgeschiedenis-ophalen" name="Open Klant: Contactgeschiedenis Ophalen" isExecutable="true"
+           camunda:versionTag="">
+    <sequenceFlow id="Flow_1tpnzje" sourceRef="Activity_0ifw82q" targetRef="Event_167urb2"/>
+    <sequenceFlow id="Flow_0ivoj5e" sourceRef="Activity_HaalContactgeschiedenisOpTask" targetRef="Gateway_1mk6sku"/>
+    <sequenceFlow id="Flow_0du2437" sourceRef="startEvent1" targetRef="Activity_0x3d6tk"/>
+    <sequenceFlow id="Flow_1p90xbm" sourceRef="Activity_0x3d6tk" targetRef="Gateway_04tnnki"/>
+    <serviceTask id="Activity_0x3d6tk" name="Haal BSN op uit document"
+                 camunda:expression="${valueResolverDelegateService.resolveValue(execution, &#39;doc:/bsn&#39;)}"
+                 camunda:resultVariable="bsn">
+      <incoming>Flow_0du2437</incoming>
+      <outgoing>Flow_1p90xbm</outgoing>
+    </serviceTask>
+    <sequenceFlow id="Flow_158ckgd" name="Ja" sourceRef="Gateway_04tnnki"
+                  targetRef="Activity_HaalContactgeschiedenisOpTask"/>
+    <exclusiveGateway id="Gateway_04tnnki" name="Is er een BSN?" default="Flow_158ckgd">
+      <incoming>Flow_1p90xbm</incoming>
+      <outgoing>Flow_158ckgd</outgoing>
+      <outgoing>Flow_1e12ryo</outgoing>
+    </exclusiveGateway>
+    <sequenceFlow id="Flow_1e12ryo" name="Nee" sourceRef="Gateway_04tnnki" targetRef="Activity_0hd00py">
+      <conditionExpression xsi:type="tFormalExpression">${ bsn == "" }</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Flow_1bm0f62" sourceRef="Gateway_1mk6sku" targetRef="Activity_0ifw82q"/>
+    <sequenceFlow id="Flow_11yc0tu" sourceRef="Activity_HaalContactgeschiedenisOpTaskViaPartijUuid"
+                  targetRef="Gateway_1mk6sku"/>
+    <startEvent id="startEvent1" name="start">
+      <outgoing>Flow_0du2437</outgoing>
+    </startEvent>
+    <serviceTask id="Activity_0ifw82q" name="Sla contact-momenten in document op"
+                 camunda:expression="${valueResolverDelegateService.handleValue(execution, &#39;doc:/contactgeschiedenis&#39;, contactgeschiedenis)}">
+      <incoming>Flow_1bm0f62</incoming>
+      <outgoing>Flow_1tpnzje</outgoing>
+    </serviceTask>
+    <endEvent id="Event_167urb2" name="end">
+      <incoming>Flow_1tpnzje</incoming>
+    </endEvent>
+    <exclusiveGateway id="Gateway_1mk6sku">
+      <incoming>Flow_0ivoj5e</incoming>
+      <incoming>Flow_11yc0tu</incoming>
+      <outgoing>Flow_1bm0f62</outgoing>
+    </exclusiveGateway>
+    <serviceTask id="Activity_HaalContactgeschiedenisOpTaskViaPartijUuid"
+                 name="Haal contact-geschiedenis op basis van partij UUID" camunda:expression="${true}">
+      <incoming>Flow_0hit7qv</incoming>
+      <outgoing>Flow_11yc0tu</outgoing>
+    </serviceTask>
+    <sequenceFlow id="Flow_0hit7qv" sourceRef="Activity_0hd00py"
+                  targetRef="Activity_HaalContactgeschiedenisOpTaskViaPartijUuid"/>
+    <serviceTask id="Activity_HaalContactgeschiedenisOpTask" name="Haal contact-geschiedenis op basis van BSN"
+                 camunda:expression="${true}">
+      <incoming>Flow_158ckgd</incoming>
+      <outgoing>Flow_0ivoj5e</outgoing>
+    </serviceTask>
+    <serviceTask id="Activity_0hd00py" name="Haal Partij UUID op uit document"
+                 camunda:expression="${valueResolverDelegateService.resolveValue(execution, &#39;doc:/partijUuid&#39;)}"
+                 camunda:resultVariable="partijUuid">
+      <incoming>Flow_1e12ryo</incoming>
+      <outgoing>Flow_0hit7qv</outgoing>
+    </serviceTask>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process">
+    <bpmndi:BPMNPlane id="BPMNPlane_process" bpmnElement="Collaboration_1a0h0q2">
+      <bpmndi:BPMNShape id="Participant_0vwhxi3_di" bpmnElement="Participant_0vwhxi3" isHorizontal="true">
+        <omgdc:Bounds x="50" y="360" width="870" height="310"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04v180f_di" bpmnElement="Activity_0x3d6tk">
+        <omgdc:Bounds x="180" y="430" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_04tnnki_di" bpmnElement="Gateway_04tnnki" isMarkerVisible="true">
+        <omgdc:Bounds x="325" y="445" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="313" y="423" width="75" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
+        <omgdc:Bounds x="102" y="452" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="110" y="495" width="22" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0yun8wh_di" bpmnElement="Activity_0ifw82q">
+        <omgdc:Bounds x="710" y="430" width="100" height="80"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_167urb2_di" bpmnElement="Event_167urb2">
+        <omgdc:Bounds x="862" y="452" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="871" y="495" width="19" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1mk6sku_di" bpmnElement="Gateway_1mk6sku" isMarkerVisible="true">
+        <omgdc:Bounds x="615" y="445" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1a9hdsr_di"
+                        bpmnElement="Activity_HaalContactgeschiedenisOpTaskViaPartijUuid">
+        <omgdc:Bounds x="520" y="550" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0lhi0r1_di" bpmnElement="Activity_HaalContactgeschiedenisOpTask">
+        <omgdc:Bounds x="450" y="430" width="100" height="80"/>
+        <bpmndi:BPMNLabel/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1chiwlm_di" bpmnElement="Activity_0hd00py">
+        <omgdc:Bounds x="380" y="550" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1tpnzje_di" bpmnElement="Flow_1tpnzje">
+        <omgdi:waypoint x="810" y="470"/>
+        <omgdi:waypoint x="862" y="470"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ivoj5e_di" bpmnElement="Flow_0ivoj5e">
+        <omgdi:waypoint x="550" y="470"/>
+        <omgdi:waypoint x="615" y="470"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0du2437_di" bpmnElement="Flow_0du2437">
+        <omgdi:waypoint x="138" y="470"/>
+        <omgdi:waypoint x="180" y="470"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1p90xbm_di" bpmnElement="Flow_1p90xbm">
+        <omgdi:waypoint x="280" y="470"/>
+        <omgdi:waypoint x="325" y="470"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_158ckgd_di" bpmnElement="Flow_158ckgd">
+        <omgdi:waypoint x="375" y="470"/>
+        <omgdi:waypoint x="450" y="470"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="388" y="452" width="13" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e12ryo_di" bpmnElement="Flow_1e12ryo">
+        <omgdi:waypoint x="350" y="495"/>
+        <omgdi:waypoint x="350" y="590"/>
+        <omgdi:waypoint x="380" y="590"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="355" y="513" width="21" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bm0f62_di" bpmnElement="Flow_1bm0f62">
+        <omgdi:waypoint x="665" y="470"/>
+        <omgdi:waypoint x="710" y="470"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11yc0tu_di" bpmnElement="Flow_11yc0tu">
+        <omgdi:waypoint x="620" y="590"/>
+        <omgdi:waypoint x="640" y="590"/>
+        <omgdi:waypoint x="640" y="495"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hit7qv_di" bpmnElement="Flow_0hit7qv">
+        <omgdi:waypoint x="480" y="590"/>
+        <omgdi:waypoint x="520" y="590"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

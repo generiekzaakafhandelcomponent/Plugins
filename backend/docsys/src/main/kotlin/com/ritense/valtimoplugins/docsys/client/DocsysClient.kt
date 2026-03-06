@@ -102,8 +102,7 @@ class DocsysClient(
         params: Map<String, Any>,
         modelId: String
     ): DamDraftResponse {
-        val body = LinkedMultiValueMap<String, Any>()
-        params.forEach { body.add(it.key, it.value) }
+        val body: Map<String, Any?> = params
 
         val response = restClientBuilder
             .clone()

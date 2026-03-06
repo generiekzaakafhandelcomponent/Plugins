@@ -4,10 +4,10 @@ import com.ritense.valtimoplugins.openklant.dto.Contactnaam
 import com.ritense.valtimoplugins.openklant.dto.CreatePartijRequest
 import com.ritense.valtimoplugins.openklant.dto.Identificator
 import com.ritense.valtimoplugins.openklant.dto.Partij
-import com.ritense.valtimoplugins.openklant.model.ContactInformation
+import com.ritense.valtimoplugins.openklant.model.PartijInformation
 
 class PartijFactory {
-    fun createFromBsn(contactInformation: ContactInformation): CreatePartijRequest =
+    fun createFromBsn(partijInformation: PartijInformation): CreatePartijRequest =
         CreatePartijRequest(
             nummer = "",
             interneNotitie = "",
@@ -15,20 +15,20 @@ class PartijFactory {
             voorkeursDigitaalAdres = null,
             rekeningnummers = emptyList(),
             voorkeursRekeningnummer = null,
-            partijIdentificatoren = listOf(getPartijIdentificator(contactInformation)),
+            partijIdentificatoren = listOf(getPartijIdentificator(partijInformation)),
             soortPartij = Partij.SoortPartij.PERSOON,
             indicatieGeheimhouding = false,
             voorkeurstaal = "nld",
             indicatieActief = true,
             bezoekadres = null,
             correspondentieAdres = null,
-            partijIdentificatie = getPartijIdentificatie(contactInformation),
+            partijIdentificatie = getPartijIdentificatie(partijInformation),
         )
 
-    private fun getPartijIdentificator(contactInformation: ContactInformation): Map<String, Identificator> {
+    private fun getPartijIdentificator(partijInformation: PartijInformation): Map<String, Identificator> {
         val identificator =
             Identificator(
-                objectId = contactInformation.bsn,
+                objectId = partijInformation.bsn,
                 codeObjecttype = "natuurlijk_persoon",
                 codeRegister = "brp",
                 codeSoortObjectId = "bsn",
@@ -36,14 +36,14 @@ class PartijFactory {
         return mapOf("partijIdentificator" to identificator)
     }
 
-    private fun getPartijIdentificatie(contactInformation: ContactInformation): Partij.PartijIdentificatie {
+    private fun getPartijIdentificatie(partijInformation: PartijInformation): Partij.PartijIdentificatie {
         val contactnaam =
             Contactnaam(
-                voorletters = "",
-                voornaam = contactInformation.firstName,
-                voorvoegselAchternaam = contactInformation.inFix,
-                achternaam = contactInformation.lastName,
+                voorletters = partijInformation.voorletters,
+                voornaam = partijInformation.voornaam,
+                voorvoegselAchternaam = partijInformation.voorvoegselAchternaam,
+                achternaam = partijInformation.achternaam,
             )
-        return Partij.PartijIdentificatie(contactnaam, contactInformation.fullName)
+        return Partij.PartijIdentificatie(contactnaam)
     }
 }

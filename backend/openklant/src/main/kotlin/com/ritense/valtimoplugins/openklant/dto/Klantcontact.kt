@@ -2,7 +2,7 @@ package com.ritense.valtimoplugins.openklant.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class KlantContact(
+data class Klantcontact(
     @JsonProperty("uuid")
     override val uuid: String,
     @JsonProperty("url")

@@ -17,10 +17,10 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-import {NgxLoggerLevel} from 'ngx-logger';
-import {ROLE_ADMIN, ROLE_USER, ValtimoConfig, UploadProvider, IncludeFunction, DefinitionColumn} from '@valtimo/config';
-import {authenticationKeycloak} from './auth/keycloak-config.dev';
-import {DARK_MODE_LOGO_BASE_64, LOGO_BASE_64} from './logo';
+import { NgxLoggerLevel } from 'ngx-logger';
+import { ROLE_ADMIN, ROLE_USER, ValtimoConfig, UploadProvider, IncludeFunction, DefinitionColumn } from '@valtimo/config';
+import { authenticationKeycloak } from './auth/keycloak-config.dev';
+import { DARK_MODE_LOGO_BASE_64, LOGO_BASE_64 } from './logo';
 
 const defaultDefinitionColumns: Array<DefinitionColumn> = [
     {
@@ -67,7 +67,7 @@ export const environment: ValtimoConfig = {
                 iconClass: 'icon mdi mdi-view-dashboard',
                 sequence: 0
             },
-            {roles: [ROLE_USER], title: 'Dossiers', iconClass: 'icon mdi mdi-layers', sequence: 1, children: []},
+            { roles: [ROLE_USER], title: 'Dossiers', iconClass: 'icon mdi mdi-layers', sequence: 1, children: [] },
             {
                 roles: [ROLE_USER],
                 title: 'Objects',
@@ -75,7 +75,7 @@ export const environment: ValtimoConfig = {
                 sequence: 2,
                 includeFunction: IncludeFunction.ObjectManagementEnabled,
             },
-            {roles: [ROLE_USER], link: ['/tasks'], title: 'Tasks', iconClass: 'icon mdi mdi-check-all', sequence: 3},
+            { roles: [ROLE_USER], link: ['/tasks'], title: 'Tasks', iconClass: 'icon mdi mdi-check-all', sequence: 3 },
             {
                 roles: [ROLE_USER],
                 link: ['/analysis'],
@@ -85,27 +85,27 @@ export const environment: ValtimoConfig = {
             },
             {
                 roles: [ROLE_ADMIN], title: 'Admin', iconClass: 'icon mdi mdi-tune', sequence: 5, children: [
-                    {title: 'Basics', textClass: 'text-dark font-weight-bold c-default', sequence: 1},
-                    {link: ['/processes'], title: 'Processes', sequence: 2},
-                    {link: ['/form-management'], title: 'Forms', sequence: 3},
-                    {link: ['/form-flow-management'], title: 'Form flows', sequence: 4},
-                    {link: ['/decision-tables'], title: 'Decision tables', sequence: 5},
-                    {link: ['/dossier-management'], title: 'Dossiers', sequence: 6},
-                    {link: ['/task-management'], title: 'Tasks', sequence: 7},
+                    { title: 'Basics', textClass: 'text-dark font-weight-bold c-default', sequence: 1 },
+                    { link: ['/processes'], title: 'Processes', sequence: 2 },
+                    { link: ['/form-management'], title: 'Forms', sequence: 3 },
+                    { link: ['/form-flow-management'], title: 'Form flows', sequence: 4 },
+                    { link: ['/decision-tables'], title: 'Decision tables', sequence: 5 },
+                    { link: ['/dossier-management'], title: 'Dossiers', sequence: 6 },
+                    { link: ['/task-management'], title: 'Tasks', sequence: 7 },
                     {
                         link: ['/object-management'],
                         title: 'Objects',
                         sequence: 8,
                         includeFunction: IncludeFunction.ObjectManagementEnabled,
                     },
-                    {link: ['/plugins'], title: 'Plugins', sequence: 9},
-                    {link: ['/process-links'], title: 'Process links', sequence: 10},
-                    {link: ['/dashboard-management'], title: 'Dashboard', sequence: 11},
-                    {link: ['/access-control'], title: 'Access Control', sequence: 12},
-                    {link: ['/logging'], title: 'Logs', sequence: 13},
-                    {title: 'Other', textClass: 'text-dark font-weight-bold c-default', sequence: 14},
-                    {link: ['/process-migration'], title: 'Process migration', sequence: 15},
-                    {link: ['/choice-fields'], title: 'Choice fields', sequence: 16},
+                    { link: ['/plugins'], title: 'Plugins', sequence: 9 },
+                    { link: ['/process-links'], title: 'Process links', sequence: 10 },
+                    { link: ['/dashboard-management'], title: 'Dashboard', sequence: 11 },
+                    { link: ['/access-control'], title: 'Access Control', sequence: 12 },
+                    { link: ['/logging'], title: 'Logs', sequence: 13 },
+                    { title: 'Other', textClass: 'text-dark font-weight-bold c-default', sequence: 14 },
+                    { link: ['/process-migration'], title: 'Process migration', sequence: 15 },
+                    { link: ['/choice-fields'], title: 'Choice fields', sequence: 16 },
                 ]
             }
         ]
@@ -136,7 +136,11 @@ export const environment: ValtimoConfig = {
     featureToggles: {
         disableCaseCount: true,
         enableObjectManagement: true
-    }
+    },
+    translationResources: [
+        './assets/i18n',
+        './assets/i18n/open-klant'
+    ],
 };
 
 /*

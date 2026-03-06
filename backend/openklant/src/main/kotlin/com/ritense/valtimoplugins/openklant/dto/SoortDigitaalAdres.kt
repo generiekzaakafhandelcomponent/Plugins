@@ -2,13 +2,15 @@ package com.ritense.valtimoplugins.openklant.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-enum class SoortDigitaalAdres {
+enum class SoortDigitaalAdres(
+    val value: String,
+) {
     @JsonProperty("email")
-    EMAIL,
+    EMAIL("email"),
 
     @JsonProperty("telefoonnummer")
-    TELEFOONNUMMER,
+    TELEFOONNUMMER("telefoonnummer"),
 
     @JsonProperty("overig")
-    OVERIG,
+    OVERIG("overig"),
 }
