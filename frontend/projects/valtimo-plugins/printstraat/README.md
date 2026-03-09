@@ -15,7 +15,6 @@ Run `ng build printstraat` to build the project. The build artifacts will be sto
 
 After building your library with `ng build printstraat`, go to the dist folder `cd dist/printstraat` and run `npm publish`.
 
-
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
