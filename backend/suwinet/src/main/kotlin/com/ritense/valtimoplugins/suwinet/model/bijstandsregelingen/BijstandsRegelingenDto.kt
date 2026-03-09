@@ -11,4 +11,8 @@ data class BijstandsRegelingenDto(
 
     val burgerservicenr: String?,
 
+    val propertiesMap: Map<String, Any?>,
+
+    val properties: List<String>,
+
 )

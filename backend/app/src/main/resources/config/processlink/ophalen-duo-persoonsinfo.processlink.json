@@ -12,6 +12,7 @@
   {
     "actionProperties": {
       "bsn": "pv:bsn",
+      "dynamicProperties":["*"],
       "resultProcessVariableName": "duoPersoonsinfo"
     },
     "activityId": "OphalenDuoPersoonsinfoTask",

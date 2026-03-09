@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_rdwvoertuig" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:collaboration id="Collaboration_rdwvoertuig">
+    <bpmn:participant id="Participant_rdwvoertuig" name="Suwinet: Ophalen RDW Voertuig" processRef="ophalen-rdw-voertuig" />
+  </bpmn:collaboration>
+  <bpmn:process id="ophalen-rdw-voertuig" name="Suwinet: Ophalen RDW Voertuig" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="StartEvent_1">
+      <bpmn:outgoing>Flow_rdwv_start_to_suwinet</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_rdwv_end">
+      <bpmn:incoming>Flow_rdwv_to_doc_to_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="SuwinetOphalenRdwVoertuig" name="Suwinet: Ophalen RDW voertuig" camunda:expression="${true}">
+      <bpmn:incoming>Flow_rdwv_start_to_suwinet</bpmn:incoming>
+      <bpmn:outgoing>Flow_rdwv_suwinet_to_doc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_rdw_voertuig_to_doc" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &quot;doc:/rdwVoertuig&quot;, rdwVoertuig)}">
+      <bpmn:incoming>Flow_rdwv_suwinet_to_doc</bpmn:incoming>
+      <bpmn:outgoing>Flow_rdwv_to_doc_to_end</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_rdwv_start_to_suwinet" sourceRef="StartEvent_1" targetRef="SuwinetOphalenRdwVoertuig" />
+    <bpmn:sequenceFlow id="Flow_rdwv_suwinet_to_doc" sourceRef="SuwinetOphalenRdwVoertuig" targetRef="Activity_rdw_voertuig_to_doc" />
+    <bpmn:sequenceFlow id="Flow_rdwv_to_doc_to_end" sourceRef="Activity_rdw_voertuig_to_doc" targetRef="Event_rdwv_end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_rdwvoertuig">
+      <bpmndi:BPMNShape id="Participant_rdwvoertuig_di" bpmnElement="Participant_rdwvoertuig" isHorizontal="true">
+        <dc:Bounds x="180" y="80" width="718" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="270" y="180" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="256" y="223" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_rdwv_end_di" bpmnElement="Event_rdwv_end">
+        <dc:Bounds x="730" y="180" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SuwinetOphalenRdwVoertuig_di" bpmnElement="SuwinetOphalenRdwVoertuig">
+        <dc:Bounds x="378" y="158" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_rdw_voertuig_to_doc_di" bpmnElement="Activity_rdw_voertuig_to_doc">
+        <dc:Bounds x="558" y="158" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_rdwv_start_to_suwinet_di" bpmnElement="Flow_rdwv_start_to_suwinet">
+        <di:waypoint x="306" y="198" />
+        <di:waypoint x="378" y="198" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_rdwv_suwinet_to_doc_di" bpmnElement="Flow_rdwv_suwinet_to_doc">
+        <di:waypoint x="478" y="198" />
+        <di:waypoint x="558" y="198" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_rdwv_to_doc_to_end_di" bpmnElement="Flow_rdwv_to_doc_to_end">
+        <di:waypoint x="658" y="198" />
+        <di:waypoint x="730" y="198" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

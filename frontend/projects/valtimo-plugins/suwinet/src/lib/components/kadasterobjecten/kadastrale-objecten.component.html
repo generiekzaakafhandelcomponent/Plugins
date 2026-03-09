@@ -24,15 +24,21 @@
   } as obs"
 >
     <v-input
-            name="bsn"
-            [title]="'bsn' | pluginTranslate : pluginId | async"
+            name="kadastraleAanduidingVariabeleName"
+            [title]="'kadastraleAanduidingVariabeleName' | pluginTranslate : pluginId | async"
             [margin]="true"
             [fullWidth]="true"
-            [defaultValue]="obs.prefill?.bsn"
+            [defaultValue]="obs.prefill?.kadastraleAanduidingVariabeleName"
             [disabled]="obs.disabled"
             [required]="true"
-            [tooltip]="'bsnTooltip' | pluginTranslate : pluginId | async"
+            [tooltip]="'kadastraleAanduidingVariabeleNameTooltip' | pluginTranslate : pluginId | async"
     ></v-input>
+    <valtimo-carbon-multi-input
+            name="dynamicProperties"
+            [title]="'dynamicProperties' | pluginTranslate : pluginId | async"
+            [defaultValues]="defaultValues$ | async"
+            [fullWidth]="true"
+    ></valtimo-carbon-multi-input>
     <v-input
             name="resultProcessVariableName"
             [title]="'resultProcessVariableName' | pluginTranslate : pluginId | async"

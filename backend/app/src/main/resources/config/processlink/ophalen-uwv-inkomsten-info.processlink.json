@@ -12,8 +12,8 @@
   {
     "actionProperties": {
       "bsn": "pv:bsn",
-      "resultProcessVariableName": "uwvInkomsten",
-      "maxPeriods": 4
+      "dynamicProperties":["*"],
+      "resultProcessVariableName": "uwvInkomsten"
     },
     "activityId": "SuwinetOphalenUwvInkomsten",
     "activityType": "bpmn:ServiceTask:start",
