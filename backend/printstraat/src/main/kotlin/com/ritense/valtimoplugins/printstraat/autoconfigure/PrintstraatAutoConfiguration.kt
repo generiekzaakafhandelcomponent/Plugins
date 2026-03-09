@@ -1,13 +1,11 @@
 package com.ritense.valtimoplugins.printstraat.autoconfigure
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.documentenapi.service.DocumentenApiService
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.printstraat.client.PrintstraatClient
 import com.ritense.valtimoplugins.printstraat.client.PrintstraatRestClient
 import com.ritense.valtimoplugins.printstraat.plugin.PrintstraatPluginFactory
 import com.ritense.valtimoplugins.printstraat.service.PrintstraatService
-import com.ritense.zakenapi.service.ZaakDocumentService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.RestClient
@@ -27,12 +25,10 @@ class PrintstraatAutoConfiguration {
     @Bean
     fun printstraatService(
         printstraatClient: PrintstraatClient,
-        documentenApiService: DocumentenApiService,
-        objectMapper: ObjectMapper
+        documentenApiService: DocumentenApiService
     ): PrintstraatService = PrintstraatService(
         printstraatClient = printstraatClient,
-        documentenApiService = documentenApiService,
-        objectMapper = objectMapper,
+        documentenApiService = documentenApiService
     )
 
     @Bean
