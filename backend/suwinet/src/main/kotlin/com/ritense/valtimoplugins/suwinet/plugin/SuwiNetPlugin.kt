@@ -75,7 +75,6 @@ class SuwiNetPlugin(
         try {
             require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
-
             suwinetBrpInfoService.setConfig(
                 getSuwinetSOAPClientConfig(),
                 suffix
@@ -386,7 +385,6 @@ class SuwiNetPlugin(
             logger.info("Exiting scope due to nested error.", e)
             return
         }
-
     }
 
     @PluginAction(
