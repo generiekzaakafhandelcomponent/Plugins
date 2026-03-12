@@ -20,6 +20,7 @@ data class LoBehandeld(
      */
     val codeOntvangendeGemeente: String,
     val huishouding: Huishouding,
-    val ingangBijstandsuitkering: IngangBijstandsuitkering
+    val ingangBijstandsuitkering: IngangBijstandsuitkering,
+    val redenAanvraagLevensonderhoud: RedenAanvraagLevensonderhoud
 )
 

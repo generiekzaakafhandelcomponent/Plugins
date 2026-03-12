@@ -113,10 +113,12 @@ class SocratesClient(
     }
 
     private fun logRequest(request: HttpRequest, body: ByteArray?) {
-        logger.debug { "${"Request: {} {}"} ${request.getMethod()} ${request.getURI()}" }
+        logger.debug { "${"Request: {} {}"} ${request.method} ${request.uri}" }
         logHeaders(request.headers)
-        if (body != null && body.size > 0) {
-            logger.info("Request body: {}", String(body, StandardCharsets.UTF_8))
+
+        if (body != null && body.isNotEmpty()) {
+            val requestBody = String(body, StandardCharsets.UTF_8)
+            logger.info("Request body: {}", maskSensitiveFields(requestBody))
         }
     }
 
@@ -133,6 +135,22 @@ class SocratesClient(
         headers.forEach { (key, value) ->
             logger.debug { "$key: $value" }
         }
+    }
+
+    private fun maskSensitiveFields(json: String): String {
+        return listOf("bankrekening", "bankrekeningPartner", "bankrekeningDerde")
+            .fold(json) { acc, field ->
+                acc.replace(Regex(""""$field"\s*:\s*"([^"]*)"""")) { match ->
+                    val original = match.groupValues[1]
+                    val masked = if (original.length <= 4) {
+                        "****"
+                    } else {
+                        "*".repeat(original.length - 4) + original.takeLast(4)
+                    }
+
+                    """"$field":"$masked""""
+                }
+            }
     }
 
     companion object {
