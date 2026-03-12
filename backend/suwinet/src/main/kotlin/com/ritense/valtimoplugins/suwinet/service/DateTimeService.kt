@@ -22,7 +22,7 @@ class DateTimeService {
         try {
             if (dateIn.isNullOrEmpty()) "" else LocalDate.parse(dateIn, dateInFormatter).format(dateOutFormatter)
         } catch (e: DateTimeParseException) {
-             dateIn
+            if (dateIn.isNullOrEmpty()) "" else dateIn
         }
 
     fun getYearFromDateString(dateIn: String, pattern: String) = toLocalDate(dateIn, pattern).year
