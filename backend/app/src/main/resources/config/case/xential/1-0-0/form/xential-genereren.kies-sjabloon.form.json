@@ -6,6 +6,23 @@
       "key": "html",
       "type": "htmlelement",
       "input": false,
+      "content": "Fields below are related to document upload and linking to zaak"
+    },
+    {
+        "key": "pv:documentTitle",
+        "type": "textfield",
+        "label": "Document titel",
+        "validate": {
+            "required": true
+        },
+        "input": true
+    },
+    {
+      "label": "HTML",
+      "refreshOnChange": false,
+      "key": "html",
+      "type": "htmlelement",
+      "input": false,
       "content": "Fields below are related to Xential document generation"
     },
     {
@@ -121,45 +138,6 @@
           {
             "label": "WORD",
             "value": "WORD"
-          }
-        ]
-      },
-      "template": "<span>{{ item.label }}</span>",
-      "validate": {
-        "required": true
-      }
-    },
-    {
-      "label": "HTML",
-      "refreshOnChange": false,
-      "key": "html",
-      "type": "htmlelement",
-      "input": false,
-      "content": "Fields below are related to document upload and linking to zaak"
-    },
-    {
-        "key": "pv:documentTitle",
-        "type": "textfield",
-        "label": "Document titel",
-        "validate": {
-            "required": true
-        },
-        "input": true
-    },
-    {
-      "key": "pv:informationObjectType",
-      "type": "select",
-      "label": "Informatieobject type",
-      "input": true,
-      "data": {
-        "values": [
-          {
-            "label": "Brief",
-            "value": "3de97256-1d8d-479b-a476-c7f0f2d0b60a"
-          },
-          {
-            "label": "Besluit",
-            "value": "60012171-7783-4c22-a510-4d258c8229c2"
           }
         ]
       },

@@ -19,7 +19,7 @@
       "fileName" : "pv:xentialDocumentProperties.documentFilename",
       "localDocumentLocation" : "xentialResourceId",
       "storedDocumentUrl" : "pdfDocumentUrl",
-      "informatieobjecttype" : "pv:informationObjectType",
+      "informatieobjecttype" : "pv:informatieObjectTypeUrl",
       "taal" : "nld",
       "status" : "definitief"
     },
