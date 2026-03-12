@@ -60,8 +60,15 @@ class SmtpMailService(
             )
 
             val attachmentMetadata = storageService.getResourceMetadata(attachmentResourceId)
-            val fileName =
+            val fileName = if ((attachmentMetadata[MetadataType.FILE_NAME.key] as String?)?.contains('.') == true) {
+                attachmentMetadata[MetadataType.FILE_NAME.key] as String
+            } else if (attachmentMetadata[MetadataType.FILE_NAME.key] != null && attachmentMetadata[MetadataType.CONTENT_TYPE.key] != null) {
                 "${attachmentMetadata[MetadataType.FILE_NAME.key]}.${attachmentMetadata[MetadataType.CONTENT_TYPE.key]}"
+            } else if (attachmentMetadata[MetadataType.CONTENT_TYPE.key] != null) {
+                "attachment.${attachmentMetadata[MetadataType.CONTENT_TYPE.key]}"
+            }  else {
+                attachmentMetadata[MetadataType.FILE_NAME.key] as String? ?: "attachment"
+            }
 
             attachments.add(SmtpMailContentDto.Attachment(fileName, attachmentResourceId))
         }

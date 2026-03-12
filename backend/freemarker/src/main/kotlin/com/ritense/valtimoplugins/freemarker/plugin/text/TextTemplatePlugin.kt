@@ -22,6 +22,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
+import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_TEXT
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
@@ -50,7 +51,12 @@ open class TextTemplatePlugin(
         @PluginActionProperty processVariableName: String
     ) {
         val textContent = generateTextContent(execution, textTemplateKey)
-        val resourceId = storageService.store(textContent.byteInputStream())
+        val resourceId = storageService.store(
+            textContent.byteInputStream(), mapOf(
+                MetadataType.FILE_NAME.key to "$textTemplateKey.txt",
+                MetadataType.CONTENT_TYPE.key to "txt"
+            )
+        )
         execution.setVariable(processVariableName, resourceId)
     }
 

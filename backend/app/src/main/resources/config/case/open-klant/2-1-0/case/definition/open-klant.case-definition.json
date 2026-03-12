@@ -1,0 +1,8 @@
+{
+  "key" : "open-klant",
+  "name" : "Open Klant",
+  "versionTag" : "2.1.0",
+  "final": false,
+  "canHaveAssignee": false,
+  "autoAssignTasks": false
+}

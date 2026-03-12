@@ -101,7 +101,7 @@ import {MtlsSslcontextPluginModule, mTlsSslcontextPluginSpecification} from '@va
 import {NotifyNlPluginModule, notifyNlPluginSpecification} from '@valtimo-plugins/notify-nl';
 import {ObjectManagementPluginModule, objectManagementPluginSpecification} from '@valtimo-plugins/object-management';
 import {OipKlanttaakPluginModule, oipKlanttaakPluginSpecification} from '@valtimo-plugins/oip-klanttaak';
-import {OpenKlantPluginModule, openKlantPluginSpecification, KlantcontactTabComponent} from '@valtimo-plugins/openklant';
+import {OpenKlantPluginModule, openKlantPluginSpecification, KlantcontactTabComponent, ContactHistoryTabComponent} from '@valtimo-plugins/openklant';
 import {OpenProductPluginModule, openProductPluginSpecification} from '@valtimo-plugins/open-product';
 import {PublictaskPluginModule, publictaskPluginSpecification} from '@valtimo-plugins/publictask';
 import {RotterdamOracleEbsPluginModule, rotterdamOracleEbsPluginSpecification} from '@valtimo-plugins/rotterdam-oracle-ebs';
@@ -254,6 +254,7 @@ export function tabsFactory() {
         provide: CASE_TAB_TOKEN,
         useValue: {
             'klantcontact-tab': KlantcontactTabComponent,
+            'generieke-contactgeschiedenis': ContactHistoryTabComponent,
         }
     }],
     bootstrap: [AppComponent]

@@ -22,6 +22,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
+import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_CSV
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_PDF
@@ -60,10 +61,17 @@ open class DocumentGeneratorPlugin(
         @PluginActionProperty processVariableName: String
     ) {
         val htmlString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_PDF)
-        val outputStream = ByteArrayOutputStream()
-        generatePdf(htmlString, outputStream)
-        val resourceId = storageService.store(ByteArrayInputStream(outputStream.toByteArray()))
-        execution.setVariable(processVariableName, resourceId)
+        ByteArrayOutputStream().use { outputStream ->
+            generatePdf(htmlString, outputStream)
+            val resourceId = storageService.store(
+                ByteArrayInputStream(outputStream.toByteArray()),
+                mapOf(
+                    MetadataType.FILE_NAME.key to "$templateKey.pdf",
+                    MetadataType.CONTENT_TYPE.key to "pdf"
+                )
+            )
+            execution.setVariable(processVariableName, resourceId)
+        }
     }
 
     @PluginAction(
@@ -78,10 +86,17 @@ open class DocumentGeneratorPlugin(
         @PluginActionProperty processVariableName: String
     ) {
         val csvString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_CSV)
-        val outputStream = ByteArrayOutputStream()
-        generateCsv(csvString, outputStream)
-        val resourceId = storageService.store(ByteArrayInputStream(outputStream.toByteArray()))
-        execution.setVariable(processVariableName, resourceId)
+        ByteArrayOutputStream().use { outputStream ->
+            generateCsv(csvString, outputStream)
+            val resourceId = storageService.store(
+                ByteArrayInputStream(outputStream.toByteArray()),
+                mapOf(
+                    MetadataType.FILE_NAME.key to "$templateKey.csv",
+                    MetadataType.CONTENT_TYPE.key to "csv"
+                )
+            )
+            execution.setVariable(processVariableName, resourceId)
+        }
     }
 
     fun generatePdf(htmlString: String, out: OutputStream) {
@@ -96,29 +111,29 @@ open class DocumentGeneratorPlugin(
     }
 
     fun generateCsv(csvString: String, out: OutputStream) {
-        val writer = OutputStreamWriter(out)
-        val reader = StringReader(csvString)
+        OutputStreamWriter(out).use { writer ->
+            val reader = StringReader(csvString)
 
-        val parser = CSVParser.builder()
-            .setReader(reader)
-            .setFormat(
-                CSVFormat.TDF.builder().setHeader()
-                    .setSkipHeaderRecord(true).get()
-            )
-            .get()
-        val headers = parser.headerNames
-
-        val printer = CSVPrinter(
-            writer,
-            CSVFormat.TDF.builder()
-                .setHeader(*headers.toTypedArray())
+            val parser = CSVParser.builder()
+                .setReader(reader)
+                .setFormat(
+                    CSVFormat.TDF.builder().setHeader()
+                        .setSkipHeaderRecord(true).get()
+                )
                 .get()
-        )
-        parser.forEach { record ->
-            printer.printRecord(headers.map { record[it] })
+            val headers = parser.headerNames
+
+            val printer = CSVPrinter(
+                writer,
+                CSVFormat.TDF.builder()
+                    .setHeader(*headers.toTypedArray())
+                    .get()
+            )
+            parser.forEach { record ->
+                printer.printRecord(headers.map { record[it] })
+            }
+            printer.flush()
         }
-        printer.flush()
-        writer.flush()
     }
 
     private fun generateDocumentContent(

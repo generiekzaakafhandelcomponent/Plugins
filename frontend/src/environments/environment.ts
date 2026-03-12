@@ -17,7 +17,7 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-import {NgxLoggerLevel} from 'ngx-logger';
+import { NgxLoggerLevel } from 'ngx-logger';
 import {
     ROLE_ADMIN,
     ROLE_USER,
@@ -27,8 +27,8 @@ import {
     DefinitionColumn,
     ROLE_DEVELOPER
 } from '@valtimo/shared';
-import {authenticationKeycloak} from './auth/keycloak-config.dev';
-import {DARK_MODE_LOGO_BASE_64, LOGO_BASE_64} from './logo';
+import { authenticationKeycloak } from './auth/keycloak-config.dev';
+import { DARK_MODE_LOGO_BASE_64, LOGO_BASE_64 } from './logo';
 
 const defaultDefinitionColumns: Array<DefinitionColumn> = [
     {
@@ -83,7 +83,7 @@ export const environment: ValtimoConfig = {
                 sequence: 2,
                 includeFunction: IncludeFunction.ObjectManagementEnabled
             },
-            {roles: [ROLE_USER], link: ['/tasks'], title: 'Tasks', iconClass: 'icon mdi mdi-check-all', sequence: 3},
+            { roles: [ROLE_USER], link: ['/tasks'], title: 'Tasks', iconClass: 'icon mdi mdi-check-all', sequence: 3 },
             {
                 roles: [ROLE_USER],
                 link: ['/analysis'],
@@ -109,7 +109,7 @@ export const environment: ValtimoConfig = {
                     {title: 'System processes', textClass: 'text-dark font-weight-bold c-default', sequence: 12},
                     {link: ['/processes'], title: 'Processes', sequence: 13},
                     {link: ['/decision-tables'], title: 'Decision tables', sequence: 14},
-
+                  
                     {title: 'Migration', textClass: 'text-dark font-weight-bold c-default', sequence: 15},
                     {link: ['/case-migration'], title: 'Case migration (beta)', sequence: 16},
                     {link: ['/process-migration'], title: 'Process migration', sequence: 17},
@@ -151,7 +151,11 @@ export const environment: ValtimoConfig = {
     featureToggles: {
         disableCaseCount: true,
         enableObjectManagement: true
-    }
+    },
+    translationResources: [
+        './assets/i18n',
+        './assets/i18n/open-klant'
+    ],
 };
 
 /*

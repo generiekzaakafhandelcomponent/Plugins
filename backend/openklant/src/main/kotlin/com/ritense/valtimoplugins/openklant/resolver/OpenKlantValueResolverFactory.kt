@@ -2,13 +2,12 @@ package com.ritense.valtimoplugins.openklant.resolver
 
 import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
-import com.ritense.valtimoplugins.openklant.model.KlantContactOptions
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.valueresolver.ValueResolverFactory
 import com.ritense.zakenapi.service.ZaakDocumentService
-import kotlinx.coroutines.runBlocking
 import org.operaton.bpm.engine.delegate.VariableScope
 import java.util.UUID
 import java.util.function.Function
@@ -27,10 +26,10 @@ class OpenKlantValueResolverFactory(
 
         return Function { requestedValue ->
             when (requestedValue) {
-                "klantcontacten" -> runBlocking { getKlantContacten(zaakUuid) }
-                "klantcontactenOrNull" -> runBlocking { getKlantContactenOrNull(zaakUuid) }
+                "klantcontacten" -> getKlantcontacten(zaakUuid)
+                "klantcontactenOrNull" -> getKlantcontactenOrNull(zaakUuid)
 
-                else -> throw IllegalArgumentException("Unknown openklant column with name: $requestedValue")
+                else -> throw IllegalArgumentException("Unknown Open Klant column with name: $requestedValue")
             }
         }
     }
@@ -51,15 +50,15 @@ class OpenKlantValueResolverFactory(
         TODO()
     }
 
-    private suspend fun getKlantContacten(zaakUuid: UUID) = getKlantContactenOrNull(zaakUuid) ?: emptyList<Any>()
+    private fun getKlantcontacten(zaakUuid: UUID) = getKlantcontactenOrNull(zaakUuid) ?: emptyList<Any>()
 
-    private suspend fun getKlantContactenOrNull(zaakUuid: UUID) =
-        runCatching { openKlantService.getAllKlantContacten(createKlantContactOptions(zaakUuid)) }
+    private fun getKlantcontactenOrNull(zaakUuid: UUID) =
+        runCatching { openKlantService.getAllKlantcontacten(createKlantcontactOptions(zaakUuid)) }
             .getOrNull()
             ?.let { reflectionUtil.deepReflectedMapOf(it) }
 
-    private fun createKlantContactOptions(zaakUuid: UUID): KlantContactOptions =
-        KlantContactOptions(
+    private fun createKlantcontactOptions(zaakUuid: UUID): KlantcontactOptions =
+        KlantcontactOptions(
             klantinteractiesUrl = properties.klantinteractiesUrl,
             token = properties.token,
             objectTypeId = OBJECT_TYPE_ID,

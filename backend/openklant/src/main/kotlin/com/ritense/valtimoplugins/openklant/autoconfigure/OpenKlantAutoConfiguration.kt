@@ -7,6 +7,7 @@ import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
 import com.ritense.valtimoplugins.openklant.plugin.OpenKlantPluginFactory
 import com.ritense.valtimoplugins.openklant.resolver.OpenKlantValueResolverFactory
 import com.ritense.valtimoplugins.openklant.service.DefaultOpenKlantService
+import com.ritense.valtimoplugins.openklant.service.KlantcontactFactory
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.service.PartijFactory
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
@@ -15,31 +16,33 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.env.Environment
-import org.springframework.core.env.Profiles
-import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.client.RestClient
+
 import java.net.URI
 
 @Configuration
 @EnableConfigurationProperties
 class OpenKlantAutoConfiguration {
     @Bean
-    fun openKlantPluginClient(
-        openKlantWebClientBuilder: WebClient.Builder,
-    ): OpenKlantClient =
-        OpenKlantClient(openKlantWebClientBuilder)
+    fun openKlantPluginClient(openKlantRestClientBuilder: RestClient.Builder): OpenKlantClient =
+        OpenKlantClient(openKlantRestClientBuilder)
 
     @Bean
     fun partijFactory(): PartijFactory = PartijFactory()
 
     @Bean
+    fun klantContactFactory(): KlantcontactFactory = KlantcontactFactory()
+
+    @Bean
     fun openKlantService(
         openKlantClient: OpenKlantClient,
         partijFactory: PartijFactory,
+        klantcontactFactory: KlantcontactFactory,
     ): OpenKlantService =
         DefaultOpenKlantService(
             openKlantClient,
             partijFactory,
+            klantcontactFactory,
         )
 
     @Bean
@@ -69,7 +72,7 @@ class OpenKlantAutoConfiguration {
         zaakDocumentService,
         openKlantService,
         reflectionUtil,
-        OpenKlantProperties(URI.create(klantinteractieUrl), openKlantToken)
+        OpenKlantProperties(URI.create(klantinteractieUrl), openKlantToken),
     )
 
     @Bean
