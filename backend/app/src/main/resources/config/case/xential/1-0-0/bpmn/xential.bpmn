@@ -31,9 +31,9 @@
                     <camunda:in source="xentialGebruikersId" target="xentialGebruikersId" />
                     <camunda:in businessKey="#{execution.processBusinessKey}" />
                     <camunda:in source="xentialDocumentProperties" target="xentialDocumentProperties" />
-                    <camunda:in source="'http://localhost:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad'" target="informatieObjectTypeUrl" />
+                    <camunda:in source="informatieObjectTypeUrl" target="informatieObjectTypeUrl" />
                 </bpmn:extensionElements>
-                <bpmn:incoming>Flow_05i2wrx</bpmn:incoming>
+                <bpmn:incoming>Flow_0k7r9wz</bpmn:incoming>
                 <bpmn:outgoing>Flow_06fck3j</bpmn:outgoing>
             </bpmn:callActivity>
             <bpmn:startEvent id="CreeerDocumentMessageStartEvent" name="Genereer uitgaande brief" isInterrupting="false">
@@ -41,14 +41,17 @@
                 <bpmn:messageEventDefinition id="MessageEventDefinition_0vzcno1" messageRef="Message_1m4frhu" />
             </bpmn:startEvent>
             <bpmn:sequenceFlow id="Flow_1kn4dmc" sourceRef="CreeerDocumentMessageStartEvent" targetRef="XentialSelectTemplateFolder" />
-            <bpmn:sequenceFlow id="Flow_05i2wrx" sourceRef="XentialSelectTemplateFolder" targetRef="ca-generate-document" />
+            <bpmn:sequenceFlow id="Flow_05i2wrx" sourceRef="XentialSelectTemplateFolder" targetRef="Activity_11kv02v" />
             <bpmn:serviceTask id="XentialSelectTemplateFolder" name="Sjabloonmap selecteren" implementation="##WebService" operaton:asyncAfter="true" operaton:expression="${null}">
                 <bpmn:incoming>Flow_1kn4dmc</bpmn:incoming>
                 <bpmn:outgoing>Flow_05i2wrx</bpmn:outgoing>
             </bpmn:serviceTask>
+            <bpmn:sequenceFlow id="Flow_0k7r9wz" sourceRef="Activity_11kv02v" targetRef="ca-generate-document" />
+            <bpmn:serviceTask id="Activity_11kv02v" name="Informatieobjecttype Url " implementation="##WebService" camunda:expression="${execution.setVariable(&#39;informatieObjectTypeUrl&#39;, &#39;http://localhost:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad&#39;)}">
+                <bpmn:incoming>Flow_05i2wrx</bpmn:incoming>
+                <bpmn:outgoing>Flow_0k7r9wz</bpmn:outgoing>
+            </bpmn:serviceTask>
         </bpmn:subProcess>
-        <bpmn:sequenceFlow id="Flow_02rzsdc" sourceRef="XentialStarten" targetRef="XentialFlowEindigen" />
-        <bpmn:sequenceFlow id="Flow_0lmrwga" sourceRef="XentialFlowEindigen" targetRef="Event_1hl2nsy" />
         <bpmn:subProcess id="Activity_0qii9iv" name="Genereer besluit document" triggeredByEvent="true">
             <bpmn:endEvent id="Event_0jxq6nt">
                 <bpmn:incoming>Flow_094vymf</bpmn:incoming>
@@ -58,9 +61,9 @@
                     <camunda:in source="xentialGebruikersId" target="xentialGebruikersId" />
                     <camunda:in businessKey="#{execution.processBusinessKey}" />
                     <camunda:in source="xentialDocumentProperties" target="xentialDocumentProperties" />
-                    <camunda:in source="'http://localhost:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad'" target="informatieObjectTypeUrl" />
+                    <camunda:in source="informatieObjectTypeUrl" target="informatieObjectTypeUrl" />
                 </bpmn:extensionElements>
-                <bpmn:incoming>Flow_0eu5thi</bpmn:incoming>
+                <bpmn:incoming>Flow_1nc7emz</bpmn:incoming>
                 <bpmn:outgoing>Flow_094vymf</bpmn:outgoing>
             </bpmn:callActivity>
             <bpmn:startEvent id="Event_14gx5p2" name="Genereer besluit" isInterrupting="false">
@@ -72,104 +75,127 @@
                 <bpmn:outgoing>Flow_0eu5thi</bpmn:outgoing>
             </bpmn:serviceTask>
             <bpmn:sequenceFlow id="Flow_094vymf" sourceRef="Activity_0y0n02w" targetRef="Event_0jxq6nt" />
-            <bpmn:sequenceFlow id="Flow_0eu5thi" sourceRef="Activity_1fmnabf" targetRef="Activity_0y0n02w" />
+            <bpmn:sequenceFlow id="Flow_0eu5thi" sourceRef="Activity_1fmnabf" targetRef="Activity_0y5a6m8" />
             <bpmn:sequenceFlow id="Flow_1fzaide" sourceRef="Event_14gx5p2" targetRef="Activity_1fmnabf" />
+            <bpmn:sequenceFlow id="Flow_1nc7emz" sourceRef="Activity_0y5a6m8" targetRef="Activity_0y0n02w" />
+            <bpmn:serviceTask id="Activity_0y5a6m8" name="Informatieobjecttype Url " implementation="##WebService" camunda:expression="${execution.setVariable(&#39;informatieObjectTypeUrl&#39;, &#39;http://localhost:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad&#39;)}">
+                <bpmn:incoming>Flow_0eu5thi</bpmn:incoming>
+                <bpmn:outgoing>Flow_1nc7emz</bpmn:outgoing>
+            </bpmn:serviceTask>
         </bpmn:subProcess>
+        <bpmn:sequenceFlow id="Flow_02rzsdc" sourceRef="XentialStarten" targetRef="XentialFlowEindigen" />
+        <bpmn:sequenceFlow id="Flow_0lmrwga" sourceRef="XentialFlowEindigen" targetRef="Event_1hl2nsy" />
     </bpmn:process>
     <bpmn:message id="Message_22ttsno" name="GENEREER_BESLUIT_MESSAGE" />
     <bpmn:message id="Message_1m4frhu" name="GENEREER_UITGAANDE_BRIEF_MESSAGE" />
     <bpmndi:BPMNDiagram id="BPMNDiagram_1">
         <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_15s7f2e">
             <bpmndi:BPMNShape id="Participant_06az24z_di" bpmnElement="Participant_06az24z" isHorizontal="true">
-                <dc:Bounds x="210" y="100" width="670" height="760" />
+                <dc:Bounds x="230" y="100" width="750" height="760" />
                 <bpmndi:BPMNLabel />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="XentialStarten">
-                <dc:Bounds x="298" y="198" width="36" height="36" />
+                <dc:Bounds x="318" y="198" width="36" height="36" />
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="290" y="241" width="54" height="14" />
+                    <dc:Bounds x="310" y="241" width="54" height="14" />
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="BPMNShape_1i4q8j9" bpmnElement="XentialFlowEindigen">
-                <dc:Bounds x="410" y="176" width="100" height="80" />
+                <dc:Bounds x="430" y="176" width="100" height="80" />
                 <bpmndi:BPMNLabel />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="Event_0e6lsg4_di" bpmnElement="Event_1hl2nsy">
-                <dc:Bounds x="592" y="198" width="36" height="36" />
+                <dc:Bounds x="612" y="198" width="36" height="36" />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="Activity_0b99i5k_di" bpmnElement="Activity_1ou4nzq" isExpanded="true">
-                <dc:Bounds x="280" y="340" width="520" height="180" />
+                <dc:Bounds x="300" y="340" width="650" height="180" />
                 <bpmndi:BPMNLabel />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="Event_10pbmt9_di" bpmnElement="Event_10pbmt9">
-                <dc:Bounds x="712" y="422" width="36" height="36" />
+                <dc:Bounds x="862" y="422" width="36" height="36" />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="Activity_03uzmyi_di" bpmnElement="ca-generate-document">
-                <dc:Bounds x="550" y="400" width="100" height="80" />
+                <dc:Bounds x="700" y="400" width="100" height="80" />
                 <bpmndi:BPMNLabel />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="Event_0rjjqdl_di" bpmnElement="CreeerDocumentMessageStartEvent">
-                <dc:Bounds x="320" y="422" width="36" height="36" />
+                <dc:Bounds x="340" y="422" width="36" height="36" />
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="305" y="465" width="74" height="27" />
+                    <dc:Bounds x="325" y="465" width="74" height="27" />
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="Activity_1oau6ut_di" bpmnElement="XentialSelectTemplateFolder">
-                <dc:Bounds x="400" y="400" width="100" height="80" />
+                <dc:Bounds x="420" y="400" width="100" height="80" />
+                <bpmndi:BPMNLabel />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0li3mmh_di" bpmnElement="Activity_11kv02v">
+                <dc:Bounds x="560" y="400" width="100" height="80" />
                 <bpmndi:BPMNLabel />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="Flow_06fck3j_di" bpmnElement="Flow_06fck3j">
-                <di:waypoint x="650" y="440" />
-                <di:waypoint x="712" y="440" />
+                <di:waypoint x="800" y="440" />
+                <di:waypoint x="862" y="440" />
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="Flow_1kn4dmc_di" bpmnElement="Flow_1kn4dmc">
-                <di:waypoint x="356" y="440" />
-                <di:waypoint x="400" y="440" />
+                <di:waypoint x="376" y="440" />
+                <di:waypoint x="420" y="440" />
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="Flow_05i2wrx_di" bpmnElement="Flow_05i2wrx">
-                <di:waypoint x="500" y="440" />
-                <di:waypoint x="550" y="440" />
+                <di:waypoint x="520" y="440" />
+                <di:waypoint x="560" y="440" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0k7r9wz_di" bpmnElement="Flow_0k7r9wz">
+                <di:waypoint x="660" y="440" />
+                <di:waypoint x="700" y="440" />
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNShape id="BPMNShape_0i80v4p" bpmnElement="Activity_0qii9iv" isExpanded="true">
-                <dc:Bounds x="280" y="570" width="520" height="180" />
+                <dc:Bounds x="300" y="570" width="650" height="180" />
                 <bpmndi:BPMNLabel />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="BPMNShape_0v2uedl" bpmnElement="Event_0jxq6nt">
-                <dc:Bounds x="712" y="652" width="36" height="36" />
+                <dc:Bounds x="862" y="652" width="36" height="36" />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="BPMNShape_137s3z6" bpmnElement="Activity_0y0n02w">
-                <dc:Bounds x="550" y="630" width="100" height="80" />
+                <dc:Bounds x="700" y="630" width="100" height="80" />
                 <bpmndi:BPMNLabel />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="BPMNShape_1ecu4i9" bpmnElement="Event_14gx5p2">
-                <dc:Bounds x="320" y="652" width="36" height="36" />
+                <dc:Bounds x="340" y="652" width="36" height="36" />
                 <bpmndi:BPMNLabel>
-                    <dc:Bounds x="301" y="695" width="82" height="14" />
+                    <dc:Bounds x="321" y="695" width="82" height="14" />
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="BPMNShape_1uy73xd" bpmnElement="Activity_1fmnabf">
-                <dc:Bounds x="400" y="630" width="100" height="80" />
+                <dc:Bounds x="420" y="630" width="100" height="80" />
+                <bpmndi:BPMNLabel />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0vph3jf_di" bpmnElement="Activity_0y5a6m8">
+                <dc:Bounds x="560" y="630" width="100" height="80" />
                 <bpmndi:BPMNLabel />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="BPMNEdge_1akm5p7" bpmnElement="Flow_094vymf">
-                <di:waypoint x="650" y="670" />
-                <di:waypoint x="712" y="670" />
+                <di:waypoint x="800" y="670" />
+                <di:waypoint x="862" y="670" />
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="BPMNEdge_0qrhiq3" bpmnElement="Flow_0eu5thi">
-                <di:waypoint x="500" y="670" />
-                <di:waypoint x="550" y="670" />
+                <di:waypoint x="520" y="670" />
+                <di:waypoint x="560" y="670" />
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="BPMNEdge_1hq4k17" bpmnElement="Flow_1fzaide">
-                <di:waypoint x="356" y="670" />
-                <di:waypoint x="400" y="670" />
+                <di:waypoint x="376" y="670" />
+                <di:waypoint x="420" y="670" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1nc7emz_di" bpmnElement="Flow_1nc7emz">
+                <di:waypoint x="660" y="670" />
+                <di:waypoint x="700" y="670" />
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="Flow_02rzsdc_di" bpmnElement="Flow_02rzsdc">
-                <di:waypoint x="334" y="216" />
-                <di:waypoint x="410" y="216" />
+                <di:waypoint x="354" y="216" />
+                <di:waypoint x="430" y="216" />
             </bpmndi:BPMNEdge>
             <bpmndi:BPMNEdge id="Flow_0lmrwga_di" bpmnElement="Flow_0lmrwga">
-                <di:waypoint x="510" y="216" />
-                <di:waypoint x="592" y="216" />
+                <di:waypoint x="530" y="216" />
+                <di:waypoint x="612" y="216" />
             </bpmndi:BPMNEdge>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>
