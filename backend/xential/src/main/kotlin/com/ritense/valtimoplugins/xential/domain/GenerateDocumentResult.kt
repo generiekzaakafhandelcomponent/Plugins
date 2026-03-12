@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.ritense.valtimoplugins.xential.plugin
+package com.ritense.valtimoplugins.xential.domain
 
-data class TemplateDataEntry(
-    val key: String,
-    val value: String,
+data class GenerateDocumentResult(
+    val status: String,
+    val resumeUrl: String? = null
 )

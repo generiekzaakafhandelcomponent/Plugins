@@ -1,27 +1,22 @@
 [
   {
-    "processDefinitionKey": "xential",
-    "canInitializeDocument": true,
-    "startableByUser": false
+    "processDefinitionKey" : "xential-start-document-genereren",
+    "canInitializeDocument" : false,
+    "startableByUser" : true
   },
   {
-    "processDefinitionKey": "xential-document-maken",
-    "canInitializeDocument": false,
-    "startableByUser": true
+    "processDefinitionKey" : "xential",
+    "canInitializeDocument" : true,
+    "startableByUser" : false
   },
   {
-    "processDefinitionKey": "xential-genereren",
-    "canInitializeDocument": false,
-    "startableByUser": false
+    "processDefinitionKey" : "xential-document-genereren-annuleren",
+    "canInitializeDocument" : false,
+    "startableByUser" : true
   },
   {
-    "processDefinitionKey": "xential-document-genereren-annuleren",
-    "canInitializeDocument": false,
-    "startableByUser": true
-  },
-  {
-    "processDefinitionKey": "xential-document-genereren-start",
-    "canInitializeDocument": false,
-    "startableByUser": true
+    "processDefinitionKey" : "xential-document-genereren",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
   }
 ]

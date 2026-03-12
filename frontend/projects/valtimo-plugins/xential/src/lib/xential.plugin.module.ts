@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,47 +19,46 @@ import {XentialConfigurationComponent} from './components/xential-configuration/
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {
-    CarbonMultiInputModule,
-    FormModule, InputLabelModule,
-    InputModule,
-    SelectModule,
-    ValuePathSelectorComponent
+  CarbonMultiInputModule,
+  FormModule, InputLabelModule,
+  InputModule,
+  SelectModule,
+  ValuePathSelectorComponent
 } from '@valtimo/components';
 import {
-    GenerateDocumentConfigurationComponent
-} from "./components/generate-document-configuration/generate-document-configuration.component";
-import {DropdownModule} from "carbon-components-angular";
+  GenerateDocumentConfigurationComponent
+} from './components/generate-document-configuration/generate-document-configuration.component';
+import {DropdownModule} from 'carbon-components-angular';
 import {
-    PrepareContentConfigurationComponent
-} from "./components/prepare-content-configuration/prepare-content-configuration.component";
+  PrepareContentConfigurationComponent
+} from './components/prepare-content-configuration/prepare-content-configuration.component';
 import {
-    ValidateAccessConfigurationComponent
-} from "./components/validate-access-configuration/validate-access-configuration.component";
+  ValidateAccessConfigurationComponent
+} from './components/validate-access-configuration/validate-access-configuration.component';
 
 @NgModule({
-    declarations: [
-        XentialConfigurationComponent,
-        GenerateDocumentConfigurationComponent,
-        PrepareContentConfigurationComponent,
-        ValidateAccessConfigurationComponent
-    ],
-    imports: [
-        CommonModule,
-        PluginTranslatePipeModule,
-        FormModule,
-        InputModule,
-        SelectModule,
-        DropdownModule,
-        CarbonMultiInputModule,
-        ValuePathSelectorComponent,
-        InputLabelModule
-    ],
-    exports: [
-        XentialConfigurationComponent,
-        GenerateDocumentConfigurationComponent,
-        PrepareContentConfigurationComponent,
-        ValidateAccessConfigurationComponent
-    ],
+  declarations: [
+    XentialConfigurationComponent,
+    GenerateDocumentConfigurationComponent,
+    PrepareContentConfigurationComponent,
+    ValidateAccessConfigurationComponent,
+  ],
+  imports: [
+    CommonModule,
+    PluginTranslatePipeModule,
+    FormModule,
+    InputModule,
+    SelectModule,
+    DropdownModule,
+    CarbonMultiInputModule,
+    ValuePathSelectorComponent,
+    InputLabelModule
+  ],
+  exports: [
+    XentialConfigurationComponent,
+    GenerateDocumentConfigurationComponent,
+    PrepareContentConfigurationComponent,
+    ValidateAccessConfigurationComponent,
+  ],
 })
-export class XentialPluginModule {
-}
+export class XentialPluginModule {}

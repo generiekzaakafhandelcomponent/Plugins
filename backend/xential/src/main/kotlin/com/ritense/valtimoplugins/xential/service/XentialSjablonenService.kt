@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class XentialSjablonenService(
                     baseUrl = xentialPlugin.baseUrl.toString(),
                     applicationName = xentialPlugin.applicationName,
                     applicationPassword = xentialPlugin.applicationPassword,
-                    mTlsSslContextPlugin.createSslContext(),
+                    sslContext = mTlsSslContextPlugin.createSslContext(),
                 )
                 return esbClient.documentApi(restClient(mTlsSslContextPlugin))
             }
@@ -53,7 +53,7 @@ class XentialSjablonenService(
         gebruikersId: String,
         sjabloongroepId: String,
     ): XentialAccessResult {
-        logger.info { "testing sjabloongroep with $sjabloongroepId" }
+        logger.debug { "testing sjabloongroep with $sjabloongroepId" }
         generateApi().let {
             try {
                 it.geefSjablonenlijstWithHttpInfo(
@@ -83,7 +83,7 @@ class XentialSjablonenService(
         gebruikersId: String,
         sjabloongroepId: String?,
     ): Sjabloonitems {
-        logger.info { "getting sjabloongroep with ${sjabloongroepId.takeIf { !it.isNullOrBlank() } ?: "geen id"}" }
+        logger.debug { "getting sjabloongroep with ${sjabloongroepId.takeIf { !it.isNullOrBlank() } ?: "geen id"}" }
         generateApi().let {
             return it.geefSjablonenlijst(
                 gebruikersId = gebruikersId,
@@ -92,29 +92,6 @@ class XentialSjablonenService(
         }
     }
 
-//        pluginService.getPluginDefinitions()
-//        pluginService.findPluginConfiguration(MTlsSslContextPlugin::class.java) {
-//            true
-//        }.let { mLTSPlugin ->
-//            val mTlsSslContextPlugin = mLTSPlugin?.let { pluginService.createInstance(it.id) } as MTlsSslContextPlugin
-//            pluginService.findPluginConfigurations(XentialPlugin::class.java).first().let { plugin ->
-//                val xentialPlugin = pluginService.createInstance(plugin.id) as XentialPlugin
-//                esbClient.createRestClient(
-//                    baseUrl = xentialPlugin.baseUrl.toString(),
-//                    applicationName = xentialPlugin.applicationName,
-//                    applicationPassword = xentialPlugin.applicationPassword,
-//                    mTlsSslContextPlugin.createSslContext()
-//                )
-//                val api = esbClient.documentApi(restClient(mTlsSslContextPlugin))
-//                logger.info { "getting sjabloongroep with ${sjabloongroepId.takeIf { !it.isNullOrBlank() } ?: "geen id"}" }
-//                return api.geefSjablonenlijst(
-//                    gebruikersId = gebruikersId,
-//                    sjabloongroepId = sjabloongroepId.takeIf { !it.isNullOrBlank() }
-//                )
-//            }
-//        }
-//    }
-
     private fun restClient(mTlsSslContextAutoConfiguration: MTlsSslContext?): RestClient {
         pluginService.findPluginConfigurations(XentialPlugin::class.java).first().let { plugin ->
             val xentialPlugin = pluginService.createInstance(plugin.id) as XentialPlugin
@@ -122,7 +99,7 @@ class XentialSjablonenService(
                 baseUrl = xentialPlugin.baseUrl.toString(),
                 applicationName = xentialPlugin.applicationName,
                 applicationPassword = xentialPlugin.applicationPassword,
-                mTlsSslContextAutoConfiguration?.createSslContext(),
+                sslContext = mTlsSslContextAutoConfiguration?.createSslContext(),
             )
         }
     }
