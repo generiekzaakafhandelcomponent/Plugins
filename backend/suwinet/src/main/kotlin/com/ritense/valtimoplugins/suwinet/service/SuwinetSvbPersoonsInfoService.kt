@@ -9,6 +9,7 @@ import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
 import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
+import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.DynamicResponseDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
@@ -48,7 +49,7 @@ class SuwinetSvbPersoonsInfoService(
         bsn: String,
         svbInfo: SVBInfo,
         dynamicProperties: List<String> = listOf()
-    ): DynamicResponseDto {
+    ): DynamicResponseDto? {
 
         logger.info { "Getting SVB PersoonsInfo from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
@@ -84,7 +85,7 @@ class SuwinetSvbPersoonsInfoService(
         }
     }
 
-    private fun SVBPersoonsInfoResponse.unwrapResponse(dynamicProperties: List<String>): DynamicResponseDto {
+    private fun SVBPersoonsInfoResponse.unwrapResponse(dynamicProperties: List<String>): DynamicResponseDto? {
 
         val responseValue = content
             .firstOrNull()
@@ -105,7 +106,14 @@ class SuwinetSvbPersoonsInfoService(
                 )
             }
 
-            else -> DynamicResponseDto(emptyList(), Any())
+            else -> {
+                val nietsGevonden = objectFactory.createNietsGevonden("test")
+                if (nietsGevonden.name.equals(content[0].name)) {
+                    return null
+                } else {
+                    throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
+                }
+            }
         }
     }
 

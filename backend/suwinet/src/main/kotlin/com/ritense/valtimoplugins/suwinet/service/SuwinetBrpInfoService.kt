@@ -14,6 +14,7 @@ import com.ritense.valtimoplugins.suwinet.model.DynamicResponseDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
+import org.camunda.bpm.engine.exception.NotFoundException
 import org.springframework.util.StringUtils
 
 class SuwinetBrpInfoService(
@@ -101,7 +102,14 @@ class SuwinetBrpInfoService(
                 throw SuwinetResultFWIException(fwiResponse.foutOrWaarschuwingOrInformatie.joinToString { "${it.name} / ${it.value}\n" })
             }
 
-            else -> null
+            else -> {
+                val nietsGevonden = objectFactory.createNietsGevonden("test")
+                if (nietsGevonden.name.equals(content[0].name)) {
+                    null
+                } else {
+                    throw SuwinetError(NotFoundException("not found"), "SUWINET_BSN_NOT_FOUND")
+                }
+            }
         }
     }
 

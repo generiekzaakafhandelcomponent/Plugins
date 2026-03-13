@@ -62,7 +62,7 @@ class SuwinetKadasterInfoService(
         bsn: String,
         kadasterService: KadasterInfo,
         dynamicProperties: List<String> = listOf()
-    ): DynamicResponseDto {
+    ): DynamicResponseDto? {
         logger.info { "Getting kadastrale aanduidingen from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
@@ -70,7 +70,7 @@ class SuwinetKadasterInfoService(
             val aanduidingen = retrieveKadasterAanduidingen(bsn)
 
             if (aanduidingen.isEmpty()) {
-                return DynamicResponseDto(emptyList(), Any())
+                return null
             }
 
             return DynamicResponseDto(
@@ -94,7 +94,7 @@ class SuwinetKadasterInfoService(
         kadastraleAanduiding: KadastraleAanduidingDto,
         kadasterService: KadasterInfo,
         dynamicProperties: List<String> = listOf()
-    ): DynamicResponseDto {
+    ): DynamicResponseDto? {
         logger.info { "Getting kadastrale objecten from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
 
         try {
@@ -103,7 +103,7 @@ class SuwinetKadasterInfoService(
             val result = getKadastraleObject(kadastraleAanduiding)
 
             return if (result == null) {
-                DynamicResponseDto(emptyList(), Any())
+                null
             } else {
                 DynamicResponseDto(
                     properties = getAvailableProperties(result as Any),

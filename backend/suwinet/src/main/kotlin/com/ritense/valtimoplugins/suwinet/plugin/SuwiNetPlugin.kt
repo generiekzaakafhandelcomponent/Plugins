@@ -254,7 +254,7 @@ class SuwiNetPlugin(
                 bsn = bsn,
                 duoStudiefinancieringInfo = suwinetDuoStudiefinancieringInfoService.createDuoStudiefinancieringService(),
                 dynamicProperties = dynamicProperties
-            ).let {
+            )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
@@ -290,7 +290,7 @@ class SuwiNetPlugin(
                 bsn = bsn,
                 kadasterService = suwinetKadasterInfoService.createKadasterService(),
                 dynamicProperties = dynamicProperties
-            ).let {
+            )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue<Any>(it)
                 )
@@ -337,7 +337,7 @@ class SuwiNetPlugin(
                 kadastraleAanduiding = kadastraleAanduiding,
                 kadasterService = suwinetKadasterInfoService.createKadasterService(),
                 dynamicProperties = dynamicProperties
-            ).let {
+            )?.let {
                 // for use in a multi instance task
                 execution.processInstance.setVariableLocal(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -485,7 +485,7 @@ class SuwiNetPlugin(
                 bsn = bsn,
                 svbInfo = suwinetSvbPersoonsInfoService.createSvbInfo(),
                 dynamicProperties = dynamicProperties
-            ).let {
+            )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
@@ -522,7 +522,7 @@ class SuwiNetPlugin(
                 bsn = bsn,
                 uwvIkvInfoService = suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
                 dynamicProperties = dynamicProperties
-            ).let {
+            )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
                 )
