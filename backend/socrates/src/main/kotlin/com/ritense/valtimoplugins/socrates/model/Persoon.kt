@@ -103,5 +103,6 @@ data class Persoon(
      * 453 = BurgervanServiëenMontenegro, 454 = Servische, 455 = Montenegrijnse,
      * 499 = Staatloos, 500 = VastgesteldnietNederlander
      */
-    val nationaliteit: List<Int>
+    val nationaliteit: List<Int>,
+    val adreshouding: List<Adreshouding>?
 )
