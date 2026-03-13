@@ -1,5 +1,8 @@
 package com.ritense.valtimoplugins.socrates.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class StraatadresBuitenland(
     override val soortAdres: String,
     val huisnummerBuitenland: Int? = null,
