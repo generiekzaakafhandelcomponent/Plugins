@@ -49,7 +49,7 @@ class SuwinetUwvPersoonsIkvService(
         bsn: String,
         uwvIkvInfoService: UWVIkvInfo,
         dynamicProperties: List<String> = listOf()
-    ): DynamicResponseDto {
+    ): DynamicResponseDto? {
         logger.info { "Getting UWV inkomsten info from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
         try {
             val uwvPersoonsIkvInfo: UWVPersoonsIkvInfo = objectFactory
@@ -74,7 +74,7 @@ class SuwinetUwvPersoonsIkvService(
         }
     }
 
-    private fun UWVPersoonsIkvInfoResponse.unwrapResponse(dynamicProperties: List<String>): DynamicResponseDto {
+    private fun UWVPersoonsIkvInfoResponse.unwrapResponse(dynamicProperties: List<String>): DynamicResponseDto? {
         val responseValue = content
             .firstOrNull()
             ?.value
@@ -88,7 +88,7 @@ class SuwinetUwvPersoonsIkvService(
 
             is FWI -> {
                 logger.info { "content: ${content[0].name}" }
-                DynamicResponseDto(emptyList(), Any())
+                return null
             }
 
             else -> {
