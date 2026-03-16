@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../frontend/node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../dist/valtimo-plugins/http-client-authentication",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  }
+}

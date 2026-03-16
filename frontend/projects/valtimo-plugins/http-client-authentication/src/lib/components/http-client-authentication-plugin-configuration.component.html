@@ -1,0 +1,86 @@
+<!--
+  ~ Copyright 2015-2026 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<ng-container *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+    selectedAuthType: selectedAuthType$ | async,
+  } as obs"
+>
+    <v-form
+            (valueChange)="formValueChange($event)"
+            *ngIf="{
+        disabled: disabled$ | async,
+        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+    } as obs"
+    >
+        <v-input
+                name="configurationTitle"
+                [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+                [margin]="true"
+                [defaultValue]="obs.prefill?.configurationTitle"
+                [disabled]="obs.disabled"
+                [required]="true"
+        >
+        </v-input>
+        <v-radio
+                name="authenticationType"
+                [title]="'authenticationType' | pluginTranslate: pluginId | async"
+                [radioValues]="authenticationTypeOptions"
+                [defaultValue]="(selectedAuthType$|async).value"
+                [margin]="true"
+                (valueChange)="radioValueChange($event)"
+        >
+        </v-radio>
+        <ng-container *ngIf="(selectedAuthType$|async).value == 'BEARER'">
+            <v-input
+                    name="authSecret"
+                    type="password"
+                    [title]="'authSecret' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [fullWidth]="true"
+                    [defaultValue]="obs.prefill?.authSecret"
+                    [disabled]="obs.disabled"
+                    [required]="false"
+            >
+            </v-input>
+        </ng-container>
+        <ng-container *ngIf="(selectedAuthType$|async).value == 'HEADER'">
+            <v-input
+                    name="authHeaderName"
+                    [title]="'authHeaderName' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [fullWidth]="true"
+                    [defaultValue]="obs.prefill?.authHeaderName"
+                    [disabled]="obs.disabled"
+                    [required]="false"
+            >
+            </v-input>
+            <v-input
+                    name="authSecret"
+                    type="password"
+                    [title]="'authSecret' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [fullWidth]="true"
+                    [defaultValue]="obs.prefill?.authSecret"
+                    [disabled]="obs.disabled"
+                    [required]="false"
+            >
+            </v-input>
+        </ng-container>
+    </v-form>
+</ng-container>

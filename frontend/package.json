@@ -41,6 +41,7 @@
     "libs:build:document-search": "ng build @valtimo-plugins/document-search",
     "libs:build:docsys": "ng build @valtimo-plugins/docsys",
     "libs:build:printstraat": "ng build @valtimo-plugins/printstraat",
+    "libs:build:http-client-authentication": "ng build @valtimo-plugins/http-client-authentication",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "libs:watch:mtls-sslcontext": "ng build @valtimo-plugins/mtls-sslcontext --watch",
@@ -66,7 +67,8 @@
     "libs:watch:valtimo-s2t": "ng build @valtimo-plugins/valtimo-s2t --watch",
     "libs:watch:document-search": "ng build @valtimo-plugins/document-search --watch",
     "libs:watch:docsys": "ng build @valtimo-plugins/docsys --watch",
-    "libs:watch:printstraat": "ng build @valtimo-plugins/printstraat --watch"
+    "libs:watch:printstraat": "ng build @valtimo-plugins/printstraat --watch",
+    "libs:watch:http-client-authentication": "ng build @valtimo-plugins/http-client-authentication --watch"
   },
   "private": true,
   "dependencies": {
@@ -172,6 +174,7 @@
     "@valtimo-plugins/valtimo-ocr": "file:dist/valtimo-plugins/valtimo-ocr",
     "@valtimo-plugins/valtimo-s2t": "file:dist/valtimo-plugins/valtimo-s2t",
     "@valtimo-plugins/xential": "file:dist/valtimo-plugins/xential",
+    "@valtimo-plugins/http-client-authentication": "file:dist/valtimo-plugins/http-client-authentication",
     "jasmine-core": "5.2.0",
     "karma": "6.4.4",
     "karma-chrome-launcher": "3.2.0",

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2015-2022 Ritense BV, the Netherlands.
+  ~ Copyright 2015-2026 Ritense BV, the Netherlands.
   ~
   ~ Licensed under EUPL, Version 1.2 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@
     name="configurationTitle"
     [title]="'configurationTitle' | pluginTranslate: pluginId | async"
     [margin]="true"
+    [fullWidth]="true"
     [disabled]="obs.disabled"
     [defaultValue]="obs.prefill?.configurationTitle"
     [required]="true"
     [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
-    [widthPx]="350"
     placeholder="Socrates Plugin"
   >
   </v-input>
@@ -44,4 +44,18 @@
             [tooltip]="'socratesApiUrlTooltip' | pluginTranslate: pluginId | async"
             placeholder="https://api.socrates.nl/"
     ></v-input>
+    <ng-container
+            *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
+    >
+        <v-select
+                [items]="authObs.authenticationPluginSelectItems"
+                [margin]="true"
+                name="authenticationPluginConfiguration"
+                [title]="'authenticationPluginConfiguration' | pluginTranslate: pluginId | async"
+                [disabled]="obs.disabled"
+                [defaultSelectionId]="obs.prefill?.authenticationPluginConfiguration"
+                [required]="false"
+                [loading]="!authObs.authenticationPluginSelectItems"
+        ></v-select>
+    </ng-container>
 </v-form>
