@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2024 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,22 @@ import {Observable} from 'rxjs';
 import {XentialApiSjabloon} from '../models/xential-api-sjabloon.model';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class XentialApiSjabloonService extends BaseApiService {
-    constructor(
-        private http: HttpClient,
-        configService: ConfigService
-    ) {
-        super(http, configService);
-    }
+  constructor(
+    private http: HttpClient,
+    configService: ConfigService
+  ) {
+    super(http, configService);
+  }
 
-    public getTemplates(gebruikersId: string, sjabloonGroupId?: string): Observable<XentialApiSjabloon> {
-        return this.http.get<XentialApiSjabloon>(
-            this.getApiUrl(!sjabloonGroupId
-                ? `/v1/xential/sjablonen?gebruikersId=${gebruikersId}`
-                : `/v1/xential/sjablonen?gebruikersId=${gebruikersId}&sjabloonGroupId=${sjabloonGroupId}`
-            )
-        );
-    }
+  public getTemplates(gebruikersId: string, sjabloonGroupId?: string): Observable<XentialApiSjabloon> {
+    return this.http.get<XentialApiSjabloon>(
+      this.getApiUrl(!sjabloonGroupId
+        ? `/v1/xential/sjablonen?gebruikersId=${gebruikersId}`
+        : `/v1/xential/sjablonen?gebruikersId=${gebruikersId}&sjabloonGroupId=${sjabloonGroupId}`
+      )
+    );
+  }
 }

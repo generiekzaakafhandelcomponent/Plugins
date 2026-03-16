@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController
 @SkipComponentScan
 @RequestMapping("/api", produces = [ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE])
 class XentialSjablonenResource(
-    val xentialSjablonenService: XentialSjablonenService,
+    private val xentialSjablonenService: XentialSjablonenService,
 ) {
     @GetMapping("/v1/xential/sjablonen")
     fun getSjablonenFromDefaultGroup(

@@ -29,4 +29,16 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="add_primary_key_to_xential_tokens" author="Ritense">
+        <addPrimaryKey tableName="xential_tokens" columnNames="token" constraintName="pk_xential_tokens"/>
+    </changeSet>
+
+    <changeSet id="add_created_on_to_xential_tokens" author="Ritense">
+        <addColumn tableName="xential_tokens">
+            <column name="created_on" type="TIMESTAMP" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

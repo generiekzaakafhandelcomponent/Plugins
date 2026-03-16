@@ -1,0 +1,191 @@
+{
+  "components" : [
+    {
+      "id" : "eke0lxo",
+      "key" : "pv:generateDocumentEventMessage",
+      "data" : {
+        "url" : "",
+        "json" : "",
+        "custom" : "",
+        "values" : [
+          {
+            "label" : "Uitgaande brief",
+            "value" : "GENEREER_UITGAANDE_BRIEF_MESSAGE"
+          },
+          {
+            "label" : "Besluit",
+            "value" : "GENEREER_BESLUIT_MESSAGE"
+          }
+        ],
+        "resource" : ""
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Document soort",
+      "limit" : 100,
+      "addons" : [],
+      "filter" : "",
+      "hidden" : false,
+      "idPath" : "id",
+      "prefix" : "",
+      "suffix" : "",
+      "unique" : false,
+      "widget" : "choicesjs",
+      "dataSrc" : "values",
+      "dbIndex" : false,
+      "overlay" : {
+        "top" : "",
+        "left" : "",
+        "style" : "",
+        "width" : "",
+        "height" : ""
+      },
+      "tooltip" : "",
+      "disabled" : false,
+      "lazyLoad" : true,
+      "multiple" : false,
+      "redrawOn" : "",
+      "tabindex" : "",
+      "template" : "<span>{{ item.label }}</span>",
+      "validate" : {
+        "custom" : "",
+        "unique" : false,
+        "multiple" : false,
+        "required" : true,
+        "customPrivate" : false,
+        "onlyAvailableItems" : false,
+        "strictDateValidation" : false
+      },
+      "autofocus" : false,
+      "encrypted" : false,
+      "hideLabel" : false,
+      "indexeddb" : {
+        "filter" : {}
+      },
+      "minSearch" : 0,
+      "modalEdit" : false,
+      "protected" : false,
+      "refreshOn" : "",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "xential-document-genereren-start-pv:generateDocumentEventMessage"
+      },
+      "errorLabel" : "",
+      "persistent" : true,
+      "properties" : {},
+      "validateOn" : "change",
+      "clearOnHide" : true,
+      "conditional" : {
+        "eq" : "",
+        "show" : null,
+        "when" : null
+      },
+      "customClass" : "",
+      "description" : "",
+      "fuseOptions" : {
+        "include" : "score",
+        "threshold" : 0.3
+      },
+      "ignoreCache" : false,
+      "placeholder" : "",
+      "searchField" : "",
+      "authenticate" : false,
+      "defaultValue" : null,
+      "selectFields" : "",
+      "customOptions" : {},
+      "dataGridLabel" : false,
+      "labelPosition" : "top",
+      "readOnlyValue" : false,
+      "searchEnabled" : false,
+      "showCharCount" : false,
+      "showWordCount" : false,
+      "uniqueOptions" : false,
+      "valueProperty" : "",
+      "calculateValue" : "",
+      "clearOnRefresh" : false,
+      "searchDebounce" : 0.3,
+      "useExactSearch" : false,
+      "calculateServer" : false,
+      "selectThreshold" : 0.3,
+      "allowMultipleMasks" : false,
+      "customDefaultValue" : "",
+      "allowCalculateOverride" : false
+    },
+    {
+      "id" : "ehurbom",
+      "key" : "submit",
+      "size" : "md",
+      "type" : "button",
+      "block" : false,
+      "input" : true,
+      "label" : "je gaat nu een document van gekozen soort aanmaken",
+      "theme" : "primary",
+      "action" : "submit",
+      "addons" : [],
+      "hidden" : false,
+      "prefix" : "",
+      "suffix" : "",
+      "unique" : false,
+      "widget" : {
+        "type" : "input"
+      },
+      "dbIndex" : false,
+      "overlay" : {
+        "top" : "",
+        "left" : "",
+        "style" : "",
+        "width" : "",
+        "height" : ""
+      },
+      "tooltip" : "",
+      "disabled" : false,
+      "leftIcon" : "",
+      "multiple" : false,
+      "redrawOn" : "",
+      "tabindex" : "",
+      "validate" : {
+        "custom" : "",
+        "unique" : false,
+        "multiple" : false,
+        "required" : false,
+        "customPrivate" : false,
+        "strictDateValidation" : false
+      },
+      "autofocus" : false,
+      "encrypted" : false,
+      "hideLabel" : false,
+      "modalEdit" : false,
+      "protected" : false,
+      "refreshOn" : "",
+      "rightIcon" : "",
+      "tableView" : false,
+      "attributes" : {},
+      "errorLabel" : "",
+      "persistent" : false,
+      "properties" : {},
+      "validateOn" : "change",
+      "clearOnHide" : true,
+      "conditional" : {
+        "eq" : "",
+        "show" : null,
+        "when" : null
+      },
+      "customClass" : "",
+      "description" : "",
+      "placeholder" : "",
+      "saveOnEnter" : false,
+      "defaultValue" : null,
+      "dataGridLabel" : true,
+      "labelPosition" : "top",
+      "showCharCount" : false,
+      "showWordCount" : false,
+      "calculateValue" : "",
+      "calculateServer" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true,
+      "allowMultipleMasks" : false,
+      "customDefaultValue" : "",
+      "allowCalculateOverride" : false
+    }
+  ]
+}
