@@ -18,6 +18,10 @@ pluginManager.withPlugin('maven-publish') {
     publishing {
         publications {
             maven(MavenPublication) {
+                groupId = pluginProperties.pluginGroupId
+                artifactId = pluginProperties.pluginArtifactId
+                version = pluginProperties.pluginVersion
+
                 pom {
                     name = 'Open Product plugin'
                     description = 'Open Product plugin'
