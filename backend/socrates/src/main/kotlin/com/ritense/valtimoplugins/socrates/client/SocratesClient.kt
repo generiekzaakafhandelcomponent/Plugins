@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.socrates.client
 
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import com.ritense.valtimoplugins.socrates.error.SocratesError
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -41,14 +42,18 @@ class SocratesClient(
 ) {
     lateinit var socratesBaseUri: URI
 
-    fun dienstAanmaken(zaakId: String, loBehandeld: LoBehandeld): LOBehandeldRespons {
+    fun dienstAanmaken(
+        zaakId: String,
+        loBehandeld: LoBehandeld,
+        authentication: HttpClientAuthenticator?
+    ): LOBehandeldRespons {
         val requestBody = LOBehandeldRequest(
             identificatie = zaakId,
             loBehandeld = loBehandeld,
         )
 
         val response = try {
-            restClientBuilder
+            val clientBuilder = restClientBuilder
                 .clone()
                 .requestInterceptor { request, body, execution ->
                     logRequest(request, body)
@@ -56,6 +61,10 @@ class SocratesClient(
                     logResponse(request, response)
                     response
                 }
+
+            authentication?.applyAuth(clientBuilder) ?: clientBuilder
+
+            clientBuilder
                 .build()
                 .post()
                 .uri {

@@ -31,7 +31,7 @@ export class HaalCentraalAuthPluginConfigurationComponent
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string
-    // If the plugin had already been saved, a prefilled configuration of the type HaalCentraalAuthPluginConfig is expected
+    // If the plugin had already been saved, a prefilled configuration of the type HttpClientAuthenticationPluginConfig is expected
     @Input() prefillConfiguration$: Observable<HaalCentraalAuthPluginConfig>;
 
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();

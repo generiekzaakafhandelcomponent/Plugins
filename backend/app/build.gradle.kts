@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":backend:value-mapper"))
     implementation(project(":backend:socrates"))
     implementation(project(":backend:printstraat"))
+    implementation(project(":backend:http-client-authentication"))
 }
 
 tasks.jar {

@@ -25,6 +25,7 @@ import com.ritense.plugin.annotation.PluginEvent
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
 import com.ritense.valtimoplugins.socrates.error.ProcessErrorPayload
 import com.ritense.valtimoplugins.socrates.error.SocratesError
@@ -47,6 +48,9 @@ open class SocratesPlugin(
 
     @PluginProperty(key = "socratesApiUrl", secret = false)
     lateinit var socratesApiUrl: URI
+
+    @PluginProperty(key = "authenticationPluginConfiguration", secret = false, required = false)
+    var authenticationPluginConfiguration: HttpClientAuthenticator? = null
 
     @PluginEvent(invokedOn = [EventType.CREATE, EventType.UPDATE])
     fun setsocratesClientParams() {
@@ -73,7 +77,11 @@ open class SocratesPlugin(
             val input = execution.getVariable(inputProcessVariable)
             val request = mapper.convertValue<LoBehandeld>(input)
 
-            val response = socratesClient.dienstAanmaken(zaakId, request)
+            val response = socratesClient.dienstAanmaken(
+                zaakId = zaakId,
+                loBehandeld = request,
+                authentication = authenticationPluginConfiguration
+            )
 
             execution.setVariable(processVariableName, response)
         } catch (e: Exception) {
