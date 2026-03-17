@@ -15,10 +15,18 @@
  */
 
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {DeleteTemplatesRequest, Template, TemplateListItem, TemplateResponse, TemplateType, UpdateTemplateRequest,} from '../models';
-import {ConfigService, Page} from '@valtimo/config';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {map, Observable} from 'rxjs';
+import {
+    DeleteTemplatesRequest,
+    Template,
+    TemplateListItem,
+    TemplatePreviewRequest,
+    TemplateResponse,
+    TemplateType,
+    UpdateTemplateRequest,
+} from '../models';
+import {ConfigService, InterceptorSkip, Page} from '@valtimo/shared';
 
 @Injectable({
     providedIn: 'root',
@@ -40,11 +48,18 @@ export class FreemarkerTemplateManagementService {
 
     public getAllTextTemplates(caseDefinitionName?: string): Observable<Page<TemplateListItem>> {
         return this.getTemplates(caseDefinitionName, 'text', undefined, 0, 10000);
+
+    public getAllDocumentTemplates(caseDefinitionName?: string): Observable<Page<TemplateListItem>> {
+        return this.getTemplates(caseDefinitionName, undefined, ['csv', 'pdf'], undefined, 0, 10000);
+    }
+
+    public getAllTemplates(caseDefinitionName?: string, templateType?: TemplateType): Observable<Page<TemplateListItem>> {
+        return this.getTemplates(caseDefinitionName, templateType, undefined, undefined, 0, 10000);
     }
 
     public getTemplates(
         caseDefinitionName?: string,
-        templateType?: TemplateType,
+        templateTypes?: TemplateType[],
         templateKey?: string,
         page?: number,
         pageSize?: number,
@@ -52,6 +67,7 @@ export class FreemarkerTemplateManagementService {
         const params = {
             caseDefinitionName,
             templateType,
+            templateTypes,
             templateKey,
             page,
             size: pageSize
@@ -91,5 +107,23 @@ export class FreemarkerTemplateManagementService {
 
     public updateTemplate(template: UpdateTemplateRequest): Observable<TemplateResponse> {
         return this.http.put<TemplateResponse>(`${this.valtimoEndpointUri}v1/template`, template);
+    }
+
+    public previewTemplate(template: TemplatePreviewRequest): Observable<Blob> {
+        return this.http.post(`${this.valtimoEndpointUri}v1/template/preview`, template, {responseType: 'blob'});
+    }
+
+    public isFinal(
+        caseDefinitionKey: string,
+        caseDefinitionVersionTag: string
+    ): Observable<boolean> {
+        return this.http
+            .get<any>(
+                `${this.valtimoEndpointUri}v1/case-definition/${caseDefinitionKey}/version/${caseDefinitionVersionTag}`,
+                {
+                    headers: new HttpHeaders().set(InterceptorSkip, '403'),
+                }
+            )
+            .pipe(map(caseDefinition => caseDefinition.final));
     }
 }

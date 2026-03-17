@@ -15,19 +15,42 @@
  */
 
 import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, combineLatest, filter, map, Observable, switchMap, take, tap} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, Observable, startWith, switchMap, take, tap} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BreadcrumbService, EditorModel, PageTitleService} from '@valtimo/components';
-import {NotificationService} from 'carbon-components-angular';
-import {TranslateService} from '@ngx-translate/core';
+import {
+    BreadcrumbService,
+    CarbonListModule,
+    EditorModel,
+    EditorModule,
+    PageTitleService,
+    RenderInPageHeaderDirective,
+} from '@valtimo/components';
+import {ButtonModule, DialogModule, IconModule, NotificationService, TabsModule} from 'carbon-components-angular';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
+import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
+import {CommonModule} from '@angular/common';
+import {MailTemplateDeleteModalComponent} from '../mail-template-delete-modal/mail-template-delete-modal.component';
 
 @Component({
+    standalone: true,
     templateUrl: './mail-template-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./mail-template-editor.component.scss'],
     providers: [NotificationService],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        TabsModule,
+        DialogModule,
+        MailTemplateDeleteModalComponent,
+        CarbonListModule,
+        ButtonModule,
+        EditorModule,
+        RenderInPageHeaderDirective,
+        IconModule,
+    ]
 })
 export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     public readonly model$ = new BehaviorSubject<EditorModel | null>(null);
@@ -50,6 +73,17 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             filter(templateKey => !!templateKey)
         );
 
+    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
+        switchMap(caseDefinitionId => combineLatest([
+                this.environmentService.canUpdateGlobalConfiguration(),
+                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
+            ]).pipe(
+                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
+                startWith(true)
+            )
+        )
+    );
+
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
         private readonly route: ActivatedRoute,
@@ -58,6 +92,7 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         private readonly notificationService: NotificationService,
         private readonly translateService: TranslateService,
         private readonly breadcrumbService: BreadcrumbService,
+        private readonly environmentService: EnvironmentService,
     ) {
     }
 
@@ -72,6 +107,7 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public ngOnDestroy(): void {
         this.pageTitleService.enableReset();
         this.breadcrumbService.clearThirdBreadcrumb();
+        this.breadcrumbService.clearFourthBreadcrumb();
     }
 
     public onValid(valid: boolean): void {
@@ -116,7 +152,7 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         });
     }
 
-    public onDelete(templates: Array<string>): void {
+    public onDelete(templates: Array<any>): void {
         this.disableEditor();
         this.disableSave();
         this.disableMore();
@@ -189,8 +225,11 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
 
     private refreshViewer(html: string): void {
         setTimeout(() => {
-            (document.getElementById('html-viewer-iframe') as HTMLIFrameElement).srcdoc = html;
-        });
+            const htmlViewer = document.getElementById('html-viewer-iframe') as HTMLIFrameElement;
+            if (htmlViewer) {
+                htmlViewer.srcdoc = html;
+            }
+        }, 100);
     }
 
     private initBreadcrumb(): void {

@@ -16,16 +16,14 @@
 
 package com.ritense.valtimoplugins.freemarker.web.rest
 
-import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
-import com.ritense.valtimoplugins.freemarker.service.TemplateDeploymentService
+import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimo.contract.domain.ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.CreateTemplateRequest
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.DeleteTemplateRequest
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.TemplateListItemResponse
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.TemplateResponse
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.UpdateTemplateRequest
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import com.ritense.valtimo.contract.domain.ValtimoMediaType.APPLICATION_JSON_UTF8_VALUE
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -44,7 +42,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/management", produces = [APPLICATION_JSON_UTF8_VALUE])
 class TemplateManagementResource(
     private val templateService: TemplateService,
-    private val templateDeploymentService: TemplateDeploymentService,
 ) {
 
     @GetMapping("/v1/template")
@@ -52,15 +49,17 @@ class TemplateManagementResource(
         @RequestParam(value = "templateKey", required = false) templateKey: String?,
         @RequestParam(value = "caseDefinitionName", required = false) caseDefinitionName: String?,
         @RequestParam(value = "templateType", required = false) templateType: String?,
+        @RequestParam(value = "templateTypes", required = false) templateTypes: List<String>?,
         pageable: Pageable,
     ): ResponseEntity<Page<TemplateListItemResponse>> {
         val templates = templateService.findTemplates(
-            templateKey,
-            caseDefinitionName,
-            templateType,
-            pageable
+            templateKey = templateKey,
+            caseDefinitionName = caseDefinitionName,
+            templateType = templateType,
+            templateTypes = templateTypes,
+            pageable = pageable
         )
-        return ResponseEntity.ok(templates.map { TemplateListItemResponse.of(it, isReadOnly(it)) })
+        return ResponseEntity.ok(templates.map { TemplateListItemResponse.of(it) })
     }
 
     @GetMapping("/v1/case-definition/{caseDefinitionName}/template-type/{templateType}/template/{key}")
@@ -70,7 +69,7 @@ class TemplateManagementResource(
         @PathVariable key: String,
     ): ResponseEntity<TemplateResponse> {
         val template = templateService.getTemplate(key, caseDefinitionName, templateType)
-        return ResponseEntity.ok(TemplateResponse.of(template, isReadOnly(template)))
+        return ResponseEntity.ok(TemplateResponse.of(template))
     }
 
     @PostMapping("/v1/template")
@@ -83,7 +82,7 @@ class TemplateManagementResource(
             templateType = request.type,
             metadata = request.metadata,
         )
-        return ResponseEntity.ok(TemplateResponse.of(template, isReadOnly(template)))
+        return ResponseEntity.ok(TemplateResponse.of(template))
     }
 
     @PutMapping("/v1/template")
@@ -97,7 +96,7 @@ class TemplateManagementResource(
             request.metadata,
             request.content
         )
-        return ResponseEntity.ok(TemplateResponse.of(template, isReadOnly(template)))
+        return ResponseEntity.ok(TemplateResponse.of(template))
     }
 
     @DeleteMapping("/v1/template")
@@ -107,6 +106,4 @@ class TemplateManagementResource(
         templateService.deleteTemplates(request.caseDefinitionName, request.type, request.templates)
         return ResponseEntity.ok().build()
     }
-
-    private fun isReadOnly(template: ValtimoTemplate) = templateDeploymentService.deploymentFileExists(template)
 }

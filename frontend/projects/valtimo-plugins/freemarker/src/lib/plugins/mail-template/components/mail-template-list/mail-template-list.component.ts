@@ -15,15 +15,30 @@
  */
 
 import {ChangeDetectionStrategy, Component, OnInit, ViewChild,} from '@angular/core';
-import {BehaviorSubject, filter, map, Observable, switchMap, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, filter, map, Observable, startWith, switchMap, take, tap} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CarbonListComponent, ColumnConfig, ViewType} from '@valtimo/components';
+import {CarbonListComponent, CarbonListModule, ColumnConfig, ViewType} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateListItem} from '../../../../models';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {MailTemplateDeleteModalComponent} from '../mail-template-delete-modal/mail-template-delete-modal.component';
+import {MailTemplateAddEditModalComponent} from '../mail-template-add-edit-modal/mail-template-add-edit-modal.component';
+import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
+import {ButtonModule} from 'carbon-components-angular';
 
 @Component({
+    standalone: true,
     templateUrl: './mail-template-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        CarbonListModule,
+        ButtonModule,
+        TranslateModule,
+        MailTemplateDeleteModalComponent,
+        MailTemplateAddEditModalComponent
+    ]
 })
 export class MailTemplateListComponent implements OnInit {
     @ViewChild(CarbonListComponent) carbonList: CarbonListComponent;
@@ -33,11 +48,6 @@ export class MailTemplateListComponent implements OnInit {
             viewType: ViewType.TEXT,
             key: 'key',
             label: 'Key',
-        },
-        {
-            viewType: ViewType.BOOLEAN,
-            key: 'readOnly',
-            label: 'Read only',
         },
     ];
 
@@ -49,13 +59,14 @@ export class MailTemplateListComponent implements OnInit {
     public readonly templates$ = new BehaviorSubject<TemplateListItem[] | null>(null);
     public readonly showAddModal$ = new BehaviorSubject<boolean>(false);
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
-    public readonly selectedRowKeys$ = new BehaviorSubject<Array<string>>([]);
+    public readonly selectedRowKeys$ = new BehaviorSubject<Array<any>>([]);
     public readonly loading$ = new BehaviorSubject<boolean>(true);
 
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
         private readonly router: Router,
-        private readonly route: ActivatedRoute
+        private readonly route: ActivatedRoute,
+        private readonly environmentService: EnvironmentService,
     ) {
     }
 
@@ -87,7 +98,7 @@ export class MailTemplateListComponent implements OnInit {
         this.showDeleteModal$.next(true);
     }
 
-    public onDelete(templates: Array<string>): void {
+    public onDelete(templates: Array<any>): void {
         this.loading$.next(true);
         this._caseDefinitionName$.pipe(
             take(1),
@@ -120,6 +131,6 @@ export class MailTemplateListComponent implements OnInit {
     }
 
     private setSelectedTemplateKeys(): void {
-        this.selectedRowKeys$.next(this.carbonList.selectedItems.map((template: TemplateListItem) => template.key));
+        this.selectedRowKeys$.next(this.carbonList.selectedItems.map((template: TemplateListItem) => ({key: template.key, type: template.type})));
     }
 }

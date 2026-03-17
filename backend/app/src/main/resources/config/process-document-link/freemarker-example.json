@@ -3,5 +3,10 @@
     "processDefinitionKey": "TextTemplatePluginExample",
     "canInitializeDocument": true,
     "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "GenerateInvoiceExample",
+    "canInitializeDocument": true,
+    "startableByUser": true
   }
 ]

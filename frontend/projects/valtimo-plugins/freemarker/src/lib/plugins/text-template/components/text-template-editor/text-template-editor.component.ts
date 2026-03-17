@@ -22,12 +22,28 @@ import {NotificationService} from 'carbon-components-angular';
 import {TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
+import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
+import {CommonModule} from '@angular/common';
+import {TextTemplateDeleteModalComponent} from '../text-template-delete-modal/text-template-delete-modal.component';
 
 @Component({
+    standalone: true,
     templateUrl: './text-template-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./text-template-editor.component.scss'],
     providers: [NotificationService],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        TabsModule,
+        DialogModule,
+        TextTemplateDeleteModalComponent,
+        CarbonListModule,
+        ButtonModule,
+        EditorModule,
+        RenderInPageHeaderDirective,
+        IconModule,
+    ]
 })
 export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     public readonly model$ = new BehaviorSubject<EditorModel | null>(null);
@@ -44,11 +60,21 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             filter(caseDefinitionName => !!caseDefinitionName)
         );
 
-    public readonly templateKey$: Observable<string> =
-        this.route.params.pipe(
-            map(params => params?.key),
-            filter(templateKey => !!templateKey)
-        );
+    public readonly templateKey$: Observable<string> = combineLatest([this.route.params, this.route.parent.params]).pipe(
+        map(([params, parentParams]) => params?.templateKey || parentParams?.templateKey),
+        filter(templateKey => !!templateKey)
+    );
+
+    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
+        switchMap(caseDefinitionId => combineLatest([
+                this.environmentService.canUpdateGlobalConfiguration(),
+                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
+            ]).pipe(
+                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
+                startWith(true)
+            )
+        )
+    );
 
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
@@ -58,6 +84,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         private readonly notificationService: NotificationService,
         private readonly translateService: TranslateService,
         private readonly breadcrumbService: BreadcrumbService,
+        private readonly environmentService: EnvironmentService,
     ) {
     }
 
@@ -72,6 +99,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public ngOnDestroy(): void {
         this.pageTitleService.enableReset();
         this.breadcrumbService.clearThirdBreadcrumb();
+        this.breadcrumbService.clearFourthBreadcrumb();
     }
 
     public onValid(valid: boolean): void {
@@ -116,7 +144,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         });
     }
 
-    public onDelete(templates: Array<string>): void {
+    public onDelete(templates: Array<any>): void {
         this.disableEditor();
         this.disableSave();
         this.disableMore();

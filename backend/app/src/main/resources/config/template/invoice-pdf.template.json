@@ -1,0 +1,6 @@
+{
+  "templateKey": "invoice",
+  "templateType": "pdf",
+  "metadata": {},
+  "contentRef": "/config/case/freemarker-example/1-0-0/template/invoice-pdf.ftlh"
+}

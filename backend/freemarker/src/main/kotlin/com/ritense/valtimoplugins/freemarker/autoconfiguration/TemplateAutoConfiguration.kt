@@ -17,39 +17,45 @@
 package com.ritense.valtimoplugins.freemarker.autoconfiguration
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.ritense.valtimo.contract.case_.CaseDefinitionChecker
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
 import com.ritense.valtimoplugins.freemarker.config.TemplateHttpSecurityConfigurer
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
+import com.ritense.valtimoplugins.freemarker.listener.TemplateCaseEventListener
+import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
-import com.ritense.valtimoplugins.freemarker.service.TemplateDeploymentService
 import com.ritense.valtimoplugins.freemarker.service.TemplateExporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateImporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valtimoplugins.freemarker.web.rest.TemplateManagementResource
 import com.ritense.valueresolver.ValueResolverService
 import freemarker.template.Configuration
-import freemarker.template.Configuration.VERSION_2_3_32
+import freemarker.template.Configuration.VERSION_2_3_34
+import freemarker.template.DefaultObjectWrapperBuilder
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.core.Ordered.HIGHEST_PRECEDENCE
 import org.springframework.core.annotation.Order
-import org.springframework.core.io.ResourceLoader
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @AutoConfiguration
-@EnableJpaRepositories(basePackageClasses = [TemplateRepository::class])
+@EnableJpaRepositories(basePackageClasses = [TemplateRepository::class, JsonSchemaDocumentRepositoryStreaming::class])
 @EntityScan(basePackageClasses = [ValtimoTemplate::class])
-@EnableCaching
 class TemplateAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(Configuration::class)
     fun freemarkerConfiguration(): Configuration {
-        val configuration = Configuration(VERSION_2_3_32)
+        val configuration = Configuration(VERSION_2_3_34)
         configuration.logTemplateExceptions = false
+
+        val objectWrapper = DefaultObjectWrapperBuilder(configuration.incompatibleImprovements).apply {
+            iterableSupport = true
+        }.build()
+        configuration.objectWrapper = objectWrapper
+
         return configuration
     }
 
@@ -60,26 +66,16 @@ class TemplateAutoConfiguration {
         objectMapper: ObjectMapper,
         valueResolverService: ValueResolverService,
         freemarkerConfiguration: Configuration,
+        caseDefinitionChecker: CaseDefinitionChecker,
+        jsonSchemaDocumentRepositoryStreaming: JsonSchemaDocumentRepositoryStreaming,
     ): TemplateService {
         return TemplateService(
             templateRepository,
             objectMapper,
             valueResolverService,
             freemarkerConfiguration,
-        )
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(TemplateDeploymentService::class)
-    fun templateDeploymentService(
-        resourceLoader: ResourceLoader,
-        templateService: TemplateService,
-        objectMapper: ObjectMapper,
-    ): TemplateDeploymentService {
-        return TemplateDeploymentService(
-            resourceLoader,
-            templateService,
-            objectMapper,
+            caseDefinitionChecker,
+            jsonSchemaDocumentRepositoryStreaming,
         )
     }
 
@@ -98,10 +94,24 @@ class TemplateAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(TemplateImporter::class)
     fun templateImporter(
-        templateDeploymentService: TemplateDeploymentService,
+        templateService: TemplateService,
+        objectMapper: ObjectMapper,
     ): TemplateImporter {
         return TemplateImporter(
-            templateDeploymentService
+            templateService,
+            objectMapper,
+        )
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(TemplateCaseEventListener::class)
+    fun templateCaseEventListener(
+        templateService: TemplateService,
+        templateRepository: TemplateRepository,
+    ): TemplateCaseEventListener {
+        return TemplateCaseEventListener(
+            templateService,
+            templateRepository,
         )
     }
 
@@ -109,11 +119,9 @@ class TemplateAutoConfiguration {
     @ConditionalOnMissingBean(TemplateManagementResource::class)
     fun templateManagementResource(
         templateService: TemplateService,
-        templateDeploymentService: TemplateDeploymentService,
     ): TemplateManagementResource {
         return TemplateManagementResource(
             templateService,
-            templateDeploymentService
         )
     }
 
