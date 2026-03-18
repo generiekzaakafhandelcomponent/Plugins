@@ -18,6 +18,9 @@ pluginManager.withPlugin('maven-publish') {
     publishing {
         publications {
             maven(MavenPublication) {
+                groupId = pluginProperties.pluginGroupId
+                artifactId = pluginProperties.pluginArtifactId
+                version = pluginProperties.pluginVersion
                 pom {
                     name = 'Token Authentication plugin'
                     description = 'Token Authentication plugin can be used for any API the requires an Authorization header with a simple Token value'
