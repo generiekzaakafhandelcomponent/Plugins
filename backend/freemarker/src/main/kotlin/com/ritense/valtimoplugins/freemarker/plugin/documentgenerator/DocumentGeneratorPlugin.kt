@@ -19,7 +19,7 @@ package com.ritense.valtimoplugins.freemarker.plugin.documentgenerator
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
-import com.ritense.processdocument.domain.impl.OperatonProcessInstanceId
+import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.resource.service.TemporaryResourceStorageService
@@ -34,7 +34,7 @@ import java.io.StringReader
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.apache.commons.csv.CSVPrinter
-import org.operaton.bpm.engine.delegate.DelegateExecution
+import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.xhtmlrenderer.pdf.ITextRenderer
 
 @Plugin(
@@ -126,7 +126,7 @@ open class DocumentGeneratorPlugin(
         templateType: String
     ): String {
         val document = processDocumentService.getDocument(
-            OperatonProcessInstanceId(execution.processInstanceId),
+            CamundaProcessInstanceId(execution.processInstanceId),
             execution
         )
         return templateService.generate(

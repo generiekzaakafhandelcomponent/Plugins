@@ -103,7 +103,7 @@ class TemplateManagementResource(
     fun deleteTemplates(
         @RequestBody request: DeleteTemplateRequest,
     ): ResponseEntity<Unit> {
-        templateService.deleteTemplates(request.caseDefinitionName, request.type, request.templates)
+        templateService.deleteTemplates(request.caseDefinitionName, request.templates)
         return ResponseEntity.ok().build()
     }
 }
