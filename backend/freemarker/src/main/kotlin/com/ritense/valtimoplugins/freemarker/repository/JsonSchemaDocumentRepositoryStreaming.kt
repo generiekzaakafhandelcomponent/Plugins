@@ -27,7 +27,7 @@ interface JsonSchemaDocumentRepositoryStreaming : JpaRepository<JsonSchemaDocume
     @Query(
         """SELECT d
         FROM JsonSchemaDocument d
-        WHERE d.documentDefinitionId.caseDefinitionId.key = :caseDefinitionKey"""
+        WHERE d.documentDefinitionId.name = :caseDefinitionName"""
     )
-    fun streamAllByCaseDefinitionKey(caseDefinitionKey: String): Stream<JsonSchemaDocument>
+    fun streamAllByCaseDefinitionName(caseDefinitionName: String): Stream<JsonSchemaDocument>
 }

@@ -22,6 +22,7 @@ import com.ritense.valtimoplugins.freemarker.config.TemplateHttpSecurityConfigur
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
 import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
+import com.ritense.valtimoplugins.freemarker.service.TemplateDeploymentService
 import com.ritense.valtimoplugins.freemarker.service.TemplateExporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateImporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
@@ -29,12 +30,14 @@ import com.ritense.valtimoplugins.freemarker.web.rest.TemplateManagementResource
 import com.ritense.valueresolver.ValueResolverService
 import freemarker.template.Configuration
 import freemarker.template.DefaultObjectWrapperBuilder
+import freemarker.template.Version
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Bean
 import org.springframework.core.Ordered.HIGHEST_PRECEDENCE
 import org.springframework.core.annotation.Order
+import org.springframework.core.io.ResourceLoader
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @AutoConfiguration
@@ -45,7 +48,7 @@ class TemplateAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(Configuration::class)
     fun freemarkerConfiguration(): Configuration {
-        val configuration = Configuration(klaasVERSION_2_3_34)
+        val configuration = Configuration(Version(2, 3, 32))
         configuration.logTemplateExceptions = false
 
         val objectWrapper = DefaultObjectWrapperBuilder(configuration.incompatibleImprovements).apply {
@@ -86,27 +89,31 @@ class TemplateAutoConfiguration {
         )
     }
 
-//    @Bean
-//    @ConditionalOnMissingBean(TemplateImporter::class)
-//    fun templateImporter(
-//        templateService: TemplateService,
-//    ): TemplateImporter {
-//        return TemplateImporter(
-//            templateService
-//        )
-//    }
+    @Bean
+    @ConditionalOnMissingBean(TemplateDeploymentService::class)
+    fun templateDeploymentService(
+        resourceLoader: ResourceLoader,
+        templateService: TemplateService,
+        objectMapper: ObjectMapper,
+    ): TemplateDeploymentService {
+        return TemplateDeploymentService(
+            resourceLoader,
+            templateService,
+            objectMapper,
+        )
+    }
 
-//    @Bean
-//    @ConditionalOnMissingBean(TemplateCaseEventListener::class)
-//    fun templateCaseEventListener(
-//        templateService: TemplateService,
-//        templateRepository: TemplateRepository,
-//    ): TemplateCaseEventListener {
-//        return TemplateCaseEventListener(
-//            templateService,
-//            templateRepository,
-//        )
-//    }
+    @Bean
+    @ConditionalOnMissingBean(TemplateImporter::class)
+    fun templateImporter(
+        templateDeploymentService: TemplateDeploymentService,
+    ): TemplateImporter {
+        return TemplateImporter(
+            templateDeploymentService
+        )
+    }
+
+
 
     @Bean
     @ConditionalOnMissingBean(TemplateManagementResource::class)
