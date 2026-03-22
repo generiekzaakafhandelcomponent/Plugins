@@ -102,12 +102,24 @@ open class DocumentGeneratorPlugin(
 
     fun generatePdf(htmlString: String, out: OutputStream) {
         val renderer = ITextRenderer()
-        with(renderer) {
-            sharedContext.isPrint = true
-            sharedContext.isInteractive = false
-            setDocumentFromString(htmlString)
-            layout()
-            createPDF(out)
+        val trimmedContent = htmlString.trim()
+        val content = when {
+            trimmedContent.isBlank() -> "<html><body></body></html>"
+            !trimmedContent.contains("<html", ignoreCase = true) -> "<html><body>$trimmedContent</body></html>"
+            else -> trimmedContent
+        }
+
+        try {
+            with(renderer) {
+                sharedContext.isPrint = true
+                sharedContext.isInteractive = false
+                setDocumentFromString(content)
+                layout()
+                createPDF(out)
+            }
+        } catch (e: Exception) {
+            logger.error(e) { "Failed to generate PDF from HTML: $content" }
+            throw e
         }
     }
 
