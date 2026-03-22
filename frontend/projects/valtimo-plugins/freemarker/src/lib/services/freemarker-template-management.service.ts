@@ -26,13 +26,12 @@ import {
     TemplateType,
     UpdateTemplateRequest,
 } from '../models';
-import {ConfigService, InterceptorSkip, Page} from '@valtimo/shared';
+import {ConfigService, Page} from '@valtimo/config';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FreemarkerTemplateManagementService {
-
     private readonly valtimoEndpointUri: string;
 
     constructor(
@@ -43,11 +42,12 @@ export class FreemarkerTemplateManagementService {
     }
 
     public getAllMailTemplates(caseDefinitionName?: string): Observable<Page<TemplateListItem>> {
-        return this.getTemplates(caseDefinitionName, 'mail', undefined, 0, 10000);
+        return this.getTemplates(caseDefinitionName, 'mail', undefined, undefined, 0, 10000);
     }
 
     public getAllTextTemplates(caseDefinitionName?: string): Observable<Page<TemplateListItem>> {
-        return this.getTemplates(caseDefinitionName, 'text', undefined, 0, 10000);
+        return this.getTemplates(caseDefinitionName, 'text', undefined, undefined, 0, 10000);
+    }
 
     public getAllDocumentTemplates(caseDefinitionName?: string): Observable<Page<TemplateListItem>> {
         return this.getTemplates(caseDefinitionName, undefined, ['csv', 'pdf'], undefined, 0, 10000);
@@ -59,24 +59,27 @@ export class FreemarkerTemplateManagementService {
 
     public getTemplates(
         caseDefinitionName?: string,
+        templateType?: TemplateType,
         templateTypes?: TemplateType[],
         templateKey?: string,
         page?: number,
         pageSize?: number,
     ): Observable<Page<TemplateListItem>> {
-        const params = {
+        const params: Record<string, string | number | string[] | undefined> = {
             caseDefinitionName,
             templateType,
             templateTypes,
             templateKey,
             page,
-            size: pageSize
+            size: pageSize,
         };
+
         Object.keys(params).forEach(key => {
-            if (params[key] == undefined) {
+            if (params[key] === undefined) {
                 delete params[key];
             }
         });
+
         return this.http.get<Page<TemplateListItem>>(
             `${this.valtimoEndpointUri}v1/template`,
             {params}
@@ -111,19 +114,5 @@ export class FreemarkerTemplateManagementService {
 
     public previewTemplate(template: TemplatePreviewRequest): Observable<Blob> {
         return this.http.post(`${this.valtimoEndpointUri}v1/template/preview`, template, {responseType: 'blob'});
-    }
-
-    public isFinal(
-        caseDefinitionKey: string,
-        caseDefinitionVersionTag: string
-    ): Observable<boolean> {
-        return this.http
-            .get<any>(
-                `${this.valtimoEndpointUri}v1/case-definition/${caseDefinitionKey}/version/${caseDefinitionVersionTag}`,
-                {
-                    headers: new HttpHeaders().set(InterceptorSkip, '403'),
-                }
-            )
-            .pipe(map(caseDefinition => caseDefinition.final));
     }
 }

@@ -25,7 +25,7 @@ import {
     FormModule,
     InputModule as ValtimoInputModule,
     ParagraphModule,
-    RenderInPageHeaderDirective,
+    RenderInPageHeaderDirectiveModule,
     SelectModule,
 } from '@valtimo/components';
 import {
@@ -39,13 +39,13 @@ import {
     NotificationModule,
     TabsModule,
 } from 'carbon-components-angular';
-import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/shared';
 import {DocumentTemplateListComponent} from './components/document-template-list/document-template-list.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TemplateManagementRoutingModule} from './document-generator-management-routing.module';
 import {GenerateCsvComponent} from './components/generate-csv/generate-csv.component';
 import {GeneratePdfComponent} from './components/generate-pdf/generate-pdf.component';
+import {CASE_MANAGEMENT_TAB_TOKEN} from "@valtimo/config";
 
 @NgModule({
     declarations: [
@@ -74,7 +74,7 @@ import {GeneratePdfComponent} from './components/generate-pdf/generate-pdf.compo
         LoadingModule,
         ModalModule,
         NotificationModule,
-        RenderInPageHeaderDirective,
+        RenderInPageHeaderDirectiveModule,
         TabsModule,
     ],
     exports: [
@@ -85,7 +85,7 @@ import {GeneratePdfComponent} from './components/generate-pdf/generate-pdf.compo
         {
             provide: CASE_MANAGEMENT_TAB_TOKEN,
             useValue: {
-                translationKey: 'document-template',
+                translationKey: 'Document templates',
                 component: DocumentTemplateListComponent,
             },
             multi: true,

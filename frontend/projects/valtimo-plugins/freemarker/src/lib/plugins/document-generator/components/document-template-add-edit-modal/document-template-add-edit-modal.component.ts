@@ -16,8 +16,8 @@
 
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {TemplateMetadataModal} from '../../../../models';
-import {CARBON_CONSTANTS, KeyGeneratorService, ValtimoCdsModalDirective} from '@valtimo/components';
+import {TemplateMetadataModal, TemplateType} from '../../../../models';
+import {CARBON_CONSTANTS, KeyGeneratorService} from '@valtimo/components';
 import {CommonModule} from '@angular/common';
 import {ButtonModule, ComboBoxModule, InputModule, ListItem, ModalModule} from 'carbon-components-angular';
 import {TranslateModule} from '@ngx-translate/core';
@@ -35,8 +35,7 @@ import {DOCUMENT_TYPES} from '../../models';
         ModalModule,
         ReactiveFormsModule,
         InputModule,
-        ComboBoxModule,
-        ValtimoCdsModalDirective,
+        ComboBoxModule
     ]
 })
 export class DocumentTemplateAddEditModalComponent implements OnInit {
@@ -53,7 +52,7 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
         this.setDefaultTypeValue(value);
     }
 
-    @Output() closeEvent = new EventEmitter<{ key: string; type: string } | null>();
+    @Output() closeEvent = new EventEmitter<{ key: string; type: TemplateType } | null>();
 
     public form = this.fb.group({
         key: this.fb.control('', Validators.required),
@@ -63,16 +62,11 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
     private _defaultKeyValue!: string;
     private _defaultTypeValue!: string;
 
-    public get key(): AbstractControl<string> {
-        const key = this.form?.get('key');
-        if (!key?.value) {
-            return key;
-        }
-        key.setValue(this.keyGeneratorService.getUniqueKey(key.value, []));
-        return key;
+    public get key(): AbstractControl {
+        return this.form?.get('key');
     }
 
-    public get type(): AbstractControl<string> {
+    public get type(): AbstractControl {
         return this.form?.get('type');
     }
 
@@ -101,7 +95,12 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
             return;
         }
 
-        this.closeEvent.emit({key: this.key.value, type: this.type.value});
+        const typeValue = typeof this.type.value === 'object' ? this.type.value.id : this.type.value;
+
+        this.closeEvent.emit({
+            key: this.keyGeneratorService.getUniqueKey(this.key.value, []),
+            type: typeValue
+        });
         this.resetForm();
     }
 

@@ -23,13 +23,12 @@ import {
     EditorModel,
     EditorModule,
     PageTitleService,
-    RenderInPageHeaderDirective,
+    RenderInPageHeaderDirectiveModule
 } from '@valtimo/components';
 import {ButtonModule, DialogModule, IconModule, NotificationService, TabsModule} from 'carbon-components-angular';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
-import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
 import {CommonModule} from '@angular/common';
 import {MailTemplateDeleteModalComponent} from '../mail-template-delete-modal/mail-template-delete-modal.component';
 
@@ -48,8 +47,8 @@ import {MailTemplateDeleteModalComponent} from '../mail-template-delete-modal/ma
         CarbonListModule,
         ButtonModule,
         EditorModule,
-        RenderInPageHeaderDirective,
         IconModule,
+        RenderInPageHeaderDirectiveModule,
     ]
 })
 export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -60,6 +59,8 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public readonly moreDisabled$ = new BehaviorSubject<boolean>(true);
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
+    public readonly initialModelValue$ = new BehaviorSubject<string>('');
+    public readonly isValid$ = new BehaviorSubject<boolean>(true);
 
     private readonly _caseDefinitionName$: Observable<string> =
         this.route.params.pipe(
@@ -73,17 +74,6 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             filter(templateKey => !!templateKey)
         );
 
-    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
-        switchMap(caseDefinitionId => combineLatest([
-                this.environmentService.canUpdateGlobalConfiguration(),
-                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
-            ]).pipe(
-                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
-                startWith(true)
-            )
-        )
-    );
-
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
         private readonly route: ActivatedRoute,
@@ -91,13 +81,13 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         private readonly router: Router,
         private readonly notificationService: NotificationService,
         private readonly translateService: TranslateService,
-        private readonly breadcrumbService: BreadcrumbService,
-        private readonly environmentService: EnvironmentService,
+        private readonly breadcrumbService: BreadcrumbService
     ) {
     }
 
     public ngOnInit(): void {
         this.loadTemplate();
+        this.initSaveButtonLogic();
     }
 
     public ngAfterViewInit(): void {
@@ -107,11 +97,12 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public ngOnDestroy(): void {
         this.pageTitleService.enableReset();
         this.breadcrumbService.clearThirdBreadcrumb();
-        this.breadcrumbService.clearFourthBreadcrumb();
     }
 
-    public onValid(valid: boolean): void {
-        this.saveDisabled$.next(valid === false);
+    public onValid(valid: any): void {
+        if (typeof valid === 'boolean') {
+            this.isValid$.next(valid);
+        }
     }
 
     public onValueChange(value: string): void {
@@ -142,6 +133,7 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
                 this.enableEditor();
                 this.showSuccessMessage(result.key);
                 this.setModel(result.content);
+                this.initialModelValue$.next(result.content);
                 this.template$.next(result);
             },
             error: () => {
@@ -158,7 +150,11 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         this.disableMore();
 
         this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-            this.templateService.deleteTemplates({caseDefinitionName, type: 'mail', templates}).pipe(take(1)).subscribe(_ =>
+            this.templateService.deleteTemplates({
+                caseDefinitionName,
+                type: 'mail',
+                templates
+            }).pipe(take(1)).subscribe(_ =>
                 this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
             )
         );
@@ -181,8 +177,17 @@ export class MailTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             this.enableEditor();
             this.setModel(result.content);
             this.refreshViewer(result.content);
+            this.initialModelValue$.next(result.content);
             this.template$.next(result);
         });
+    }
+
+    private initSaveButtonLogic(): void {
+        combineLatest([this.updatedModelValue$, this.initialModelValue$, this.isValid$]).subscribe(
+            ([updatedValue, initialValue, isValid]) => {
+                this.saveDisabled$.next(!isValid || updatedValue === initialValue);
+            }
+        );
     }
 
     private setModel(content: string): void {

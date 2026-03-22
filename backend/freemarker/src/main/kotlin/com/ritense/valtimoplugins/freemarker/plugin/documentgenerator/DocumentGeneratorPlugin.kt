@@ -27,6 +27,7 @@ import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_CSV
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_PDF
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
@@ -61,16 +62,17 @@ open class DocumentGeneratorPlugin(
         @PluginActionProperty processVariableName: String
     ) {
         val htmlString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_PDF)
-        val outputStream = ByteArrayOutputStream()
-        generatePdf(htmlString, outputStream)
-        val resourceId = storageService.store(
-            ByteArrayInputStream(outputStream.toByteArray()),
-            mapOf(
-                MetadataType.FILE_NAME.key to "$templateKey.pdf",
-                MetadataType.CONTENT_TYPE.key to "pdf"
+        ByteArrayOutputStream().use { outputStream ->
+            generatePdf(htmlString, outputStream)
+            val resourceId = storageService.store(
+                ByteArrayInputStream(outputStream.toByteArray()),
+                mapOf(
+                    MetadataType.FILE_NAME.key to "$templateKey.pdf",
+                    MetadataType.CONTENT_TYPE.key to "pdf"
+                )
             )
-        )
-        execution.setVariable(processVariableName, resourceId)
+            execution.setVariable(processVariableName, resourceId)
+        }
     }
 
     @PluginAction(
@@ -150,5 +152,9 @@ open class DocumentGeneratorPlugin(
             document = document,
             processVariables = execution.variables,
         )
+    }
+
+    companion object {
+        val logger = KotlinLogging.logger {}
     }
 }

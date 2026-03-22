@@ -23,15 +23,16 @@ import {
     EditorModel,
     EditorModule,
     PageTitleService,
-    RenderInPageHeaderDirective
+    RenderInPageHeaderDirectiveModule
 } from '@valtimo/components';
-import {ButtonModule, DialogModule, NotificationService, TabsModule} from 'carbon-components-angular';
+import {ButtonModule, DialogModule, IconModule, NotificationService, TabsModule} from 'carbon-components-angular';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse, TemplateType} from '../../../../models';
-import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
 import {CommonModule} from '@angular/common';
-import {DocumentTemplateDeleteModalComponent} from '../document-template-delete-modal/document-template-delete-modal.component';
+import {
+    DocumentTemplateDeleteModalComponent
+} from '../document-template-delete-modal/document-template-delete-modal.component';
 
 @Component({
     standalone: true,
@@ -48,7 +49,8 @@ import {DocumentTemplateDeleteModalComponent} from '../document-template-delete-
         CarbonListModule,
         ButtonModule,
         EditorModule,
-        RenderInPageHeaderDirective,
+        IconModule,
+        RenderInPageHeaderDirectiveModule,
     ]
 })
 export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -59,10 +61,14 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
     public readonly moreDisabled$ = new BehaviorSubject<boolean>(true);
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
+    public readonly initialModelValue$ = new BehaviorSubject<string>('');
+    public readonly isValid$ = new BehaviorSubject<boolean>(true);
 
-    private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
-        filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
-    );
+    private readonly _caseDefinitionName$: Observable<string> =
+        this.route.params.pipe(
+            map(params => params?.name),
+            filter(caseDefinitionName => !!caseDefinitionName)
+        );
 
     public readonly templateKey$: Observable<string> = combineLatest([this.route.params, this.route.parent.params]).pipe(
         map(([params, parentParams]) => params?.templateKey || parentParams?.templateKey),
@@ -74,17 +80,6 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         filter(templateType => !!templateType)
     );
 
-    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
-        switchMap(caseDefinitionId => combineLatest([
-                this.environmentService.canUpdateGlobalConfiguration(),
-                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
-            ]).pipe(
-                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
-                startWith(true)
-            )
-        )
-    );
-
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
         private readonly route: ActivatedRoute,
@@ -93,26 +88,27 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         private readonly notificationService: NotificationService,
         private readonly translateService: TranslateService,
         private readonly breadcrumbService: BreadcrumbService,
-        private readonly environmentService: EnvironmentService,
     ) {
+    }
+
+    ngAfterViewInit(): void {
+        throw new Error("Method not implemented.");
     }
 
     public ngOnInit(): void {
         this.loadTemplate();
-    }
-
-    public ngAfterViewInit(): void {
-        this.initBreadcrumb();
+        this.initSaveButtonLogic();
     }
 
     public ngOnDestroy(): void {
         this.pageTitleService.enableReset();
         this.breadcrumbService.clearThirdBreadcrumb();
-        this.breadcrumbService.clearFourthBreadcrumb();
     }
 
-    public onValid(valid: boolean): void {
-        this.saveDisabled$.next(valid === false);
+    public onValid(valid: any): void {
+        if (typeof valid === 'boolean') {
+            this.isValid$.next(valid);
+        }
     }
 
     public onValueChange(value: string): void {
@@ -124,13 +120,12 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         this.disableSave();
         this.disableMore();
 
-        combineLatest([this.updatedModelValue$, this._caseDefinitionId$, this.templateKey$, this.templateType$]).pipe(
-            switchMap(([updatedModelValue, caseDefinitionId, templateKey, templateType]) =>
+        combineLatest([this.updatedModelValue$, this._caseDefinitionName$, this.templateKey$, this.templateType$]).pipe(
+            switchMap(([updatedModelValue, caseDefinitionName, templateKey, templateType]) =>
                 this.templateService.updateTemplate(
                     {
                         key: templateKey,
-                        caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
-                        caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                        caseDefinitionName: caseDefinitionName,
                         type: templateType,
                         content: updatedModelValue,
                     }
@@ -144,6 +139,7 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
                 this.enableEditor();
                 this.showSuccessMessage(result.key);
                 this.setModel(result.content);
+                this.initialModelValue$.next(result.content);
                 this.template$.next(result);
             },
             error: () => {
@@ -155,18 +151,17 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
     }
 
     public onDelete(templates: Array<any>): void {
-        console.log(templates);
         this.disableEditor();
         this.disableSave();
         this.disableMore();
 
-        this._caseDefinitionId$.pipe(take(1)).subscribe(caseDefinitionId =>
+        this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
             this.templateService.deleteTemplates({
-                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
-                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+                caseDefinitionName,
+                type: templates[0]?.type || 'pdf',
                 templates
             }).pipe(take(1)).subscribe(_ =>
-                this.router.navigate([`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`])
+                this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
             )
         );
     }
@@ -176,19 +171,28 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
     }
 
     private loadTemplate(): void {
-        combineLatest([this._caseDefinitionId$, this.templateKey$, this.templateType$]).pipe(
+        combineLatest([this._caseDefinitionName$, this.templateKey$, this.templateType$]).pipe(
             tap(([_, key, type]) => {
                 this.pageTitleService.setCustomPageTitle(`Document: ${key}.${type}`, true);
             }),
-            switchMap(([caseDefinitionId, key, type]) => this.templateService.getTemplate(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag, type, key)),
+            switchMap(([caseDefinitionName, key, type]) => this.templateService.getTemplate(caseDefinitionName, type, key)),
             take(1),
         ).subscribe(result => {
             this.enableMore();
             this.enableSave();
             this.enableEditor();
             this.setModel(result.content);
+            this.initialModelValue$.next(result.content);
             this.template$.next(result);
         });
+    }
+
+    private initSaveButtonLogic(): void {
+        combineLatest([this.updatedModelValue$, this.initialModelValue$, this.isValid$]).subscribe(
+            ([updatedValue, initialValue, isValid]) => {
+                this.saveDisabled$.next(!isValid || updatedValue === initialValue);
+            }
+        );
     }
 
     private setModel(content: string): void {
@@ -227,7 +231,7 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
         setTimeout(() => {
             const preview = document.getElementById('preview-iframe') as HTMLIFrameElement;
             if (preview) {
-                preview.src = window.URL.createObjectURL(new Blob([""], { type: "text/plain" }));
+                preview.src = window.URL.createObjectURL(new Blob([""], {type: "text/plain"}));
                 combineLatest([this.updatedModelValue$, this.template$]).pipe(
                     take(1),
                     switchMap(([updatedModelValue, template]) =>
@@ -247,28 +251,13 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
 
                         const errorBlob = new Blob(
                             [`<html><body><h2>Error loading preview</h2><p>See logs for more information</p></body></html>`],
-                            { type: 'text/html' }
+                            {type: 'text/html'}
                         );
                         preview.src = URL.createObjectURL(errorBlob);
                     }
                 });
             }
         }, 100);
-    }
-
-    private initBreadcrumb(): void {
-        this._caseDefinitionId$.subscribe(caseDefinitionId => {
-            this.breadcrumbService.setThirdBreadcrumb({
-                route: [`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}`],
-                content: `${caseDefinitionId.caseDefinitionKey}:${caseDefinitionId.caseDefinitionVersionTag}`,
-                href: `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}`,
-            });
-            this.breadcrumbService.setFourthBreadcrumb({
-                route: [`/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`],
-                content: 'Document template',
-                href: `/case-management/case/${caseDefinitionId.caseDefinitionKey}/version/${caseDefinitionId.caseDefinitionVersionTag}/document-template`,
-            });
-        });
     }
 
     private showSuccessMessage(key: string): void {

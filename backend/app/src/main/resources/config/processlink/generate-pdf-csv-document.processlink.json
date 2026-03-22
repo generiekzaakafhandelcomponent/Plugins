@@ -1,27 +1,23 @@
 [
   {
-    "activityId": "StartEvent_1",
+    "activityId": "StartGenerateDocumentStartEvent",
     "activityType": "bpmn:StartEvent:start",
     "formDefinitionName": "invoice",
-    "viewModelEnabled": false,
-    "formDisplayType": "modal",
-    "formSize": "medium",
-    "subtitles": null,
     "processLinkType": "form"
   },
   {
-    "activityId": "GenerateInvoicePdfTask",
+    "activityId": "GenerateInvoicePDFTask",
     "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
     "pluginConfigurationId": "4ac9a49f-4aeb-4f91-86d9-853fd95a1b33",
     "pluginActionDefinitionKey": "generate-pdf",
     "actionProperties": {
-      "templateKey": "invoice",
+      "templateKey": "invoice-pdf",
       "processVariableName": "pdfResourceId"
-    },
-    "processLinkType": "plugin"
+    }
   },
   {
-    "activityId": "UploadPdf",
+    "activityId": "UploadPDFToDocumentenAPITask",
     "activityType": "bpmn:ServiceTask:start",
     "processLinkType": "plugin",
     "pluginConfigurationId": "5474fe57-532a-4050-8d89-32e62ca3e895",
@@ -37,7 +33,7 @@
     }
   },
   {
-    "activityId": "LinkPdfToZaak",
+    "activityId": "LinkPDFToZaakTask",
     "activityType": "bpmn:ServiceTask:start",
     "processLinkType": "plugin",
     "pluginConfigurationId": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
@@ -47,18 +43,18 @@
     }
   },
   {
-    "activityId": "GenerateInvoiceCsvTask",
+    "activityId": "GenerateInvoiceCSVTask",
     "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
     "pluginConfigurationId": "4ac9a49f-4aeb-4f91-86d9-853fd95a1b33",
     "pluginActionDefinitionKey": "generate-csv",
     "actionProperties": {
-      "templateKey": "invoice",
+      "templateKey": "invoice-csv",
       "processVariableName": "csvResourceId"
-    },
-    "processLinkType": "plugin"
+    }
   },
   {
-    "activityId": "UploadCsv",
+    "activityId": "UploadCSVToDocumentenAPITask",
     "activityType": "bpmn:ServiceTask:start",
     "processLinkType": "plugin",
     "pluginConfigurationId": "5474fe57-532a-4050-8d89-32e62ca3e895",
@@ -74,7 +70,7 @@
     }
   },
   {
-    "activityId": "LinkCsvToZaak",
+    "activityId": "LinkCSVToZaakTask",
     "activityType": "bpmn:ServiceTask:start",
     "processLinkType": "plugin",
     "pluginConfigurationId": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",

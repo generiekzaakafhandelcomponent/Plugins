@@ -20,12 +20,15 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CarbonListComponent, CarbonListModule, ColumnConfig, ViewType} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateListItem} from '../../../../models';
-import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
 import {CommonModule} from '@angular/common';
 import {ButtonModule} from 'carbon-components-angular';
 import {TranslateModule} from '@ngx-translate/core';
-import {DocumentTemplateDeleteModalComponent} from '../document-template-delete-modal/document-template-delete-modal.component';
-import {DocumentTemplateAddEditModalComponent} from '../document-template-add-edit-modal/document-template-add-edit-modal.component';
+import {
+    DocumentTemplateDeleteModalComponent
+} from '../document-template-delete-modal/document-template-delete-modal.component';
+import {
+    DocumentTemplateAddEditModalComponent
+} from '../document-template-add-edit-modal/document-template-add-edit-modal.component';
 
 @Component({
     standalone: true,
@@ -54,22 +57,19 @@ export class DocumentTemplateListComponent implements OnInit {
             key: 'type',
             label: 'Document type',
         },
+        {
+            viewType: ViewType.BOOLEAN,
+            key: 'readOnly',
+            label: 'Read only',
+        },
     ];
 
-    private readonly _caseDefinitionId$: Observable<CaseManagementParams> = getCaseManagementRouteParams(this.route).pipe(
-        filter((params: CaseManagementParams | undefined) => !!params?.caseDefinitionKey),
-    );
 
-    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
-        switchMap(caseDefinitionId => combineLatest([
-                this.environmentService.canUpdateGlobalConfiguration(),
-                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
-            ]).pipe(
-                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
-                startWith(true)
-            )
-        )
-    );
+    private readonly _caseDefinitionName$: Observable<string> =
+        this.route.params.pipe(
+            map(params => params?.name),
+            filter(caseDefinitionName => !!caseDefinitionName)
+        );
 
     public readonly templates$ = new BehaviorSubject<TemplateListItem[] | null>(null);
     public readonly showAddModal$ = new BehaviorSubject<boolean>(false);
@@ -80,8 +80,7 @@ export class DocumentTemplateListComponent implements OnInit {
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
         private readonly router: Router,
-        private readonly route: ActivatedRoute,
-        private readonly environmentService: EnvironmentService,
+        private readonly route: ActivatedRoute
     ) {
     }
 
@@ -99,18 +98,12 @@ export class DocumentTemplateListComponent implements OnInit {
             return;
         }
 
-        this._caseDefinitionId$.pipe(
+        this._caseDefinitionName$.pipe(
             take(1),
-            switchMap(caseDefinitionId => this.templateService.addTemplate({
-                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
-                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
-                key: data.key,
-                type: data.type.id,
-                content: ''
-            }))
+            switchMap(caseDefinitionName => this.templateService.addTemplate({caseDefinitionName, ...data}))
         ).subscribe(template => {
             this.showAddModal$.next(false);
-            this.gotoDocumentTemplateEditor(template.caseDefinitionKey, template.caseDefinitionVersionTag, template.key, template.type);
+            this.gotoDocumentTemplateEditor(template.caseDefinitionName, template.key, template.type);
         });
     }
 
@@ -119,14 +112,13 @@ export class DocumentTemplateListComponent implements OnInit {
         this.showDeleteModal$.next(true);
     }
 
-    public onDelete(templates: Array<string>): void {
-        console.log(templates)
+    public onDelete(templates: Array<any>): void {
         this.loading$.next(true);
-        this._caseDefinitionId$.pipe(
+        this._caseDefinitionName$.pipe(
             take(1),
-            switchMap(caseDefinitionId => this.templateService.deleteTemplates({
-                caseDefinitionKey: caseDefinitionId.caseDefinitionKey,
-                caseDefinitionVersionTag: caseDefinitionId.caseDefinitionVersionTag,
+            switchMap(caseDefinitionName => this.templateService.deleteTemplates({
+                caseDefinitionName,
+                type: templates[0]?.type || 'pdf',
                 templates
             })),
         ).subscribe(_ => {
@@ -135,19 +127,19 @@ export class DocumentTemplateListComponent implements OnInit {
     }
 
     public onRowClick(template: TemplateListItem): void {
-        this._caseDefinitionId$.pipe(take(1)).subscribe(caseDefinitionId =>
-            this.gotoDocumentTemplateEditor(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag, template.key, template.type)
+        this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
+            this.gotoDocumentTemplateEditor(caseDefinitionName, template.key, template.type)
         );
     }
 
-    private gotoDocumentTemplateEditor(caseDefinitionKey: string, caseDefinitionVersionTag: string, key: string, type: string): void {
-        this.router.navigate([`/case-management/case/${caseDefinitionKey}/version/${caseDefinitionVersionTag}/document-template/${key}/${type}`]);
+    private gotoDocumentTemplateEditor(caseDefinitionName: string, key: string, type: string): void {
+        this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}/document-template/${key}/${type}`]);
     }
 
     private reloadTemplateList(): void {
         this.loading$.next(true);
-        this._caseDefinitionId$.pipe(
-            switchMap(caseDefinitionId => this.templateService.getAllDocumentTemplates(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)),
+        this._caseDefinitionName$.pipe(
+            switchMap(caseDefinitionName => this.templateService.getAllDocumentTemplates(caseDefinitionName)),
             map(templatePage => templatePage.content),
             take(1)
         ).subscribe(templateListItems => {
@@ -157,6 +149,9 @@ export class DocumentTemplateListComponent implements OnInit {
     }
 
     private setSelectedTemplateKeys(): void {
-        this.selectedRowKeys$.next(this.carbonList.selectedItems.map((template: TemplateListItem) => ({key: template.key, type: template.type})));
+        this.selectedRowKeys$.next(this.carbonList.selectedItems.map((template: TemplateListItem) => ({
+            key: template.key,
+            type: template.type
+        })));
     }
 }

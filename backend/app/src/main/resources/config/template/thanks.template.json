@@ -1,6 +1,6 @@
 {
   "templateKey": "thanks-template",
-  "caseDefinitionName": "example",
+  "caseDefinitionName": "freemarker-example",
   "templateType": "mail",
   "metadata": {
     "testKey": "testValue"

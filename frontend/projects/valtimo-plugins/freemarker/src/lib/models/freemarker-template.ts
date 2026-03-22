@@ -29,7 +29,7 @@ interface CreateTemplateRequest {
 interface DeleteTemplatesRequest {
     caseDefinitionName?: string;
     type: TemplateType;
-    templates: Array<string>;
+    templates: Array<{key: string, type: string}>;
 }
 
 interface UpdateTemplateRequest {
@@ -54,6 +54,7 @@ interface TemplateResponse {
     type: TemplateType;
     metadata: any;
     content: string;
+    readOnly?: boolean;
 }
 
 interface TemplatePreviewRequest {

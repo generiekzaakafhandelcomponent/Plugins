@@ -17,15 +17,16 @@
 import {ChangeDetectionStrategy, Component, OnInit, ViewChild,} from '@angular/core';
 import {BehaviorSubject, filter, map, Observable, switchMap, take} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CarbonListComponent, ColumnConfig, ViewType} from '@valtimo/components';
+import {CarbonListComponent, CarbonListModule, ColumnConfig, ViewType} from '@valtimo/components';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateListItem} from '../../../../models';
-import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
 import {CommonModule} from '@angular/common';
 import {ButtonModule} from 'carbon-components-angular';
 import {TranslateModule} from '@ngx-translate/core';
 import {TextTemplateDeleteModalComponent} from '../text-template-delete-modal/text-template-delete-modal.component';
-import {TextTemplateAddEditModalComponent} from '../text-template-add-edit-modal/text-template-add-edit-modal.component';
+import {
+    TextTemplateAddEditModalComponent
+} from '../text-template-add-edit-modal/text-template-add-edit-modal.component';
 
 @Component({
     standalone: true,
@@ -70,8 +71,7 @@ export class TextTemplateListComponent implements OnInit {
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
         private readonly router: Router,
-        private readonly route: ActivatedRoute,
-        private readonly environmentService: EnvironmentService,
+        private readonly route: ActivatedRoute
     ) {
     }
 
@@ -91,7 +91,10 @@ export class TextTemplateListComponent implements OnInit {
 
         this._caseDefinitionName$.pipe(
             take(1),
-            switchMap(caseDefinitionName => this.templateService.addTemplate({caseDefinitionName, type: 'text', ...data}))
+            switchMap(caseDefinitionName => this.templateService.addTemplate({
+                caseDefinitionName,
+                type: 'text', ...data
+            }))
         ).subscribe(template => {
             this.showAddModal$.next(false);
             this.gotoTextTemplateEditor(template.caseDefinitionName, template.key);
@@ -107,7 +110,11 @@ export class TextTemplateListComponent implements OnInit {
         this.loading$.next(true);
         this._caseDefinitionName$.pipe(
             take(1),
-            switchMap(caseDefinitionName => this.templateService.deleteTemplates({caseDefinitionName, type: 'text', templates})),
+            switchMap(caseDefinitionName => this.templateService.deleteTemplates({
+                caseDefinitionName,
+                type: 'text',
+                templates
+            })),
         ).subscribe(_ => {
             this.reloadTemplateList();
         });
@@ -136,6 +143,9 @@ export class TextTemplateListComponent implements OnInit {
     }
 
     private setSelectedTemplateKeys(): void {
-        this.selectedRowKeys$.next(this.carbonList.selectedItems.map((template: TemplateListItem) => ({key: template.key, type: template.type})));
+        this.selectedRowKeys$.next(this.carbonList.selectedItems.map((template: TemplateListItem) => ({
+            key: template.key,
+            type: template.type
+        })));
     }
 }

@@ -5,7 +5,7 @@
     "startableByUser": true
   },
   {
-    "processDefinitionKey": "GenerateInvoiceExample",
+    "processDefinitionKey": "generate-pdf-csv-document",
     "canInitializeDocument": true,
     "startableByUser": true
   }

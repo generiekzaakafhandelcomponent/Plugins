@@ -16,18 +16,21 @@
 
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable} from 'rxjs';
+import {ConfirmationModalModule} from '@valtimo/components';
 
 @Component({
-  selector: 'valtimo-mail-template-delete-modal',
-  templateUrl: './mail-template-delete-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'valtimo-mail-template-delete-modal',
+    templateUrl: './mail-template-delete-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [ConfirmationModalModule]
 })
 export class MailTemplateDeleteModalComponent {
-  @Input() deleteRowKeys: Array<string>;
-  @Input() showDeleteModal$: Observable<boolean>;
-  @Output() deleteEvent = new EventEmitter<Array<string>>();
+    @Input() deleteRowKeys: Array<string>;
+    @Input() showDeleteModal$: Observable<boolean>;
+    @Output() deleteEvent = new EventEmitter<Array<string>>();
 
-  public onDelete(templates: Array<any>): void {
-    this.deleteEvent.emit(templates);
-  }
+    public onDelete(templates: Array<any>): void {
+        this.deleteEvent.emit(templates);
+    }
 }

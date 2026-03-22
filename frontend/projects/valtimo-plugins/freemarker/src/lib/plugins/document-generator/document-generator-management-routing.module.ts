@@ -16,13 +16,13 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ROLE_ADMIN} from '@valtimo/shared';
+import {ROLE_ADMIN} from '@valtimo/config';
 import {AuthGuardService} from '@valtimo/security';
 import {DocumentTemplateEditorComponent} from './components/document-template-editor/document-template-editor.component';
 
 const routes: Routes = [
     {
-        path: 'case-management/case/:caseDefinitionKey/version/:caseDefinitionVersionTag/document-template/:templateKey/:templateType',
+        path: 'dossier-management/dossier/:name/document-template/:templateKey/:templateType',
         component: DocumentTemplateEditorComponent,
         canActivate: [AuthGuardService],
         data: {

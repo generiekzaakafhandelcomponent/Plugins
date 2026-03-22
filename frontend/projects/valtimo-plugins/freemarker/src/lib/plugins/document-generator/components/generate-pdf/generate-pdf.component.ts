@@ -16,11 +16,11 @@
 
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FunctionConfigurationComponent, FunctionConfigurationData} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, switchMap, take} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap, take, tap} from 'rxjs';
 import {GeneratePdfFileConfig} from '../../models';
 import {FreemarkerTemplateManagementService} from '../../../../services';
-import {CaseManagementParams, ManagementContext} from '@valtimo/shared';
-import {SelectItem} from '@valtimo/components';
+import {ModalService, SelectItem} from '@valtimo/components';
+import {DocumentService} from '@valtimo/document';
 
 @Component({
     standalone: false,
@@ -33,7 +33,6 @@ export class GeneratePdfComponent
     @Input() disabled$!: Observable<boolean>;
     @Input() pluginId!: string;
     @Input() prefillConfiguration$!: Observable<GeneratePdfFileConfig>;
-    @Input() context$: Observable<[ManagementContext, CaseManagementParams]>;
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
 
@@ -43,15 +42,44 @@ export class GeneratePdfComponent
 
     readonly loading$ = new BehaviorSubject<boolean>(true);
 
-    readonly templateListItems$ = new BehaviorSubject<Array<SelectItem>>(undefined);
+    readonly templateListItems$: Observable<Array<SelectItem>> = this.modalService.modalData$.pipe(
+        switchMap(params =>
+            this.documentService.findProcessDocumentDefinitionsByProcessDefinitionKey(
+                params?.processDefinitionKey
+            )
+        ),
+        switchMap(processDocumentDefinitions =>
+            combineLatest([
+                of({content: []}),
+                ...processDocumentDefinitions.map(processDocumentDefinition =>
+                    this.templateService.getTemplates(
+                        processDocumentDefinition.id.documentDefinitionId.name,
+                        'pdf'
+                    )
+                ),
+            ])
+        ),
+        map(results => {
+            return results
+                .flatMap(result => result.content)
+                .map(template => ({
+                    id: template.key,
+                    text: template.key,
+                }));
+        }),
+        tap(() => {
+            this.loading$.next(false);
+        })
+    );
 
     constructor(
+        private readonly modalService: ModalService,
+        private readonly documentService: DocumentService,
         private readonly templateService: FreemarkerTemplateManagementService
     ) {
     }
 
     ngOnInit(): void {
-        this.loadTemplateListItems();
         this.openSaveSubscription();
     }
 
@@ -62,24 +90,6 @@ export class GeneratePdfComponent
     formValueChange(formValue: GeneratePdfFileConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
-    }
-
-    private loadTemplateListItems() {
-        this.context$.pipe(
-            switchMap(([_, params]) => this.templateService.getAllTemplates(
-                params.caseDefinitionKey,
-                params.caseDefinitionVersionTag,
-                'pdf'
-            )),
-            map(results => results.content.map(template => ({
-                id: template.key,
-                text: template.key,
-            })))
-        ).subscribe(templateListItems => {
-                this.templateListItems$.next(templateListItems);
-                this.loading$.next(false);
-            }
-        );
     }
 
     private handleValid(formValue: GeneratePdfFileConfig): void {

@@ -17,12 +17,18 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, combineLatest, filter, map, Observable, switchMap, take, tap} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BreadcrumbService, EditorModel, PageTitleService} from '@valtimo/components';
-import {NotificationService} from 'carbon-components-angular';
-import {TranslateService} from '@ngx-translate/core';
+import {
+    BreadcrumbService,
+    CarbonListModule,
+    EditorModel,
+    EditorModule,
+    PageTitleService,
+    RenderInPageHeaderDirectiveModule
+} from '@valtimo/components';
+import {ButtonModule, DialogModule, IconModule, NotificationService, TabsModule} from 'carbon-components-angular';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
-import {CaseManagementParams, EnvironmentService, getCaseManagementRouteParams} from '@valtimo/shared';
 import {CommonModule} from '@angular/common';
 import {TextTemplateDeleteModalComponent} from '../text-template-delete-modal/text-template-delete-modal.component';
 
@@ -41,8 +47,8 @@ import {TextTemplateDeleteModalComponent} from '../text-template-delete-modal/te
         CarbonListModule,
         ButtonModule,
         EditorModule,
-        RenderInPageHeaderDirective,
         IconModule,
+        RenderInPageHeaderDirectiveModule,
     ]
 })
 export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -53,6 +59,8 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public readonly moreDisabled$ = new BehaviorSubject<boolean>(true);
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
+    public readonly initialModelValue$ = new BehaviorSubject<string>('');
+    public readonly isValid$ = new BehaviorSubject<boolean>(true);
 
     private readonly _caseDefinitionName$: Observable<string> =
         this.route.params.pipe(
@@ -60,21 +68,11 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             filter(caseDefinitionName => !!caseDefinitionName)
         );
 
-    public readonly templateKey$: Observable<string> = combineLatest([this.route.params, this.route.parent.params]).pipe(
-        map(([params, parentParams]) => params?.templateKey || parentParams?.templateKey),
-        filter(templateKey => !!templateKey)
-    );
-
-    public readonly readOnly$: Observable<boolean> = this._caseDefinitionId$.pipe(
-        switchMap(caseDefinitionId => combineLatest([
-                this.environmentService.canUpdateGlobalConfiguration(),
-                this.templateService.isFinal(caseDefinitionId.caseDefinitionKey, caseDefinitionId.caseDefinitionVersionTag)
-            ]).pipe(
-                map(([canUpdateGlobal, isFinalCase]) => !canUpdateGlobal || isFinalCase),
-                startWith(true)
-            )
-        )
-    );
+    public readonly templateKey$: Observable<string> =
+        this.route.params.pipe(
+            map(params => params?.key),
+            filter(templateKey => !!templateKey)
+        );
 
     constructor(
         private readonly templateService: FreemarkerTemplateManagementService,
@@ -83,13 +81,13 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         private readonly router: Router,
         private readonly notificationService: NotificationService,
         private readonly translateService: TranslateService,
-        private readonly breadcrumbService: BreadcrumbService,
-        private readonly environmentService: EnvironmentService,
+        private readonly breadcrumbService: BreadcrumbService
     ) {
     }
 
     public ngOnInit(): void {
         this.loadTemplate();
+        this.initSaveButtonLogic();
     }
 
     public ngAfterViewInit(): void {
@@ -99,11 +97,12 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public ngOnDestroy(): void {
         this.pageTitleService.enableReset();
         this.breadcrumbService.clearThirdBreadcrumb();
-        this.breadcrumbService.clearFourthBreadcrumb();
     }
 
-    public onValid(valid: boolean): void {
-        this.saveDisabled$.next(valid === false);
+    public onValid(valid: any): void {
+        if (typeof valid === 'boolean') {
+            this.isValid$.next(valid);
+        }
     }
 
     public onValueChange(value: string): void {
@@ -134,6 +133,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
                 this.enableEditor();
                 this.showSuccessMessage(result.key);
                 this.setModel(result.content);
+                this.initialModelValue$.next(result.content);
                 this.template$.next(result);
             },
             error: () => {
@@ -150,7 +150,11 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         this.disableMore();
 
         this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-            this.templateService.deleteTemplates({caseDefinitionName, type: 'text', templates}).pipe(take(1)).subscribe(_ =>
+            this.templateService.deleteTemplates({
+                caseDefinitionName,
+                type: 'text',
+                templates
+            }).pipe(take(1)).subscribe(_ =>
                 this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
             )
         );
@@ -172,8 +176,17 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             this.enableSave();
             this.enableEditor();
             this.setModel(result.content);
+            this.initialModelValue$.next(result.content);
             this.template$.next(result);
         });
+    }
+
+    private initSaveButtonLogic(): void {
+        combineLatest([this.updatedModelValue$, this.initialModelValue$, this.isValid$]).subscribe(
+            ([updatedValue, initialValue, isValid]) => {
+                this.saveDisabled$.next(!isValid || updatedValue === initialValue);
+            }
+        );
     }
 
     private setModel(content: string): void {

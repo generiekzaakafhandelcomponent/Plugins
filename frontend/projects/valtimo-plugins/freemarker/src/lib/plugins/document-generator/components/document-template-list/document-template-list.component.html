@@ -19,7 +19,7 @@
         [items]="templates$ | async"
         [fields]="fields"
         [loading]="loading$ | async"
-        [showSelectionColumn]="!(readOnly$ | async)"
+        [showSelectionColumn]="true"
         (rowClicked)="onRowClick($event)"
 >
     <ng-container header> {{ 'Title' }}</ng-container>
@@ -59,7 +59,6 @@
 
 <ng-template #addTemplateButton>
     <button cdsButton="primary"
-            [disabled]="readOnly$ | async"
             (click)="openAddModal()">
         {{ 'Add' }}
 
