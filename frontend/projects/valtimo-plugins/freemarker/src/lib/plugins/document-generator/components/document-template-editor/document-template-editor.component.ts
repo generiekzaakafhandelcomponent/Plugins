@@ -91,8 +91,8 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
     ) {
     }
 
-    ngAfterViewInit(): void {
-        throw new Error("Method not implemented.");
+    public ngAfterViewInit(): void {
+        this.initBreadcrumb();
     }
 
     public ngOnInit(): void {
@@ -258,6 +258,16 @@ export class DocumentTemplateEditorComponent implements OnInit, AfterViewInit, O
                 });
             }
         }, 100);
+    }
+
+    private initBreadcrumb(): void {
+        this._caseDefinitionName$.subscribe(caseDefinitionName => {
+            this.breadcrumbService.setThirdBreadcrumb({
+                route: [`/dossier-management/dossier/${caseDefinitionName}`],
+                content: caseDefinitionName,
+                href: `/dossier-management/dossier/${caseDefinitionName}`,
+            });
+        });
     }
 
     private showSuccessMessage(key: string): void {

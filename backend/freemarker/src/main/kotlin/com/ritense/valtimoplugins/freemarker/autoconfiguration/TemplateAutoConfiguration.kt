@@ -113,8 +113,6 @@ class TemplateAutoConfiguration {
         )
     }
 
-
-
     @Bean
     @ConditionalOnMissingBean(TemplateManagementResource::class)
     fun templateManagementResource(
