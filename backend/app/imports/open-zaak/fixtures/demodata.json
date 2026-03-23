@@ -672,6 +672,17 @@
   }
 },
 {
+  "model": "notifications_api_common.notificationsconfig",
+  "pk": 1,
+  "fields": {
+    "notifications_api_service": 11,
+    "notification_delivery_max_retries": 5,
+    "notification_delivery_retry_backoff": 3,
+    "notification_delivery_retry_backoff_max": 48,
+    "notification_delivery_base_factor": 4
+  }
+},
+{
   "model": "zgw_consumers.service",
   "pk": 1,
   "fields": {

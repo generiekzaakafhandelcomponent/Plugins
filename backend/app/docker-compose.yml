@@ -79,7 +79,7 @@ services:
     platform: linux/amd64
     environment: &openzaak-env
       - DB_HOST=openzaak-db
-      - DB_POST=5432
+      - DB_PORT=5432
       - SECRET_KEY=veryRestrictedSecretKey
       - DB_USER=openzaak
       - DB_PASSWORD=openzaak
@@ -90,7 +90,7 @@ services:
       - OPENZAAK_SUPERUSER_EMAIL=admin@admin.org
       - DJANGO_SUPERUSER_PASSWORD=admin
       - SENDFILE_BACKEND=django_sendfile.backends.simple
-      - NOTIFICATIONS_DISABLED=true
+      - NOTIFICATIONS_DISABLED=false
       - CACHE_DEFAULT=openzaak-redis:6379/0
       - CACHE_AXES=openzaak-redis:6379/0
       - CELERY_BROKER_URL=redis://openzaak-redis:6379/0
@@ -334,6 +334,7 @@ services:
       - CELERY_WORKER_CONCURRENCY=${CELERY_WORKER_CONCURRENCY:-4}
       - SUBPATH=${SUBPATH:-/}
       - DISABLE_2FA=True
+      - LOG_NOTIFICATIONS_IN_DB=true
     volumes:
       - ./imports/open-notificaties/fixtures:/app/demodata
       - ./imports/open-notificaties/dump_demodata.sh:/app/dump_demodata.sh

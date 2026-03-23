@@ -17,4 +17,5 @@ python /app/src/manage.py dumpdata \
     catalogi.roltype \
     catalogi.informatieobjecttype \
     catalogi.zaaktypeinformatieobjecttype \
+    notifications_api_common.notificationsconfig \
     zgw_consumers.service --indent 2 --format json > /app/demodata/demodata.json
