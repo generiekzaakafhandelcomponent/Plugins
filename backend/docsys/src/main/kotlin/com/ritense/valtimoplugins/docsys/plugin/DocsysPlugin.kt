@@ -91,12 +91,12 @@ open class DocsysPlugin(
         @PluginActionProperty processVariableName: String
     ) {
         setDocsysClientParams()
-        var resolvedParams = resolveValue(execution, params)
+        val resolvedParams = resolveValues(execution, params)
 
         // step 1
         val fileResponse = DocsysClient.generateDocument(
             modelId = modelId,
-            params = (resolvedParams?.associate { it.key to it.value as Any }) as Map<String, Any>,
+            params = resolvedParams.associate { it.key to it.value }
         )
 
         val resourceId = storeDocument(fileResponse, format)
@@ -113,25 +113,32 @@ open class DocsysPlugin(
         mutableMetaData[MetadataType.CONTENT_TYPE.key] = format
         mutableMetaData["author"] = "Gegenereerd door Docsys"
 
-        val resourceId = storageService.store( content.inputStream(), mutableMetaData)
+        val resourceId = storageService.store(content.inputStream(), mutableMetaData)
 
         return resourceId
     }
 
-    private fun resolveValue(execution: DelegateExecution, keyValueList: List<TemplateProperty>?): List<TemplateProperty>? {
-        return if (keyValueList == null) {
-            null
-        } else {
-            keyValueList.filter { it.value is String }.map {
-                var resolvedValues = valueResolverService.resolveValues(
-                    execution.processInstanceId,
-                    execution,
-                    listOf(it.value as String)
-                )
-                var resolvedValue = resolvedValues[it.value]
-                TemplateProperty(it.key, resolvedValue)
+    private fun resolveValues(
+        execution: DelegateExecution,
+        keyValueList: List<TemplateProperty>?
+    ): List<TemplateProperty> {
+        return keyValueList?.map { property ->
+            val resolvedValue = when (val value = property.value) {
+                is String -> {
+                    val resolvedValues = valueResolverService.resolveValues(
+                        execution.processInstanceId,
+                        execution,
+                        listOf(value)
+                    )
+                    resolvedValues[value]
+                }
+
+                null -> null
+                else -> value
             }
-        }
+
+            TemplateProperty(property.key, resolvedValue)
+        } ?: emptyList()
     }
 
     private fun slugifyFilename(name: String): String {
