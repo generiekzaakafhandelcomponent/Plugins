@@ -15,14 +15,26 @@
  */
 
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, Validators, AbstractControl} from '@angular/forms';
 import {TemplateMetadataModal} from '../../../../models';
 import {CARBON_CONSTANTS, KeyGeneratorService} from '@valtimo/components';
+import {ButtonModule, InputModule, ModalModule} from 'carbon-components-angular';
+import {TranslateModule} from '@ngx-translate/core';
+import {CommonModule} from '@angular/common';
 
 @Component({
     selector: 'valtimo-mail-template-add-edit-modal',
     templateUrl: './mail-template-add-edit-modal.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        CommonModule,
+        ButtonModule,
+        TranslateModule,
+        ModalModule,
+        ReactiveFormsModule,
+        InputModule,
+    ]
 })
 export class MailTemplateAddEditModalComponent implements OnInit {
     @Input() open = false;
@@ -41,13 +53,8 @@ export class MailTemplateAddEditModalComponent implements OnInit {
 
     private _defaultKeyValue!: string;
 
-    public get key() {
-        const key = this.form?.get('key');
-        if (!key?.value) {
-            return key
-        }
-        key.setValue(this.keyGeneratorService.getUniqueKey(key.value, []));
-        return key;
+    public get key(): AbstractControl {
+        return this.form?.get('key');
     }
 
     constructor(
@@ -69,7 +76,7 @@ export class MailTemplateAddEditModalComponent implements OnInit {
             return;
         }
 
-        this.closeEvent.emit({key: this.key.value});
+        this.closeEvent.emit({key: this.keyGeneratorService.getUniqueKey(this.key.value, [])});
         this.resetForm();
     }
 

@@ -17,17 +17,39 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, combineLatest, filter, map, Observable, switchMap, take, tap} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BreadcrumbService, EditorModel, PageTitleService} from '@valtimo/components';
-import {NotificationService} from 'carbon-components-angular';
-import {TranslateService} from '@ngx-translate/core';
+import {
+    BreadcrumbService,
+    CarbonListModule,
+    EditorModel,
+    EditorModule,
+    PageTitleService,
+    RenderInPageHeaderDirectiveModule
+} from '@valtimo/components';
+import {ButtonModule, DialogModule, IconModule, NotificationService, TabsModule} from 'carbon-components-angular';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {FreemarkerTemplateManagementService} from '../../../../services';
 import {TemplateResponse} from '../../../../models';
+import {CommonModule} from '@angular/common';
+import {TextTemplateDeleteModalComponent} from '../text-template-delete-modal/text-template-delete-modal.component';
 
 @Component({
+    standalone: true,
     templateUrl: './text-template-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./text-template-editor.component.scss'],
     providers: [NotificationService],
+    imports: [
+        CommonModule,
+        TranslateModule,
+        TabsModule,
+        DialogModule,
+        TextTemplateDeleteModalComponent,
+        CarbonListModule,
+        ButtonModule,
+        EditorModule,
+        IconModule,
+        RenderInPageHeaderDirectiveModule,
+    ]
 })
 export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     public readonly model$ = new BehaviorSubject<EditorModel | null>(null);
@@ -37,6 +59,8 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
     public readonly moreDisabled$ = new BehaviorSubject<boolean>(true);
     public readonly showDeleteModal$ = new BehaviorSubject<boolean>(false);
     public readonly updatedModelValue$ = new BehaviorSubject<string>('');
+    public readonly initialModelValue$ = new BehaviorSubject<string>('');
+    public readonly isValid$ = new BehaviorSubject<boolean>(true);
 
     private readonly _caseDefinitionName$: Observable<string> =
         this.route.params.pipe(
@@ -57,12 +81,13 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         private readonly router: Router,
         private readonly notificationService: NotificationService,
         private readonly translateService: TranslateService,
-        private readonly breadcrumbService: BreadcrumbService,
+        private readonly breadcrumbService: BreadcrumbService
     ) {
     }
 
     public ngOnInit(): void {
         this.loadTemplate();
+        this.initSaveButtonLogic();
     }
 
     public ngAfterViewInit(): void {
@@ -74,8 +99,10 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         this.breadcrumbService.clearThirdBreadcrumb();
     }
 
-    public onValid(valid: boolean): void {
-        this.saveDisabled$.next(valid === false);
+    public onValid(valid: any): void {
+        if (typeof valid === 'boolean') {
+            this.isValid$.next(valid);
+        }
     }
 
     public onValueChange(value: string): void {
@@ -106,6 +133,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
                 this.enableEditor();
                 this.showSuccessMessage(result.key);
                 this.setModel(result.content);
+                this.initialModelValue$.next(result.content);
                 this.template$.next(result);
             },
             error: () => {
@@ -116,13 +144,17 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
         });
     }
 
-    public onDelete(templates: Array<string>): void {
+    public onDelete(templates: Array<any>): void {
         this.disableEditor();
         this.disableSave();
         this.disableMore();
 
         this._caseDefinitionName$.pipe(take(1)).subscribe(caseDefinitionName =>
-            this.templateService.deleteTemplates({caseDefinitionName, type: 'text', templates}).pipe(take(1)).subscribe(_ =>
+            this.templateService.deleteTemplates({
+                caseDefinitionName,
+                type: 'text',
+                templates
+            }).pipe(take(1)).subscribe(_ =>
                 this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
             )
         );
@@ -144,8 +176,17 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
             this.enableSave();
             this.enableEditor();
             this.setModel(result.content);
+            this.initialModelValue$.next(result.content);
             this.template$.next(result);
         });
+    }
+
+    private initSaveButtonLogic(): void {
+        combineLatest([this.updatedModelValue$, this.initialModelValue$, this.isValid$]).subscribe(
+            ([updatedValue, initialValue, isValid]) => {
+                this.saveDisabled$.next(!isValid || updatedValue === initialValue);
+            }
+        );
     }
 
     private setModel(content: string): void {

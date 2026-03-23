@@ -21,11 +21,11 @@ import com.ritense.document.service.DocumentService
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_TEXT
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valueresolver.ValueResolverFactory
 import com.ritense.valueresolver.ValueResolverOption
-import com.ritense.valueresolver.exception.ValueResolverValidationException
 import java.util.UUID
 import java.util.function.Function
 import org.camunda.bpm.engine.delegate.VariableScope
@@ -59,18 +59,19 @@ class TextTemplateValueResolver(
         throw UnsupportedOperationException("Can not to save values in template. ${values.keys}")
     }
 
-    override fun createValidator(documentDefinitionName: String): Function<String, Unit> {
-        return Function { requestedValue ->
-            val templates = templateService.findTemplates(
-                templateKey = requestedValue,
-                caseDefinitionName = documentDefinitionName,
-                templateType = TEMPLATE_TYPE_TEXT,
-            )
-            require(templates.isNotEmpty()) {
-                throw ValueResolverValidationException("Failed to find textTemplate with name '$requestedValue'")
-            }
-        }
-    }
+    // TODO:
+//    override fun createValidator(caseDefinitionId: CaseDefinitionId): Function<String, Unit> {
+//        return Function { requestedValue ->
+//            val templates = templateService.findTemplates(
+//                templateKey = requestedValue,
+//                caseDefinitionId = caseDefinitionId,
+//                templateType = TEMPLATE_TYPE_TEXT,
+//            )
+//            require(templates.isNotEmpty()) {
+//                throw ValueResolverValidationException("Failed to find textTemplate with name '$requestedValue'")
+//            }
+//        }
+//    }
 
     override fun preProcessValuesForNewCase(values: Map<String, Any?>): Map<String, Any> {
         throw UnsupportedOperationException("Can not to save values in template. ${values.keys}")
@@ -95,11 +96,10 @@ class TextTemplateValueResolver(
         return Function { requestedValue ->
             templateService.generate(
                 templateKey = requestedValue,
-                caseDefinitionName = document.definitionId().name(),
                 templateType = TEMPLATE_TYPE_TEXT,
                 document = document,
                 processVariables = processVariables,
-                strict = false,
+                missingPlaceholderStrategy = REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE,
             )
         }
     }

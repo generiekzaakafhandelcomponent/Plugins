@@ -23,19 +23,17 @@ data class TemplateResponse(
     val caseDefinitionName: String? = null,
     val type: String,
     val metadata: Map<String, Any?>,
-    val content: String,
-    val readOnly: Boolean,
+    val content: String
 ) {
 
     companion object {
-        fun of(template: ValtimoTemplate, readOnly: Boolean): TemplateResponse {
+        fun of(template: ValtimoTemplate): TemplateResponse {
             return TemplateResponse(
                 key = template.key,
                 caseDefinitionName = template.caseDefinitionName,
                 type = template.type,
                 metadata = template.metadata,
-                content = template.content,
-                readOnly = readOnly,
+                content = template.content
             )
         }
     }

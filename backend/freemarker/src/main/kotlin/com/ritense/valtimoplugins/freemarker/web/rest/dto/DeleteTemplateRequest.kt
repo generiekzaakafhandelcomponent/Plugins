@@ -19,5 +19,10 @@ package com.ritense.valtimoplugins.freemarker.web.rest.dto
 data class DeleteTemplateRequest(
     val caseDefinitionName: String? = null,
     val type: String,
-    val templates: List<String>
+    val templates: List<TemplateKeyType>
+)
+
+data class TemplateKeyType(
+    val key: String,
+    val type: String,
 )

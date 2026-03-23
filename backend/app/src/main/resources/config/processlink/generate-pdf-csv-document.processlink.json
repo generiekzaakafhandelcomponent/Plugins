@@ -1,0 +1,82 @@
+[
+  {
+    "activityId": "StartGenerateDocumentStartEvent",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "invoice",
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "GenerateInvoicePDFTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "4ac9a49f-4aeb-4f91-86d9-853fd95a1b33",
+    "pluginActionDefinitionKey": "generate-pdf",
+    "actionProperties": {
+      "templateKey": "invoice-pdf",
+      "processVariableName": "pdfResourceId"
+    }
+  },
+  {
+    "activityId": "UploadPDFToDocumentenAPITask",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "5474fe57-532a-4050-8d89-32e62ca3e895",
+    "pluginActionDefinitionKey": "store-temp-document",
+    "actionProperties": {
+      "title": "Invoice PDF",
+      "fileName": "invoice.pdf",
+      "localDocumentLocation": "pdfResourceId",
+      "storedDocumentUrl": "pdfDocumentUrl",
+      "informatieobjecttype": "http://localhost:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad",
+      "taal": "nld",
+      "status": "definitief"
+    }
+  },
+  {
+    "activityId": "LinkPDFToZaakTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+    "pluginActionDefinitionKey": "link-document-to-zaak",
+    "actionProperties": {
+      "documentUrl": "pv:pdfDocumentUrl"
+    }
+  },
+  {
+    "activityId": "GenerateInvoiceCSVTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "4ac9a49f-4aeb-4f91-86d9-853fd95a1b33",
+    "pluginActionDefinitionKey": "generate-csv",
+    "actionProperties": {
+      "templateKey": "invoice-csv",
+      "processVariableName": "csvResourceId"
+    }
+  },
+  {
+    "activityId": "UploadCSVToDocumentenAPITask",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "5474fe57-532a-4050-8d89-32e62ca3e895",
+    "pluginActionDefinitionKey": "store-temp-document",
+    "actionProperties": {
+      "title": "Invoice CSV",
+      "fileName": "invoice.csv",
+      "localDocumentLocation": "csvResourceId",
+      "storedDocumentUrl": "csvDocumentUrl",
+      "informatieobjecttype": "http://localhost:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad",
+      "taal": "nld",
+      "status": "definitief"
+    }
+  },
+  {
+    "activityId": "LinkCSVToZaakTask",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+    "pluginActionDefinitionKey": "link-document-to-zaak",
+    "actionProperties": {
+      "documentUrl": "pv:csvDocumentUrl"
+    }
+  }
+]
