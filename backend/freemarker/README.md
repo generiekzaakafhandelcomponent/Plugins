@@ -30,7 +30,7 @@ The following Gradle dependency can be added to your `build.gradle` file:
 
 ```kotlin
 dependencies {
-    implementation("com.ritense.valtimoplugins:freemarker:8.1.1")
+    implementation("com.ritense.valtimoplugins:freemarker:V12-8.1.1")
 }
 ```
 
@@ -43,7 +43,7 @@ The following dependency can be added to your `package.json` file:
 ```json
 {
   "dependencies": {
-    "@valtimo-plugins/freemarker": "8.1.1"
+    "@valtimo-plugins/freemarker": "V12-8.1.1"
   }
 }
 ```
