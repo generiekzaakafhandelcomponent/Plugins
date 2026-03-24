@@ -49,11 +49,11 @@ class DocsysClient(
     lateinit var clientSecret: String
     lateinit var scope: String
 
-          // token for authentication Docsys API
-     var token: AccesTokenDecorator? = null
+    // token for authentication Docsys API
+    var token: AccesTokenDecorator? = null
 
     fun generateDocument(modelId: String, params: Map<String, Any?>): DownloadResponse {
-        logger.debug { "Generearte draft doument in  Docsys using model '$modelId'" }
+        logger.debug { "Generate draft document in Docsys using model '$modelId'" }
 
         val draft = generateDraft(params, modelId)
         val fileResponse = downloadDocument(draft)
@@ -88,7 +88,7 @@ class DocsysClient(
             .retrieve()
             .body<DownloadResponse>()
 
-        if(response == null) {
+        if (response == null) {
             throw IllegalStateException("Document could not be downloaded.")
         }
 
@@ -123,13 +123,12 @@ class DocsysClient(
             .retrieve()
             .body<DamDraftResponse>()
 
-        if(response == null) {
+        if (response == null) {
             throw IllegalStateException("Draft could not be generated")
         }
 
         return response
     }
-
 
     private fun getAccessToken(): AccesTokenDecorator {
 
@@ -154,10 +153,9 @@ class DocsysClient(
 
             val successResponse: AccessTokenResponse = response.toSuccessResponse()
 
-
             // Get the access token
             val accessToken: BearerAccessToken? = successResponse.getTokens().bearerAccessToken
-            if(accessToken == null) {
+            if (accessToken == null) {
                 throw IllegalStateException("Access token not found")
             }
 
