@@ -25,6 +25,7 @@ include(
     "backend:valtimo-llm",
     "backend:kvk-handelsregister",
     "backend:value-mapper",
+    "backend:document-verzoek",
     "frontend",
 )
 

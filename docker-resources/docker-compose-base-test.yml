@@ -22,3 +22,4 @@ services:
 #   url: jdbc:postgresql://localhost:54352/suwinet-test
 #   url: jdbc:postgresql://localhost:54353/xential-test
 #   url: jdbc:postgresql://localhost:54354/hugging-face-test
+#   url: jdbc:postgresql://localhost:54355/document-verzoek

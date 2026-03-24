@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":backend:xential"))
     implementation(project(":backend:valtimo-llm"))
     implementation(project(":backend:value-mapper"))
+    implementation(project(":backend:document-verzoek"))
 }
 
 tasks.jar {

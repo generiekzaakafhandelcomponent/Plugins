@@ -34,6 +34,7 @@
     "libs:build:spotler": "ng build @valtimo-plugins/spotler",
     "libs:build:suwinet": "ng build @valtimo-plugins/suwinet",
     "libs:build:token-authentication": "ng build @valtimo-plugins/token-authentication",
+    "libs:build:document-verzoek": "ng build @valtimo-plugins/document-verzoek",
     "libs:build:xential": "ng build @valtimo-plugins/xential",
     "libs:build:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm",
     "libs:build:value-mapper": "ng build @valtimo-plugins/value-mapper",
@@ -57,6 +58,7 @@
     "libs:watch:spotler": "ng build @valtimo-plugins/spotler --watch",
     "libs:watch:suwinet": "ng build @valtimo-plugins/suwinet --watch",
     "libs:watch:token-authentication": "ng build @valtimo-plugins/token-authentication --watch",
+    "libs:watch:document-verzoek": "ng build @valtimo-plugins/document-verzoek --watch",
     "libs:watch:xential": "ng build @valtimo-plugins/xential --watch",
     "libs:watch:valtimo-llm": "ng build @valtimo-plugins/valtimo-llm --watch",
     "libs:watch:value-mapper": "ng build @valtimo-plugins/value-mapper --watch"
@@ -220,6 +222,7 @@
     "@valtimo-plugins/token-authentication": "file:dist/valtimo-plugins/token-authentication",
     "@valtimo-plugins/valtimo-ocr": "file:dist/valtimo-plugins/valtimo-ocr",
     "@valtimo-plugins/valtimo-s2t": "file:dist/valtimo-plugins/valtimo-s2t",
+    "@valtimo-plugins/document-verzoek": "file:dist/valtimo-plugins/document-verzoek",
     "@valtimo-plugins/xential": "file:dist/valtimo-plugins/xential",
     "@valtimo-plugins/value-mapper": "file:dist/valtimo-plugins/value-mapper",
     "chokidar": "4.0.3",

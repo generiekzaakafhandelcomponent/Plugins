@@ -32,7 +32,7 @@ class PublicTaskCompletedListener(
     private val publicTaskRepository: PublicTaskRepository
 ) : TaskCompletedListener(applicationEventPublisher) {
 
-    override fun notify(delegateTask: DelegateTask) {
+    fun notify(delegateTask: DelegateTask) {
         with(publicTaskRepository.findAll()) {
             if (this.any { it.isCompletedByPublicTask && it.userTaskId.toString() == delegateTask.id }) {
                 val assignee = this.first { it.userTaskId.toString() == delegateTask.id }.assigneeCandidateContactData

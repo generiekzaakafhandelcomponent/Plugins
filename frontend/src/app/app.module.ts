@@ -110,10 +110,11 @@ import {SmtpMailPluginModule, smtpmailPluginSpecification} from '@valtimo-plugin
 import {SpotlerPluginModule, spotlerPluginSpecification} from '@valtimo-plugins/spotler';
 import {SuwinetPluginModule, suwinetPluginSpecification} from '@valtimo-plugins/suwinet';
 import {TokenAuthenticationPluginModule, tokenAuthenticationPluginSpecification} from '@valtimo-plugins/token-authentication';
-import {ValtimoLlmPluginModule, valtimoLlmPluginSpecification} from '@valtimo-plugins/valtimo-llm'
+import {ValtimoLlmPluginModule, valtimoLlmPluginSpecification} from '@valtimo-plugins/valtimo-llm';
 import {ValtimoOcrPluginModule, valtimoOcrPluginSpecification} from '@valtimo-plugins/valtimo-ocr';
 import {ValtimoS2tPluginModule, valtimoS2tPluginSpecification} from '@valtimo-plugins/valtimo-s2t';
 import {XentialPluginModule, xentialPluginSpecification} from '@valtimo-plugins/xential';
+import {DocumentVerzoekPluginModule,documentVerzoekPluginSpecification} from '@valtimo-plugins/document-verzoek';
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -151,6 +152,7 @@ export function tabsFactory() {
         DocumentenApiPluginModule,
         DocumentGeneratorPluginModule,
         DocumentModule,
+        DocumentVerzoekPluginModule,
         ExterneKlanttaakPluginModule,
         FormManagementModule,
         FormModule,
@@ -218,6 +220,7 @@ export function tabsFactory() {
         provide: PLUGINS_TOKEN,
         useValue: [
             xentialPluginSpecification,
+            documentVerzoekPluginSpecification,
             catalogiApiPluginSpecification,
             documentGeneratorPluginSpecification,
             documentenApiPluginSpecification,
