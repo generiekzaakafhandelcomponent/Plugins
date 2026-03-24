@@ -28,13 +28,10 @@ import com.nimbusds.oauth2.sdk.auth.ClientSecretBasic
 import com.nimbusds.oauth2.sdk.auth.Secret
 import com.nimbusds.oauth2.sdk.id.ClientID
 import com.nimbusds.oauth2.sdk.token.BearerAccessToken
-import com.ritense.resource.domain.MetadataType
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
-import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import java.net.URI
@@ -52,11 +49,11 @@ class DocsysClient(
     lateinit var clientSecret: String
     lateinit var scope: String
 
-          // token for authentication Docsys API
-     var token: AccesTokenDecorator? = null;
+    // token for authentication Docsys API
+    var token: AccesTokenDecorator? = null
 
-    fun generateDocument(modelId: String, params: Map<String, Any>): DownloadResponse {
-        logger.debug { "Generearte draft doument in  Docsys using model '$modelId'" }
+    fun generateDocument(modelId: String, params: Map<String, Any?>): DownloadResponse {
+        logger.debug { "Generate draft document in Docsys using model '$modelId'" }
 
         val draft = generateDraft(params, modelId)
         val fileResponse = downloadDocument(draft)
@@ -91,7 +88,7 @@ class DocsysClient(
             .retrieve()
             .body<DownloadResponse>()
 
-        if(response == null) {
+        if (response == null) {
             throw IllegalStateException("Document could not be downloaded.")
         }
 
@@ -99,7 +96,7 @@ class DocsysClient(
     }
 
     private fun generateDraft(
-        params: Map<String, Any>,
+        params: Map<String, Any?>,
         modelId: String
     ): DamDraftResponse {
         val body: Map<String, Any?> = params
@@ -126,13 +123,12 @@ class DocsysClient(
             .retrieve()
             .body<DamDraftResponse>()
 
-        if(response == null) {
+        if (response == null) {
             throw IllegalStateException("Draft could not be generated")
         }
 
         return response
     }
-
 
     private fun getAccessToken(): AccesTokenDecorator {
 
@@ -157,10 +153,9 @@ class DocsysClient(
 
             val successResponse: AccessTokenResponse = response.toSuccessResponse()
 
-
             // Get the access token
             val accessToken: BearerAccessToken? = successResponse.getTokens().bearerAccessToken
-            if(accessToken == null) {
+            if (accessToken == null) {
                 throw IllegalStateException("Access token not found")
             }
 
