@@ -61,7 +61,6 @@ open class TextTemplatePlugin(
         )
         return templateService.generate(
             templateKey = templateKey,
-            caseDefinitionName = document.definitionId().name(),
             templateType = TEMPLATE_TYPE_TEXT,
             document = document,
             processVariables = execution.variables,

@@ -75,7 +75,6 @@ open class MailTemplatePlugin(
         )
         return templateService.generate(
             templateKey = templateKey,
-            caseDefinitionName = document.definitionId().name(),
             templateType = TEMPLATE_TYPE_MAIL,
             document = document,
             processVariables = execution.variables,

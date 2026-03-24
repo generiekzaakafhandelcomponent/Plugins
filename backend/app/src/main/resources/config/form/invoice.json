@@ -1,0 +1,70 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "Client Name",
+      "key": "clientName",
+      "type": "textfield",
+      "input": true
+    },
+    {
+      "label": "Invoice Date",
+      "key": "invoiceDate",
+      "type": "datetime",
+      "input": true,
+      "format": "yyyy-MM-dd",
+      "enableDate": true,
+      "enableTime": false
+    },
+    {
+      "label": "Invoice Number",
+      "key": "invoiceNumber",
+      "type": "textfield",
+      "input": true
+    },
+    {
+      "label": "Items",
+      "key": "items",
+      "type": "datagrid",
+      "input": true,
+      "components": [
+        {
+          "label": "Description",
+          "key": "description",
+          "type": "textfield",
+          "input": true
+        },
+        {
+          "label": "Quantity",
+          "key": "quantity",
+          "type": "number",
+          "input": true
+        },
+        {
+          "label": "Unit Price",
+          "key": "unitPrice",
+          "type": "textfield",
+          "input": true
+        },
+        {
+          "label": "Total",
+          "key": "total",
+          "type": "textfield",
+          "input": true
+        }
+      ]
+    },
+    {
+      "label": "Total Amount",
+      "key": "totalAmount",
+      "type": "textfield",
+      "input": true
+    },
+    {
+      "type": "button",
+      "action": "submit",
+      "label": "Submit",
+      "theme": "primary"
+    }
+  ]
+}

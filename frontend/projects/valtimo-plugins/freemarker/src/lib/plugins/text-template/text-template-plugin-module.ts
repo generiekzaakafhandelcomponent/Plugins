@@ -51,10 +51,6 @@ import {GenerateTextFileComponent} from './components/generate-text-file/generat
     declarations: [
         GenerateTextFileComponent,
         TextTemplateConfigurationComponent,
-        TextTemplateAddEditModalComponent,
-        TextTemplateEditorComponent,
-        TextTemplateDeleteModalComponent,
-        TextTemplateListComponent,
     ],
     imports: [
         CommonModule,
@@ -79,14 +75,14 @@ import {GenerateTextFileComponent} from './components/generate-text-file/generat
         NotificationModule,
         RenderInPageHeaderDirectiveModule,
         TabsModule,
-    ],
-    exports: [
-        GenerateTextFileComponent,
-        TextTemplateConfigurationComponent,
         TextTemplateAddEditModalComponent,
         TextTemplateEditorComponent,
         TextTemplateDeleteModalComponent,
         TextTemplateListComponent,
+    ],
+    exports: [
+        GenerateTextFileComponent,
+        TextTemplateConfigurationComponent,
     ],
     providers: [
         {

@@ -15,7 +15,9 @@
  */
 
 import {NgModule} from '@angular/core';
-import {MailTemplateConfigurationComponent} from './components/mail-template-configuration/mail-template-configuration.component';
+import {
+    MailTemplateConfigurationComponent
+} from './components/mail-template-configuration/mail-template-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
 import {
@@ -38,11 +40,16 @@ import {
     LoadingModule,
     ModalModule,
     NotificationModule, TabsModule,
-} from 'carbon-components-angular';import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/config';
+} from 'carbon-components-angular';
+import {CASE_MANAGEMENT_TAB_TOKEN} from '@valtimo/config';
 import {MailTemplateListComponent} from './components/mail-template-list/mail-template-list.component';
-import {MailTemplateAddEditModalComponent} from './components/mail-template-add-edit-modal/mail-template-add-edit-modal.component';
+import {
+    MailTemplateAddEditModalComponent
+} from './components/mail-template-add-edit-modal/mail-template-add-edit-modal.component';
 import {MailTemplateEditorComponent} from './components/mail-template-editor/mail-template-editor.component';
-import {MailTemplateDeleteModalComponent} from './components/mail-template-delete-modal/mail-template-delete-modal.component';
+import {
+    MailTemplateDeleteModalComponent
+} from './components/mail-template-delete-modal/mail-template-delete-modal.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TemplateManagementRoutingModule} from './mail-template-management-routing.module';
@@ -52,10 +59,6 @@ import {TemplateManagementRoutingModule} from './mail-template-management-routin
         MailTemplateConfigurationComponent,
         GenerateMailFileComponent,
         GenerateMailContentComponent,
-        MailTemplateAddEditModalComponent,
-        MailTemplateEditorComponent,
-        MailTemplateDeleteModalComponent,
-        MailTemplateListComponent,
     ],
     imports: [
         CommonModule,
@@ -80,15 +83,15 @@ import {TemplateManagementRoutingModule} from './mail-template-management-routin
         NotificationModule,
         RenderInPageHeaderDirectiveModule,
         TabsModule,
+        MailTemplateAddEditModalComponent,
+        MailTemplateEditorComponent,
+        MailTemplateDeleteModalComponent,
+        MailTemplateListComponent,
     ],
     exports: [
         MailTemplateConfigurationComponent,
         GenerateMailFileComponent,
         GenerateMailContentComponent,
-        MailTemplateAddEditModalComponent,
-        MailTemplateEditorComponent,
-        MailTemplateDeleteModalComponent,
-        MailTemplateListComponent,
     ],
     providers: [
         {
