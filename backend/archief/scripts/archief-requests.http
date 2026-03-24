@@ -1,0 +1,40 @@
+### Variables
+@openzaakHost = http://localhost:8001
+@notificatiesHost = http://localhost:8002
+@openzaakToken = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ2YWx0aW1vX2NsaWVudCIsImlhdCI6MTk5ODEwMDI3NiwiY2xpZW50X2lkIjoidmFsdGltb19jbGllbnQiLCJ1c2VyX2lkIjoidmFsdGltb19jbGllbnQiLCJ1c2VyX3JlcHJlc2VudGF0aW9uIjoidmFsdGltb19jbGllbnQifQ.-yBgqxDxAUO_rZYuiwjzF8-LrV9jwLsHmbrXW_vxB34
+@notificatiesToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ2YWx0aW1vIiwiaWF0IjoxODc0Mjg2Mjc5LCJjbGllbnRfaWQiOiJ2YWx0aW1vIiwidXNlcl9pZCI6IiIsInVzZXJfcmVwcmVzZW50YXRpb24iOiIifQ.gDBDOcVBDdq_CXDkGIh6ZI2KZhzmspsy3ADpR3a5FVU
+
+### 1. Get zaken (ordered by most recent) - copy the 'zaakUrl' from the first result
+GET {{openzaakHost}}/zaken/api/v1/zaken?ordering=-identificatie
+Accept-Crs: EPSG:4326
+Content-Crs: EPSG:4326
+Authorization: Bearer {{openzaakToken}}
+
+> {%
+    client.test("Status is 200", function() {
+        client.assert(response.status === 200, "Expected 200 but got " + response.status);
+    });
+    client.global.set("zaakUrl", response.body.results[0].url);
+    client.log("zaakUrl: " + client.global.get("zaakUrl"));
+%}
+
+### 2. Send archief notification using the zaakUrl from step 1
+POST {{notificatiesHost}}/api/v1/notificaties
+Content-Type: application/json
+Authorization: Bearer {{notificatiesToken}}
+
+{
+  "kanaal": "zaakdossier",
+  "hoofdObject": "{{zaakUrl}}",
+  "resource": "zaak",
+  "resourceUrl": "{{zaakUrl}}",
+  "actie": "archive",
+  "aanmaakdatum": "2025-09-08T20:08:53.115418+02:00",
+  "kenmerken": {}
+}
+
+> {%
+    client.test("Status is 200", function() {
+        client.assert(response.status === 201, "Expected 201 but got " + response.status);
+    });
+%}
