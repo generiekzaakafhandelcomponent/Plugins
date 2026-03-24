@@ -85,6 +85,7 @@ import {
     ObjecttypenApiPluginModule, objecttypenApiPluginSpecification,
 } from '@valtimo/plugin';
 
+import {ArchiefPluginModule, archiefPluginSpecification} from '@valtimo-plugins/archief';
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {HaalCentraalBrpAuthPluginModule, haalCentraalBrpAuthPluginSpecification} from '@valtimo-plugins/haal-centraal-auth';
 import {
@@ -133,6 +134,7 @@ export function tabsFactory() {
         AccessControlManagementModule,
         AccountModule,
         AnalyseModule,
+        ArchiefPluginModule,
         AppRoutingModule,
         BootstrapModule,
         BpmnJsDiagramModule,
@@ -217,6 +219,7 @@ export function tabsFactory() {
     providers: [{
         provide: PLUGINS_TOKEN,
         useValue: [
+            archiefPluginSpecification,
             xentialPluginSpecification,
             catalogiApiPluginSpecification,
             documentGeneratorPluginSpecification,
