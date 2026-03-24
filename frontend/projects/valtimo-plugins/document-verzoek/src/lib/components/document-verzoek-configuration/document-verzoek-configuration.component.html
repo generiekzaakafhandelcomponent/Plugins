@@ -1,0 +1,137 @@
+<!--
+  ~ Copyright 2015-2025 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<v-form
+        (valueChange)="formValueChange($event)"
+        *ngIf="{
+    disabled: disabled$ | async,
+    prefill: mappedPrefill$ ? (mappedPrefill$ | async) : null,
+  } as obs"
+>
+  <v-input
+          name="configurationTitle"
+          data-test-id="verzoekConfigurationTitle"
+          [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [disabled]="obs.disabled"
+          [defaultValue]="obs.prefill?.configurationTitle"
+          [required]="true"
+          [trim]="true"
+          [tooltip]="'configurationTitleTooltip' | pluginTranslate: pluginId | async"
+          placeholder="Verzoek Plugin"
+  >
+  </v-input>
+  <ng-container
+          *ngIf="{notificatiePluginSelectItems: notificatiePluginSelectItems$ | async} as vars"
+  >
+    <v-select
+            [items]="vars.notificatiePluginSelectItems"
+            [margin]="true"
+            name="notificatiesApiPluginConfiguration"
+            data-test-id="documentVerzoekNotificatiesApiPlugin"
+            [title]="'notificatiesApiPluginConfiguration' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultSelectionId]="obs.prefill?.notificatiesApiPluginConfiguration"
+            [required]="true"
+            [loading]="!vars.notificatiePluginSelectItems"
+            [tooltip]="'notificatiesApiPluginConfigurationTooltip' | pluginTranslate: pluginId | async"
+    ></v-select>
+  </ng-container>
+  <ng-container
+          *ngIf="{zakenPluginSelectItems: zakenPluginSelectItems$ | async} as vars"
+  >
+    <v-select
+            [items]="vars.zakenPluginSelectItems"
+            [margin]="true"
+            name="zakenApiPlugin"
+            data-test-id="zakenApiPlugin"
+            [title]="'zakenApiPlugin' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultSelectionId]="obs.prefill?.zakenApiPlugin"
+            [required]="true"
+            [loading]="!vars.zakenPluginSelectItems"
+            [tooltip]="'zakenApiPluginTooltip' | pluginTranslate: pluginId | async"
+    ></v-select>
+  </ng-container>
+  <ng-container
+          *ngIf="{documentenPluginSelectItems: documentenPluginSelectItems$ | async} as vars"
+  >
+    <v-select
+            [items]="vars.documentenPluginSelectItems"
+            [margin]="true"
+            name="documentenApiPlugin"
+            data-test-id="documentenApiPlugin"
+            [title]="'documentenApiPlugin' | pluginTranslate: pluginId | async"
+            [disabled]="obs.disabled"
+            [defaultSelectionId]="obs.prefill?.documentenApiPlugin"
+            [required]="true"
+            [loading]="!vars.documentenPluginSelectItems"
+            [tooltip]="'documentenApiPluginTooltip' | pluginTranslate: pluginId | async"
+    ></v-select>
+  </ng-container>
+  <v-input
+          name="eventMessage"
+          data-test-id="verzoekEventMessage"
+          [title]="'eventMessage' | pluginTranslate: pluginId | async"
+          [margin]="true"
+          [disabled]="obs.disabled"
+          [defaultValue]="obs.prefill?.eventMessage"
+          [required]="true"
+          [trim]="true"
+          [tooltip]="'eventMessageTooltip' | pluginTranslate: pluginId | async"
+          placeholder=""
+  >
+  </v-input>
+  <v-multi-input-form
+          name="informatieobjecttypeUrls"
+          data-test-id="informatieobjecttypeUrls-test-id"
+          [title]="'informatieobjecttypeUrls' | pluginTranslate: pluginId | async"
+          [formTemplate]="docTypesForm"
+          [addRowText]="'addInformatieobjecttypeUrl' | pluginTranslate: pluginId | async"
+          [required]="true"
+          [tooltip]="'informatieobjecttypeUrlTooltip' | pluginTranslate: pluginId | async"
+          (deleteRowEvent)="deleteRow($event)"
+          [initialAmountOfRows]="0"
+          [minimumAmountOfRows]="0"
+          [defaultValues]="obs.prefill?.informatieobjecttypeUrls"
+  >
+  </v-multi-input-form>
+</v-form>
+<ng-template
+        #docTypesForm
+        let-uuid="uuid"
+        let-changeFunction="changeFunction"
+        let-prefill="prefill"
+>
+  <ng-container
+          *ngIf="{
+      disabled: disabled$ | async,
+    } as obs"
+  >
+    <v-form (valueChange)="changeFunction($event, uuid)">
+      <v-input
+              [smallMargin]="true"
+              name="url"
+              data-test-id="informatieobjecttypeUrl-test-id"
+              [title]="'informatieobjecttypeUrl' | pluginTranslate: pluginId | async"
+              [disabled]="obs.disabled"
+              [defaultValue]="prefill?.url"
+              [required]="true"
+              [tooltip]="'informatieobjecttypeUrlTooltip' | pluginTranslate: pluginId | async"
+      ></v-input>
+    </v-form>
+  </ng-container>
+</ng-template>

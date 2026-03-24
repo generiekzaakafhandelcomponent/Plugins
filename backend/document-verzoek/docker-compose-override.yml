@@ -1,0 +1,8 @@
+services:
+  db:
+    ports:
+      - "54355:5432"
+    environment:
+      - POSTGRES_DB=document-verzoek-test
+      - POSTGRES_USER=test-user
+      - POSTGRES_PASSWORD=password
