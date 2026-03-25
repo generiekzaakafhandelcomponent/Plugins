@@ -99,7 +99,6 @@ export class ContactHistoryTabComponent implements OnInit {
     private translate: TranslateService,
     private readonly logger: NGXLogger
   ) {
-    // Setting translations at runtime, so we don't have to touch any global i18n files.
     translate.setTranslation('en', pluginEnTranslations, true);
     translate.setTranslation('nl', pluginNlTranslations, true);
   }
