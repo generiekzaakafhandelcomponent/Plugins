@@ -147,6 +147,47 @@
         }
       }
     },
+    "@valtimo-plugins/archief": {
+      "projectType": "library",
+      "root": "projects/valtimo-plugins/archief",
+      "sourceRoot": "projects/valtimo-plugins/archief/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/valtimo-plugins/archief/tsconfig.lib.json",
+            "project": "projects/valtimo-plugins/archief/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/valtimo-plugins/archief/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/valtimo-plugins/archief/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/valtimo-plugins/archief/src/test.ts",
+            "tsConfig": "projects/valtimo-plugins/archief/tsconfig.spec.json",
+            "karmaConfig": "projects/valtimo-plugins/archief/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/valtimo-plugins/archief/src/**/*.ts",
+              "projects/valtimo-plugins/archief/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "@valtimo-plugins/notify-nl": {
       "projectType": "library",
       "root": "projects/valtimo-plugins/notify-nl",

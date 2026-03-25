@@ -1,0 +1,20 @@
+[
+  {
+    "activityId": "link-process-to-document",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "a3c1f8d2-7e4b-4a9c-b6d1-2f8e3a5c9b01",
+    "pluginActionDefinitionKey": "link-process-to-document",
+    "processLinkType": "plugin",
+    "actionProperties": {
+      "zaakInstanceUrl": "pv:resourceUrl"
+    }
+  },
+  {
+    "activityId": "delete-document",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "a3c1f8d2-7e4b-4a9c-b6d1-2f8e3a5c9b01",
+    "pluginActionDefinitionKey": "delete-document",
+    "processLinkType": "plugin",
+    "actionProperties": {}
+  }
+]

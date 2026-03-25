@@ -1,0 +1,18 @@
+{
+    "name": "archief",
+    "version": 1,
+    "backend": [
+        {
+            "import": "com.ritense.valtimoplugins:archief"
+        }
+    ],
+    "frontend": {
+        "import": "@valtimo-plugins/archief",
+        "codeAdditions": [
+            {
+                "spec": "archiefPluginSpecification",
+                "module": "ArchiefPluginModule"
+            }
+        ]
+    }
+}
