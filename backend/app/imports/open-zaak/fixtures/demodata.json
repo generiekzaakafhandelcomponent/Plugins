@@ -604,7 +604,28 @@
     "catalogus": 1
   }
 },
-{
+  {
+    "model": "catalogi.informatieobjecttype",
+    "pk": 2,
+    "fields": {
+      "_etag": "_etag",
+      "datum_begin_geldigheid": "2024-11-12",
+      "datum_einde_geldigheid": null,
+      "concept": false,
+      "uuid": "38548709-1da8-42df-93c2-f1b569446e4c",
+      "omschrijving": "kofax",
+      "informatieobjectcategorie": "",
+      "trefwoord": "[\"groen\", \"vierkant\", \"klein\"]",
+      "vertrouwelijkheidaanduiding": "zaakvertrouwelijk",
+      "omschrijving_generiek_informatieobjecttype": "",
+      "omschrijving_generiek_definitie": "",
+      "omschrijving_generiek_herkomst": "",
+      "omschrijving_generiek_hierarchie": "",
+      "omschrijving_generiek_opmerking": "",
+      "catalogus": 1
+    }
+  },
+  {
   "model": "catalogi.zaaktypeinformatieobjecttype",
   "pk": 1,
   "fields": {
@@ -617,7 +638,21 @@
     "statustype": null
   }
 },
-{
+  {
+    "model": "catalogi.zaaktypeinformatieobjecttype",
+    "pk": 2,
+    "fields": {
+      "_etag": "_etag",
+      "uuid": "1aaa26ca-f121-4b6d-9407-ba549efed336",
+      "zaaktype": 1,
+      "informatieobjecttype": 2,
+      "volgnummer": 2,
+      "richting": "inkomend",
+      "statustype": null
+    }
+  },
+
+  {
   "model": "authorizations.applicatie",
   "pk": 1,
   "fields": {
