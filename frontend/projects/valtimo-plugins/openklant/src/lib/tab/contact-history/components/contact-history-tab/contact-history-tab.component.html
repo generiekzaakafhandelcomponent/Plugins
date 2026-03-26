@@ -6,7 +6,7 @@
   }"
 >
   <span class="loading-description mr-2">{{
-    isLoading ? "Verversen..." : "Opgehaald"
+    isLoading ? ('openKlant.contactHistory.loadingSpinner.loading' | translate) : ('openKlant.contactHistory.loadingSpinner.retrieved' | translate)
   }}</span>
   <cds-loading
     [size]="'sm'"
