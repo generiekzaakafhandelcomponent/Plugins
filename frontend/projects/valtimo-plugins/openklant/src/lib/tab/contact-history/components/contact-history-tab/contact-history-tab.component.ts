@@ -21,10 +21,12 @@ import {
 import { ProcessPollingService } from "../../services/process-polling.service";
 import { ContactHistoryService } from "../../services/contact-history.service";
 import { getOutcomeTranslationKey } from "../../presenters/contact-outcome.presenter";
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ConfigService } from "@valtimo/shared";
 import { HttpBackend, HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { pluginEnTranslations } from "../../../../translations/en";
+import { pluginNlTranslations } from "../../../../translations/nl";
 
 @Component({
   selector: "generieke-contactgeschiedenis",
@@ -94,8 +96,12 @@ export class ContactHistoryTabComponent implements OnInit {
     private processService: ProcessService,
     private processPollingService: ProcessPollingService,
     private contactHistoryService: ContactHistoryService,
+    private translate: TranslateService,
     private readonly logger: NGXLogger
-  ) { }
+  ) {
+    translate.setTranslation('en', pluginEnTranslations, true);
+    translate.setTranslation('nl', pluginNlTranslations, true);
+  }
 
   ngOnInit() {
     const snapshot = this.route.snapshot.paramMap;

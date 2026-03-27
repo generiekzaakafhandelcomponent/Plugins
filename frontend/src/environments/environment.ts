@@ -75,7 +75,7 @@ export const environment: ValtimoConfig = {
                 iconClass: 'icon mdi mdi-view-dashboard',
                 sequence: 0
             },
-            {roles: [ROLE_USER], title: 'Cases', iconClass: 'icon mdi mdi-layers', sequence: 1, children: []},
+            { roles: [ROLE_USER], title: 'Cases', iconClass: 'icon mdi mdi-layers', sequence: 1, children: [] },
             {
                 roles: [ROLE_USER],
                 title: 'Objects',
@@ -93,35 +93,35 @@ export const environment: ValtimoConfig = {
             },
             {
                 roles: [ROLE_ADMIN], title: 'Admin', iconClass: 'icon mdi mdi-tune', sequence: 5, children: [
-                    {title: 'Configuration', textClass: 'text-dark font-weight-bold c-default', sequence: 1},
-                    {link: ['/building-block-management'], title: 'buildingBlockManagement.title', sequence: 2},
-                    {link: ['/case-management'], title: 'Cases', sequence: 3},
-                    {link: ['/plugins'], title: 'Plugins', sequence: 4},
-                    {link: ['/dashboard-management'], title: 'Dashboard', sequence: 5},
-                    {link: ['/access-control'], title: 'Access Control', sequence: 6},
-                    {link: ['/translation-management'], title: 'Translations', sequence: 7},
-                    {link: ['/choice-fields'], title: 'Choice fields', sequence: 8},
+                    { title: 'Configuration', textClass: 'text-dark font-weight-bold c-default', sequence: 1 },
+                    { link: ['/building-block-management'], title: 'buildingBlockManagement.title', sequence: 2 },
+                    { link: ['/case-management'], title: 'Cases', sequence: 3 },
+                    { link: ['/plugins'], title: 'Plugins', sequence: 4 },
+                    { link: ['/dashboard-management'], title: 'Dashboard', sequence: 5 },
+                    { link: ['/access-control'], title: 'Access Control', sequence: 6 },
+                    { link: ['/translation-management'], title: 'Translations', sequence: 7 },
+                    { link: ['/choice-fields'], title: 'Choice fields', sequence: 8 },
 
-                    {title: 'Object management', textClass: 'text-dark font-weight-bold c-default', sequence: 9},
-                    {link: ['/object-management'], title: 'Objects', sequence: 10},
-                    {link: ['/form-management'], title: 'Forms', sequence: 11},
+                    { title: 'Object management', textClass: 'text-dark font-weight-bold c-default', sequence: 9 },
+                    { link: ['/object-management'], title: 'Objects', sequence: 10 },
+                    { link: ['/form-management'], title: 'Forms', sequence: 11 },
 
-                    {title: 'System processes', textClass: 'text-dark font-weight-bold c-default', sequence: 12},
-                    {link: ['/processes'], title: 'Processes', sequence: 13},
-                    {link: ['/decision-tables'], title: 'Decision tables', sequence: 14},
-                  
-                    {title: 'Migration', textClass: 'text-dark font-weight-bold c-default', sequence: 15},
-                    {link: ['/case-migration'], title: 'Case migration (beta)', sequence: 16},
-                    {link: ['/process-migration'], title: 'Process migration', sequence: 17},
+                    { title: 'System processes', textClass: 'text-dark font-weight-bold c-default', sequence: 12 },
+                    { link: ['/processes'], title: 'Processes', sequence: 13 },
+                    { link: ['/decision-tables'], title: 'Decision tables', sequence: 14 },
 
-                    {title: 'Other', textClass: 'text-dark font-weight-bold c-default', sequence: 18},
-                    {link: ['/logging'], title: 'Logs', sequence: 19},
-                    {link: ['/notifications-api/notifications/failed'], title: 'Notifications', sequence: 20},
+                    { title: 'Migration', textClass: 'text-dark font-weight-bold c-default', sequence: 15 },
+                    { link: ['/case-migration'], title: 'Case migration (beta)', sequence: 16 },
+                    { link: ['/process-migration'], title: 'Process migration', sequence: 17 },
+
+                    { title: 'Other', textClass: 'text-dark font-weight-bold c-default', sequence: 18 },
+                    { link: ['/logging'], title: 'Logs', sequence: 19 },
+                    { link: ['/notifications-api/notifications/failed'], title: 'Notifications', sequence: 20 },
                 ]
             },
             {
                 roles: [ROLE_DEVELOPER], title: 'Development', iconClass: 'icon mdi mdi-code', sequence: 6, children: [
-                    {link: ['/swagger'], title: 'Swagger', iconClass: 'icon mdi mdi-dot-circle', sequence: 1}
+                    { link: ['/swagger'], title: 'Swagger', iconClass: 'icon mdi mdi-dot-circle', sequence: 1 }
                 ]
             }
         ]
@@ -153,8 +153,7 @@ export const environment: ValtimoConfig = {
         enableObjectManagement: true
     },
     translationResources: [
-        './assets/i18n',
-        './assets/i18n/open-klant'
+        './assets/i18n'
     ],
 };
 
