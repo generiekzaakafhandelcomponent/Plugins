@@ -3,6 +3,7 @@ package com.ritense.valtimoplugins.suwinet.service
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class DateTimeService {
 
@@ -18,7 +19,11 @@ class DateTimeService {
         LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern))
 
     fun fromSuwinetToDateString(dateIn: String?) =
-        if (dateIn.isNullOrEmpty()) "" else LocalDate.parse(dateIn, dateInFormatter).format(dateOutFormatter)
+        try {
+            if (dateIn.isNullOrEmpty()) "" else LocalDate.parse(dateIn, dateInFormatter).format(dateOutFormatter)
+        } catch (e: DateTimeParseException) {
+            if (dateIn.isNullOrEmpty()) "" else dateIn
+        }
 
     fun getYearFromDateString(dateIn: String, pattern: String) = toLocalDate(dateIn, pattern).year
 
