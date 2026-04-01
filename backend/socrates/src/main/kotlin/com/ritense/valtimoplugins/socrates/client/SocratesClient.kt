@@ -46,7 +46,7 @@ class SocratesClient(
     fun dienstAanmaken(
         zaakId: String,
         loBehandeld: LoBehandeld,
-        betrokkenen: List<Betrokkene>,
+        betrokkenen: List<Betrokkene>?,
         authentication: HttpClientAuthenticator?
     ): LOBehandeldRespons {
         val requestBody = LOBehandeldRequest(
