@@ -79,7 +79,7 @@ open class SocratesPlugin(
             val loBehandeldInput = execution.getVariable(loBehandeldInputProcessVariable)
             val loBehandeld = mapper.convertValue<LoBehandeld>(loBehandeldInput)
 
-            var betrokkenen = listOf<Betrokkene>()
+            var betrokkenen: List<Betrokkene> = emptyList()
             if(execution.hasVariable(betrokkenenInputProcessVariable)) {
                 val betrokkenenInput = execution.getVariable(betrokkenenInputProcessVariable)
                 betrokkenen = mapper.convertValue<List<Betrokkene>>(betrokkenenInput)
