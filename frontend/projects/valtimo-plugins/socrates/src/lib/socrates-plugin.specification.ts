@@ -43,12 +43,13 @@ const socratesPluginSpecification: PluginSpecification = {
             loBehandeldInputNaamTooltip: 'Naam van de process variabele met input voor LOBehandeld info voor Socrates',
             betrokkenenInputNaam: 'input process variabele voor Betrokkenen info Socrates',
             betrokkenenInputNaamTooltip: 'Naam van de process variabele met input voor Betrokken info voor Socrates',
+            variabeleNaam: 'Naam van de resultaat variabele',
             variabeleNaamTooltip: 'Naam van de process variabele die de Socrates respons bevat',
         },
         en: {
             title: 'Socrates',
             description: 'Integrate with Socrates using this plugin.',
-            configurationTitle: 'Configuratiename',
+            configurationTitle: 'Configuration name',
             configurationTitleTooltip:
                 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
             socratesApiUrl: 'Socrates URL',
@@ -60,6 +61,7 @@ const socratesPluginSpecification: PluginSpecification = {
             loBehandeldInputNaamTooltip: 'Name of the process variabele with input for LOBehandeld info for Socrates',
             betrokkenenInputNaam: 'input process variabele for Betrokkenen info Socrates',
             betrokkenenInputNaamTooltip: 'Name of the process variabele with input for Betrokken info for Socrates',
+            variabeleNaam: 'Name of the result variable',
             variabeleNaamTooltip: 'Name of the process variable containing the Socrates response',
         },
         de: {
