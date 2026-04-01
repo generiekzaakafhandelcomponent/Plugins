@@ -1,7 +1,7 @@
 package com.ritense.valtimoplugins.socrates.model
 
 data class Betrokkene(
-    val naam: String,
+    val Naam: String,
 
-    val rol: List<Rol>
+    val Rol: List<Rol>
 )

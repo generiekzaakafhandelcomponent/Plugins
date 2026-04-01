@@ -6,5 +6,5 @@ import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 data class LOBehandeldRequest(
     val identificatie: String,
     val loBehandeld: LoBehandeld,
-    val betrokkenen: List<Betrokkene>,
+    val Betrokkenen: List<Betrokkene>,
 )

@@ -29,7 +29,7 @@ import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticat
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
 import com.ritense.valtimoplugins.socrates.error.ProcessErrorPayload
 import com.ritense.valtimoplugins.socrates.error.SocratesError
-import com.ritense.valtimoplugins.socrates.model.BetrokkenenWrapper
+import com.ritense.valtimoplugins.socrates.model.Betrokkene
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
@@ -80,7 +80,7 @@ open class SocratesPlugin(
             val loBehandeld = mapper.convertValue<LoBehandeld>(loBehandeldInput)
 
             val betrokkenenInput = execution.getVariable(betrokkenenInputProcessVariable)
-            val betrokkenen = mapper.convertValue<BetrokkenenWrapper>(betrokkenenInput)
+            val betrokkenen = mapper.convertValue<List<Betrokkene>>(betrokkenenInput)
 
             val response = socratesClient.dienstAanmaken(
                 zaakId = zaakId,
