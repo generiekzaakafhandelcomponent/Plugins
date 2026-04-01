@@ -1,0 +1,129 @@
+name: Ritense PR examinator
+
+on:
+  pull_request_review:
+    types: [ submitted ]
+  pull_request_review_comment:
+    types: [ created ]
+
+jobs:
+  PR_Ritense:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@ritense')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@ritense')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@ritense'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read # Required for Claude to read CI results on PRs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+# ── Step  Post "in progress" comment ────────────────────────────
+      - name: "⏳ Post review started comment"
+        id: progress_comment
+        uses: actions/github-script@v7
+        with:
+         script: |
+           const body = [
+             '## 🤖 Claude Review — In Progress',
+             '',
+             '| Step | Status |',
+             '|------|--------|',
+             '| 📥 Checkout          | ✅ Done   |',
+             '| 🔍 Analysing diff    | ⏳ Running |',
+             '| 💬 Posting feedback  | ⏳ Pending |',
+             '',
+             '_Claude is reviewing your changes. This comment will be updated when complete._',
+           ].join('\n');
+           
+           const pr_number = context.payload.pull_request?.number
+             ?? context.payload.issue?.number;
+           
+           const comment = await github.rest.issues.createComment({
+             owner: context.repo.owner,
+             repo: context.repo.repo,
+             issue_number: pr_number,
+             body,
+           });
+           
+           // Save comment ID so we can update it later
+           core.setOutput('comment_id', comment.data.id);
+           core.setOutput('pr_number', pr_number);
+
+      - name: PR Review with Progress Tracking
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          path_to_claude_code_executable: ${{ env.CLAUDE_PATH }}
+          track_progress: true
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+            
+            Please review this pull request with plugin-pr-reviewer agent.
+
+            Note: The PR branch is already checked out in the current working directory.
+
+      # ── Step : Update progress comment ──────────────────────────────
+      - name: "✅ Update progress comment (success)"
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = [
+              '## 🤖 Claude Review — Complete ✅',
+              '',
+              '| Step | Status |',
+              '|------|--------|',
+              '| 📥 Checkout          | ✅ Done |',
+              '| 🔍 Analysing diff    | ✅ Done |',
+              '| 💬 Posting feedback  | ✅ Done |',
+              '',
+              `_Review completed at ${new Date().toUTCString()}_`,
+              '',
+              '> 💡 Mention **@claude** in a comment to ask follow-up questions or request a re-review.',
+            ].join('\n');
+
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.progress_comment.outputs.comment_id }},
+              body,
+            });
+
+      # ── Step  Update progress comment on failure ────────────────────
+      - name: "❌ Update progress comment (failure)"
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = [
+              '## 🤖 Claude Review — Failed ❌',
+              '',
+              '| Step | Status |',
+              '|------|--------|',
+              '| 📥 Checkout          | ✅ Done    |',
+              '| 🔍 Analysing diff    | ❌ Failed  |',
+              '| 💬 Posting feedback  | ⏳ Skipped |',
+              '',
+              '**The review encountered an error.** Check the [Actions log](' +
+              `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}` +
+              ') for details.',
+              '',
+              '> 💡 Mention **@ritense** in a comment to retry the review.',
+            ].join('\n');
+
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.progress_comment.outputs.comment_id }},
+              body,
+            });
+            

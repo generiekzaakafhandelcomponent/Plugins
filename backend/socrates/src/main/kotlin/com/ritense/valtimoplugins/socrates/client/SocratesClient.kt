@@ -18,6 +18,7 @@ package com.ritense.valtimoplugins.socrates.client
 
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.socrates.error.SocratesError
+import com.ritense.valtimoplugins.socrates.model.Betrokkene
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.HttpHeaders
@@ -41,10 +42,11 @@ class SocratesClient(
 ) {
     lateinit var socratesBaseUri: URI
 
-    fun dienstAanmaken(zaakId: String, loBehandeld: LoBehandeld): LOBehandeldRespons {
+    fun dienstAanmaken(zaakId: String, loBehandeld: LoBehandeld, betrokkenen: List<Betrokkene>?): LOBehandeldRespons {
         val requestBody = LOBehandeldRequest(
             identificatie = zaakId,
             loBehandeld = loBehandeld,
+            betrokkenen = betrokkenen
         )
 
         val response = try {

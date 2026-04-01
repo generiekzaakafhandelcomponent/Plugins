@@ -60,7 +60,7 @@ export class DienstAanmakenComponent implements FunctionConfigurationComponent, 
     }
 
     private handleValid(formValue: DienstAanmakenConfig): void {
-        const valid = !!(formValue.inputProcessVariable)
+        const valid = !!(formValue.loBehandeldInputProcessVariable)
             && !!(formValue.zaakId)
             && !!(formValue.processVariableName);
 
