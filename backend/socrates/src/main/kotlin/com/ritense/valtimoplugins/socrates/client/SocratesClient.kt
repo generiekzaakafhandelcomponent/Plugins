@@ -42,11 +42,11 @@ class SocratesClient(
 ) {
     lateinit var socratesBaseUri: URI
 
-    fun dienstAanmaken(zaakId: String, loBehandeld: LoBehandeld, betrokkenen: List<Betrokkene>): LOBehandeldRespons {
+    fun dienstAanmaken(zaakId: String, loBehandeld: LoBehandeld, betrokkenen: List<Betrokkene>?): LOBehandeldRespons {
         val requestBody = LOBehandeldRequest(
             identificatie = zaakId,
             loBehandeld = loBehandeld,
-            Betrokkenen = betrokkenen
+            betrokkenen = betrokkenen
         )
 
         val response = try {

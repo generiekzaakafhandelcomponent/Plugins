@@ -75,8 +75,11 @@ open class SocratesPlugin(
             val loBehandeldInput = execution.getVariable(loBehandeldInputProcessVariable)
             val loBehandeld = mapper.convertValue<LoBehandeld>(loBehandeldInput)
 
-            val betrokkenenInput = execution.getVariable(betrokkenenInputProcessVariable)
-            val betrokkenen = mapper.convertValue<List<Betrokkene>>(betrokkenenInput)
+            var betrokkenen = listOf<Betrokkene>()
+            if(execution.hasVariable(betrokkenenInputProcessVariable)) {
+                val betrokkenenInput = execution.getVariable(betrokkenenInputProcessVariable)
+                betrokkenen = mapper.convertValue<List<Betrokkene>>(betrokkenenInput)
+            }
 
             val response = socratesClient.dienstAanmaken(zaakId, loBehandeld, betrokkenen)
 

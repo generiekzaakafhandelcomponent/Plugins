@@ -113,17 +113,17 @@ var loBehandeld = {
 execution.setVariable("socratesInput", toJavaValue(loBehandeld));
 
 var betrokkenen = [{
-            "Naam": "9",
-            "Rol": [{
-                    "Rolomschrijving": "BehandelaarAfdeling"
+            "naam": "9",
+            "rol": [{
+                    "rolomschrijving": "BehandelaarAfdeling"
                 }
             ]
         }, {
-            "Naam": "9",
-            "Rol": [{
-                    "Rolomschrijving": "BehandelaarTeam"
+            "naam": "9",
+            "rol": [{
+                    "rolomschrijving": "BehandelaarTeam"
                 }
-            ]
+           ]
         }
     ];
 
