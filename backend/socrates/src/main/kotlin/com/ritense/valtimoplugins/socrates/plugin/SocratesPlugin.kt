@@ -69,7 +69,7 @@ open class SocratesPlugin(
         execution: DelegateExecution,
         @PluginActionProperty zaakId: String,
         @PluginActionProperty loBehandeldInputProcessVariable: String,
-        @PluginActionProperty betrokkenenInputProcessVariable: String,
+        @PluginActionProperty betrokkenenInputProcessVariable: String?,
         @PluginActionProperty processVariableName: String
     ) {
         setsocratesClientParams()
