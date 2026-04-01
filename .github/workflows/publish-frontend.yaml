@@ -8,6 +8,7 @@ on:
       - main
       - feature/github-actions-workflows
       - v13
+      - release/socrates-1.2.x
 
 jobs:
   # -------------------------------------------------------------
