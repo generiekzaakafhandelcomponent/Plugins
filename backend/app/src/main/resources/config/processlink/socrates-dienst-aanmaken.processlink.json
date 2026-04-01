@@ -13,7 +13,8 @@
     "processLinkType": "plugin",
     "actionProperties": {
       "zaakId": "ZAAK-000123644",
-      "inputProcessVariable": "socratesInput",
+      "loBehandeldInputProcessVariable": "socratesInput",
+      "betrokkenenInputProcessVariable": "betrokkenen",
       "processVariableName": "socratesResponse"
     }
   }
