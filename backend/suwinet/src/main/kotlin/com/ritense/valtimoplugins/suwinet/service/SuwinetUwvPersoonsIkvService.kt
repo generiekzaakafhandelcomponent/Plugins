@@ -15,7 +15,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
-import kotlin.collections.emptyMap
 
 class SuwinetUwvPersoonsIkvService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
