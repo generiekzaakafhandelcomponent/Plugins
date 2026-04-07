@@ -15,6 +15,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
 import org.springframework.util.StringUtils
+import kotlin.collections.emptyMap
 
 class SuwinetUwvPersoonsIkvService(
     private val suwinetSOAPClient: SuwinetSOAPClient,
@@ -94,7 +95,7 @@ class SuwinetUwvPersoonsIkvService(
             else -> {
                 val nietsGevonden = objectFactory.createNietsGevonden("test")
                 if (nietsGevonden.name.equals(content[0].name)) {
-                    DynamicResponseDto(emptyList(), Any())
+                    DynamicResponseDto(emptyList(), emptyMap<String, Any>())
                 } else {
                     throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
                 }
