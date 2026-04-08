@@ -67,7 +67,7 @@ class SuwinetRdwService(
             val kentekens = retrieveVoertuigenBezitInfo(bsn)
 
             val aansprakelijken = kentekens.mapNotNull { retrieveAansprakelijkeInfoFromSuwi(it) }
-            if (aansprakelijken.isEmpty()) return DynamicResponseDto(emptyList(), Any())
+            if (aansprakelijken.isEmpty()) return DynamicResponseDto(emptyList(), emptyMap<String, Any>())
             val wrapper = VoertuigenWrapper(aansprakelijken)
             DynamicResponseDto(
                 properties = getAvailableProperties(wrapper),

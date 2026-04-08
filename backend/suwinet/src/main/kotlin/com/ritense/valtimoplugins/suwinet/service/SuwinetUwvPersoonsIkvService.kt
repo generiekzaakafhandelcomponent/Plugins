@@ -94,7 +94,7 @@ class SuwinetUwvPersoonsIkvService(
             else -> {
                 val nietsGevonden = objectFactory.createNietsGevonden("test")
                 if (nietsGevonden.name.equals(content[0].name)) {
-                    DynamicResponseDto(emptyList(), Any())
+                    DynamicResponseDto(emptyList(), emptyMap<String, Any>())
                 } else {
                     throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
                 }
