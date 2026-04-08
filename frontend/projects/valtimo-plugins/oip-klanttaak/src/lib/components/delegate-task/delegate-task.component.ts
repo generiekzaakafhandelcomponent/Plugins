@@ -62,6 +62,7 @@ export class DelegateTaskComponent implements FunctionConfigurationComponent, On
       const valid = !!(
         formValue.betrokkeneIdentifier &&
         formValue.levelOfAssurance &&
+        formValue.verloopdatum &&
         formValue.formulierUri
       );
       this.logger.debug('handleValid', valid);

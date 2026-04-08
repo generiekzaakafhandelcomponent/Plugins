@@ -19,7 +19,7 @@
       "formulierUri" : "https://host.docker.local/formulier/123456",
       "toelichting" : "Gegevens aan te leveren door burger alvorens process in behandeling genomen kan worden.",
       "koppelingIdentifier" : "case:id",
-      "verloopdatum" : null,
+      "verloopdatum" : "pv:oipTaskExpirationDate",
       "levelOfAssurance" : "MOBILE_TWO_FACTOR_CONTRACT",
       "koppelingRegistratie" : "ZAAK",
       "formulierDataMapping" : [

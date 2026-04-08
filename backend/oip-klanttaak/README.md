@@ -97,13 +97,13 @@ Properties:
 
 - **Betrokkene identifier**: The BSN or identifier of the person the task is for.
 - **Level of assurance**: Security level required (e.g., Password protected transport, Smartcard).
+- **Verloopdatum**: Deadline for the task.
 - **Formulier URI**: Link to the form in OIP.
 - **Formulier data mapping** (Optional): List of key-value pairs to pre-fill the form.
 - **Toelichting** (Optional): A description or explanation for the task.
 - **Koppeling registratie** (Optional): Type of link (e.g., Zaak or Product).
 - **Koppeling identifier** (Optional): UUID of the linked object.
 - **Doorlooptijd** (Optional): ISO 8601 duration (e.g., P14D).
-- **Verloopdatum** (Optional): Deadline for the task.
 - **Deadline verlengbaar** (Optional): Boolean indicating if the deadline can be extended.
 
 ![Delegate task plugin action configuration](assets/delegate-task.png "Delegate task plugin action configuration")

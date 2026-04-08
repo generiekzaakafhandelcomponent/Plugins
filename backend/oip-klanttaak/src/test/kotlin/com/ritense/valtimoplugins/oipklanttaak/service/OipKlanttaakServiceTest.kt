@@ -54,6 +54,7 @@ import org.operaton.bpm.engine.delegate.DelegateExecution
 import org.operaton.bpm.engine.delegate.DelegateTask
 import java.net.URI
 import java.time.LocalDate
+import java.time.OffsetDateTime
 import java.util.UUID
 import kotlin.String
 
@@ -130,7 +131,8 @@ class OipKlanttaakServiceTest {
                     DataBinding("/firstname", "doc:/firstname"),
                     DataBinding("/lastname", "doc:/lastname"),
                     DataBinding("/email", "doc:/email")
-                )
+                ),
+                expirationDate = OffsetDateTime.now().plusWeeks(2)
             )
         }
 
