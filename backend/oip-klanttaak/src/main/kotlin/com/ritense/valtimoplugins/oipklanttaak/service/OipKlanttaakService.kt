@@ -276,7 +276,7 @@ class OipKlanttaakService(
         zaakUrlProvider.getZaakUrl(id).let { zaakUrl ->
             requireNotNull(pluginService.createInstance(
                 ZakenApiPlugin::class.java,
-                ZakenApiPlugin.Companion.findConfigurationByUrl(zaakUrl)
+                ZakenApiPlugin.findConfigurationByUrl(zaakUrl)
             )) { "Zaken API Plugin configuration not found for zaak with URL '$zaakUrl'" }
         }
 
