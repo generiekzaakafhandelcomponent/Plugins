@@ -59,6 +59,7 @@ class DocumentVerzoekPluginEventListener(
     @RunWithoutAuthorization
     @EventListener(NotificatiesApiNotificationReceivedEvent::class)
     fun handleEvent(event: NotificatiesApiNotificationReceivedEvent) {
+        // check if event is relevant for this filter
         if (!event.kanaal.equals("zaken", ignoreCase = true)) {
             logger.debug { "DocumentVerzoekPlugin is ignoring Notificaties API event: Event kanaal '${event.kanaal}' doesn't match 'zaken'" }
             return
@@ -69,10 +70,10 @@ class DocumentVerzoekPluginEventListener(
             logger.debug { "DocumentVerzoekPlugin is ignoring Notificaties API event: Event kenmerk 'zaakType' is null" }
             return
         }
-//        if (event.resource?.equals("zaakinformatieobject", ignoreCase = true) != true) {
-//            logger.debug { "DocumentVerzoekPlugin is ignoring Notificaties API event: Event 'resource' is not zaakinformatieobject" }
-//            return
-//        }
+        if (event.resource?.equals("zaakinformatieobject", ignoreCase = true) != true) {
+            logger.debug { "DocumentVerzoekPlugin is ignoring Notificaties API event: Event 'resource' is not zaakinformatieobject" }
+            return
+        }
         if (!event.actie.equals("create", ignoreCase = true)) {
             logger.debug { "DocumentVerzoekPlugin is ignoring Notificaties API event: Event actie '${event.actie}' doesn't match 'create'" }
             return
@@ -82,9 +83,10 @@ class DocumentVerzoekPluginEventListener(
             DocumentVerzoekPlugin::class.java
         ) { properties ->
             !properties["informatieobjecttypeUrls"].isMissingNode && !properties["informatieobjecttypeUrls"].isEmpty
-        }?.let { handleNewDocumentEvent(event, it) }
+        }?.let {
+            handleNewDocumentEvent(event, it)
+        }
             ?: logger.warn { "DocumentVerzoekPlugin is ignoring Notificaties API event: No DocumentVerzoekPlugin found with list matching of informatieobjecttypes" }
-
     }
 
     private fun handleNewDocumentEvent(
@@ -97,6 +99,7 @@ class DocumentVerzoekPluginEventListener(
             logger.warn { "DocumentVerzoekPlugin is ignoring Notificaties API event: hoofdObject is null" }
             return
         }
+//        val (zaakUrl, resourceUrl) = hoofdObject to URI(event.resourceUrl)
         val (zaakUrl, resourceUrl) = if (environment.activeProfiles.contains("dev")) {
             hoofdObject.replace(
                 "host.docker.internal",
@@ -106,21 +109,26 @@ class DocumentVerzoekPluginEventListener(
             hoofdObject to URI(event.resourceUrl)
         }
 
-        val zaak = try {
-            zaakInstanceLinkService.getByZaakInstanceUrl(URI(zaakUrl))
-        } catch (ex: ZaakInstanceLinkNotFoundException) {
-            logger.warn { "DocumentVerzoekPlugin is ignoring Notificaties API event: no ZaakInstanceLink found for zaakUrl '$zaakUrl'" }
-            return
-        }
-        run {
-            plugin.zakenApiPlugin.getZaakInformatieObjecten(
-                zaak.documentId,
-                URI(zaakUrl),
-            ).firstOrNull { it.url == resourceUrl }?.let { zaakInformatieObject ->
+        // is this zaak present?
+        run{
+            val zaak = try {
+                zaakInstanceLinkService.getByZaakInstanceUrl(URI(zaakUrl))
+            } catch (ex: ZaakInstanceLinkNotFoundException) {
+                logger.warn { "DocumentVerzoekPlugin is ignoring Notificaties API event: no ZaakInstanceLink found for zaakUrl '$zaakUrl'" }
+                return
+            }
+
+            // get zaak informatie object
+            plugin.zakenApiPlugin.getZaakInformatieObjectByUrl(
+                resourceUrl,
+                zaak.documentId
+            )?.let { zaakInformatieObject ->
+                // get informatie object
                 plugin.documentenApiPlugin.getInformatieObject(
                     zaakInformatieObject.informatieobject,
                     zaak.documentId
                 ).let { informatieObject ->
+                    // check if this is an external uploaded document
                     if (plugin.informatieobjecttypeUrls.any { informatieDocumentType ->
                             informatieDocumentType.url == informatieObject.informatieobjecttype
                         }) {
@@ -139,8 +147,38 @@ class DocumentVerzoekPluginEventListener(
                 }
             }
                 ?: logger.warn { "DocumentVerzoekPlugin is ignoring Notificaties API event: No InformatieObject found for zaakInstanceUrl '$resourceUrl'" }
+
         }
     }
+
+//        run {
+//            plugin.zakenApiPlugin.getZaakInformatieObjecten(
+//                zaak.documentId,
+//                URI(zaakUrl),
+//            ).firstOrNull { it.url == resourceUrl }?.let { zaakInformatieObject ->
+//                plugin.documentenApiPlugin.getInformatieObject(
+//                    zaakInformatieObject.informatieobject,
+//                    zaak.documentId
+//                ).let { informatieObject ->
+//                    if (plugin.informatieobjecttypeUrls.any { informatieDocumentType ->
+//                            informatieDocumentType.url == informatieObject.informatieobjecttype
+//                        }) {
+//                        logger.debug { "DocumentVerzoekPlugin: broadcasting message for '${informatieObject.url}'" }
+//                        sendMessage(
+//                            zaak.documentId.toString(),
+//                            plugin.eventMessage,
+//                            zaakInformatieObject,
+//                            informatieObject
+//                        )
+//                        publishEvent(
+//                            zaak.documentId,
+//                            informatieObject.identificatie ?: "unknown"
+//                        )
+//                    }
+//                }
+//            }
+//                ?: logger.warn { "DocumentVerzoekPlugin is ignoring Notificaties API event: No InformatieObject found for zaakInstanceUrl '$resourceUrl'" }
+//        }
 
     private fun publishEvent(documentId: UUID, identificatie: String) {
         applicationEventPublisher.publishEvent(
