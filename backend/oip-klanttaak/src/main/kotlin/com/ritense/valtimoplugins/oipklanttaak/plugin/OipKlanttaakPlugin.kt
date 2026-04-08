@@ -85,7 +85,7 @@ class OipKlanttaakPlugin(
         @PluginActionProperty koppelingRegistratie: String? = null,
         @PluginActionProperty koppelingIdentifier: String? = null,
         @PluginActionProperty doorlooptijd: String? = null,
-        @PluginActionProperty verloopdatum: OffsetDateTime? = null,
+        @PluginActionProperty verloopdatum: OffsetDateTime,
         @PluginActionProperty deadlineVerlengbaar: Boolean? = null,
     ) {
         withLoggingContext(DelegateTask::class.java.canonicalName to delegateTask.id) {
@@ -119,7 +119,7 @@ class OipKlanttaakPlugin(
                         },
                         value = UUID.fromString(koppelingIdentifier!!)
                     )
-               },
+                },
                 leadTime = doorlooptijd?.let { Period.parse(it) },
                 expirationDate = verloopdatum,
                 deadlineExtendable = deadlineVerlengbaar

@@ -32,12 +32,12 @@ interface PluginConfigFormValue extends PluginConfig {
 interface DelegateTaskConfig {
   betrokkeneIdentifier: string;
   levelOfAssurance: string;
+  verloopdatum: Date;
   formulierUri: string;
   formulierDataMapping?: DataBinding[] | null;
   toelichting?: string | null;
   koppelingRegistratie?: Registratie | null;
   koppelingIdentifier?: string | null;
-  verloopdatum?: Date | null;
 }
 
 interface CompleteDelegatedTaskConfig {

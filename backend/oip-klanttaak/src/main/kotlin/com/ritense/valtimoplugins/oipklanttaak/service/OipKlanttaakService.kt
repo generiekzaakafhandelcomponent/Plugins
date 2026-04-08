@@ -72,12 +72,12 @@ class OipKlanttaakService(
         taskOwner: String = DEFAULT_TASK_OWNER,
         authorizeeIdentifier: String,
         levelOfAssurance: LevelOfAssurance,
+        expirationDate: OffsetDateTime,
         formUri: URI,
         formDataMapping: List<DataBinding>? = null,
         description: String? = null,
         koppeling: Koppeling? = null,
         leadTime: Period? = null,
-        expirationDate: OffsetDateTime? = null,
         deadlineExtendable: Boolean? = null,
     ) {
         objectManagementById(objectManagementId).let { objectManagement ->
@@ -111,7 +111,8 @@ class OipKlanttaakService(
                                                     delegateTask = delegateTask,
                                                     formDataMapping = it
                                                 )
-                                            }
+                                            },
+                                            verzondenData = emptyMap()
                                         ),
                                         verwerkerTaakId = UUID.fromString(delegateTask.id),
                                         koppeling = koppeling,
