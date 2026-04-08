@@ -91,7 +91,10 @@ open class OipKlanttaakEventListener(
             event.actie.equals("update", ignoreCase = true)
         ).also {
             if (!it) {
-                logger.info { "Skipping: Event does not match criteria to complete an OIP Task." }
+                logger.info {
+                    "Skipping: Event does not match criteria to complete an OIP Task. " +
+                        "(objectType(=${objectTypeFrom(event)}) != null, kanaal(=${event.kanaal}) == 'objecten', actie(=${event.actie}) == 'update')"
+                }
             }
         }
 
