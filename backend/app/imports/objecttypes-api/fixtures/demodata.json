@@ -2642,7 +2642,7 @@
                   "documenten": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "$ref": "#/definitions/informatieobject"
                     },
                     "description": "Documenten"
                   }
@@ -2677,7 +2677,7 @@
                   "upload_documenten": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "$ref": "#/definitions/informatieobject"
                     },
                     "description": "Geüploade documenten"
                   }
@@ -2700,7 +2700,7 @@
           "informatieobject": {
             "type": "object",
             "required": [
-              "informatieobjecttype",
+              "informatieobject",
               "titel",
               "omschrijving",
               "vertrouwelijkheidaanduiding",
@@ -2720,7 +2720,7 @@
               "omschrijving": {
                 "type": "string"
               },
-              "informatieobjecttype": {
+              "informatieobject": {
                 "type": "string",
                 "format": "uri"
               },
