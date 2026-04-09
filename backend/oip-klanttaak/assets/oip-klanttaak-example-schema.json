@@ -131,7 +131,7 @@
             "documenten": {
               "type": "array",
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/informatieobject"
               },
               "description": "Documenten"
             }
@@ -166,7 +166,7 @@
             "upload_documenten": {
               "type": "array",
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/informatieobject"
               },
               "description": "Geüploade documenten"
             }
