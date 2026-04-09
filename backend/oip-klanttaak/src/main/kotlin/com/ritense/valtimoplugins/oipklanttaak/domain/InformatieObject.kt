@@ -23,6 +23,6 @@ data class InformatieObject(
     val auteur: String,
     val formaat: String,
     val omschrijving: String,
-    val informatieobjecttype: URI,
+    val informatieobject: URI,
     val vertrouwelijkheidaanduiding: Vertrouwelijkheidaanduiding,
 )

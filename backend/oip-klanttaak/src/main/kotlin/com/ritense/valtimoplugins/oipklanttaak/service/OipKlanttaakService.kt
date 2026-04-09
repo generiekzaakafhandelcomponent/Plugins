@@ -226,7 +226,7 @@ class OipKlanttaakService(
                                                     objectMapper.convertValue<InformatieObject>(documentNode).let { informatieObject ->
                                                         zakenApiPlugin.linkDocumentToZaak(
                                                             execution = execution,
-                                                            documentUrl = informatieObject.informatieobjecttype.toASCIIString(),
+                                                            documentUrl = informatieObject.informatieobject.toASCIIString(),
                                                             titel = informatieObject.titel,
                                                             beschrijving = informatieObject.omschrijving
                                                         )
