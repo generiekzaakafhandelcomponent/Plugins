@@ -24,9 +24,8 @@ import {
     ValtimoConfig,
     UploadProvider,
     IncludeFunction,
-    DefinitionColumn,
-    ROLE_DEVELOPER
-} from '@valtimo/shared';
+    DefinitionColumn
+} from '@valtimo/config';
 import { authenticationKeycloak } from './auth/keycloak-config.dev';
 import { DARK_MODE_LOGO_BASE_64, LOGO_BASE_64 } from './logo';
 
