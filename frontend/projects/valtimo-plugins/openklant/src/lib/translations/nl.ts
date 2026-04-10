@@ -1,0 +1,26 @@
+
+export const pluginNlTranslations = {
+    openKlant: {
+        contactHistory: {
+            tabTitle: "Contactgeschiedenis",
+            outcome: {
+                success: "Succes",
+                failure: "Mislukt",
+                notApplicable: "Niet van toepassing",
+                unknown: "Onbekend"
+            },
+            messages: {
+                noProperty: {
+                    title: "Geen contactgeschiedenis property",
+                    description: "Er bestaat geen 'contactgeschiedenis'-property in de dossierdefinitie. Voeg deze toe aan het dossierdefinitie."
+                },
+                emptyHistory: {
+                    title: "Geen contactgeschiedenis",
+                    description: "Er bestaat nog geen contactgeschiedenis voor dit dossier."
+                }
+            }
+        }
+    }
+
+};
+

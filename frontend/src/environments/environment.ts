@@ -18,7 +18,15 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 import { NgxLoggerLevel } from 'ngx-logger';
-import { ROLE_ADMIN, ROLE_USER, ValtimoConfig, UploadProvider, IncludeFunction, DefinitionColumn } from '@valtimo/config';
+import {
+    ROLE_ADMIN,
+    ROLE_USER,
+    ValtimoConfig,
+    UploadProvider,
+    IncludeFunction,
+    DefinitionColumn,
+    ROLE_DEVELOPER
+} from '@valtimo/shared';
 import { authenticationKeycloak } from './auth/keycloak-config.dev';
 import { DARK_MODE_LOGO_BASE_64, LOGO_BASE_64 } from './logo';
 
@@ -73,7 +81,7 @@ export const environment: ValtimoConfig = {
                 title: 'Objects',
                 iconClass: 'icon mdi mdi-archive',
                 sequence: 2,
-                includeFunction: IncludeFunction.ObjectManagementEnabled,
+                includeFunction: IncludeFunction.ObjectManagementEnabled
             },
             { roles: [ROLE_USER], link: ['/tasks'], title: 'Tasks', iconClass: 'icon mdi mdi-check-all', sequence: 3 },
             {
@@ -138,8 +146,7 @@ export const environment: ValtimoConfig = {
         enableObjectManagement: true
     },
     translationResources: [
-        './assets/i18n',
-        './assets/i18n/open-klant'
+        './assets/i18n'
     ],
 };
 
