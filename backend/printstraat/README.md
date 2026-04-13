@@ -4,11 +4,10 @@ A Valtimo plugin that collects a **single document** from the **Documenten API**
 
 ## What it does
 
-- Reads a process variable containing **JSON metadata of a single document**.
+- Reads a process variable containing a **document URL**.
 - Downloads the document via the configured **Documenten API** plugin configuration.
 - Base64-encodes the file and posts it to **Printstraat**.
-- Uses a deterministic unique filename (`"<documentId> - <documentName>"`) to avoid duplicate uploads.
-- On failure, throws a BPMN error with code `PrintstraatError`.
+- On failure, throws a BPMN error with code `PRINTSTRAAT_ERROR`.
 
 ---
 
@@ -26,31 +25,27 @@ A Valtimo plugin that collects a **single document** from the **Documenten API**
 
 ### Action input parameters
 
-| Parameter | Type | Required | Description |
-| --- | --- | :---: | --- |
+| Parameter | Type | Required | Description                                             |
+| --- | --- | :---: |---------------------------------------------------------|
 | `documentenApiPluginConfigurationId` | `String` | ✓ | Plugin configuration ID used to call the Documenten API |
-| `zaaknummer` | `String` | ✓ | Zaaknummer to send to Printstraat |
-| `documentMetadataVariableName` | `String` | ✓ | Name of the process variable that holds the document metadata |
+| `zaaknummer` | `String` | ✓ | Zaaknummer to send to Printstraat                       |
+| `documentUrl` | `String` | ✓ | Document URL                                            |
 
 ---
 
 ## Expected process variable
 
-`documentMetadataVariableName` must reference a **JSON object** representing a single document and must at least contain `id` and `name`.
+`documentUrl` must reference a **URI** representing a single document.
 
 Example:
 
-```json
-{
-  "id": "d7bd5d8e-9e5b-4f78-9e0a-5a5b20a4d8a4",
-  "name": "brief.pdf"
-} 
+```text
+http://localhost:8001/documenten/api/v1/enkelvoudiginformatieobjecten/a9cdfb0e-30d5-4101-a75c-ecd3cc204ce0
 ```
 
 ## Implementation notes
 
 - Files are base64-encoded (`InputStream` → Base64) before sending.
-- Filenames are prefixed with the documentId: `"<documentId> - <documentName>"` to avoid duplicate rejections on the Printstraat side.
 - `documentenApiPluginConfigurationId` is passed to `DocumentenApiService.downloadInformatieObject(...)`.
 - The plugin sends exactly one document per action invocation.
 - To send multiple documents, model the service task as a **BPMN multi-instance**:
