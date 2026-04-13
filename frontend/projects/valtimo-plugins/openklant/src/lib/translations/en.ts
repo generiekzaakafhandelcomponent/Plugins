@@ -2,6 +2,10 @@ export const pluginEnTranslations = {
     openKlant: {
         contactHistory: {
             tabTitle: "Contact History",
+            loadingSpinner: {
+                loading: "Loading...",
+                retrieved: "Retrieved"
+            },
             outcome: {
                 success: "Success",
                 failure: "Failure",

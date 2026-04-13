@@ -3,6 +3,10 @@ export const pluginNlTranslations = {
     openKlant: {
         contactHistory: {
             tabTitle: "Contactgeschiedenis",
+            loadingSpinner: {
+                loading: "Verversen...",
+                retrieved: "Opgehaald"
+            },
             outcome: {
                 success: "Succes",
                 failure: "Mislukt",
