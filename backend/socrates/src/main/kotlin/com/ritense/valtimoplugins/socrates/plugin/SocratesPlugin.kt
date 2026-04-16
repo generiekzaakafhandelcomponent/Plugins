@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticat
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
 import com.ritense.valtimoplugins.socrates.error.ProcessErrorPayload
 import com.ritense.valtimoplugins.socrates.error.SocratesError
+import com.ritense.valtimoplugins.socrates.model.Betrokkene
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
@@ -67,19 +68,27 @@ open class SocratesPlugin(
     open fun dienstAanmaken(
         execution: DelegateExecution,
         @PluginActionProperty zaakId: String,
-        @PluginActionProperty inputProcessVariable: String,
+        @PluginActionProperty loBehandeldInputProcessVariable: String,
+        @PluginActionProperty betrokkenenInputProcessVariable: String?,
         @PluginActionProperty processVariableName: String
     ) {
         setsocratesClientParams()
         logger.debug { "dienst-aanmaken start" }
 
         try {
-            val input = execution.getVariable(inputProcessVariable)
-            val request = mapper.convertValue<LoBehandeld>(input)
+            val loBehandeldInput = execution.getVariable(loBehandeldInputProcessVariable)
+            val loBehandeld = mapper.convertValue<LoBehandeld>(loBehandeldInput)
+
+            var betrokkenen: List<Betrokkene> = emptyList()
+            if(execution.hasVariable(betrokkenenInputProcessVariable)) {
+                val betrokkenenInput = execution.getVariable(betrokkenenInputProcessVariable)
+                betrokkenen = mapper.convertValue<List<Betrokkene>>(betrokkenenInput)
+            }
 
             val response = socratesClient.dienstAanmaken(
                 zaakId = zaakId,
-                loBehandeld = request,
+                loBehandeld = loBehandeld,
+                betrokkenen = betrokkenen,
                 authentication = authenticationPluginConfiguration
             )
 

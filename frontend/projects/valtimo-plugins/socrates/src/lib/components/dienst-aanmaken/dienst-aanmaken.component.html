@@ -35,13 +35,23 @@
     >
     </v-input>
     <v-input
-            name="inputProcessVariable"
-            [title]="'inputVariabeleName' | pluginTranslate: pluginId | async"
+            name="loBehandeldInputProcessVariable"
+            [title]="'loBehandeldInputNaam' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.inputProcessVariable"
+            [defaultValue]="obs.prefill?.loBehandeldInputProcessVariable"
             [disabled]="obs.disabled"
-            [tooltip]="'inputVariabeleNaamTooltip' | pluginTranslate: pluginId | async"
+            [tooltip]="'loBehandeldInputNaamTooltip' | pluginTranslate: pluginId | async"
             [required]="true"
+    >
+    </v-input>
+    <v-input
+            name="betrokkenenInputProcessVariable"
+            [title]="'betrokkenenInputNaam' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [defaultValue]="obs.prefill?.betrokkenenInputProcessVariable"
+            [disabled]="obs.disabled"
+            [tooltip]="'betrokkenenInputNaamTooltip' | pluginTranslate: pluginId | async"
+            [required]="false"
     >
     </v-input>
     <v-input
