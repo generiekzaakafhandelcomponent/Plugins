@@ -1,0 +1,17 @@
+[
+  {
+    "processDefinitionKey": "cloud-event-publish",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "cloud-event-receive",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  },
+  {
+    "processDefinitionKey": "cloud-event-message-start",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  }
+]

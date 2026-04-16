@@ -20,6 +20,7 @@
       "@src": ["src"],
       "@src/*": ["src/*"],
       "@valtimo-plugins/archief": ["dist/valtimo-plugins/archief"],
+      "@valtimo-plugins/cloud-event": ["dist/valtimo-plugins/cloud-event"],
       "@valtimo-plugins/externe-klanttaak": ["dist/valtimo-plugins/externe-klanttaak"],
       "@valtimo-plugins/freemarker": ["dist/valtimo-plugins/freemarker"],
       "@valtimo-plugins/haal-centraal": ["dist/valtimo-plugins/haal-centraal"],

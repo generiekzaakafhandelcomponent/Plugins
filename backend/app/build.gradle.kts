@@ -18,6 +18,7 @@ dependencies {
 
     // Plugins
     implementation(project(":backend:archief"))
+    implementation(project(":backend:cloud-event"))
     implementation(project(":backend:valtimo-ocr"))
     implementation(project(":backend:externe-klanttaak"))
     implementation(project(":backend:haal-centraal"))

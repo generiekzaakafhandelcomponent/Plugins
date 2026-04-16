@@ -1,0 +1,32 @@
+[
+  {
+    "activityId": "MessageStartEvent",
+    "activityType": "bpmn:MessageStartEvent:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "e7b3a1d4-5c2f-4e8a-9d6b-1f3a5c7e9b02",
+    "pluginActionDefinitionKey": "receive-cloud-event",
+    "actionProperties": {
+      "eventType": "com.example.cloud-event.start-process"
+    }
+  },
+  {
+    "activityId": "ReceiveTaskWait",
+    "activityType": "bpmn:ReceiveTask:end",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "e7b3a1d4-5c2f-4e8a-9d6b-1f3a5c7e9b02",
+    "pluginActionDefinitionKey": "receive-cloud-event",
+    "actionProperties": {
+      "eventType": "com.example.cloud-event.resume-process"
+    }
+  },
+  {
+    "activityId": "CatchEventWait",
+    "activityType": "bpmn:IntermediateCatchEvent:end",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "e7b3a1d4-5c2f-4e8a-9d6b-1f3a5c7e9b02",
+    "pluginActionDefinitionKey": "receive-cloud-event",
+    "actionProperties": {
+      "eventType": "com.example.cloud-event.resume-process"
+    }
+  }
+]
