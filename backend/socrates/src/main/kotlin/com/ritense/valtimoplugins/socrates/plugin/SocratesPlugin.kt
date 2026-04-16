@@ -88,7 +88,7 @@ open class SocratesPlugin(
             val response = socratesClient.dienstAanmaken(
                 zaakId = zaakId,
                 loBehandeld = loBehandeld,
-                betrokkenenWrapper = betrokkenen,
+                betrokkenen = betrokkenen,
                 authentication = authenticationPluginConfiguration
             )
 
