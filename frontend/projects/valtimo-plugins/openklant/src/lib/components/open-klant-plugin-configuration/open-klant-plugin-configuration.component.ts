@@ -8,8 +8,8 @@ import {
 } from "@angular/core";
 import {
   PluginConfigurationComponent,
-  PluginConfigurationData,
-} from "@valtimo/plugin";
+  PluginConfigurationData, PluginTranslatePipeModule,
+} from '@valtimo/plugin';
 import {
   BehaviorSubject,
   combineLatest,
@@ -18,11 +18,19 @@ import {
   take,
 } from "rxjs";
 import { Config } from "../../models/config";
+import {FormModule, InputModule} from '@valtimo/components';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
-  selector: "open-klant-plugin-configuration",
-  templateUrl: "./open-klant-plugin-configuration.component.html",
-  styleUrl: "./open-klant-plugin-configuration.component.scss",
+  selector: 'open-klant-plugin-configuration',
+  templateUrl: './open-klant-plugin-configuration.component.html',
+  styleUrl: './open-klant-plugin-configuration.component.scss',
+  imports: [
+    FormModule,
+    InputModule,
+    PluginTranslatePipeModule,
+    AsyncPipe
+  ]
 })
 export class OpenKlantPluginConfigurationComponent
   implements PluginConfigurationComponent, OnInit, OnDestroy
