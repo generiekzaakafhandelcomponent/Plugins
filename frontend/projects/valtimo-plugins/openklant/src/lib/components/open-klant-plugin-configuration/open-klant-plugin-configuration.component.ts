@@ -19,7 +19,7 @@ import {
 } from "rxjs";
 import { Config } from "../../models/config";
 import {FormModule, InputModule} from '@valtimo/components';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, NgIf} from '@angular/common';
 
 @Component({
   selector: 'open-klant-plugin-configuration',
@@ -29,7 +29,8 @@ import {AsyncPipe} from '@angular/common';
     FormModule,
     InputModule,
     PluginTranslatePipeModule,
-    AsyncPipe
+    AsyncPipe,
+    NgIf
   ]
 })
 export class OpenKlantPluginConfigurationComponent
