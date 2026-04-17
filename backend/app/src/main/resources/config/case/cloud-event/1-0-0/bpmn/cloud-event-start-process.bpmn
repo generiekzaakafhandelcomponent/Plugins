@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1"
+                  targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+    <bpmn:process camunda:versionTag="CD:cloud-event:1.0.0" id="cloud-event-start-process" isClosed="false"
+                  isExecutable="true" name="Cloud event start process" processType="None">
+        <bpmn:startEvent camunda:asyncAfter="true" camunda:asyncBefore="true" id="StartEvent_1" isInterrupting="true"
+                         parallelMultiple="false">
+            <bpmn:outgoing>Flow_1siz7xx</bpmn:outgoing>
+            <bpmn:messageEventDefinition id="MessageEventDefinition_1apsjk7" messageRef="Message_0lprsnv"/>
+        </bpmn:startEvent>
+        <bpmn:endEvent camunda:asyncAfter="true" camunda:asyncBefore="true" id="Event_1qtn37s">
+            <bpmn:incoming>Flow_1w8yrxb</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="Flow_1siz7xx" sourceRef="StartEvent_1" targetRef="Activity_1yrraxv"/>
+        <bpmn:sequenceFlow id="Flow_1w8yrxb" sourceRef="Activity_1yrraxv" targetRef="Event_1qtn37s"/>
+        <bpmn:userTask camunda:candidateGroups="ROLE_USER" completionQuantity="1" id="Activity_1yrraxv"
+                       implementation="##unspecified" isForCompensation="false" name="View cloud event"
+                       startQuantity="1">
+            <bpmn:incoming>Flow_1siz7xx</bpmn:incoming>
+            <bpmn:outgoing>Flow_1w8yrxb</bpmn:outgoing>
+        </bpmn:userTask>
+    </bpmn:process>
+    <bpmn:message id="Message_0lprsnv" name="Message_0lprsnv"/>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane bpmnElement="cloud-event-start-process" id="BPMNPlane_1">
+            <bpmndi:BPMNShape bpmnElement="StartEvent_1" id="Event_04o47lo_di">
+                <dc:Bounds height="36" width="36" x="173" y="102"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="Event_1qtn37s" id="Event_1qtn37s_di">
+                <dc:Bounds height="36" width="36" x="422" y="102"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="Activity_1yrraxv" id="Activity_1byu4wn_di">
+                <dc:Bounds height="80" width="100" x="260" y="80"/>
+                <bpmndi:BPMNLabel/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="Flow_1siz7xx" id="Flow_1siz7xx_di">
+                <di:waypoint x="209" y="120"/>
+                <di:waypoint x="260" y="120"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="Flow_1w8yrxb" id="Flow_1w8yrxb_di">
+                <di:waypoint x="360" y="120"/>
+                <di:waypoint x="422" y="120"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

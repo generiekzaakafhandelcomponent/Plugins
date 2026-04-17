@@ -10,7 +10,7 @@
     "startableByUser": true
   },
   {
-    "processDefinitionKey": "cloud-event-message-start",
+    "processDefinitionKey": "cloud-event-start-process",
     "canInitializeDocument": true,
     "startableByUser": false
   }

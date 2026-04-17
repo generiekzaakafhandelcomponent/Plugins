@@ -1,38 +1,27 @@
 [
   {
-    "activityId": "StartEvent",
-    "activityType": "bpmn:StartEvent:start",
-    "processLinkType": "form",
-    "formDefinitionName": "start-form-cloud-event"
-  },
-  {
     "activityId": "SendTaskPublish",
     "activityType": "bpmn:SendTask:start",
-    "processLinkType": "plugin",
     "pluginConfigurationId": "e7b3a1d4-5c2f-4e8a-9d6b-1f3a5c7e9b02",
     "pluginActionDefinitionKey": "publish-cloud-event",
     "actionProperties": {
-      "eventType": "com.example.cloud-event.start-process",
-      "resultType": "test",
-      "resultId": "send-task-result-1",
-      "data": {
-        "message": "Published via send task"
-      }
-    }
+      "data": "Hoi",
+      "resultId": "send-task-result",
+      "eventType": "com.example.cloud-event.test",
+      "resultType": "test"
+    },
+    "referenceType": "FIXED",
+    "pluginDefinitionKey": null,
+    "processLinkType": "plugin"
   },
   {
-    "activityId": "ThrowEventPublish",
-    "activityType": "bpmn:IntermediateThrowEvent:start",
-    "processLinkType": "plugin",
-    "pluginConfigurationId": "e7b3a1d4-5c2f-4e8a-9d6b-1f3a5c7e9b02",
-    "pluginActionDefinitionKey": "publish-cloud-event",
-    "actionProperties": {
-      "eventType": "com.example.cloud-event.resume-process",
-      "resultType": "test",
-      "resultId": "throw-event-result-1",
-      "data": {
-        "message": "Published via intermediate throw event"
-      }
-    }
+    "activityId": "StartEvent",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "start-form-cloud-event",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": null,
+    "processLinkType": "form"
   }
 ]

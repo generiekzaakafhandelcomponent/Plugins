@@ -1,59 +1,47 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_publish"
-                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
-    <bpmn:process id="cloud-event-publish" name="Cloud Event Publish" isExecutable="true">
-        <bpmn:startEvent id="StartEvent">
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" exporter="Camunda Modeler" exporterVersion="5.34.0"
+                  expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_publish"
+                  targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+    <bpmn:process camunda:versionTag="CD:cloud-event:1.0.0" id="cloud-event-publish" isClosed="false"
+                  isExecutable="true" name="Cloud Event Publish" processType="None">
+        <bpmn:startEvent camunda:asyncAfter="true" id="StartEvent" isInterrupting="true" parallelMultiple="false">
             <bpmn:outgoing>Flow_1</bpmn:outgoing>
         </bpmn:startEvent>
         <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent" targetRef="SendTaskPublish"/>
-        <bpmn:sendTask id="SendTaskPublish" name="Publish Cloud Event to start process" camunda:expression="${null}">
+        <bpmn:sendTask camunda:asyncAfter="true" camunda:asyncBefore="true" camunda:expression="${null}"
+                       completionQuantity="1" id="SendTaskPublish" implementation="##WebService"
+                       isForCompensation="false" name="Publish Cloud Event" startQuantity="1">
             <bpmn:incoming>Flow_1</bpmn:incoming>
             <bpmn:outgoing>Flow_2</bpmn:outgoing>
         </bpmn:sendTask>
-        <bpmn:sequenceFlow id="Flow_2" sourceRef="SendTaskPublish" targetRef="ThrowEventPublish"/>
-        <bpmn:intermediateThrowEvent id="ThrowEventPublish" name="Publish Cloud Event to resume process">
-            <bpmn:incoming>Flow_2</bpmn:incoming>
-            <bpmn:outgoing>Flow_3</bpmn:outgoing>
-            <bpmn:messageEventDefinition id="MessageEventDefinition_throw" messageRef="Message_publish"/>
-        </bpmn:intermediateThrowEvent>
-        <bpmn:sequenceFlow id="Flow_3" sourceRef="ThrowEventPublish" targetRef="EndEvent"/>
+        <bpmn:sequenceFlow id="Flow_2" sourceRef="SendTaskPublish" targetRef="EndEvent"/>
         <bpmn:endEvent id="EndEvent">
-            <bpmn:incoming>Flow_3</bpmn:incoming>
+            <bpmn:incoming>Flow_2</bpmn:incoming>
         </bpmn:endEvent>
     </bpmn:process>
     <bpmn:message id="Message_publish" name="cloud-event-publish-message"/>
     <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="cloud-event-publish">
-            <bpmndi:BPMNShape id="_BPMNShape_StartEvent" bpmnElement="StartEvent">
-                <dc:Bounds x="179" y="99" width="36" height="36"/>
+        <bpmndi:BPMNPlane bpmnElement="cloud-event-publish" id="BPMNPlane_1">
+            <bpmndi:BPMNShape bpmnElement="StartEvent" id="_BPMNShape_StartEvent">
+                <dc:Bounds height="36" width="36" x="179" y="99"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_SendTask_di" bpmnElement="SendTaskPublish">
-                <dc:Bounds x="270" y="77" width="100" height="80"/>
+            <bpmndi:BPMNShape bpmnElement="SendTaskPublish" id="Activity_SendTask_di">
+                <dc:Bounds height="80" width="100" x="270" y="77"/>
                 <bpmndi:BPMNLabel/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Event_ThrowEvent_di" bpmnElement="ThrowEventPublish">
-                <dc:Bounds x="432" y="99" width="36" height="36"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="410" y="135" width="81" height="40"/>
-                </bpmndi:BPMNLabel>
+            <bpmndi:BPMNShape bpmnElement="EndEvent" id="Event_0x649al_di">
+                <dc:Bounds height="36" width="36" x="442" y="99"/>
             </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Event_EndEvent_di" bpmnElement="EndEvent">
-                <dc:Bounds x="532" y="99" width="36" height="36"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+            <bpmndi:BPMNEdge bpmnElement="Flow_1" id="Flow_1_di">
                 <di:waypoint x="215" y="117"/>
                 <di:waypoint x="270" y="117"/>
             </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+            <bpmndi:BPMNEdge bpmnElement="Flow_2" id="Flow_2_di">
                 <di:waypoint x="370" y="117"/>
-                <di:waypoint x="432" y="117"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
-                <di:waypoint x="468" y="117"/>
-                <di:waypoint x="532" y="117"/>
+                <di:waypoint x="442" y="117"/>
             </bpmndi:BPMNEdge>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>

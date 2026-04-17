@@ -86,10 +86,7 @@ open class CloudEventProcessLinkListener(
     private fun matchesFilter(event: ValtimoEvent, processLink: PluginProcessLink): Boolean {
         val properties = processLink.actionProperties ?: return true
         val filter = objectMapper.treeToValue(properties, ReceiveCloudEventProperties::class.java)
-        if (!filter.eventType.isNullOrBlank() && filter.eventType != event.type) {
-            return false
-        }
-        return true
+        return !(!filter.eventType.isNullOrBlank() && filter.eventType != event.type)
     }
 
     private fun signalWaitingExecutions(processLink: PluginProcessLink, variables: Map<String, Any>) {
