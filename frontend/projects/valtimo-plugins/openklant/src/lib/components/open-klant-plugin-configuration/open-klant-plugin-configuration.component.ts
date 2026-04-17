@@ -8,7 +8,8 @@ import {
 } from "@angular/core";
 import {
   PluginConfigurationComponent,
-  PluginConfigurationData, PluginTranslatePipeModule,
+  PluginConfigurationData, 
+  PluginTranslatePipeModule,
 } from '@valtimo/plugin';
 import {
   BehaviorSubject,
