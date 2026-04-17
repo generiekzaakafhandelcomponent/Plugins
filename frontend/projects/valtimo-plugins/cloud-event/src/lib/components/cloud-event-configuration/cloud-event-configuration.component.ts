@@ -16,7 +16,7 @@
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { PluginConfigurationComponent, PluginConfigurationData } from "@valtimo/plugin";
-import { BehaviorSubject, combineLatest, Observable, Subscription, take } from "rxjs";
+import { BehaviorSubject, combineLatest, filter, map, Observable, Subscription, switchMap, take } from "rxjs";
 import { CloudEventConfig } from "../../models";
 
 @Component({
@@ -56,14 +56,14 @@ export class CloudEventConfigurationComponent implements PluginConfigurationComp
   }
 
   private openSaveSubscription(): void {
-    this.saveSubscription = this.save$?.subscribe((save) => {
-      combineLatest([this.formValue$, this.valid$])
-        .pipe(take(1))
-        .subscribe(([formValue, valid]) => {
-          if (valid) {
-            this.configuration.emit(formValue!);
-          }
-        });
-    });
+    this.saveSubscription = this.save$
+      ?.pipe(
+        switchMap(() => combineLatest([this.formValue$, this.valid$]).pipe(take(1))),
+        filter(([_, valid]) => valid),
+        map(([formValue]) => formValue)
+      )
+      .subscribe(formValue => {
+        this.configuration.emit(formValue!);
+      });
   }
 }

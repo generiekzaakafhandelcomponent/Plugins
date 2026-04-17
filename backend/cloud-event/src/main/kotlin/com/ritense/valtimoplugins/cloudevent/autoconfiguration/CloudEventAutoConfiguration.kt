@@ -20,10 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.ritense.case.service.CaseDefinitionService
 import com.ritense.inbox.ValtimoEventHandler
 import com.ritense.outbox.OutboxService
-import com.ritense.plugin.repository.PluginProcessLinkRepository
 import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.service.ProcessDefinitionCaseDefinitionService
 import com.ritense.processdocument.service.ProcessDocumentService
+import com.ritense.processlink.repository.ValtimoPluginProcessLinkRepository
 import com.ritense.valtimo.contract.config.LiquibaseMasterChangeLogLocation
 import com.ritense.valtimo.service.ProcessPropertyService
 import com.ritense.valtimoplugins.cloudevent.domain.ProcessedCloudEvent
@@ -62,7 +62,7 @@ class CloudEventAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(CloudEventProcessLinkListener::class)
     fun cloudEventProcessLinkListener(
-        pluginProcessLinkRepository: PluginProcessLinkRepository,
+        pluginProcessLinkRepository: ValtimoPluginProcessLinkRepository,
         runtimeService: RuntimeService,
         repositoryService: RepositoryService,
         processPropertyService: ProcessPropertyService,

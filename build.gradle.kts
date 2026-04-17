@@ -35,7 +35,8 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url = uri("https://central.sonatype.com/repository/maven-snapshots") }
+        maven { url = uri("https://s01.oss.sonatype.org/content/repositories/releases/") }
+        maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
     }
 }
 

@@ -30,6 +30,7 @@ import com.ritense.processdocument.domain.impl.request.NewDocumentAndStartProces
 import com.ritense.processdocument.service.ProcessDefinitionCaseDefinitionService
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.processlink.repository.ValtimoPluginProcessLinkRepository
 import com.ritense.valtimo.service.ProcessPropertyService
 import com.ritense.valtimoplugins.cloudevent.domain.ProcessedCloudEvent
 import com.ritense.valtimoplugins.cloudevent.domain.ReceiveCloudEventProperties
@@ -44,7 +45,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 open class CloudEventProcessLinkListener(
-    private val pluginProcessLinkRepository: PluginProcessLinkRepository,
+    private val pluginProcessLinkRepository: ValtimoPluginProcessLinkRepository,
     private val runtimeService: RuntimeService,
     private val repositoryService: RepositoryService,
     private val processPropertyService: ProcessPropertyService,
@@ -67,7 +68,8 @@ open class CloudEventProcessLinkListener(
         processedCloudEventRepository.save(ProcessedCloudEvent(eventId = event.id))
 
         val processLinks: List<PluginProcessLink> = pluginProcessLinkRepository
-            .findByPluginDefinitionKeyAndPluginActionDefinitionKey(PLUGIN_KEY, ACTION_KEY)
+            .findByPluginActionDefinitionKey(ACTION_KEY)
+            //.findByPluginDefinitionKeyAndPluginActionDefinitionKey(PLUGIN_KEY, ACTION_KEY)
         if (processLinks.isEmpty()) {
             return
         }
@@ -138,9 +140,14 @@ open class CloudEventProcessLinkListener(
     }
 
     private fun startDocumentProcessByMessage(processLink: PluginProcessLink, variables: Map<String, Any>) {
-        val processDefinitionCaseDefinition = processDefinitionCaseDefinitionService
-            .findByProcessDefinitionIdOrNull(ProcessDefinitionId(processLink.processDefinitionId))
-            ?: return
+        val processDefinitionCaseDefinition = try {
+            processDefinitionCaseDefinitionService
+                .findByProcessDefinitionId(ProcessDefinitionId(processLink.processDefinitionId))
+                //.findByProcessDefinitionIdOrNull(ProcessDefinitionId(processLink.processDefinitionId))
+                ?: return
+        } catch (_: Exception) {
+            return
+        }
 
         val activeCaseDefinition =
             caseDefinitionService.getActiveCaseDefinition(processDefinitionCaseDefinition.id.caseDefinitionId.key)

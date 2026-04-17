@@ -25,7 +25,6 @@ import com.ritense.valtimo.event.OperatonTaskEvent
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.UUID
-import org.operaton.bpm.engine.delegate.DelegateTask
 import org.springframework.context.ApplicationEventPublisher
 
 class PublicTaskCompletedListener(
