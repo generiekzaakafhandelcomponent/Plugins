@@ -40,7 +40,7 @@ const openKlantPluginSpecification: PluginSpecification = {
       configurationTitle: "Configuratie van de Open Klant-plugin",
       configurationTitleTooltip:
         "In dit onderdeel configureer je de Open Klant-plugin om eenvoudig gegevens te kunnen verzenden en ophalen.",
-      klantinteractiesUrl: "Klant interacties URL",
+      klantinteractiesUrl: "Klantinteracties URL",
       token: "Open Klant token",
 
       // Store contact info
@@ -106,7 +106,7 @@ const openKlantPluginSpecification: PluginSpecification = {
       configurationTitle: "Open Klant plugin configuration",
       configurationTitleTooltip:
         "In this section, you configure the Open Klant plugin to easily send and retrieve data.",
-      klantinteractiesUrl: "Klant interacties URL",
+      klantinteractiesUrl: "Klantinteracties URL",
       token: "Open Klant token",
 
       // Store contact info
