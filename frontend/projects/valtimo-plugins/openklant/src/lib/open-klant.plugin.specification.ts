@@ -25,11 +25,8 @@ const openKlantPluginSpecification: PluginSpecification = {
   pluginTranslations: {
     nl: {
       title: "Open Klant",
-      configurationTitle: "Configuratie van de Open Klant-plugin",
       description:
         "Een plugin voor het ophalen en versturen van Open Klant-gegevens.",
-      configurationTitleTooltip:
-        "In dit onderdeel configureer je de Open Klant-plugin om eenvoudig gegevens te kunnen verzenden en ophalen.",
 
       // Common
       resultPvName: "Naam van resultaat-procesvariabele",
@@ -38,6 +35,13 @@ const openKlantPluginSpecification: PluginSpecification = {
       caseUuid: "Open Zaak zaak UUID",
       variableFieldTooltip:
         "Dit veld kan zowel de letterlijke waarde, of het pad naar een (proces)variabele bevatten welke de waarde bevat (b.v. 'pv:/resultaat')",
+
+      // Configuration
+      configurationTitle: "Configuratie van de Open Klant-plugin",
+      configurationTitleTooltip:
+        "In dit onderdeel configureer je de Open Klant-plugin om eenvoudig gegevens te kunnen verzenden en ophalen.",
+      klantinteractiesUrl: "Klant interacties URL",
+      token: "Open Klant token",
 
       // Store contact info
       "store-contact-info": "Maak Digitaal Adres (en Partij) aan",
@@ -88,10 +92,7 @@ const openKlantPluginSpecification: PluginSpecification = {
 
     en: {
       title: "Open Klant",
-      configurationTitle: "Open Klant plugin configuration",
       description: "A plugin for retrieving and sending Open Klant data.",
-      configurationTitleTooltip:
-        "In this section, you configure the Open Klant plugin to easily send and retrieve data.",
 
       // Common
       resultPvName: "Result process variable name",
@@ -100,6 +101,13 @@ const openKlantPluginSpecification: PluginSpecification = {
       caseUuid: "Open Zaak case UUID",
       variableFieldTooltip:
         "This field accepts either a literal value or a path to a (process) variable containing the value (e.g. 'pv:/result')",
+
+      // Configuration
+      configurationTitle: "Open Klant plugin configuration",
+      configurationTitleTooltip:
+        "In this section, you configure the Open Klant plugin to easily send and retrieve data.",
+      klantinteractiesUrl: "Klant interacties URL",
+      token: "Open Klant token",
 
       // Store contact info
       "store-contact-info": "Create 'Digitaal Adres' (digital address) (and Partij)",
