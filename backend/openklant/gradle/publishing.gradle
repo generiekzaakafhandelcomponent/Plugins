@@ -27,7 +27,7 @@ pluginManager.withPlugin("maven-publish") {
                     description = "Open Klant plugin for Valtimo"
                     developers {
                         developer {
-                            id = "team-risa"
+                            id = "risa-it"
                             name = "RISA IT"
                             email = "gzac@risa-it.nl"
                         }
