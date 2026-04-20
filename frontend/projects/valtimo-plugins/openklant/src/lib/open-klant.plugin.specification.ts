@@ -37,11 +37,11 @@ const openKlantPluginSpecification: PluginSpecification = {
         "Dit veld kan zowel de letterlijke waarde, of het pad naar een (proces)variabele bevatten welke de waarde bevat (b.v. 'pv:/resultaat')",
 
       // Configuration
-      configurationTitle: "Configuratie van de Open Klant-plugin",
+      configurationTitle: "Configuratie van de Open-Klantplugin",
       configurationTitleTooltip:
         "In dit onderdeel configureer je de Open Klant-plugin om eenvoudig gegevens te kunnen verzenden en ophalen.",
-      klantinteractiesUrl: "Klantinteracties URL",
-      token: "Open Klant token",
+      klantinteractiesUrl: "Klantinteracties-URL",
+      token: "Open-Klant-token",
 
       // Store contact info
       "store-contact-info": "Maak Digitaal Adres (en Partij) aan",
