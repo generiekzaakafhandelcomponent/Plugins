@@ -17,7 +17,9 @@
 package com.ritense.valtimoplugins.socrates.client
 
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import com.ritense.valtimoplugins.socrates.error.SocratesError
+import com.ritense.valtimoplugins.socrates.model.Betrokkene
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.HttpHeaders
@@ -41,14 +43,20 @@ class SocratesClient(
 ) {
     lateinit var socratesBaseUri: URI
 
-    fun dienstAanmaken(zaakId: String, loBehandeld: LoBehandeld): LOBehandeldRespons {
+    fun dienstAanmaken(
+        zaakId: String,
+        loBehandeld: LoBehandeld,
+        betrokkenen: List<Betrokkene>?,
+        authentication: HttpClientAuthenticator?
+    ): LOBehandeldRespons {
         val requestBody = LOBehandeldRequest(
             identificatie = zaakId,
             loBehandeld = loBehandeld,
+            betrokkenen = betrokkenen
         )
 
         val response = try {
-            restClientBuilder
+            val clientBuilder = restClientBuilder
                 .clone()
                 .requestInterceptor { request, body, execution ->
                     logRequest(request, body)
@@ -56,6 +64,10 @@ class SocratesClient(
                     logResponse(request, response)
                     response
                 }
+
+            authentication?.applyAuth(clientBuilder) ?: clientBuilder
+
+            clientBuilder
                 .build()
                 .post()
                 .uri {
@@ -74,36 +86,38 @@ class SocratesClient(
                 .retrieve()
                 .body<LOBehandeldRespons>()
         } catch (e: Exception) {
+            val safeException = sanitizeException(e)
+
             when (e.cause) {
                 is IOException -> {
                     val msg = "error connecting to Socrates"
-                    logger.error(e) { msg }
-                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                    logger.error { "$msg\n${sanitizeStackTrace(e)}" }
+                    throw SocratesError(safeException, msg, null, "SOCRATES_ERROR")
                 }
 
                 is HttpClientErrorException -> {
                     val excep = e.cause as HttpClientErrorException
                     val errorResponse = excep.getResponseBodyAs(ErrorResponse::class.java)
-                    logger.error(e) { "error request to Socrates" }
-                    throw SocratesError(e, null, errorResponse, "SOCRATES_ERROR")
+                    logger.error { "error request to Socrates\n${sanitizeStackTrace(e)}" }
+                    throw SocratesError(safeException, null, errorResponse, "SOCRATES_ERROR")
                 }
 
                 is HttpServerErrorException -> {
                     val msg = "error connecting to Socrates"
-                    logger.error(e) { msg }
-                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                    logger.error { "$msg\n${sanitizeStackTrace(e)}" }
+                    throw SocratesError(safeException, msg, null, "SOCRATES_ERROR")
                 }
 
                 else -> {
                     val msg = "unknown error met het aanmaken dienst in Socrates"
-                    logger.error(e) { msg }
-                    throw SocratesError(e, msg, null, "SOCRATES_ERROR")
+                    logger.error { "$msg\n${sanitizeStackTrace(e)}" }
+                    throw SocratesError(safeException, msg, null, "SOCRATES_ERROR")
                 }
             }
         }
 
         if (response == null) {
-            throw IllegalStateException("no respons")
+            throw IllegalStateException("no response")
         }
 
         logger.debug { response }
@@ -113,10 +127,12 @@ class SocratesClient(
     }
 
     private fun logRequest(request: HttpRequest, body: ByteArray?) {
-        logger.debug { "${"Request: {} {}"} ${request.getMethod()} ${request.getURI()}" }
+        logger.debug { "${"Request: {} {}"} ${request.method} ${request.uri}" }
         logHeaders(request.headers)
-        if (body != null && body.size > 0) {
-            logger.info("Request body: {}", String(body, StandardCharsets.UTF_8))
+
+        if (body != null && body.isNotEmpty()) {
+            val requestBody = String(body, StandardCharsets.UTF_8)
+            logger.info("Request body: {}", maskSensitiveFields(requestBody))
         }
     }
 
@@ -133,6 +149,32 @@ class SocratesClient(
         headers.forEach { (key, value) ->
             logger.debug { "$key: $value" }
         }
+    }
+
+    private fun maskSensitiveFields(json: String): String {
+        return listOf("bankrekening", "bankrekeningPartner", "bankrekeningDerde")
+            .fold(json) { acc, field ->
+                acc.replace(Regex(""""$field"\s*:\s*"([^"]*)"""")) { match ->
+                    val original = match.groupValues[1]
+                    val masked = if (original.length <= 4) {
+                        "****"
+                    } else {
+                        "*".repeat(original.length - 4) + original.takeLast(4)
+                    }
+
+                    """"$field":"$masked""""
+                }
+            }
+    }
+
+    private fun sanitizeException(e: Exception): Exception {
+        val sanitized = Exception(maskSensitiveFields(e.message ?: ""))
+        sanitized.stackTrace = e.stackTrace
+        return sanitized
+    }
+
+    private fun sanitizeStackTrace(e: Exception): String {
+        return maskSensitiveFields(e.stackTraceToString())
     }
 
     companion object {

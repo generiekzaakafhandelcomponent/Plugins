@@ -45,6 +45,11 @@ switch (destinationArg) {
 
 const distDir = './dist/valtimo-plugins';
 fs.readdirSync(distDir).forEach((dir) => {
+    const pkgJson = path.resolve(`${distDir}/${dir}/package.json`);
+    if (!fs.existsSync(pkgJson)) {
+        console.log(`Skipping ${dir}: no package.json found`);
+        return;
+    }
     let cwd = process.cwd();
     process.chdir(path.resolve(`${distDir}/${dir}`));
     if(destinationArg === 'npmjs') {

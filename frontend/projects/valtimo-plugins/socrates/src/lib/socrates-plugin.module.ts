@@ -18,7 +18,7 @@ import {NgModule} from '@angular/core';
 import {SocratesConfigurationComponent} from './components/socrates-configuration/socrates-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {FormModule, InputModule} from '@valtimo/components';
+import {FormModule, InputModule, SelectModule} from '@valtimo/components';
 import {DienstAanmakenComponent} from "./components/dienst-aanmaken/dienst-aanmaken.component";
 
 
@@ -27,7 +27,7 @@ import {DienstAanmakenComponent} from "./components/dienst-aanmaken/dienst-aanma
         SocratesConfigurationComponent,
         DienstAanmakenComponent,
     ],
-    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, SelectModule],
     exports: [
         SocratesConfigurationComponent,
         DienstAanmakenComponent

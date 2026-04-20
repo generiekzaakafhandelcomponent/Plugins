@@ -1,6 +1,7 @@
 package com.ritense.valtimoplugins.suwinet.service
 
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ritense.valtimo.TestHelper
 import com.ritense.valtimoplugins.BaseTest
 import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVIkvInfo
@@ -8,10 +9,10 @@ import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfo
 import com.ritense.valtimoplugins.dkd.UWVDossierInkomstenGSD.UWVPersoonsIkvInfoResponse
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClient
 import com.ritense.valtimoplugins.suwinet.client.SuwinetSOAPClientConfig
+import com.ritense.valtimoplugins.suwinet.dynamic.DynamicResponseFactory
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.any
@@ -31,19 +32,9 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
     lateinit var suwinetSOAPClient: SuwinetSOAPClient
 
     @Mock
-    lateinit var dateTimeService: DateTimeService
-
-    @Mock
-    lateinit var uwvSoortIkvService: UwvSoortIkvService
-
-    @Mock
-    lateinit var uwvCodeService: UwvCodeService
-
-    @Mock
     lateinit var suwinetSOAPClientConfig: SuwinetSOAPClientConfig
 
-    @InjectMocks
-    lateinit var suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService
+    private lateinit var suwinetUwvPersoonsIkvService: SuwinetUwvPersoonsIkvService
 
     lateinit var testHelper: TestHelper
 
@@ -51,14 +42,10 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
     fun setup() {
         testHelper = TestHelper
         suwinetSOAPClient = Mockito.mock()
-        dateTimeService = DateTimeService()
-        uwvCodeService = UwvCodeService()
-        uwvSoortIkvService = UwvSoortIkvService()
+        val dynamicResponseFactory = DynamicResponseFactory(jacksonObjectMapper())
         suwinetUwvPersoonsIkvService = SuwinetUwvPersoonsIkvService(
             suwinetSOAPClient,
-            dateTimeService,
-            uwvCodeService,
-            uwvSoortIkvService
+            dynamicResponseFactory
         )
         suwinetUwvPersoonsIkvService.setConfig(suwinetSOAPClientConfig, "")
     }
@@ -78,18 +65,19 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
         val result = suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
             bsn,
             uwvService,
-            3
+            dynamicProperties = listOf("*")
         )
 
         // then
-        assertEquals("found bsn should be equal", 1, result?.inkomsten?.size)
+        val inkomstenverhouding = (result.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
+        assertEquals("found bsn should be equal", 1, inkomstenverhouding.size)
     }
 
     @Test
     fun `retrieving UWV persoonsinfo should return ikv info node 111111110`() {
         // given
         val bsn = "111111110"
-        val maxPeriods = 3
+
         // when
         whenever(uwvService.uwvPersoonsIkvInfo(any(UWVPersoonsIkvInfo::class.java))).thenReturn(
             testHelper.unmarshal<UWVPersoonsIkvInfoResponse>(
@@ -99,19 +87,22 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
         val result = suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
             bsn,
             uwvService,
-            maxPeriods
+            dynamicProperties = listOf("*")
         )
         // then
-        assertEquals("found bsn should be equal", 2, result?.inkomsten?.size)
-        assertEquals("found opgaven should be equal to", 1, result?.inkomsten?.get(0)?.opgaven?.size)
-        assertEquals("found opgaven should be equal to", maxPeriods, result?.inkomsten?.get(1)?.opgaven?.size)
+        val inkomstenverhouding = (result.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
+        assertEquals("found bsn should be equal", 2, inkomstenverhouding.size)
+        val opgaven0 = ((inkomstenverhouding[0] as Map<*, *>)["inkomstenopgave"] as List<*>)
+        val opgaven1 = ((inkomstenverhouding[1] as Map<*, *>)["inkomstenopgave"] as List<*>)
+        assertEquals("found opgaven should be equal to", 1, opgaven0.size)
+        assertEquals("found opgaven should be equal to", 37, opgaven1.size)
     }
 
     @Test
     fun `retrieving UWV persoonsinfo should return ikv info node over long period`() {
         // given
         val bsn = "243000388"
-        val maxPeriods = 4
+
         // when
         whenever(uwvService.uwvPersoonsIkvInfo(any(UWVPersoonsIkvInfo::class.java))).thenReturn(
             testHelper.unmarshal<UWVPersoonsIkvInfoResponse>(
@@ -121,11 +112,11 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
         val result = suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
             bsn,
             uwvService,
-            maxPeriods
+            dynamicProperties = listOf("*")
         )
         // then
-        assertEquals("found bsn should be equal", 1, result?.inkomsten?.size)
-        assertEquals("found inkomsten opgaven should be equal", maxPeriods, result?.inkomsten?.get(0)?.opgaven?.size)
+        val inkomstenverhouding = (result.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
+        assertEquals("found bsn should be equal", 1, inkomstenverhouding.size)
     }
 
     @Test
@@ -143,15 +134,12 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
         val result = suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
             bsn,
             uwvService,
-            3
+            dynamicProperties = listOf("*")
         )
         logger.info { "$result" }
         // then
-        assertEquals("found bsn should be equal", 4, result?.inkomsten?.size)
-        logger.info { "0 - ${result?.inkomsten?.get(0)?.opgaven?.size}" }
-        logger.info { "1 - ${result?.inkomsten?.get(1)?.opgaven?.size}" }
-        logger.info { "2 - ${result?.inkomsten?.get(2)?.opgaven?.size}" }
-        logger.info { "3 - ${result?.inkomsten?.get(3)?.opgaven?.size}" }
+        val inkomstenverhouding = (result.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
+        assertEquals("found bsn should be equal", 4, inkomstenverhouding.size)
     }
 
     @Test
@@ -169,10 +157,10 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
         val result = suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
             bsn,
             uwvService,
-            3
+            dynamicProperties = listOf("*")
         )
 
         // then
-        assertEquals("found uwv clientsuwi should be null", null, result)
+        assertEquals("found uwv clientsuwi should be empty", true, result.properties.isEmpty())
     }
 }

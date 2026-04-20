@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,11 @@ import com.ritense.plugin.annotation.PluginEvent
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.plugin.domain.EventType
 import com.ritense.processlink.domain.ActivityTypeWithEventName
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import com.ritense.valtimoplugins.socrates.client.SocratesClient
 import com.ritense.valtimoplugins.socrates.error.ProcessErrorPayload
 import com.ritense.valtimoplugins.socrates.error.SocratesError
+import com.ritense.valtimoplugins.socrates.model.Betrokkene
 import com.ritense.valtimoplugins.socrates.model.LoBehandeld
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.BpmnError
@@ -48,6 +50,9 @@ open class SocratesPlugin(
     @PluginProperty(key = "socratesApiUrl", secret = false)
     lateinit var socratesApiUrl: URI
 
+    @PluginProperty(key = "authenticationPluginConfiguration", secret = false, required = false)
+    var authenticationPluginConfiguration: HttpClientAuthenticator? = null
+
     @PluginEvent(invokedOn = [EventType.CREATE, EventType.UPDATE])
     fun setsocratesClientParams() {
         logger.debug { "set socrates client params" }
@@ -63,17 +68,29 @@ open class SocratesPlugin(
     open fun dienstAanmaken(
         execution: DelegateExecution,
         @PluginActionProperty zaakId: String,
-        @PluginActionProperty inputProcessVariable: String,
+        @PluginActionProperty loBehandeldInputProcessVariable: String,
+        @PluginActionProperty betrokkenenInputProcessVariable: String?,
         @PluginActionProperty processVariableName: String
     ) {
         setsocratesClientParams()
         logger.debug { "dienst-aanmaken start" }
 
         try {
-            val input = execution.getVariable(inputProcessVariable)
-            val request = mapper.convertValue<LoBehandeld>(input)
+            val loBehandeldInput = execution.getVariable(loBehandeldInputProcessVariable)
+            val loBehandeld = mapper.convertValue<LoBehandeld>(loBehandeldInput)
 
-            val response = socratesClient.dienstAanmaken(zaakId, request)
+            var betrokkenen: List<Betrokkene> = emptyList()
+            if(execution.hasVariable(betrokkenenInputProcessVariable)) {
+                val betrokkenenInput = execution.getVariable(betrokkenenInputProcessVariable)
+                betrokkenen = mapper.convertValue<List<Betrokkene>>(betrokkenenInput)
+            }
+
+            val response = socratesClient.dienstAanmaken(
+                zaakId = zaakId,
+                loBehandeld = loBehandeld,
+                betrokkenen = betrokkenen,
+                authentication = authenticationPluginConfiguration
+            )
 
             execution.setVariable(processVariableName, response)
         } catch (e: Exception) {

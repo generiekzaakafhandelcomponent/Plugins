@@ -29,6 +29,7 @@ include(
     "backend:value-mapper",
     "backend:document-search",
     "backend:printstraat",
+    "backend:http-client-authentication",
     "frontend",
 )
 

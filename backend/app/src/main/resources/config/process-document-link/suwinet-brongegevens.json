@@ -15,12 +15,27 @@
     "startableByUser": false
   },
   {
+    "processDefinitionKey": "ophalen-kadaster-aanduidingen",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
     "processDefinitionKey": "ophalen-kadaster-info",
     "canInitializeDocument": true,
     "startableByUser": false
   },
   {
     "processDefinitionKey": "ophalen-rdw-brongegevens",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-rdw-kentekens",
+    "canInitializeDocument": true,
+    "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-rdw-voertuig",
     "canInitializeDocument": true,
     "startableByUser": false
   },

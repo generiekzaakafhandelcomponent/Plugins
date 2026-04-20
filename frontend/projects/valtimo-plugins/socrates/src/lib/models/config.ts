@@ -22,7 +22,8 @@ interface SocratesConfig extends PluginConfigurationData {
 
 interface DienstAanmakenConfig {
     zaakId: string;
-    inputProcessVariable: string;
+    loBehandeldInputProcessVariable: string;
+    betrokkenenInputProcessVariable: string;
     processVariableName: string;
 }
 

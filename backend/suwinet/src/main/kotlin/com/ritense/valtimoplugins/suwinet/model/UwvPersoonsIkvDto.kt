@@ -4,8 +4,9 @@ import java.math.BigDecimal
 import java.time.LocalDate
 
 data class UwvPersoonsIkvDto(
-    val inkomsten: List<Inkomsten>
-
+    val inkomsten: List<Inkomsten>,
+    val propertiesMap: Map<String, Any?> = mapOf(),
+    val properties: List<String> = listOf()
 ) {
     data class Inkomsten(
         val naamRechtspersoon: String?,

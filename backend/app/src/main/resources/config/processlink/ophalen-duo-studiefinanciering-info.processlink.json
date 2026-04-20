@@ -12,8 +12,8 @@
   {
     "actionProperties": {
       "bsn": "pv:bsn",
-      "resultProcessVariableName": "duoStudiefinanciering",
-      "maxPeriods": 4
+      "dynamicProperties":["*"],
+      "resultProcessVariableName": "duoStudiefinanciering"
     },
     "activityId": "SuwinetDuoStudiefinancieringInfo",
     "activityType": "bpmn:ServiceTask:start",

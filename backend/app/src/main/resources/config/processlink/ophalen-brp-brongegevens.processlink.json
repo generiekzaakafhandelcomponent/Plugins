@@ -12,7 +12,8 @@
     {
         "actionProperties": {
             "bsn": "pv:bsn",
-            "resultProcessVariableName": "brpPersoonsgegevensInfo"
+            "resultProcessVariableName": "brpPersoonsgegevensInfo",
+            "dynamicProperties":["*"]
         },
         "activityId": "OphalenBRPPersoonsgegevensTask",
         "activityType": "bpmn:ServiceTask:start",
@@ -23,7 +24,8 @@
     {
         "actionProperties": {
             "bsn": "pv:partnerBsn",
-            "resultProcessVariableName": "brpPersoonsgegevensPartnerInfo"
+            "resultProcessVariableName": "brpPersoonsgegevensPartnerInfo",
+            "dynamicProperties": ["*"]
         },
         "activityId": "OphalenBRPPartnerGegevensTask",
         "activityType": "bpmn:ServiceTask:start",
@@ -34,7 +36,9 @@
     {
         "actionProperties": {
             "kinderenBsns": "pv:kinderenBsns",
-            "resultProcessVariableName": "brpPersoonsgegevensKinderenInfo"
+            "resultProcessVariableName": "brpPersoonsgegevensKinderenInfo",
+            "dynamicProperties": ["*"]
+
         },
         "activityId": "OphalenBRPKinderenGegevensTask",
         "activityType": "bpmn:ServiceTask:start",

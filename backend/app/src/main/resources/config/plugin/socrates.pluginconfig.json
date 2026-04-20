@@ -4,7 +4,8 @@
     "title": "Socrates plugin (autodeployed)",
     "pluginDefinitionKey": "socrates",
     "properties": {
-      "socratesApiUrl": "http://localhost:9898"
+      "socratesApiUrl": "http://localhost:9898",
+      "authenticationPluginConfiguration": "5a47634f-2757-41ba-95de-4dec94752148"
     }
   }
 ]

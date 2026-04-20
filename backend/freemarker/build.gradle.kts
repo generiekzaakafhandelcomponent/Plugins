@@ -23,6 +23,11 @@ dockerCompose {
     }
 }
 
+val kotlinLoggingVersion: String by project
+val mockitoKotlinVersion: String by project
+val flyingSaucerPdfVersion: String by project
+val apacheCommonsCsvVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:document")
@@ -37,9 +42,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    implementation("org.freemarker:freemarker:2.3.33")
+    implementation("org.freemarker:freemarker")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:$flyingSaucerPdfVersion")
+    implementation("org.apache.commons:commons-csv:$apacheCommonsCsvVersion")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging:$kotlinLoggingVersion")
 
     // Testing
     testImplementation("com.ritense.valtimo:local-resource")
@@ -49,7 +56,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 

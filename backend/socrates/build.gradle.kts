@@ -24,6 +24,8 @@ dockerCompose {
 }
 
 dependencies {
+    implementation(project(":backend:http-client-authentication"))
+
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")

@@ -91,6 +91,8 @@ import {ObjectModule} from "@valtimo/object";
 
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {
+    DocumentGeneratorPluginModule,
+    documentGeneratorPluginSpecification,
     MailTemplatePluginModule,
     mailTemplatePluginSpecification,
     TextTemplatePluginModule,
@@ -131,10 +133,13 @@ import {
     HaalCentraalBagPluginModule
 } from "../../projects/valtimo-plugins/haal-centraal/src/lib/plugins/bag/haal-centraal-bag-plugin.module";
 
+import {
+    HttpClientAuthenticationPluginModule,
+    httpClientAuthenticationPluginSpecification
+} from "../../projects/valtimo-plugins/http-client-authentication/src/public-api";
 import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from "@valtimo/dashboard";
 import {DashboardManagementModule} from "@valtimo/dashboard-management";
-import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
 import {ValtimoOcrPluginModule} from "../../projects/valtimo-plugins/valtimo-ocr/src/lib/valtimo-ocr-plugin-module";
 import {
     valtimoOcrPluginSpecification
@@ -172,6 +177,7 @@ import {PrintstraatPluginModule} from "../../projects/valtimo-plugins/printstraa
 import {
     printstraatPluginSpecification
 } from "../../projects/valtimo-plugins/printstraat/src/lib/printstraat.plugin.specification";
+import {KvkPluginModule, kvkPluginSpecification} from "@valtimo-plugins/kvk-handelsregister";
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -188,6 +194,8 @@ export function tabsFactory() {
     ],
     imports: [
         ValuePathSelectorComponent,
+        ZgwModule,
+        DocumentGeneratorPluginModule,
         MailTemplatePluginModule,
         TextTemplatePluginModule,
         PublictaskPluginModule,
@@ -207,6 +215,7 @@ export function tabsFactory() {
         SuwinetPluginModule,
         SuwinetAuthPluginModule,
         XentialPluginModule,
+        HttpClientAuthenticationPluginModule,
         HttpClientModule,
         CommonModule,
         BrowserModule,
@@ -282,6 +291,7 @@ export function tabsFactory() {
             valtimoOcrPluginSpecification,
             valtimoS2tPluginSpecification,
             externeKlanttaakPluginSpecification,
+            documentGeneratorPluginSpecification,
             mailTemplatePluginSpecification,
             notifyNlPluginSpecification,
             haalCentraalBrpPluginSpecification,
@@ -303,6 +313,7 @@ export function tabsFactory() {
             textTemplatePluginSpecification,
             mTlsSslcontextPluginSpecification,
             XentialPluginSpecification,
+            httpClientAuthenticationPluginSpecification,
             kvkPluginSpecification,
             documentSearchPluginSpecification,
             valueMapperPluginSpecification,

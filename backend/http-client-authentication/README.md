@@ -1,0 +1,1 @@
+# Http Client Authentication Plugin

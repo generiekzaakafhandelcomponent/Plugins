@@ -52,6 +52,11 @@ class ValtimoTemplateSpecificationHelper {
         }
 
         @JvmStatic
+        fun byTypes(types: List<String>) = Specification<ValtimoTemplate> { root, _, cb ->
+            root.get<Any>(TYPE).`in`(types)
+        }
+
+        @JvmStatic
         fun byKeyAndCaseDefinitionNameAndType(key: String, caseDefinitionName: String?, type: String) =
             byKey(key).and(byCaseDefinitionName(caseDefinitionName)).and(byType(type))
 
