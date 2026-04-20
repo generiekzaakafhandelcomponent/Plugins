@@ -28,7 +28,7 @@ pluginManager.withPlugin("maven-publish") {
                     developers {
                         developer {
                             id = "team-risa"
-                            name = "Team Risa"
+                            name = "RISA IT"
                             email = "gzac@risa-it.nl"
                         }
                     }
