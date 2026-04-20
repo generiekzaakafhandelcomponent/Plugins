@@ -21,10 +21,10 @@ import com.ritense.valtimo.operaton.TaskCompletedListener
 import com.ritense.valtimo.contract.audit.utils.AuditHelper
 import com.ritense.valtimo.contract.event.TaskCompletedEvent
 import com.ritense.valtimo.contract.utils.RequestHelper
+import com.ritense.valtimo.event.OperatonTaskEvent
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.UUID
-import org.operaton.bpm.engine.delegate.DelegateTask
 import org.springframework.context.ApplicationEventPublisher
 
 class PublicTaskCompletedListener(
@@ -32,7 +32,8 @@ class PublicTaskCompletedListener(
     private val publicTaskRepository: PublicTaskRepository
 ) : TaskCompletedListener(applicationEventPublisher) {
 
-    override fun notify(delegateTask: DelegateTask) {
+    override fun notify(event: OperatonTaskEvent) {
+        val delegateTask = event.delegateTask
         with(publicTaskRepository.findAll()) {
             if (this.any { it.isCompletedByPublicTask && it.userTaskId.toString() == delegateTask.id }) {
                 val assignee = this.first { it.userTaskId.toString() == delegateTask.id }.assigneeCandidateContactData

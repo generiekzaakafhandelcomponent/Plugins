@@ -1,0 +1,12 @@
+services:
+
+  xential-mockserver:
+    container_name: xential-mockserver
+    image: mockserver/mockserver:5.15.0
+    ports:
+      - "1080:1080"
+    environment:
+      - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/initializerJson.json
+      - MOCKSERVER_WATCH_INITIALIZATION_JSON=false
+    volumes:
+      - ./imports/initializerJson.json:/config/initializerJson.json

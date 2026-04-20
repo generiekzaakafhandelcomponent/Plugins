@@ -1,47 +1,71 @@
-<v-form
-        (valueChange)="formValueChange($event)"
-        *ngIf="{
-        disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
-    } as obs"
->
+<!--
+  ~ Copyright 2015-2026 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 
-    <div>
-        <v-input-label
-                [title]="'generate doc'"
-        ></v-input-label>
-    </div>
+@if ({
+  disabled: disabled$ | async,
+  prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+}; as obs) {
+  <v-form (valueChange)="formValueChange($event)">
+    <v-input
+      name="xentialDocumentPropertiesVariableName"
+      [title]="'xentialDocumentPropertiesVariableName' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialDocumentPropertiesVariableNameTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialDocumentPropertiesVariableName"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
+    />
 
     <v-input
-            name="xentialDocumentProperties"
-            [title]="'xentialDocumentProperties' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialDocumentProperties"
-            [disabled]="obs.disabled"
-            [required]="true"
+      name="xentialGebruikersId"
+      [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialGebruikersIdTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialGebruikersId"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
     />
+
     <v-input
-            name="xentialData"
-            [title]="'xentialData' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialData"
-            [disabled]="obs.disabled"
-            [required]="true"
+      name="xentialSjabloonId"
+      [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
+      [tooltip]="'xentialSjabloonIdTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialSjabloonId"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
     />
+
     <v-input
-            name="xentialSjabloonId"
-            [title]="'xentialSjabloonId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialSjabloonId"
-            [disabled]="obs.disabled"
-            [required]="true"
+      name="xentialData"
+      [title]="'xentialData' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.xentialData"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
     />
+
     <v-input
-            name="xentialGebruikersId"
-            [title]="'xentialGebruikersId' | pluginTranslate: pluginId | async"
-            [margin]="true"
-            [defaultValue]="obs.prefill?.xentialGebruikersId"
-            [disabled]="obs.disabled"
-            [required]="true"
+      name="fileFormat"
+      [title]="'fileFormat' | pluginTranslate: pluginId | async"
+      [tooltip]="'fileFormatTooltip' | pluginTranslate: pluginId | async"
+      [defaultValue]="obs.prefill?.fileFormat"
+      [disabled]="obs.disabled"
+      [required]="true"
+      [margin]="true"
     />
-</v-form>
+  </v-form>
+}

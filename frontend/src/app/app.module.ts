@@ -74,6 +74,7 @@ import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from '@valtimo/dashboard';
 import {DashboardManagementModule} from '@valtimo/dashboard-management';
 import {SseModule} from '@valtimo/sse';
+import {TeamsModule} from '@valtimo/teams';
 import {
     PLUGINS_TOKEN,
     CatalogiApiPluginModule,catalogiApiPluginSpecification,
@@ -85,6 +86,8 @@ import {
     ObjecttypenApiPluginModule, objecttypenApiPluginSpecification,
 } from '@valtimo/plugin';
 
+import {ArchiefPluginModule, archiefPluginSpecification} from '@valtimo-plugins/archief';
+import {CloudEventPluginModule, cloudEventPluginSpecification } from '@valtimo-plugins/cloud-event';
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {HaalCentraalBrpAuthPluginModule, haalCentraalBrpAuthPluginSpecification} from '@valtimo-plugins/haal-centraal-auth';
 import {
@@ -113,7 +116,7 @@ import {TokenAuthenticationPluginModule, tokenAuthenticationPluginSpecification}
 import {ValtimoLlmPluginModule, valtimoLlmPluginSpecification} from '@valtimo-plugins/valtimo-llm'
 import {ValtimoOcrPluginModule, valtimoOcrPluginSpecification} from '@valtimo-plugins/valtimo-ocr';
 import {ValtimoS2tPluginModule, valtimoS2tPluginSpecification} from '@valtimo-plugins/valtimo-s2t';
-import {XentialPluginModule, XentialPluginSpecification} from '@valtimo-plugins/xential';
+import {XentialPluginModule, xentialPluginSpecification} from '@valtimo-plugins/xential';
 
 export function tabsFactory() {
     return new Map<string, object>([
@@ -133,11 +136,13 @@ export function tabsFactory() {
         AccessControlManagementModule,
         AccountModule,
         AnalyseModule,
+        ArchiefPluginModule,
         AppRoutingModule,
         BootstrapModule,
         BpmnJsDiagramModule,
         BrowserModule,
         BuildingBlockManagementModule,
+        CloudEventPluginModule,
         CaseManagementModule,
         CaseMigrationModule,
         CaseModule.forRoot(tabsFactory),
@@ -196,6 +201,7 @@ export function tabsFactory() {
         SwaggerModule,
         TokenAuthenticationPluginModule,
         TaskModule,
+        TeamsModule,
         TextTemplatePluginModule,
         TranslateModule.forRoot({
             loader: {
@@ -217,8 +223,10 @@ export function tabsFactory() {
     providers: [{
         provide: PLUGINS_TOKEN,
         useValue: [
-            XentialPluginSpecification,
+            archiefPluginSpecification,
+            xentialPluginSpecification,
             catalogiApiPluginSpecification,
+            cloudEventPluginSpecification,
             documentGeneratorPluginSpecification,
             documentenApiPluginSpecification,
             externeKlanttaakPluginSpecification,

@@ -72,12 +72,12 @@ class OipKlanttaakService(
         taskOwner: String = DEFAULT_TASK_OWNER,
         authorizeeIdentifier: String,
         levelOfAssurance: LevelOfAssurance,
+        expirationDate: OffsetDateTime,
         formUri: URI,
         formDataMapping: List<DataBinding>? = null,
         description: String? = null,
         koppeling: Koppeling? = null,
         leadTime: Period? = null,
-        expirationDate: OffsetDateTime? = null,
         deadlineExtendable: Boolean? = null,
     ) {
         objectManagementById(objectManagementId).let { objectManagement ->
@@ -111,7 +111,8 @@ class OipKlanttaakService(
                                                     delegateTask = delegateTask,
                                                     formDataMapping = it
                                                 )
-                                            }
+                                            },
+                                            verzondenData = emptyMap()
                                         ),
                                         verwerkerTaakId = UUID.fromString(delegateTask.id),
                                         koppeling = koppeling,
@@ -225,7 +226,7 @@ class OipKlanttaakService(
                                                     objectMapper.convertValue<InformatieObject>(documentNode).let { informatieObject ->
                                                         zakenApiPlugin.linkDocumentToZaak(
                                                             execution = execution,
-                                                            documentUrl = informatieObject.informatieobjecttype.toASCIIString(),
+                                                            documentUrl = informatieObject.informatieobject.toASCIIString(),
                                                             titel = informatieObject.titel,
                                                             beschrijving = informatieObject.omschrijving
                                                         )
@@ -275,7 +276,7 @@ class OipKlanttaakService(
         zaakUrlProvider.getZaakUrl(id).let { zaakUrl ->
             requireNotNull(pluginService.createInstance(
                 ZakenApiPlugin::class.java,
-                ZakenApiPlugin.Companion.findConfigurationByUrl(zaakUrl)
+                ZakenApiPlugin.findConfigurationByUrl(zaakUrl)
             )) { "Zaken API Plugin configuration not found for zaak with URL '$zaakUrl'" }
         }
 

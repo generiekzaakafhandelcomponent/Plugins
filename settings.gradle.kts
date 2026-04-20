@@ -2,6 +2,7 @@ rootProject.name = "Plugins"
 include(
     "backend",
     "backend:app",
+    "backend:cloud-event",
     "backend:valtimo-ocr",
     "backend:externe-klanttaak",
     "backend:freemarker",
@@ -24,6 +25,7 @@ include(
     "backend:xential",
     "backend:valtimo-llm",
     "backend:kvk-handelsregister",
+    "backend:archief",
     "backend:value-mapper",
     "frontend",
 )

@@ -21,6 +21,7 @@ import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.smartdocuments.domain.DocumentFormatOption
 import com.ritense.valtimoplugins.xential.domain.DocumentCreatedMessage
 import com.ritense.valtimoplugins.xential.domain.FileFormat
+import com.ritense.valtimoplugins.xential.domain.GenerateDocumentResult
 import com.ritense.valtimoplugins.xential.domain.XentialDocumentProperties
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
@@ -28,7 +29,6 @@ import com.rotterdam.esb.xential.api.DefaultApi
 import com.rotterdam.esb.xential.model.Sjabloondata
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.operaton.bpm.engine.RuntimeService
-import org.operaton.bpm.engine.delegate.DelegateExecution
 import java.io.ByteArrayInputStream
 import java.util.Base64
 import java.util.UUID
@@ -43,41 +43,43 @@ class DocumentGenerationService(
         processId: UUID,
         xentialGebruikersId: String,
         sjabloonId: String,
-        xentialDocumentProperties: XentialDocumentProperties,
-        execution: DelegateExecution,
-    ) {
-        logger.info { "generating xential document" }
+        xentialDocumentProperties: XentialDocumentProperties
+    ): GenerateDocumentResult {
+        logger.info { "Generating xential document" }
+        requireNotNull(xentialDocumentProperties.fileFormat) {
+            "fileFormat is required"
+        }
+        requireNotNull(xentialDocumentProperties.content) {
+            "content is required"
+        }
+        val result = api.creeerDocument(
+            gebruikersId = xentialGebruikersId,
+            accepteerOnbekend = false,
+            sjabloondata = Sjabloondata(
+                sjabloonId = sjabloonId,
+                bestandsFormaat = Sjabloondata.BestandsFormaat.valueOf(xentialDocumentProperties.fileFormat.name),
+                documentkenmerk = xentialDocumentProperties.documentId,
+                sjabloonVulData = xentialDocumentProperties.content,
+            ),
+        )
+        logger.debug { "found something: $result" }
 
-        val result =
-            api.creeerDocument(
-                gebruikersId = xentialGebruikersId,
-                accepteerOnbekend = false,
-                sjabloondata =
-                    Sjabloondata(
-                        sjabloonId = sjabloonId,
-                        bestandsFormaat = Sjabloondata.BestandsFormaat.valueOf(xentialDocumentProperties.fileFormat.name),
-                        documentkenmerk = xentialDocumentProperties.documentId,
-                        sjabloonVulData = xentialDocumentProperties.content.toString(),
-                    ),
-            )
-        logger.info { "found something: $result" }
-        val xentialToken =
-            XentialToken(
-                token = UUID.fromString(result.documentCreatieSessieId),
-                processId = processId,
-                messageName = xentialDocumentProperties.messageName,
-                resumeUrl = result.resumeUrl.toString(),
-            )
-
-        logger.info { "token: ${xentialToken.token}" }
-        xentialTokenRepository.save(xentialToken)
-
-        execution.setVariable("xentialStatus", result.status)
-
-        result.resumeUrl?.let {
-            execution.setVariable("resumeUrl", it)
+        val xentialToken = XentialToken(
+            token = UUID.fromString(result.documentCreatieSessieId),
+            processId = processId,
+            messageName = xentialDocumentProperties.messageName,
+            resumeUrl = result.resumeUrl?.toString(),
+        )
+        logger.debug { "token: ${xentialToken.token}" }
+        xentialTokenRepository.save(xentialToken).also {
+            logger.debug { "persisted token: $it" }
         }
         logger.info { "ready" }
+
+        return GenerateDocumentResult(
+            status = result.status.value,
+            resumeUrl = result.resumeUrl?.toString(),
+        )
     }
 
     private fun setMimeType(format: FileFormat): String {
@@ -92,24 +94,34 @@ class DocumentGenerationService(
 
     fun onDocumentGenerated(message: DocumentCreatedMessage) {
         val bytes = Base64.getDecoder().decode(message.data)
-
-        val xentialToken =
-            xentialTokenRepository.findById(UUID.fromString(message.documentCreatieSessieId))
-                .orElseThrow { NoSuchElementException("Could not find Xential Token ${message.documentCreatieSessieId}") }
-
-        logger.info { "Retrieved content from Xential Callback, token: ${xentialToken.token}, type: ${message.formaat}" }
+        val xentialToken = xentialTokenRepository.findById(UUID.fromString(message.documentCreatieSessieId))
+            .orElseThrow {
+                NoSuchElementException("Could not find Xential Token ${message.documentCreatieSessieId}")
+            }
+        logger.info {
+            "Retrieved content from Xential Callback, token: ${xentialToken.token}, type: ${message.formaat}"
+        }
 
         ByteArrayInputStream(bytes).use { inputStream ->
-            val metadata =
-                mapOf(
-                    MetadataType.FILE_NAME.key to "${xentialToken.processId}-${xentialToken.messageName}.tmp",
-                    MetadataType.CONTENT_TYPE.key to setMimeType(message.formaat)
-                )
-            val resourceId = temporaryResourceStorageService.store(inputStream, metadata)
-            runtimeService.createMessageCorrelation(xentialToken.messageName)
-                .processInstanceId(xentialToken.processId.toString())
-                .setVariable("xentialResourceId", resourceId)
-                .correlateAll()
+            val metadata = mapOf(
+                MetadataType.FILE_NAME.key to "${xentialToken.processId}-${xentialToken.messageName}.tmp",
+                MetadataType.CONTENT_TYPE.key to setMimeType(message.formaat)
+            )
+            temporaryResourceStorageService.store(inputStream, metadata).let { resourceId ->
+                logger.info { "Stored temporary resource with id: $resourceId" }
+                runtimeService.createMessageCorrelation(xentialToken.messageName)
+                    .processInstanceId(xentialToken.processId.toString())
+                    .setVariable("xentialResourceId", resourceId)
+                    .correlateAllWithResult().also { correlationResults ->
+                        logger.info {
+                            "Correlated message '${xentialToken.messageName}' to ${correlationResults.size} execution(s)"
+                        }
+                        if (correlationResults.isNotEmpty()) {
+                            xentialTokenRepository.delete(xentialToken)
+                            logger.debug { "Deleted xential token: ${xentialToken.token}" }
+                        }
+                    }
+            }
         }
     }
 

@@ -1,0 +1,14 @@
+[
+  {
+    "key": "summary",
+    "name": null,
+    "type": "standard",
+    "contentKey": "summary"
+  },
+  {
+    "key": "progress",
+    "name": null,
+    "type": "standard",
+    "contentKey": "progress"
+  }
+]

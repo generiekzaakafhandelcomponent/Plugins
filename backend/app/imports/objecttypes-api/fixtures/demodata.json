@@ -2639,12 +2639,12 @@
               "data": {
                 "type": "object",
                 "properties": {
-                  "upload_documenten": {
+                  "documenten": {
                     "type": "array",
                     "items": {
                       "$ref": "#/definitions/informatieobject"
                     },
-                    "description": "Geüploade documenten"
+                    "description": "Documenten"
                   }
                 },
                 "description": "Prefill data voor het externe formulier",
@@ -2669,9 +2669,6 @@
               },
               "verzonden_data": {
                 "type": "object",
-                "required": [
-                  "volledige_naam"
-                ],
                 "properties": {
                   "volledige_naam": {
                     "type": "string",
@@ -2703,7 +2700,7 @@
           "informatieobject": {
             "type": "object",
             "required": [
-              "informatieobjecttype",
+              "informatieobject",
               "titel",
               "omschrijving",
               "vertrouwelijkheidaanduiding",
@@ -2723,7 +2720,7 @@
               "omschrijving": {
                 "type": "string"
               },
-              "informatieobjecttype": {
+              "informatieobject": {
                 "type": "string",
                 "format": "uri"
               },
@@ -2740,7 +2737,7 @@
             "additionalProperties": false
           }
         },
-        "description": "Schema voor externformulier taak met link naar extern formulier met twee velden (volledige naam en bestandsupload), inclusief schema voor Betrokkene",
+        "description": "Schema voor externformulier taak met link naar extern formulier, inclusief schema voor Betrokkene",
         "additionalProperties": false
       },
       "status": "draft"
