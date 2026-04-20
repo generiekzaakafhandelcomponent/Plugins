@@ -31,8 +31,8 @@ const openKlantPluginSpecification: PluginSpecification = {
       // Common
       resultPvName: "Naam van resultaat-procesvariabele",
       bsn: "BSN",
-      partijUuid: "Partij UUID",
-      caseUuid: "Open Zaak zaak UUID",
+      partijUuid: "Partij-UUID",
+      caseUuid: "Open-Zaak-zaak-UUID",
       variableFieldTooltip:
         "Dit veld kan zowel de letterlijke waarde, of het pad naar een (proces)variabele bevatten welke de waarde bevat (b.v. 'pv:/resultaat')",
 
@@ -59,7 +59,7 @@ const openKlantPluginSpecification: PluginSpecification = {
 
       // Get contact moments by Partij UUID
       "get-contact-moments-by-partij-uuid":
-        "Contactgeschiedenis ophalen op basis van Partij UUID",
+        "Contactgeschiedenis ophalen op basis van Partij-UUID",
 
       // Get contact moments by case UUID
       "get-contact-moments-by-case-uuid":
@@ -87,7 +87,7 @@ const openKlantPluginSpecification: PluginSpecification = {
       "set-default-digitaal-adres": "Instellen van standaard digitaal adres",
       digitaalAdres: "Digitaal adres",
       soortDigitaalAdres: "Soort digitaal adres ('email'/'telefoonnummer'/'overig')",
-      verificatieDatum: "Verificatie datum (YYYY-MM-DD)",
+      verificatieDatum: "Verificatiedatum (YYYY-MM-DD)",
     },
 
     en: {
