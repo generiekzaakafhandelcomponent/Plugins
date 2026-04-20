@@ -164,4 +164,3 @@ Desktop.ini
 /.env.properties
 dist
 backend/.idea/
-frontend/package-lock.json
