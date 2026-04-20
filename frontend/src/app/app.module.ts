@@ -74,6 +74,7 @@ import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from '@valtimo/dashboard';
 import {DashboardManagementModule} from '@valtimo/dashboard-management';
 import {SseModule} from '@valtimo/sse';
+import {TeamsModule} from '@valtimo/teams';
 import {
     PLUGINS_TOKEN,
     CatalogiApiPluginModule,catalogiApiPluginSpecification,
@@ -86,6 +87,7 @@ import {
 } from '@valtimo/plugin';
 
 import {ArchiefPluginModule, archiefPluginSpecification} from '@valtimo-plugins/archief';
+import {CloudEventPluginModule, cloudEventPluginSpecification } from '@valtimo-plugins/cloud-event';
 import {ExterneKlanttaakPluginModule, externeKlanttaakPluginSpecification} from '@valtimo-plugins/externe-klanttaak';
 import {HaalCentraalBrpAuthPluginModule, haalCentraalBrpAuthPluginSpecification} from '@valtimo-plugins/haal-centraal-auth';
 import {
@@ -140,6 +142,7 @@ export function tabsFactory() {
         BpmnJsDiagramModule,
         BrowserModule,
         BuildingBlockManagementModule,
+        CloudEventPluginModule,
         CaseManagementModule,
         CaseMigrationModule,
         CaseModule.forRoot(tabsFactory),
@@ -198,6 +201,7 @@ export function tabsFactory() {
         SwaggerModule,
         TokenAuthenticationPluginModule,
         TaskModule,
+        TeamsModule,
         TextTemplatePluginModule,
         TranslateModule.forRoot({
             loader: {
@@ -222,6 +226,7 @@ export function tabsFactory() {
             archiefPluginSpecification,
             xentialPluginSpecification,
             catalogiApiPluginSpecification,
+            cloudEventPluginSpecification,
             documentGeneratorPluginSpecification,
             documentenApiPluginSpecification,
             externeKlanttaakPluginSpecification,

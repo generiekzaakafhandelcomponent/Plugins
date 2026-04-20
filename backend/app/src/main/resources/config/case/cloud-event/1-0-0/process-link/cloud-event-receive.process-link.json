@@ -1,0 +1,34 @@
+[
+  {
+    "activityId": "StartEvent",
+    "activityType": "bpmn:StartEvent:start",
+    "formDefinitionName": "start-form-cloud-event",
+    "viewModelEnabled": false,
+    "formDisplayType": "modal",
+    "formSize": "medium",
+    "subtitles": null,
+    "processLinkType": "form"
+  },
+  {
+    "activityId": "ReceiveTaskWait",
+    "activityType": "bpmn:ReceiveTask:end",
+    "pluginConfigurationId": "e7b3a1d4-5c2f-4e8a-9d6b-1f3a5c7e9b02",
+    "pluginActionDefinitionKey": "receive-cloud-event",
+    "actionProperties": {
+      "eventType": "com.example.cloud-event.test"
+    },
+    "referenceType": "FIXED",
+    "pluginDefinitionKey": null,
+    "processLinkType": "plugin"
+  },
+  {
+    "activityId": "Activity_11a513u",
+    "activityType": "bpmn:UserTask:create",
+    "formDefinitionName": "view-cloud-event",
+    "viewModelEnabled": false,
+    "formDisplayType": "panel",
+    "formSize": "medium",
+    "subtitles": [],
+    "processLinkType": "form"
+  }
+]

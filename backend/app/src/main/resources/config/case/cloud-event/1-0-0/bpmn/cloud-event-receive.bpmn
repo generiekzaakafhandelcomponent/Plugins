@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  exporter="Camunda Modeler" exporterVersion="5.34.0" expressionLanguage="http://www.w3.org/1999/XPath"
+                  id="Definitions_receive" targetNamespace="http://bpmn.io/schema/bpmn"
+                  typeLanguage="http://www.w3.org/2001/XMLSchema">
+    <bpmn:process xmlns:camunda="http://camunda.org/schema/1.0/bpmn" camunda:versionTag="CD:cloud-event:1.0.0"
+                  id="cloud-event-receive" isClosed="false" isExecutable="true" name="Cloud Event Receive"
+                  processType="None">
+        <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent" targetRef="ReceiveTaskWait"/>
+        <bpmn:receiveTask camunda:asyncAfter="true" camunda:asyncBefore="true" completionQuantity="1"
+                          id="ReceiveTaskWait" implementation="##WebService" instantiate="false"
+                          isForCompensation="false" name="Wait for Cloud Event" startQuantity="1">
+            <bpmn:incoming>Flow_1</bpmn:incoming>
+            <bpmn:outgoing>Flow_2</bpmn:outgoing>
+        </bpmn:receiveTask>
+        <bpmn:sequenceFlow id="Flow_2" sourceRef="ReceiveTaskWait" targetRef="Activity_11a513u"/>
+        <bpmn:endEvent id="EndEvent">
+            <bpmn:incoming>Flow_0uqfl0u</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:startEvent camunda:asyncAfter="true" camunda:asyncBefore="true" id="StartEvent" isInterrupting="true"
+                         parallelMultiple="false">
+            <bpmn:outgoing>Flow_1</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="Flow_0uqfl0u" sourceRef="Activity_11a513u" targetRef="EndEvent"/>
+        <bpmn:userTask camunda:candidateGroups="ROLE_USER" completionQuantity="1" id="Activity_11a513u"
+                       implementation="##unspecified" isForCompensation="false" name="View cloud event"
+                       startQuantity="1">
+            <bpmn:incoming>Flow_2</bpmn:incoming>
+            <bpmn:outgoing>Flow_0uqfl0u</bpmn:outgoing>
+        </bpmn:userTask>
+    </bpmn:process>
+    <bpmn:message id="Message_resume" name="cloud-event-resume-process-message"/>
+    <bpmn:message id="Message_start" name="cloud-event-start-process-message"/>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane bpmnElement="cloud-event-receive" id="BPMNPlane_1">
+            <bpmndi:BPMNShape bpmnElement="ReceiveTaskWait" id="Activity_ReceiveTask_di">
+                <dc:Bounds height="80" width="100" x="270" y="77"/>
+                <bpmndi:BPMNLabel/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="EndEvent" id="Event_EndEvent_di">
+                <dc:Bounds height="36" width="36" x="562" y="99"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="StartEvent" id="Event_0rdp6r4_di">
+                <dc:Bounds height="36" width="36" x="179" y="99"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds height="27" width="73" x="163" y="142"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="Activity_11a513u" id="Activity_1shoeyp_di">
+                <dc:Bounds height="80" width="100" x="410" y="77"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="Flow_1" id="Flow_1_di">
+                <di:waypoint x="215" y="117"/>
+                <di:waypoint x="270" y="117"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="Flow_2" id="Flow_2_di">
+                <di:waypoint x="370" y="117"/>
+                <di:waypoint x="410" y="117"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="Flow_0uqfl0u" id="Flow_0uqfl0u_di">
+                <di:waypoint x="510" y="117"/>
+                <di:waypoint x="562" y="117"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

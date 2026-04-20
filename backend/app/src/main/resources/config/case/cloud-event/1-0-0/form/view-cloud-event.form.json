@@ -1,0 +1,79 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "pv.cloudEventId",
+      "type": "textfield",
+      "input": true,
+      "label": "cloudEventId",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "view-cloud-event-cloudEventId"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "pv.cloudEventType",
+      "type": "textfield",
+      "input": true,
+      "label": "cloudEventType",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "view-cloud-event-cloudEventType"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "pv.cloudEventDate",
+      "type": "textfield",
+      "input": true,
+      "label": "cloudEventDate",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "view-cloud-event-cloudEventDate"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "pv.cloudEventResultType",
+      "type": "textfield",
+      "input": true,
+      "label": "cloudEventResultType",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "view-cloud-event-cloudEventResultType"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "pv.cloudEventResultId",
+      "type": "textfield",
+      "input": true,
+      "label": "cloudEventResultId",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "view-cloud-event-cloudEventResultId"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "pv.cloudEventData.data",
+      "type": "textfield",
+      "input": true,
+      "label": "cloudEventData",
+      "tableView": true,
+      "attributes": {
+        "data-testid": "view-cloud-event-cloudEventData"
+      },
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Submit",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}
