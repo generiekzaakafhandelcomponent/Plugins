@@ -131,7 +131,7 @@ class SuwinetSvbPersoonsInfoService(
             UitkeringenDto.Uitkering(
                 codeSzWet = it.szWet.cdSzWet,
                 datumBeginUitkeringsverhouding = toDate(it.datBUitkeringsverhouding),
-                datumEindUitkeringsverhouding = toDate(it.datEUitkeringsverhouding),
+                datumEindUitkeringsverhouding = it.datEUitkeringsverhouding?.let { date -> toDate(date) } ?: "",
                 periodes = getUitkeringsPeriod(it.uitkeringsperiode, it.szWet.cdSzWet)
             )
         }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0vol0sx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:collaboration id="Collaboration_1gmd3lc">
+    <bpmn:participant id="OphalenSVBUitkeringenParticipant" name="Suwinet ophalen SVB Uitkeringen" processRef="ophalen-svb-brongegevens" />
+    <bpmn:textAnnotation id="TextAnnotation_07okm9r">
+      <bpmn:text>output: svbUitkeringen</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_0l9i0zu">
+      <bpmn:text>input: bsn</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0ll5oxr" associationDirection="None" sourceRef="StartEvent_1" targetRef="TextAnnotation_0l9i0zu" />
+  </bpmn:collaboration>
+  <bpmn:process id="ophalen-svb-brongegevens" name="Suwinet ophalen SVB Uitkeringen" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" camunda:asyncAfter="true">
+      <bpmn:outgoing>Flow_1tb0eas</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1tb0eas" sourceRef="StartEvent_1" targetRef="OphalenSVBUitkeringenTask" />
+    <bpmn:sequenceFlow id="Flow_1yu1hho" sourceRef="OphalenSVBUitkeringenTask" targetRef="Activity_0cork8l" />
+    <bpmn:sequenceFlow id="Flow_0xag52s" sourceRef="Activity_0cork8l" targetRef="Event_0n56cye" />
+    <bpmn:serviceTask id="OphalenSVBUitkeringenTask" name="ophalen SVB uitkeringen" camunda:asyncAfter="true" camunda:expression="${true}">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_1tb0eas</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yu1hho</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0cork8l" name="pv to doc" camunda:expression="${valueResolverDelegateService.handleValue(execution, &#34;doc:/svb&#34;, svbPersoonsinfo)}">
+      <bpmn:incoming>Flow_1yu1hho</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xag52s</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0n56cye">
+      <bpmn:incoming>Flow_0xag52s</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:association id="Association_0kky9km" sourceRef="OphalenSVBUitkeringenTask" targetRef="TextAnnotation_07okm9r" />
+  </bpmn:process>
+  <bpmn:error id="Error_10q1uq2" name="Error_3lbup3a" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1gmd3lc">
+      <bpmndi:BPMNShape id="Participant_0gc491p_di" bpmnElement="OphalenSVBUitkeringenParticipant" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="680" height="270" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="222" y="230" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j7h7ol_di" bpmnElement="OphalenSVBUitkeringenTask">
+        <dc:Bounds x="320" y="208" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0a5frwy_di" bpmnElement="Activity_0cork8l">
+        <dc:Bounds x="490" y="208" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0n56cye_di" bpmnElement="Event_0n56cye">
+        <dc:Bounds x="642" y="230" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0kky9km_di" bpmnElement="Association_0kky9km">
+        <di:waypoint x="399" y="208" />
+        <di:waypoint x="426" y="171" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tb0eas_di" bpmnElement="Flow_1tb0eas">
+        <di:waypoint x="258" y="248" />
+        <di:waypoint x="320" y="248" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yu1hho_di" bpmnElement="Flow_1yu1hho">
+        <di:waypoint x="420" y="248" />
+        <di:waypoint x="490" y="248" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xag52s_di" bpmnElement="Flow_0xag52s">
+        <di:waypoint x="590" y="248" />
+        <di:waypoint x="642" y="248" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_07okm9r_di" bpmnElement="TextAnnotation_07okm9r">
+        <dc:Bounds x="380" y="130" width="160" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0l9i0zu_di" bpmnElement="TextAnnotation_0l9i0zu">
+        <dc:Bounds x="260" y="150" width="100" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0ll5oxr_di" bpmnElement="Association_0ll5oxr">
+        <di:waypoint x="252" y="234" />
+        <di:waypoint x="297" y="180" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
