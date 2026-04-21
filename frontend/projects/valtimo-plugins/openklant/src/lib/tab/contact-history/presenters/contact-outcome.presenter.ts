@@ -3,13 +3,13 @@ import { ContactOutcome } from "../models/klantcontact.model";
 export function getOutcomeTranslationKey(outcome: ContactOutcome): string {
     switch (outcome) {
         case ContactOutcome.SUCCESS:
-            return 'contactHistory.outcome.success';
+            return 'openKlant.contactHistory.outcome.success';
         case ContactOutcome.FAILURE:
-            return 'contactHistory.outcome.failure';
+            return 'openKlant.contactHistory.outcome.failure';
         case ContactOutcome.NOT_APPLICABLE:
-            return 'contactHistory.outcome.notApplicable';
+            return 'openKlant.contactHistory.outcome.notApplicable';
         case ContactOutcome.UNKNOWN:
         default:
-            return 'contactHistory.outcome.unknown';
+            return 'openKlant.contactHistory.outcome.unknown';
     }
 }
