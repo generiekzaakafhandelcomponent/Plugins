@@ -6,7 +6,7 @@
   }"
 >
   <span class="loading-description mr-2">{{
-    isLoading ? "Verversen..." : "Opgehaald"
+    isLoading ? ('openKlant.contactHistory.loadingSpinner.loading' | translate) : ('openKlant.contactHistory.loadingSpinner.retrieved' | translate)
   }}</span>
   <cds-loading
     [size]="'sm'"
@@ -50,14 +50,14 @@
 
 <valtimo-no-results
   *ngIf="contactHistory === null"
-  [title]="'contactHistory.messages.noProperty.title' | translate"
-  [description]="'contactHistory.messages.noProperty.description' | translate"
+  [title]="'openKlant.contactHistory.messages.noProperty.title' | translate"
+  [description]="'openKlant.contactHistory.messages.noProperty.description' | translate"
   illustration="valtimo-layout/img/emptystate-no-result.svg"
 ></valtimo-no-results>
 
 <valtimo-no-results
   *ngIf="contactHistory?.length === 0"
-  [title]="'contactHistory.messages.emptyHistory.title' | translate"
-  [description]="'contactHistory.messages.emptyHistory.description' | translate"
+  [title]="'openKlant.contactHistory.messages.emptyHistory.title' | translate"
+  [description]="'openKlant.contactHistory.messages.emptyHistory.description' | translate"
   illustration="valtimo-layout/img/emptystate-no-result.svg"
 ></valtimo-no-results>
