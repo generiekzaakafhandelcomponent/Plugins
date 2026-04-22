@@ -166,7 +166,7 @@ class OpenKlantPlugin(
         @PluginActionProperty bsn: String,
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
-    ): Unit {
+    ) {
         logger.info { "Fetching contact history from Open Klant by BSN number — business key: ${execution.processBusinessKey}" }
         val pluginProperties =
             KlantcontactOptions.fromActionProperties(
@@ -192,7 +192,7 @@ class OpenKlantPlugin(
         @PluginActionProperty partijUuid: String,
         @PluginActionProperty resultPvName: String,
         execution: DelegateExecution,
-    ): Unit {
+    ) {
         logger.info { "Fetching contact history from Open Klant by Partij UUID — business key: ${execution.processBusinessKey}" }
         val pluginProperties =
             KlantcontactOptions.fromActionProperties(
@@ -215,9 +215,11 @@ class OpenKlantPlugin(
         activityTypes = [ActivityTypeWithEventName.SERVICE_TASK_START],
     )
     fun postKlantContact(
+        @PluginActionProperty referentienummer: String?,
         @PluginActionProperty kanaal: String,
         @PluginActionProperty onderwerp: String,
-        @PluginActionProperty inhoud: String,
+        @PluginActionProperty inhoud: String?,
+        @PluginActionProperty reactie: String?,
         @PluginActionProperty vertrouwelijk: String,
         @PluginActionProperty taal: String,
         @PluginActionProperty plaatsgevondenOp: String,
@@ -227,15 +229,18 @@ class OpenKlantPlugin(
         @PluginActionProperty voornaam: String?,
         @PluginActionProperty voorvoegselAchternaam: String?,
         @PluginActionProperty achternaam: String?,
+        @PluginActionProperty metadata: Map<String, String>?,
         execution: DelegateExecution,
     ) {
         logger.info { "Registering klantcontact - ${execution.processBusinessKey}" }
 
         val klantcontactCreationInformation =
             KlantcontactCreationInformation.fromActionProperties(
+                referentienummer = referentienummer,
                 kanaal = kanaal,
                 onderwerp = onderwerp,
                 inhoud = inhoud,
+                reactie = reactie,
                 vertrouwelijk = vertrouwelijk,
                 taal = taal,
                 plaatsgevondenOp = plaatsgevondenOp,
@@ -245,6 +250,7 @@ class OpenKlantPlugin(
                 voornaam = voornaam,
                 voorvoegselAchternaam = voorvoegselAchternaam,
                 achternaam = achternaam,
+                metadata = metadata,
             )
         val properties = OpenKlantProperties(klantinteractiesUrl, token)
 
