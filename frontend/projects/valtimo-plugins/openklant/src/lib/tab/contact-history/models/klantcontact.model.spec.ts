@@ -9,7 +9,7 @@ import {
 describe("mapModelToDto", () => {
   it("should correctly map all fields from DTO to model", () => {
     const dto: KlantcontactDTO = {
-      nummer: "123",
+      referentienummer: "123",
       kanaal: "email",
       onderwerp: "Test Subject",
       inhoud: "Test content",
@@ -71,7 +71,7 @@ describe("mapModelToDto", () => {
 
     const dto = mapModelToDto(model);
 
-    expect(dto.nummer).toBe("456");
+    expect(dto.referentienummer).toBe("456");
     expect(dto.kanaal).toBe("chat");
     expect(dto.onderwerp).toBe("Hello");
     expect(dto.inhoud).toBe("Some content");
@@ -93,7 +93,7 @@ describe("mapModelToDto", () => {
 
     const dto = mapModelToDto(model);
 
-    expect(dto.nummer).toBeUndefined();
+    expect(dto.referentienummer).toBeUndefined();
     expect(dto.kanaal).toBe("sms");
     expect(dto.onderwerp).toBe("Test");
     expect(dto.inhoud).toBeUndefined();
