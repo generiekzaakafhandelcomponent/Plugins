@@ -42,10 +42,7 @@
         "klantcontact": {
             "type": "object",
             "properties": {
-                "taal": {
-                    "type": "string"
-                },
-                "inhoud": {
+                "referentienummer": {
                     "type": "string"
                 },
                 "kanaal": {
@@ -53,6 +50,27 @@
                 },
                 "onderwerp": {
                     "type": "string"
+                },
+                "inhoud": {
+                    "type": "string"
+                },
+                "reactie": {
+                    "type": "string"
+                },
+                "vertrouwelijk": {
+                    "type": "boolean"
+                },
+                "taal": {
+                  "type": "string"
+                },
+                "plaatsgevondenOp": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object"
+                },
+                "hasBetrokkene": {
+                    "type": "boolean"
                 },
                 "betrokkene": {
                     "type": "object",
@@ -70,15 +88,6 @@
                             "type": "string"
                         }
                     }
-                },
-                "hasBetrokkene": {
-                    "type": "boolean"
-                },
-                "vertrouwelijk": {
-                    "type": "boolean"
-                },
-                "plaatsgevondenOp": {
-                    "type": "string"
                 }
             }
         },
