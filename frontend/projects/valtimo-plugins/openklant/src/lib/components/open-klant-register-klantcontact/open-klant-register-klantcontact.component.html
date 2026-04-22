@@ -6,6 +6,13 @@
   } as obs"
 >
     <v-input
+            name="referentienummer"
+            [title]="'referentienummer' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.referentienummer"
+            [disabled]="obs.disabled"
+            [required]="false"
+    ></v-input>
+    <v-input
             name="kanaal"
             [title]="'kanaal' | pluginTranslate: pluginId | async"
             [defaultValue]="obs.prefill?.kanaal"
@@ -24,7 +31,14 @@
             [title]="'inhoud' | pluginTranslate: pluginId | async"
             [defaultValue]="obs.prefill?.inhoud"
             [disabled]="obs.disabled"
-            [required]="true"
+            [required]="false"
+    ></v-input>
+    <v-input
+            name="reactie"
+            [title]="'reactie' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.reactie"
+            [disabled]="obs.disabled"
+            [required]="false"
     ></v-input>
     <v-input
             name="vertrouwelijk"
@@ -46,6 +60,13 @@
             [defaultValue]="obs.prefill?.plaatsgevondenOp"
             [disabled]="obs.disabled"
             [required]="true"
+    ></v-input>
+    <v-input
+            name="metadata"
+            [title]="'metadata' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.metadata"
+            [disabled]="obs.disabled"
+            [required]="false"
     ></v-input>
     <cds-toggle
         #hasBetrokkene
