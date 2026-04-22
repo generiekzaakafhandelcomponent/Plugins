@@ -1,8 +1,8 @@
 package com.ritense.valtimoplugins.openklant.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
@@ -24,7 +24,10 @@ data class KlantcontactCreationRequest(
         @field:Size(max = 200)
         val onderwerp: String,
         @field:Size(max = 1000)
-        val inhoud: String?,
+        val inhoud: String? = null,
+        @field:Size(max = 1000)
+        val reactie: String? = null,
+        @field:NotNull
         val indicatieContactGelukt: Boolean? = null,
         @field:NotBlank
         @field:Pattern(
@@ -32,9 +35,16 @@ data class KlantcontactCreationRequest(
             message = "taal must be of 3 letters (ISO 639-2/B)",
         )
         val taal: String,
-        @field:NotBlank
         val vertrouwelijk: Boolean,
+        @field:NotBlank
         val plaatsgevondenOp: String? = null,
+        @field:NotNull
+        val metadata: Map<
+            @Size(max = 100)
+            String,
+            @Size(max = 100)
+            String,
+        >? = null,
     )
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
