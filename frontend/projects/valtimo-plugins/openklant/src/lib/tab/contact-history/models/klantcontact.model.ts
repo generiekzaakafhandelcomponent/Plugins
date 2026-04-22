@@ -3,6 +3,7 @@ export interface Klantcontact {
   channel: string;
   subject: string;
   content?: string;
+  reaction?: string;
   outcome: ContactOutcome;
   preferredLanguage: string;
   isConfidential: boolean;
@@ -21,6 +22,7 @@ export interface KlantcontactDTO {
   kanaal: string;
   onderwerp: string;
   inhoud?: string;
+  reactie?: string;
   indicatieContactGelukt?: string | null; // Although the API docs type this as a boolean, in practice, the API returns a string, e.g. 'true'
   taal: string;
   vertrouwelijk: boolean;
@@ -33,6 +35,7 @@ export function mapDtoToModel(dto: KlantcontactDTO): Klantcontact {
     channel: dto.kanaal,
     subject: dto.onderwerp,
     content: dto.inhoud,
+    reaction: dto.reactie,
     outcome: parseWasSuccessfulToContactOutcome(dto.indicatieContactGelukt),
     preferredLanguage: dto.taal,
     isConfidential: dto.vertrouwelijk,
@@ -48,6 +51,7 @@ export function mapModelToDto(model: Klantcontact): KlantcontactDTO {
     kanaal: model.channel,
     onderwerp: model.subject,
     inhoud: model.content,
+    reactie: model.reaction,
     indicatieContactGelukt: parseContactOutcomeToBoolean(model.outcome),
     taal: model.preferredLanguage,
     vertrouwelijk: model.isConfidential,
