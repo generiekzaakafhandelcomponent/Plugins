@@ -74,46 +74,52 @@ Voorbeeld `*.processlink.json`:
 
 Voorbeeld `*.processlink.json`
 ```json
-{
-  "activityId": "verstuurKlantcontact",
-  "activityType": "bpmn:ServiceTask:start",
-  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
-  "pluginActionDefinitionKey": "register-klantcontact",
-  "actionProperties": {
-    "hasBetrokkene": true,
-    "kanaal": "doc:/klantcontact/kanaal",
-    "onderwerp": "doc:/klantcontact/onderwerp",
-    "inhoud": "doc:/klantcontact/inhoud",
-    "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
-    "taal": "doc:/klantcontact/taal",
-    "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp",
-    "partijUuid": "doc:/klantcontact/betrokkene/partijUuid",
-    "voorletters": "doc:/klantcontact/betrokkene/voorletters",
-    "voornaam": "doc:/klantcontact/betrokkene/voornaam",
-    "voorvoegselAchternaam": "doc:/klantcontact/betrokkene/voorvoegselAchternaam",
-    "achternaam": "doc:/klantcontact/betrokkene/achternaam"
-  },
-  "processLinkType": "plugin"
+ {
+    "activityId": "verstuurKlantcontact",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+    "pluginActionDefinitionKey": "register-klantcontact",
+    "actionProperties": {
+        "hasBetrokkene": true,
+        "referentienummer": "doc:/klantcontact/referentienummer",
+        "kanaal": "doc:/klantcontact/kanaal",
+        "onderwerp": "doc:/klantcontact/onderwerp",
+        "inhoud": "doc:/klantcontact/inhoud",
+        "reactie": "doc:/klantcontact/reactie",
+        "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
+        "taal": "doc:/klantcontact/taal",
+        "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp",
+        "metadata": "doc:/klantcontact/metadata",
+        "partijUuid": "doc:/partijUuid",
+        "voorletters": "doc:/klantcontact/betrokkene/voorletters",
+        "voornaam": "doc:/klantcontact/betrokkene/voornaam",
+        "voorvoegselAchternaam": "doc:/klantcontact/betrokkene/voorvoegselAchternaam",
+        "achternaam": "doc:/klantcontact/betrokkene/achternaam"
+    },
+    "processLinkType": "plugin"
 }
 ```
 
 zonder betrokkene:
 ```json
 {
-  "activityId": "verstuurKlantcontactZonderBetrokkene",
-  "activityType": "bpmn:ServiceTask:start",
-  "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
-  "pluginActionDefinitionKey": "register-klantcontact",
-  "actionProperties": {
-    "hasBetrokkene": false,
-    "kanaal": "doc:/klantcontact/kanaal",
-    "onderwerp": "doc:/klantcontact/onderwerp",
-    "inhoud": "doc:/klantcontact/inhoud",
-    "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
-    "taal": "doc:/klantcontact/taal",
-    "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp"
-  },
-  "processLinkType": "plugin"
+    "activityId": "verstuurKlantcontactZonderBetrokkene",
+    "activityType": "bpmn:ServiceTask:start",
+    "pluginConfigurationId": "12023724-a4bd-431d-93c0-5ba52049e9cd",
+    "pluginActionDefinitionKey": "register-klantcontact",
+    "actionProperties": {
+        "hasBetrokkene": false,
+        "referentienummer": "doc:/klantcontact/referentienummer",
+        "kanaal": "doc:/klantcontact/kanaal",
+        "onderwerp": "doc:/klantcontact/onderwerp",
+        "inhoud": "doc:/klantcontact/inhoud",
+        "reactie": "doc:/klantcontact/reactie",
+        "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
+        "taal": "doc:/klantcontact/taal",
+        "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp",
+        "metadata": "doc:/klantcontact/metadata"
+    },
+    "processLinkType": "plugin"
 }
 ```
 ## Instellen van standaard digitaal adres
