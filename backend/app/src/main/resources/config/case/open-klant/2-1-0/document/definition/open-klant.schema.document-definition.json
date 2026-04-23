@@ -57,6 +57,9 @@
                 "reactie": {
                     "type": "string"
                 },
+                "indicatieContactGelukt": {
+                  "type": "boolean"
+                },
                 "vertrouwelijk": {
                     "type": "boolean"
                 },

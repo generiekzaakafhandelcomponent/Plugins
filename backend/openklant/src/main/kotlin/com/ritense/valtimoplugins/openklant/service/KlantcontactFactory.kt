@@ -26,7 +26,7 @@ class KlantcontactFactory {
             onderwerp = klantContactCreationInformation.onderwerp,
             inhoud = klantContactCreationInformation.inhoud,
             reactie = klantContactCreationInformation.reactie,
-            indicatieContactGelukt = true,
+            indicatieContactGelukt = klantContactCreationInformation.indicatieContactGelukt,
             taal = klantContactCreationInformation.taal,
             vertrouwelijk = klantContactCreationInformation.vertrouwelijk,
             plaatsgevondenOp = klantContactCreationInformation.plaatsgevondenOp,

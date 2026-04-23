@@ -228,6 +228,31 @@
                     "optionsLabelPosition": "right"
                 },
                 {
+                  "key": "klantcontact.indicatieContactGelukt",
+                  "type": "radio",
+                  "input": true,
+                  "label": "Indicatie Contact Gelukt",
+                  "inline": false,
+                  "values": [
+                    {
+                      "label": "Ja",
+                      "value": "true",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "Nee",
+                      "value": "false",
+                      "shortcut": ""
+                    }
+                  ],
+                  "tableView": false,
+                  "attributes": {
+                    "data-testid": "open-klant.start-klantcontact.indicatieContactGelukt"
+                  },
+                  "defaultValue": false,
+                  "optionsLabelPosition": "right"
+                },
+                {
                     "key": "klantcontact.taal",
                     "type": "textfield",
                     "input": true,
