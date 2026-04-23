@@ -6,6 +6,10 @@ export const pluginEnTranslations = {
                 loading: "Loading...",
                 retrieved: "Retrieved"
             },
+            contact: {
+                content: "Content",
+                reaction: "Reaction"
+            },
             outcome: {
                 success: "Success",
                 failure: "Failure",
