@@ -249,7 +249,7 @@
                   "attributes": {
                     "data-testid": "open-klant.start-klantcontact.indicatieContactGelukt"
                   },
-                  "defaultValue": false,
+                  "defaultValue": true,
                   "optionsLabelPosition": "right"
                 },
                 {
