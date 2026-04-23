@@ -1,8 +1,8 @@
 <div
-  [ngClass]="{ 
-    'contact-history-spinner': true, 
-    'refresh-container': true, 
-    'no-height': !isLoading 
+  [ngClass]="{
+    'contact-history-spinner': true,
+    'refresh-container': true,
+    'no-height': !isLoading
   }"
 >
   <span class="loading-description mr-2">{{
@@ -34,14 +34,21 @@
 
       <div class="timeline-content">
         <p class="timeline-author">
-          <em class="klantcontact-number">{{ customerContact.id }}:</em>
+          <em *ngIf="customerContact.id" class="klantcontact-number">{{ customerContact.id }}:</em>
           {{ customerContact.channel | titlecase }} -
           {{ getOutcomeTranslationKey(customerContact.outcome) | translate }}
         </p>
 
         <details>
           <summary>{{ customerContact.subject }}</summary>
-          <p>{{ customerContact.content }}</p>
+          <p *ngIf="customerContact.content">
+            <span class="klantcontact-property-name">{{ 'openKlant.contactHistory.contact.content' | translate }}: </span>
+            {{ customerContact.content }}
+          </p>
+          <p *ngIf="customerContact.reaction">
+            <span class="klantcontact-property-name">{{ 'openKlant.contactHistory.contact.reaction' | translate }}: </span>
+            {{ customerContact.reaction }}
+          </p>
         </details>
       </div>
     </li>
