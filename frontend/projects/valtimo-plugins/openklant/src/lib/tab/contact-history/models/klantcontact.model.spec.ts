@@ -21,7 +21,7 @@ describe("mapModelToDto", () => {
     };
     const model = mapDtoToModel(dto);
 
-    expect(model.id).toBe("123");
+    expect(model.referenceId).toBe("123");
     expect(model.channel).toBe("email");
     expect(model.subject).toBe("Test Subject");
     expect(model.content).toBe("Test content");
@@ -43,7 +43,7 @@ describe("mapModelToDto", () => {
 
     const model = mapDtoToModel(dto);
 
-    expect(model.id).toBeUndefined();
+    expect(model.referenceId).toBeUndefined();
     expect(model.channel).toBe("phone");
     expect(model.subject).toBe("Missing fields");
     expect(model.content).toBeUndefined();
@@ -58,7 +58,7 @@ describe("mapModelToDto", () => {
 describe("mapModelToDto", () => {
   it("should correctly map all fields from model to DTO", () => {
     const model: Klantcontact = {
-      id: "456",
+      referenceId: "456",
       channel: "chat",
       subject: "Hello",
       content: "Some content",
