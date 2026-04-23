@@ -1,5 +1,7 @@
 export interface Klantcontact {
   id?: string;
+  number?: string;
+  referenceId?: string;
   channel: string;
   subject: string;
   content?: string;
@@ -18,6 +20,7 @@ export enum ContactOutcome {
 }
 
 export interface KlantcontactDTO {
+  nummer?: string;
   referentienummer?: string;
   kanaal: string;
   onderwerp: string;
@@ -31,7 +34,11 @@ export interface KlantcontactDTO {
 
 export function mapDtoToModel(dto: KlantcontactDTO): Klantcontact {
   return {
-    id: dto.referentienummer,
+    id: dto.referentienummer
+      ? dto.referentienummer
+      : dto.nummer,
+    number: dto.nummer,
+    referenceId: dto.referentienummer,
     channel: dto.kanaal,
     subject: dto.onderwerp,
     content: dto.inhoud,
@@ -47,7 +54,8 @@ export function mapDtoToModel(dto: KlantcontactDTO): Klantcontact {
 
 export function mapModelToDto(model: Klantcontact): KlantcontactDTO {
   return {
-    referentienummer: model.id,
+    nummer: model.number,
+    referentienummer: model.referenceId,
     kanaal: model.channel,
     onderwerp: model.subject,
     inhoud: model.content,
