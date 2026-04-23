@@ -53,6 +53,41 @@ describe("mapModelToDto", () => {
     expect(model.isConfidential).toBe(false);
     expect(model.occurredAt).toBeUndefined();
   });
+
+    it("should correctly map id to referentienummer, when referentienummer and nummer is available", () => {
+        const dto: KlantcontactDTO = {
+            referentienummer: "123",
+            nummer: "456",
+            kanaal: "email",
+            onderwerp: "Test Subject",
+            inhoud: "Test content",
+            reactie: "Test reaction",
+            indicatieContactGelukt: "true",
+            taal: "en",
+            vertrouwelijk: false,
+            plaatsgevondenOp: "2025-12-18T15:30:00Z",
+        };
+        const model = mapDtoToModel(dto);
+
+        expect(model.id).toBe("123");
+    });
+
+    it("should correctly map id to nummer, when only nummer is available", () => {
+        const dto: KlantcontactDTO = {
+            nummer: "456",
+            kanaal: "email",
+            onderwerp: "Test Subject",
+            inhoud: "Test content",
+            reactie: "Test reaction",
+            indicatieContactGelukt: "true",
+            taal: "en",
+            vertrouwelijk: false,
+            plaatsgevondenOp: "2025-12-18T15:30:00Z",
+        };
+        const model = mapDtoToModel(dto);
+
+        expect(model.id).toBe("456");
+    });
 });
 
 describe("mapModelToDto", () => {
