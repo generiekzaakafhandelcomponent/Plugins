@@ -4,6 +4,7 @@ export interface RegisterKlantcontactConfig {
     onderwerp: string;
     inhoud: string | undefined;
     reactie: string | undefined;
+    indicatieContactGelukt: string | undefined;
     vertrouwelijk: string;
     taal: string;
     plaatsgevondenOp: string;

@@ -41,6 +41,13 @@
             [required]="false"
     ></v-input>
     <v-input
+            name="indicatieContactGelukt"
+            [title]="'indicatieContactGelukt' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.indicatieContactGelukt.toString()"
+            [disabled]="obs.disabled"
+            [required]="true"
+    ></v-input>
+    <v-input
             name="vertrouwelijk"
             [title]="'vertrouwelijk' | pluginTranslate: pluginId | async"
             [defaultValue]="obs.prefill?.vertrouwelijk.toString()"
