@@ -40,12 +40,15 @@
         "pluginActionDefinitionKey": "register-klantcontact",
         "actionProperties": {
             "hasBetrokkene": false,
+            "referentienummer": "doc:/klantcontact/referentienummer",
             "kanaal": "doc:/klantcontact/kanaal",
             "onderwerp": "doc:/klantcontact/onderwerp",
             "inhoud": "doc:/klantcontact/inhoud",
+            "reactie": "doc:/klantcontact/reactie",
             "vertrouwelijk": "doc:/klantcontact/vertrouwelijk",
             "taal": "doc:/klantcontact/taal",
-            "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp"
+            "plaatsgevondenOp": "doc:/klantcontact/plaatsgevondenOp",
+            "metadata": "doc:/klantcontact/metadata"
         },
         "processLinkType": "plugin"
     },
