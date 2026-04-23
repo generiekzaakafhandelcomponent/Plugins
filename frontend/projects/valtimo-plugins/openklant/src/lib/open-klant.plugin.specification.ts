@@ -9,6 +9,7 @@ import { GetOrCreatePartijComponent } from "./components/get-or-create-partij/ge
 import {
   SetDefaultDigitaalAdresComponent
 } from "./components/set-default-digitaal-adres/set-default-digitaal-adres.component";
+import {GetContactMomentsByPartijUuidComponent} from './components/get-contact-moments-by-partij-uuid/get-contact-moments-by-partij-uuid.component';
 
 const openKlantPluginSpecification: PluginSpecification = {
   pluginId: "openklant",
@@ -16,6 +17,7 @@ const openKlantPluginSpecification: PluginSpecification = {
   pluginLogoBase64: OPEN_KLANT_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
     "get-contact-moments-by-bsn": GetContactMomentsByBsnComponent,
+    "get-contact-moments-by-partij-uuid": GetContactMomentsByPartijUuidComponent,
     "get-contact-moments-by-case-uuid": GetContactMomentsByCaseUuidComponent,
     "store-contact-info": StoreContactInfoComponent,
     "get-or-create-partij": GetOrCreatePartijComponent,
