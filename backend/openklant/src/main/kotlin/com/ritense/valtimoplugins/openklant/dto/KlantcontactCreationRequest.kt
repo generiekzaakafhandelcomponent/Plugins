@@ -42,7 +42,7 @@ data class KlantcontactCreationRequest(
         @field:NotBlank
         @field:Pattern(
             regexp = "^[A-Za-z]{3}$",
-            message = "taal must be of 3 letters (ISO 639-2/B)",
+            message = "taal moet 3 letters bevatten (ISO 639-2/B)",
         )
         val taal: String,
         @field:JsonProperty("vertrouwelijk")
