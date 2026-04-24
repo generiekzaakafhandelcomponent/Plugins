@@ -7,6 +7,10 @@ export const pluginNlTranslations = {
                 loading: "Verversen...",
                 retrieved: "Opgehaald"
             },
+            contact: {
+                content: "Inhoud",
+                reaction: "Reactie"
+            },
             outcome: {
                 success: "Succes",
                 failure: "Mislukt",

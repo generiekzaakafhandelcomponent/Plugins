@@ -22,12 +22,15 @@ describe("RegisterKlantcontactComponent", () => {
 
   const validFormValue: RegisterKlantcontactConfig = {
     hasBetrokkene: true,
+    referentienummer: "",
     kanaal: "email",
     onderwerp: "Subject",
     inhoud: "Content",
+    reactie: "Reactie",
     vertrouwelijk: "true",
     taal: "nld",
     plaatsgevondenOp: new Date().toISOString(),
+    metadata: "",
     partijUuid: "uuid-123",
     voorletters: "J.D.",
     voornaam: "John",
@@ -37,12 +40,15 @@ describe("RegisterKlantcontactComponent", () => {
 
   const invalidFormValueMissingField: RegisterKlantcontactConfig = {
     hasBetrokkene: true,
+    referentienummer: "",
     kanaal: "",
     onderwerp: "Subject",
     inhoud: "Content",
+    reactie: "Reactie",
     vertrouwelijk: "true",
     taal: "nld",
     plaatsgevondenOp: new Date().toISOString(),
+    metadata: "",
     partijUuid: "uuid-123",
     voorletters: "J.D.",
     voornaam: "John",
@@ -113,12 +119,15 @@ describe("RegisterKlantcontactComponent", () => {
       const validFormValueWithConfidentialSetOnFalse: RegisterKlantcontactConfig =
         {
           hasBetrokkene: false,
+          referentienummer: "123",
           kanaal: "email",
           onderwerp: "Subject",
           inhoud: "Content",
+          reactie: "Reactie",
           vertrouwelijk: "false",
           taal: "nld",
           plaatsgevondenOp: new Date().toISOString(),
+          metadata: "",
           partijUuid: undefined,
           voorletters: undefined,
           voornaam: undefined,
