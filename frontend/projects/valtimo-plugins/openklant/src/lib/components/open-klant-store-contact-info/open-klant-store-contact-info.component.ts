@@ -8,7 +8,8 @@ import {
 } from "@angular/core";
 import {
     FunctionConfigurationComponent,
-    FunctionConfigurationData, PluginTranslatePipeModule,
+    FunctionConfigurationData,
+    PluginTranslatePipeModule,
 } from '@valtimo/plugin';
 import {
   Observable,
