@@ -138,7 +138,7 @@ const openKlantPluginSpecification: PluginSpecification = {
 
       // Register contact moment
       "register-klantcontact": "Register new klantcontact (customer contact)",
-      objectTypeId: "Type van het object, bijvoorbeeld: 'zaak'",
+      objectTypeId: "Object type, for example: 'zaak'",
       referentienummer: "Reference number",
       kanaal: "Communication channel",
       onderwerp: "Subject",
