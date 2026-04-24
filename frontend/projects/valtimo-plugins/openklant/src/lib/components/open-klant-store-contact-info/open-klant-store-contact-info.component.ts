@@ -18,9 +18,9 @@ import {
   combineLatest,
   take,
 } from "rxjs";
-import { StoreContactInfoConfig } from "../../models/store-contact-info-config";
-import {FormModule, InputModule} from '@valtimo/components';
-import {AsyncPipe, NgIf} from '@angular/common';
+import { StoreContactInfoConfig } from '../../models/store-contact-info-config';
+import { FormModule, InputModule } from '@valtimo/components';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
     selector: 'store-contact-info',
