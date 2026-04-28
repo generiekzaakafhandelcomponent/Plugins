@@ -10,7 +10,7 @@
         "import": "@valtimo-plugins/xential",
         "codeAdditions": [
             {
-                "spec": "XentialPluginSpecification",
+                "spec": "xentialPluginSpecification",
                 "module": "XentialPluginModule"
             }
         ]
