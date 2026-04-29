@@ -16,7 +16,11 @@
 
 package com.ritense.valtimoplugins.docsys.client
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class DamDraftResponse(
+    @JsonProperty("DraftId")
     val draftId: String,
+    @JsonProperty("DraftUrl")
     val draftUrl: String
 )
