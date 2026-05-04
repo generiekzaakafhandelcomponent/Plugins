@@ -26,11 +26,13 @@ class PrintstraatService(
 
             val informatieObject = documentenApiService.getInformatieObject(
                 pluginConfigurationId = documentenApiPluginConfigurationId,
+                caseDocumentId = null,
                 documentId = documentId
             )
 
             val stream = documentenApiService.downloadInformatieObject(
                 pluginConfigurationId = documentenApiPluginConfigurationId,
+                caseDocumentId = null,
                 documentId = documentId
             )
 
