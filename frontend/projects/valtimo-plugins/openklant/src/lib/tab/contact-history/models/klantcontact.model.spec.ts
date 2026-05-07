@@ -9,10 +9,11 @@ import {
 describe("mapModelToDto", () => {
   it("should correctly map all fields from DTO to model", () => {
     const dto: KlantcontactDTO = {
-      nummer: "123",
+      referentienummer: "123",
       kanaal: "email",
       onderwerp: "Test Subject",
       inhoud: "Test content",
+      reactie: "Test reaction",
       indicatieContactGelukt: "true",
       taal: "en",
       vertrouwelijk: false,
@@ -20,10 +21,11 @@ describe("mapModelToDto", () => {
     };
     const model = mapDtoToModel(dto);
 
-    expect(model.id).toBe("123");
+    expect(model.referenceId).toBe("123");
     expect(model.channel).toBe("email");
     expect(model.subject).toBe("Test Subject");
     expect(model.content).toBe("Test content");
+    expect(model.reaction).toBe("Test reaction");
     expect(model.outcome).toBe(ContactOutcome.SUCCESS);
     expect(model.preferredLanguage).toBe("en");
     expect(model.isConfidential).toBe(false);
@@ -41,24 +43,61 @@ describe("mapModelToDto", () => {
 
     const model = mapDtoToModel(dto);
 
-    expect(model.id).toBeUndefined();
+    expect(model.referenceId).toBeUndefined();
     expect(model.channel).toBe("phone");
     expect(model.subject).toBe("Missing fields");
     expect(model.content).toBeUndefined();
+    expect(model.reaction).toBeUndefined();
     expect(model.outcome).toBe(ContactOutcome.NOT_APPLICABLE);
     expect(model.preferredLanguage).toBe("nl");
     expect(model.isConfidential).toBe(false);
     expect(model.occurredAt).toBeUndefined();
   });
+
+    it("should correctly map id to referentienummer, when referentienummer and nummer is available", () => {
+        const dto: KlantcontactDTO = {
+            referentienummer: "123",
+            nummer: "456",
+            kanaal: "email",
+            onderwerp: "Test Subject",
+            inhoud: "Test content",
+            reactie: "Test reaction",
+            indicatieContactGelukt: "true",
+            taal: "en",
+            vertrouwelijk: false,
+            plaatsgevondenOp: "2025-12-18T15:30:00Z",
+        };
+        const model = mapDtoToModel(dto);
+
+        expect(model.id).toBe("123");
+    });
+
+    it("should correctly map id to nummer, when only nummer is available", () => {
+        const dto: KlantcontactDTO = {
+            nummer: "456",
+            kanaal: "email",
+            onderwerp: "Test Subject",
+            inhoud: "Test content",
+            reactie: "Test reaction",
+            indicatieContactGelukt: "true",
+            taal: "en",
+            vertrouwelijk: false,
+            plaatsgevondenOp: "2025-12-18T15:30:00Z",
+        };
+        const model = mapDtoToModel(dto);
+
+        expect(model.id).toBe("456");
+    });
 });
 
 describe("mapModelToDto", () => {
   it("should correctly map all fields from model to DTO", () => {
     const model: Klantcontact = {
-      id: "456",
+      referenceId: "456",
       channel: "chat",
       subject: "Hello",
       content: "Some content",
+      reaction: "A reaction",
       outcome: ContactOutcome.FAILURE,
       preferredLanguage: "nl",
       isConfidential: true,
@@ -67,10 +106,11 @@ describe("mapModelToDto", () => {
 
     const dto = mapModelToDto(model);
 
-    expect(dto.nummer).toBe("456");
+    expect(dto.referentienummer).toBe("456");
     expect(dto.kanaal).toBe("chat");
     expect(dto.onderwerp).toBe("Hello");
     expect(dto.inhoud).toBe("Some content");
+    expect(dto.reactie).toBe("A reaction");
     expect(dto.indicatieContactGelukt).toBe("false");
     expect(dto.taal).toBe("nl");
     expect(dto.vertrouwelijk).toBe(true);
@@ -88,10 +128,11 @@ describe("mapModelToDto", () => {
 
     const dto = mapModelToDto(model);
 
-    expect(dto.nummer).toBeUndefined();
+    expect(dto.referentienummer).toBeUndefined();
     expect(dto.kanaal).toBe("sms");
     expect(dto.onderwerp).toBe("Test");
     expect(dto.inhoud).toBeUndefined();
+    expect(dto.reactie).toBeUndefined();
     expect(dto.indicatieContactGelukt).toBe(undefined); // because model.outcome is ContactOutcome.UNKNOWN
     expect(dto.taal).toBe("en");
     expect(dto.vertrouwelijk).toBe(false);

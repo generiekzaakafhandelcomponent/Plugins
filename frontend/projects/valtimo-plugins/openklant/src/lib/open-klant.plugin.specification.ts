@@ -9,6 +9,7 @@ import { GetOrCreatePartijComponent } from "./components/get-or-create-partij/ge
 import {
   SetDefaultDigitaalAdresComponent
 } from "./components/set-default-digitaal-adres/set-default-digitaal-adres.component";
+import {GetContactMomentsByPartijUuidComponent} from './components/get-contact-moments-by-partij-uuid/get-contact-moments-by-partij-uuid.component';
 
 const openKlantPluginSpecification: PluginSpecification = {
   pluginId: "openklant",
@@ -16,6 +17,7 @@ const openKlantPluginSpecification: PluginSpecification = {
   pluginLogoBase64: OPEN_KLANT_PLUGIN_LOGO_BASE64,
   functionConfigurationComponents: {
     "get-contact-moments-by-bsn": GetContactMomentsByBsnComponent,
+    "get-contact-moments-by-partij-uuid": GetContactMomentsByPartijUuidComponent,
     "get-contact-moments-by-case-uuid": GetContactMomentsByCaseUuidComponent,
     "store-contact-info": StoreContactInfoComponent,
     "get-or-create-partij": GetOrCreatePartijComponent,
@@ -68,12 +70,16 @@ const openKlantPluginSpecification: PluginSpecification = {
       // Register contact moment
       "register-klantcontact": "Registreer nieuw klantcontact",
       objectTypeId: "Type van het object, bijvoorbeeld: 'zaak'",
+      referentienummer: "Referentienummer",
       kanaal: "Communicatiekanaal",
       onderwerp: "Onderwerp",
       inhoud: "Inhoud",
+      reactie: "Reactie",
+      indicatieContactGelukt: "Indicatie contact gelukt",
       vertrouwelijk: "Vertrouwelijk (true/false)",
       taal: "Taal (ISO 639-2/B-formaat)",
       plaatsgevondenOp: "Plaatsgevonden op (ISO 8601)",
+      metadata: "Metadata",
       voorletters: "Voorletters",
       voornaam: "Voornaam",
       voorvoegselAchternaam: "Voorvoegsel achternaam",
@@ -132,13 +138,17 @@ const openKlantPluginSpecification: PluginSpecification = {
 
       // Register contact moment
       "register-klantcontact": "Register new klantcontact (customer contact)",
-      objectTypeId: "Type van het object, bijvoorbeeld: 'zaak'",
+      objectTypeId: "Object type, for example: 'zaak'",
+      referentienummer: "Reference number",
       kanaal: "Communication channel",
       onderwerp: "Subject",
       inhoud: "Message content",
+      reactie: "Reaction",
+      indicatieContactGelukt: "Successfully contacted",
       vertrouwelijk: "Confidential (true/false)",
       taal: "Language (ISO 639-2/B format)",
       plaatsgevondenOp: "Occurred on (ISO 8601)",
+      metadata: "Metadata",
       voorletters: "Initials",
       voornaam: "First name",
       voorvoegselAchternaam: "Name infix",

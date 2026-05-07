@@ -82,7 +82,6 @@ export class RegisterKlantcontactComponent
     const valid =
       !!formValue.kanaal &&
       !!formValue.onderwerp &&
-      !!formValue.inhoud &&
       !!formValue.vertrouwelijk &&
       !!formValue.taal &&
       !!formValue.plaatsgevondenOp &&

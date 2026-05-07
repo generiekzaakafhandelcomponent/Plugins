@@ -142,6 +142,17 @@
             "tableView": false,
             "components": [
                 {
+                    "key": "klantcontact.referentienummer",
+                    "type": "textfield",
+                    "input": true,
+                    "label": "Referentienummer",
+                    "tableView": true,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.referentienummer"
+                    },
+                    "applyMaskOn": "change"
+                },
+                {
                     "key": "klantcontact.kanaal",
                     "type": "textfield",
                     "input": true,
@@ -169,10 +180,23 @@
                     "key": "klantcontact.inhoud",
                     "type": "textarea",
                     "input": true,
-                    "label": "inhoud",
+                    "label": "Inhoud",
                     "tableView": true,
                     "attributes": {
                         "data-testid": "open-klant.start-klantcontact.inhoud"
+                    },
+                    "autoExpand": false,
+                    "applyMaskOn": "change",
+                    "defaultValue": "Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos."
+                },
+                {
+                    "key": "klantcontact.reactie",
+                    "type": "textarea",
+                    "input": true,
+                    "label": "Reactie",
+                    "tableView": true,
+                    "attributes": {
+                        "data-testid": "open-klant.start-klantcontact.reactie"
                     },
                     "autoExpand": false,
                     "applyMaskOn": "change",
@@ -202,6 +226,31 @@
                     },
                     "defaultValue": false,
                     "optionsLabelPosition": "right"
+                },
+                {
+                  "key": "klantcontact.indicatieContactGelukt",
+                  "type": "radio",
+                  "input": true,
+                  "label": "Indicatie Contact Gelukt",
+                  "inline": false,
+                  "values": [
+                    {
+                      "label": "Ja",
+                      "value": "true",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "Nee",
+                      "value": "false",
+                      "shortcut": ""
+                    }
+                  ],
+                  "tableView": false,
+                  "attributes": {
+                    "data-testid": "open-klant.start-klantcontact.indicatieContactGelukt"
+                  },
+                  "defaultValue": true,
+                  "optionsLabelPosition": "right"
                 },
                 {
                     "key": "klantcontact.taal",
@@ -250,6 +299,22 @@
                     "defaultDate": "moment()",
                     "enableMaxDateInput": false,
                     "enableMinDateInput": false
+                },
+                {
+                    "key": "klantcontact.metadata",
+                    "type": "datamap",
+                    "input": true,
+                    "label": "Metadata",
+                    "addAnother": "Add property",
+                    "tableView": false,
+                    "validateWhenHidden": false,
+                    "valueComponent": {
+                      "type": "textfield",
+                      "label": "Value",
+                      "input": true,
+                      "hideLabel": true,
+                      "tableView": true
+                    }
                 },
                 {
                     "key": "klantcontact.hasBetrokkene",
