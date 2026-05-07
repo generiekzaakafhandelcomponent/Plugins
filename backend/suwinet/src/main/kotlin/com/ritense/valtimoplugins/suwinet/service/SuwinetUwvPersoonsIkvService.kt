@@ -192,7 +192,7 @@ class SuwinetUwvPersoonsIkvService(
                     loonLbPremieVolksverzekering = getWaarde(it.bedrLoonLbPremieVolksverz),
                     ingehoudenLbPremieVolksverzekering = getWaarde(it.bedrIngehoudenLbPremieVolksverz),
                     vakantietoeslag = getWaarde(it.bedrVakantietoeslag),
-                    opgbRechtVakantietoeslag = getWaarde(it.bedrVakantietoeslag),
+                    opgbRechtVakantietoeslag = getWaarde(it.bedrOpgbRechtVakantietoeslag),
                     extraPrdSalaris = getWaarde(it.bedrExtraPrdSalaris),
                     opgbRechtExtraPrdSalaris = getWaarde(it.bedrOpgbRechtExtraPrdSalaris),
                     vergoedingReiskostenOnbelast = getWaarde(it.bedrVergoedingReiskostenOnbelast),
