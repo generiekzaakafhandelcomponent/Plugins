@@ -10,7 +10,7 @@
         "import": "@valtimo-plugins/mtls-sslcontext",
         "codeAdditions": [
             {
-                "spec": "MtlsSslcontextPluginSpecification",
+                "spec": "mtlsSslcontextPluginSpecification",
                 "module": "MtlsSslcontextPluginModule"
             }
         ]
