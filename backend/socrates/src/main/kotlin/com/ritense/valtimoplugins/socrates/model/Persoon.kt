@@ -19,7 +19,7 @@ data class Persoon(
     val geslachtsnaamstam: String,
     val voorlettersAanschrijving: String,
     val voornamen: String,
-    val voorvoegsel: String,
+    val voorvoegsel: String?,
 
     /**
      * Een aanduiding voor de wijze van aanschrijving van de NATUURLIJK PERSOON.
