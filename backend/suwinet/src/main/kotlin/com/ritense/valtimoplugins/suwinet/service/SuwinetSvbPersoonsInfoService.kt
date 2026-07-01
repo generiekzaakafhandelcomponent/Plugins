@@ -11,9 +11,11 @@ import com.ritense.valtimoplugins.suwinet.error.SuwinetError
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultFWIException
 import com.ritense.valtimoplugins.suwinet.exception.SuwinetResultNotFoundException
 import com.ritense.valtimoplugins.suwinet.model.DynamicResponseDto
+import com.ritense.valtimoplugins.suwinet.util.PeriodFilter
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.xml.ws.WebServiceException
 import jakarta.xml.ws.soap.SOAPFaultException
+import java.time.LocalDate
 import org.springframework.util.StringUtils
 
 class SuwinetSvbPersoonsInfoService(
@@ -48,7 +50,9 @@ class SuwinetSvbPersoonsInfoService(
     fun getPersoonsgegevensByBsn(
         bsn: String,
         svbInfo: SVBInfo,
-        dynamicProperties: List<String> = listOf()
+        dynamicProperties: List<String> = listOf(),
+        periodStart: LocalDate? = null,
+        periodEnd: LocalDate? = null
     ): DynamicResponseDto? {
 
         logger.info { "Getting SVB PersoonsInfo from ${soapClientConfig.baseUrl + SERVICE_PATH + (this.suffix ?: "")}" }
@@ -60,7 +64,7 @@ class SuwinetSvbPersoonsInfoService(
                     burgerservicenr = bsn
                 }
             val response = svbInfo.svbPersoonsInfo(svbInfoRequest)
-            return response.unwrapResponse(dynamicProperties)
+            return response.unwrapResponse(dynamicProperties, periodStart, periodEnd)
 
             // SOAPFaultException occur when something is wrong with the request/response
         } catch (e: SOAPFaultException) {
@@ -85,7 +89,11 @@ class SuwinetSvbPersoonsInfoService(
         }
     }
 
-    private fun SVBPersoonsInfoResponse.unwrapResponse(dynamicProperties: List<String>): DynamicResponseDto? {
+    private fun SVBPersoonsInfoResponse.unwrapResponse(
+        dynamicProperties: List<String>,
+        periodStart: LocalDate? = null,
+        periodEnd: LocalDate? = null
+    ): DynamicResponseDto? {
 
         val responseValue = content
             .firstOrNull()
@@ -94,6 +102,9 @@ class SuwinetSvbPersoonsInfoService(
 
         return when (responseValue) {
             is SVBPersoonsInfoResponse.ClientSuwi -> {
+                if (periodStart != null && periodEnd != null) {
+                    responseValue.applyPeriodFilter(periodStart, periodEnd)
+                }
                 DynamicResponseDto(
                     properties = getAvailableProperties(responseValue),
                     dynamicProperties = getDynamicProperties(responseValue, dynamicProperties)
@@ -113,6 +124,32 @@ class SuwinetSvbPersoonsInfoService(
                 } else {
                     throw SuwinetResultNotFoundException("SuwiNet response: $responseValue")
                 }
+            }
+        }
+    }
+
+    /**
+     * Mutates the ClientSuwi response in-place: removes uitkeringsverhoudingen and uitkeringsperioden
+     * that do not overlap with [periodStart, periodEnd].
+     *
+     * XSD date fields use yyyyMMdd format (sml:Datum).
+     * Field mapping from BodyReaction.xsd:
+     *   Uitkeringsverhouding: DatBUitkeringsverhouding / DatEUitkeringsverhouding
+     *   Uitkeringsperiode:    DatBUitkeringsperiode / DatEUitkeringsperiode
+     */
+    private fun SVBPersoonsInfoResponse.ClientSuwi.applyPeriodFilter(
+        periodStart: LocalDate,
+        periodEnd: LocalDate
+    ) {
+        uitkeringsverhouding.removeIf { uv ->
+            !PeriodFilter.overlaps(
+                uv.datBUitkeringsverhouding,
+                uv.datEUitkeringsverhouding, periodStart, periodEnd
+            )
+        }
+        uitkeringsverhouding.forEach { uv ->
+            uv.uitkeringsperiode.removeIf { up ->
+                !PeriodFilter.overlaps(up.datBUitkeringsperiode, up.datEUitkeringsperiode, periodStart, periodEnd)
             }
         }
     }

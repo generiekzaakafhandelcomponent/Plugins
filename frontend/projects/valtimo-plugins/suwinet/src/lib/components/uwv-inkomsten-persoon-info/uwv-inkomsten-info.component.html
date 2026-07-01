@@ -51,6 +51,26 @@
     >
     </v-input>
     <v-input
+            name="startdatumPeriode"
+            [title]="'startdatumPeriode' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.startdatumPeriode"
+            [disabled]="obs.disabled"
+            [tooltip]="'startdatumPeriodeTooltip' | pluginTranslate : pluginId | async"
+            [required]="false"
+    ></v-input>
+    <v-input
+            name="einddatumPeriode"
+            [title]="'einddatumPeriode' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.einddatumPeriode"
+            [disabled]="obs.disabled"
+            [tooltip]="'einddatumPeriodeTooltip' | pluginTranslate : pluginId | async"
+            [required]="false"
+    ></v-input>
+    <v-input
             name="suffix"
             [title]="'suffix' | pluginTranslate : pluginId | async"
             [margin]="true"
