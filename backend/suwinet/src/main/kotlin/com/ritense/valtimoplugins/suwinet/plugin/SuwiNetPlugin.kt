@@ -19,6 +19,7 @@ import com.ritense.valtimoplugins.suwinet.service.SuwinetKadasterInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetRdwService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetSvbPersoonsInfoService
 import com.ritense.valtimoplugins.suwinet.service.SuwinetUwvPersoonsIkvService
+import com.ritense.valtimoplugins.suwinet.util.DateExpressionEvaluator
 import com.ritense.valtimoplugins.suwinetauth.plugin.SuwinetAuth
 import java.net.URI
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -89,10 +90,11 @@ class SuwiNetPlugin(
             }
 
         } catch (e: Exception) {
-            when(e) {
+            when (e) {
                 is SuwinetError -> {
                     throw BpmnError(e.errorCode)
                 }
+
                 else -> {
                     logger.info("Exiting scope due to nested error.", e)
                     return
@@ -131,10 +133,11 @@ class SuwiNetPlugin(
                 )
             }
         } catch (e: Exception) {
-            when(e) {
+            when (e) {
                 is SuwinetError -> {
                     throw BpmnError(e.errorCode)
                 }
+
                 else -> {
                     logger.info("Exiting scope due to nested error.", e)
                     return
@@ -178,10 +181,11 @@ class SuwiNetPlugin(
                 }
             }
         } catch (e: Exception) {
-            when(e) {
+            when (e) {
                 is SuwinetError -> {
                     throw BpmnError(e.errorCode)
                 }
+
                 else -> {
                     logger.info("Exiting scope due to nested error.", e)
                     return
@@ -323,13 +327,15 @@ class SuwiNetPlugin(
             //init
             execution.processInstance.removeVariableLocal(resultProcessVariableName)
 
-            val kadastraleAanduidingMap = execution.getVariableLocal(kadastraleAanduidingVariabeleName) as LinkedHashMap<*, *>
+            val kadastraleAanduidingMap =
+                execution.getVariableLocal(kadastraleAanduidingVariabeleName) as LinkedHashMap<*, *>
             val kadastraleAanduiding = KadastraleAanduidingDto(
                 kadastraleAanduidingMap.get("cdKadastraleGemeente") as String,
                 kadastraleAanduidingMap.get("kadastraleGemeentenaam") as String,
                 kadastraleAanduidingMap.get("kadastraleSectie") as String,
                 kadastraleAanduidingMap.get("kadastraalPerceelnr") as BigInteger,
-                kadastraleAanduidingMap.get("volgnrKadastraalAppartementsrecht") as BigInteger?)
+                kadastraleAanduidingMap.get("volgnrKadastraalAppartementsrecht") as BigInteger?
+            )
 
             suwinetKadasterInfoService.getKadastraleObjectByAanduiding(
                 kadastraleAanduiding = kadastraleAanduiding,
@@ -469,9 +475,17 @@ class SuwiNetPlugin(
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
         @PluginActionProperty dynamicProperties: List<String> = listOf(),
+        @PluginActionProperty startdatumPeriode: String? = null,
+        @PluginActionProperty einddatumPeriode: String? = null,
         execution: DelegateExecution
     ) {
         logger.info { "Getting SVB info for case ${execution.businessKey}" }
+
+        val (periodStart, periodEnd) = DateExpressionEvaluator.evaluatePeriod(
+            startdatumPeriode,
+            einddatumPeriode,
+            execution
+        )
 
         try {
             suwinetSvbPersoonsInfoService.setConfig(
@@ -482,7 +496,9 @@ class SuwiNetPlugin(
             suwinetSvbPersoonsInfoService.getPersoonsgegevensByBsn(
                 bsn = bsn,
                 svbInfo = suwinetSvbPersoonsInfoService.createSvbInfo(),
-                dynamicProperties = dynamicProperties
+                dynamicProperties = dynamicProperties,
+                periodStart = periodStart,
+                periodEnd = periodEnd
             )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -505,11 +521,20 @@ class SuwiNetPlugin(
         @PluginActionProperty resultProcessVariableName: String,
         @PluginActionProperty suffix: String? = "",
         @PluginActionProperty dynamicProperties: List<String> = listOf(),
+        @PluginActionProperty startdatumPeriode: String? = null,
+        @PluginActionProperty einddatumPeriode: String? = null,
         execution: DelegateExecution
     ) {
         require(bsn.isValidBsn()) { "Provided BSN does not pass elfproef" }
 
         logger.info { "Getting uwv info for case ${execution.businessKey}" }
+
+        val (periodStart, periodEnd) = DateExpressionEvaluator.evaluatePeriod(
+            startdatumPeriode,
+            einddatumPeriode,
+            execution
+        )
+
         suwinetUwvPersoonsIkvService.setConfig(
             getSuwinetSOAPClientConfig(),
             suffix
@@ -519,7 +544,9 @@ class SuwiNetPlugin(
             suwinetUwvPersoonsIkvService.getUWVInkomstenInfoByBsn(
                 bsn = bsn,
                 uwvIkvInfoService = suwinetUwvPersoonsIkvService.getUWVIkvInfoService(),
-                dynamicProperties = dynamicProperties
+                dynamicProperties = dynamicProperties,
+                periodStart = periodStart,
+                periodEnd = periodEnd
             )?.let {
                 execution.processInstance.setVariable(
                     resultProcessVariableName, objectMapper.convertValue(it)
@@ -554,11 +581,13 @@ class SuwiNetPlugin(
         )
 
         try {
-            suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(bsn,
+            suwinetBijstandsregelingenService.getBijstandsregelingenByBsn(
+                bsn,
                 suwinetBijstandsregelingenService.createBijstandsregelingenService(),
-                dynamicProperties)
+                dynamicProperties
+            )
                 ?.let {
-                    logger.debug { objectMapper.writeValueAsString(it)  }
+                    logger.debug { objectMapper.writeValueAsString(it) }
                     execution.processInstance.setVariable(
                         resultProcessVariableName, objectMapper.convertValue(it)
                     )
@@ -573,6 +602,7 @@ class SuwiNetPlugin(
             is SuwinetError -> {
                 throw BpmnError(e.errorCode)
             }
+
             else -> {
                 logger.error(e) { "Unexpected Suwinet error in SuwiNetPlugin" }
                 throw e

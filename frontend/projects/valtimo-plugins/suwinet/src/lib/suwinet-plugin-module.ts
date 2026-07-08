@@ -23,6 +23,7 @@ import {PluginTranslatePipeModule} from '@valtimo/plugin';
 
 import {FormsModule} from '@angular/forms';
 import {CarbonMultiInputModule, FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
+import {NotificationModule} from 'carbon-components-angular';
 import {SuwinetPluginConfigurationComponent} from './components/plugin-configuration/suwinet-plugin-configuration.component';
 import {BrpPersoonInfoComponent} from './components/brp-persoon-info/brp-persoon-info.component';
 import {BrpPartnerInfoComponent} from './components/brp-partner-info/brp-partner-info.component';
@@ -57,7 +58,7 @@ import {KadastraleAanduidingenComponent} from "./components/kadastrale-aanduidin
         UwvInkomstenInfoComponent,
         BijstandsregelingenInfoComponent
     ],
-    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, CarbonMultiInputModule,  ParagraphModule, SelectModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, FormsModule, PluginTranslatePipeModule, FormModule, CarbonMultiInputModule, ParagraphModule, SelectModule, NotificationModule],
     exports: [
         SuwinetPluginConfigurationComponent,
         BrpPersoonInfoComponent,

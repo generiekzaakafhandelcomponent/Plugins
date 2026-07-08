@@ -39,6 +39,38 @@
             [defaultValues]="defaultValues$ | async"
             [fullWidth]="true"
     ></valtimo-carbon-multi-input>
+    <ng-template #periodeFilterTemplate>
+        <span style="white-space: pre-line">{{ 'periodeFilterInfo' | pluginTranslate : pluginId | async }}</span>
+    </ng-template>
+    <cds-inline-notification
+            [notificationObj]="{
+                type: 'info',
+                lowContrast: true,
+                showClose: false,
+                title: '',
+                template: periodeFilterTemplate
+            }"
+    ></cds-inline-notification>
+    <v-input
+            name="startdatumPeriode"
+            [title]="'startdatumPeriode' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.startdatumPeriode"
+            [disabled]="obs.disabled"
+            [tooltip]="'startdatumPeriodeTooltip' | pluginTranslate : pluginId | async"
+            [required]="false"
+    ></v-input>
+    <v-input
+            name="einddatumPeriode"
+            [title]="'einddatumPeriode' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.einddatumPeriode"
+            [disabled]="obs.disabled"
+            [tooltip]="'einddatumPeriodeTooltip' | pluginTranslate : pluginId | async"
+            [required]="false"
+    ></v-input>
     <v-input
             name="resultProcessVariableName"
             [title]="'resultProcessVariableName' | pluginTranslate : pluginId | async"
