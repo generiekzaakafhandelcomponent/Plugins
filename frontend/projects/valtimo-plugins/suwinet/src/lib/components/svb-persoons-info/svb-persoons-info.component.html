@@ -39,17 +39,18 @@
             [defaultValues]="defaultValues$ | async"
             [fullWidth]="true"
     ></valtimo-carbon-multi-input>
-    <v-input
-            name="resultProcessVariableName"
-            [title]="'resultProcessVariableName' | pluginTranslate : pluginId | async"
-            [margin]="true"
-            [fullWidth]="true"
-            [defaultValue]="obs.prefill?.resultProcessVariableName"
-            [disabled]="obs.disabled"
-            [tooltip]="'resultProcessVariableNameTooltip' | pluginTranslate : pluginId | async"
-            [required]="true"
-    >
-    </v-input>
+    <ng-template #periodeFilterTemplate>
+        <span style="white-space: pre-line">{{ 'periodeFilterInfo' | pluginTranslate : pluginId | async }}</span>
+    </ng-template>
+    <cds-inline-notification
+            [notificationObj]="{
+                type: 'info',
+                lowContrast: true,
+                showClose: false,
+                title: '',
+                template: periodeFilterTemplate
+            }"
+    ></cds-inline-notification>
     <v-input
             name="startdatumPeriode"
             [title]="'startdatumPeriode' | pluginTranslate : pluginId | async"
@@ -70,6 +71,17 @@
             [tooltip]="'einddatumPeriodeTooltip' | pluginTranslate : pluginId | async"
             [required]="false"
     ></v-input>
+    <v-input
+            name="resultProcessVariableName"
+            [title]="'resultProcessVariableName' | pluginTranslate : pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.resultProcessVariableName"
+            [disabled]="obs.disabled"
+            [tooltip]="'resultProcessVariableNameTooltip' | pluginTranslate : pluginId | async"
+            [required]="true"
+    >
+    </v-input>
     <v-input
             name="suffix"
             [title]="'suffix' | pluginTranslate : pluginId | async"
