@@ -30,6 +30,7 @@ Beide acties hebben twee nieuwe optionele velden:
 | Startdatum | Einddatum | Resultaat                                              |
 |------------|-----------|--------------------------------------------------------|
 | Leeg       | Leeg      | Geen filtering – alle records worden teruggegeven      |
+| Leeg       | Ingevuld  | Geen filtering – einddatum wordt genegeerd             |
 | Ingevuld   | Leeg      | Einddatum wordt automatisch de **huidige datum**       |
 | Ingevuld   | Ingevuld  | Alleen records die overlappen met het opgegeven bereik |
 
