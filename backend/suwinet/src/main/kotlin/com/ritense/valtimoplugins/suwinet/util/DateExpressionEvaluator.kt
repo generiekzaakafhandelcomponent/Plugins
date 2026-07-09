@@ -44,10 +44,16 @@ object DateExpressionEvaluator {
     private fun evaluateSpel(expression: String, execution: DelegateExecution): LocalDate {
         val context = StandardEvaluationContext(SpelDateContext())
         execution.variables.forEach { (key, value) ->
-            context.setVariable(key, value)
+            context.setVariable(key, if (value is String) tryParseLocalDate(value) ?: value else value)
         }
         return spelParser.parseExpression(expression).getValue(context, LocalDate::class.java)
             ?: error("SpEL expression '\${$expression}' evaluated to null")
+    }
+
+    private fun tryParseLocalDate(s: String): LocalDate? = try {
+        LocalDate.parse(s)
+    } catch (_: Exception) {
+        null
     }
 
     class SpelDateContext {
