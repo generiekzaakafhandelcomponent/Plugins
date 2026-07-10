@@ -142,11 +142,13 @@ open class ObjectManagementPlugin(
         val objectData = objectMapper.createObjectNode()
         val jsonPatchBuilder = JsonPatchBuilder()
 
-        objectDataMap.forEach {
-            val path = JsonPointer.valueOf(it.key)
-            val valueNode = objectMapper.valueToTree<JsonNode>(it.value)
-            jsonPatchBuilder.addJsonNodeValue(objectData, path, valueNode)
-        }
+        objectDataMap
+            .filter { it.value != null }
+            .forEach {
+                val path = JsonPointer.valueOf(it.key)
+                val valueNode = objectMapper.valueToTree<JsonNode>(it.value)
+                jsonPatchBuilder.addJsonNodeValue(objectData, path, valueNode)
+            }
 
         JsonPatchService.apply(jsonPatchBuilder.build(), objectData)
 
