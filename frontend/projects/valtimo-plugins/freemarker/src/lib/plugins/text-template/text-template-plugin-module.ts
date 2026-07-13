@@ -24,7 +24,7 @@ import {
     EditorModule,
     FormModule,
     InputModule as ValtimoInputModule,
-    ParagraphModule, RenderInPageHeaderDirectiveModule,
+    ParagraphModule, RadioModule, RenderInPageHeaderDirectiveModule,
     SelectModule,
 } from '@valtimo/components';
 import {
@@ -46,10 +46,12 @@ import {TranslateModule} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TemplateManagementRoutingModule} from './text-template-management-routing.module';
 import {GenerateTextFileComponent} from './components/generate-text-file/generate-text-file.component';
+import {GenerateTextComponent} from './components/generate-text/generate-text.component';
 
 @NgModule({
     declarations: [
         GenerateTextFileComponent,
+        GenerateTextComponent,
         TextTemplateConfigurationComponent,
     ],
     imports: [
@@ -58,6 +60,7 @@ import {GenerateTextFileComponent} from './components/generate-text-file/generat
         TemplateManagementRoutingModule,
         FormModule,
         ParagraphModule,
+        RadioModule,
         SelectModule,
         ConfirmationModalModule,
         TranslateModule,
@@ -82,6 +85,7 @@ import {GenerateTextFileComponent} from './components/generate-text-file/generat
     ],
     exports: [
         GenerateTextFileComponent,
+        GenerateTextComponent,
         TextTemplateConfigurationComponent,
     ],
     providers: [

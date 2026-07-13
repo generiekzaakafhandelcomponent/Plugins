@@ -14,99 +14,25 @@
  * limitations under the License.
  */
 
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FunctionConfigurationComponent} from '@valtimo/plugin';
-import {BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap, take, tap} from 'rxjs';
-import {GenerateTextFileConfig} from '../../models';
-import {FunctionConfigurationData} from '@valtimo/plugin/lib/models/plugin';
-import {ModalService, SelectItem} from '@valtimo/components';
-import {DocumentService} from '@valtimo/document';
-import {FreemarkerTemplateManagementService} from '../../../../services';
+import {Component} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Page} from '@valtimo/config';
+import {TemplateListItem} from '../../../../models';
+import {GenerateTemplateConfigurationComponent} from '../../../shared/generate-template/generate-template-configuration.component';
 
 @Component({
+    standalone: false,
     selector: 'valtimo-generate-text-file-configuration',
-    templateUrl: './generate-text-file.component.html',
+    templateUrl: '../../../shared/generate-template/generate-template-configuration.component.html',
 })
-export class GenerateTextFileComponent
-    implements FunctionConfigurationComponent, OnInit, OnDestroy {
-    @Input() save$!: Observable<void>;
-    @Input() disabled$!: Observable<boolean>;
-    @Input() pluginId!: string;
-    @Input() prefillConfiguration$!: Observable<GenerateTextFileConfig>;
-    @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() configuration: EventEmitter<FunctionConfigurationData> = new EventEmitter<FunctionConfigurationData>();
+export class GenerateTextFileComponent extends GenerateTemplateConfigurationComponent {
+    readonly keyFieldName = 'textTemplateKey';
+    readonly defaultProcessVariableName = 'contentId';
+    readonly descriptionKey = 'generateTextFileDescription';
+    readonly keyTitleKey = 'textTemplateKey';
+    readonly keyTooltipKey = 'textTemplateKeyTooltip';
 
-    private saveSubscription!: Subscription;
-    private readonly formValue$ = new BehaviorSubject<GenerateTextFileConfig | null>(null);
-    private readonly valid$ = new BehaviorSubject<boolean>(false);
-
-    readonly loading$ = new BehaviorSubject<boolean>(true);
-
-    readonly textTemplateItems$: Observable<Array<SelectItem>> = this.modalService.modalData$.pipe(
-        switchMap(params =>
-            this.documentService.findProcessDocumentDefinitionsByProcessDefinitionKey(
-                params?.processDefinitionKey
-            )
-        ),
-        switchMap(processDocumentDefinitions =>
-            combineLatest([
-                of({content: []}),
-                ...processDocumentDefinitions.map(processDocumentDefinition =>
-                    this.templateService.getAllTextTemplates(
-                        processDocumentDefinition.id.documentDefinitionId.name
-                    )
-                ),
-            ])
-        ),
-        map(results => {
-            return results
-                .flatMap(result => result.content)
-                .map(template => ({
-                    id: template.key,
-                    text: template.key,
-                }));
-        }),
-        tap(() => {
-            this.loading$.next(false);
-        })
-    );
-
-    constructor(
-        private readonly modalService: ModalService,
-        private readonly documentService: DocumentService,
-        private readonly templateService: FreemarkerTemplateManagementService
-    ) {
-    }
-
-    ngOnInit(): void {
-        this.openSaveSubscription();
-    }
-
-    ngOnDestroy(): void {
-        this.saveSubscription?.unsubscribe();
-    }
-
-    formValueChange(formValue: GenerateTextFileConfig): void {
-        this.formValue$.next(formValue);
-        this.handleValid(formValue);
-    }
-
-    private handleValid(formValue: GenerateTextFileConfig): void {
-        const valid = !!(formValue.textTemplateKey && formValue.processVariableName);
-
-        this.valid$.next(valid);
-        this.valid.emit(valid);
-    }
-
-    private openSaveSubscription(): void {
-        this.saveSubscription = this.save$?.subscribe(save => {
-            combineLatest([this.formValue$, this.valid$])
-                .pipe(take(1))
-                .subscribe(([formValue, valid]) => {
-                    if (valid) {
-                        this.configuration.emit(formValue!);
-                    }
-                });
-        });
+    protected fetchTemplates(documentDefinitionName: string): Observable<Page<TemplateListItem>> {
+        return this.templateService.getAllTextTemplates(documentDefinitionName);
     }
 }

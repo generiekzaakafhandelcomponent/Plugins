@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2022 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,17 +22,17 @@ import {GenerateTemplateConfigurationComponent} from '../../../shared/generate-t
 
 @Component({
     standalone: false,
-    selector: 'valtimo-generate-pdf-configuration',
+    selector: 'valtimo-generate-text-configuration',
     templateUrl: '../../../shared/generate-template/generate-template-configuration.component.html',
 })
-export class GeneratePdfComponent extends GenerateTemplateConfigurationComponent {
-    readonly keyFieldName = 'templateKey';
-    readonly defaultProcessVariableName = 'contentId';
-    readonly descriptionKey = 'generateDocumentFileDescription';
-    readonly keyTitleKey = 'pdfTemplateKey';
-    readonly keyTooltipKey = 'templateKeyTooltip';
+export class GenerateTextComponent extends GenerateTemplateConfigurationComponent {
+    readonly keyFieldName = 'textTemplateKey';
+    readonly defaultProcessVariableName = 'content';
+    readonly descriptionKey = 'generateTextDescription';
+    readonly keyTitleKey = 'textTemplateKey';
+    readonly keyTooltipKey = 'textTemplateKeyTooltip';
 
     protected fetchTemplates(documentDefinitionName: string): Observable<Page<TemplateListItem>> {
-        return this.templateService.getTemplates(documentDefinitionName, 'pdf');
+        return this.templateService.getAllTextTemplates(documentDefinitionName);
     }
 }

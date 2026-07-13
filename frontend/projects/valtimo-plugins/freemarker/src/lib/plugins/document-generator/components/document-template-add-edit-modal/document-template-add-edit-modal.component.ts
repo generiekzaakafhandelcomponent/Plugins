@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TemplateMetadataModal, TemplateType} from '../../../../models';
-import {CARBON_CONSTANTS, KeyGeneratorService} from '@valtimo/components';
+import {CARBON_CONSTANTS, KeyGeneratorService, ValtimoCdsModalDirectiveModule} from '@valtimo/components';
 import {CommonModule} from '@angular/common';
-import {ButtonModule, ComboBoxModule, InputModule, ListItem, ModalModule} from 'carbon-components-angular';
+import {ButtonModule, ComboBoxModule, DropdownModule, InputModule, ListItem, ModalModule} from 'carbon-components-angular';
 import {TranslateModule} from '@ngx-translate/core';
 import {DOCUMENT_TYPES} from '../../models';
 
@@ -27,7 +27,6 @@ import {DOCUMENT_TYPES} from '../../models';
     standalone: true,
     selector: 'valtimo-document-template-add-edit-modal',
     templateUrl: './document-template-add-edit-modal.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CommonModule,
         ButtonModule,
@@ -35,7 +34,9 @@ import {DOCUMENT_TYPES} from '../../models';
         ModalModule,
         ReactiveFormsModule,
         InputModule,
-        ComboBoxModule
+        ComboBoxModule,
+        DropdownModule,
+        ValtimoCdsModalDirectiveModule,
     ]
 })
 export class DocumentTemplateAddEditModalComponent implements OnInit {
@@ -70,11 +71,7 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
         return this.form?.get('type');
     }
 
-    public readonly documentTypeSelectItems: Array<ListItem> = DOCUMENT_TYPES.map(item => ({
-        id: item,
-        content: item,
-        selected: false,
-    }));
+    public documentTypeSelectItems: Array<ListItem> = this.buildTypeItems(undefined);
 
     constructor(
         private readonly fb: FormBuilder,
@@ -83,6 +80,16 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
     }
 
     public ngOnInit(): void {
+    }
+
+    public onTypeSelected(item: ListItem | undefined): void {
+        this.type.setValue(item?.selected ? (item.id as string) : null);
+        this.type.markAsDirty();
+    }
+
+    public onTypeCleared(): void {
+        this.type.setValue(null);
+        this.type.markAsDirty();
     }
 
     public onCancel(): void {
@@ -95,11 +102,9 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
             return;
         }
 
-        const typeValue = typeof this.type.value === 'object' ? this.type.value.id : this.type.value;
-
         this.closeEvent.emit({
             key: this.keyGeneratorService.getUniqueKey(this.key.value, []),
-            type: typeValue
+            type: this.type.value
         });
         this.resetForm();
     }
@@ -110,15 +115,25 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
 
     private setDefaultTypeValue(value: string) {
         this.type.setValue(value);
+        this.documentTypeSelectItems = this.buildTypeItems(value);
     }
 
     private resetForm(): void {
         setTimeout(() => {
             this.form.reset();
+            this.documentTypeSelectItems = this.buildTypeItems(undefined);
             if (this.modalType === 'edit') {
                 this.setDefaultKeyValue(this._defaultKeyValue);
                 this.setDefaultTypeValue(this._defaultTypeValue);
             }
         }, CARBON_CONSTANTS.modalAnimationMs);
+    }
+
+    private buildTypeItems(selectedId: string | undefined): Array<ListItem> {
+        return DOCUMENT_TYPES.map(item => ({
+            id: item,
+            content: item,
+            selected: item === selectedId,
+        }));
     }
 }

@@ -1,0 +1,91 @@
+<!--
+  ~ Copyright 2015-2026 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<ng-container *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+    templateItems: templateItems$ | async,
+    valueResolverItems: valueResolverItems$ | async,
+    loading: loading$ | async,
+    selectedInputType: selectedInputType$ | async,
+  } as obs"
+>
+    <ng-container *ngIf="obs.loading === false; else loading">
+        <v-paragraph [margin]="true" [italic]="true">
+            {{ descriptionKey | pluginTranslate: pluginId | async }}
+        </v-paragraph>
+        <v-form (valueChange)="formValueChange($event)">
+            <v-radio
+                    name="templateKeyInputType"
+                    [disabled]="obs.disabled"
+                    [title]="keyTitleKey | pluginTranslate: pluginId | async"
+                    [tooltip]="keyTooltipKey | pluginTranslate: pluginId | async"
+                    [radioValues]="inputTypeRadioValues$ | async"
+                    [defaultValue]="obs.prefill?.templateKeyInputType || 'selection'"
+                    [margin]="true"
+            ></v-radio>
+
+            <v-select
+                    *ngIf="obs.selectedInputType === 'selection'"
+                    [items]="obs.templateItems"
+                    [margin]="true"
+                    [widthInPx]="350"
+                    [name]="keyFieldName"
+                    [disabled]="obs.disabled"
+                    [defaultSelectionId]="prefillKey(obs.prefill)"
+                    [required]="true"
+                    [loading]="!obs.templateItems"
+            ></v-select>
+
+            <v-input
+                    *ngIf="obs.selectedInputType === 'text'"
+                    [name]="keyFieldName"
+                    [margin]="true"
+                    [defaultValue]="prefillKey(obs.prefill)"
+                    [disabled]="obs.disabled"
+                    [required]="true"
+                    placeholder="pv:myTemplateKey"
+            ></v-input>
+
+            <v-select
+                    *ngIf="obs.selectedInputType === 'value-resolver'"
+                    [items]="obs.valueResolverItems"
+                    [margin]="true"
+                    [widthInPx]="350"
+                    [name]="keyFieldName"
+                    [disabled]="obs.disabled"
+                    [defaultSelectionId]="prefillKey(obs.prefill)"
+                    [required]="true"
+                    [loading]="!obs.valueResolverItems"
+            ></v-select>
+
+            <v-input
+                    name="processVariableName"
+                    [title]="'processVariableName' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [defaultValue]="obs.prefill?.processVariableName || defaultProcessVariableName"
+                    [disabled]="obs.disabled"
+                    [tooltip]="'processVariableNameTooltip' | pluginTranslate: pluginId | async"
+            ></v-input>
+        </v-form>
+    </ng-container>
+</ng-container>
+
+<ng-template #loading>
+    <div class="loading-container">
+        <cds-loading></cds-loading>
+    </div>
+</ng-template>
