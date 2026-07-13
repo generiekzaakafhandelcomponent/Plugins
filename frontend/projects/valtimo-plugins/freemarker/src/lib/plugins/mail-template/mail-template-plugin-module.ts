@@ -26,7 +26,7 @@ import {
     EditorModule,
     FormModule,
     InputModule as ValtimoInputModule,
-    ParagraphModule, RenderInPageHeaderDirectiveModule,
+    ParagraphModule, RadioModule, RenderInPageHeaderDirectiveModule,
     SelectModule,
 } from '@valtimo/components';
 import {GenerateMailContentComponent} from './components/generate-mail-content/generate-mail-content.component';
@@ -66,6 +66,7 @@ import {TemplateManagementRoutingModule} from './mail-template-management-routin
         TemplateManagementRoutingModule,
         FormModule,
         ParagraphModule,
+        RadioModule,
         SelectModule,
         ConfirmationModalModule,
         TranslateModule,

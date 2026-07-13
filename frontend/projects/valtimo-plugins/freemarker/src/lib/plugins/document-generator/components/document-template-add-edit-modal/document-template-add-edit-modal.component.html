@@ -46,12 +46,14 @@
                 />
             </cds-label>
             <cds-combo-box
-                    formControlName="type"
                     [label]="'Document type'"
-                    [dropUp]="false"
-                    [items]="documentTypeSelectItems"
+                    [dropUp]="true"
+                    [appendInline]="true"
+                    [invalid]="type.dirty && type.invalid"
+                    (selected)="onTypeSelected($event)"
+                    (clear)="onTypeCleared()"
             >
-                <cds-dropdown-list></cds-dropdown-list>
+                <cds-dropdown-list [items]="documentTypeSelectItems"></cds-dropdown-list>
             </cds-combo-box>
         </form>
     </section>

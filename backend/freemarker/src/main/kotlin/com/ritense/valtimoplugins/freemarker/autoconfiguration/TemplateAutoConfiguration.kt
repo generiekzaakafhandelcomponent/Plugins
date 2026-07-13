@@ -28,6 +28,7 @@ import com.ritense.valtimoplugins.freemarker.service.TemplateImporter
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
 import com.ritense.valtimoplugins.freemarker.web.rest.TemplateManagementResource
 import com.ritense.valueresolver.ValueResolverService
+import freemarker.core.TemplateClassResolver
 import freemarker.template.Configuration
 import freemarker.template.DefaultObjectWrapperBuilder
 import freemarker.template.Version
@@ -50,6 +51,7 @@ class TemplateAutoConfiguration {
     fun freemarkerConfiguration(): Configuration {
         val configuration = Configuration(Version(2, 3, 32))
         configuration.logTemplateExceptions = false
+        configuration.newBuiltinClassResolver = TemplateClassResolver.ALLOWS_NOTHING_RESOLVER
 
         val objectWrapper = DefaultObjectWrapperBuilder(configuration.incompatibleImprovements).apply {
             iterableSupport = true

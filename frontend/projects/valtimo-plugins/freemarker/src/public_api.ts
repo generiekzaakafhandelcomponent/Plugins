@@ -52,6 +52,8 @@ export * from './lib/plugins/text-template/models';
 export * from './lib/plugins/text-template/text-template-plugin-module';
 export * from './lib/plugins/text-template/text-template-plugin.specification';
 export * from './lib/plugins/text-template/components/generate-text-file/generate-text-file.component';
+export * from './lib/plugins/text-template/components/generate-text/generate-text.component';
+export * from './lib/plugins/shared/generate-template/generate-template-configuration.component';
 export * from './lib/plugins/text-template/components/text-template-add-edit-modal/text-template-add-edit-modal.component';
 export * from './lib/plugins/text-template/components/text-template-configuration/text-template-configuration.component';
 export * from './lib/plugins/text-template/components/text-template-delete-modal/text-template-delete-modal.component';

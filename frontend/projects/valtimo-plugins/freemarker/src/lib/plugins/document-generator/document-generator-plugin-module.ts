@@ -25,6 +25,7 @@ import {
     FormModule,
     InputModule as ValtimoInputModule,
     ParagraphModule,
+    RadioModule,
     RenderInPageHeaderDirectiveModule,
     SelectModule,
 } from '@valtimo/components';
@@ -59,6 +60,7 @@ import {CASE_MANAGEMENT_TAB_TOKEN} from "@valtimo/config";
         TemplateManagementRoutingModule,
         FormModule,
         ParagraphModule,
+        RadioModule,
         SelectModule,
         ConfirmationModalModule,
         TranslateModule,
