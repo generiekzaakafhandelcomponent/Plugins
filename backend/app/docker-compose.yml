@@ -45,7 +45,7 @@ services:
 
   #zgw
   openzaak:
-    image: openzaak/open-zaak:1.12.4
+    image: openzaak/open-zaak:1.13.0
     container_name: valtimo-plugins-local-openzaak
     platform: linux/amd64
     environment:
@@ -74,7 +74,7 @@ services:
       - openzaak-private-media:/app/private-media # persist data even if container shuts down
 
   openzaak-database:
-    image: mdillon/postgis:11
+    image: postgis/postgis:13-3.1  # Open Zaak 1.13+ requires PostgreSQL 12 or later
     container_name: valtimo-plugins-local-openzaak-database
     platform: linux/amd64
     ports:

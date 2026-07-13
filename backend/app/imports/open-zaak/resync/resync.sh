@@ -2,7 +2,7 @@
 
 # The pg_dump will extract the data only from the specified tables, if you need more tables you can add them here.
 
-pg_dump --inserts --data-only --host localhost --port 8091 --username openzaak openzaak \
+pg_dump --inserts --on-conflict-do-nothing --data-only --host localhost --port 8091 --username openzaak openzaak \
 -t accounts_user \
 -t catalogi_catalogus \
 -t authorizations_applicatie \
@@ -14,10 +14,6 @@ pg_dump --inserts --data-only --host localhost --port 8091 --username openzaak o
 -t catalogi_roltype \
 -t catalogi_informatieobjecttype \
 -t catalogi_zaaktypeinformatieobjecttype \
--t zgw_consumers_service \
--t zaken_zaakidentificatie \
--t zaken_zaak \
--t zaken_rol \
--t zaken_natuurlijkpersoon > ../database/1-setup-zaaktype.sql
+-t zgw_consumers_service | grep -v '^SET transaction_timeout' > ../database/1-setup-zaaktype.sql
 
 
