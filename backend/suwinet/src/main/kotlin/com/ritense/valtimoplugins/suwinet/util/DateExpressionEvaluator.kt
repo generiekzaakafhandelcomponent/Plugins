@@ -14,9 +14,12 @@ object DateExpressionEvaluator {
      *
      * Supported formats (evaluated in order):
      *   - null / blank → null (caller decides the default)
-     *   - "${<spelExpr>}" → Spring Expression Language with `localDateTimeNow` pre-bound to LocalDate.now();
+     *   - "{<spelExpr>}" → Spring Expression Language with `localDateTimeNow` pre-bound to LocalDate.now();
      *       process variables are accessible as `#varName`. Examples:
-     *       `${localDateTimeNow}`, `${localDateTimeNow.minusWeeks(2)}`, `${localDateTimeNow.minusMonths(3)}`
+     *       `{localDateTimeNow}`, `{localDateTimeNow.minusWeeks(2)}`, `{localDateTimeNow.minusMonths(3)}`
+     *       Note: plain `{...}` is used instead of `${...}` because Valtimo's PluginService resolves
+     *       any `${...}` in plugin property values as a Spring/env placeholder before this code runs,
+     *       which would throw for expressions like `localDateTimeNow.minusMonths(3)`.
      *   - "yyyy-MM-dd" → literal ISO date
      */
     fun evaluatePeriod(
@@ -33,8 +36,8 @@ object DateExpressionEvaluator {
         if (expression.isNullOrBlank()) return null
         val trimmed = expression.trim()
         return when {
-            trimmed.startsWith("\${") && trimmed.endsWith("}") -> {
-                val spelExpr = trimmed.removePrefix("\${").removeSuffix("}")
+            trimmed.startsWith("{") && trimmed.endsWith("}") -> {
+                val spelExpr = trimmed.removePrefix("{").removeSuffix("}")
                 evaluateSpel(spelExpr, execution)
             }
             else -> LocalDate.parse(trimmed)
@@ -47,7 +50,7 @@ object DateExpressionEvaluator {
             context.setVariable(key, if (value is String) tryParseLocalDate(value) ?: value else value)
         }
         return spelParser.parseExpression(expression).getValue(context, LocalDate::class.java)
-            ?: error("SpEL expression '\${$expression}' evaluated to null")
+            ?: error("SpEL expression '{$expression}' evaluated to null")
     }
 
     private fun tryParseLocalDate(s: String): LocalDate? = try {

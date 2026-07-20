@@ -52,26 +52,31 @@ waarde bij de plugin-actie terechtkomt.
 | `doc:/aanvraag/datum` | Een waarde uit het documentmodel op pad `/aanvraag/datum` |
 | `case:createdOn`      | Een systeemeigenschap van de zaak, zoals de aanmaakdatum  |
 
-### 2. SpEL-expressie `${...}`
+### 2. SpEL-expressie `{...}`
 
 Gebruik Spring Expression Language voor dynamische datumberekeningen op basis van de huidige datum.
 `localDateTimeNow` staat altijd voor de datum van vandaag.
 
+> **Let op:** dit gebruikt enkele accolades `{...}`, **niet** `${...}`. Valtimo's `PluginService`
+> probeert elke `${...}` in een plugin-actiewaarde vóór uitvoering op te lossen als een
+> Spring/environment placeholder, en gooit een `IllegalStateException` wanneer dat niet lukt.
+> Om die botsing te vermijden gebruikt deze SpEL-notatie daarom `{...}` in plaats van `${...}`.
+
 | Expressie                               | Betekenis                       |
-|-----------------------------------------|---------------------------------|
-| `${localDateTimeNow}`                   | Vandaag                         |
-| `${localDateTimeNow.minusDays(14)}`     | 14 dagen geleden                |
-| `${localDateTimeNow.minusWeeks(2)}`     | 2 weken geleden                 |
-| `${localDateTimeNow.minusMonths(3)}`    | 3 maanden geleden               |
-| `${localDateTimeNow.minusYears(1)}`     | 1 jaar geleden                  |
-| `${localDateTimeNow.withDayOfMonth(1)}` | Eerste dag van de huidige maand |
+|------------------------------------------|----------------------------------|
+| `{localDateTimeNow}`                    | Vandaag                         |
+| `{localDateTimeNow.minusDays(14)}`      | 14 dagen geleden                |
+| `{localDateTimeNow.minusWeeks(2)}`      | 2 weken geleden                 |
+| `{localDateTimeNow.minusMonths(3)}`     | 3 maanden geleden               |
+| `{localDateTimeNow.minusYears(1)}`      | 1 jaar geleden                  |
+| `{localDateTimeNow.withDayOfMonth(1)}`  | Eerste dag van de huidige maand |
 
 Procesvariabelen zijn ook beschikbaar als SpEL-variabele via `#naam`:
 
-| Expressie                          | Betekenis                                           |
-|------------------------------------|-----------------------------------------------------|
-| `${#aanvraagdatum}`                | De procesvariabele `aanvraagdatum` direct als datum |
-| `${#aanvraagdatum.minusMonths(1)}` | Eén maand vóór de waarde van `aanvraagdatum`        |
+| Expressie                         | Betekenis                                           |
+|-------------------------------------|-----------------------------------------------------|
+| `{#aanvraagdatum}`                 | De procesvariabele `aanvraagdatum` direct als datum |
+| `{#aanvraagdatum.minusMonths(1)}`  | Eén maand vóór de waarde van `aanvraagdatum`        |
 
 ### 3. Vaste ISO-datum
 
@@ -171,7 +176,7 @@ Datumvelden: `datBUitkeringsperiode` (begin) en `datEUitkeringsperiode` (einde)
 ### Voorbeeld 1 – Inkomsten van de afgelopen 3 maanden (UWV)
 
 ```
-Startdatum periode: ${localDateTimeNow.minusMonths(3)}
+Startdatum periode: {localDateTimeNow.minusMonths(3)}
 Einddatum periode:  (leeg)
 ```
 
@@ -196,14 +201,14 @@ Via een Valtimo value resolver:
 
 ```
 Startdatum periode: pv:aanvraagdatum
-Einddatum periode:  ${localDateTimeNow}
+Einddatum periode:  {localDateTimeNow}
 ```
 
 Of via een SpEL-expressie:
 
 ```
-Startdatum periode: ${#aanvraagdatum}
-Einddatum periode:  ${localDateTimeNow}
+Startdatum periode: {#aanvraagdatum}
+Einddatum periode:  {localDateTimeNow}
 ```
 
 Beide notaties leveren hetzelfde resultaat op: records die overlappen tussen de aanvraagdatum
