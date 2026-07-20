@@ -21,7 +21,7 @@ import com.ritense.valtimoplugins.haalcentraal.bag.client.HaalCentraalBagClient
 import com.ritense.valtimoplugins.haalcentraal.bag.model.Address
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressDto
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressRequest
-import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
+import com.ritense.valtimoplugins.haalcentraalauthenticationplugin.HaalCentraalAuthentication
 import mu.KotlinLogging
 import java.net.URI
 

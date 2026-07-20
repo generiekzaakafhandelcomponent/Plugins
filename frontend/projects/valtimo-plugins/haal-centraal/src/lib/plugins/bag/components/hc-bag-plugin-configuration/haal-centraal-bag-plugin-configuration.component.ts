@@ -42,7 +42,7 @@ export class HaalCentraalBagPluginConfigurationComponent
     readonly authenticationPluginSelectItems$: Observable<Array<{ id: string; text: string }>> =
         combineLatest([
             this.pluginManagementService.getPluginConfigurationsByCategory(
-                'haal-centraal-auth'
+                'haal-centraal-authentication'
             ),
             this.translateService.stream('key'),
         ]).pipe(

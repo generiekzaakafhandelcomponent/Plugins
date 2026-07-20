@@ -23,7 +23,7 @@ import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressResponse
 import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalBadRequestException
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
-import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
+import com.ritense.valtimoplugins.haalcentraalauthenticationplugin.HaalCentraalAuthentication
 import mu.KotlinLogging
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI

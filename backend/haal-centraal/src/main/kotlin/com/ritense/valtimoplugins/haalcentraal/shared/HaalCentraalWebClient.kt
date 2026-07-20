@@ -18,7 +18,7 @@
 package com.ritense.valtimoplugins.haalcentraal.shared
 
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
-import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
+import com.ritense.valtimoplugins.haalcentraalauthenticationplugin.HaalCentraalAuthentication
 import org.springframework.web.client.RestClient
 import java.net.URI
 
