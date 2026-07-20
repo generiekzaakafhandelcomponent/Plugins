@@ -19,7 +19,7 @@ package com.ritense.valtimoplugins.haalcentraalauth.plugin
 
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginProperty
-import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
+import com.ritense.valtimoplugins.haalcentraalauthenticationplugin.HaalCentraalAuthentication
 import mu.KotlinLogging
 import org.springframework.web.client.RestClient
 import org.springframework.web.reactive.function.client.ClientRequest

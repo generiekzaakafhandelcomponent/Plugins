@@ -24,7 +24,7 @@ import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpServic
 import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalBadRequestException
 import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
-import com.ritense.valtimoplugins.haalcentraalauth.HaalCentraalAuthentication
+import com.ritense.valtimoplugins.haalcentraalauthenticationplugin.HaalCentraalAuthentication
 import java.net.URI
 
 class HcBrpClient(

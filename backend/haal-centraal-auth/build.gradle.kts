@@ -31,6 +31,8 @@ dockerCompose {
 
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+        implementation("com.ritense.valtimoplugins:haal-centraal-authentication-plugin:1.0.1-V12")
+
         // Netty and WebClient
         implementation("io.projectreactor.netty:reactor-netty-core:1.1.20")
         implementation("io.projectreactor.netty:reactor-netty-http:1.1.20")
