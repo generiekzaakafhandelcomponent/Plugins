@@ -3,36 +3,42 @@ package com.ritense.valtimoplugins.openklant.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Klantcontact(
-    @JsonProperty("uuid")
+    @field:JsonProperty("uuid")
     override val uuid: String,
-    @JsonProperty("url")
+    @field:JsonProperty("url")
     override val url: String,
-    @JsonProperty("gingOverOnderwerpobjecten")
+    @field:JsonProperty("gingOverOnderwerpobjecten")
     val gingOverOnderwerpobjecten: List<ObjectReference>,
-    @JsonProperty("hadBetrokkenActoren")
+    @field:JsonProperty("hadBetrokkenActoren")
     val hadBetrokkenActoren: List<Actor>,
-    @JsonProperty("omvatteBijlagen")
+    @field:JsonProperty("omvatteBijlagen")
     val omvatteBijlagen: List<ObjectReference>,
-    @JsonProperty("hadBetrokkenen")
+    @field:JsonProperty("hadBetrokkenen")
     val hadBetrokkenen: List<ObjectReference>,
-    @JsonProperty("leiddeTotInterneTaken")
+    @field:JsonProperty("leiddeTotInterneTaken")
     val leiddeTotInterneTaken: List<ObjectReference>,
-    @JsonProperty("nummer")
+    @field:JsonProperty("nummer")
     val nummer: String?,
-    @JsonProperty("kanaal")
+    @field:JsonProperty("referentienummer")
+    val referentienummer: String?,
+    @field:JsonProperty("kanaal")
     val kanaal: String,
-    @JsonProperty("onderwerp")
+    @field:JsonProperty("onderwerp")
     val onderwerp: String,
-    @JsonProperty("inhoud")
+    @field:JsonProperty("inhoud")
     val inhoud: String?,
-    @JsonProperty("indicatieContactGelukt")
+    @field:JsonProperty("reactie")
+    val reactie: String?,
+    @field:JsonProperty("indicatieContactGelukt")
     val indicatieContactGelukt: Boolean?,
-    @JsonProperty("taal")
+    @field:JsonProperty("taal")
     val taal: String,
-    @JsonProperty("vertrouwelijk")
+    @field:JsonProperty("vertrouwelijk")
     val vertrouwelijk: Boolean,
-    @JsonProperty("plaatsgevondenOp")
+    @field:JsonProperty("plaatsgevondenOp")
     val plaatsgevondenOp: String?,
-    @JsonProperty("_expand")
+    @field:JsonProperty("metadata")
+    val metadata: Map<String, String>,
+    @field:JsonProperty("_expand")
     val expand: Any?,
 ) : Referable

@@ -1,8 +1,8 @@
 export interface StoreContactInfoConfig {
   bsn: string;
-  firstName: String;
-  inFix: String;
-  lastName: String;
+  firstName: string;
+  inFix: string;
+  lastName: string;
   emailAddress: string;
   caseUuid: string;
 }

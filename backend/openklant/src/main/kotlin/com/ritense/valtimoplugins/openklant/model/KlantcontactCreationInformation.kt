@@ -1,12 +1,16 @@
 package com.ritense.valtimoplugins.openklant.model
 
 data class KlantcontactCreationInformation(
+    val referentienummer: String?,
     val kanaal: String,
     val onderwerp: String,
-    val inhoud: String,
+    val inhoud: String?,
+    val reactie: String?,
+    val indicatieContactGelukt: Boolean?,
     val vertrouwelijk: Boolean,
     val taal: String,
     val plaatsgevondenOp: String,
+    val metadata: Map<String, String>?,
     val hasBetrokkene: Boolean,
     val partijUuid: String?,
     val voorletters: String?,
@@ -16,12 +20,16 @@ data class KlantcontactCreationInformation(
 ) {
     companion object {
         fun fromActionProperties(
+            referentienummer: String?,
             kanaal: String,
             onderwerp: String,
-            inhoud: String,
+            inhoud: String?,
+            reactie: String?,
+            indicatieContactGelukt: String?,
             vertrouwelijk: String,
             taal: String,
             plaatsgevondenOp: String,
+            metadata: Map<String, String>?,
             hasBetrokkene: Boolean,
             partijUuid: String?,
             voorletters: String?,
@@ -29,12 +37,16 @@ data class KlantcontactCreationInformation(
             voorvoegselAchternaam: String?,
             achternaam: String?,
         ) = KlantcontactCreationInformation(
+            referentienummer = referentienummer?.trim(),
             kanaal = kanaal.trim(),
             onderwerp = onderwerp,
             inhoud = inhoud,
+            reactie = reactie,
+            indicatieContactGelukt = indicatieContactGelukt?.trim().toBoolean(),
             vertrouwelijk = vertrouwelijk.trim().toBoolean(),
             taal = taal.trim(),
             plaatsgevondenOp = plaatsgevondenOp.trim(),
+            metadata = metadata,
             hasBetrokkene = hasBetrokkene,
             partijUuid = partijUuid?.trim(),
             voorletters = voorletters?.trim(),

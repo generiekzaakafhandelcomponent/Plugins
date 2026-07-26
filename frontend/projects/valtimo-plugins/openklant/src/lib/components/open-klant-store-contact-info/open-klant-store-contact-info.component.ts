@@ -7,9 +7,10 @@ import {
   Output,
 } from "@angular/core";
 import {
-  FunctionConfigurationComponent,
-  FunctionConfigurationData,
-} from "@valtimo/plugin";
+    FunctionConfigurationComponent,
+    FunctionConfigurationData,
+    PluginTranslatePipeModule,
+} from '@valtimo/plugin';
 import {
   Observable,
   BehaviorSubject,
@@ -17,11 +18,21 @@ import {
   combineLatest,
   take,
 } from "rxjs";
-import { StoreContactInfoConfig } from "../../models/store-contact-info-config";
+import { StoreContactInfoConfig } from '../../models/store-contact-info-config';
+import { FormModule, InputModule } from '@valtimo/components';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
-  selector: "store-contact-info",
-  templateUrl: "./open-klant-store-contact-info.component.html"
+    selector: 'store-contact-info',
+    standalone: true,
+    imports: [
+        FormModule,
+        NgIf,
+        InputModule,
+        PluginTranslatePipeModule,
+        AsyncPipe
+    ],
+    templateUrl: './open-klant-store-contact-info.component.html'
 })
 export class StoreContactInfoComponent
   implements FunctionConfigurationComponent, OnInit, OnDestroy {
