@@ -43,5 +43,10 @@
     "processDefinitionKey": "ophalen-uwv-inkomsten-info",
     "canInitializeDocument": true,
     "startableByUser": false
+  },
+  {
+    "processDefinitionKey": "ophalen-bijstandsregelingen-info",
+    "canInitializeDocument": true,
+    "startableByUser": false
   }
 ]
