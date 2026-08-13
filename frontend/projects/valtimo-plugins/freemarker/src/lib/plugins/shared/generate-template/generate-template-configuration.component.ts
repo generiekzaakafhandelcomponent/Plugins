@@ -29,14 +29,18 @@ import {Page} from '@valtimo/config';
 import {TranslateService} from '@ngx-translate/core';
 import {
     BehaviorSubject,
+    catchError,
     combineLatest,
     filter,
     map,
     Observable,
     of,
+    skip,
+    Subject,
     Subscription,
     switchMap,
     take,
+    takeUntil,
     tap,
 } from 'rxjs';
 import {FreemarkerTemplateManagementService} from '../../../services';
@@ -83,58 +87,39 @@ export abstract class GenerateTemplateConfigurationComponent
     readonly valuePathSelectorPrefixes = [ValuePathSelectorPrefix.DOC, ValuePathSelectorPrefix.CASE];
 
     private saveSubscription!: Subscription;
+    protected readonly _subscriptions = new Subscription();
+    protected readonly _destroy$ = new Subject<void>();
     protected readonly formValue$ = new BehaviorSubject<FunctionConfigurationData | null>(null);
     protected readonly valid$ = new BehaviorSubject<boolean>(false);
 
     readonly loading$ = new BehaviorSubject<boolean>(true);
+    readonly templateItems$ = new BehaviorSubject<Array<SelectItem>>([]);
     readonly selectedInputType$ = new BehaviorSubject<TemplateKeyInputType>('selection');
+    /**
+     * The input type the radio group starts on. Resolved once, before the form is rendered, so the
+     * radio is not reset while the user is interacting with it.
+     */
+    readonly defaultInputType$ = new BehaviorSubject<TemplateKeyInputType>('selection');
 
     private readonly documentDefinitionName$ = new BehaviorSubject<string | null>(null);
-
-    readonly templateItems$: Observable<Array<SelectItem>> = this.modalService.modalData$.pipe(
-        switchMap(params =>
-            this.documentService.findProcessDocumentDefinitionsByProcessDefinitionKey(
-                params?.processDefinitionKey
-            )
-        ),
-        tap(processDocumentDefinitions =>
-            this.documentDefinitionName$.next(
-                processDocumentDefinitions?.[0]?.id?.documentDefinitionId?.name ?? null
-            )
-        ),
-        switchMap(processDocumentDefinitions =>
-            combineLatest([
-                of<Page<TemplateListItem>>({content: []} as Page<TemplateListItem>),
-                ...processDocumentDefinitions.map(processDocumentDefinition =>
-                    this.fetchTemplates(processDocumentDefinition.id.documentDefinitionId.name)
-                ),
-            ])
-        ),
-        map(results =>
-            results
-                .flatMap(result => result.content)
-                .map(template => ({
-                    id: template.key,
-                    text: template.key,
-                }))
-        ),
-        tap(() => this.loading$.next(false)),
-    );
 
     /**
      * The resolvable value-resolver keys (doc:/case: fields) for the active case, shown as a
      * dropdown in 'value-resolver' mode.
+     *
+     * This stream is subscribed as soon as the form renders, regardless of the selected input type,
+     * so a failing lookup must not propagate: an error here would reach the async pipe and leave the
+     * dropdown loading forever. Any failure resolves to an empty list instead.
      */
     readonly valueResolverItems$: Observable<Array<SelectItem>> = this.documentDefinitionName$.pipe(
         filter((name): name is string => !!name),
         switchMap(name =>
-            this.valuePathSelectorService.getResolvableKeys(
-                this.valuePathSelectorPrefixes,
-                name,
-                ValuePathType.FIELD,
-            )
+            this.valuePathSelectorService
+                .getResolvableKeys(this.valuePathSelectorPrefixes, name, ValuePathType.FIELD)
+                .pipe(catchError(() => of([])))
         ),
         map(items => items.map(item => ({id: item.path, text: item.path}))),
+        catchError(() => of<Array<SelectItem>>([])),
     );
 
     readonly inputTypeRadioValues$: Observable<Array<RadioValue>> = this.translateService.stream('key').pipe(
@@ -157,11 +142,15 @@ export abstract class GenerateTemplateConfigurationComponent
 
     ngOnInit(): void {
         this.openSaveSubscription();
-        this.initInputTypePrefill();
+        this.initInputType();
+        this.initTemplateItems();
     }
 
     ngOnDestroy(): void {
         this.saveSubscription?.unsubscribe();
+        this._subscriptions.unsubscribe();
+        this._destroy$.next();
+        this._destroy$.complete();
     }
 
     formValueChange(formValue: FunctionConfigurationData): void {
@@ -197,12 +186,74 @@ export abstract class GenerateTemplateConfigurationComponent
         });
     }
 
-    private initInputTypePrefill(): void {
-        (this.prefillConfiguration$ ?? of(null))
+    /**
+     * Picks the input type the form opens on: the saved one when the configuration is being edited,
+     * otherwise the template dropdown when there are templates to choose from, and the free text
+     * input when there are none — an empty, required dropdown would be a dead end. That happens when
+     * the process the action belongs to is not linked to a case, so no templates can be scoped.
+     */
+    private initInputType(): void {
+        const inputTypeSubscription = combineLatest([
+            (this.prefillConfiguration$ ?? of(null)).pipe(take(1)),
+            // templateItems$ is seeded with an empty list; skip it and take the first loaded one
+            this.templateItems$.pipe(skip(1), take(1)),
+        ])
             .pipe(take(1))
-            .subscribe(prefill => {
-                const inputType = (prefill?.['templateKeyInputType'] as TemplateKeyInputType) || 'selection';
+            .subscribe(([prefill, templateItems]) => {
+                const inputType =
+                    (prefill?.['templateKeyInputType'] as TemplateKeyInputType) ||
+                    (templateItems.length ? 'selection' : 'text');
+
+                this.defaultInputType$.next(inputType);
                 this.selectedInputType$.next(inputType);
+            });
+        this._subscriptions.add(inputTypeSubscription);
+    }
+
+    /**
+     * Loads the templates of the case(s) the process is linked to. Any failure resolves to an empty
+     * list instead of killing the stream: the view is rendered either way, so the configuration never
+     * stalls on the loading spinner.
+     */
+    private initTemplateItems(): void {
+        this.modalService.modalData$
+            .pipe(
+                switchMap(params =>
+                    this.documentService
+                        .findProcessDocumentDefinitionsByProcessDefinitionKey(params?.processDefinitionKey)
+                        .pipe(catchError(() => of([])))
+                ),
+                tap(processDocumentDefinitions =>
+                    this.documentDefinitionName$.next(
+                        processDocumentDefinitions?.[0]?.id?.documentDefinitionId?.name ?? null
+                    )
+                ),
+                switchMap(processDocumentDefinitions =>
+                    combineLatest([
+                        of<Page<TemplateListItem>>({content: []} as Page<TemplateListItem>),
+                        ...processDocumentDefinitions.map(processDocumentDefinition =>
+                            this.fetchTemplates(processDocumentDefinition.id.documentDefinitionId.name).pipe(
+                                catchError(() => of({content: []} as Page<TemplateListItem>)),
+                            )
+                        ),
+                    ])
+                ),
+                map(results =>
+                    results
+                        .flatMap(result => result.content)
+                        .map(template => ({
+                            id: template.key,
+                            text: template.key,
+                        }))
+                ),
+                catchError(() => of<Array<SelectItem>>([])),
+                takeUntil(this._destroy$),
+            )
+            .subscribe(templateItems => {
+                // the items are published before loading is cleared, so the form is rendered with the
+                // input type that initInputType() derives from them
+                this.templateItems$.next(templateItems);
+                this.loading$.next(false);
             });
     }
 }

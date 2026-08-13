@@ -4,6 +4,12 @@
   "title": "Freemarker example",
   "type": "object",
   "properties": {
-    "additionalProperties": true
-  }
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
 }

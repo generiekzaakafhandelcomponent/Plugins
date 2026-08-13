@@ -23,11 +23,11 @@
           "type": "object",
           "$ref": "/document/definition/reference/sd/woonsituatie-sd-v2.schema.json"
         },
-        "additionalProperties": true,
         "complaint": {
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": true
     }
   }
 }

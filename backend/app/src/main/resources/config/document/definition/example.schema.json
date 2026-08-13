@@ -4,9 +4,9 @@
   "title": "Example",
   "type": "object",
   "properties": {
-    "additionalProperties": true,
     "complaint": {
       "type": "string"
     }
-  }
+  },
+  "additionalProperties": true
 }

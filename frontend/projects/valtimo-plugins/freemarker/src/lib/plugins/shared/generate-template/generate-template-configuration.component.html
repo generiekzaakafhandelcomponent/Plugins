@@ -21,6 +21,7 @@
     valueResolverItems: valueResolverItems$ | async,
     loading: loading$ | async,
     selectedInputType: selectedInputType$ | async,
+    defaultInputType: defaultInputType$ | async,
   } as obs"
 >
     <ng-container *ngIf="obs.loading === false; else loading">
@@ -34,7 +35,7 @@
                     [title]="keyTitleKey | pluginTranslate: pluginId | async"
                     [tooltip]="keyTooltipKey | pluginTranslate: pluginId | async"
                     [radioValues]="inputTypeRadioValues$ | async"
-                    [defaultValue]="obs.prefill?.templateKeyInputType || 'selection'"
+                    [defaultValue]="obs.defaultInputType"
                     [margin]="true"
             ></v-radio>
 
