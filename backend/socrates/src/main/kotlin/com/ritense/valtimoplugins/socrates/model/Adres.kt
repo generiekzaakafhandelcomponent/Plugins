@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.EXISTING_PROPERTY,
-    property = "soortAdres",
+    property = "SoortAdres",
     visible = true
 )
 @JsonSubTypes(
@@ -21,6 +21,6 @@ sealed interface Adres {
      * 2 = NederlandsPostbusadres
      * 3 = StraatadresBuitenland
      */
-    @get:JsonProperty("soortAdres")
+    @get:JsonProperty("SoortAdres")
     val soortAdres: String
 }
