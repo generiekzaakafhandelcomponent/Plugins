@@ -15,6 +15,6 @@
  *
  */
 
-package com.ritense.valtimoplugins.haalcentraal.shared.exception
+package com.ritense.valtimoplugins.haalcentraal.brp.exception
 
-class HaalCentraalBadRequestException(message: String) : RuntimeException("HaalCentraal: $message")
+class HaalCentraalNotFoundException(message: String) : RuntimeException("HaalCentraal: $message")

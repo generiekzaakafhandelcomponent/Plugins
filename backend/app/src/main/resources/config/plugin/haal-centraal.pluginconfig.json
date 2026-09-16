@@ -1,10 +1,15 @@
 [
   {
     "id": "6a6a3adc-ad44-4774-bcb0-b1a34c426561",
-    "title": "Haal Centraal BRP AUTH (autodeployed)",
-    "pluginDefinitionKey": "haal-centraal-auth",
+    "title": "Haal Centraal Token Exchange AUTH (autodeployed)",
+    "pluginDefinitionKey": "token-exchange-authentication",
     "properties": {
-      "authenticationSecret": "SECRET"
+      "tokenEndpoint": "${HAALCENTRAAL_TOKEN_ENDPOINT}",
+      "clientId": "${HAALCENTRAAL_TOKEN_CLIENT_ID}",
+      "clientSecret": "${HAALCENTRAAL_TOKEN_CLIENT_SECRET}",
+      "audience": "${HAALCENTRAAL_TOKEN_AUDIENCE}",
+      "keystorePath": "${AUTODEPLOYMENT_PLUGINCONFIG_HAALCENTRAAL_KEYSTOREPATH}",
+      "keystoreSecret": "${AUTODEPLOYMENT_PLUGINCONFIG_HAALCENTRAAL_KEYSTORESECRET}"
     }
   },
   {
@@ -21,8 +26,7 @@
     "title": "Haal Centraal BAG (autodeployed)",
     "pluginDefinitionKey": "haalcentraalbag",
     "properties": {
-      "bagBaseUrl": "http://localhost:5020/haalcentraal/api/bag/v1/",
-      "authenticationPluginConfiguration": "6a6a3adc-ad44-4774-bcb0-b1a34c426561"
+      "bagBaseUrl": "http://localhost:5020/haalcentraal/api/bag/v1/"
     }
   }
 ]

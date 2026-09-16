@@ -20,22 +20,19 @@ package com.ritense.valtimoplugins.haalcentraal.bag.client
 import com.ritense.valtimoplugins.haalcentraal.bag.exception.AddressNotFoundException
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressRequest
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressResponse
-import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
-import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalBadRequestException
-import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
-import com.ritense.valtimoplugins.haalcentraalauthenticationplugin.HaalCentraalAuthentication
 import mu.KotlinLogging
+import org.springframework.web.client.RestClient
+import org.springframework.web.client.body
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 class HaalCentraalBagClient(
-    private val webClient: HaalCentraalWebClient
+    private val restClient: RestClient
 ) {
 
     fun getAdresseerbaarObjectIdentificatie(
         baseUrl: URI,
-        addressRequest: AddressRequest,
-        authentication: HaalCentraalAuthentication
+        addressRequest: AddressRequest
     ): AddressResponse? {
 
         val uri = UriComponentsBuilder.fromUri(baseUrl)
@@ -51,13 +48,17 @@ class HaalCentraalBagClient(
             .toUri()
 
         return try {
-            webClient.get<AddressResponse>(uri, authentication)
-        } catch (e: HaalCentraalNotFoundException) {
-            logger.warn("Not found exception: ${e.message} for postcode: ${addressRequest.postcode} en huisnummer: ${addressRequest.huisnummer}")
-            throw AddressNotFoundException(e.message!!)
-        } catch (e: HaalCentraalBadRequestException) {
-            logger.warn("Bad request exception: ${e.message} for postcode: ${addressRequest.postcode} en huisnummer: ${addressRequest.huisnummer}")
-            throw AddressNotFoundException(e.message!!)
+            restClient
+                .get()
+                .uri(uri)
+                .retrieve()
+                .body<AddressResponse>()
+        } catch (ex: Exception) {
+            if (ex.message?.contains("404") == true) {
+                logger.warn("Not found exception: ${ex.message} for postcode: ${addressRequest.postcode} en huisnummer: ${addressRequest.huisnummer}")
+                throw AddressNotFoundException("Niets gevonden")
+            }
+            throw ex
         }
     }
 
