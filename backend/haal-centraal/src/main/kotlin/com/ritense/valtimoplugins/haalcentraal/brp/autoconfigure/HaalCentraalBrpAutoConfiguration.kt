@@ -18,23 +18,32 @@
 package com.ritense.valtimoplugins.haalcentraal.brp.autoconfigure
 
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimoplugins.haalcentraal.brp.client.HaalCentraalBrpRestClient
 import com.ritense.valtimoplugins.haalcentraal.brp.client.HcBrpClient
 import com.ritense.valtimoplugins.haalcentraal.brp.plugin.HaalCentraalBrpPluginFactory
 import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService
-import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
+import org.springframework.web.client.RestClient
 
 @AutoConfiguration
 class HaalCentraalBrpAutoConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean(HaalCentraalBrpRestClient::class)
+    fun haalCentraalBrpRestClient(
+        restClientBuilder: RestClient.Builder,
+    ): HaalCentraalBrpRestClient {
+        return HaalCentraalBrpRestClient(restClientBuilder)
+    }
+
+    @Bean
     @ConditionalOnMissingBean(HcBrpClient::class)
     fun hcBrpClient(
-        haalCentraalWebClient: HaalCentraalWebClient
+        haalCentraalBrpRestClient: HaalCentraalBrpRestClient
     ): HcBrpClient {
-        return HcBrpClient(haalCentraalWebClient)
+        return HcBrpClient(haalCentraalBrpRestClient)
     }
 
     @Bean

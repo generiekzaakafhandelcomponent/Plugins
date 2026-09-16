@@ -15,11 +15,10 @@
  *
  */
 
-import {PluginConfigurationComponent, PluginManagementService, PluginTranslationService} from "@valtimo/plugin";
+import {PluginConfigurationComponent} from "@valtimo/plugin";
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from "@angular/core";
-import {BehaviorSubject, combineLatest, map, Observable, Subscription, take} from "rxjs";
+import {BehaviorSubject, combineLatest, Observable, Subscription, take} from "rxjs";
 import {BagConfig} from "../../models";
-import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -39,33 +38,9 @@ export class HaalCentraalBagPluginConfigurationComponent
     @Output() valid: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() configuration: EventEmitter<BagConfig> =
         new EventEmitter<BagConfig>();
-    readonly authenticationPluginSelectItems$: Observable<Array<{ id: string; text: string }>> =
-        combineLatest([
-            this.pluginManagementService.getPluginConfigurationsByCategory(
-                'haal-centraal-authentication'
-            ),
-            this.translateService.stream('key'),
-        ]).pipe(
-            map(([configurations]) =>
-                configurations.map(configuration => ({
-                    id: configuration.id,
-                    text: `${configuration.title} - ${this.pluginTranslationService.instant(
-                        'title',
-                        configuration.pluginDefinition.key
-                    )}`,
-                }))
-            )
-        );
     private saveSubscription!: Subscription;
     private readonly formValue$ = new BehaviorSubject<BagConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
-
-    constructor(
-        private readonly pluginManagementService: PluginManagementService,
-        private readonly translateService: TranslateService,
-        private readonly pluginTranslationService: PluginTranslationService
-    ) {
-    }
 
     ngOnInit(): void {
         this.openSaveSubscription();

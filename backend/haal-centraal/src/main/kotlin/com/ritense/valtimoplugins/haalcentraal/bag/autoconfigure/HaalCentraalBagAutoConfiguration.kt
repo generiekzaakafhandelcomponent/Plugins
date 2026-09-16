@@ -21,10 +21,10 @@ import com.ritense.plugin.service.PluginService
 import com.ritense.valtimoplugins.haalcentraal.bag.client.HaalCentraalBagClient
 import com.ritense.valtimoplugins.haalcentraal.bag.plugin.HaalCentraalBagPluginFactory
 import com.ritense.valtimoplugins.haalcentraal.bag.service.HaalCentraalBagService
-import com.ritense.valtimoplugins.haalcentraal.shared.HaalCentraalWebClient
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
+import org.springframework.web.client.RestClient
 
 @AutoConfiguration
 class HaalCentraalBagAutoConfiguration {
@@ -32,8 +32,8 @@ class HaalCentraalBagAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(HaalCentraalBagClient::class)
     fun haalCentraalBagClient(
-        haalCentraalWebClient: HaalCentraalWebClient
-    ): HaalCentraalBagClient = HaalCentraalBagClient(haalCentraalWebClient)
+        restClientBuilder: RestClient.Builder,
+    ): HaalCentraalBagClient = HaalCentraalBagClient(restClientBuilder.clone().build())
 
     @Bean
     @ConditionalOnMissingBean(HaalCentraalBagService::class)
