@@ -27,6 +27,7 @@ val kotlinLoggingVersion: String by project
 val mockitoKotlinVersion: String by project
 val flyingSaucerPdfVersion: String by project
 val apacheCommonsCsvVersion: String by project
+val freemarkerVersion: String by project
 
 dependencies {
     implementation("com.ritense.valtimo:core")
@@ -42,7 +43,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    implementation("org.freemarker:freemarker")
+    implementation("org.freemarker:freemarker:$freemarkerVersion")
     implementation("org.xhtmlrenderer:flying-saucer-pdf:$flyingSaucerPdfVersion")
     implementation("org.apache.commons:commons-csv:$apacheCommonsCsvVersion")
 

@@ -24,13 +24,15 @@ dockerCompose {
     }
 }
 
+val freemarkerVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
     implementation("com.ritense.valtimo:document")
-    implementation("org.freemarker:freemarker:2.3.33")
+    implementation("org.freemarker:freemarker:$freemarkerVersion")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
