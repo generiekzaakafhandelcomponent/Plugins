@@ -23,6 +23,8 @@ dockerCompose {
     }
 }
 
+val freemarkerVersion: String by project
+
 dependencies {
     implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
@@ -48,7 +50,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core")
 
     // Templating engine
-    implementation("org.freemarker:freemarker")
+    implementation("org.freemarker:freemarker:$freemarkerVersion")
 
     // Testing
     testImplementation("com.ritense.valtimo:document")
