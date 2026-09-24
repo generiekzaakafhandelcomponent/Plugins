@@ -2,8 +2,9 @@
   {
     "id": "6a6a3adc-ad44-4774-bcb0-b1a34c426561",
     "title": "Haal Centraal Token Exchange AUTH (autodeployed)",
-    "pluginDefinitionKey": "token-exchange-authentication",
+    "pluginDefinitionKey": "http-client-authentication-plugin",
     "properties": {
+      "authenticationType": "TOKEN_EXCHANGE",
       "tokenEndpoint": "${HAALCENTRAAL_TOKEN_ENDPOINT}",
       "clientId": "${HAALCENTRAAL_TOKEN_CLIENT_ID}",
       "clientSecret": "${HAALCENTRAAL_TOKEN_CLIENT_SECRET}",
@@ -26,7 +27,8 @@
     "title": "Haal Centraal BAG (autodeployed)",
     "pluginDefinitionKey": "haalcentraalbag",
     "properties": {
-      "bagBaseUrl": "http://localhost:5020/haalcentraal/api/bag/v1/"
+      "bagBaseUrl": "http://localhost:5020/haalcentraal/api/bag/v1/",
+      "authenticationPluginConfiguration": "6a6a3adc-ad44-4774-bcb0-b1a34c426561"
     }
   }
 ]

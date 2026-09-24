@@ -15,26 +15,25 @@
  *
  */
 
-package com.ritense.valtimoplugins.haalcentraal.brp.client
+package com.ritense.valtimoplugins.haalcentraal.shared.client
 
-import com.ritense.valtimoplugins.haalcentraal.brp.exception.HaalCentraalNotFoundException
-import com.ritense.valtimoplugins.tokenexchangeauth.TokenExchangeAuthentication
-import org.springframework.http.client.JdkClientHttpRequestFactory
+import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import org.springframework.web.client.RestClient
 import java.net.URI
-import java.net.http.HttpClient
 
 /**
- * Builds a `RestClient` authenticated with a [TokenExchangeAuthentication] (JWT bearer, and an
- * optional client certificate for mTLS), used by the Haal Centraal BRP API.
+ * Builds a `RestClient` authenticated via a [HttpClientAuthenticator] (any plugin implementing the
+ * "http-client-authentication" category, e.g. a Keycloak token-exchange or basic-auth plugin).
+ * Shared by the Haal Centraal BRP and BAG APIs.
  */
-class HaalCentraalBrpRestClient(
+class HaalCentraalRestClient(
     private val restClientBuilder: RestClient.Builder,
 ) {
     inline fun <reified T : Any, R : Any?> get(
         uri: URI,
         request: R?,
-        authentication: TokenExchangeAuthentication
+        authentication: HttpClientAuthenticator
     ): T? {
         val restClient = buildRestClient(authentication)
         return try {
@@ -54,7 +53,7 @@ class HaalCentraalBrpRestClient(
 
     inline fun <reified T : Any> get(
         uri: URI,
-        authentication: TokenExchangeAuthentication
+        authentication: HttpClientAuthenticator
     ): T? {
         val restClient = buildRestClient(authentication)
         return try {
@@ -72,17 +71,9 @@ class HaalCentraalBrpRestClient(
     }
 
     fun buildRestClient(
-        authentication: TokenExchangeAuthentication
+        authentication: HttpClientAuthenticator
     ): RestClient {
-        val builder = restClientBuilder
-            .clone()
-            .defaultHeaders { headers -> headers.setBearerAuth(authentication.getAccessToken()) }
-
-        authentication.getSslContext()?.let { sslContext ->
-            val httpClient = HttpClient.newBuilder().sslContext(sslContext).build()
-            builder.requestFactory(JdkClientHttpRequestFactory(httpClient))
-        }
-
+        val builder = authentication.applyAuth(restClientBuilder.clone()) ?: restClientBuilder.clone()
         return builder.build()
     }
 }

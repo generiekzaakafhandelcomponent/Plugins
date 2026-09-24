@@ -49,7 +49,7 @@ export class HaalcentraalBrpPluginConfigurationComponent
 
     readonly authenticationPluginSelectItems$: Observable<Array<{ id: string; text: string }>> =
         combineLatest([
-            this.pluginManagementService.getPluginConfigurationsByCategory('token-exchange-authentication'),
+            this.pluginManagementService.getPluginConfigurationsByCategory('http-client-authentication'),
             this.translateService.stream('key'),
         ]).pipe(
             map(([configurations]) =>

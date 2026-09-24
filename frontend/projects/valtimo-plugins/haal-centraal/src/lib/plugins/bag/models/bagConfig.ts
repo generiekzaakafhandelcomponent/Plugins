@@ -19,6 +19,7 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 
 interface BagConfig extends PluginConfigurationData {
     bagBaseUrl: string;
+    authenticationPluginConfiguration: string;
 }
 
 interface OphalenAdresseerbaarObjectIdentificatie {

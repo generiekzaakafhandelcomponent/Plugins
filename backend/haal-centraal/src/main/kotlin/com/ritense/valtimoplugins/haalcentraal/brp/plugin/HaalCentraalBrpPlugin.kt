@@ -27,7 +27,7 @@ import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimoplugins.haalcentraal.brp.exception.HcBewoningenNotFoundException
 import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
 import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService
-import com.ritense.valtimoplugins.tokenexchangeauth.TokenExchangeAuthentication
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import mu.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import java.net.URI
@@ -46,7 +46,7 @@ class HaalCentraalBrpPlugin(
     lateinit var brpBaseUrl: URI
 
     @PluginProperty(key = "authenticationPluginConfiguration", secret = false, required = true)
-    lateinit var authenticationPluginConfiguration: TokenExchangeAuthentication
+    lateinit var authenticationPluginConfiguration: HttpClientAuthenticator
 
     @PluginAction(
         key = "hc-brp-get-bewoningen",

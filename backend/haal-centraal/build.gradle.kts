@@ -31,7 +31,7 @@ dockerCompose {
 
         implementation(project(":backend:freemarker"))
         implementation(project(":backend:object-management"))
-        implementation("com.ritense.valtimoplugins:token-exchange-authentication:0.0.3-V12")
+        implementation("com.ritense.valtimoplugins:http-client-authentication:2.1.0-V12")
 
         // Testing
         testImplementation("com.ritense.valtimo:local-resource")
