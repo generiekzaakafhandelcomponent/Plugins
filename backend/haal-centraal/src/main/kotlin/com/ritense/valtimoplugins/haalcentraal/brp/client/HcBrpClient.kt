@@ -21,18 +21,19 @@ import com.ritense.valtimoplugins.haalcentraal.brp.exception.HcBewoningenNotFoun
 import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
 import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenResponse
 import com.ritense.valtimoplugins.haalcentraal.brp.service.HaalCentraalBrpService.Companion.logger
-import com.ritense.valtimoplugins.haalcentraal.brp.exception.HaalCentraalNotFoundException
-import com.ritense.valtimoplugins.tokenexchangeauth.TokenExchangeAuthentication
+import com.ritense.valtimoplugins.haalcentraal.shared.client.HaalCentraalRestClient
+import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import java.net.URI
 
 class HcBrpClient(
-    private val restClient: HaalCentraalBrpRestClient
+    private val restClient: HaalCentraalRestClient
 ) {
 
     fun getBewoningen(
         baseUrl: URI,
         bewoningenRequest: BewoningenRequest,
-        authentication: TokenExchangeAuthentication
+        authentication: HttpClientAuthenticator
     ): BewoningenResponse? {
         val uri = URI("${baseUrl}/bewoningen")
 

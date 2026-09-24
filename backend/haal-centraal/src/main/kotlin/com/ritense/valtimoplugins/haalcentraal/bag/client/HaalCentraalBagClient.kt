@@ -20,19 +20,21 @@ package com.ritense.valtimoplugins.haalcentraal.bag.client
 import com.ritense.valtimoplugins.haalcentraal.bag.exception.AddressNotFoundException
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressRequest
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressResponse
+import com.ritense.valtimoplugins.haalcentraal.shared.client.HaalCentraalRestClient
+import com.ritense.valtimoplugins.haalcentraal.shared.exception.HaalCentraalNotFoundException
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import mu.KotlinLogging
-import org.springframework.web.client.RestClient
-import org.springframework.web.client.body
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 class HaalCentraalBagClient(
-    private val restClient: RestClient
+    private val restClient: HaalCentraalRestClient
 ) {
 
     fun getAdresseerbaarObjectIdentificatie(
         baseUrl: URI,
-        addressRequest: AddressRequest
+        addressRequest: AddressRequest,
+        authentication: HttpClientAuthenticator
     ): AddressResponse? {
 
         val uri = UriComponentsBuilder.fromUri(baseUrl)
@@ -48,17 +50,10 @@ class HaalCentraalBagClient(
             .toUri()
 
         return try {
-            restClient
-                .get()
-                .uri(uri)
-                .retrieve()
-                .body<AddressResponse>()
-        } catch (ex: Exception) {
-            if (ex.message?.contains("404") == true) {
-                logger.warn("Not found exception: ${ex.message} for postcode: ${addressRequest.postcode} en huisnummer: ${addressRequest.huisnummer}")
-                throw AddressNotFoundException("Niets gevonden")
-            }
-            throw ex
+            restClient.get<AddressResponse>(uri, authentication)
+        } catch (e: HaalCentraalNotFoundException) {
+            logger.warn("Not found exception: ${e.message} for postcode: ${addressRequest.postcode} en huisnummer: ${addressRequest.huisnummer}")
+            throw AddressNotFoundException(e.message!!)
         }
     }
 

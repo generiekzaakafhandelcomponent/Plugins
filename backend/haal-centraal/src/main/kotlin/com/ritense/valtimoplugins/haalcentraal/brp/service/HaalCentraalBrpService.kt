@@ -20,7 +20,7 @@ package com.ritense.valtimoplugins.haalcentraal.brp.service
 import com.ritense.valtimoplugins.haalcentraal.brp.client.HcBrpClient
 import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningDto
 import com.ritense.valtimoplugins.haalcentraal.brp.model.BewoningenRequest
-import com.ritense.valtimoplugins.tokenexchangeauth.TokenExchangeAuthentication
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import mu.KotlinLogging
 import java.net.URI
 
@@ -31,7 +31,7 @@ class HaalCentraalBrpService(
     fun getBewoningen(
         baseUrl: URI,
         bewoningenRequest: BewoningenRequest,
-        authentication: TokenExchangeAuthentication
+        authentication: HttpClientAuthenticator
     ): List<BewoningDto>? {
         logger.info("Retrieving bewoningen for adresseerbaarObjectIdentificatie: ${bewoningenRequest.adresseerbaarObjectIdentificatie}")
 

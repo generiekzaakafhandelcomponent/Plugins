@@ -21,6 +21,7 @@ import com.ritense.valtimoplugins.haalcentraal.bag.client.HaalCentraalBagClient
 import com.ritense.valtimoplugins.haalcentraal.bag.model.Address
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressDto
 import com.ritense.valtimoplugins.haalcentraal.bag.model.AddressRequest
+import com.ritense.valtimoplugins.httpclientauthentication.HttpClientAuthenticator
 import mu.KotlinLogging
 import java.net.URI
 
@@ -30,7 +31,8 @@ class HaalCentraalBagService(
 
     fun getAdresseerbaarObjectIdentificatie(
         baseUrl: URI,
-        addressRequest: AddressRequest
+        addressRequest: AddressRequest,
+        haalCentraalAuthentication: HttpClientAuthenticator
     ): List<AddressDto> {
         logger.info("Fetching address for postcode: ${addressRequest.postcode}, huisnummer: ${addressRequest.huisnummer}")
 
@@ -44,7 +46,8 @@ class HaalCentraalBagService(
 
         val response = haalCentraalBagClient.getAdresseerbaarObjectIdentificatie(
             baseUrl = baseUrl,
-            addressRequest = cleanAddressRequest
+            addressRequest = cleanAddressRequest,
+            authentication = haalCentraalAuthentication
         )
 
         return response?.embedded?.adressen?.map { address -> address.toDto() } ?: emptyList()
