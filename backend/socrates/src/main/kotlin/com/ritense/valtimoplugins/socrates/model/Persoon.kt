@@ -18,7 +18,7 @@ data class Persoon(
      */
     val geslachtsnaamstam: String,
     val voorlettersAanschrijving: String,
-    val voornamen: String,
+    val voornamen: String?,
     val voorvoegsel: String?,
 
     /**
