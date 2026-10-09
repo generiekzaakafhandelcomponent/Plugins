@@ -8,5 +8,5 @@ data class Partner(
      * 3 = Partnerongehuwd, 4 = Overigefamilierelatie
      */
     val partnerRelatietype: Int,
-    val ingangsdatumRelatie: LocalDate,
+    val ingangsdatumRelatie: LocalDate?,
 )
