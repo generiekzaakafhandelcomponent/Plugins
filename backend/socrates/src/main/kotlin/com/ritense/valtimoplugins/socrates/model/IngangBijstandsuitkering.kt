@@ -4,5 +4,5 @@ import java.time.LocalDate
 
 data class IngangBijstandsuitkering(
     val datumMeldingBijGemeente: LocalDate,
-    val gewensteStartdatumUitkering: LocalDate
+    val gewensteStartdatumUitkering: LocalDate?
 )
