@@ -1,0 +1,1169 @@
+openapi: 3.1.0
+info:
+  title: LO Behandeld API
+  description: Versie 2 van de LO Behandeld API, met BRP bronbevraging
+  version: v2
+paths:
+  /api/v{version}/LOBehandeld:
+    post:
+      tags:
+      - LOBehandeld
+      parameters:
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZaakLOBehandeld'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseLOBehandeld'
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseLOBehandeld'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseLOBehandeld'
+components:
+  schemas:
+    Adres:
+      required:
+      - SoortAdres
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/NederlandsPostbusadres'
+      - $ref: '#/components/schemas/NederlandsStraatadres'
+      - $ref: '#/components/schemas/StraatadresBuitenland'
+      properties:
+        SoortAdres:
+          $ref: '#/components/schemas/SoortAdres'
+      additionalProperties: false
+      discriminator:
+        propertyName: soortAdres
+        mapping:
+          NederlandsPostbusadres: '#/components/schemas/NederlandsPostbusadres'
+          NederlandsStraatadres: '#/components/schemas/NederlandsStraatadres'
+          StraatadresBuitenland: '#/components/schemas/StraatadresBuitenland'
+    Adreshouding:
+      required:
+      - Adres
+      - Begindatum
+      - CodeFunctieAdres
+      type: object
+      properties:
+        Adres:
+          $ref: '#/components/schemas/Adres'
+        CodeFunctieAdres:
+          $ref: '#/components/schemas/AdreshoudingCodeFunctieAdres'
+        Begindatum:
+          type: string
+          format: date
+      additionalProperties: false
+    AdreshoudingCodeFunctieAdres:
+      enum:
+      - A
+      - C
+      - L
+      - V
+      type: string
+      description: A = Afwijkend woonadres, C = Correspondentieadres, L = Loonaangifte adres, V = Vestigingsadres
+    Alimentatie:
+      required:
+      - InkomstensoortAlimentatie
+      - SoortInkomstencomponenttypeSpecifiekeGegevens
+      type: object
+      properties:
+        InkomstensoortAlimentatie:
+          $ref: '#/components/schemas/InkomstensoortAlimentatie'
+        SoortInkomstencomponenttypeSpecifiekeGegevens:
+          $ref: '#/components/schemas/SoortInkomstencomponenttypeSpecifiekeGegevens'
+      additionalProperties: false
+    AnderInkomen:
+      required:
+      - Categorie
+      - SoortInkomstencomponenttypeSpecifiekeGegevens
+      type: object
+      properties:
+        Categorie:
+          $ref: '#/components/schemas/Categorie'
+        BeschrijvingAnderInkomen:
+          type: string
+          nullable: true
+        SoortInkomstencomponenttypeSpecifiekeGegevens:
+          $ref: '#/components/schemas/SoortInkomstencomponenttypeSpecifiekeGegevens'
+      additionalProperties: false
+    Bekostiger:
+      required:
+      - SoortBekostiger
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/BekostigerPersoon'
+      - $ref: '#/components/schemas/BekostigerOrganisatie'
+      properties:
+        SoortBekostiger:
+          $ref: '#/components/schemas/SoortBekostiger'
+      additionalProperties: false
+      discriminator:
+        propertyName: soortBekostiger
+        mapping:
+          BekostigerPersoon: '#/components/schemas/BekostigerPersoon'
+          BekostigerOrganisatie: '#/components/schemas/BekostigerOrganisatie'
+    BekostigerOrganisatie:
+      required:
+      - Loonheffingsnummer
+      - Naam
+      - SoortBekostiger
+      type: object
+      properties:
+        Loonheffingsnummer:
+          pattern: ^\d{8,9}L\d{2}$
+          type: string
+        Naam:
+          pattern: ^[\p{L}\p{M}\-'\.,\s]{1, 40}$
+          type: string
+        SoortBekostiger:
+          $ref: '#/components/schemas/SoortBekostiger'
+      additionalProperties: false
+    BekostigerPersoon:
+      required:
+      - Burgerservicenummer
+      - SoortBekostiger
+      type: object
+      properties:
+        Burgerservicenummer:
+          pattern: ^[0-9]{9}$
+          type: string
+        SoortBekostiger:
+          $ref: '#/components/schemas/SoortBekostiger'
+      additionalProperties: false
+    Besluit:
+      required:
+      - Dienst
+      type: object
+      properties:
+        Dienst:
+          $ref: '#/components/schemas/Dienst'
+      additionalProperties: false
+    BetaaldWerk:
+      required:
+      - IndicatieLoonheffingskorting
+      - IndicatieReserveringVT
+      - SoortInkomstencomponenttypeSpecifiekeGegevens
+      type: object
+      properties:
+        IndicatieLoonheffingskorting:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieReserveringVT:
+          $ref: '#/components/schemas/JaNee'
+        SoortInkomstencomponenttypeSpecifiekeGegevens:
+          $ref: '#/components/schemas/SoortInkomstencomponenttypeSpecifiekeGegevens'
+      additionalProperties: false
+    Betrokkene:
+      required:
+      - Naam
+      type: object
+      properties:
+        Naam:
+          type: string
+        Omschrijving:
+          type: string
+          nullable: true
+        Rol:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Rol'
+          nullable: true
+      additionalProperties: false
+    Bewindvoerder:
+      required:
+      - RolOrganisatie
+      - Vestiging
+      type: object
+      properties:
+        RolOrganisatie:
+          $ref: '#/components/schemas/BewindvoerderRolOrganisatie'
+        Vestiging:
+          $ref: '#/components/schemas/Vestiging'
+      additionalProperties: false
+    BewindvoerderRolOrganisatie:
+      enum:
+      - AR
+      - C
+      - B
+      type: string
+      description: AR = AR, C = C, B = B
+    Bewoner:
+      required:
+      - Burgerservicenummer
+      type: object
+      properties:
+        Burgerservicenummer:
+          pattern: ^[0-9]{9}$
+          type: string
+      additionalProperties: false
+    Categorie:
+      enum:
+      - '0'
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      type: string
+      description: 0 = Anders, 1 = VergoedingVrijwilligerswerk, 2 = AfkoopwaardeLijfrente, 3 = HuurOfOnderhuur, 4 = Giften, 5 = Toelagen, 6 = InkomenUitBuitenland, 7 = Zorgpremie, 8 = TeruggaveInkomstenbelasting, 9 = Hypotheekrenteaftrek, 10 = Combinatiekorting
+    Contactgegevens:
+      type: object
+      properties:
+        CodeTypeTelefoonnummer:
+          $ref: '#/components/schemas/ContactgegevensCodeTypeTelefoonnummer'
+        EMailadres:
+          maxLength: 70
+          pattern: ^[A-Za-z0-9_-]+([.][A-Za-z0-9_-]+)*@[A-Za-z0-9_-]+([.][A-Za-z0-9_-]+)*[.][A-Za-z0-9]+$
+          type: string
+          nullable: true
+        IndicatieGeheimTelefoonnummer:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieVoorkeurTelefoonnummer:
+          $ref: '#/components/schemas/JaNee'
+        TelefoonLandnummer:
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+          format: int32
+          nullable: true
+        Telefoonnummer:
+          pattern: ^0[1-9][0-9]{8}$
+          type: string
+          nullable: true
+      additionalProperties: false
+    ContactgegevensCodeTypeTelefoonnummer:
+      enum:
+      - '01'
+      - '02'
+      - '03'
+      - '04'
+      - '05'
+      - '06'
+      type: string
+      description: 01 = Prive, 02 = Werk, 03 = Vast, 04 = Mobiel, 05 = Fax, 06 = Sateliet
+    Dienst:
+      required:
+      - Begindatum
+      - Einddatum
+      type: object
+      properties:
+        Begindatum:
+          type: string
+          format: date
+        Einddatum:
+          type: string
+          format: date
+      additionalProperties: false
+    Huishouding:
+      required:
+      - Aanvrager
+      type: object
+      properties:
+        Aanvrager:
+          $ref: '#/components/schemas/Persoon'
+        InAanmerkingTeNemenVermogen:
+          pattern: ^-?[0-9]+((;|,|\\.)[0-9]{2}|)$
+          type: string
+          nullable: true
+        Leefsituatie:
+          $ref: '#/components/schemas/Leefsituatie'
+        Medeaanvrager:
+          $ref: '#/components/schemas/Persoon'
+        UitbetalingUitkering:
+          $ref: '#/components/schemas/UitbetalingUitkering'
+      additionalProperties: false
+    Huisvesting:
+      required:
+      - CodeRelatieBewonerTotHuisvesting
+      - IndicatieZelfstandigeWoonruimte
+      type: object
+      properties:
+        AantalDagenPerWeekInInstellingOfOpvang:
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+          format: int32
+          nullable: true
+        CodeRelatieBewonerTotHuisvesting:
+          $ref: '#/components/schemas/HuisvestingCodeRelatieBewonerTotHuisvesting'
+        IndicatieHuur:
+          $ref: '#/components/schemas/IndicatieHuur'
+        IndicatieInDetentie:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieInstellingVolledigVerzorgd:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieZelfstandigeWoonruimte:
+          $ref: '#/components/schemas/JaNee'
+        ToelichtingHuisvesting:
+          type: string
+          nullable: true
+        ToelichtingRelatieBewonerTotHuisvesting:
+          type: string
+          nullable: true
+      additionalProperties: false
+    HuisvestingCodeRelatieBewonerTotHuisvesting:
+      enum:
+      - '0'
+      - '1'
+      - '2'
+      - '3'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '99'
+      type: string
+      description: 0 = Onbekend, 1 = Eigenaar, 2 = Huurder, 3 = OnderhuurderOfKamerbewoner, 6 = GehuisvestInInrichting, 7 = GeenVasteWoonOfVerblijfplaatsZwervend, 8 = GeenVasteWoonOfVerblijfplaatsBankTotBank, 9 = Anders, 99 = NietVanToepassing
+    IndicatieHuur:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: 1 = Geen, 2 = Laag, 3 = Commercieel
+    IngangBijstandsuitkering:
+      required:
+      - DatumMeldingBijGemeente
+      type: object
+      properties:
+        AfwijkendeIngangsdatum:
+          $ref: '#/components/schemas/JaNee'
+        DatumMeldingBijGemeente:
+          type: string
+          format: date
+        GewensteStartdatumUitkering:
+          type: string
+          format: date
+          nullable: true
+        RedenAfwijkendestartdatum:
+          $ref: '#/components/schemas/RedenAfwijkendeStartdatum'
+      additionalProperties: false
+    InkomstencomponenttypeSpecifiekeGegevens:
+      required:
+      - SoortInkomstencomponenttypeSpecifiekeGegevens
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/BetaaldWerk'
+      - $ref: '#/components/schemas/Uitkering'
+      - $ref: '#/components/schemas/Alimentatie'
+      - $ref: '#/components/schemas/Pensioen'
+      - $ref: '#/components/schemas/AnderInkomen'
+      properties:
+        SoortInkomstencomponenttypeSpecifiekeGegevens:
+          $ref: '#/components/schemas/SoortInkomstencomponenttypeSpecifiekeGegevens'
+      additionalProperties: false
+      discriminator:
+        propertyName: soortInkomstencomponenttypeSpecifiekeGegevens
+        mapping:
+          BetaaldWerk: '#/components/schemas/BetaaldWerk'
+          Uitkering: '#/components/schemas/Uitkering'
+          Alimentatie: '#/components/schemas/Alimentatie'
+          Pensioen: '#/components/schemas/Pensioen'
+          AnderInkomen: '#/components/schemas/AnderInkomen'
+    InkomstensoortAlimentatie:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      type: string
+      description: 1 = AlimentatieExEchtgenoteGeindexeerd, 2 = AlimentatieExEchtgenoteNietGeindexeerd, 3 = AlimentatieKinderenGeindexeerd, 4 = AlimentatieKinderenNietGeindexeerd
+    InkomstensoortPensioen:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      type: string
+      description: 1 = Bedrijfspensioen, 2 = BuitenlandsPensioen, 3 = PensioenIvmOorlog, 4 = Invaliditeitspensioen, 5 = NabestaandenpensioenWeduweWeduwnaar, 6 = NabestaandenpensioenWezen
+    Inkomstenverhouding:
+      required:
+      - Bekostiger
+      - PeriodeStartdatum
+      - PrimairInkomstencomponent
+      type: object
+      properties:
+        Bekostiger:
+          $ref: '#/components/schemas/Bekostiger'
+        PeriodeEinddatum:
+          type: string
+          format: date
+          nullable: true
+        PeriodeStartdatum:
+          type: string
+          format: date
+        PrimairInkomstencomponent:
+          $ref: '#/components/schemas/PrimairInkomstencomponent'
+      additionalProperties: false
+    JaNee:
+      enum:
+      - '1'
+      - '2'
+      type: string
+      description: 1 = Ja, 2 = Nee
+    Kind:
+      required:
+      - Burgerservicenummer
+      type: object
+      properties:
+        Burgerservicenummer:
+          pattern: ^[0-9]{9}$
+          type: string
+      additionalProperties: false
+    KleurInkomen:
+      enum:
+      - '1'
+      - '3'
+      - '5'
+      type: string
+      description: 1 = Wit, 3 = Groen, 5 = Onbelast
+    LOBehandeld:
+      required:
+      - Aanvraagdatum
+      - Aanvraagid
+      - CodeOntvangendeGemeente
+      - Huishouding
+      - IngangBijstandsuitkering
+      type: object
+      properties:
+        Aanvraagdatum:
+          type: string
+          format: date
+        Aanvraagid:
+          pattern: ^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$
+          type: string
+        Besluit:
+          $ref: '#/components/schemas/Besluit'
+        CodeOntvangendeGemeente:
+          type: string
+        Huishouding:
+          $ref: '#/components/schemas/Huishouding'
+        IngangBijstandsuitkering:
+          $ref: '#/components/schemas/IngangBijstandsuitkering'
+        RedenAanvraagLevensonderhoud:
+          $ref: '#/components/schemas/RedenAanvraagLevensonderhoud'
+      additionalProperties: false
+    Leefsituatie:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      type: string
+      description: 1 = InstitutioneelHuishouden, 2 = Eenoudergezin, 3 = Alleenstaand, 4 = VastePartnersKinderen, 5 = VastePartnersGeenKinderen, 6 = OverigHuishouden
+    Medebewoner:
+      required:
+      - Bewoner
+      - IndicatieKostendeler
+      - IngangsdatumRelatie
+      - Relatietype
+      type: object
+      properties:
+        Bewoner:
+          $ref: '#/components/schemas/Bewoner'
+        IndicatieKostendeler:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieZorgbehoefte:
+          $ref: '#/components/schemas/JaNee'
+        Relatietype:
+          $ref: '#/components/schemas/MedebewonerRelatietype'
+        IngangsdatumRelatie:
+          type: string
+          format: date
+      additionalProperties: false
+    MedebewonerRelatietype:
+      enum:
+      - '0'
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      - '11'
+      - '12'
+      - '13'
+      - '14'
+      - '15'
+      - '16'
+      - '17'
+      - '99'
+      type: string
+      description: 0 = Onbekend, 1 = Kind18JaarOfOuder, 2 = OuderOfSchoonouder, 3 = BroerOfZus, 4 = OverigFamilielid, 5 = Kostganger, 6 = Onderhuurder, 7 = ExPartner, 8 = MedeouderVanKind, 9 = Verzorger, 10 = Verzorgde, 11 = Kostendeler, 12 = VoormaligUitkeringdeler, 13 = KindJongerDan18, 14 = Stiefkind, 15 = AangetrouwdKind, 16 = OpaOfOma, 17 = KostgeverOfVerhuurder, 99 = Anders
+    NederlandsPostbusadres:
+      required:
+      - Postbusnummer
+      - Postcode
+      - SoortAdres
+      - Woonplaatsnaam
+      type: object
+      properties:
+        Locatieomschrijving:
+          pattern: ^[\p{L}\p{M}\d\-'\.\s]{1,35}$
+          type: string
+          nullable: true
+        Postbusnummer:
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+          format: int32
+        Postcode:
+          pattern: ^[1-9][0-9]{3} ?[a-zA-Z]{2}$
+          type: string
+        Woonplaatsnaam:
+          pattern: ^[\p{L}\p{M}\d\-'\.\s]{1,40}$
+          type: string
+        SoortAdres:
+          $ref: '#/components/schemas/SoortAdres'
+      additionalProperties: false
+    NederlandsStraatadres:
+      required:
+      - Huisnummer
+      - Postcode
+      - SoortAdres
+      - Straatnaam
+      - Woonplaatsnaam
+      type: object
+      properties:
+        AanduidingBijHuisnummer:
+          type: string
+          nullable: true
+        Huisletter:
+          pattern: ^[A-Za-z]$
+          type: string
+          nullable: true
+        Huisnummer:
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+          format: int32
+        Huisnummertoevoeging:
+          maxLength: 4
+          minLength: 1
+          type: string
+          nullable: true
+        Locatieomschrijving:
+          pattern: ^[\p{L}\p{M}\d\-'\.\s]{1,35}$
+          type: string
+          nullable: true
+        Postcode:
+          pattern: ^[1-9][0-9]{3} ?[a-zA-Z]{2}$
+          type: string
+        Straatnaam:
+          pattern: ^.{1,24}$
+          type: string
+        Woonplaatsnaam:
+          pattern: ^[\p{L}\p{M}\d\-'\.\s]{1,40}$
+          type: string
+        SoortAdres:
+          $ref: '#/components/schemas/SoortAdres'
+      additionalProperties: false
+    OuderKind:
+      required:
+      - IndicatieCoOuder
+      - IndicatieKinderbijslag
+      - IndicatieOnderhoudsplicht
+      - IndicatieThuiswonend
+      - Kind
+      - OuderKindRelatietype
+      type: object
+      properties:
+        IndicatieCoOuder:
+          $ref: '#/components/schemas/OuderKindIndicatieCoOuder'
+        IndicatieKinderbijslag:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieOnderhoudsplicht:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieThuiswonend:
+          $ref: '#/components/schemas/JaNee'
+        Kind:
+          $ref: '#/components/schemas/Kind'
+        OuderKindRelatietype:
+          $ref: '#/components/schemas/OuderKindRelatietype'
+      additionalProperties: false
+    OuderKindIndicatieCoOuder:
+      enum:
+      - '1'
+      - '2'
+      - '8'
+      type: string
+      description: 1 = Ja, 2 = Nee, 8 = NVT
+    OuderKindRelatietype:
+      enum:
+      - OK
+      - PP
+      type: string
+      description: OK = OK, PP = PP
+    Partner:
+      required:
+      - PartnerRelatietype
+      type: object
+      anyOf:
+      - not:
+          required:
+          - relatietype
+          properties:
+            relatietype:
+              enum:
+              - '4'
+      - required:
+        - ingangsdatumRelatie
+      properties:
+        PartnerRelatietype:
+          $ref: '#/components/schemas/PartnerRelatietype'
+        IngangsdatumRelatie:
+          type: string
+          format: date
+          nullable: true
+      additionalProperties: false
+    PartnerRelatietype:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      type: string
+      description: 1 = Partnergehuwd, 2 = Partnergeregistreerd, 3 = Partnerongehuwd, 4 = Overigefamilierelatie
+    Pensioen:
+      required:
+      - InkomstensoortPensioen
+      - SoortInkomstencomponenttypeSpecifiekeGegevens
+      type: object
+      properties:
+        IndicatieLoonheffingskorting:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieReserveringVT:
+          $ref: '#/components/schemas/JaNee'
+        InkomstensoortPensioen:
+          $ref: '#/components/schemas/InkomstensoortPensioen'
+        SoortInkomstencomponenttypeSpecifiekeGegevens:
+          $ref: '#/components/schemas/SoortInkomstencomponenttypeSpecifiekeGegevens'
+      additionalProperties: false
+    Persoon:
+      required:
+      - Burgerservicenummer
+      type: object
+      properties:
+        Adreshouding:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Adreshouding'
+          nullable: true
+        Bewindvoerder:
+          $ref: '#/components/schemas/Bewindvoerder'
+        Burgerservicenummer:
+          pattern: ^[0-9]{9}$
+          type: string
+        Contactgegevens:
+          $ref: '#/components/schemas/Contactgegevens'
+        Kinderen:
+          type: array
+          items:
+            $ref: '#/components/schemas/OuderKind'
+          nullable: true
+        Medebewoners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medebewoner'
+          nullable: true
+        Partner:
+          $ref: '#/components/schemas/Partner'
+        Profiel:
+          $ref: '#/components/schemas/Profiel'
+        Huisvesting:
+          $ref: '#/components/schemas/Huisvesting'
+      additionalProperties: false
+    PrimairInkomstencomponent:
+      required:
+      - BrutoNetto
+      - PeriodeStartdatum
+      - PrimairInkomstencomponenttype
+      type: object
+      properties:
+        BrutoNetto:
+          $ref: '#/components/schemas/PrimairInkomstencomponentBrutoNetto'
+        Inkomsten:
+          pattern: ^-?[0-9]+((;|,|\\.)[0-9]{2}|)$
+          type: string
+          nullable: true
+        InkomstencomponenttypeSpecifiekeGegevens:
+          $ref: '#/components/schemas/InkomstencomponenttypeSpecifiekeGegevens'
+        PeriodeEinddatum:
+          type: string
+          format: date
+          nullable: true
+        PeriodeStartdatum:
+          type: string
+          format: date
+        PeriodiciteitUitbetaling:
+          $ref: '#/components/schemas/PrimairInkomstencomponentPeriodiciteitUitbetaling'
+        PrimairInkomstencomponenttype:
+          $ref: '#/components/schemas/PrimairInkomstencomponenttype'
+        SecundairInkomstencomponent:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecundairInkomstencomponent'
+          nullable: true
+        KleurLoonbelastingtabel:
+          $ref: '#/components/schemas/KleurInkomen'
+      additionalProperties: false
+    PrimairInkomstencomponentBrutoNetto:
+      enum:
+      - Br
+      - Nt
+      type: string
+      description: Br = Br, Nt = Nt
+    PrimairInkomstencomponentPeriodiciteitUitbetaling:
+      enum:
+      - '0'
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      type: string
+      description: 0 = NVT, 1 = Dagelijks, 2 = Wekelijks, 3 = Tweewekelijks, 4 = Vierwekelijks, 5 = Vijfwekelijks, 6 = Maandelijks, 7 = Kwartaal, 8 = Jaar, 9 = Eenmalig
+    PrimairInkomstencomponenttype:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      type: string
+      description: 1 = Alimentatie, 2 = AnderInkomen, 3 = BetaaldWerk, 4 = Pensioen, 5 = Studiefinanciering, 6 = Uitkering, 7 = Stage, 8 = Hobby, 9 = EigenBedrijf
+    Profiel:
+      type: object
+      properties:
+        Inkomstenverhoudingen:
+          type: array
+          items:
+            $ref: '#/components/schemas/Inkomstenverhouding'
+          nullable: true
+        IndNietRechthebbend:
+          $ref: '#/components/schemas/JaNee'
+      additionalProperties: false
+    RedenAanvraagLevensonderhoud:
+      type: object
+      properties:
+        OnvoldoendeInkomen:
+          $ref: '#/components/schemas/RedenAanvraagLevensonderhoudOnvoldoendeInkomen'
+        TeLaagInkomen:
+          $ref: '#/components/schemas/RedenAanvraagLevensonderhoudTeLaagInkomen'
+        UitkeringStopgezet:
+          $ref: '#/components/schemas/RedenAanvraagLevensonderhoudUitkeringStopgezet'
+        Verblijfstatus:
+          $ref: '#/components/schemas/RedenAanvraagLevensonderhoudVerblijfstatus'
+        WijzigingGezin:
+          $ref: '#/components/schemas/RedenAanvraagLevensonderhoudWijzigingGezin'
+        Zelfstandige:
+          $ref: '#/components/schemas/RedenAanvraagLevensonderhoudZelfstandige'
+      additionalProperties: false
+    RedenAanvraagLevensonderhoudOnvoldoendeInkomen:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      - '7'
+      - '8'
+      - '9'
+      - '10'
+      - '11'
+      type: string
+      description: 1 = IkHebGeenWerkMeer, 2 = IkHebWelInkomstenMaarTeLaag, 3 = UitkeringGeenBijstandStopgezet, 4 = BijstandsuitkeringStopgezet, 5 = BijstandsaanvraagAfgewezenOfNietInBehandeling, 6 = AlimentatieGestoptOfVerlaagd, 7 = StudiefinancieringGestopt, 8 = InStakingOfUitgeslotenVoorWerk, 9 = VanSpaargeldGeleefd, 10 = VrijNaGevangenisstraf, 11 = AndereReden
+    RedenAanvraagLevensonderhoudTeLaagInkomen:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      type: string
+      description: 1 = WWUitkeringTeLaag, 2 = ZWUitkeringTeLaag, 3 = TeLaagInkomenUitParttimeWerk, 4 = AanvullingOpAndereInkomsten
+    RedenAanvraagLevensonderhoudUitkeringStopgezet:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      type: string
+      description: 1 = EindeWWUitkering, 2 = EindeZWUitkering, 3 = EindeWGAUitkering, 4 = EindeWAOIVAUitkering, 5 = EindeOverigeUitkering
+    RedenAanvraagLevensonderhoudVerblijfstatus:
+      enum:
+      - '1'
+      - '2'
+      type: string
+      description: 1 = VerblijfsvergunningGekregen, 2 = VerblijfsvergunningGekregenEnVertrekUitAsielzoekerscentrum
+    RedenAanvraagLevensonderhoudWijzigingGezin:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: 1 = EigenUitkeringMaarNuSamenAanvraagMetPartner, 2 = RelatieVerbroken, 3 = PartnerOverleden
+    RedenAanvraagLevensonderhoudZelfstandige:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: 1 = GestoptMetEigenBedrijf, 2 = EigenBedrijfOnvoldoendeInkomen, 3 = EigenBedrijfTijdelijkGeslotenDoorGemeente
+    RedenAfwijkendeStartdatum:
+      required:
+      - RedenAfwijkingAanwezig
+      type: object
+      properties:
+        AanvraagdatumDigid:
+          type: string
+          format: date
+          nullable: true
+        OntvangstdatumBeslissingInstantie:
+          type: string
+          format: date
+          nullable: true
+        Redenafwijkendestartdatumtype:
+          $ref: '#/components/schemas/Redenafwijkendestartdatumtype'
+        RedenAfwijkingAanwezig:
+          $ref: '#/components/schemas/JaNee'
+        SpecificatieBijzondereRedenLaterIngaanStartdatumAanvraag:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Redenafwijkendestartdatumtype:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      type: string
+      description: 1 = WachtenBeslissingInstantie, 2 = WachtenDigid, 3 = OpnameInstelling, 4 = AndereRedenAfwijkendeStartdatum
+    ResponseLOBehandeld:
+      required:
+      - berichtId
+      - responseId
+      type: object
+      properties:
+        berichtId:
+          type: string
+          nullable: true
+        responseId:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+          nullable: true
+        foutcode:
+          type: string
+          nullable: true
+        foutomschrijving:
+          type: string
+          nullable: true
+        details:
+          type: string
+          nullable: true
+        fouten:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    Rol:
+      required:
+      - Rolomschrijving
+      type: object
+      properties:
+        Rolomschrijving:
+          type: string
+      additionalProperties: false
+    SecundairInkomstencomponent:
+      required:
+      - SecundairInkomstencomponenttype
+      type: object
+      properties:
+        Boekingsdatum:
+          type: string
+          format: date
+          nullable: true
+        Inkomsten:
+          pattern: ^-?[0-9]+((;|,|\\.)[0-9]{2}|)$
+          type: string
+          nullable: true
+        SecundairInkomstencomponenttype:
+          $ref: '#/components/schemas/SecundairInkomstencomponenttype'
+      additionalProperties: false
+    SecundairInkomstencomponenttype:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      - '6'
+      type: string
+      description: 1 = AVWBBudget, 2 = Heffingskorting, 3 = Inkomstenvermindering, 4 = Vakantiegeld, 5 = Vergoeding, 6 = Toeslag
+    SoortAdres:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      type: string
+      description: 1 = NederlandsStraatadres, 2 = NederlandsPostbusadres, 3 = StraatadresBuitenland
+    SoortBekostiger:
+      enum:
+      - '1'
+      - '2'
+      type: string
+      description: 1 = BekostigerOrganisatie, 2 = BekostigerPersoon
+    SoortInkomstencomponenttypeSpecifiekeGegevens:
+      enum:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+      - '5'
+      type: string
+      description: 1 = BetaaldWerk, 2 = Uitkering, 3 = Alimentatie, 4 = Pensioen, 5 = AnderInkomen
+    StraatadresBuitenland:
+      required:
+      - SoortAdres
+      type: object
+      properties:
+        HuisnummerBuitenland:
+          maximum: 2147483647
+          minimum: 0
+          type: integer
+          format: int32
+          nullable: true
+        LandencodeIso:
+          pattern: ^[A-Z]{2}$
+          type: string
+          nullable: true
+        Landsnaam:
+          type: string
+          nullable: true
+        LocatieomschrijvingBuitenland:
+          maxLength: 35
+          minLength: 1
+          type: string
+          nullable: true
+        PostcodeBuitenland:
+          maxLength: 35
+          minLength: 1
+          type: string
+          nullable: true
+        RegionaamBuitenland:
+          maxLength: 35
+          minLength: 1
+          type: string
+          nullable: true
+        StraatnaamBuitenland:
+          maxLength: 35
+          minLength: 1
+          type: string
+          nullable: true
+        WoonplaatsnaamBuitenland:
+          maxLength: 40
+          minLength: 1
+          type: string
+          nullable: true
+        SoortAdres:
+          $ref: '#/components/schemas/SoortAdres'
+      additionalProperties: false
+    UitbetalingUitkering:
+      required:
+      - SoortUitbetaling
+      type: object
+      properties:
+        AanDerdeReden:
+          type: string
+          nullable: true
+        Bankrekening:
+          pattern: ^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$
+          type: string
+          nullable: true
+        BankrekeningDerde:
+          pattern: ^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$
+          type: string
+          nullable: true
+        BankrekeningPartner:
+          pattern: ^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$
+          type: string
+          nullable: true
+        Rekeninghouder:
+          type: string
+          nullable: true
+        RekeninghouderDerde:
+          type: string
+          nullable: true
+        RekeninghouderPartner:
+          type: string
+          nullable: true
+        SoortUitbetaling:
+          $ref: '#/components/schemas/UitbetalingUitkeringSoortUitbetaling'
+      additionalProperties: false
+    UitbetalingUitkeringSoortUitbetaling:
+      enum:
+      - '01'
+      - '02'
+      - '03'
+      - '04'
+      - '05'
+      type: string
+      description: 01 = Klant, 02 = Partner, 03 = Gesplitst, 04 = Gemachtigde, 05 = Bewindvoerder
+    Uitkering:
+      required:
+      - SoortInkomstencomponenttypeSpecifiekeGegevens
+      type: object
+      properties:
+        IndicatieBeslagOpUitkering:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieLoonheffingskorting:
+          $ref: '#/components/schemas/JaNee'
+        IndicatieReserveringVT:
+          $ref: '#/components/schemas/JaNee'
+        InkomstensoortUitkering:
+          $ref: '#/components/schemas/UitkeringInkomstensoortUitkering'
+        SoortInkomstencomponenttypeSpecifiekeGegevens:
+          $ref: '#/components/schemas/SoortInkomstencomponenttypeSpecifiekeGegevens'
+      additionalProperties: false
+    UitkeringInkomstensoortUitkering:
+      enum:
+      - AAW
+      - AB
+      - ABW
+      - AKW
+      - ANW
+      - AOW
+      - AOW-OBR
+      - AOWOR
+      - AWBZ
+      - AWW
+      - BB
+      - BBZ
+      - BBZB
+      - BBZBB
+      - BBZL
+      - CSV
+      - INTW
+      - IOAW
+      - IOAZ
+      - IOW
+      - IVA
+      - KB
+      - KOP
+      - NWJ
+      - OSV
+      - PVW
+      - PWJ
+      - REA
+      - RW
+      - RWW
+      - TRI
+      - TW
+      - VUT
+      - WAJ
+      - WAMIL
+      - WAO
+      - WAZ
+      - WAZO
+      - WBIA
+      - WGA
+      - WHK
+      - WIA
+      - WIJ
+      - WMO
+      - WSW
+      - WVG
+      - WW
+      - WWAJ
+      - WWB
+      - WWF
+      - WWIK
+      - ZFW
+      - ZVW
+      - ZW
+      type: string
+      description: AAW = AAW, AB = AB, ABW = ABW, AKW = AKW, ANW = ANW, AOW = AOW, AOW-OBR = AOWOBR, AOWOR = AOWOR, AWBZ = AWBZ, AWW = AWW, BB = BB, BBZ = BBZ, BBZB = BBZB, BBZBB = BBZBB, BBZL = BBZL, CSV = CSV, INTW = INTW, IOAW = IOAW, IOAZ = IOAZ, IOW = IOW, IVA = IVA, KB = KB, KOP = KOP, NWJ = NWJ, OSV = OSV, PVW = PVW, PWJ = PWJ, REA = REA, RW = RW, RWW = RWW, TRI = TRI, TW = TW, VUT = VUT, WAJ = WAJ, WAMIL = WAMIL, WAO = WAO, WAZ = WAZ, WAZO = WAZO, WBIA = WBIA, WGA = WGA, WHK = WHK, WIA = WIA, WIJ = WIJ, WMO = WMO, WSW = WSW, WVG = WVG, WW = WW, WWAJ = WWAJ, WWB = WWB, WWF = WWF, WWIK = WWIK, ZFW = ZFW, ZVW = ZVW, ZW = ZW
+    Vestiging:
+      required:
+      - KvkNummer
+      type: object
+      properties:
+        KvkNummer:
+          pattern: ^[0-9]{8}$
+          type: string
+        Vestigingsnummer:
+          pattern: ^[0-9]{12}$
+          type: string
+          nullable: true
+      additionalProperties: false
+    ZaakLOBehandeld:
+      required:
+      - Identificatie
+      - LObehandeld
+      type: object
+      properties:
+        Betrokkenen:
+          type: array
+          items:
+            $ref: '#/components/schemas/Betrokkene'
+          nullable: true
+        Identificatie:
+          type: string
+        LObehandeld:
+          $ref: '#/components/schemas/LOBehandeld'
+        Url:
+          type: string
+          nullable: true
+        Uuid:
+          pattern: ^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$
+          type: string
+          nullable: true
+      additionalProperties: false
+tags:
+- name: LOBehandeld

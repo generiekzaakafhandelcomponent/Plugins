@@ -4,12 +4,10 @@ import java.time.LocalDate
 
 data class Adreshouding(
     /**
-     * A = A
-     * B = B
-     * C = C
-     * L = L
-     * V = V
-     * W = W
+     * A = Afwijkend woonadres
+     * C = Correspondentieadres
+     * L = Loonaangifte adres
+     * V = Vestigingsadres
      */
     val codeFunctieAdres: String,
     val begindatum: LocalDate,
