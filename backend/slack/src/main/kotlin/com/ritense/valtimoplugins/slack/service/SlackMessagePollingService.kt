@@ -101,7 +101,19 @@ open class SlackMessagePollingService(
     }
 
     private fun pollAllConfigurations() {
-        val links = pluginProcessLinkRepository.findByPluginActionDefinitionKey(RECEIVE_MESSAGE_ACTION)
+        val allLinks = pluginProcessLinkRepository.findByPluginActionDefinitionKey(RECEIVE_MESSAGE_ACTION)
+
+        // The admin page offers every action on every element, so a receive-message link can end
+        // up on, say, a service task. Nothing could be started or resumed from there: skip it
+        // loudly rather than reading the channel for it and failing on every message.
+        val (links, misplaced) = allLinks.partition { ReceiveMessageTarget.of(it.activityType) != null }
+        misplaced.forEach {
+            logger.warn {
+                "Ignoring the receive-message link on activity '${it.activityId}' of process definition " +
+                    "'${it.processDefinitionId}': a ${it.activityType} cannot receive a message. Link it to a " +
+                    "message start event, a receive task or a message intermediate catch event."
+            }
+        }
 
         // A process link may name its plugin configuration indirectly, through a reference
         // resolved at execution time from process variables. That cannot work here: there is

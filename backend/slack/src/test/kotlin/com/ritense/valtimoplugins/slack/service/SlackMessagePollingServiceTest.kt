@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.ritense.plugin.domain.PluginConfigurationId
 import com.ritense.plugin.domain.PluginProcessLink
 import com.ritense.plugin.service.PluginService
+import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.processlink.repository.ValtimoPluginProcessLinkRepository
 import com.ritense.valtimoplugins.slack.BaseTest
 import com.ritense.valtimoplugins.slack.client.SlackClient
@@ -42,6 +43,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import java.math.BigDecimal
 import java.net.URI
@@ -63,6 +65,7 @@ class SlackMessagePollingServiceTest : BaseTest() {
     private lateinit var handler: IncomingSlackMessageHandler
     private lateinit var starter: SlackMessageProcessStarter
     private lateinit var cursorRepository: SlackChannelCursorRepository
+    private lateinit var processLinkRepository: ValtimoPluginProcessLinkRepository
     private lateinit var pollingService: SlackMessagePollingService
 
     @BeforeEach
@@ -72,6 +75,7 @@ class SlackMessagePollingServiceTest : BaseTest() {
         handler = mock()
         starter = mock()
         cursorRepository = mock()
+        processLinkRepository = mock()
 
         whenever(pluginService.createInstance<SlackPlugin>(any<UUID>())).doReturn(plugin())
         whenever(slackClient.conversationsHistory(any(), any(), any())).thenReturn(SlackClient.PagedMessages())
@@ -81,7 +85,7 @@ class SlackMessagePollingServiceTest : BaseTest() {
 
         pollingService =
             SlackMessagePollingService(
-                mock<ValtimoPluginProcessLinkRepository>(),
+                processLinkRepository,
                 pluginService,
                 slackClient,
                 handler,
@@ -302,6 +306,22 @@ class SlackMessagePollingServiceTest : BaseTest() {
     private fun historyOf(vararg timestamps: String) {
         whenever(slackClient.conversationsHistory(any(), any(), any()))
             .thenReturn(SlackClient.PagedMessages(timestamps.map { message(it) }))
+    }
+
+    @Test
+    fun `should not read a channel for a link on an element that cannot receive a message`() {
+        // The admin page offers receive-message on a service task too; nothing can be started or
+        // resumed from there, so the channel is not read for it.
+        val onServiceTask =
+            processLink().also {
+                whenever(it.activityType).thenReturn(ActivityTypeWithEventName.SERVICE_TASK_START)
+                whenever(it.pluginConfigurationId).thenReturn(configurationId)
+            }
+        whenever(processLinkRepository.findByPluginActionDefinitionKey("receive-message")).thenReturn(listOf(onServiceTask))
+
+        pollingService.pollChannels()
+
+        verifyNoInteractions(slackClient, starter)
     }
 
     private fun message(ts: String) = SlackMessage(channel = CHANNEL, ts = ts, text = "Hallo", userId = "U012AB3CD")

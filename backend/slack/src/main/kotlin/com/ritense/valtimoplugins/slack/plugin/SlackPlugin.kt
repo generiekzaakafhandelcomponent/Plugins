@@ -22,8 +22,11 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.processlink.domain.ActivityTypeWithEventName.INTERMEDIATE_CATCH_EVENT_END
+import com.ritense.processlink.domain.ActivityTypeWithEventName.INTERMEDIATE_CATCH_EVENT_START
 import com.ritense.processlink.domain.ActivityTypeWithEventName.MESSAGE_START_EVENT_START
 import com.ritense.processlink.domain.ActivityTypeWithEventName.RECEIVE_TASK_END
+import com.ritense.processlink.domain.ActivityTypeWithEventName.RECEIVE_TASK_START
+import com.ritense.processlink.domain.ActivityTypeWithEventName.START_EVENT_START
 import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.slack.client.SlackClient
@@ -150,7 +153,16 @@ open class SlackPlugin(
         key = "receive-message",
         title = "Receive message",
         description = "Start or continue a process for each message posted in a Slack channel",
-        activityTypes = [MESSAGE_START_EVENT_START, RECEIVE_TASK_END, INTERMEDIATE_CATCH_EVENT_END],
+        // The ':start' variants are what Valtimo 12's process-link page links these elements on,
+        // see ReceiveMessageTarget.
+        activityTypes = [
+            MESSAGE_START_EVENT_START,
+            START_EVENT_START,
+            RECEIVE_TASK_END,
+            RECEIVE_TASK_START,
+            INTERMEDIATE_CATCH_EVENT_END,
+            INTERMEDIATE_CATCH_EVENT_START,
+        ],
     )
     fun receiveMessage(
         @PluginActionProperty channel: String,

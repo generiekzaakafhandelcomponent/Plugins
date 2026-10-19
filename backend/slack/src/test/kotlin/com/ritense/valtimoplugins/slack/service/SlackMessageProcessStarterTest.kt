@@ -131,6 +131,20 @@ class SlackMessageProcessStarterTest : BaseTest() {
     }
 
     @Test
+    fun `should start a case for a start event linked on its start, as the Valtimo 12 admin page links it`() {
+        // The admin page sends a message start event as a plain 'bpmn:StartEvent:start'.
+        val link = messageStartEvent(ActivityTypeWithEventName.START_EVENT_START)
+        val documentId = JsonSchemaDocumentId.existingId(UUID.fromString("11111111-2222-3333-4444-555555555555"))
+        givenACaseCanBeStartedFor(link, documentId)
+        val correlation = givenStartMessageCorrelates("IncomingSlackMessage", PROCESS_INSTANCE_ID)
+
+        val started = starter.start(link, reply(threadTs = null))
+
+        assertThat(started).isTrue()
+        verify(correlation).correlateStartMessage()
+    }
+
+    @Test
     fun `should hand the message on as process variables when it starts a case`() {
         val link = messageStartEvent()
         givenACaseCanBeStartedFor(
@@ -260,6 +274,21 @@ class SlackMessageProcessStarterTest : BaseTest() {
         assertThat(resumed).isTrue()
         verify(runtimeService).signal(eq("execution-b"), any<Map<String, Any>>())
         verify(runtimeService, never()).signal(eq("execution-a"), any<Map<String, Any>>())
+    }
+
+    @Test
+    fun `should resume a receive task linked on its start, as the Valtimo 12 admin page links it`() {
+        waiting("execution-a" to "instance-a")
+        awaits("instance-a", "1735689600.000100")
+
+        val resumed =
+            starter.start(
+                receiveTask(ActivityTypeWithEventName.RECEIVE_TASK_START),
+                reply(threadTs = "1735689600.000100"),
+            )
+
+        assertThat(resumed).isTrue()
+        verify(runtimeService).signal(eq("execution-a"), any<Map<String, Any>>())
     }
 
     @Test
@@ -446,9 +475,11 @@ class SlackMessageProcessStarterTest : BaseTest() {
             .thenReturn(messageTs)
     }
 
-    private fun messageStartEvent(): PluginProcessLink =
+    private fun messageStartEvent(
+        activityType: ActivityTypeWithEventName = ActivityTypeWithEventName.MESSAGE_START_EVENT_START,
+    ): PluginProcessLink =
         mock<PluginProcessLink>().also {
-            whenever(it.activityType).thenReturn(ActivityTypeWithEventName.MESSAGE_START_EVENT_START)
+            whenever(it.activityType).thenReturn(activityType)
             whenever(it.activityId).thenReturn("Event_0beitek")
             whenever(it.processDefinitionId).thenReturn("Verwerk_slackbericht_handmatig:1:abc")
         }
@@ -550,9 +581,11 @@ class SlackMessageProcessStarterTest : BaseTest() {
         return correlation
     }
 
-    private fun receiveTask(): PluginProcessLink =
+    private fun receiveTask(
+        activityType: ActivityTypeWithEventName = ActivityTypeWithEventName.RECEIVE_TASK_END,
+    ): PluginProcessLink =
         mock<PluginProcessLink>().also {
-            whenever(it.activityType).thenReturn(ActivityTypeWithEventName.RECEIVE_TASK_END)
+            whenever(it.activityType).thenReturn(activityType)
             whenever(it.activityId).thenReturn("await-reply")
             whenever(it.processDefinitionId).thenReturn("slack-intake-process:1:abc")
         }

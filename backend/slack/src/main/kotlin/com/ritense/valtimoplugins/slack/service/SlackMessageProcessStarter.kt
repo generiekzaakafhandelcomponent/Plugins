@@ -24,7 +24,6 @@ import com.ritense.plugin.domain.PluginProcessLink
 import com.ritense.processdocument.domain.impl.CamundaProcessDefinitionKey
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentAssociationService
-import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimo.service.ProcessPropertyService
 import com.ritense.valtimoplugins.slack.domain.SlackMessage
@@ -72,8 +71,8 @@ class SlackMessageProcessStarter(
         message: SlackMessage,
     ): Boolean {
         val variables = message.toProcessVariables()
-        return when (processLink.activityType) {
-            ActivityTypeWithEventName.MESSAGE_START_EVENT_START -> startProcessByMessage(processLink, variables)
+        return when (ReceiveMessageTarget.of(processLink.activityType)) {
+            ReceiveMessageTarget.START_PROCESS -> startProcessByMessage(processLink, variables)
             else -> signalWaitingExecutions(processLink, message, variables)
         }
     }
@@ -100,7 +99,7 @@ class SlackMessageProcessStarter(
      * its beginning; the claim table removes what was already handled.
      */
     fun threadsAwaitingReply(processLink: PluginProcessLink): Map<String, String?> {
-        if (processLink.activityType == ActivityTypeWithEventName.MESSAGE_START_EVENT_START) {
+        if (ReceiveMessageTarget.of(processLink.activityType) == ReceiveMessageTarget.START_PROCESS) {
             return emptyMap()
         }
 
@@ -285,11 +284,11 @@ class SlackMessageProcessStarter(
                 "Resuming execution '${execution.id}' of process instance '${execution.processInstanceId}' " +
                     "at activity '${processLink.activityId}'"
             }
-            when (processLink.activityType) {
-                ActivityTypeWithEventName.RECEIVE_TASK_END ->
+            when (ReceiveMessageTarget.of(processLink.activityType)) {
+                ReceiveMessageTarget.RECEIVE_TASK ->
                     runtimeService.signal(execution.id, variables)
 
-                ActivityTypeWithEventName.INTERMEDIATE_CATCH_EVENT_END ->
+                ReceiveMessageTarget.MESSAGE_CATCH_EVENT ->
                     runtimeService.messageEventReceived(messageNameOf(processLink), execution.id, variables)
 
                 else ->
