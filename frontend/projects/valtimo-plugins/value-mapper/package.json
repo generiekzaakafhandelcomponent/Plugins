@@ -1,7 +1,7 @@
 {
   "name": "@valtimo-plugins/value-mapper",
   "license": "EUPL-1.2",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "peerDependencies": {
     "@angular/common": "17.3.12",
     "@angular/core": "17.3.12"
