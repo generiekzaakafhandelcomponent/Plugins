@@ -22,6 +22,7 @@ import com.ritense.document.domain.impl.request.NewDocumentRequest
 import com.ritense.document.service.DocumentService
 import com.ritense.plugin.domain.PluginProcessLink
 import com.ritense.processdocument.domain.impl.CamundaProcessDefinitionKey
+import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentAssociationService
 import com.ritense.processlink.domain.ActivityTypeWithEventName
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
@@ -136,14 +137,14 @@ class SlackMessageProcessStarter(
     }
 
     private fun isLatestVersion(processDefinitionId: String): Boolean {
-        val processDefinition = repositoryService.getProcessDefinition(processDefinitionId)
-        val latest =
-            repositoryService
-                .createProcessDefinitionQuery()
-                .processDefinitionKey(processDefinition.key)
-                .latestVersion()
-                .singleResult()
-        return latest?.id == processDefinitionId
+        val key = repositoryService.getProcessDefinition(processDefinitionId).key
+        // A list rather than a single result: with tenants, there is a latest version per tenant.
+        return repositoryService
+            .createProcessDefinitionQuery()
+            .processDefinitionKey(key)
+            .latestVersion()
+            .list()
+            .any { it.id == processDefinitionId }
     }
 
     private fun startSystemProcessByMessage(
@@ -168,24 +169,23 @@ class SlackMessageProcessStarter(
     ): Boolean {
         val processDefinition = repositoryService.getProcessDefinition(processLink.processDefinitionId)
         val processDocumentDefinition =
-            try {
-                processDocumentAssociationService
-                    .findProcessDocumentDefinition(CamundaProcessDefinitionKey(processDefinition.key))
-                    .orElse(null)
-            } catch (e: Exception) {
-                logger.warn(e) {
-                    "Could not look up the document definition linked to process '${processDefinition.key}'"
+            processDocumentAssociationService
+                .findProcessDocumentDefinition(CamundaProcessDefinitionKey(processDefinition.key))
+                .orElse(null)
+                ?: run {
+                    logger.warn { "No document definition linked to process '${processDefinition.key}'" }
+                    return false
                 }
-                null
-            }
-        if (processDocumentDefinition == null) {
-            logger.warn { "No document definition linked to process '${processDefinition.key}'" }
-            return false
-        }
 
-        require(processDocumentDefinition.canInitializeDocument()) {
-            "Cannot start a case for process definition '${processLink.processDefinitionId}' because " +
-                "canInitializeDocument is false on the process-document link."
+        // Skipped rather than thrown. This is configuration and does not change between polls, so
+        // an exception would roll back the claim, keep the channel cursor from moving past this
+        // message, and have every later poll fail on it again.
+        if (!processDocumentDefinition.canInitializeDocument()) {
+            logger.warn {
+                "Not starting a case for process definition '${processLink.processDefinitionId}': " +
+                    "canInitializeDocument is false on the process-document link"
+            }
+            return false
         }
 
         val documentDefinitionName = processDocumentDefinition.processDocumentDefinitionId().documentDefinitionId().name()
@@ -220,22 +220,28 @@ class SlackMessageProcessStarter(
             runtimeService
                 .createMessageCorrelation(messageName)
                 .processDefinitionId(processLink.processDefinitionId)
-                // Valtimo resolves `doc:` for a process instance through the process-document
-                // association, and falls back to the business key while that association does
-                // not exist yet. It cannot exist yet here - it is created below, once the
-                // instance has an id - so the start event's own listeners depend on this
-                // business key to reach the document. Valtimo's own start path sets it the
+                // Valtimo resolves `doc:` for a process instance from its business key, and
+                // associates the instance with that document when its start event runs. Both
+                // depend on this being the document id. Valtimo's own start path sets it the
                 // same way.
                 .processInstanceBusinessKey(document.id().toString())
                 .setVariables(variables)
                 .correlateStartMessage()
 
+        // Usually already associated by Valtimo's start event listener, which may have pointed
+        // it at another document than this one; creating one regardless would then throw. So
+        // only fill the gap, the same way Valtimo's own start paths do.
         AuthorizationContext.runWithoutAuthorization {
-            processDocumentAssociationService.createProcessDocumentInstance(
-                processInstance.id,
-                UUID.fromString(document.id().toString()),
-                processDefinition.name,
-            )
+            if (processDocumentAssociationService
+                    .findProcessDocumentInstance(CamundaProcessInstanceId(processInstance.id))
+                    .isEmpty
+            ) {
+                processDocumentAssociationService.createProcessDocumentInstance(
+                    processInstance.id,
+                    UUID.fromString(document.id().toString()),
+                    processDefinition.name,
+                )
+            }
         }
         return true
     }
