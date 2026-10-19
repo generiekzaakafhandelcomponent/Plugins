@@ -8,8 +8,8 @@ dockerCompose {
 }
 
 dependencies {
-    implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:core")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
 }
 
 apply(from = "gradle/publishing.gradle")
