@@ -18,6 +18,11 @@ plugins {
     id("org.openapi.generator") version "7.12.0"
 }
 
+val camundaMockitoVersion: String by project
+val kotlinLoggingVersion: String by project
+val mockitoKotlinVersion: String by project
+val okhttpVersion: String by project
+
 dockerCompose {
     setProjectName("rotterdam-oracle-ebs")
     isRequiredBy(project.tasks.integrationTesting)
@@ -28,35 +33,41 @@ dockerCompose {
 }
 
 dependencies {
-    implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:contract")
-    implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:value-resolver")
+    compileOnly("com.ritense.valtimo:core")
+    compileOnly("com.ritense.valtimo:contract")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:value-resolver")
 
     implementation(project(":backend:mTLS-SSLContext"))
 
     // Spring core web functionality
-    implementation("org.springframework:spring-web")
+    compileOnly("org.springframework:spring-web")
 
     // Logging
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 
     // Jackson FasterXML
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    compileOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     // Apache HTTP Client
     implementation("org.apache.httpcomponents.core5:httpcore5")
     implementation("org.apache.httpcomponents.client5:httpclient5")
 
     // Testing
+    testImplementation("com.ritense.valtimo:core")
+    testImplementation("com.ritense.valtimo:contract")
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("org.springframework:spring-web")
+    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 //    testImplementation("org.camunda.bpm:camunda-bpm-junit5:7.21.0")
     testImplementation("org.mockito:mockito-core")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
-    testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
-    testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
+    testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:$camundaMockitoVersion")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
 }
 
 apply(from = "gradle/publishing.gradle")

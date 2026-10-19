@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+val apacheCxfVersion: String by project
+val kotlinLoggingVersion: String by project
+val mockitoKotlinVersion: String by project
+
 dockerCompose {
     setProjectName("suwinet-auth")
     isRequiredBy(project.tasks.integrationTesting)
@@ -24,20 +28,25 @@ dockerCompose {
 }
 
 dependencies {
-    implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:value-resolver")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:value-resolver")
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
+    compileOnly("org.springframework.boot:spring-boot-starter-security")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 
     // Apache CXF and Jakarta dependencies
-    implementation("org.apache.cxf:cxf-rt-transports-http:4.0.7")
-    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:4.0.7")
+    implementation("org.apache.cxf:cxf-rt-transports-http:$apacheCxfVersion")
+    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$apacheCxfVersion")
 
     // Testing
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("com.ritense.valtimo:test-utils-common")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -45,7 +54,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 
