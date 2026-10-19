@@ -31,9 +31,7 @@ class ValtimoOcrAutoConfiguration {
     @ConditionalOnMissingBean(MistralOCRModel::class)
     fun mistralOCRModel(
         restClientBuilder: RestClient.Builder
-    ) = MistralOCRModel(
-        restClientBuilder, null, null
-    )
+    ) = MistralOCRModel(restClientBuilder)
 
 
     @Bean
