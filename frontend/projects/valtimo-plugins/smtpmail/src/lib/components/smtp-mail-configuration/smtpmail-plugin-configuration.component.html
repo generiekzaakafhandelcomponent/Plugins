@@ -95,7 +95,7 @@
             type="checkbox"
             [title]="'auth' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.auth || true"
+            [defaultValue]="obs.prefill?.auth ?? true"
             [disabled]="obs.disabled"
             [required]="false"
     >
