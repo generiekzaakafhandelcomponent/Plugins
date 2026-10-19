@@ -18,7 +18,8 @@
         (valueChange)="formValueChange($event)"
         *ngIf="{
         disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+        contentInputTypeOptions: contentInputTypeOptions$ | async
     } as obs"
     >
     <v-input
@@ -87,7 +88,30 @@
             [tooltip]="'subjectTooltip' | pluginTranslate: pluginId | async"
     >
     </v-input>
+    <v-radio
+            name="contentInputType"
+            [defaultValue]="obs.prefill?.content ? 'content' : 'contentId'"
+            [disabled]="obs.disabled"
+            [margin]="true"
+            [radioValues]="obs.contentInputTypeOptions"
+            [title]="'contentInputType' | pluginTranslate: pluginId | async"
+            [tooltip]="'contentInputTypeTooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-radio>
     <v-input
+            *ngIf="$contentInputType() === 'content'"
+            name="content"
+            [defaultValue]="obs.prefill?.content"
+            [disabled]="obs.disabled"
+            [margin]="true"
+            [placeholder]="'pv:mailContent'"
+            [required]="true"
+            [title]="'content' | pluginTranslate: pluginId | async"
+            [tooltip]="'contentTooltip' | pluginTranslate: pluginId | async"
+    >
+    </v-input>
+    <v-input
+            *ngIf="$contentInputType() === 'contentId'"
             name="contentId"
             [title]="'contentId' | pluginTranslate: pluginId | async"
             [margin]="true"

@@ -36,26 +36,19 @@ class SmtpMailService(
         mailContext: SmtpMailContextDto,
         connection: SmtpMailPluginPropertyDto,
     ) {
-        val mailContent =
-            prepareMailContent(
-                contentResourceId = mailContext.contentResourceId,
-                attachmentResourceIds = mailContext.attachmentResourceIds,
-            )
+        val mailContent = prepareMailContent(mailContext)
 
         smtpMailClient.sendEmail(connection, mailContext, mailContent).also {
             logger.info { "Attempted to send SMTP mail with subject ${mailContext.subject}" }
         }
     }
 
-    private fun prepareMailContent(
-        contentResourceId: String,
-        attachmentResourceIds: List<String>,
-    ): SmtpMailContentDto {
+    private fun prepareMailContent(mailContext: SmtpMailContextDto): SmtpMailContentDto {
         val attachments: MutableList<SmtpMailContentDto.Attachment> = mutableListOf()
 
         var totalAttachmentsSize = 0
 
-        attachmentResourceIds.forEach { attachmentResourceId ->
+        mailContext.attachmentResourceIds.forEach { attachmentResourceId ->
             totalAttachmentsSize +=
                 checkForMaxAttachmentSize(
                     storageService.getResourceContentAsInputStream(attachmentResourceId),
@@ -79,15 +72,16 @@ class SmtpMailService(
             attachments.add(SmtpMailContentDto.Attachment(fileName, attachmentResourceId))
         }
 
-        val mailMessageAsInputStream =
-            storageService.getResourceContentAsInputStream(contentResourceId).also {
-                logger.debug { "Fetching mail message with resourceId '$contentResourceId" }
-            }
-
         return SmtpMailContentDto(
-            mailMessage = mailMessageAsInputStream.toPlainText(),
+            mailMessage = mailContext.content ?: fetchMailMessage(mailContext.contentResourceId),
             attachments = attachments,
         )
+    }
+
+    private fun fetchMailMessage(contentResourceId: String?): String {
+        checkNotNull(contentResourceId) { "Mail has neither content nor a contentResourceId" }
+        logger.debug { "Fetching mail message with resourceId '$contentResourceId" }
+        return storageService.getResourceContentAsInputStream(contentResourceId).toPlainText()
     }
 
     private fun checkForMaxAttachmentSize(

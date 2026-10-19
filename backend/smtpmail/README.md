@@ -55,8 +55,13 @@ Create process link between a BPMN service task and the desired plugin action.
 * `cc` - CC email addresses (optional)
 * `bcc` - BCC email addresses (optional)
 * `subject` - Subject of email
-* `contentId` - The content ID of the contents of the mail, see [options](#prepare-mail-contents) to generate content
+* `contentId` - The content ID of a temporary file with the HTML contents of the mail, see
+  [options](#prepare-mail-contents) to generate content
+* `content` - The HTML contents of the mail, usually a process variable such as `pv:mailContent`. Use this instead of
+  `contentId` when the mail is reviewed in a user task before it is sent
 * `attachmentIds` - List with IDs of files in local storage are added as attachment of the mail (optional)
+
+Exactly one of `contentId` and `content` must be provided; the configuration screen lets you choose between them.
 
 Before sending, the plugin rejects a CR or LF character in `sender`, `fromName`, `recipients`, `cc`, `bcc` and
 `subject` to prevent mail header injection, and it rejects malformed addresses. A host without a dot - a local mail
@@ -95,7 +100,9 @@ submitter controls, such as a form field, can expand to any number of recipients
 There are 2 plugins available to generate the contents of an email:
 
 #### Mail template plugin
-Generate Mail contents with plugin action `Generate Mail File` with a case mail template
+Generate Mail contents with plugin action `Generate Mail File` with a case mail template. To review the mail before it
+is sent, use `Generate Mail Content` instead: it stores the HTML in a process variable that `content` can point to. A
+temporary file may be removed before a review task is picked up.
 * `mailTemplateKey` - A Case Mail template  
 * `processVariableName` - process variable name of the generated mail contents
 

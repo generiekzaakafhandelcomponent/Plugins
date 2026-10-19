@@ -24,6 +24,7 @@ import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailPluginPropertyDto
 import com.ritense.valtimoplugins.smtpmail.service.SmtpMailService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -32,6 +33,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.camunda.bpm.engine.delegate.DelegateExecution
 
@@ -340,6 +342,78 @@ class SmtpMailPluginTest : BaseTest() {
         assertEquals(fromAction, captureContext())
     }
 
+    // -- Content from a file or directly as text ----------------------------------------
+
+    @Test
+    fun `passes the content id to the service`() {
+        sendMail()
+
+        with(captureContext()) {
+            assertEquals("content-resource-id", contentResourceId)
+            assertNull(content)
+        }
+    }
+
+    @Test
+    fun `passes the content to the service`() {
+        sendMail(contentId = null, content = "<p>Beste meneer</p>")
+
+        with(captureContext()) {
+            assertNull(contentResourceId)
+            assertEquals("<p>Beste meneer</p>", content)
+        }
+    }
+
+    @Test
+    fun `treats a blank content id as absent when content is given`() {
+        sendMail(contentId = " ", content = "<p>Beste meneer</p>")
+
+        with(captureContext()) {
+            assertNull(contentResourceId)
+            assertEquals("<p>Beste meneer</p>", content)
+        }
+    }
+
+    @Test
+    fun `passes the content when sending without a DelegateExecution`() {
+        sendMailWithoutExecution(contentId = null, content = "<p>Beste meneer</p>")
+
+        assertEquals("<p>Beste meneer</p>", captureContext().content)
+    }
+
+    @Test
+    fun `still accepts the positional arguments from before content was added`() {
+        val sender = Email("afzender@example.com")
+        val recipients = listOf(Email("ontvanger@example.com"))
+
+        plugin.sendMail(execution, sender, null, EmailList(recipients), null, null, "Onderwerp", "content-id", null)
+        plugin.sendMail(sender, null, recipients, null, null, "Onderwerp", "content-id", null)
+
+        val captor = argumentCaptor<SmtpMailContextDto>()
+        verify(smtpMailService, times(2)).sendSmtpMail(captor.capture(), any<SmtpMailPluginPropertyDto>())
+        captor.allValues.forEach { assertEquals("content-id", it.contentResourceId) }
+    }
+
+    @Test
+    fun `rejects a mail without content and content id`() {
+        val exception = assertThrows<IllegalArgumentException> { sendMail(contentId = null, content = null) }
+
+        assertTrue(exception.message!!.contains("content"))
+        verifyNothingSent()
+    }
+
+    @Test
+    fun `rejects a mail with blank content and no content id`() {
+        assertThrows<IllegalArgumentException> { sendMail(contentId = null, content = "  ") }
+        verifyNothingSent()
+    }
+
+    @Test
+    fun `rejects a mail with both content and content id`() {
+        assertThrows<IllegalArgumentException> { sendMail(content = "<p>Beste meneer</p>") }
+        verifyNothingSent()
+    }
+
     private fun sendMail(
         sender: String = "afzender@example.com",
         fromName: String? = "Gemeente",
@@ -347,6 +421,8 @@ class SmtpMailPluginTest : BaseTest() {
         cc: List<String>? = null,
         bcc: List<String>? = null,
         subject: String = "Uw aanvraag",
+        contentId: String? = "content-resource-id",
+        content: String? = null,
     ) = plugin.sendMail(
         execution = execution,
         sender = Email(sender),
@@ -355,7 +431,8 @@ class SmtpMailPluginTest : BaseTest() {
         cc = cc?.let { list -> EmailList(list.map { Email(it) }) },
         bcc = bcc?.let { list -> EmailList(list.map { Email(it) }) },
         subject = subject,
-        contentId = "content-resource-id",
+        contentId = contentId,
+        content = content,
         attachmentIds = null,
     )
 
@@ -366,6 +443,8 @@ class SmtpMailPluginTest : BaseTest() {
         cc: List<String>? = null,
         bcc: List<String>? = null,
         subject: String = "Uw aanvraag",
+        contentId: String? = "content-resource-id",
+        content: String? = null,
     ) = plugin.sendMail(
         sender = Email(sender),
         fromName = fromName,
@@ -373,8 +452,9 @@ class SmtpMailPluginTest : BaseTest() {
         cc = cc?.map { Email(it) },
         bcc = bcc?.map { Email(it) },
         subject = subject,
-        contentId = "content-resource-id",
+        contentId = contentId,
         attachmentIds = null,
+        content = content,
     )
 
     private fun captureConnection(): SmtpMailPluginPropertyDto {

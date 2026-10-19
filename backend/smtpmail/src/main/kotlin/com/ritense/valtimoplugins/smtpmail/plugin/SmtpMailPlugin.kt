@@ -77,8 +77,9 @@ class SmtpMailPlugin(
         @PluginActionProperty cc: EmailList?,
         @PluginActionProperty bcc: EmailList?,
         @PluginActionProperty subject: String,
-        @PluginActionProperty contentId: String,
+        @PluginActionProperty contentId: String?,
         @PluginActionProperty attachmentIds: List<String>?,
+        @PluginActionProperty content: String? = null,
     ) = sendMail(
         sender = sender,
         fromName = fromName,
@@ -88,8 +89,10 @@ class SmtpMailPlugin(
         subject = subject,
         contentId = contentId,
         attachmentIds = attachmentIds,
+        content = content,
     )
 
+    @JvmOverloads
     fun sendMail(
         sender: Email,
         fromName: String?,
@@ -97,14 +100,19 @@ class SmtpMailPlugin(
         cc: List<Email>?,
         bcc: List<Email>?,
         subject: String,
-        contentId: String,
+        contentId: String?,
         attachmentIds: List<String>?,
+        content: String? = null,
     ) {
         // Header injection guard, re-checked server side for defence in depth.
         requireNoControlChars(subject, "subject")
         requireNoControlChars(fromName, "fromName")
 
         requireValidEmail(sender.address, "sender")
+
+        require(content.isNullOrBlank() != contentId.isNullOrBlank()) {
+            "Exactly one of the fields 'content' and 'contentId' must be provided"
+        }
 
         // Normalising here holds a programmatic caller to the same splitting and validation as a process link.
         val toAddresses = EmailList(recipients).normalized("recipients")
@@ -123,7 +131,8 @@ class SmtpMailPlugin(
                     ccList = ccAddresses,
                     bccList = bccAddresses,
                     subject = subject,
-                    contentResourceId = contentId,
+                    contentResourceId = contentId.takeUnless { it.isNullOrBlank() },
+                    content = content.takeUnless { it.isNullOrBlank() },
                     attachmentResourceIds = attachmentIds ?: emptyList(),
                 ),
             connection = getConnectionProperties(),
