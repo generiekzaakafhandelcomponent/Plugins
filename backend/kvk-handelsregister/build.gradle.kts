@@ -44,9 +44,6 @@ dependencies {
     implementation("com.auth0:java-jwt:4.4.0")
 
     // Testing
-    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    testImplementation("com.fasterxml.jackson.core:jackson-annotations:2.14.2")
-    testImplementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
     testImplementation("org.junit.jupiter:junit-jupiter-migrationsupport:5.9.1")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.mockito:mockito-core")
@@ -59,6 +56,11 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+    testImplementation("com.ritense.valtimo:test-utils-common")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation("org.postgresql:postgresql")
 
 }
 

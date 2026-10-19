@@ -16,13 +16,16 @@
 
 package com.ritense.valtimo.kvk.autoconfigure
 
+import com.ritense.plugin.service.EncryptionService
 import com.ritense.plugin.service.PluginService
 import com.ritense.valtimo.kvk.client.SimpleKvkHandelsregisterClient
+import com.ritense.valtimo.kvk.migration.KvkApiKeyEncryptionMigration
 import com.ritense.valtimo.kvk.plugin.KvkHandelsregisterPluginFactory
 import com.ritense.valtimo.kvk.service.KvkHandelsregisterService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import javax.sql.DataSource
 
 @Configuration
 @EnableConfigurationProperties
@@ -51,5 +54,13 @@ class HandelsregisterAutoConfiguration {
     @Bean
     fun simpleKvkClient(): SimpleKvkHandelsregisterClient {
         return SimpleKvkHandelsregisterClient()
+    }
+
+    @Bean
+    fun kvkApiKeyEncryptionMigration(
+        dataSource: DataSource,
+        encryptionService: EncryptionService
+    ): KvkApiKeyEncryptionMigration {
+        return KvkApiKeyEncryptionMigration(dataSource, encryptionService)
     }
 }
