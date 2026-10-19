@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { RegisterKlantcontactComponent } from "./open-klant-register-klantcontact.component";
 import { RegisterKlantcontactConfig } from "../../models/register-klantcontact-config";
-import { BehaviorSubject, Subject } from "rxjs";
+import { BehaviorSubject, of, Subject } from "rxjs";
 import { EventEmitter, NO_ERRORS_SCHEMA } from "@angular/core";
 import {
   TranslateModule,
@@ -10,6 +10,8 @@ import {
   TranslateFakeLoader,
 } from "@ngx-translate/core";
 import { PluginService } from "@valtimo/plugin";
+import { InputComponent } from "@valtimo/components";
+import { By } from "@angular/platform-browser";
 
 const pluginServiceMock: Partial<PluginService> = {} as any;
 
@@ -20,13 +22,27 @@ describe("RegisterKlantcontactComponent", () => {
   let save$: Subject<void>;
   let disabled$: BehaviorSubject<boolean>;
 
+  const inputByName = (name: string): InputComponent | undefined =>
+    fixture.debugElement
+      .queryAll(By.directive(InputComponent))
+      .map(reference => reference.componentInstance as InputComponent)
+      .find(input => input.name === name);
+
+  const setInput = (name: string, value: unknown): void => {
+    const input = inputByName(name);
+    expect(input)
+      .withContext(`the form should contain a v-input named '${name}'`)
+      .toBeDefined();
+    input.onValueChange(value);
+  };
+
   const validFormValue: RegisterKlantcontactConfig = {
     hasBetrokkene: true,
-    referentienummer: undefined,
+    referentienummer: "",
     kanaal: "email",
     onderwerp: "Subject",
     inhoud: "Content",
-    reactie: undefined,
+    reactie: "Reactie",
     indicatieContactGelukt: "true",
     vertrouwelijk: "true",
     taal: "nld",
@@ -41,11 +57,11 @@ describe("RegisterKlantcontactComponent", () => {
 
   const invalidFormValueMissingField: RegisterKlantcontactConfig = {
     hasBetrokkene: true,
-    referentienummer: undefined,
+    referentienummer: "",
     kanaal: "",
     onderwerp: "Subject",
     inhoud: "Content",
-    reactie: undefined,
+    reactie: "Reactie",
     indicatieContactGelukt: "true",
     vertrouwelijk: "true",
     taal: "nld",
@@ -121,11 +137,11 @@ describe("RegisterKlantcontactComponent", () => {
       const validFormValueWithConfidentialSetOnFalse: RegisterKlantcontactConfig =
         {
           hasBetrokkene: false,
-          referentienummer: undefined,
+          referentienummer: "123",
           kanaal: "email",
           onderwerp: "Subject",
           inhoud: "Content",
-          reactie: undefined,
+          reactie: "Reactie",
           indicatieContactGelukt: "true",
           vertrouwelijk: "false",
           taal: "nld",
@@ -200,6 +216,146 @@ describe("RegisterKlantcontactComponent", () => {
 
       component.formValueChange(validFormValue);
       expect(component.valid.emit).toHaveBeenCalledWith(true);
+    });
+  });
+
+  // Regression coverage for Github Issue #14
+  describe("hasBetrokkene", () => {
+    const fillRequiredKlantcontactFields = (): void => {
+      setInput("kanaal", '"E-mail"');
+      setInput("onderwerp", '"Herinnering: openstaande taak"');
+      setInput("vertrouwelijk", "false");
+      setInput("taal", "nld");
+      setInput("plaatsgevondenOp", "pv:datumTijd");
+    };
+
+    it("should render hasBetrokkene as a form control so v-form collects it", () => {
+      expect(inputByName("hasBetrokkene")).toBeDefined();
+    });
+
+    it("should hide the betrokkene fields until hasBetrokkene is enabled", () => {
+      expect(inputByName("partijUuid")).toBeUndefined();
+
+      setInput("hasBetrokkene", true);
+      fixture.detectChanges();
+
+      expect(inputByName("partijUuid")).toBeDefined();
+    });
+
+    it("should persist hasBetrokkene as true along with the betrokkene fields", () => {
+      fillRequiredKlantcontactFields();
+      setInput("hasBetrokkene", true);
+      fixture.detectChanges();
+
+      setInput("partijUuid", "pv:partijUuid");
+      setInput("voorletters", '"P"');
+      setInput("voornaam", '"Pietje"');
+      setInput("voorvoegselAchternaam", '""');
+      setInput("achternaam", '"Puk"');
+      fixture.detectChanges();
+
+      save$.next();
+
+      expect(component.configuration.emit).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          hasBetrokkene: true,
+          partijUuid: "pv:partijUuid",
+          voornaam: '"Pietje"',
+          achternaam: '"Puk"',
+        }),
+      );
+    });
+
+    it("should persist hasBetrokkene as false for an anonymous klantcontact", () => {
+      fillRequiredKlantcontactFields();
+      setInput("hasBetrokkene", false);
+      fixture.detectChanges();
+
+      save$.next();
+
+      expect(component.configuration.emit).toHaveBeenCalledWith(
+        jasmine.objectContaining({hasBetrokkene: false}),
+      );
+    });
+  });
+
+  describe("prefill of a process link without a persisted hasBetrokkene", () => {
+    const legacyPrefill = (
+      partijUuid: string | undefined,
+    ): Partial<RegisterKlantcontactConfig> => ({
+      referentienummer: "",
+      kanaal: "email",
+      onderwerp: "Subject",
+      inhoud: "Content",
+      reactie: "Reactie",
+      indicatieContactGelukt: "true",
+      vertrouwelijk: "true",
+      taal: "nld",
+      plaatsgevondenOp: "2026-08-31T12:00:00Z",
+      metadata: "",
+      partijUuid,
+      voorletters: "J.D.",
+      voornaam: "John",
+      voorvoegselAchternaam: "van",
+      achternaam: "Doe",
+    });
+
+    const createWithPrefill = (
+      prefill: Partial<RegisterKlantcontactConfig>,
+    ): void => {
+      fixture = TestBed.createComponent(RegisterKlantcontactComponent);
+      component = fixture.componentInstance;
+
+      component.save$ = save$.asObservable();
+      component.disabled$ = disabled$.asObservable();
+      component.pluginId = "plugin-123";
+      component.prefillConfiguration$ = of(
+        prefill as RegisterKlantcontactConfig,
+      );
+
+      component.valid = new EventEmitter<boolean>();
+      component.configuration = new EventEmitter<RegisterKlantcontactConfig>();
+
+      spyOn(component.valid, "emit");
+      spyOn(component.configuration, "emit");
+
+      fixture.detectChanges();
+    };
+
+    it("should derive hasBetrokkene from the partijUuid so the betrokkene fields stay visible", () => {
+      createWithPrefill(legacyPrefill("uuid-123"));
+
+      expect(inputByName("hasBetrokkene").inputValue$.getValue()).toBeTrue();
+      expect(inputByName("partijUuid")).toBeDefined();
+    });
+
+    it("should not drop the configured betrokkene when such a process link is re-saved", () => {
+      createWithPrefill(legacyPrefill("uuid-123"));
+
+      save$.next();
+
+      expect(component.configuration.emit).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          hasBetrokkene: true,
+          partijUuid: "uuid-123",
+          voornaam: "John",
+          achternaam: "Doe",
+        }),
+      );
+    });
+
+    it("should leave hasBetrokkene unchecked when no partijUuid was configured", () => {
+      createWithPrefill(legacyPrefill(undefined));
+
+      expect(inputByName("hasBetrokkene").inputValue$.getValue()).toBeFalse();
+      expect(inputByName("partijUuid")).toBeUndefined();
+    });
+
+    it("should honour an explicitly persisted hasBetrokkene of false over a leftover partijUuid", () => {
+      createWithPrefill({...legacyPrefill("uuid-123"), hasBetrokkene: false});
+
+      expect(inputByName("hasBetrokkene").inputValue$.getValue()).toBeFalse();
+      expect(inputByName("partijUuid")).toBeUndefined();
     });
   });
 });

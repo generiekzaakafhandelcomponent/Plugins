@@ -5,32 +5,26 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild,
 } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {
-  FormModule,
+  FormModule, FormOutput,
   InputModule,
-  RadioModule,
-  RadioValue,
 } from "@valtimo/components";
 import {
   FunctionConfigurationComponent,
   FunctionConfigurationData,
   PluginTranslatePipeModule,
 } from "@valtimo/plugin";
-import { AsyncPipe } from "@angular/common";
+import {AsyncPipe} from "@angular/common";
 import {
   BehaviorSubject,
   combineLatest,
-  map,
   Observable,
   Subscription,
   take,
 } from "rxjs";
-import { RegisterKlantcontactConfig } from "../../models/register-klantcontact-config";
-import { ToggleModule } from "carbon-components-angular";
-import { Toggle } from "carbon-components-angular";
+import {RegisterKlantcontactConfig} from "../../models/register-klantcontact-config";
 
 @Component({
   selector: "register-klantcontact",
@@ -41,8 +35,6 @@ import { Toggle } from "carbon-components-angular";
     InputModule,
     PluginTranslatePipeModule,
     AsyncPipe,
-    RadioModule,
-    ToggleModule,
   ],
   templateUrl: "./open-klant-register-klantcontact.component.html",
 })
@@ -58,38 +50,68 @@ export class RegisterKlantcontactComponent
   @Output() configuration: EventEmitter<FunctionConfigurationData> =
     new EventEmitter<FunctionConfigurationData>();
 
-  @ViewChild("hasBetrokkene") hasBetrokkene: Toggle;
+  protected hasBetrokkene = false;
+
+  protected readonly formValue$ =
+    new BehaviorSubject<RegisterKlantcontactConfig | null>(null);
 
   private saveSubscription: Subscription;
-  private readonly formValue$ =
-    new BehaviorSubject<RegisterKlantcontactConfig | null>(null);
+  private prefillSubscription: Subscription;
   private readonly valid$ = new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
+    this.openPrefillSubscription();
     this.openSaveSubscription();
   }
 
   ngOnDestroy(): void {
     this.saveSubscription?.unsubscribe();
+    this.prefillSubscription?.unsubscribe();
   }
 
-  formValueChange(formValue: RegisterKlantcontactConfig): void {
+  formValueChange(formOutput: FormOutput): void {
+    const formValue = formOutput as RegisterKlantcontactConfig;
+
+    this.hasBetrokkene = !!formValue.hasBetrokkene;
     this.formValue$.next(formValue);
     this.handleValid(formValue);
   }
 
-  private handleValid(formValue: RegisterKlantcontactConfig): void {
+  /**
+   * Process links configured before plugin version 1.4.0, when the 'heeftBetrokkene' toggle was
+   * not persisted, have no hasBetrokkene property at all. Falling back to false would render them
+   * as anonymous and drop the configured betrokkene as soon as the process link is re-saved, so
+   * derive the intent from the presence of a partijUuid instead. This mirrors the fallback in the
+   * backend's KlantcontactCreationInformation.
+   *
+   * Can be removed once no process links predating 1.4.0 are in use.
+   */
+  protected resolveHasBetrokkene(
+    prefill: RegisterKlantcontactConfig | null,
+  ): boolean {
+    return !!(prefill?.hasBetrokkene ?? prefill?.partijUuid);
+  }
+
+  private openPrefillSubscription(): void {
+    this.prefillSubscription = this.prefillConfiguration$
+      ?.pipe(take(1))
+      .subscribe(prefill => {
+        this.hasBetrokkene = this.resolveHasBetrokkene(prefill);
+      });
+  }
+
+  private handleValid(formOutput: RegisterKlantcontactConfig): void {
     const valid =
-      !!formValue.kanaal &&
-      !!formValue.onderwerp &&
-      !!formValue.vertrouwelijk &&
-      !!formValue.taal &&
-      !!formValue.plaatsgevondenOp &&
-      !!(!formValue.hasBetrokkene || formValue.partijUuid) &&
-      !!(!formValue.hasBetrokkene || formValue.voorletters) &&
-      !!(!formValue.hasBetrokkene || formValue.voornaam) &&
-      !!(!formValue.hasBetrokkene || formValue.voorvoegselAchternaam) &&
-      !!(!formValue.hasBetrokkene || formValue.achternaam);
+      !!formOutput.kanaal &&
+      !!formOutput.onderwerp &&
+      !!formOutput.vertrouwelijk &&
+      !!formOutput.taal &&
+      !!formOutput.plaatsgevondenOp &&
+      !!(!formOutput.hasBetrokkene || formOutput.partijUuid) &&
+      !!(!formOutput.hasBetrokkene || formOutput.voorletters) &&
+      !!(!formOutput.hasBetrokkene || formOutput.voornaam) &&
+      !!(!formOutput.hasBetrokkene || formOutput.voorvoegselAchternaam) &&
+      !!(!formOutput.hasBetrokkene || formOutput.achternaam);
 
     this.valid$.next(valid);
     this.valid.emit(valid);
@@ -99,9 +121,9 @@ export class RegisterKlantcontactComponent
     this.saveSubscription = this.save$?.subscribe(() => {
       combineLatest([this.formValue$, this.valid$])
         .pipe(take(1))
-        .subscribe(([formValue, valid]) => {
+        .subscribe(([config, valid]) => {
           if (valid) {
-            this.configuration.emit(formValue);
+            this.configuration.emit(config);
           }
         });
     });

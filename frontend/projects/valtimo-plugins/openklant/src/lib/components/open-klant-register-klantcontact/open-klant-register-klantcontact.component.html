@@ -50,7 +50,7 @@
     <v-input
             name="vertrouwelijk"
             [title]="'vertrouwelijk' | pluginTranslate: pluginId | async"
-            [defaultValue]="obs.prefill?.vertrouwelijk.toString()"
+            [defaultValue]="obs.prefill?.vertrouwelijk?.toString()"
             [disabled]="obs.disabled"
             [required]="true"
     ></v-input>
@@ -75,18 +75,15 @@
             [disabled]="obs.disabled"
             [required]="false"
     ></v-input>
-    <cds-toggle
-        #hasBetrokkene
-        class="toggle"
-        [label]="'heeftBetrokkene' | pluginTranslate: pluginId | async"
-        [onText]="'heeftBetrokkene.betrokkene' | pluginTranslate: pluginId | async"
-        [offText]="'heeftBetrokkene.anoniem' | pluginTranslate: pluginId | async"
-        [checked]="!!obs.prefill?.hasBetrokkene"
-        [disabled]="obs.disabled"
-    >
-    </cds-toggle>
+    <v-input
+            name="hasBetrokkene"
+            type="checkbox"
+            [title]="'heeftBetrokkene' | pluginTranslate: pluginId | async"
+            [defaultValue]="$any(resolveHasBetrokkene(obs.prefill))"
+            [disabled]="obs.disabled"
+    ></v-input>
     <ng-container
-            *ngIf="hasBetrokkene.checked">
+            *ngIf="hasBetrokkene">
         <v-input
                 name="partijUuid"
                 [title]="'partijUuid' | pluginTranslate: pluginId | async"

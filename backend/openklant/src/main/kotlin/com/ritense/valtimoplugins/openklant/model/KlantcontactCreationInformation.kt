@@ -1,5 +1,7 @@
 package com.ritense.valtimoplugins.openklant.model
 
+import mu.KotlinLogging
+
 data class KlantcontactCreationInformation(
     val referentienummer: String?,
     val kanaal: String,
@@ -19,6 +21,8 @@ data class KlantcontactCreationInformation(
     val achternaam: String?,
 ) {
     companion object {
+        private val logger = KotlinLogging.logger { }
+
         fun fromActionProperties(
             referentienummer: String?,
             kanaal: String,
@@ -30,7 +34,7 @@ data class KlantcontactCreationInformation(
             taal: String,
             plaatsgevondenOp: String,
             metadata: Map<String, String>?,
-            hasBetrokkene: Boolean,
+            hasBetrokkene: Boolean?,
             partijUuid: String?,
             voorletters: String?,
             voornaam: String?,
@@ -47,7 +51,7 @@ data class KlantcontactCreationInformation(
             taal = taal.trim(),
             plaatsgevondenOp = plaatsgevondenOp.trim(),
             metadata = metadata,
-            hasBetrokkene = hasBetrokkene,
+            hasBetrokkene = hasBetrokkene ?: resolveMissingHasBetrokkene(partijUuid),
             partijUuid = partijUuid?.trim(),
             voorletters = voorletters?.trim(),
             voornaam = voornaam?.trim(),
@@ -66,5 +70,22 @@ data class KlantcontactCreationInformation(
                 ?.takeIf { it.isNotEmpty() }
                 ?.toBoolean()
                 ?: true
+
+        /**
+         * Process links configured before plugin version 1.4.0, when the 'heeftBetrokkene' toggle
+         * was not persisted, have no hasBetrokkene property at all. Falling back to false would
+         * silently register those klantcontacten as anonymous and drop the configured betrokkene,
+         * so derive the intent from the presence of a partijUuid instead.
+         *
+         * Can be removed once no process links predating 1.4.0 are in use.
+         */
+        private fun resolveMissingHasBetrokkene(partijUuid: String?): Boolean =
+            (!partijUuid.isNullOrBlank()).also {
+                logger.warn {
+                    "Action property 'hasBetrokkene' is missing from the process link. " +
+                        "Derived hasBetrokkene = $it from the configured partijUuid. " +
+                        "Re-save the process link to store the property explicitly."
+                }
+            }
     }
 }

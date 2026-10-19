@@ -9,7 +9,7 @@ export interface RegisterKlantcontactConfig {
   taal: string;
   plaatsgevondenOp: string;
   metadata: string;
-  hasBetrokkene: boolean;
+  hasBetrokkene: boolean | undefined;
   partijUuid: string | undefined;
   voorletters: string | undefined;
   voornaam: string | undefined;

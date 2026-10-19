@@ -224,7 +224,7 @@ class OpenKlantPlugin(
         @PluginActionProperty vertrouwelijk: String,
         @PluginActionProperty taal: String,
         @PluginActionProperty plaatsgevondenOp: String,
-        @PluginActionProperty hasBetrokkene: Boolean,
+        @PluginActionProperty hasBetrokkene: Boolean?,
         @PluginActionProperty partijUuid: String?,
         @PluginActionProperty voorletters: String?,
         @PluginActionProperty voornaam: String?,
