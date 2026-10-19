@@ -60,6 +60,17 @@ dependencies {
     implementation("org.freemarker:freemarker:$freemarkerVersion")
 
     // Testing
+    testImplementation("com.ritense.valtimo:contract")
+    testImplementation("com.ritense.valtimo:core")
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:form")
+    testImplementation("com.ritense.valtimo:audit")
+    testImplementation("com.ritense.valtimo:authorization")
+    testImplementation("com.ritense.valtimo:temporary-resource-storage")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("com.ritense.valtimo:document")
     testImplementation("com.ritense.valtimo:local-resource")
     testImplementation("com.ritense.valtimo:process-document")
