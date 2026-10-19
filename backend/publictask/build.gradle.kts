@@ -24,35 +24,37 @@ dockerCompose {
 }
 
 val freemarkerVersion: String by project
+val kotlinLoggingVersion: String by project
 val mockitoKotlinVersion: String by project
+val apacheTikaVersion: String by project
 
 dependencies {
-    implementation("com.ritense.valtimo:contract")
-    implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:form")
-    implementation("com.ritense.valtimo:contract")
-    implementation("com.ritense.valtimo:document")
-    implementation("com.ritense.valtimo:process-document")
-    implementation("com.ritense.valtimo:audit")
-    implementation("com.ritense.valtimo:authorization")
-    implementation("com.ritense.valtimo:temporary-resource-storage")
-    implementation("com.ritense.valtimo:value-resolver")
+    compileOnly("com.ritense.valtimo:contract")
+    compileOnly("com.ritense.valtimo:core")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:form")
+    compileOnly("com.ritense.valtimo:contract")
+    compileOnly("com.ritense.valtimo:document")
+    compileOnly("com.ritense.valtimo:process-document")
+    compileOnly("com.ritense.valtimo:audit")
+    compileOnly("com.ritense.valtimo:authorization")
+    compileOnly("com.ritense.valtimo:temporary-resource-storage")
+    compileOnly("com.ritense.valtimo:value-resolver")
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    compileOnly("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-mail")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework.boot:spring-boot-starter-security")
+    compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.core:jackson-annotations")
-    implementation("com.fasterxml.jackson.core:jackson-core")
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
+    compileOnly("com.fasterxml.jackson.core:jackson-databind")
+    compileOnly("com.fasterxml.jackson.core:jackson-annotations")
+    compileOnly("com.fasterxml.jackson.core:jackson-core")
 
-    // Detects the type of an uploaded file from its content. The version Valtimo 12.29 itself brings along.
-    implementation("org.apache.tika:tika-core:3.2.3")
+    // Detects the type of an uploaded file from its content. The version Valtimo 12.48 itself brings along.
+    implementation("org.apache.tika:tika-core:$apacheTikaVersion")
 
     // Templating engine
     implementation("org.freemarker:freemarker:$freemarkerVersion")
