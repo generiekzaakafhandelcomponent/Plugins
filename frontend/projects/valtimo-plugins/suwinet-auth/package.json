@@ -3,11 +3,11 @@
   "license": "EUPL-1.2",
   "version": "1.2.0",
   "peerDependencies": {
-    "@angular/common": "^17.2.2",
-    "@angular/core": "^17.2.2"
+    "@angular/common": "17.3.12",
+    "@angular/core": "17.3.12"
   },
   "dependencies": {
-  "@angular/forms": "^17.2.2",
+    "@angular/forms": "17.3.12",
     "ngx-spinner": "17.0.0",
     "ngx-toastr": "19.0.0",
     "tslib": "2.6.3"
