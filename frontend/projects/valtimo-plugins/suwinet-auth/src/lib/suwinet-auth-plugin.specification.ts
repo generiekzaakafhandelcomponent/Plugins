@@ -40,7 +40,9 @@ const suwinetAuthPluginSpecification: PluginSpecification = {
             headerName: 'Header name',
             headerValue: 'Header value',
             configurationTitle: 'Configuratienaam',
-            configurationTitleTooltip: 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.'
+            configurationTitlePlaceholder: 'suwinet-auth Plugin',
+            configurationTitleTooltip: 'De naam van de huidige plugin-configuratie. Onder deze naam kan de configuratie in de rest van de applicatie teruggevonden worden.',
+            externDescription: 'Authenticatie wordt extern afgehandeld — geen aanvullende inloggegevens vereist.'
         },
         en: {
             title: 'Suwinet Auth',
@@ -55,7 +57,9 @@ const suwinetAuthPluginSpecification: PluginSpecification = {
             headerName: 'Header name',
             headerValue: 'Header value',
             configurationTitle: 'Configuration name',
-            configurationTitleTooltip: 'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.'
+            configurationTitlePlaceholder: 'suwinet-auth Plugin',
+            configurationTitleTooltip: 'The name of the current plugin configuration. Under this name, the configuration can be found in the rest of the application.',
+            externDescription: 'Authentication is handled externally — no additional credentials required.'
         },
         de: {
             title: 'Suwinet Auth',
@@ -70,8 +74,10 @@ const suwinetAuthPluginSpecification: PluginSpecification = {
             headerName: 'Header name',
             headerValue: 'Header value',
             configurationTitle: 'Konfigurationsname',
+            configurationTitlePlaceholder: 'suwinet-auth Plugin',
             configurationTitleTooltip:
                 'Der Name der aktuellen Plugin-Konfiguration. Unter diesem Namen ist die Konfiguration im Rest der Anwendung zu finden.',
+            externDescription: 'Die Authentifizierung wird extern gehandhabt — keine zusätzlichen Anmeldedaten erforderlich.',
         },
     },
 };
