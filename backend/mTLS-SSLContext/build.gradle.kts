@@ -37,8 +37,8 @@ dependencies {
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
-    implementation("jakarta.inject:jakarta.inject-api:2.0.1")
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("jakarta.inject:jakarta.inject-api")
+    implementation("jakarta.persistence:jakarta.persistence-api")
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.moshi:moshi:1.15.1")

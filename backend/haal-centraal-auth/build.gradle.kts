@@ -34,9 +34,9 @@ dockerCompose {
         implementation("com.ritense.valtimoplugins:haal-centraal-authentication-plugin:1.0.1-V12")
 
         // Netty and WebClient
-        implementation("io.projectreactor.netty:reactor-netty-core:1.1.20")
-        implementation("io.projectreactor.netty:reactor-netty-http:1.1.20")
-        implementation("org.springframework:spring-webflux:6.1.10")
+        implementation("io.projectreactor.netty:reactor-netty-core")
+        implementation("io.projectreactor.netty:reactor-netty-http")
+        implementation("org.springframework:spring-webflux")
 
         // Testing
         testImplementation("com.ritense.valtimo:local-resource")

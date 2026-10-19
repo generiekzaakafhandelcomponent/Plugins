@@ -56,7 +56,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
-    testImplementation("com.squareup.okhttp3:mockwebserver")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 }
 
 apply(from = "gradle/publishing.gradle")

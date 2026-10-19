@@ -11,14 +11,14 @@ dependencies {
     implementation("com.ritense.valtimo:core")
     implementation("com.ritense.valtimo:plugin-valtimo")
     implementation("com.ritense.valtimo:valtimo-gzac-dependencies")
-    implementation("org.springframework:spring-webflux:6.1.14")
-    implementation("io.projectreactor.netty:reactor-netty-core:1.1.20")
-    implementation("io.projectreactor.netty:reactor-netty-http:1.1.20")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.springframework:spring-webflux")
+    implementation("io.projectreactor.netty:reactor-netty-core")
+    implementation("io.projectreactor.netty:reactor-netty-http")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
     implementation("io.github.microutils:kotlin-logging")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.mockk:mockk:1.13.9")
+    testImplementation("io.mockk:mockk:1.14.9")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 }
 

@@ -47,8 +47,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core")
 
     // Apache deps
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.4")
-    implementation("org.apache.httpcomponents:httpcore:4.4.15")
+    implementation("org.apache.httpcomponents.client5:httpclient5")
+    implementation("org.apache.httpcomponents:httpcore")
 
     implementation("com.auth0:java-jwt:4.4.0")
 
@@ -66,7 +66,7 @@ dependencies {
     implementation("org.apache.cxf:cxf-rt-bindings-soap:4.0.7")
     implementation("org.apache.cxf:cxf-rt-ws-addr:4.0.7")
     implementation("com.sun.xml.ws:jaxws-ri:4.0.3")
-    implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
+    implementation("org.glassfish.jaxb:jaxb-runtime")
 
     implementation("org.apache.cxf:cxf-tools-common:4.0.7")
     implementation("org.apache.cxf:cxf-tools-wsdlto-core:4.0.7")
@@ -74,20 +74,20 @@ dependencies {
     implementation("org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:4.0.7")
 
     // Testing
-    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    testImplementation("com.fasterxml.jackson.core:jackson-annotations:2.14.2")
-    testImplementation("com.fasterxml.jackson.core:jackson-core:2.14.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-migrationsupport:5.9.1")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind")
+    testImplementation("com.fasterxml.jackson.core:jackson-annotations")
+    testImplementation("com.fasterxml.jackson.core:jackson-core")
+    testImplementation("org.junit.jupiter:junit-jupiter-migrationsupport")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.mockito:mockito-junit-jupiter")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("com.jayway.jsonpath:json-path:2.7.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("com.jayway.jsonpath:json-path")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
 
 
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
-    testImplementation("com.squareup.okhttp3:okhttp:4.10.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
