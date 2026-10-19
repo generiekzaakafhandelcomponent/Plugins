@@ -15,6 +15,9 @@
  *
  */
 
+val haalCentraalAuthenticationPluginVersion: String by project
+val mockitoKotlinVersion: String by project
+
 dockerCompose {
     setProjectName("HaalCentraalAuth")
     isRequiredBy(project.tasks.integrationTesting)
@@ -27,16 +30,16 @@ dockerCompose {
 
         implementation(project(":backend:object-management"))
 
-        implementation("io.github.microutils:kotlin-logging")
+        compileOnly("io.github.microutils:kotlin-logging")
 
-        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
 
-        implementation("com.ritense.valtimoplugins:haal-centraal-authentication-plugin:1.0.1-V12")
+        implementation("com.ritense.valtimoplugins:haal-centraal-authentication-plugin:$haalCentraalAuthenticationPluginVersion")
 
         // Netty and WebClient
         implementation("io.projectreactor.netty:reactor-netty-core")
         implementation("io.projectreactor.netty:reactor-netty-http")
-        implementation("org.springframework:spring-webflux")
+        compileOnly("org.springframework:spring-webflux")
 
         // Testing
         testImplementation("com.ritense.valtimo:local-resource")
@@ -46,7 +49,7 @@ dockerCompose {
 
         testImplementation("org.mockito:mockito-core")
         testImplementation("org.hamcrest:hamcrest-library")
-        testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+        testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
