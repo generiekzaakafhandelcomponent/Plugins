@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val valtimoVersion: String by project
+val lalakiCentralVersion: String by project
 
 plugins {
     // Idea
@@ -68,7 +69,7 @@ subprojects {
 
         dependencies {
             implementation(platform("com.ritense.valtimo:valtimo-dependency-versions:$valtimoVersion"))
-            implementation("cn.lalaki.central:central:1.2.5")
+            implementation("cn.lalaki.central:central:$lalakiCentralVersion")
         }
 
         allOpen {
