@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+val camundaMockitoVersion: String by project
+val kotlinLoggingVersion: String by project
+val mockitoKotlinVersion: String by project
+val okhttpVersion: String by project
+
 dockerCompose {
     setProjectName("externe-klanttaak")
     isRequiredBy(project.tasks.integrationTesting)
@@ -25,28 +30,36 @@ dockerCompose {
 
 dependencies {
     implementation("com.ritense.valtimo:catalogi-api")
-    implementation("com.ritense.valtimo:contract")
-    implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
+    compileOnly("com.ritense.valtimo:contract")
+    compileOnly("com.ritense.valtimo:core")
+    compileOnly("com.ritense.valtimo:document")
     implementation("com.ritense.valtimo:documenten-api")
-    implementation("com.ritense.valtimo:outbox")
+    compileOnly("com.ritense.valtimo:outbox")
     implementation("com.ritense.valtimo:object-management")
     implementation("com.ritense.valtimo:objecten-api")
     implementation("com.ritense.valtimo:objecttypen-api")
     implementation("com.ritense.valtimo:openzaak-plugin-authentication")
     implementation("com.ritense.valtimo:notificaties-api")
-    implementation("com.ritense.valtimo:plugin")
-    implementation("com.ritense.valtimo:process-document")
-    implementation("com.ritense.valtimo:value-resolver")
+    compileOnly("com.ritense.valtimo:plugin")
+    compileOnly("com.ritense.valtimo:process-document")
+    compileOnly("com.ritense.valtimo:value-resolver")
     implementation("com.ritense.valtimo:zaken-api")
 
     implementation(kotlin("reflect"))
 
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    compileOnly("org.springframework.boot:spring-boot-starter-security")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 
     // Testing
+    testImplementation("com.ritense.valtimo:contract")
+    testImplementation("com.ritense.valtimo:core")
+    testImplementation("com.ritense.valtimo:document")
+    testImplementation("com.ritense.valtimo:outbox")
+    testImplementation("com.ritense.valtimo:plugin")
+    testImplementation("com.ritense.valtimo:process-document")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("com.ritense.valtimo:local-resource")
     testImplementation("com.ritense.valtimo:test-utils-common")
 
@@ -54,11 +67,11 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation("org.springframework.data:spring-data-jpa")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-    testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:7.21.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
+    testImplementation("org.camunda.community.mockito:camunda-platform-7-mockito:$camundaMockitoVersion")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("org.mockito:mockito-core")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 
