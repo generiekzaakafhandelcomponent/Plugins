@@ -15,6 +15,8 @@
  *
  */
 
+val mockitoKotlinVersion: String by project
+
 dockerCompose {
     setProjectName("document-search")
     isRequiredBy(project.tasks.integrationTesting)
@@ -23,14 +25,14 @@ dockerCompose {
 
     dependencies {
         implementation(platform("com.ritense.valtimo:valtimo-dependency-versions:$valtimoVersion"))
-        implementation("com.ritense.valtimo:document")
-        implementation("com.ritense.valtimo:value-resolver")
-        implementation("com.ritense.valtimo:plugin")
-        implementation("com.ritense.valtimo:authorization")
+        compileOnly("com.ritense.valtimo:document")
+        compileOnly("com.ritense.valtimo:value-resolver")
+        compileOnly("com.ritense.valtimo:plugin")
+        compileOnly("com.ritense.valtimo:authorization")
 
-        implementation("io.github.microutils:kotlin-logging")
+        compileOnly("io.github.microutils:kotlin-logging")
 
-        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
 
         // Testing
         testImplementation("com.ritense.valtimo:local-resource")
@@ -40,7 +42,7 @@ dockerCompose {
 
         testImplementation("org.mockito:mockito-core")
         testImplementation("org.hamcrest:hamcrest-library")
-        testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+        testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

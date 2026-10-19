@@ -16,8 +16,8 @@
 
 dependencies {
 
-    implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
 
     tasks.jar {
         enabled = true
