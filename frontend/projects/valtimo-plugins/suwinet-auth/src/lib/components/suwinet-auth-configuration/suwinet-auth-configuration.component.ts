@@ -109,7 +109,6 @@ export class SuwinetAuthConfigurationComponent
         } else if (formValue.authType === this.mtlsRadio.value) {
             valid = !!(formValue.keystorePath
                 && formValue.truststorePath
-                && formValue.truststoreSecret
                 && formValue.configurationTitle)
         } else if (formValue.authType === this.headerRadio.value) {
             valid = !!(formValue.headerName
