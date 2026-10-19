@@ -47,8 +47,6 @@ export class ValtimoOcrConfigurationComponent
     formValueChange(formValue: ValtimoOcrConfig): void {
         this.formValue$.next(formValue);
         this.handleValid(formValue);
-
-        console.log(formValue)
     }
 
     private handleValid(formValue: ValtimoOcrConfig): void {

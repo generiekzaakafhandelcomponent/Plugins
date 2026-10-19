@@ -25,14 +25,16 @@ import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import java.net.URI
 
+// One instance serves every plugin configuration, so the URL and token are passed with each call
+// instead of being set on it: two configurations running at the same time could otherwise use each other's.
 @Component
 @SkipComponentScan
 class MistralOCRModel(
     private val restClientBuilder: RestClient.Builder,
-    var baseUri: URI? = null,
-    var token: String? = null,
 ) {
     fun mistralFiletoText(
+        baseUri: URI,
+        token: String,
         fileBase64: String,
         documentName: String?,
         pages: Number?,
@@ -55,6 +57,8 @@ class MistralOCRModel(
         }
 
         val result = post(
+            baseUri,
+            token,
             "v1/ocr",
             MistralFileRequest(
                 model = "mistral-ocr-latest",
@@ -67,23 +71,23 @@ class MistralOCRModel(
         return result
     }
 
-    private fun post(path: String, mistralFileRequest: MistralFileRequest): List<MistralOCRPage> {
+    private fun post(baseUri: URI, token: String, path: String, mistralFileRequest: MistralFileRequest): List<MistralOCRPage> {
         try {
             val response = restClientBuilder
                 .clone()
                 .build()
                 .post()
                 .uri {
-                    it.scheme(baseUri!!.scheme)
-                        .host(baseUri!!.host)
-                        .path(baseUri!!.path)
+                    it.scheme(baseUri.scheme)
+                        .host(baseUri.host)
+                        .path(baseUri.path)
                         .path(path)
-                        .port(baseUri!!.port)
+                        .port(baseUri.port)
                         .build()
                 }
                 .headers {
                     it.contentType = org.springframework.http.MediaType.APPLICATION_JSON
-                    it.setBearerAuth(token!!)
+                    it.setBearerAuth(token)
                 }
                 .accept(org.springframework.http.MediaType.APPLICATION_JSON)
                 .body(ObjectMapper().writeValueAsString(mistralFileRequest))

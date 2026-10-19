@@ -56,9 +56,6 @@ open class ValtimoOcrPlugin(
         @PluginActionProperty includeImageBase64: Boolean,
         @PluginActionProperty resultPV: String
     ) {
-        mistralOCRModel.baseUri = url
-        mistralOCRModel.token = token
-
         val file = execution.getVariable(filePV) as? List<*>
             ?: throw IllegalStateException("No file provided in the process variable $filePV to convert to text.")
 
@@ -72,6 +69,8 @@ open class ValtimoOcrPlugin(
             .find(firstItem)?.groupValues?.get(1)?.plus(".pdf")
 
         val mistralOCR: List<MistralOCRPage> = mistralOCRModel.mistralFiletoText(
+            baseUri = url,
+            token = token,
             fileBase64 = base64Url,
             documentName = filename,
             pages = pages,
@@ -85,7 +84,6 @@ open class ValtimoOcrPlugin(
             markdownCombined = mistralOCR.joinToString("\n") { it.markdown }
         )
 
-        println("OCR Result: $resultObject")
         execution.setVariable(resultPV, resultObject)
     }
 }
