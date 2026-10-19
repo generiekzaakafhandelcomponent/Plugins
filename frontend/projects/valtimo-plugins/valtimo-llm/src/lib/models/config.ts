@@ -19,6 +19,7 @@ import {PluginConfigurationData} from '@valtimo/plugin';
 interface ValtimoLlmConfig extends PluginConfigurationData {
     url: string;
     token: string;
+    model?: string;
 }
 
 interface GiveSummaryConfig {

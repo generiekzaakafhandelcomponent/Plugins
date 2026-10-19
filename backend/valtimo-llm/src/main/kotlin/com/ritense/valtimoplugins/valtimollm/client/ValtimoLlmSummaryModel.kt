@@ -20,63 +20,34 @@ import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MISTRAL_SYSTEM_MESSAGE
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralMessage
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralRequest
-import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.http.MediaType
+import com.ritense.valtimoplugins.valtimollm.client.valtimollm.resolveModel
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestClient
-import org.springframework.web.client.body
-import java.net.URI
 
+// Stateless: the endpoint comes with every call, so actions of different configurations can run at the same time.
 @Component
 @SkipComponentScan
 class ValtimoLlmSummaryModel(
-    private val restClientBuilder: RestClient.Builder,
-    var baseUri: URI? = null,
-    var token: String? = null,
+    private val chatCompletionsClients: ChatCompletionsClients,
 ) {
+    fun giveSummary(
+        endpoint: ModelEndpoint,
+        longText: String,
+    ): String {
+        val request =
+            MistralRequest(
+                model = resolveModel(endpoint.model),
+                messages =
+                    listOf(
+                        MistralMessage(role = "user", content = longText),
+                        MISTRAL_SYSTEM_MESSAGE,
+                    ),
+                max_tokens = 500,
+                stream = false,
+            )
 
-    fun giveSummary(longText: String): String {
-        val request = MistralRequest(
-            model = "open-mistral-nemo-2407",
-            messages = listOf(
-                MistralMessage(role = "user", content = longText),
-                MISTRAL_SYSTEM_MESSAGE
-            ),
-            max_tokens = 500,
-            stream = false
-        )
-
-        val result = post("v1/chat/completions", request)
-        return result.summaryText
-    }
-
-    private fun post(path: String, body: Any): SummaryResponse {
-        val response = restClientBuilder
-            .clone()
-            .build()
-            .post()
-            .uri {
-                it.scheme(baseUri!!.scheme)
-                    .host(baseUri!!.host)
-                    .path(baseUri!!.path)
-                    .path(path)
-                    .port(baseUri!!.port)
-                    .build()
-            }
-            .headers {
-                it.contentType = MediaType.APPLICATION_JSON
-                it.setBearerAuth(token!!)
-            }
-            .accept(MediaType.APPLICATION_JSON)
-            .body(body)
-            .retrieve()
-            .body<SummaryResponse>()!!
-
-
-        return response
-    }
-
-    companion object {
-        private val logger = KotlinLogging.logger {}
+        return chatCompletionsClients
+            .forEndpoint(endpoint.url, endpoint.token)
+            .complete(request, SummaryResponse::class.java)
+            .summaryText
     }
 }

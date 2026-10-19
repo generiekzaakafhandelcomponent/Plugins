@@ -12,6 +12,10 @@ data class MistralMessage(
     val content: String,
 )
 
+const val DEFAULT_MODEL = "open-mistral-nemo-2407"
+
+fun resolveModel(model: String?): String = model?.takeIf { it.isNotBlank() } ?: DEFAULT_MODEL
+
 val MISTRAL_SYSTEM_MESSAGE = MistralMessage(
     role = "system",
     content = """

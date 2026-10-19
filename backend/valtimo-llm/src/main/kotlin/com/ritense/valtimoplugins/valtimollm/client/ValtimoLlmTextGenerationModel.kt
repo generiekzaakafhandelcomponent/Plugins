@@ -21,66 +21,34 @@ import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralMessage
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralRequest
 import com.ritense.valtimoplugins.valtimollm.client.valtimollm.MistralResponse
-import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.http.MediaType
+import com.ritense.valtimoplugins.valtimollm.client.valtimollm.resolveModel
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestClient
-import org.springframework.web.client.body
-import java.net.URI
 
+// Stateless: the endpoint comes with every call, so actions of different configurations can run at the same time.
 @Component
 @SkipComponentScan
 class ValtimoLlmTextGenerationModel(
-    private val restClientBuilder: RestClient.Builder,
-    var baseUri: URI? = null,
-    var token: String? = null,
+    private val chatCompletionsClients: ChatCompletionsClients,
 ) {
-
-    fun mistralChat(question: String): String {
-        val result = post(
-            "v1/chat/completions",
+    fun mistralChat(
+        endpoint: ModelEndpoint,
+        question: String,
+    ): String {
+        val request =
             MistralRequest(
-                model = "open-mistral-nemo-2407",
-                messages = listOf(
-                    MistralMessage(
-                        role = "user",
-                        content = question
-                    )
-                )
+                model = resolveModel(endpoint.model),
+                messages = listOf(MistralMessage(role = "user", content = question)),
             )
-        )
-        return result
-    }
-
-    private fun post(path: String, mistralRequest: MistralRequest): String {
-        val response = restClientBuilder
-            .clone()
-            .build()
-            .post()
-            .uri {
-                it.scheme(baseUri!!.scheme)
-                    .host(baseUri!!.host)
-                    .path(baseUri!!.path)
-                    .path(path)
-                    .port(baseUri!!.port)
-                    .build()
-            }
-            .headers {
-                it.contentType = MediaType.APPLICATION_JSON
-                it.setBearerAuth(token!!)
-            }
-            .accept(MediaType.APPLICATION_JSON)
-            .body(ObjectMapper().writeValueAsString(mistralRequest))
-            .retrieve()
-            .body<MistralResponse>()!!
+        val response =
+            chatCompletionsClients
+                .forEndpoint(endpoint.url, endpoint.token)
+                .complete(ObjectMapper().writeValueAsString(request), MistralResponse::class.java)
 
         if (response.choices.isEmpty()) {
             throw AiAgentException("Empty response")
         }
-        return response.choices.first().message.content
-    }
-
-    companion object {
-        private val logger = KotlinLogging.logger {}
+        return response.choices
+            .first()
+            .message.content
     }
 }
