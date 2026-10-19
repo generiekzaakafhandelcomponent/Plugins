@@ -29,7 +29,7 @@ import {TranslateService} from "@ngx-translate/core";
   styleUrls: ['./suwinet-plugin-configuration.component.scss'],
 })
 export class SuwinetPluginConfigurationComponent
-  implements SuwinetPluginConfigurationComponent, OnInit, OnDestroy {
+  implements PluginConfigurationComponent, OnInit, OnDestroy {
     @Input() save$: Observable<void>;
     @Input() disabled$: Observable<boolean>;
     @Input() pluginId: string;
@@ -82,7 +82,8 @@ export class SuwinetPluginConfigurationComponent
   private handleValid(formValue: SuwinetPluginConfig): void {
     const valid = !!(
         formValue.configurationTitle &&
-        formValue.baseUrl
+        formValue.baseUrl &&
+        formValue.authenticationPluginConfiguration
     );
 
     this.valid$.next(valid);
