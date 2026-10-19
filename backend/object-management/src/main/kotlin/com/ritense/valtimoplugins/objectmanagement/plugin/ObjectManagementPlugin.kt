@@ -78,10 +78,12 @@ open class ObjectManagementPlugin(
         @PluginActionProperty objectManagementConfigurationId: UUID,
         @PluginActionProperty objectData: List<DataBindingConfig>,
         ) {
+        val existingObjectData = objectManagementCrudService.getObjectData(objectManagementConfigurationId, objectUrl)
+
         objectManagementCrudService.updateObject(
             objectManagementConfigurationId,
             objectUrl,
-            getObjectData(objectData, execution)
+            getObjectData(objectData, execution, existingObjectData)
         )
         logger.info { "Successfully updated object with url: $objectUrl" }
     }
@@ -121,7 +123,11 @@ open class ObjectManagementPlugin(
         logger.info { "Successfully retrieved ${objects.results.size} objects for object management: $objectManagementConfigurationTitle" }
     }
 
-    private fun getObjectData(keyValueMap: List<DataBindingConfig>, execution: DelegateExecution): JsonNode {
+    private fun getObjectData(
+        keyValueMap: List<DataBindingConfig>,
+        execution: DelegateExecution,
+        baseObjectData: JsonNode = objectMapper.createObjectNode()
+    ): JsonNode {
         val resolvedValuesMap = valueResolverService.resolveValues(
             execution.businessKey,
             execution,
@@ -139,7 +145,7 @@ open class ObjectManagementPlugin(
 
         val objectDataMap = keyValueMap.associate { it.key to resolvedValuesMap[it.value] }
 
-        val objectData = objectMapper.createObjectNode()
+        val objectData = baseObjectData.deepCopy<JsonNode>()
         val jsonPatchBuilder = JsonPatchBuilder()
 
         objectDataMap
