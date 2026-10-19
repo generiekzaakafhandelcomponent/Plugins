@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+val httpClientAuthenticationPluginVersion: String by project
+val kotlinLoggingVersion: String by project
+val mockitoKotlinVersion: String by project
+val okhttpVersion: String by project
+
 dockerCompose {
     setProjectName("socrates")
     isRequiredBy(project.tasks.integrationTesting)
@@ -24,16 +29,16 @@ dockerCompose {
 }
 
 dependencies {
-    implementation("com.ritense.valtimoplugins:http-client-authentication:2.1.1-V12")
+    implementation("com.ritense.valtimoplugins:http-client-authentication:$httpClientAuthenticationPluginVersion")
 
-    implementation("com.ritense.valtimo:contract")
-    implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:value-resolver")
+    compileOnly("com.ritense.valtimo:contract")
+    compileOnly("com.ritense.valtimo:core")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:value-resolver")
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    compileOnly("org.springframework.boot:spring-boot-starter-webflux")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 
     // Testing
     testImplementation("com.ritense.valtimo:document")
@@ -46,12 +51,12 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 
-    testImplementation("com.squareup.okhttp3:mockwebserver")
-    testImplementation("com.squareup.okhttp3:okhttp")
+    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
+    testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

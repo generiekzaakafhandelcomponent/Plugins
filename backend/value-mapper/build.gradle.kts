@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+val kotlinLoggingVersion: String by project
+val mockitoKotlinVersion: String by project
+
 dockerCompose {
     setProjectName("value-mapper")
     isRequiredBy(project.tasks.integrationTesting)
@@ -24,23 +27,35 @@ dockerCompose {
 }
 
 dependencies {
-    implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
-    implementation("com.ritense.valtimo:exporter")
-    implementation("com.ritense.valtimo:importer")
-    implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:web")
-    implementation("com.ritense.valtimo:process-document")
-    implementation("com.ritense.valtimo:temporary-resource-storage")
-    implementation("com.ritense.valtimo:value-resolver")
+    compileOnly("com.ritense.valtimo:core")
+    compileOnly("com.ritense.valtimo:document")
+    compileOnly("com.ritense.valtimo:exporter")
+    compileOnly("com.ritense.valtimo:importer")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:web")
+    compileOnly("com.ritense.valtimo:process-document")
+    compileOnly("com.ritense.valtimo:temporary-resource-storage")
+    compileOnly("com.ritense.valtimo:value-resolver")
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
+    compileOnly("org.springframework.boot:spring-boot-starter-security")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 
     // Testing
+    testImplementation("com.ritense.valtimo:core")
+    testImplementation("com.ritense.valtimo:document")
+    testImplementation("com.ritense.valtimo:exporter")
+    testImplementation("com.ritense.valtimo:importer")
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:web")
+    testImplementation("com.ritense.valtimo:process-document")
+    testImplementation("com.ritense.valtimo:temporary-resource-storage")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("com.ritense.valtimo:local-resource")
     testImplementation("com.ritense.valtimo:test-utils-common")
 
@@ -49,7 +64,7 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
 
