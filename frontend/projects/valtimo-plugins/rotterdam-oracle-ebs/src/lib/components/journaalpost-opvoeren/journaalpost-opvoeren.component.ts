@@ -282,7 +282,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
             return value;
         } else {
             // If a numeric-like key, strip _ prefix from the key
-            return this.enumSvc.getEnumKey(Grootboek, value).replace(/^_/, '');
+            return this.enumSvc.getEnumKey(Grootboek, value)?.replace(/^_/, '');
         }
     }
 
