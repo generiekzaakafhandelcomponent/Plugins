@@ -68,8 +68,8 @@ class SmtpMailClient(
         with(getSmtpMailPluginData()) {
             this@apply.host = host
             this@apply.port = port
-            if (username != null) this@apply.username = username
-            if (password != null) this@apply.password = password
+            if (!username.isNullOrBlank()) this@apply.username = username
+            if (!password.isNullOrBlank()) this@apply.password = password
             this@apply.protocol = protocol
             this@apply.javaMailProperties["mail.transport.protocol"] = protocol
             this@apply.javaMailProperties["mail.smtp.auth"] = auth
