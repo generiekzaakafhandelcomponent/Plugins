@@ -18,11 +18,13 @@ package com.ritense.valtimoplugins.smtpmail.plugin
 
 import com.ritense.valtimoplugins.smtpmail.BaseTest
 import com.ritense.valtimoplugins.smtpmail.dto.Email
+import com.ritense.valtimoplugins.smtpmail.dto.EmailList
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailPluginPropertyDto
 import com.ritense.valtimoplugins.smtpmail.service.SmtpMailService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -201,6 +203,110 @@ class SmtpMailPluginTest : BaseTest() {
         verifyNothingSent()
     }
 
+    // -- Comma and semicolon separated address lists ------------------------------------
+
+    @Test
+    fun `splits a comma separated recipient value into separate addresses`() {
+        sendMail(recipients = listOf("jan@example.com,piet@example.com"))
+
+        assertEquals(
+            listOf(Email("jan@example.com"), Email("piet@example.com")),
+            captureContext().recipients,
+        )
+    }
+
+    @Test
+    fun `splits a semicolon separated recipient value into separate addresses`() {
+        sendMail(recipients = listOf("jan@example.com;piet@example.com"))
+
+        assertEquals(
+            listOf(Email("jan@example.com"), Email("piet@example.com")),
+            captureContext().recipients,
+        )
+    }
+
+    @Test
+    fun `trims surrounding whitespace and drops empty entries while splitting`() {
+        sendMail(recipients = listOf(" jan@example.com , , piet@example.com; "))
+
+        assertEquals(
+            listOf(Email("jan@example.com"), Email("piet@example.com")),
+            captureContext().recipients,
+        )
+    }
+
+    @Test
+    fun `splits a separated value in a list that also holds single addresses`() {
+        sendMail(recipients = listOf("jan@example.com", "piet@example.com;klaas@example.com"))
+
+        assertEquals(
+            listOf(Email("jan@example.com"), Email("piet@example.com"), Email("klaas@example.com")),
+            captureContext().recipients,
+        )
+    }
+
+    @Test
+    fun `splits separated values in cc and bcc`() {
+        sendMail(
+            cc = listOf("cc1@example.com,cc2@example.com"),
+            bcc = listOf("bcc1@example.com;bcc2@example.com"),
+        )
+
+        with(captureContext()) {
+            assertEquals(listOf(Email("cc1@example.com"), Email("cc2@example.com")), ccList)
+            assertEquals(listOf(Email("bcc1@example.com"), Email("bcc2@example.com")), bccList)
+        }
+    }
+
+    @Test
+    fun `leaves a single address and an already separate list untouched`() {
+        sendMail(recipients = listOf("jan@example.com", "piet@example.com"))
+
+        assertEquals(
+            listOf(Email("jan@example.com"), Email("piet@example.com")),
+            captureContext().recipients,
+        )
+    }
+
+    @Test
+    fun `validates every address of a separated value`() {
+        assertThrows<IllegalArgumentException> {
+            sendMail(recipients = listOf("jan@example.com,not-an-address"))
+        }
+        verifyNothingSent()
+    }
+
+    @Test
+    fun `rejects a recipients value that holds nothing but separators`() {
+        val exception =
+            assertThrows<IllegalArgumentException> { sendMail(recipients = listOf(" , ; ")) }
+
+        assertTrue(exception.message!!.contains("recipients"))
+        verifyNothingSent()
+    }
+
+    @Test
+    fun `rejects an empty recipients list`() {
+        assertThrows<IllegalArgumentException> { sendMail(recipients = emptyList()) }
+        verifyNothingSent()
+    }
+
+    @Test
+    fun `still rejects CRLF hidden in a separated value`() {
+        assertThrows<IllegalArgumentException> {
+            sendMail(recipients = listOf("jan@example.com,evil@example.com\r\nBcc: evil@example.com"))
+        }
+        verifyNothingSent()
+    }
+
+    @Test
+    fun `does not split the sender`() {
+        assertThrows<IllegalArgumentException> {
+            sendMail(sender = "afzender@example.com,tweede@example.com")
+        }
+        verifyNothingSent()
+    }
+
     // -- Sending without a process, such as from a scheduled job ------------------------
 
     @Test
@@ -245,9 +351,9 @@ class SmtpMailPluginTest : BaseTest() {
         execution = execution,
         sender = Email(sender),
         fromName = fromName,
-        recipients = recipients.map { Email(it) },
-        cc = cc?.map { Email(it) },
-        bcc = bcc?.map { Email(it) },
+        recipients = EmailList(recipients.map { Email(it) }),
+        cc = cc?.let { list -> EmailList(list.map { Email(it) }) },
+        bcc = bcc?.let { list -> EmailList(list.map { Email(it) }) },
         subject = subject,
         contentId = "content-resource-id",
         attachmentIds = null,

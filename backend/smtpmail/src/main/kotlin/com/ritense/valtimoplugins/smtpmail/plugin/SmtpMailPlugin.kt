@@ -22,6 +22,7 @@ import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.valtimoplugins.smtpmail.dto.Email
+import com.ritense.valtimoplugins.smtpmail.dto.EmailList
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailPluginPropertyDto
 import com.ritense.valtimoplugins.smtpmail.service.SmtpMailService
@@ -52,8 +53,7 @@ class SmtpMailPlugin(
     @PluginProperty(key = "protocol", required = false, secret = false)
     var protocol: String? = DEFAULT_PROTOCOL
 
-    // Off by default: enabling this writes the entire SMTP dialogue — envelope recipients
-    // (including Bcc), headers and the full message body — to the application log.
+    // Off by default: enabling this writes the entire SMTP dialogue, Bcc and body included, to the log.
     @PluginProperty(key = "debug", required = false, secret = false)
     var debug: Boolean? = DEFAULT_DEBUG
 
@@ -73,18 +73,18 @@ class SmtpMailPlugin(
         execution: DelegateExecution,
         @PluginActionProperty sender: Email,
         @PluginActionProperty fromName: String?,
-        @PluginActionProperty recipients: List<Email>,
-        @PluginActionProperty cc: List<Email>?,
-        @PluginActionProperty bcc: List<Email>?,
+        @PluginActionProperty recipients: EmailList,
+        @PluginActionProperty cc: EmailList?,
+        @PluginActionProperty bcc: EmailList?,
         @PluginActionProperty subject: String,
         @PluginActionProperty contentId: String,
         @PluginActionProperty attachmentIds: List<String>?,
     ) = sendMail(
         sender = sender,
         fromName = fromName,
-        recipients = recipients,
-        cc = cc,
-        bcc = bcc,
+        recipients = recipients.addresses,
+        cc = cc?.addresses,
+        bcc = bcc?.addresses,
         subject = subject,
         contentId = contentId,
         attachmentIds = attachmentIds,
@@ -105,18 +105,23 @@ class SmtpMailPlugin(
         requireNoControlChars(fromName, "fromName")
 
         requireValidEmail(sender.address, "sender")
-        recipients.forEach { requireValidEmail(it.address, "recipients") }
-        cc?.forEach { requireValidEmail(it.address, "cc") }
-        bcc?.forEach { requireValidEmail(it.address, "bcc") }
+
+        // Normalising here holds a programmatic caller to the same splitting and validation as a process link.
+        val toAddresses = EmailList(recipients).normalized("recipients")
+        val ccAddresses = EmailList(cc.orEmpty()).normalized("cc")
+        val bccAddresses = EmailList(bcc.orEmpty()).normalized("bcc")
+
+        // Without this, JavaMail would surface the far less obvious 'No recipient addresses'.
+        require(toAddresses.isNotEmpty()) { "Field 'recipients' must contain at least one email address" }
 
         smtpMailService.sendSmtpMail(
             mailContext =
                 SmtpMailContextDto(
                     sender = sender,
                     fromName = fromName.takeIf { !it.isNullOrBlank() } ?: sender.address,
-                    recipients = recipients,
-                    ccList = cc ?: emptyList(),
-                    bccList = bcc ?: emptyList(),
+                    recipients = toAddresses,
+                    ccList = ccAddresses,
+                    bccList = bccAddresses,
                     subject = subject,
                     contentResourceId = contentId,
                     attachmentResourceIds = attachmentIds ?: emptyList(),
