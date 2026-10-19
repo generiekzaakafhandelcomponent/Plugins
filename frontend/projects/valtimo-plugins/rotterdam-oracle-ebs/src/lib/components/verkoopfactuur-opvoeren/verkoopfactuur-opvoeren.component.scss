@@ -3,13 +3,35 @@
 }
 
 .line-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   margin: 1em 0;
   padding: 1em;
   border: 1px solid gray;
 }
 
+.line-fields {
+  flex: 1;
+}
+
 .remove-line-wrapper {
-  margin-top: 1em;
+  flex-shrink: 0;
+  padding-top: 1.25rem;
+}
+
+.delete-btn {
+  padding: 0 !important;
+  align-items: center !important;
+
+  &:hover:not([disabled]) {
+    background-color: #da1e28;
+    color: #ffffff;
+
+    svg {
+      fill: #ffffff;
+    }
+  }
 }
 
 .add-line-wrapper {

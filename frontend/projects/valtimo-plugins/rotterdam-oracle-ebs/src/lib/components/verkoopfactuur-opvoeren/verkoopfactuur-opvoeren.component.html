@@ -280,75 +280,77 @@
                 <div formArrayName="regels" class="lines-wrapper">
                     <div class="line-wrapper"
                          *ngFor="let line of lines.controls; let i = index">
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="hoeveelheid"
-                            wrapperClass="line-field-wrapper"
-                            title="verkoopfactuur.regel.hoeveelheid"
-                            [required]="true"
-                        ></app-input-field>
+                        <div class="line-fields">
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="hoeveelheid"
+                                wrapperClass="line-field-wrapper"
+                                title="verkoopfactuur.regel.hoeveelheid"
+                                [required]="true"
+                            ></app-input-field>
 
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="tarief"
-                            wrapperClass="line-field-wrapper"
-                            title="verkoopfactuur.regel.tarief"
-                            [required]="true"
-                        ></app-input-field>
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="tarief"
+                                wrapperClass="line-field-wrapper"
+                                title="verkoopfactuur.regel.tarief"
+                                [required]="true"
+                            ></app-input-field>
 
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="btwPercentage"
-                            wrapperClass="line-field-wrapper"
-                            title="verkoopfactuur.regel.btwPercentage"
-                            [required]="true"
-                        ></app-input-field>
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="btwPercentage"
+                                wrapperClass="line-field-wrapper"
+                                title="verkoopfactuur.regel.btwPercentage"
+                                [required]="true"
+                            ></app-input-field>
 
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="grootboekSleutel"
-                            wrapperClass="line-field-wrapper"
-                            title="verkoopfactuur.regel.grootboekSleutel"
-                            [required]="false"
-                        ></app-input-field>
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="grootboekSleutel"
+                                wrapperClass="line-field-wrapper"
+                                title="verkoopfactuur.regel.grootboekSleutel"
+                                [required]="false"
+                            ></app-input-field>
 
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="bronSleutel"
-                            wrapperClass="line-field-wrapper"
-                            title="verkoopfactuur.regel.bronSleutel"
-                            [required]="false"
-                        ></app-input-field>
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="bronSleutel"
+                                wrapperClass="line-field-wrapper"
+                                title="verkoopfactuur.regel.bronSleutel"
+                                [required]="false"
+                            ></app-input-field>
 
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="omschrijving"
-                            wrapperClass="line-field-wrapper"
-                            title="verkoopfactuur.regel.omschrijving"
-                            [required]="false"
-                        ></app-input-field>
-
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="omschrijving"
+                                wrapperClass="line-field-wrapper"
+                                title="verkoopfactuur.regel.omschrijving"
+                                [required]="false"
+                            ></app-input-field>
+                        </div>
                         <div class="remove-line-wrapper">
                             <button type="button"
-                                    cdsButton="secondary"
+                                    class="delete-btn"
+                                    cdsButton="ghost"
+                                    [iconOnly]="true"
                                     (click)="removeLine(i)"
                                     [disabled]="obs.disabled"
-                            >
-                                {{'verkoopfactuur.regel.verwijderen' | pluginTranslate: pluginId | async}}
-                                <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
+                                    [title]="'verkoopfactuur.regel.verwijderen' | pluginTranslate: pluginId | async">
+                                <svg class="cds--btn__icon" cdsIcon="trash-can" size="16"></svg>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="add-line-wrapper">
                     <button type="button"
-                            cdsButton="secondary"
+                            cdsButton="primary"
                             (click)="addLine()"
                             [disabled]="obs.disabled">
                         {{'verkoopfactuur.regel.toevoegen' | pluginTranslate: pluginId | async}}

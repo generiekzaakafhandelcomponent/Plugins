@@ -57,6 +57,10 @@ Only provide one of the properties for the journaalpost lines via `regels` or `r
   * boekingType (one of: Credit, Debit)
   * bedrag (string)
   * omschrijving (string, optional)
+  * bronspecifiekeWaarden (list of, optional)
+    * naam (string)
+    * waarde (string)
+    * volgorde (string, numeric)
 * regelsViaResolver (string)
 
 The response of the plugin action is stored as an object in a process instance variable named according specified via 
