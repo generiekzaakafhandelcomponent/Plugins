@@ -140,8 +140,19 @@ class DefaultOpenKlantService(
                     partij.makeReference().uuid,
                     properties,
                 )
-        val nieuweDigitaleAdressen = digitaleAdressen + createDigitalAddress(partij, contactInformation, properties)
-        updateDigitaleAdressenForPartij(partij, nieuweDigitaleAdressen, properties)
+
+        val digitaleUniekeReferenties =
+            digitaleAdressen.map {
+                "${it.verstrektDoorPartij?.uuid},${it.referentie},${it.soortDigitaalAdres}"
+            }
+
+        // Only create the digitaal adres when it does not exist yet. It is linked to the partij through
+        // verstrektDoorPartij, so the partij itself does not need to be patched.
+        if ("${partij.uuid},${contactInformation.zaaknummer},${SoortDigitaalAdres.EMAIL}" !in
+            digitaleUniekeReferenties
+        ) {
+            createDigitalAddress(partij, contactInformation, properties)
+        }
     }
 
     private fun createAndStoreNewPartij(
@@ -149,27 +160,7 @@ class DefaultOpenKlantService(
         properties: OpenKlantProperties,
     ): String {
         val nieuwePartij = createNewPartij(contactInformation, properties)
-        val nieuweDigitaleAdress = createDigitalAddress(nieuwePartij, contactInformation, properties)
-
-        updateDigitaleAdressenForPartij(nieuwePartij, nieuweDigitaleAdress, properties)
+        createDigitalAddress(nieuwePartij, contactInformation, properties)
         return nieuwePartij.uuid
     }
-
-    private fun updateDigitaleAdressenForPartij(
-        partij: Partij,
-        digitaleAdressen: List<DigitaalAdres>,
-        properties: OpenKlantProperties,
-    ) {
-        val patchData =
-            mapOf(
-                "digitaleAdressen" to digitaleAdressen.map { it.makeUuidReference() },
-            )
-        openKlantClient.patchPartij(partij.uuid, patchData, properties)
-    }
-
-    private fun updateDigitaleAdressenForPartij(
-        partij: Partij,
-        digitaleAdress: DigitaalAdres,
-        properties: OpenKlantProperties,
-    ) = updateDigitaleAdressenForPartij(partij, listOf(digitaleAdress), properties)
 }
