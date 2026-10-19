@@ -1,13 +1,13 @@
 <div
-  [ngClass]="{ 
-    'contact-history-spinner': true, 
-    'refresh-container': true, 
-    'no-height': !isLoading 
+  [ngClass]="{
+    'contact-history-spinner': true,
+    'refresh-container': true,
+    'no-height': !isLoading
   }"
 >
   <span class="loading-description mr-2">{{
-    isLoading ? ('openKlant.contactHistory.loadingSpinner.loading' | translate) : ('openKlant.contactHistory.loadingSpinner.retrieved' | translate)
-  }}</span>
+      isLoading ? ('openKlant.contactHistory.loadingSpinner.loading' | translate) : ('openKlant.contactHistory.loadingSpinner.retrieved' | translate)
+    }}</span>
   <cds-loading
     [size]="'sm'"
     [isActive]="isLoading"
@@ -15,49 +15,66 @@
   ></cds-loading>
 </div>
 
-<section
-  class="valtimo-timeline ng-star-inserted"
-  *ngIf="contactHistory?.length > 0"
->
-  <ul class="timeline mb-0 py-5">
-    <li
-      *ngFor="let customerContact of contactHistory"
-      class="timeline-item"
-      [ngClass]="{
+@if (contactHistory?.length > 0) {
+  <section
+    class="valtimo-timeline ng-star-inserted"
+  >
+    <ul class="timeline mb-0 py-5">
+      <li
+        *ngFor="let customerContact of contactHistory"
+        class="timeline-item"
+        [ngClass]="{
         failed: customerContact.outcome === ContactOutcome.FAILURE
       }"
-    >
-      <div class="timeline-date">
-        <p>{{ formatAsDate(customerContact.occurredAt) }}</p>
-        <p>{{ formatAsTime(customerContact.occurredAt) }}</p>
-      </div>
+      >
+        <div class="timeline-date">
+          <p>{{ formatAsDate(customerContact.occurredAt) }}</p>
+          <p>{{ formatAsTime(customerContact.occurredAt) }}</p>
+        </div>
 
-      <div class="timeline-content">
-        <p class="timeline-author">
-          <em class="klantcontact-number">{{ customerContact.id }}:</em>
-          {{ customerContact.channel | titlecase }} -
-          {{ getOutcomeTranslationKey(customerContact.outcome) | translate }}
-        </p>
+        <div class="timeline-content">
+          <p class="timeline-author">
+            @if (customerContact.id) {
+              <em class="klantcontact-number">{{ customerContact.id }}:</em>
+            }
+            {{ customerContact.channel | titlecase }} -
+            {{ getOutcomeTranslationKey(customerContact.outcome) | translate }}
+          </p>
 
-        <details>
-          <summary>{{ customerContact.subject }}</summary>
-          <p>{{ customerContact.content }}</p>
-        </details>
-      </div>
-    </li>
-  </ul>
-</section>
+          <details>
+            <summary>{{ customerContact.subject }}</summary>
+            @if (customerContact.content) {
+              <p>
+              <span class="klantcontact-property-name">{{ 'openKlant.contactHistory.contact.content' | translate }}: </span>
+                {{ customerContact.content }}
+              </p>
+            }
+            @if (customerContact.reaction) {
+              <p>
+              <span class="klantcontact-property-name">{{ 'openKlant.contactHistory.contact.reaction' | translate }}: </span>
+                {{ customerContact.reaction }}
+              </p>
+            }
+          </details>
+        </div>
+      </li>
+    </ul>
+  </section>
+}
 
-<valtimo-no-results
-  *ngIf="contactHistory === null"
-  [title]="'openKlant.contactHistory.messages.noProperty.title' | translate"
-  [description]="'openKlant.contactHistory.messages.noProperty.description' | translate"
-  illustration="valtimo-layout/img/emptystate-no-result.svg"
-></valtimo-no-results>
+@if (contactHistory === null) {
+  <valtimo-no-results
+    [title]="'openKlant.contactHistory.messages.noProperty.title' | translate"
+    [description]="'openKlant.contactHistory.messages.noProperty.description' | translate"
+    illustration="valtimo-layout/img/emptystate-no-result.svg"
+  ></valtimo-no-results>
+}
 
-<valtimo-no-results
-  *ngIf="contactHistory?.length === 0"
-  [title]="'openKlant.contactHistory.messages.emptyHistory.title' | translate"
-  [description]="'openKlant.contactHistory.messages.emptyHistory.description' | translate"
-  illustration="valtimo-layout/img/emptystate-no-result.svg"
-></valtimo-no-results>
+@if (contactHistory?.length === 0) {
+  <valtimo-no-results
+    [title]="'openKlant.contactHistory.messages.emptyHistory.title' | translate"
+    [description]="'openKlant.contactHistory.messages.emptyHistory.description' | translate"
+    illustration="valtimo-layout/img/emptystate-no-result.svg"
+  ></valtimo-no-results>
+}
+

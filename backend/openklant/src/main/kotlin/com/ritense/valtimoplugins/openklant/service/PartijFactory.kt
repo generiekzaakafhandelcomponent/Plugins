@@ -9,7 +9,7 @@ import com.ritense.valtimoplugins.openklant.model.PartijInformation
 class PartijFactory {
     fun createFromBsn(partijInformation: PartijInformation): CreatePartijRequest =
         CreatePartijRequest(
-            nummer = "",
+            nummer = null,
             interneNotitie = "",
             digitaleAdressen = emptyList(),
             voorkeursDigitaalAdres = null,

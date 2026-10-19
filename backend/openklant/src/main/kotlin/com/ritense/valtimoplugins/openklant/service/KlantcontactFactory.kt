@@ -22,14 +22,16 @@ class KlantcontactFactory {
 
     private fun klantcontactRequest(klantContactCreationInformation: KlantcontactCreationInformation) =
         KlantcontactCreationRequest.KlantcontactRequest(
-            nummer = null,
+            referentienummer = klantContactCreationInformation.referentienummer,
             kanaal = klantContactCreationInformation.kanaal,
             onderwerp = klantContactCreationInformation.onderwerp,
             inhoud = klantContactCreationInformation.inhoud,
-            indicateContactGelukt = true,
+            reactie = klantContactCreationInformation.reactie,
+            indicatieContactGelukt = klantContactCreationInformation.indicatieContactGelukt,
             taal = klantContactCreationInformation.taal,
             vertrouwelijk = klantContactCreationInformation.vertrouwelijk,
             plaatsgevondenOp = klantContactCreationInformation.plaatsgevondenOp,
+            metadata = klantContactCreationInformation.metadata,
         )
 
     private fun betrokkeneRequest(klantContactCreationInformation: KlantcontactCreationInformation) =

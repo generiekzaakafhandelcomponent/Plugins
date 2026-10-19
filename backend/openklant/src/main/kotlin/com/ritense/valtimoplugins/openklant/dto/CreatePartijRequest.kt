@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class CreatePartijRequest(
     @JsonProperty("nummer")
-    val nummer: String,
+    val nummer: String?,
     @JsonProperty("interneNotitie")
     val interneNotitie: String,
     @JsonProperty("digitaleAdressen")

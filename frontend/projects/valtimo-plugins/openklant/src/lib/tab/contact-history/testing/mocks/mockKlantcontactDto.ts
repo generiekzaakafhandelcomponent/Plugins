@@ -1,7 +1,7 @@
 import { KlantcontactDTO } from "../../models/klantcontact.model";
 
 export const mockKlantcontactDTO: KlantcontactDTO = {
-    nummer: "CC-2024-0001",
+    referentienummer: "CC-2024-0001",
     kanaal: "EMAIL",
     onderwerp: "Vraag over factuur",
     inhoud: "Ik heb een vraag over mijn laatste factuur.",

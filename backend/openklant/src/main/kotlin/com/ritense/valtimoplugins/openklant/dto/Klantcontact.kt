@@ -19,12 +19,16 @@ data class Klantcontact(
     val leiddeTotInterneTaken: List<ObjectReference>,
     @JsonProperty("nummer")
     val nummer: String?,
+    @JsonProperty("referentienummer")
+    val referentienummer: String? = null,
     @JsonProperty("kanaal")
     val kanaal: String,
     @JsonProperty("onderwerp")
     val onderwerp: String,
     @JsonProperty("inhoud")
     val inhoud: String?,
+    @JsonProperty("reactie")
+    val reactie: String? = null,
     @JsonProperty("indicatieContactGelukt")
     val indicatieContactGelukt: Boolean?,
     @JsonProperty("taal")
@@ -33,6 +37,8 @@ data class Klantcontact(
     val vertrouwelijk: Boolean,
     @JsonProperty("plaatsgevondenOp")
     val plaatsgevondenOp: String?,
+    @JsonProperty("metadata")
+    val metadata: Map<String, String>? = null,
     @JsonProperty("_expand")
     val expand: Any?,
 ) : Referable
