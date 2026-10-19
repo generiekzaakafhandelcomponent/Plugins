@@ -85,7 +85,6 @@ open class ValtimoOcrPlugin(
             markdownCombined = mistralOCR.joinToString("\n") { it.markdown }
         )
 
-        println("OCR Result: $resultObject")
         execution.setVariable(resultPV, resultObject)
     }
 }
