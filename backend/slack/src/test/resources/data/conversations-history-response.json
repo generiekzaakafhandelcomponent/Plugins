@@ -1,0 +1,60 @@
+{
+  "ok": true,
+  "messages": [
+    {
+      "type": "message",
+      "user": "U012AB3CD",
+      "text": "En nog een vraag",
+      "ts": "1735689900.000500",
+      "thread_ts": "1735689600.000100",
+      "team": "T012AB3CD"
+    },
+    {
+      "type": "message",
+      "subtype": "channel_join",
+      "user": "U099ZZ9ZZ",
+      "text": "<@U099ZZ9ZZ> has joined the channel",
+      "ts": "1735689800.000400"
+    },
+    {
+      "type": "message",
+      "subtype": "message_changed",
+      "hidden": true,
+      "ts": "1735689700.000300",
+      "message": {
+        "type": "message",
+        "user": "U012AB3CD",
+        "text": "Ik wil bezwaar maken (aangepast)",
+        "ts": "1735689600.000100"
+      }
+    },
+    {
+      "type": "message",
+      "subtype": "bot_message",
+      "bot_id": "B012AB3CD",
+      "username": "Valtimo messenger",
+      "text": "Uw bericht is ontvangen",
+      "ts": "1735689650.000200",
+      "app_id": "A012AB3CD"
+    },
+    {
+      "type": "message",
+      "user": "U012AB3CD",
+      "text": "Ik wil bezwaar maken",
+      "ts": "1735689600.000100",
+      "team": "T012AB3CD",
+      "files": [
+        {
+          "id": "F012AB3CD",
+          "name": "bezwaarschrift.pdf",
+          "mimetype": "application/pdf"
+        }
+      ]
+    }
+  ],
+  "has_more": false,
+  "pin_count": 0,
+  "response_metadata": {
+    "next_cursor": ""
+  }
+}

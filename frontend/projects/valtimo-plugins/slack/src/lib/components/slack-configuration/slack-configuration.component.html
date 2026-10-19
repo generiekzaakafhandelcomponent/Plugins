@@ -51,10 +51,58 @@
     [title]="'token' | pluginTranslate: pluginId | async"
     [margin]="true"
     [disabled]="obs.disabled"
-    [defaultValue]="obs.prefill?.clientSecret"
+    [defaultValue]="obs.prefill?.token"
     [required]="true"
     [fullWidth]="true"
     [tooltip]="'tokenTooltip' | pluginTranslate: pluginId | async"
+  >
+  </v-input>
+
+  <v-input
+    name="initialLookbackMinutes"
+    type="number"
+    [title]="'initialLookbackMinutes' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.initialLookbackMinutes || 15"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [tooltip]="'initialLookbackMinutesTooltip' | pluginTranslate: pluginId | async"
+  >
+  </v-input>
+
+  <v-input
+    name="messagesPerPage"
+    type="number"
+    [title]="'messagesPerPage' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.messagesPerPage || 100"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [tooltip]="'messagesPerPageTooltip' | pluginTranslate: pluginId | async"
+  >
+  </v-input>
+
+  <v-input
+    name="maxPagesPerPoll"
+    type="number"
+    [title]="'maxPagesPerPoll' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.maxPagesPerPoll || 10"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [tooltip]="'maxPagesPerPollTooltip' | pluginTranslate: pluginId | async"
+  >
+  </v-input>
+
+  <v-input
+    name="maxThreadsPerPoll"
+    type="number"
+    [title]="'maxThreadsPerPoll' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.maxThreadsPerPoll || 50"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [tooltip]="'maxThreadsPerPollTooltip' | pluginTranslate: pluginId | async"
   >
   </v-input>
 </v-form>

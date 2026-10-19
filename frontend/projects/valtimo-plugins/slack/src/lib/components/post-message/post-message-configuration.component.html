@@ -39,4 +39,14 @@
     [required]="true"
     [tooltip]="'messageTooltip' | pluginTranslate: pluginId | async"
   ></v-input>
+  <v-input
+    name="threadTs"
+    [title]="'threadTs' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.threadTs"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [placeholder]="'pv:slackThreadTs'"
+    [tooltip]="'threadTsTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
 </v-form>

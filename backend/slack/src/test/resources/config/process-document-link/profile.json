@@ -4,5 +4,17 @@
     "canInitializeDocument": true,
     "startableByUser": true,
     "processIsVisibleInMenu": true
+  },
+  {
+    "processDefinitionKey": "SlackMessageStartProcess",
+    "canInitializeDocument": true,
+    "startableByUser": false,
+    "processIsVisibleInMenu": false
+  },
+  {
+    "processDefinitionKey": "SlackReplyProcess",
+    "canInitializeDocument": true,
+    "startableByUser": true,
+    "processIsVisibleInMenu": false
   }
 ]

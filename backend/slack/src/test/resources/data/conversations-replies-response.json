@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "messages": [
+    {
+      "type": "message",
+      "user": "U012AB3CD",
+      "text": "Ik wil bezwaar maken",
+      "thread_ts": "1735689600.000100",
+      "reply_count": 1,
+      "ts": "1735689600.000100"
+    },
+    {
+      "type": "message",
+      "user": "U045CD6EF",
+      "text": "Bedankt, wij pakken het op",
+      "thread_ts": "1735689600.000100",
+      "parent_user_id": "U012AB3CD",
+      "ts": "1735690000.000600"
+    }
+  ],
+  "has_more": false,
+  "response_metadata": {
+    "next_cursor": ""
+  }
+}

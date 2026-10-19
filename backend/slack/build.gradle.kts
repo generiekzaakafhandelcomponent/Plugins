@@ -24,13 +24,22 @@ dockerCompose {
 }
 
 dependencies {
+    implementation("com.ritense.valtimo:authorization")
+    implementation("com.ritense.valtimo:contract")
     implementation("com.ritense.valtimo:core")
+    implementation("com.ritense.valtimo:document")
     implementation("com.ritense.valtimo:plugin-valtimo")
+    implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    // For @SchedulerLock on the poller. Valtimo core already provides the LockProvider.
+    implementation("net.javacrumbs.shedlock:shedlock-spring")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
     // Testing
@@ -48,8 +57,8 @@ dependencies {
 
     testImplementation("org.postgresql:postgresql")
 
-    testImplementation("com.squareup.okhttp3:mockwebserver")
-    testImplementation("com.squareup.okhttp3:okhttp")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

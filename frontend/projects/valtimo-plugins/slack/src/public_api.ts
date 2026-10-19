@@ -24,3 +24,4 @@ export * from './lib/slack-plugin.specification';
 export * from './lib/components/slack-configuration/slack-configuration.component';
 export * from './lib/components/post-message/post-message-configuration.component';
 export * from './lib/components/post-message-with-file/post-message-with-file-configuration.component';
+export * from './lib/components/receive-message/receive-message-configuration.component';

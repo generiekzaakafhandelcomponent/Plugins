@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Two processes covering the two halves of the receive-message action: one that a Slack
+  ~ message starts, and one that a Slack reply continues.
+  -->
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_slack_message"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+    <bpmn:message id="Message_SlackMessageReceived" name="SlackMessageReceived"/>
+    <bpmn:message id="Message_SlackReplyReceived" name="SlackReplyReceived"/>
+
+    <bpmn:process id="SlackMessageStartProcess" name="Slack message start process" isExecutable="true">
+        <bpmn:startEvent id="SlackMessageStart">
+            <bpmn:outgoing>Flow_start_to_task</bpmn:outgoing>
+            <bpmn:messageEventDefinition id="MessageEventDefinition_start"
+                                         messageRef="Message_SlackMessageReceived"/>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="Flow_start_to_task" sourceRef="SlackMessageStart" targetRef="ReviewSlackMessage"/>
+        <!-- A wait state, so the instance and its variables are still there to assert on. -->
+        <bpmn:userTask id="ReviewSlackMessage" name="Review Slack message">
+            <bpmn:incoming>Flow_start_to_task</bpmn:incoming>
+            <bpmn:outgoing>Flow_task_to_end</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="Flow_task_to_end" sourceRef="ReviewSlackMessage" targetRef="Event_start_end"/>
+        <bpmn:endEvent id="Event_start_end">
+            <bpmn:incoming>Flow_task_to_end</bpmn:incoming>
+        </bpmn:endEvent>
+    </bpmn:process>
+
+    <bpmn:process id="SlackReplyProcess" name="Slack reply process" isExecutable="true">
+        <bpmn:startEvent id="ReplyProcessStart">
+            <bpmn:outgoing>Flow_to_await</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="Flow_to_await" sourceRef="ReplyProcessStart" targetRef="AwaitSlackReply"/>
+        <bpmn:intermediateCatchEvent id="AwaitSlackReply" name="Await Slack reply">
+            <bpmn:incoming>Flow_to_await</bpmn:incoming>
+            <bpmn:outgoing>Flow_to_reply_end</bpmn:outgoing>
+            <bpmn:messageEventDefinition id="MessageEventDefinition_await"
+                                         messageRef="Message_SlackReplyReceived"/>
+        </bpmn:intermediateCatchEvent>
+        <bpmn:sequenceFlow id="Flow_to_reply_end" sourceRef="AwaitSlackReply" targetRef="Event_reply_end"/>
+        <bpmn:endEvent id="Event_reply_end">
+            <bpmn:incoming>Flow_to_reply_end</bpmn:incoming>
+        </bpmn:endEvent>
+    </bpmn:process>
+
+    <bpmndi:BPMNDiagram id="BPMNDiagram_slack">
+        <bpmndi:BPMNPlane id="BPMNPlane_start" bpmnElement="SlackMessageStartProcess">
+            <bpmndi:BPMNShape id="SlackMessageStart_di" bpmnElement="SlackMessageStart">
+                <dc:Bounds x="179" y="99" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_start_to_task_di" bpmnElement="Flow_start_to_task">
+                <di:waypoint x="215" y="117"/>
+                <di:waypoint x="270" y="117"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="ReviewSlackMessage_di" bpmnElement="ReviewSlackMessage">
+                <dc:Bounds x="270" y="77" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_task_to_end_di" bpmnElement="Flow_task_to_end">
+                <di:waypoint x="370" y="117"/>
+                <di:waypoint x="432" y="117"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="Event_start_end_di" bpmnElement="Event_start_end">
+                <dc:Bounds x="432" y="99" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+
+    <bpmndi:BPMNDiagram id="BPMNDiagram_slack_reply">
+        <bpmndi:BPMNPlane id="BPMNPlane_reply" bpmnElement="SlackReplyProcess">
+            <bpmndi:BPMNShape id="ReplyProcessStart_di" bpmnElement="ReplyProcessStart">
+                <dc:Bounds x="179" y="99" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_to_await_di" bpmnElement="Flow_to_await">
+                <di:waypoint x="215" y="117"/>
+                <di:waypoint x="292" y="117"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="AwaitSlackReply_di" bpmnElement="AwaitSlackReply">
+                <dc:Bounds x="292" y="99" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_to_reply_end_di" bpmnElement="Flow_to_reply_end">
+                <di:waypoint x="328" y="117"/>
+                <di:waypoint x="412" y="117"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="Event_reply_end_di" bpmnElement="Event_reply_end">
+                <dc:Bounds x="412" y="99" width="36" height="36"/>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

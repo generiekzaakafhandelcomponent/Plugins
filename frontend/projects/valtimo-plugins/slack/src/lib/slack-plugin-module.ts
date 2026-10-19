@@ -18,21 +18,31 @@ import {NgModule} from '@angular/core';
 import {SlackConfigurationComponent} from './components/slack-configuration/slack-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {FormModule, InputModule, ParagraphModule} from '@valtimo/components';
+import {FormModule, InputModule, ParagraphModule, SelectModule} from '@valtimo/components';
 import {PostMessageWithFileConfigurationComponent} from './components/post-message-with-file/post-message-with-file-configuration.component';
 import {PostMessageConfigurationComponent} from './components/post-message/post-message-configuration.component';
+import {ReceiveMessageConfigurationComponent} from './components/receive-message/receive-message-configuration.component';
 
 @NgModule({
   declarations: [
     SlackConfigurationComponent,
     PostMessageConfigurationComponent,
     PostMessageWithFileConfigurationComponent,
+    ReceiveMessageConfigurationComponent,
   ],
-  imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, ParagraphModule],
+  imports: [
+    CommonModule,
+    PluginTranslatePipeModule,
+    FormModule,
+    InputModule,
+    ParagraphModule,
+    SelectModule,
+  ],
   exports: [
     SlackConfigurationComponent,
     PostMessageConfigurationComponent,
     PostMessageWithFileConfigurationComponent,
+    ReceiveMessageConfigurationComponent,
   ],
 })
 export class SlackPluginModule {}

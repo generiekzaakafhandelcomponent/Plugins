@@ -1,0 +1,97 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright 2026 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!--
+      One row per Slack message that has already started or continued a process. The primary
+      key is the duplicate guard: concurrent claims from two nodes collide here rather than
+      creating two cases.
+    -->
+    <changeSet id="1" author="Ritense">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="slack_processed_message"/>
+            </not>
+        </preConditions>
+        <createTable tableName="slack_processed_message">
+            <!-- "<plugin configuration id>|<channel>/<ts>"; see IncomingSlackMessageHandler.claimKey. -->
+            <column name="message_identity" type="VARCHAR(512)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="plugin_configuration_id" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="channel" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- Slack's message timestamp, kept as sent: "1735689600.123456". -->
+            <column name="message_ts" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Supports the retention job, which deletes by age across all configurations. -->
+    <changeSet id="2" author="Ritense">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="idx_slack_processed_message_processed_at"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="slack_processed_message" indexName="idx_slack_processed_message_processed_at">
+            <column name="processed_at"/>
+        </createIndex>
+    </changeSet>
+
+    <!--
+      How far each configuration has read each channel. Unlike a mailbox, a channel already
+      holds everything ever said in it, so without this the first poll would turn the whole
+      history into cases.
+    -->
+    <changeSet id="3" author="Ritense">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="slack_channel_cursor"/>
+            </not>
+        </preConditions>
+        <createTable tableName="slack_channel_cursor">
+            <!-- "<plugin configuration id>|<channel>"; see SlackChannelCursor.idOf. -->
+            <column name="cursor_id" type="VARCHAR(512)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="plugin_configuration_id" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="channel" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_message_ts" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
