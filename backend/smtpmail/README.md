@@ -38,7 +38,9 @@ Create a configuration instance for the plugin and configure the following prope
 * `Username` - The email address or account name used to send mail.
 * `Password` - The authentication password
 * `Protocol` - smtp
-* `debug` - optional, set to true for development reasons 
+* `debug` - optional, off by default. Only enable while troubleshooting: it writes the complete SMTP dialogue -
+  envelope recipients (including Bcc), headers and the message body - to the application log at `DEBUG` level for
+  logger `com.ritense.valtimoplugins.smtpmail.client.SmtpMailClient`. The SMTP password is never traced.
 * `Authentication` - set to true when authentication is needed
 * `STARTTLS` - set connection to SMTP Host using TLS
 Create process link between a BPMN service task and the desired plugin action.
@@ -54,6 +56,12 @@ Create process link between a BPMN service task and the desired plugin action.
 * `subject` - Subject of email
 * `contentId` - The content ID of the contents of the mail, see [options](#prepare-mail-contents) to generate content
 * `attachmentIds` - List with IDs of files in local storage are added as attachment of the mail (optional)
+
+Before sending, the plugin rejects a CR or LF character in `sender`, `fromName`, `recipients`, `cc`, `bcc` and
+`subject` to prevent mail header injection, and it rejects malformed addresses. A host without a dot - a local mail
+catcher or an internal hostname such as `dev@localhost` or `test@mailhog` - is a valid address.
+
+The mail is always sent through the plugin configuration that is linked to the service task.
 
 ### Prepare mail contents
 There are 2 plugins available to generate the contents of an email:

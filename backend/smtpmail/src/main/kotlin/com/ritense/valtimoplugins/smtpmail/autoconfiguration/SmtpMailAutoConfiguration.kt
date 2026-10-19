@@ -21,37 +21,34 @@ import com.ritense.resource.service.TemporaryResourceStorageService
 import com.ritense.valtimoplugins.smtpmail.client.SmtpMailClient
 import com.ritense.valtimoplugins.smtpmail.plugin.SmtpMailPluginFactory
 import com.ritense.valtimoplugins.smtpmail.service.SmtpMailService
-import com.ritense.valueresolver.ValueResolverService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class SmtpMailAutoConfiguration {
-
     @Bean
-    fun smtpMailClient(
-        pluginService: PluginService,
-        storageService: TemporaryResourceStorageService,
-    ): SmtpMailClient = SmtpMailClient(
-        pluginService = pluginService,
-        storageService = storageService
-    )
+    fun smtpMailClient(storageService: TemporaryResourceStorageService): SmtpMailClient =
+        SmtpMailClient(
+            storageService = storageService,
+        )
 
     @Bean
     fun smtpMailService(
         smtpMailClient: SmtpMailClient,
-        storageService: TemporaryResourceStorageService
-    ): SmtpMailService = SmtpMailService(
-        smtpMailClient = smtpMailClient,
-        storageService = storageService
-    )
+        storageService: TemporaryResourceStorageService,
+    ): SmtpMailService =
+        SmtpMailService(
+            smtpMailClient = smtpMailClient,
+            storageService = storageService,
+        )
 
     @Bean
     fun smtpMailPluginFactory(
         pluginService: PluginService,
         smtpMailService: SmtpMailService,
-    ): SmtpMailPluginFactory = SmtpMailPluginFactory(
-        pluginService = pluginService,
-        smtpMailService = smtpMailService,
-    )
+    ): SmtpMailPluginFactory =
+        SmtpMailPluginFactory(
+            pluginService = pluginService,
+            smtpMailService = smtpMailService,
+        )
 }
