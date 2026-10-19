@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+val kotlinLoggingVersion: String by project
+
 dockerCompose {
     setProjectName("NotifyNl")
     isRequiredBy(project.tasks.integrationTesting)
@@ -24,14 +26,14 @@ dockerCompose {
 }
 
 dependencies {
-    implementation("com.ritense.valtimo:core")
-    implementation("com.ritense.valtimo:document")
-    implementation("com.ritense.valtimo:plugin-valtimo")
-    implementation("com.ritense.valtimo:process-document")
-    implementation("com.ritense.valtimo:temporary-resource-storage")
-    implementation("com.ritense.valtimo:value-resolver")
+    compileOnly("com.ritense.valtimo:core")
+    compileOnly("com.ritense.valtimo:document")
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:process-document")
+    compileOnly("com.ritense.valtimo:temporary-resource-storage")
+    compileOnly("com.ritense.valtimo:value-resolver")
 
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 }
 
 apply(from = "gradle/publishing.gradle")
