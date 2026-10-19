@@ -15,6 +15,9 @@
  *
  */
 
+val httpClientAuthenticationPluginVersion: String by project
+val mockitoKotlinVersion: String by project
+
 dockerCompose {
     setProjectName("HaalCentraal")
     isRequiredBy(project.tasks.integrationTesting)
@@ -25,13 +28,13 @@ dockerCompose {
         implementation(platform("com.ritense.valtimo:valtimo-dependency-versions:$valtimoVersion"))
         implementation("com.ritense.valtimo:valtimo-gzac-dependencies")
 
-        implementation("io.github.microutils:kotlin-logging")
+        compileOnly("io.github.microutils:kotlin-logging")
 
-        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
 
         implementation(project(":backend:freemarker"))
         implementation(project(":backend:object-management"))
-        implementation("com.ritense.valtimoplugins:http-client-authentication:2.1.1-V12")
+        implementation("com.ritense.valtimoplugins:http-client-authentication:$httpClientAuthenticationPluginVersion")
 
         // Testing
         testImplementation("com.ritense.valtimo:local-resource")
@@ -41,7 +44,7 @@ dockerCompose {
 
         testImplementation("org.mockito:mockito-core")
         testImplementation("org.hamcrest:hamcrest-library")
-        testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+        testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
