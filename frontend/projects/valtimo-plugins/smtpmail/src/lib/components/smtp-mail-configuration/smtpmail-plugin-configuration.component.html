@@ -105,7 +105,7 @@
             type="checkbox"
             [title]="'startTlsEnable' | pluginTranslate: pluginId | async"
             [margin]="true"
-            [defaultValue]="obs.prefill?.startTlsEnable || true"
+            [defaultValue]="obs.prefill?.startTlsEnable ?? true"
             [disabled]="obs.disabled"
             [required]="false"
     >
