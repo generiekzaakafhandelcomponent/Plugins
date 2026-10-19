@@ -79,6 +79,26 @@ class SmtpMailPlugin(
         @PluginActionProperty subject: String,
         @PluginActionProperty contentId: String,
         @PluginActionProperty attachmentIds: List<String>?,
+    ) = sendMail(
+        sender = sender,
+        fromName = fromName,
+        recipients = recipients,
+        cc = cc,
+        bcc = bcc,
+        subject = subject,
+        contentId = contentId,
+        attachmentIds = attachmentIds,
+    )
+
+    fun sendMail(
+        sender: Email,
+        fromName: String?,
+        recipients: List<Email>,
+        cc: List<Email>?,
+        bcc: List<Email>?,
+        subject: String,
+        contentId: String,
+        attachmentIds: List<String>?,
     ) {
         // Header injection guard, re-checked server side for defence in depth.
         requireNoControlChars(subject, "subject")
@@ -101,13 +121,11 @@ class SmtpMailPlugin(
                     contentResourceId = contentId,
                     attachmentResourceIds = attachmentIds ?: emptyList(),
                 ),
-            // Taken from this instance, whose properties Valtimo injected from the plugin
-            // configuration bound to the process link. Never looked up again downstream.
-            connection = connectionProperties(),
+            connection = getConnectionProperties(),
         )
     }
 
-    private fun connectionProperties() =
+    fun getConnectionProperties() =
         SmtpMailPluginPropertyDto(
             host = host,
             port = port ?: DEFAULT_PORT,

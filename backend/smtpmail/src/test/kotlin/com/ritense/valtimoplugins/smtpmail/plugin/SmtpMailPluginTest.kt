@@ -201,6 +201,39 @@ class SmtpMailPluginTest : BaseTest() {
         verifyNothingSent()
     }
 
+    // -- Sending without a process, such as from a scheduled job ------------------------
+
+    @Test
+    fun `sends without a DelegateExecution through the same configuration`() {
+        sendMailWithoutExecution()
+
+        with(captureConnection()) {
+            assertEquals("smtp.transactional.test", host)
+            assertEquals(587, port)
+            assertEquals("transactional-user", username)
+            assertEquals("transactional-secret", password)
+        }
+    }
+
+    @Test
+    fun `applies the same validation when sending without a DelegateExecution`() {
+        assertThrows<IllegalArgumentException> {
+            sendMailWithoutExecution(subject = "phishy\r\nBcc: evil@example.com")
+        }
+        verifyNothingSent()
+    }
+
+    @Test
+    fun `builds the same mail context with and without a DelegateExecution`() {
+        sendMail()
+        val fromAction = captureContext()
+
+        setUp()
+        sendMailWithoutExecution()
+
+        assertEquals(fromAction, captureContext())
+    }
+
     private fun sendMail(
         sender: String = "afzender@example.com",
         fromName: String? = "Gemeente",
@@ -220,9 +253,33 @@ class SmtpMailPluginTest : BaseTest() {
         attachmentIds = null,
     )
 
+    private fun sendMailWithoutExecution(
+        sender: String = "afzender@example.com",
+        fromName: String? = "Gemeente",
+        recipients: List<String> = listOf("ontvanger@example.com"),
+        cc: List<String>? = null,
+        bcc: List<String>? = null,
+        subject: String = "Uw aanvraag",
+    ) = plugin.sendMail(
+        sender = Email(sender),
+        fromName = fromName,
+        recipients = recipients.map { Email(it) },
+        cc = cc?.map { Email(it) },
+        bcc = bcc?.map { Email(it) },
+        subject = subject,
+        contentId = "content-resource-id",
+        attachmentIds = null,
+    )
+
     private fun captureConnection(): SmtpMailPluginPropertyDto {
         val captor = argumentCaptor<SmtpMailPluginPropertyDto>()
         verify(smtpMailService).sendSmtpMail(any<SmtpMailContextDto>(), captor.capture())
+        return captor.firstValue
+    }
+
+    private fun captureContext(): SmtpMailContextDto {
+        val captor = argumentCaptor<SmtpMailContextDto>()
+        verify(smtpMailService).sendSmtpMail(captor.capture(), any<SmtpMailPluginPropertyDto>())
         return captor.firstValue
     }
 
