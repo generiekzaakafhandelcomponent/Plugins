@@ -13,14 +13,13 @@ import com.ritense.valtimoplugins.openklant.service.PartijFactory
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.zakenapi.service.ZaakDocumentService
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.RestClient
-
 import java.net.URI
 
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties
 class OpenKlantAutoConfiguration {
     @Bean
