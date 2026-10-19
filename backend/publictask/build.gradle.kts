@@ -24,6 +24,7 @@ dockerCompose {
 }
 
 val freemarkerVersion: String by project
+val mockitoKotlinVersion: String by project
 
 dependencies {
     implementation("com.ritense.valtimo:contract")
@@ -36,6 +37,7 @@ dependencies {
     implementation("com.ritense.valtimo:process-document")
     implementation("com.ritense.valtimo:audit")
     implementation("com.ritense.valtimo:authorization")
+    implementation("com.ritense.valtimo:temporary-resource-storage")
     implementation("com.ritense.valtimo:value-resolver")
 
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -48,6 +50,9 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.core:jackson-core")
+
+    // Detects the type of an uploaded file from its content. The version Valtimo 12.29 itself brings along.
+    implementation("org.apache.tika:tika-core:3.2.3")
 
     // Templating engine
     implementation("org.freemarker:freemarker:$freemarkerVersion")
@@ -69,12 +74,9 @@ dependencies {
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")
     testImplementation("com.jayway.jsonpath:json-path")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
-
-    testImplementation("com.squareup.okhttp3:mockwebserver")
-    testImplementation("com.squareup.okhttp3:okhttp")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

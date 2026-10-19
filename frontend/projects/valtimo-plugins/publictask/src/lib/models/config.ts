@@ -16,14 +16,27 @@
 
 import {PluginConfigurationData} from '@valtimo/plugin';
 
-interface PublicTaskConfig extends PluginConfigurationData {}
+interface PublicTaskConfig extends PluginConfigurationData {
+    baseUrl?: string;
+}
 
 interface CreatePublicTaskConfig {
     pvAssigneeCandidateContactData: string;
     timeToLive: string;
+    // Optional; the plugin falls back to a bounded default for the ones that are left out.
+    maxAttachments?: number;
+    maxAttachmentSizeInBytes?: number;
+    acceptedMimeTypes?: string;
+    // What every uploaded file is filed with. Edited as rows, read as an object.
+    documentMetadata?: DocumentMetadata;
+}
+
+interface DocumentMetadata {
+    [key: string]: string;
 }
 
 export {
     PublicTaskConfig,
-    CreatePublicTaskConfig
+    CreatePublicTaskConfig,
+    DocumentMetadata
 };

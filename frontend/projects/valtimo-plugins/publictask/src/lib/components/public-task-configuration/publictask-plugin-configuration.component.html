@@ -14,4 +14,15 @@
             [required]="true"
     >
     </v-input>
+    <v-input
+            name="baseUrl"
+            [title]="'baseUrl' | pluginTranslate: pluginId | async"
+            [tooltip]="'baseUrlTooltip' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [placeholder]="'baseUrlPlaceholder' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.baseUrl"
+            [disabled]="obs.disabled"
+            [required]="false"
+    >
+    </v-input>
 </v-form>

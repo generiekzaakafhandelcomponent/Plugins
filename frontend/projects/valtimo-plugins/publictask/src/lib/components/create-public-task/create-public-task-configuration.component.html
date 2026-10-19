@@ -2,7 +2,8 @@
         (valueChange)="formValueChange($event)"
         *ngIf="{
         disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+        prefill: prefillConfiguration$ | async,
+        documentMetadataRows: documentMetadataRows$ | async
     } as obs"
     >
     <v-input
@@ -23,4 +24,60 @@
             [required]="false"
     >
     </v-input>
+    <!-- What the public task's open upload endpoint accepts. An upload field can ask for less, never more. -->
+    <v-input
+            name="maxAttachments"
+            type="number"
+            [title]="'maxAttachments' | pluginTranslate: pluginId | async"
+            [tooltip]="'maxAttachmentsTooltip' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [min]="0"
+            [step]="1"
+            [defaultValue]="obs.prefill?.maxAttachments ?? defaultMaxAttachments"
+            [disabled]="obs.disabled"
+            [required]="false"
+    >
+    </v-input>
+    <v-input
+            name="maxAttachmentSizeInBytes"
+            type="number"
+            [title]="'maxAttachmentSizeInBytes' | pluginTranslate: pluginId | async"
+            [tooltip]="'maxAttachmentSizeInBytesTooltip' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [min]="0"
+            [step]="1048576"
+            [defaultValue]="obs.prefill?.maxAttachmentSizeInBytes ?? defaultMaxAttachmentSizeInBytes"
+            [disabled]="obs.disabled"
+            [required]="false"
+    >
+    </v-input>
+    <!-- No default to prefill: a value here would narrow the types for a process that never asked for it. -->
+    <v-input
+            name="acceptedMimeTypes"
+            [title]="'acceptedMimeTypes' | pluginTranslate: pluginId | async"
+            [tooltip]="'acceptedMimeTypesTooltip' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [placeholder]="'acceptedMimeTypesPlaceholder' | pluginTranslate: pluginId | async"
+            [defaultValue]="obs.prefill?.acceptedMimeTypes"
+            [disabled]="obs.disabled"
+            [required]="false"
+    >
+    </v-input>
+    <!-- What every file is filed with. The Documenten API needs at least an informatieobjecttype and titel. -->
+    <valtimo-carbon-multi-input
+            name="documentMetadata"
+            type="keyValuePathSelector"
+            [valuePathSelectorPrefixes]="valuePathSelectorPrefixes"
+            [title]="'documentMetadata' | pluginTranslate: pluginId | async"
+            [tooltip]="'documentMetadataTooltip' | pluginTranslate: pluginId | async"
+            [keyColumnTitle]="'documentMetadataKey' | pluginTranslate: pluginId | async"
+            [valueColumnTitle]="'documentMetadataValue' | pluginTranslate: pluginId | async"
+            [addRowText]="'documentMetadataAddRow' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValues]="obs.documentMetadataRows"
+            [disabled]="obs.disabled"
+            [required]="false"
+    >
+    </valtimo-carbon-multi-input>
 </v-form>

@@ -18,12 +18,12 @@ import {NgModule} from '@angular/core';
 import {PublictaskPluginConfigurationComponent} from './components/public-task-configuration/publictask-plugin-configuration.component';
 import {CommonModule} from '@angular/common';
 import {PluginTranslatePipeModule} from '@valtimo/plugin';
-import {FormModule, InputModule} from '@valtimo/components';
+import {CarbonMultiInputModule, FormModule, InputModule} from '@valtimo/components';
 import {CreatePublicTaskConfigurationComponent} from "./components/create-public-task/create-public-task-configuration.component";
 
 @NgModule({
   declarations: [PublictaskPluginConfigurationComponent, CreatePublicTaskConfigurationComponent],
-    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, PluginTranslatePipeModule],
+    imports: [CommonModule, PluginTranslatePipeModule, FormModule, InputModule, CarbonMultiInputModule, PluginTranslatePipeModule],
   exports: [PublictaskPluginConfigurationComponent, CreatePublicTaskConfigurationComponent]
 })
 export class PublictaskPluginModule {}
