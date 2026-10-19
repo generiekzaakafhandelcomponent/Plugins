@@ -16,6 +16,10 @@
             {
                 "spec": "haalCentraalBagPluginSpecification",
                 "module": "HaalCentraalBagPluginModule"
+            },
+            {
+                "spec": "haalCentraalBrpPersonenPluginSpecification",
+                "module": "HaalCentraalBrpPersonenPluginModule"
             }
         ]
     }
