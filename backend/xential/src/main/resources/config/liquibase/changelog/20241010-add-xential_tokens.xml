@@ -29,4 +29,27 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="add_expires_on_to_xential_tokens" author="Ritense">
+        <addColumn tableName="xential_tokens">
+            <column name="expires_on" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!--
+      ~ Records which Xential plugin configuration started the document creation session, so that its callback is
+      ~ verified against that configuration's callbackSecret instead of an arbitrarily chosen one.
+      ~
+      ~ Nullable on purpose: sessions that already existed when this column was added have no value, and those
+      ~ sessions must keep loading after the upgrade.
+      -->
+    <changeSet id="add_plugin_configuration_id_to_xential_tokens" author="Ritense">
+        <addColumn tableName="xential_tokens">
+            <column name="plugin_configuration_id" type="uuid">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

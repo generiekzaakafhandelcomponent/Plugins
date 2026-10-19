@@ -13,6 +13,10 @@
     * [Plugin action: Prepare content](#plugin-action-prepare-content)
     * [Plugin action: Generate document](#plugin-action-generate-document)
     * [Endpoint: /xential/document](#endpoint-xentialdocument)
+    * [Securing the document callback](#securing-the-document-callback)
+      * [More than one plugin configuration](#more-than-one-plugin-configuration)
+      * [Upgrading: sessions started before this version](#upgrading-sessions-started-before-this-version)
+      * [Rate limiting and denial of service](#rate-limiting-and-denial-of-service)
     * [Endpoint: /xential/sjablonen](#endpoint-xentialsjablonen)
   * [Running the example application](#running-the-example-application)
   * [Development](#development)
@@ -72,6 +76,10 @@ Plugin actions can be linked to BPMN service tasks. Using the plugin comes down 
   * `mTlsSllContextConfigurationId` - The mTLS SSL Context configuration that should be used.
   * `applicationName` - Is the name for basic authentication at Xential.
   * `applicationPassword` - Is the password for basic authentication at Xential.
+  * `callbackSecret` - Shared secret used to verify incoming document callbacks. Optional, but required before
+    callback verification can be enforced. Entered as a password field, and because secrets are never returned by
+    the backend the field is empty when an existing configuration is reopened: leaving it empty keeps the stored
+    secret, entering a value replaces it. See [Securing the document callback](#securing-the-document-callback).
 * Create process link between a BPMN service task and the desired plugin action.
 
 ### Plugin action: Toegamg tot Xential toetsen
@@ -119,6 +127,66 @@ a job to generate the document.
 * `formaat` - document format of the data retrieved
 * `documentkenmerk` - not used
 * `data` - the actual content of the generated document
+
+### Securing the document callback
+
+`/xential/document` is called by Xential rather than by a logged-in user, so it cannot require a Valtimo login.
+Instead, the caller proves it is genuine by signing the callback with a shared secret.
+
+The sender computes `HMAC-SHA256(callbackSecret, documentCreatieSessieId + data)`, hex encoded, and sends it in
+the `X-Xential-Signature` header. The session id is part of the signed material so that a captured signature
+cannot be replayed against a different document creation session. Signatures are compared in constant time.
+
+Enabling this is a coordinated change: Valtimo must not start rejecting callbacks before the sending side signs
+them. Roll it out in three steps.
+
+1. Set `callbackSecret` on the plugin configuration and configure the same secret on the sending side.
+2. Leave `valtimo.xential.callback.verification-mode` at its default of `LOG_ONLY` and check the logs. Every
+   callback that fails verification is logged as a warning while still being processed, so a running integration
+   keeps working.
+3. Once no warnings remain, set the mode to `ENFORCE`.
+
+| Property                                      | Default       | Description                                                                                            |
+|-----------------------------------------------|---------------|--------------------------------------------------------------------------------------------------------|
+| `valtimo.xential.callback.verification-mode`  | `LOG_ONLY`    | `LOG_ONLY` logs an unverifiable callback and processes it anyway; `ENFORCE` rejects it.                |
+| `valtimo.xential.callback.token-time-to-live` | `P7D`         | How long a document creation session stays valid. Expired sessions are rejected and swept.             |
+| `valtimo.xential.callback.rate-limit`         | `60`          | Unverifiable callbacks absorbed per window. Signed callbacks are never counted. `0` disables the limit. |
+| `valtimo.xential.callback.rate-limit-window`  | `PT1M`        | Length of the rate limiting window.                                                                    |
+| `valtimo.xential.callback.token-cleanup-cron` | `0 0 * * * *` | Schedule on which expired document creation sessions are deleted.                                      |
+
+A document creation session is single use: it is deleted once its document has been stored and the BPMN message
+has been correlated. If the correlation fails, the session is kept so that a retry can still succeed until it
+expires. The endpoint answers with an empty body, and there is exactly one response for a rejected callback
+(`404`): a malformed, unknown or expired session id, an undecodable payload and a wrong or missing signature are
+all answered identically. It therefore cannot be used to discover which session ids exist.
+
+#### More than one plugin configuration
+
+Each Xential plugin configuration has its own `callbackSecret`; they do not have to share one. Valtimo records
+which configuration started a document creation session and verifies that session's callback against *that*
+configuration's secret.
+
+#### Upgrading: sessions started before this version
+
+Document creation sessions that were already in flight when this version was deployed do not record which plugin
+configuration started them, so there is no secret to check their callbacks against. They can never be verified.
+
+* In `LOG_ONLY` they are processed, and logged with a warning that names this specific cause.
+* In `ENFORCE` they are rejected.
+
+So before switching to `ENFORCE`, let those sessions complete or restart the processes waiting on them. Sessions
+created before this version have no expiry, so they are not swept automatically. Sessions started after the
+upgrade are unaffected.
+
+#### Rate limiting and denial of service
+
+Only callbacks that fail verification are counted against the rate limit. A correctly signed callback never
+consumes budget and can never be blocked, no matter how much forged traffic arrives alongside it. In `LOG_ONLY`
+unverifiable callbacks are counted but not blocked, because that mode promises not to change any outcome.
+
+The budget is per application instance and held in memory, so with several instances behind a load balancer the
+effective ceiling is a multiple of the configured one and it resets on restart. This is a local backstop, not a
+cluster-wide guarantee, and it does not replace rate limiting at the ingress.
 
 ### Endpoint: /xential/sjablonen
 

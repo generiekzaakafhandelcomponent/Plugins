@@ -22,4 +22,11 @@ export interface XentialConfig extends PluginConfigurationData {
     baseUrl: string;
     gebruikersId: string;
     mTlsSslContextAutoConfigurationId: string;
+    /**
+     * Shared secret that incoming document callbacks are signed with.
+     *
+     * Optional: without it a configuration still works, its callbacks just cannot be verified. Never returned by
+     * the backend, so it is absent when an existing configuration is loaded for editing.
+     */
+    callbackSecret?: string;
 }

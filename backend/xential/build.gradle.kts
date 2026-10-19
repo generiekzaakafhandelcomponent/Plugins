@@ -86,6 +86,11 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
+// openapi-generator drags in slf4j-simple, which would shadow logback in tests that capture log output.
+configurations.named("testImplementation") {
+    exclude(group = "org.slf4j", module = "slf4j-simple")
+}
+
 apply(from = "gradle/publishing.gradle")
 
 openApiGenerate {

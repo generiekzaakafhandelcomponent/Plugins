@@ -20,6 +20,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
@@ -34,4 +35,27 @@ class XentialToken(
     val messageName: String,
     @Column(name = "resume_url", nullable = true, updatable = false)
     val resumeUrl: String?,
-)
+    /**
+     * The moment after which this document creation session is no longer accepted on the callback endpoint.
+     *
+     * Nullable because sessions created before expiry was introduced have no value; those are treated as
+     * non-expiring so that an upgrade does not invalidate documents that are still being generated.
+     */
+    @Column(name = "expires_on", nullable = true, updatable = false)
+    val expiresOn: LocalDateTime? = null,
+    /**
+     * The Xential plugin configuration that started this document creation session.
+     *
+     * The callback for this session is verified against the `callbackSecret` of *this* configuration. Binding the
+     * session to its originating configuration is what makes verification deterministic when more than one
+     * Xential plugin configuration exists; picking an arbitrary configuration would check the signature against
+     * the wrong secret.
+     *
+     * Nullable because sessions created before this column was introduced have no value. Those cannot be
+     * verified at all - see [CallbackVerificationResult.UNKNOWN_PLUGIN_CONFIGURATION].
+     */
+    @Column(name = "plugin_configuration_id", nullable = true, updatable = false)
+    val pluginConfigurationId: UUID? = null,
+) {
+    fun isExpired(now: LocalDateTime): Boolean = expiresOn?.isBefore(now) ?: false
+}

@@ -28,8 +28,11 @@ import com.ritense.valtimoplugins.xential.repository.XentialTokenRepository
 import com.ritense.valtimoplugins.xential.security.config.XentialApiHttpSecurityConfigurer
 import com.ritense.valtimoplugins.xential.service.DocumentGenerationService
 import com.ritense.valtimoplugins.xential.service.OpentunnelEsbClient
+import com.ritense.valtimoplugins.xential.service.XentialCallbackRateLimiter
+import com.ritense.valtimoplugins.xential.service.XentialCallbackVerificationService
 import com.ritense.valtimoplugins.xential.service.XentialDocumentHelper
 import com.ritense.valtimoplugins.xential.service.XentialSjablonenService
+import com.ritense.valtimoplugins.xential.service.XentialTokenCleanupService
 import com.ritense.valtimoplugins.xential.service.XentialUserIdHelper
 import com.ritense.valtimoplugins.xential.web.rest.DocumentResource
 import com.ritense.valtimoplugins.xential.web.rest.XentialSjablonenResource
@@ -39,6 +42,7 @@ import org.camunda.bpm.engine.RuntimeService
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.core.annotation.Order
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
@@ -46,6 +50,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @AutoConfiguration
 @EnableJpaRepositories(basePackageClasses = [XentialTokenRepository::class])
 @EntityScan(basePackageClasses = [XentialToken::class])
+@EnableConfigurationProperties(XentialCallbackProperties::class)
 class XentialAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(XentialPluginFactory::class)
@@ -88,12 +93,32 @@ class XentialAutoConfiguration {
         xentialTokenRepository: XentialTokenRepository,
         temporaryResourceStorageService: TemporaryResourceStorageService,
         runtimeService: RuntimeService,
-        valueResolverService: ValueResolverService,
+        xentialCallbackVerificationService: XentialCallbackVerificationService,
+        xentialCallbackRateLimiter: XentialCallbackRateLimiter,
+        xentialCallbackProperties: XentialCallbackProperties,
     ) = DocumentGenerationService(
         xentialTokenRepository,
         temporaryResourceStorageService,
         runtimeService,
+        xentialCallbackVerificationService,
+        xentialCallbackRateLimiter,
+        xentialCallbackProperties,
     )
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun xentialCallbackVerificationService(pluginService: PluginService) =
+        XentialCallbackVerificationService(pluginService)
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun xentialCallbackRateLimiter(xentialCallbackProperties: XentialCallbackProperties) =
+        XentialCallbackRateLimiter(xentialCallbackProperties)
+
+    @Bean
+    @ConditionalOnMissingBean
+    fun xentialTokenCleanupService(xentialTokenRepository: XentialTokenRepository) =
+        XentialTokenCleanupService(xentialTokenRepository)
 
     @Bean
     @ProcessBean
