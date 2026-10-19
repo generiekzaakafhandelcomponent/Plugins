@@ -25,7 +25,7 @@ class KvkHandelsregisterPlugin(
     @PluginProperty(key = "handelsregisterBaseUrl", secret = false, required = true)
     lateinit var handelsregisterBaseUrl: URI
 
-    @PluginProperty(key = "apikey", secret = false, required = true)
+    @PluginProperty(key = "apikey", secret = true, required = true)
     lateinit var apikey: String
 
     @PluginProperty(key = "connectionTimeout", secret = false, required = false)
