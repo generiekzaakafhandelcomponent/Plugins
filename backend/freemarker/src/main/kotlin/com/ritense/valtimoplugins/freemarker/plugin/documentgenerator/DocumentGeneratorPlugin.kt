@@ -37,6 +37,8 @@ import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.apache.commons.csv.CSVPrinter
 import org.camunda.bpm.engine.delegate.DelegateExecution
+import org.camunda.bpm.engine.impl.context.Context
+import org.xhtmlrenderer.pdf.ITextOutputDevice
 import org.xhtmlrenderer.pdf.ITextRenderer
 
 @Plugin(
@@ -61,6 +63,7 @@ open class DocumentGeneratorPlugin(
         @PluginActionProperty templateKey: String,
         @PluginActionProperty processVariableName: String
     ) {
+        warnIfNotAsync(execution)
         val htmlString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_PDF)
         ByteArrayOutputStream().use { outputStream ->
             generatePdf(htmlString, outputStream)
@@ -86,6 +89,7 @@ open class DocumentGeneratorPlugin(
         @PluginActionProperty templateKey: String,
         @PluginActionProperty processVariableName: String
     ) {
+        warnIfNotAsync(execution)
         val csvString = generateDocumentContent(execution, templateKey, TEMPLATE_TYPE_CSV)
         ByteArrayOutputStream().use { outputStream ->
             generateCsv(csvString, outputStream)
@@ -101,7 +105,11 @@ open class DocumentGeneratorPlugin(
     }
 
     fun generatePdf(htmlString: String, out: OutputStream) {
-        val renderer = ITextRenderer()
+        val outputDevice = ITextOutputDevice(ITextRenderer.DEFAULT_DOTS_PER_POINT)
+        val renderer = ITextRenderer(
+            outputDevice,
+            TimeoutUserAgent(outputDevice, ITextRenderer.DEFAULT_DOTS_PER_PIXEL),
+        )
         val trimmedContent = htmlString.trim()
         val content = when {
             trimmedContent.isBlank() -> "<html><body></body></html>"
@@ -124,7 +132,7 @@ open class DocumentGeneratorPlugin(
     }
 
     fun generateCsv(csvString: String, out: OutputStream) {
-        OutputStreamWriter(out).use { writer ->
+        OutputStreamWriter(out, Charsets.UTF_8).use { writer ->
             val reader = StringReader(csvString)
 
             val parser = CSVParser.builder()
@@ -146,6 +154,16 @@ open class DocumentGeneratorPlugin(
                 printer.printRecord(headers.map { record[it] })
             }
             printer.flush()
+        }
+    }
+
+    private fun warnIfNotAsync(execution: DelegateExecution) {
+        if (Context.getJobExecutorContext() == null) {
+            logger.warn {
+                "Generating a document in activity '${execution.currentActivityId}' outside the job executor. " +
+                    "This blocks the request (and its database connection) that triggered it. " +
+                    "Mark the service task as asynchronous (asyncBefore) to run it in the background."
+            }
         }
     }
 

@@ -82,10 +82,10 @@ class TextTemplateValueResolver(
     }
 
     override fun getResolvableKeyOptions(documentDefinitionName: String): List<ValueResolverOption> {
-        val templateKeys = templateService.findTemplates(
+        val templateKeys = templateService.findTemplateKeys(
             caseDefinitionName = documentDefinitionName,
             templateType = TEMPLATE_TYPE_TEXT,
-        ).map { it.key }
+        ).content.map { it.key }
         return createFieldList(templateKeys)
     }
 

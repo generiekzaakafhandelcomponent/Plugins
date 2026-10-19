@@ -38,7 +38,7 @@ const mailTemplatePluginSpecification: PluginSpecification = {
       configurationTitleTooltip:
           'De naam van de huidige plug-in configuratie. Onder deze naam kan de configuratie worden gevonden in de rest van de applicatie.',
       generateMailContentDescription:
-          'Deze actie genereert de inhoud van een mail op basis van een sjabloon. De mail tekst wordt opgeslagen in een Proces Variabele.',
+          'Deze actie genereert de inhoud van een mail op basis van een sjabloon. De mail tekst wordt opgeslagen in een Proces Variabele. Gebruik deze actie als de mail eerst bekeken moet worden, bijvoorbeeld met de e-mailvoorbeeldcomponent. Een procesvariabele kan maximaal 4000 tekens bevatten; gebruik voor langere mails "Genereer Mailbestand".',
       generateMailFileDescription:
           'Deze actie genereert de inhoud van een mail en slaat het resultaat op in een tijdelijk bestand. Het ID van het bestand wordt opgeslagen in een Proces Variabele.',
       mailTemplateKey: 'Mail sjabloon',
@@ -52,13 +52,13 @@ const mailTemplatePluginSpecification: PluginSpecification = {
     en: {
       title: 'Mail Templates',
       'generate-mail-file': 'Generate Mail File',
-      'generate-mail-content': 'Generate Mail Content (deprecated)',
+      'generate-mail-content': 'Generate Mail Content',
       description: 'Create mail templates with Freemarker.',
       configurationTitle: 'Configuration Name',
       configurationTitleTooltip:
           'The name of the current plug-in configuration. The configuration can be found under this name in the rest of the application.',
       generateMailContentDescription:
-          'This action generates the content of an mail based on a template. The mail text is then stored in a Process Variable. This action is deprecated because the mail text can be bigger than a Process Variable can store. Please use action "Generate Mail File" instead',
+          'This action generates the content of a mail based on a template. The mail text is then stored in a Process Variable. Use this action when the mail has to be reviewed first, for example with the e-mail preview component. A Process Variable can hold at most 4000 characters; use "Generate Mail File" for longer mails.',
       generateMailFileDescription:
           'This action generates the content of an mail and saves the result in a temporary file. The file ID is then stored in a Process Variable.',
       mailTemplateKey: 'Mail Template',
@@ -78,7 +78,7 @@ const mailTemplatePluginSpecification: PluginSpecification = {
       configurationTitleTooltip:
           'Der Name der aktuellen Plug-in-Konfiguration. Unter diesem Namen kann die Konfiguration im Rest der Anwendung gefunden werden.',
       generateMailContentDescription:
-          'Diese Aktion generiert den Inhalt einer Mail basierend auf einer Vorlage. Der Mail-Text wird in einer Prozessvariablen gespeichert.',
+          'Diese Aktion generiert den Inhalt einer Mail basierend auf einer Vorlage. Der Mail-Text wird in einer Prozessvariablen gespeichert. Verwenden Sie diese Aktion, wenn die Mail zuerst geprüft werden muss, zum Beispiel mit der E-Mail-Vorschaukomponente. Eine Prozessvariable kann höchstens 4000 Zeichen enthalten; verwenden Sie für längere Mails "Mail-Datei generieren".',
       generateMailFileDescription:
           'Diese Aktion generiert den Inhalt einer Mail und speichert das Ergebnis in einer temporären Datei. Die Datei-ID wird in einer Prozessvariablen gespeichert.',
       mailTemplateKey: 'Mail-Vorlage',
