@@ -343,24 +343,28 @@ class PublicTaskService(
                 return taskNotAvailableResponse(e)
             }
 
+        // Marked before submitting: PublicTaskCompletedListener reads this flag while the task completes,
+        // which happens inside handleSubmission. Cleared again when the submission does not go through.
+        publicTaskRepository.save(publicTaskEntity.copy(isCompletedByPublicTask = true))
+
         val formSubmissionResult =
-            runWithoutAuthorization {
-                defaultFormSubmissionService.handleSubmission(
-                    processLinkId = camundaTask.processLinkId,
-                    formData = submission,
-                    documentId = publicTaskEntity.processBusinessKey,
-                    documentDefinitionName = null,
-                    taskInstanceId = publicTaskEntity.userTaskId.toString(),
-                )
+            try {
+                runWithoutAuthorization {
+                    defaultFormSubmissionService.handleSubmission(
+                        processLinkId = camundaTask.processLinkId,
+                        formData = submission,
+                        documentId = publicTaskEntity.processBusinessKey,
+                        documentDefinitionName = null,
+                        taskInstanceId = publicTaskEntity.userTaskId.toString(),
+                    )
+                }
+            } catch (e: Exception) {
+                publicTaskRepository.save(publicTaskEntity.copy(isCompletedByPublicTask = false))
+                throw e
             }
 
-        publicTaskRepository.save(
-            publicTaskEntity.copy(
-                isCompletedByPublicTask = formSubmissionResult.errors().isEmpty(),
-            ),
-        )
-
         if (formSubmissionResult.errors().isNotEmpty()) {
+            publicTaskRepository.save(publicTaskEntity.copy(isCompletedByPublicTask = false))
             return SERVER_SIDE_ERROR
         }
 
@@ -378,7 +382,55 @@ class PublicTaskService(
         val references = submittedFileReferences(submission)
         return references.storedResourceIds.all { isExistingValtimoResourceId(it) } &&
             references.uploadedHere.all { isUsableAttachmentOfThisCase(it, publicTaskEntity) } &&
-            references.temporaryResourceIds.none { isThisCasesAttachment(it, publicTaskEntity) == false }
+            references.temporaryResourceIds.none { isThisCasesAttachment(it, publicTaskEntity) == false } &&
+            wereShownInThePrefilledForm(references.storedResourceIds, publicTaskEntity)
+    }
+
+    /**
+     * An existing Valtimo resource may only come back when the public page was given it: a prefilled field
+     * holds the case's files under its `defaultValue`. Any other resource would let the link holder attach a
+     * file of another case to this one.
+     */
+    private fun wereShownInThePrefilledForm(
+        storedResourceIds: Set<String>,
+        publicTaskEntity: PublicTaskEntity,
+    ): Boolean {
+        if (storedResourceIds.isEmpty()) {
+            return true
+        }
+        val prefilledResourceIds =
+            try {
+                val taskData =
+                    runWithoutAuthorization {
+                        processLinkActivityService.openTask(publicTaskEntity.userTaskId).properties
+                            as FormTaskOpenResultProperties
+                    }
+                storedResourceIdsIn(taskData.prefilledForm)
+            } catch (e: Exception) {
+                logger.info(e) { "Refused a submission for user task ${publicTaskEntity.userTaskId}: form not available" }
+                return false
+            }
+        val allShown = prefilledResourceIds.containsAll(storedResourceIds)
+        if (!allShown) {
+            logger.info {
+                "Refused a submission for user task ${publicTaskEntity.userTaskId}: " +
+                    "a stored file reference that was not in the prefilled form"
+            }
+        }
+        return allShown
+    }
+
+    private fun storedResourceIdsIn(form: JsonNode): Set<String> {
+        val resourceIds = mutableSetOf<String>()
+
+        fun collectFrom(node: JsonNode) {
+            if (node.isObject) {
+                node.at(RESOURCE_ID_POINTER).takeIf { it.isTextual }?.let { resourceIds.add(it.textValue()) }
+            }
+            node.forEach { collectFrom(it) }
+        }
+        collectFrom(form)
+        return resourceIds
     }
 
     /** The ids UploadField acts on, kept apart because they are held to different standards. */

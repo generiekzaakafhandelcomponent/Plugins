@@ -68,7 +68,8 @@ the submission, exactly like an upload from a task inside Valtimo. Whatever alre
 - An upload field can be stricter than the process link with its own **Maximum File Size** and **File Pattern**
   settings, never more permissive.
 - The type of a file is detected from its content, not from its name.
-- A submission can only refer to files that were uploaded through the same link for the same case.
+- A submission can only refer to files that were uploaded through the same link for the same case, or to files
+  of the case that the form showed prefilled.
 - The Documenten API needs at least `informatieobjecttype` and `titel` in the **Attachment metadata**. Values can
   be fixed text or a reference such as `pv:informatieobjecttypeUrl` or `doc:/aanvraag/onderwerp`, resolved when
   the public task is created. The keys `filename`, `contentType`, `user`, `documentId`, `filePath` and

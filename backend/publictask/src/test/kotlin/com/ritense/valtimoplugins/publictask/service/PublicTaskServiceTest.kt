@@ -17,9 +17,11 @@
 package com.ritense.valtimoplugins.publictask.service
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.ritense.form.domain.FormTaskOpenResultProperties
 import com.ritense.form.service.impl.DefaultFormSubmissionService
 import com.ritense.form.web.rest.dto.FormSubmissionResult
+import com.ritense.valtimo.contract.result.OperationError
 import com.ritense.processlink.exception.ProcessLinkNotFoundException
 import com.ritense.processlink.service.ProcessLinkActivityService
 import com.ritense.processlink.web.rest.dto.ProcessLinkActivityResult
@@ -788,19 +790,77 @@ internal class PublicTaskServiceTest : BaseTest() {
     }
 
     @Test
-    fun `an existing Valtimo resource in a prefilled form is accepted on its UUID form alone`() {
+    fun `an existing Valtimo resource that the prefilled form showed is accepted`() {
         givenPublicTask()
-        givenAnOpenTask()
+        val resourceId = UUID.randomUUID().toString()
+        givenAnOpenTask(prefilledForm = aPrefilledFormWithStoredResource(resourceId))
 
-        // A resource id in UUID form is an existing Valtimo resource, which is how a prefilled field arrives.
+        val response =
+            publicTaskService.completeUserTaskWithPublicTaskSubmission(
+                PUBLIC_TASK_ID,
+                submissionWithStoredResource(resourceId),
+            )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        verifyNoInteractions(temporaryResourceStorageService)
+    }
+
+    @Test
+    fun `an existing Valtimo resource that the prefilled form did not show is refused`() {
+        givenPublicTask()
+        givenAnOpenTask(prefilledForm = aPrefilledFormWithStoredResource(UUID.randomUUID().toString()))
+
+        // A resource of another case: attaching it would link that case's file to this case's zaak.
         val response =
             publicTaskService.completeUserTaskWithPublicTaskSubmission(
                 PUBLIC_TASK_ID,
                 submissionWithStoredResource(UUID.randomUUID().toString()),
             )
 
+        assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+        verifyNoInteractions(defaultFormSubmissionService)
+    }
+
+    @Test
+    fun `the task is marked completed by the public task before the submission completes it`() {
+        givenPublicTask()
+        givenAnOpenTask()
+
+        val response =
+            publicTaskService.completeUserTaskWithPublicTaskSubmission(PUBLIC_TASK_ID, JsonNodeFactory.instance.objectNode())
+
+        // PublicTaskCompletedListener reads the flag while handleSubmission completes the task.
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        verifyNoInteractions(temporaryResourceStorageService)
+        val order = org.mockito.Mockito.inOrder(publicTaskRepository, defaultFormSubmissionService)
+        order.verify(publicTaskRepository).save(org.mockito.kotlin.check { assertThat(it.isCompletedByPublicTask).isTrue() })
+        order.verify(defaultFormSubmissionService).handleSubmission(any(), any(), anyOrNull(), anyOrNull(), anyOrNull())
+        verify(publicTaskRepository).save(any())
+    }
+
+    @Test
+    fun `a submission with errors leaves the task available`() {
+        givenPublicTask()
+        givenAnOpenTask(submissionErrors = listOf(mock()))
+
+        val response =
+            publicTaskService.completeUserTaskWithPublicTaskSubmission(PUBLIC_TASK_ID, JsonNodeFactory.instance.objectNode())
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+        assertThat(savedCompletionFlags()).containsExactly(true, false)
+    }
+
+    @Test
+    fun `a submission that fails leaves the task available`() {
+        givenPublicTask()
+        givenAnOpenTask()
+        whenever(defaultFormSubmissionService.handleSubmission(any(), any(), anyOrNull(), anyOrNull(), anyOrNull()))
+            .thenThrow(IllegalStateException("submission failed"))
+
+        assertThrows<IllegalStateException> {
+            publicTaskService.completeUserTaskWithPublicTaskSubmission(PUBLIC_TASK_ID, JsonNodeFactory.instance.objectNode())
+        }
+
+        assertThat(savedCompletionFlags()).containsExactly(true, false)
     }
 
     @Test
@@ -863,16 +923,43 @@ internal class PublicTaskServiceTest : BaseTest() {
                 .put("storage", PublicTaskAttachment.STORAGE_PROVIDER_NAME)
         }
 
+    /** A form whose upload field Valtimo prefilled with a file the case already holds. */
+    private fun aPrefilledFormWithStoredResource(resourceId: String): ObjectNode =
+        JsonNodeFactory.instance.objectNode().apply {
+            putArray("components")
+                .addObject()
+                .put("key", COMPONENT_KEY)
+                .put("type", "documenten-api-file")
+                .putArray("defaultValue")
+                .addObject()
+                .putObject("data")
+                .put("resourceId", resourceId)
+        }
+
+    private fun savedCompletionFlags(): List<Boolean> {
+        val captor = argumentCaptor<PublicTaskEntity>()
+        verify(publicTaskRepository, org.mockito.kotlin.atLeastOnce()).save(captor.capture())
+        return captor.allValues.map { it.isCompletedByPublicTask }
+    }
+
     private fun submissionWithStoredResource(resourceId: String) =
         JsonNodeFactory.instance.objectNode().apply {
             putArray("bijlagen").addObject().putObject("data").put("resourceId", resourceId)
         }
 
-    private fun givenAnOpenTask() {
-        whenever(processLinkActivityService.openTask(USER_TASK_ID))
-            .thenReturn(ProcessLinkActivityResult(PROCESS_LINK_ID, "form", Any()))
+    private fun givenAnOpenTask(
+        prefilledForm: ObjectNode = JsonNodeFactory.instance.objectNode(),
+        submissionErrors: List<OperationError> = emptyList(),
+    ) {
+        whenever(processLinkActivityService.openTask(USER_TASK_ID)).thenReturn(
+            ProcessLinkActivityResult(
+                PROCESS_LINK_ID,
+                "form",
+                FormTaskOpenResultProperties(formDefinitionId = FORM_DEFINITION_ID, prefilledForm = prefilledForm),
+            ),
+        )
         val submissionResult: FormSubmissionResult = mock()
-        whenever(submissionResult.errors()).thenReturn(emptyList())
+        whenever(submissionResult.errors()).thenReturn(submissionErrors)
         whenever(
             defaultFormSubmissionService.handleSubmission(any(), any(), anyOrNull(), anyOrNull(), anyOrNull()),
         ).thenReturn(submissionResult)
