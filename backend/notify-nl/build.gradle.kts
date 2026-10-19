@@ -34,6 +34,16 @@ dependencies {
     compileOnly("com.ritense.valtimo:value-resolver")
 
     implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
+
+    testImplementation("com.ritense.valtimo:core")
+    testImplementation("com.ritense.valtimo:document")
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:process-document")
+    testImplementation("com.ritense.valtimo:temporary-resource-storage")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 apply(from = "gradle/publishing.gradle")
