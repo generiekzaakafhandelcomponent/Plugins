@@ -1,10 +1,14 @@
 package com.ritense.valtimoplugins.openklant.resolver
 
 import com.ritense.document.domain.impl.JsonSchemaDocumentId
+import com.ritense.plugin.domain.PluginConfiguration
+import com.ritense.plugin.service.PluginService
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimoplugins.openklant.dto.Klantcontact
+import com.ritense.valtimoplugins.openklant.model.KlantcontactOptions
 import com.ritense.valtimoplugins.openklant.model.OpenKlantProperties
+import com.ritense.valtimoplugins.openklant.plugin.OpenKlantPlugin
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
 import com.ritense.zakenapi.domain.ZaakResponse
@@ -15,10 +19,12 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import io.mockk.slot
 import io.mockk.verify
 import org.camunda.bpm.engine.delegate.VariableScope
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -34,7 +40,7 @@ class OpenKlantValueResolverFactoryTest {
     private lateinit var openKlantService: OpenKlantService
     private lateinit var reflectionUtil: ReflectionUtil
     private lateinit var variableScope: VariableScope
-    private lateinit var properties: OpenKlantProperties
+    private lateinit var pluginService: PluginService
 
     @BeforeEach
     fun setup() {
@@ -43,7 +49,15 @@ class OpenKlantValueResolverFactoryTest {
         openKlantService = mockk()
         reflectionUtil = mockk()
         variableScope = mockk()
-        properties = OpenKlantProperties(URI.create("https://test.klantinteracties.org"), "openklant-token")
+        pluginService = mockk()
+
+        val plugin = mockk<OpenKlantPlugin>()
+        every { plugin.klantinteractiesUrl } returns URI.create("https://test.klantinteracties.org")
+        every { plugin.token } returns "openklant-token"
+        val configuration = pluginConfiguration("Open Klant")
+        every { pluginService.findPluginConfigurations(OpenKlantPlugin::class.java, any()) } returns
+            listOf(configuration)
+        every { pluginService.createInstance(configuration) } returns plugin
 
         factory =
             OpenKlantValueResolverFactory(
@@ -51,7 +65,7 @@ class OpenKlantValueResolverFactoryTest {
                 zaakDocumentService = zaakDocumentService,
                 openKlantService = openKlantService,
                 reflectionUtil = reflectionUtil,
-                properties = properties,
+                pluginService = pluginService,
             )
     }
 
@@ -300,6 +314,114 @@ class OpenKlantValueResolverFactoryTest {
     }
 
     @Test
+    fun `klantcontacten should resolve to an empty list when no Open Klant configuration exists`() {
+        // Arrange
+        val documentId = stubZaakForDocument()
+        every { pluginService.findPluginConfigurations(OpenKlantPlugin::class.java, any()) } returns emptyList()
+
+        // Act & Assert
+        assertEquals(emptyList<Any>(), factory.createResolver(documentId).apply("klantcontacten"))
+
+        val exception = assertThrows<IllegalStateException> { factory.openKlantProperties() }
+        assertEquals(OpenKlantValueResolverFactory.MISSING_CONFIGURATION_MESSAGE, exception.message)
+    }
+
+    @Test
+    fun `klantcontactenOrNull should resolve to null when no Open Klant configuration exists`() {
+        // Arrange
+        val documentId = stubZaakForDocument()
+        every { pluginService.findPluginConfigurations(OpenKlantPlugin::class.java, any()) } returns emptyList()
+
+        // Act & Assert
+        assertNull(factory.createResolver(documentId).apply("klantcontactenOrNull"))
+
+        val exception = assertThrows<IllegalStateException> { factory.openKlantProperties() }
+        assertEquals(OpenKlantValueResolverFactory.MISSING_CONFIGURATION_MESSAGE, exception.message)
+    }
+
+    @Test
+    fun `klantcontacten should fall back to the environment properties when no plugin configuration exists`() {
+        // Arrange
+        every { pluginService.findPluginConfigurations(OpenKlantPlugin::class.java, any()) } returns emptyList()
+        val factory = factoryWith(environmentProperties = ENVIRONMENT_PROPERTIES)
+
+        // Act
+        val options = captureOptionsUsedBy(factory)
+
+        // Assert
+        assertEquals(ENVIRONMENT_PROPERTIES.klantinteractiesUrl, options.klantinteractiesUrl)
+        assertEquals(ENVIRONMENT_PROPERTIES.token, options.token)
+    }
+
+    @Test
+    fun `klantcontacten should let the plugin configuration override the environment properties`() {
+        // Arrange
+        val factory = factoryWith(environmentProperties = ENVIRONMENT_PROPERTIES)
+
+        // Act
+        val options = captureOptionsUsedBy(factory)
+
+        // Assert
+        assertEquals(URI.create("https://test.klantinteracties.org"), options.klantinteractiesUrl)
+        assertEquals("openklant-token", options.token)
+    }
+
+    @Test
+    fun `klantcontacten should resolve to an empty list when multiple Open Klant configurations exist`() {
+        // Arrange
+        every { pluginService.findPluginConfigurations(OpenKlantPlugin::class.java, any()) } returns
+            listOf(pluginConfiguration("Open Klant A"), pluginConfiguration("Open Klant B"))
+        val factory = factoryWith(environmentProperties = ENVIRONMENT_PROPERTIES)
+        val documentId = stubZaakForDocument()
+
+        // Act & Assert
+        // The environment properties are configured, but an ambiguous plugin configuration still
+        // takes precedence over them rather than falling through to the fallback.
+        assertEquals(emptyList<Any>(), factory.createResolver(documentId).apply("klantcontacten"))
+
+        val exception = assertThrows<IllegalStateException> { factory.openKlantProperties() }
+        assertEquals(
+            OpenKlantValueResolverFactory.multipleConfigurationsMessage(listOf("Open Klant A", "Open Klant B")),
+            exception.message,
+        )
+    }
+
+    private fun pluginConfiguration(title: String): PluginConfiguration {
+        val configuration = mockk<PluginConfiguration>()
+        every { configuration.title } returns title
+        return configuration
+    }
+
+    private fun factoryWith(environmentProperties: OpenKlantProperties?) =
+        OpenKlantValueResolverFactory(
+            processDocumentService = processDocumentService,
+            zaakDocumentService = zaakDocumentService,
+            openKlantService = openKlantService,
+            reflectionUtil = reflectionUtil,
+            pluginService = pluginService,
+            openKlantPropertiesFromEnvironmentVariables = environmentProperties,
+        )
+
+    private fun stubZaakForDocument(): String {
+        val documentId = UUID.randomUUID().toString()
+        val mockZaak = mockk<ZaakResponse>()
+        every { mockZaak.uuid } returns UUID.randomUUID()
+        every { zaakDocumentService.getZaakByDocumentIdOrThrow(UUID.fromString(documentId)) } returns mockZaak
+        return documentId
+    }
+
+    private fun captureOptionsUsedBy(factory: OpenKlantValueResolverFactory): KlantcontactOptions {
+        val documentId = stubZaakForDocument()
+        val options = slot<KlantcontactOptions>()
+        coEvery { openKlantService.getAllKlantcontacten(capture(options)) } returns emptyList()
+        every { reflectionUtil.deepReflectedMapOf(any()) } returns emptyMap<String, Any>()
+
+        factory.createResolver(documentId).apply("klantcontacten")
+
+        return options.captured
+    }
+
+    @Test
     fun `handleValues should throw NotImplementedError`() {
         // Arrange
         val processInstanceId = UUID.randomUUID().toString()
@@ -309,5 +431,13 @@ class OpenKlantValueResolverFactoryTest {
         assertThrows<NotImplementedError> {
             factory.handleValues(processInstanceId, variableScope, values)
         }
+    }
+
+    companion object {
+        private val ENVIRONMENT_PROPERTIES =
+            OpenKlantProperties(
+                klantinteractiesUrl = URI.create("https://environment.klantinteracties.org"),
+                token = "environment-token",
+            )
     }
 }

@@ -11,6 +11,7 @@ import com.ritense.valtimoplugins.openklant.service.KlantcontactFactory
 import com.ritense.valtimoplugins.openklant.service.OpenKlantService
 import com.ritense.valtimoplugins.openklant.service.PartijFactory
 import com.ritense.valtimoplugins.openklant.util.ReflectionUtil
+import com.ritense.valtimoplugins.openklant.util.trimToNull
 import com.ritense.zakenapi.service.ZaakDocumentService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.AutoConfiguration
@@ -62,17 +63,27 @@ class OpenKlantAutoConfiguration {
         zaakDocumentService: ZaakDocumentService,
         openKlantService: OpenKlantService,
         reflectionUtil: ReflectionUtil,
-        @Value("\${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL}")
-        klantinteractieUrl: String,
-        @Value("\${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN}")
-        openKlantToken: String,
+        pluginService: PluginService,
+        @Value("\${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_KLANTINTERACTIES_URL:}")
+        klantinteractiesUrl: String,
+        @Value("\${AUTODEPLOYMENT_PLUGINCONFIG_OPENKLANT_AUTHORIZATION_TOKEN:}")
+        token: String,
     ) = OpenKlantValueResolverFactory(
         processDocumentService,
         zaakDocumentService,
         openKlantService,
         reflectionUtil,
-        OpenKlantProperties(URI.create(klantinteractieUrl), openKlantToken),
+        pluginService,
+        openKlantEnvironmentProperties(klantinteractiesUrl, token),
     )
+
+    private fun openKlantEnvironmentProperties(
+        klantinteractiesUrl: String,
+        token: String,
+    ): OpenKlantProperties? =
+        klantinteractiesUrl.trimToNull()?.let { url ->
+            token.trimToNull()?.let { OpenKlantProperties(URI.create(url), it) }
+        }
 
     @Bean
     fun reflectionUtil() = ReflectionUtil()
