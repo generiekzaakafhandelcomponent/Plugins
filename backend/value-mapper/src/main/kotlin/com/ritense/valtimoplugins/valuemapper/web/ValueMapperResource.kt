@@ -80,9 +80,9 @@ class ValueMapperResource(
     ): ResponseEntity<ValueMapperTemplateDTO> {
         if (template.key.isBlank() || key != template.key) {
             throw BadRequestAlertException(
-                "The template key ${template.key} is not equal to the path variabele",
+                "The template key ${template.key} is not equal to the path variable",
                 ValueMapperTemplate::class.simpleName,
-                "keyNOtEqual",
+                "keyNotEqual",
             )
         }
 
