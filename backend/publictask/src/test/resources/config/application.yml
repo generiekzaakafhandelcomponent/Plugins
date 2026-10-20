@@ -1,0 +1,44 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:54341/publictask-test
+    username: test-user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: false
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    show_sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        hbm2ddl.auto: none
+        generate_statistics: false
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+        connection:
+          provider_disables_autocommit: false
+    hibernate:
+      ddl-auto: none
+spring-actuator:
+  username: admin
+  password: password
+valtimo:
+  url: http://localhost:8080
+  database: postgres
+  plugin:
+    encryption-secret: "abcdefghijklmnop"
+
+camunda:
+  bpm:
+    generic-properties:
+      properties:
+        enforceHistoryTimeToLive: false

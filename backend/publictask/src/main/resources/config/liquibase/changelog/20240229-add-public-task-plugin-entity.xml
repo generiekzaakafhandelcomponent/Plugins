@@ -41,4 +41,53 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="Ritense">
+        <modifyDataType tableName="public_task_plugin_entity"
+                        columnName="process_business_key"
+                        newDataType="VARCHAR(255)"/>
+    </changeSet>
+
+    <!-- Bounds what the unauthenticated upload endpoint can add, across restarts and instances. -->
+    <changeSet id="3" author="Ritense">
+        <addColumn tableName="public_task_plugin_entity">
+            <column name="attachment_count" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- What this task's upload endpoint accepts. Older tasks get the plugin's own defaults. -->
+    <changeSet id="4" author="Ritense">
+        <addColumn tableName="public_task_plugin_entity">
+            <column name="max_attachments" type="INT" defaultValueNumeric="10">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_attachment_size_in_bytes" type="BIGINT" defaultValueNumeric="10485760">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accepted_mime_types" type="VARCHAR(1024)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- The metadata every file uploaded through this task is filed with, as JSON. Older tasks carry none. -->
+    <changeSet id="5" author="Ritense">
+        <addColumn tableName="public_task_plugin_entity">
+            <column name="document_metadata" type="VARCHAR(4096)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- The address the link of this task was built with. Older tasks fall back to the application setting. -->
+    <changeSet id="6" author="Ritense">
+        <addColumn tableName="public_task_plugin_entity">
+            <column name="base_url" type="VARCHAR(512)" defaultValue="">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

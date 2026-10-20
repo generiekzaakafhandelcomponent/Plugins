@@ -17,7 +17,42 @@
 package com.ritense.valtimoplugins.publictask.repository
 
 import com.ritense.valtimoplugins.publictask.domain.PublicTaskEntity
-import java.util.UUID
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
+import org.springframework.transaction.annotation.Propagation.REQUIRES_NEW
+import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
-interface PublicTaskRepository : JpaRepository<PublicTaskEntity, UUID>
+interface PublicTaskRepository : JpaRepository<PublicTaskEntity, UUID> {
+    /** Claims a slot in its own transaction, so simultaneous uploads cannot both take the last free one. */
+    @Transactional(propagation = REQUIRES_NEW)
+    @Modifying
+    @Query(
+        """
+        update PublicTaskEntity publicTask
+           set publicTask.attachmentCount = publicTask.attachmentCount + 1
+         where publicTask.publicTaskId = :publicTaskId
+           and publicTask.attachmentCount < publicTask.maxAttachments
+        """,
+    )
+    fun reserveAttachmentSlot(
+        @Param("publicTaskId") publicTaskId: UUID,
+    ): Int
+
+    /** Gives back a slot claimed by [reserveAttachmentSlot] for an upload that was refused. */
+    @Transactional(propagation = REQUIRES_NEW)
+    @Modifying
+    @Query(
+        """
+        update PublicTaskEntity publicTask
+           set publicTask.attachmentCount = publicTask.attachmentCount - 1
+         where publicTask.publicTaskId = :publicTaskId
+           and publicTask.attachmentCount > 0
+        """,
+    )
+    fun releaseAttachmentSlot(
+        @Param("publicTaskId") publicTaskId: UUID,
+    ): Int
+}

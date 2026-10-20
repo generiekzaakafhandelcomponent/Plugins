@@ -47,6 +47,7 @@ server:
     min-response-size: 1024
 
 valtimo:
+  url: http://localhost:8080
   database: postgres
   app:
     scheme: http

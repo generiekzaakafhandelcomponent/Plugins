@@ -26,7 +26,7 @@ dockerCompose {
 val freemarkerVersion: String by project
 val kotlinLoggingVersion: String by project
 val mockitoKotlinVersion: String by project
-val okhttpVersion: String by project
+val apacheTikaVersion: String by project
 
 dependencies {
     compileOnly("com.ritense.valtimo:contract")
@@ -39,6 +39,7 @@ dependencies {
     compileOnly("com.ritense.valtimo:process-document")
     compileOnly("com.ritense.valtimo:audit")
     compileOnly("com.ritense.valtimo:authorization")
+    compileOnly("com.ritense.valtimo:temporary-resource-storage")
     compileOnly("com.ritense.valtimo:value-resolver")
 
     compileOnly("org.springframework.boot:spring-boot-starter-webflux")
@@ -52,10 +53,24 @@ dependencies {
     compileOnly("com.fasterxml.jackson.core:jackson-annotations")
     compileOnly("com.fasterxml.jackson.core:jackson-core")
 
+    // Detects the type of an uploaded file from its content. The version Valtimo 12.48 itself brings along.
+    implementation("org.apache.tika:tika-core:$apacheTikaVersion")
+
     // Templating engine
     implementation("org.freemarker:freemarker:$freemarkerVersion")
 
     // Testing
+    testImplementation("com.ritense.valtimo:contract")
+    testImplementation("com.ritense.valtimo:core")
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:form")
+    testImplementation("com.ritense.valtimo:audit")
+    testImplementation("com.ritense.valtimo:authorization")
+    testImplementation("com.ritense.valtimo:temporary-resource-storage")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("com.ritense.valtimo:document")
     testImplementation("com.ritense.valtimo:local-resource")
     testImplementation("com.ritense.valtimo:process-document")
@@ -75,9 +90,6 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
-
-    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
-    testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

@@ -17,6 +17,7 @@
 package com.ritense.valtimoplugins.publictask.htmlrenderer.config
 
 import freemarker.cache.ClassTemplateLoader
+import freemarker.core.HTMLOutputFormat
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
 
@@ -25,5 +26,8 @@ class FreemarkerConfig : Configuration(VERSION_2_3_31) {
         templateLoader = ClassTemplateLoader(javaClass, "/config/template")
         defaultEncoding = Charsets.UTF_8.toString()
         templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
+        // Templates render HTML that is served to the public, so every interpolation is HTML escaped unless the
+        // template asks for a different encoder. Without this, a value taken from case data can inject markup.
+        outputFormat = HTMLOutputFormat.INSTANCE
     }
 }
