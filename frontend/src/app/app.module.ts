@@ -125,6 +125,8 @@ import {
 import {
     HaalCentraalBrpPluginModule,
     haalCentraalBrpPluginSpecification,
+    HaalCentraalBrpPersonenPluginModule,
+    haalCentraalBrpPersonenPluginSpecification,
 } from "@valtimo-plugins/haal-centraal";
 import {
     haalCentraalBagPluginSpecification
@@ -208,6 +210,7 @@ export function tabsFactory() {
         ValtimoLlmPluginModule,
         HaalCentraalBrpPluginModule,
         HaalCentraalBagPluginModule,
+        HaalCentraalBrpPersonenPluginModule,
         HaalCentraalBrpAuthPluginModule,
         SamplePluginModule,
         SmtpMailPluginModule,
@@ -296,6 +299,7 @@ export function tabsFactory() {
             notifyNlPluginSpecification,
             haalCentraalBrpPluginSpecification,
             haalCentraalBagPluginSpecification,
+            haalCentraalBrpPersonenPluginSpecification,
             haalCentraalBrpAuthPluginSpecification,
             objectManagementPluginSpecification,
             objectTokenAuthenticationPluginSpecification,
