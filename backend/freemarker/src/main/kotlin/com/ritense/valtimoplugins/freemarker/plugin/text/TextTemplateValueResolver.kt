@@ -21,6 +21,7 @@ import com.ritense.document.service.DocumentService
 import com.ritense.processdocument.domain.impl.CamundaProcessInstanceId
 import com.ritense.processdocument.service.ProcessDocumentService
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
+import com.ritense.valtimoplugins.freemarker.model.CircularTemplateReferenceException
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE
 import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_TEXT
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
@@ -94,17 +95,28 @@ class TextTemplateValueResolver(
         processVariables: Map<String, Any?> = emptyMap()
     ): Function<String, Any?> {
         return Function { requestedValue ->
-            templateService.generate(
-                templateKey = requestedValue,
-                templateType = TEMPLATE_TYPE_TEXT,
-                document = document,
-                processVariables = processVariables,
-                missingPlaceholderStrategy = REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE,
-            )
+            // A template that (indirectly) uses itself would recurse until the stack overflows
+            val generating = templatesBeingGenerated.get()
+            if (!generating.add(requestedValue)) {
+                throw CircularTemplateReferenceException(requestedValue)
+            }
+            try {
+                templateService.generate(
+                    templateKey = requestedValue,
+                    templateType = TEMPLATE_TYPE_TEXT,
+                    document = document,
+                    processVariables = processVariables,
+                    missingPlaceholderStrategy = REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE,
+                )
+            } finally {
+                generating.remove(requestedValue)
+            }
         }
     }
 
     companion object {
         const val PREFIX = "template"
+
+        private val templatesBeingGenerated = ThreadLocal.withInitial { mutableSetOf<String>() }
     }
 }

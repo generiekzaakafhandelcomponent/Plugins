@@ -23,6 +23,7 @@ import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.SH
 import com.ritense.valtimoplugins.freemarker.plugin.documentgenerator.DocumentGeneratorPlugin
 import com.ritense.valtimoplugins.freemarker.plugin.web.rest.dto.TemplatePreviewRequest
 import com.ritense.valtimoplugins.freemarker.service.TemplateService
+import java.io.ByteArrayOutputStream
 import java.net.URLConnection
 import org.springframework.http.ContentDisposition
 import org.springframework.http.MediaType
@@ -33,7 +34,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 
 @RestController
 @SkipComponentScan
@@ -46,7 +46,7 @@ class DocumentGeneratorResource(
     @PostMapping("/v1/template/preview")
     fun getTemplatePreview(
         @RequestBody request: TemplatePreviewRequest,
-    ): ResponseEntity<StreamingResponseBody> {
+    ): ResponseEntity<ByteArray> {
 
         val documentGeneratorPlugin = pluginService.createInstance(DocumentGeneratorPlugin::class.java) { true }
             ?: throw RuntimeException("ERROR: Missing plugin configuration: 'Document generator'.")
@@ -54,7 +54,8 @@ class DocumentGeneratorResource(
         val preview = templateService.generate(
             templateName = request.fileName,
             templateContent = request.content,
-            missingPlaceholderStrategy = SHOW_MISSING_PLACEHOLDER
+            missingPlaceholderStrategy = SHOW_MISSING_PLACEHOLDER,
+            templateType = request.fileName.substringAfterLast('.', ""),
         )
 
         val fileMediaType = try {
@@ -63,14 +64,16 @@ class DocumentGeneratorResource(
             APPLICATION_OCTET_STREAM
         }
 
-        val stream = StreamingResponseBody { out ->
+        // Rendered before responding, so a failure is an error response instead of a broken download
+        val content = ByteArrayOutputStream().use { out ->
             if (fileMediaType == APPLICATION_PDF) {
                 documentGeneratorPlugin.generatePdf(preview, out)
             } else if (fileMediaType.subtype == "csv") {
                 documentGeneratorPlugin.generateCsv(preview, out)
             } else {
-                out.use { it.write(preview.toByteArray()) }
+                out.write(preview.toByteArray())
             }
+            out.toByteArray()
         }
 
         return ResponseEntity.ok()
@@ -80,6 +83,6 @@ class DocumentGeneratorResource(
                     .build()
             }
             .contentType(fileMediaType)
-            .body(stream)
+            .body(content)
     }
 }

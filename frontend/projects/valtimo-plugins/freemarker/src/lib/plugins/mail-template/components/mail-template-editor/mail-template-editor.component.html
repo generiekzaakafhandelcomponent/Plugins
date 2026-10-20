@@ -42,7 +42,7 @@
             ></valtimo-editor>
         </cds-tab>
         <cds-tab [heading]="'Viewer'" (selected)="onSelectedTabViewer()">
-            <iframe title="HTML Viewer" id="html-viewer-iframe">
+            <iframe title="HTML Viewer" id="html-viewer-iframe" sandbox="">
             </iframe>
         </cds-tab>
     </cds-tabs>

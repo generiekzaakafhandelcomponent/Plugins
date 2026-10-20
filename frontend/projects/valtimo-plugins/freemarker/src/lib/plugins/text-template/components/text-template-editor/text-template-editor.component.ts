@@ -121,6 +121,7 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
                         key: templateKey,
                         caseDefinitionName,
                         type: 'text',
+                        metadata: this.template$.value?.metadata,
                         content: updatedModelValue,
                     }
                 )
@@ -154,9 +155,14 @@ export class TextTemplateEditorComponent implements OnInit, AfterViewInit, OnDes
                 caseDefinitionName,
                 type: 'text',
                 templates
-            }).pipe(take(1)).subscribe(_ =>
-                this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`])
-            )
+            }).pipe(take(1)).subscribe({
+                next: () => this.router.navigate([`/dossier-management/dossier/${caseDefinitionName}`]),
+                error: () => {
+                    this.enableMore();
+                    this.enableSave();
+                    this.enableEditor();
+                },
+            })
         );
     }
 

@@ -2,6 +2,15 @@
 
 Contains three plugins which all use Freemarker.
 
+Mail and PDF templates escape every value they insert as HTML, so `Smith & Sons` stays readable and a value can't add
+markup to the mail or PDF. To insert a value that is HTML on purpose, write `${value?no_esc}`. Templates that already
+escape with `?html` or `<#escape>` keep working as before, but then none of their values is escaped automatically and
+they can't use `?no_esc`; remove `?html` and `<#escape>` to have the template escaped. CSV templates escape tabs, line
+breaks, quotes and backslashes in a value, so it stays in one field. A backslash written in the CSV template itself
+starts an escape sequence (`\t` is a tab, `\n` a line break, `\r` a carriage return, `\b` a backspace, `\f` a form
+feed, `\\` a backslash). A single backslash at the end of a line joins it to the next line, and at the end of the
+template it makes the CSV generation fail. Text templates don't escape.
+
 ## Plugin 1: Mail Template Plugin
 
 For creating HTML mail templates with Freemarker.

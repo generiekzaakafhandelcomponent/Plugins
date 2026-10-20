@@ -16,8 +16,8 @@
 
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators, AbstractControl} from '@angular/forms';
-import {TemplateMetadataModal} from '../../../../models';
-import {CARBON_CONSTANTS, KeyGeneratorService} from '@valtimo/components';
+import {TEMPLATE_KEY_PATTERN, TemplateMetadataModal} from '../../../../models';
+import {CARBON_CONSTANTS} from '@valtimo/components';
 import {ButtonModule, InputModule, ModalModule} from 'carbon-components-angular';
 import {TranslateModule} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
@@ -48,7 +48,7 @@ export class MailTemplateAddEditModalComponent implements OnInit {
     @Output() closeEvent = new EventEmitter<{ key: string; metadata?: any } | null>();
 
     public form = this.fb.group({
-        key: this.fb.control('', Validators.required),
+        key: this.fb.control('', [Validators.required, Validators.pattern(TEMPLATE_KEY_PATTERN)]),
     });
 
     private _defaultKeyValue!: string;
@@ -59,7 +59,6 @@ export class MailTemplateAddEditModalComponent implements OnInit {
 
     constructor(
         private readonly fb: FormBuilder,
-        private readonly keyGeneratorService: KeyGeneratorService,
     ) {
     }
 
@@ -76,7 +75,7 @@ export class MailTemplateAddEditModalComponent implements OnInit {
             return;
         }
 
-        this.closeEvent.emit({key: this.keyGeneratorService.getUniqueKey(this.key.value, [])});
+        this.closeEvent.emit({key: this.key.value});
         this.resetForm();
     }
 

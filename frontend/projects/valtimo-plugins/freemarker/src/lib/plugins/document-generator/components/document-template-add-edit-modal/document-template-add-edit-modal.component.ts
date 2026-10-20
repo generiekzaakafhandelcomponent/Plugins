@@ -16,8 +16,8 @@
 
 import {Component, EventEmitter, Input, OnInit, Output,} from '@angular/core';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {TemplateMetadataModal, TemplateType} from '../../../../models';
-import {CARBON_CONSTANTS, KeyGeneratorService, ValtimoCdsModalDirectiveModule} from '@valtimo/components';
+import {TEMPLATE_KEY_PATTERN, TemplateMetadataModal, TemplateType} from '../../../../models';
+import {CARBON_CONSTANTS, ValtimoCdsModalDirectiveModule} from '@valtimo/components';
 import {CommonModule} from '@angular/common';
 import {ButtonModule, ComboBoxModule, DropdownModule, InputModule, ListItem, ModalModule} from 'carbon-components-angular';
 import {TranslateModule} from '@ngx-translate/core';
@@ -56,7 +56,7 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
     @Output() closeEvent = new EventEmitter<{ key: string; type: TemplateType } | null>();
 
     public form = this.fb.group({
-        key: this.fb.control('', Validators.required),
+        key: this.fb.control('', [Validators.required, Validators.pattern(TEMPLATE_KEY_PATTERN)]),
         type: this.fb.control(undefined, Validators.required),
     });
 
@@ -75,7 +75,6 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
 
     constructor(
         private readonly fb: FormBuilder,
-        private readonly keyGeneratorService: KeyGeneratorService,
     ) {
     }
 
@@ -103,7 +102,7 @@ export class DocumentTemplateAddEditModalComponent implements OnInit {
         }
 
         this.closeEvent.emit({
-            key: this.keyGeneratorService.getUniqueKey(this.key.value, []),
+            key: this.key.value,
             type: this.type.value
         });
         this.resetForm();

@@ -133,27 +133,16 @@ open class DocumentGeneratorPlugin(
 
     fun generateCsv(csvString: String, out: OutputStream) {
         OutputStreamWriter(out, Charsets.UTF_8).use { writer ->
-            val reader = StringReader(csvString)
-
-            val parser = CSVParser.builder()
-                .setReader(reader)
-                .setFormat(
-                    CSVFormat.TDF.builder().setHeader()
-                        .setSkipHeaderRecord(true).get()
-                )
+            // Every row as it is, so duplicate or blank column names and short rows don't lose values
+            CSVParser.builder()
+                .setReader(StringReader(csvString))
+                .setFormat(CSV_TEMPLATE_FORMAT)
                 .get()
-            val headers = parser.headerNames
-
-            val printer = CSVPrinter(
-                writer,
-                CSVFormat.TDF.builder()
-                    .setHeader(*headers.toTypedArray())
-                    .get()
-            )
-            parser.forEach { record ->
-                printer.printRecord(headers.map { record[it] })
-            }
-            printer.flush()
+                .use { parser ->
+                    val printer = CSVPrinter(writer, CSVFormat.TDF)
+                    parser.forEach { record -> printer.printRecord(record) }
+                    printer.flush()
+                }
         }
     }
 
@@ -186,5 +175,10 @@ open class DocumentGeneratorPlugin(
 
     companion object {
         val logger = KotlinLogging.logger {}
+
+        // Reads back the values TsvOutputFormat escaped
+        private val CSV_TEMPLATE_FORMAT = CSVFormat.TDF.builder()
+            .setEscape('\\')
+            .get()
     }
 }

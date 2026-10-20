@@ -111,6 +111,15 @@ class DocumentGeneratorPluginTest {
     }
 
     @Test
+    fun `should keep every column of a csv with repeated column names and short rows`() {
+        val out = ByteArrayOutputStream()
+
+        plugin.generateCsv("name\tcity\tname\nAnna\tAmsterdam\tBakker\nBram\n", out)
+
+        assertEquals("name\tcity\tname\r\nAnna\tAmsterdam\tBakker\r\nBram\r\n", out.toString(Charsets.UTF_8))
+    }
+
+    @Test
     fun `should warn when generating outside the job executor`() {
         plugin.generateCsv(execution(), "report", "reportId")
 
