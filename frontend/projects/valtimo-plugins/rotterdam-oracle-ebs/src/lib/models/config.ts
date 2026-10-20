@@ -38,12 +38,19 @@ interface JournaalpostOpvoerenConfig {
     regelsViaResolver?: string;
 }
 
+interface BronspecifiekeWaarde {
+    naam: string;
+    waarde: string;
+    volgorde: number;
+}
+
 interface JournaalpostRegel {
     grootboekSleutel: string;
     bronSleutel: string;
     boekingType: string;
     bedrag: string;
     omschrijving?: string;
+    bronspecifiekeWaarden?: BronspecifiekeWaarde[];
 }
 
 interface VerkoopfactuurOpvoerenConfig {
@@ -139,6 +146,7 @@ enum Grootboek {
 export {
     RotterdamEsbConfig,
     JournaalpostOpvoerenConfig,
+    BronspecifiekeWaarde,
     JournaalpostRegel,
     VerkoopfactuurOpvoerenConfig,
     AdresLocatie,

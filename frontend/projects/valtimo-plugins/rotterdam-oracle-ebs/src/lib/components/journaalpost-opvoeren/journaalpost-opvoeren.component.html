@@ -142,67 +142,127 @@
                 <div formArrayName="regels" class="lines-wrapper">
                     <div class="line-wrapper"
                          *ngFor="let line of lines.controls; let i = index">
-                        <app-input-field
+                        <div class="line-fields">
+                            <app-input-field
+                                  [pluginId]="pluginId"
+                                  [formGroup]="line"
+                                  controlName="bronSleutel"
+                                  wrapperClass="line-field-wrapper"
+                                  title="journaalpost.regel.bronSleutel"
+                                  [required]="false"
+                            ></app-input-field>
+                            <app-input-field
                                 [pluginId]="pluginId"
                                 [formGroup]="line"
-                                controlName="bronSleutel"
+                                controlName="grootboekSleutel"
                                 wrapperClass="line-field-wrapper"
-                                title="journaalpost.regel.bronSleutel"
+                                title="journaalpost.regel.grootboekSleutel"
                                 [required]="false"
-                        ></app-input-field>
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="grootboekSleutel"
-                            wrapperClass="line-field-wrapper"
-                            title="journaalpost.regel.grootboekSleutel"
-                            [required]="false"
-                        ></app-input-field>
+                            ></app-input-field>
 
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="boekingType"
-                            wrapperClass="line-field-wrapper"
-                            title="journaalpost.regel.boekingType"
-                            tooltip="journaalpost.regel.boekingType.tooltip"
-                            [required]="true"
-                            [presets]="boekingTypeItems"
-                        ></app-input-field>
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="boekingType"
+                                wrapperClass="line-field-wrapper"
+                                title="journaalpost.regel.boekingType"
+                                tooltip="journaalpost.regel.boekingType.tooltip"
+                                [required]="true"
+                                [presets]="boekingTypeItems"
+                            ></app-input-field>
 
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="omschrijving"
-                            wrapperClass="line-field-wrapper"
-                            title="journaalpost.regel.omschrijving"
-                            [required]="false"
-                        ></app-input-field>
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="omschrijving"
+                                wrapperClass="line-field-wrapper"
+                                title="journaalpost.regel.omschrijving"
+                                [required]="false"
+                            ></app-input-field>
 
-                        <app-input-field
-                            [pluginId]="pluginId"
-                            [formGroup]="line"
-                            controlName="bedrag"
-                            wrapperClass="line-field-wrapper"
-                            title="journaalpost.regel.bedrag"
-                            [required]="true"
-                        ></app-input-field>
+                            <app-input-field
+                                [pluginId]="pluginId"
+                                [formGroup]="line"
+                                controlName="bedrag"
+                                wrapperClass="line-field-wrapper"
+                                title="journaalpost.regel.bedrag"
+                                [required]="true"
+                            ></app-input-field>
 
+                            <div [formGroup]="$any(line)">
+                                <div formArrayName="bronspecifiekeWaarden">
+                                    <v-input-label
+                                        [title]="'journaalpost.regel.bronspecifiekeWaarden' | pluginTranslate: pluginId | async"
+                                        [tooltip]="'journaalpost.regel.bronspecifiekeWaarden.tooltip' | pluginTranslate: pluginId | async"
+                                    ></v-input-label>
+                                    <div class="line-wrapper"
+                                         *ngFor="let bsw of getBronwaarden(i).controls; let j = index">
+                                        <div class="line-fields">
+                                            <app-input-field
+                                                [pluginId]="pluginId"
+                                                [formGroup]="$any(bsw)"
+                                                controlName="naam"
+                                                wrapperClass="line-field-wrapper"
+                                                title="journaalpost.regel.bronwaarde.naam"
+                                                [required]="true"
+                                            ></app-input-field>
+                                            <app-input-field
+                                                [pluginId]="pluginId"
+                                                [formGroup]="$any(bsw)"
+                                                controlName="waarde"
+                                                wrapperClass="line-field-wrapper"
+                                                title="journaalpost.regel.bronwaarde.waarde"
+                                                [required]="true"
+                                            ></app-input-field>
+                                            <app-input-field
+                                                [pluginId]="pluginId"
+                                                [formGroup]="$any(bsw)"
+                                                controlName="volgorde"
+                                                wrapperClass="line-field-wrapper"
+                                                title="journaalpost.regel.bronwaarde.volgorde"
+                                                [required]="true"
+                                            ></app-input-field>
+                                        </div>
+                                        <div class="remove-line-wrapper">
+                                            <button type="button"
+                                                    class="delete-btn"
+                                                    cdsButton="ghost"
+                                                    [iconOnly]="true"
+                                                    (click)="removeBronwaarde(i, j)"
+                                                    [disabled]="obs.disabled"
+                                                    [title]="'journaalpost.regel.bronwaarde.verwijderen' | pluginTranslate: pluginId | async">
+                                                <svg class="cds--btn__icon" cdsIcon="trash-can" size="16"></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="add-line-wrapper">
+                                        <button type="button"
+                                                cdsButton="primary"
+                                                (click)="addBronwaarde(i)"
+                                                [disabled]="obs.disabled">
+                                            {{'journaalpost.regel.bronwaarde.toevoegen' | pluginTranslate: pluginId | async}}
+                                            <svg class="cds--btn__icon" cdsIcon="add" size="16"></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="remove-line-wrapper">
                             <button type="button"
-                                    cdsButton="secondary"
+                                    class="delete-btn"
+                                    cdsButton="ghost"
+                                    [iconOnly]="true"
                                     (click)="removeLine(i)"
                                     [disabled]="obs.disabled"
-                            >
-                                {{'journaalpost.regel.verwijderen' | pluginTranslate: pluginId | async}}
-                                <svg class="cds--btn__icon" cdsIcon="subtract" size="16"></svg>
+                                    [title]="'journaalpost.regel.verwijderen' | pluginTranslate: pluginId | async">
+                                <svg class="cds--btn__icon" cdsIcon="trash-can" size="16"></svg>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="add-line-wrapper">
                     <button type="button"
-                            cdsButton="secondary"
+                            cdsButton="primary"
                             (click)="addLine()"
                             [disabled]="obs.disabled">
                         {{'journaalpost.regel.toevoegen' | pluginTranslate: pluginId | async}}
@@ -229,7 +289,14 @@
         "bronSleutel": "",
         "boekingType": "", // [One of: Credit | Debet]
         "bedrag": "",
-        "omschrijving": "" // Optional
+        "omschrijving": "", // Optional
+        "bronspecifiekeWaarden": [ // Optional
+            &#123;
+                "naam": "",
+                "waarde": "",
+                "volgorde": ""
+            &#125;
+        ]
     &#125;,
     ...
 ]</code></pre>

@@ -22,7 +22,7 @@ import {
     PluginTranslationService
 } from '@valtimo/plugin';
 import {BehaviorSubject, combineLatest, Observable, Subscription, take} from 'rxjs';
-import {BoekingType, Grootboek, JournaalpostOpvoerenConfig, SaldoSoort} from '../../models';
+import {BoekingType, BronspecifiekeWaarde, Grootboek, JournaalpostOpvoerenConfig, SaldoSoort} from '../../models';
 import {TranslateService} from "@ngx-translate/core";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NGXLogger} from "ngx-logger";
@@ -102,7 +102,23 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     }
 
     removeLine(index: number): void {
-        this.lines.removeAt(index);
+        if (window.confirm(this.pluginTranslationService.instant('journaalpost.regel.verwijderen.bevestiging', this.pluginId))) {
+            this.lines.removeAt(index);
+        }
+    }
+
+    getBronwaarden(lineIndex: number): FormArray {
+        return this.lines.at(lineIndex).get('bronspecifiekeWaarden') as FormArray;
+    }
+
+    addBronwaarde(lineIndex: number): void {
+        this.getBronwaarden(lineIndex).push(this.createBronwaardeFormGroup());
+    }
+
+    removeBronwaarde(lineIndex: number, waardeIndex: number): void {
+        if (window.confirm(this.pluginTranslationService.instant('journaalpost.regel.bronwaarde.verwijderen.bevestiging', this.pluginId))) {
+            this.getBronwaarden(lineIndex).removeAt(waardeIndex);
+        }
     }
 
     private initForm() {
@@ -133,6 +149,15 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
             boekingType: this.fb.control(null, Validators.required),
             omschrijving: this.fb.control(''),
             bedrag: this.fb.control('', Validators.required),
+            bronspecifiekeWaarden: this.fb.array([]),
+        });
+    }
+
+    private createBronwaardeFormGroup(): FormGroup {
+        return this.fb.group({
+            naam: this.fb.control('', Validators.required),
+            waarde: this.fb.control('', Validators.required),
+            volgorde: this.fb.control('', Validators.required),
         });
     }
 
@@ -141,9 +166,14 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
             this.prefillConfiguration$.subscribe(configuration => {
                 if (configuration) {
                     this.logger.debug('Prefilling form - configuration', configuration);
+                    // reset lines to avoid duplication when prefill runs more than once
+                    this.lines.clear();
                     // add lines
                     if (configuration.regels != undefined) {
-                        configuration.regels.forEach( () => this.addLine());
+                        configuration.regels.forEach((regel, i) => {
+                            this.addLine();
+                            regel.bronspecifiekeWaarden?.forEach(() => this.addBronwaarde(i));
+                        });
                     }
                     // prefill form values
                     this.pluginActionForm.patchValue({
@@ -163,7 +193,12 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                             bronSleutel: regel.bronSleutel,
                             boekingType: this.fromBoekingType(regel.boekingType),
                             omschrijving: regel.omschrijving,
-                            bedrag: regel.bedrag
+                            bedrag: regel.bedrag,
+                            bronspecifiekeWaarden: regel.bronspecifiekeWaarden?.map((bsw: BronspecifiekeWaarde) => ({
+                                naam: bsw.naam,
+                                waarde: bsw.waarde,
+                                volgorde: bsw.volgorde,
+                            })) ?? [],
                         })) : null,
                         regelsViaResolver: configuration.regelsViaResolver
                     });
@@ -201,7 +236,14 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
                         bronSleutel: regel.bronSleutel,
                         boekingType: this.toBoekingType(regel.boekingType),
                         omschrijving: regel.omschrijving,
-                        bedrag: regel.bedrag
+                        bedrag: regel.bedrag,
+                        bronspecifiekeWaarden: regel.bronspecifiekeWaarden?.length
+                            ? regel.bronspecifiekeWaarden.map((bsw: BronspecifiekeWaarde) => ({
+                                naam: bsw.naam,
+                                waarde: bsw.waarde,
+                                volgorde: bsw.volgorde,
+                            }))
+                            : undefined,
                     })) : null,
                     regelsViaResolver: (formValue.regelsViaResolver != undefined) ? formValue.regelsViaResolver : null
                 });
@@ -240,7 +282,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
             return value;
         } else {
             // If a numeric-like key, strip _ prefix from the key
-            return this.enumSvc.getEnumKey(Grootboek, value).replace(/^_/, '');
+            return this.enumSvc.getEnumKey(Grootboek, value)?.replace(/^_/, '');
         }
     }
 
@@ -261,7 +303,7 @@ export class JournaalpostOpvoerenComponent implements FunctionConfigurationCompo
     }
 
     private isValueResolverPrefix(value: string): boolean {
-        return (
+        return !!value && (
             value.startsWith('case:')
             ||
             value.startsWith('doc:')

@@ -24,6 +24,7 @@ import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.RelatieType
 import com.ritense.valtimoplugins.rotterdam.oracleebs.domain.SaldoSoort
 import com.ritense.valtimoplugins.rotterdam.oracleebs.service.EsbClient
 import com.ritense.valueresolver.ValueResolverService
+import com.rotterdam.esb.opvoeren.models.Bronspecifiekewaardesegment
 import com.rotterdam.esb.opvoeren.models.Factuurregel
 import com.rotterdam.esb.opvoeren.models.Grootboekrekening
 import com.rotterdam.esb.opvoeren.models.Journaalpost
@@ -159,7 +160,7 @@ class OracleEbsPlugin(
             @Suppress("UNCHECKED_CAST")
             when (regelsViaResolver) {
                 is ArrayList<*> -> regelsViaResolver.map {
-                    JournaalpostRegel.from(it as LinkedHashMap<String, String>)
+                    JournaalpostRegel.from(it as LinkedHashMap<String, Any?>)
                 }
                 is ArrayNode -> objectMapper.convertValue<List<JournaalpostRegel>>(regelsViaResolver)
                 is String -> objectMapper.readValue<List<JournaalpostRegel>>(regelsViaResolver)
@@ -189,7 +190,20 @@ class OracleEbsPlugin(
                 journaalpostregelboekingtype = boekingTypeFrom(resolvedLineValues[BOEKING_TYPE_KEY]!!),
                 journaalpostregelbedrag = doubleFrom(resolvedLineValues[BEDRAG_KEY]!!),
                 journaalpostregelomschrijving = stringOrNullFrom(resolvedLineValues[OMSCHRIJVING_KEY]!!),
-                bronspecifiekewaarden = null
+                bronspecifiekewaarden = regel.bronspecifiekeWaarden?.map { bsw ->
+                    val resolvedSourceSpecificValues = resolveValuesFor(execution, mapOf(
+                        NAAM_KEY to bsw.naam,
+                        WAARDE_KEY to bsw.waarde,
+                        VOLGORDE_KEY to bsw.volgorde
+                    )).also {
+                        logger.debug { "Resolved source specific values: $it" }
+                    }
+                    Bronspecifiekewaardesegment(
+                        bronspecifiekewaardesegmentnaam = stringFrom(resolvedSourceSpecificValues[NAAM_KEY]!!),
+                        bronspecifiekewaardesegmentwaarde = stringFrom(resolvedSourceSpecificValues[WAARDE_KEY]!!),
+                        volgorde = integerFrom(resolvedSourceSpecificValues[VOLGORDE_KEY]!!)
+                    )
+                }
             )
         }
 
@@ -611,6 +625,13 @@ class OracleEbsPlugin(
             else -> BigDecimal.ZERO
         }
 
+    private fun integerFrom(value: Any): Int =
+        when (value) {
+            is Int -> value
+            is String -> value.trim().toInt()
+            else -> throw IllegalArgumentException("Unsupported type ${value::class}")
+        }
+
     private fun integerOrNullFrom(value: Any?): Int? =
         when (value) {
             is Int -> value
@@ -688,5 +709,8 @@ class OracleEbsPlugin(
         private const val PLAATSNAAM_KEY = "plaatsnaam"
         private const val POSTCODE_KEY = "postcode"
         private const val LANDCODE_KEY = "landcode"
+        private const val NAAM_KEY = "naam"
+        private const val WAARDE_KEY = "waarde"
+        private const val VOLGORDE_KEY = "volgorde"
     }
 }
