@@ -75,6 +75,7 @@ open class SuwinetAuthPlugin(): SuwinetAuth {
             SuwinetAuth.AuthType.MTLS.authType ->  addMtlsAuth(client)
             SuwinetAuth.AuthType.BASIC.authType -> addBasicAuth(client)
             SuwinetAuth.AuthType.HEADER.authType -> addHeaderAuth(client)
+            SuwinetAuth.AuthType.EXTERN.authType -> logger.info { "using authorization type $authType (externally managed)" }
             else -> {
                 logger.warn { "Unsupported auth type $authType" }
             }
@@ -125,15 +126,15 @@ open class SuwinetAuthPlugin(): SuwinetAuth {
         keystoreKey: String? = null
     ): KeyManagerFactory? {
 
-        return if (keystoreCertificate.isNullOrEmpty() || keystoreKey.isNullOrEmpty()) {
+        return if (keystoreCertificate.isNullOrEmpty()) {
             logger.info { "Keystore not set" }
             null
         } else {
             logger.info { "wsgKeyManagerFactory certificate: $keystoreCertificate" }
             val keyStore = KeyStore.getInstance("jks")
-            keyStore.load(FileInputStream(keystoreCertificate), keystoreKey.toCharArray())
+            keyStore.load(FileInputStream(keystoreCertificate), keystoreKey?.toCharArray())
             keystoreManagerFactory = KeyManagerFactory.getInstance("SunX509")
-            keystoreManagerFactory?.init(keyStore, keystoreKey.toCharArray())
+            keystoreManagerFactory?.init(keyStore, keystoreKey?.toCharArray())
             keystoreManagerFactory
         }
     }
@@ -142,14 +143,14 @@ open class SuwinetAuthPlugin(): SuwinetAuth {
         truststoreCertificate: String? = null,
         truststoreKey: String? = null
     ): TrustManagerFactory? {
-        return if (truststoreCertificate.isNullOrEmpty() || truststoreKey.isNullOrEmpty()) {
+        return if (truststoreCertificate.isNullOrEmpty()) {
             logger.info { "Truststore not set." }
             null
         } else {
             val trustStore = KeyStore.getInstance("jks")
             logger.info { "wsgTrustManagerFactory certificate: $truststoreCertificate" }
 
-            trustStore.load(FileInputStream(truststoreCertificate), truststoreKey.toCharArray())
+            trustStore.load(FileInputStream(truststoreCertificate), truststoreKey?.toCharArray())
             trustManagerFactory = TrustManagerFactory.getInstance("SunX509")
             trustManagerFactory?.init(trustStore)
             trustManagerFactory
