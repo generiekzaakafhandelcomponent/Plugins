@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2025 Ritense BV, the Netherlands.
+ * Copyright 2015-2026 Ritense BV, the Netherlands.
  *
  * Licensed under EUPL, Version 1.2 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ package com.ritense.valtimoplugins.xential.repository
 
 import com.ritense.valtimoplugins.xential.domain.XentialToken
 import org.springframework.data.repository.CrudRepository
+import java.time.LocalDateTime
 import java.util.UUID
 
-interface XentialTokenRepository : CrudRepository<XentialToken, UUID>
+interface XentialTokenRepository : CrudRepository<XentialToken, UUID> {
+    fun findAllByExpiresOnBefore(moment: LocalDateTime): List<XentialToken>
+}

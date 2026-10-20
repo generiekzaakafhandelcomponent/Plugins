@@ -59,6 +59,21 @@
             [required]="true"
     >
     </v-input>
+    <!--
+      ~ Optional: a configuration without a secret keeps working, it just cannot have its callbacks verified.
+      ~ Secrets are never returned by the backend, so this field is empty when an existing configuration is
+      ~ opened. Leaving it empty on save keeps the stored secret; entering a value replaces it.
+      -->
+    <v-input
+            name="callbackSecret"
+            type="password"
+            [title]="'callbackSecret' | pluginTranslate: pluginId | async"
+            [margin]="true"
+            [fullWidth]="true"
+            [defaultValue]="obs.prefill?.callbackSecret"
+            [disabled]="obs.disabled"
+            [required]="false"
+    ></v-input>
     <hr/>
     <ng-container
             *ngIf="{authenticationPluginSelectItems: authenticationPluginSelectItems$ | async} as authObs"
