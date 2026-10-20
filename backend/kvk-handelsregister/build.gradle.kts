@@ -49,6 +49,12 @@ dependencies {
     implementation("com.auth0:java-jwt:$auth0JavaJwtVersion")
 
     // Testing
+    testImplementation("com.ritense.valtimo:contract")
+    testImplementation("com.ritense.valtimo:core")
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("com.ritense.valtimo:document")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("com.fasterxml.jackson.core:jackson-databind")
     testImplementation("com.fasterxml.jackson.core:jackson-annotations")
     testImplementation("com.fasterxml.jackson.core:jackson-core")
@@ -64,6 +70,11 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+    testImplementation("com.ritense.valtimo:test-utils-common")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation("org.postgresql:postgresql")
 
 }
 
