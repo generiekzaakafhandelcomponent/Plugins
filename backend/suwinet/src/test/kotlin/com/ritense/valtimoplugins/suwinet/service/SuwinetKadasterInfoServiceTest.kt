@@ -66,7 +66,7 @@ internal class SuwinetKadasterInfoServiceTest : BaseTest() {
         )
 
         // then
-        assertEquals("found kadastrale aanduidingen should be empty", true, result.properties.isEmpty())
+        assertEquals("result should be null when not found", null, result)
     }
 
     @Test
@@ -87,7 +87,7 @@ internal class SuwinetKadasterInfoServiceTest : BaseTest() {
             dynamicProperties = listOf("*")
         )
 
-        printResult(result.dynamicProperties)
+        printResult(result!!.dynamicProperties)
         // then
         assertEquals("found kadastrale aanduidingen should be 4", 4, (result.dynamicProperties as List<*>).size)
     }
@@ -118,6 +118,6 @@ internal class SuwinetKadasterInfoServiceTest : BaseTest() {
         )
 
         // then
-        assertEquals("found kadastrale aanduidingen should be 4", 4, (result.dynamicProperties as List<*>).size)
+        assertEquals("found kadastrale aanduidingen should be 4", 4, (result!!.dynamicProperties as List<*>).size)
     }
 }

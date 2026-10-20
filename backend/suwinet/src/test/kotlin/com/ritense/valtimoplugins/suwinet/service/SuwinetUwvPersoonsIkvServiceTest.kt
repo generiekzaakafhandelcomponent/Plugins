@@ -69,7 +69,7 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
         )
 
         // then
-        val inkomstenverhouding = (result.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
+        val inkomstenverhouding = (result!!.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
         assertEquals("found bsn should be equal", 1, inkomstenverhouding.size)
     }
 
@@ -90,7 +90,7 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
             dynamicProperties = listOf("*")
         )
         // then
-        val inkomstenverhouding = (result.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
+        val inkomstenverhouding = (result!!.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
         assertEquals("found bsn should be equal", 2, inkomstenverhouding.size)
         val opgaven0 = ((inkomstenverhouding[0] as Map<*, *>)["inkomstenopgave"] as List<*>)
         val opgaven1 = ((inkomstenverhouding[1] as Map<*, *>)["inkomstenopgave"] as List<*>)
@@ -115,7 +115,7 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
             dynamicProperties = listOf("*")
         )
         // then
-        val inkomstenverhouding = (result.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
+        val inkomstenverhouding = (result!!.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
         assertEquals("found bsn should be equal", 1, inkomstenverhouding.size)
     }
 
@@ -138,7 +138,7 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
         )
         logger.info { "$result" }
         // then
-        val inkomstenverhouding = (result.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
+        val inkomstenverhouding = (result!!.dynamicProperties as Map<*, *>)["inkomstenverhouding"] as List<*>
         assertEquals("found bsn should be equal", 4, inkomstenverhouding.size)
     }
 
@@ -161,6 +161,6 @@ internal class SuwinetUwvPersoonsIkvServiceTest : BaseTest() {
         )
 
         // then
-        assertEquals("found uwv clientsuwi should be empty", true, result.properties.isEmpty())
+        assertEquals("found uwv clientsuwi should be empty", true, result!!.properties.isEmpty())
     }
 }

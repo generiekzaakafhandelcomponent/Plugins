@@ -62,7 +62,7 @@ internal class SuwinetDuoStudiefinancieringInfoServiceTest : BaseTest() {
             dynamicProperties = listOf("*")
         )
         // then
-        val r = result.dynamicProperties as Map<*, *>
+        val r = result!!.dynamicProperties as Map<*, *>
         assertEquals("found bsn should be equal to input parameter", bsn, r["burgerservicenr"])
         val studiefinancieringen = r["studiefinanciering"] as List<*>
         assertEquals("found studiefinancieringen should be 5", 5, studiefinancieringen.size)
@@ -86,6 +86,6 @@ internal class SuwinetDuoStudiefinancieringInfoServiceTest : BaseTest() {
         )
 
         // then
-        assertEquals("result should have no properties when not found", true, result.properties.isEmpty())
+        assertEquals("result should be null when not found", null, result)
     }
 }

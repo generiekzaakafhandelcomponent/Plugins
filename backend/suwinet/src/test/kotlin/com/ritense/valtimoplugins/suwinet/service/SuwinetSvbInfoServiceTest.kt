@@ -65,7 +65,7 @@ internal class SuwinetSvbInfoServiceTest : BaseTest() {
             dynamicProperties = listOf("*")
         )
         logger.info { "$result" }
-        val uitkeringsverhouding = (result.dynamicProperties as Map<*, *>)["uitkeringsverhouding"] as List<*>
+        val uitkeringsverhouding = (result!!.dynamicProperties as Map<*, *>)["uitkeringsverhouding"] as List<*>
         assertEquals("found svb bsn should be contain 2 uitkeringen", 2, uitkeringsverhouding.size)
     }
 
@@ -86,7 +86,7 @@ internal class SuwinetSvbInfoServiceTest : BaseTest() {
             dynamicProperties = listOf("*")
         )
         // then
-        val uitkeringsverhouding = (result.dynamicProperties as Map<*, *>)["uitkeringsverhouding"] as List<*>
+        val uitkeringsverhouding = (result!!.dynamicProperties as Map<*, *>)["uitkeringsverhouding"] as List<*>
         assertEquals("found svb bsn should be contain 1 uitkering", 1, uitkeringsverhouding.size)
     }
 
@@ -108,6 +108,6 @@ internal class SuwinetSvbInfoServiceTest : BaseTest() {
             dynamicProperties = listOf("*")
         )
         // then
-        assertEquals("no uitkeringen not found", true, result.properties.isEmpty())
+        assertEquals("result should be null when not found", null, result)
     }
 }
