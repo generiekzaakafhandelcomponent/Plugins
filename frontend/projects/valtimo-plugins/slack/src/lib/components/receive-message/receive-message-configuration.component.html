@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2026 Ritense BV, the Netherlands.
+  ~
+  ~ Licensed under EUPL, Version 1.2 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" basis,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<p style="margin-bottom: 1.5rem">{{ 'receiveMessageDescription' | pluginTranslate: pluginId | async }}</p>
+
+<v-form
+  (valueChange)="formValueChange($event)"
+  *ngIf="{
+    disabled: disabled$ | async,
+    prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+    threadScopeItems: threadScopeItems$ | async
+  } as obs"
+>
+  <v-input
+    name="channel"
+    [title]="'receiveChannel' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.channel"
+    [disabled]="obs.disabled"
+    [required]="true"
+    [placeholder]="'C012AB3CD'"
+    [tooltip]="'receiveChannelTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+
+  <v-input
+    name="messageContains"
+    [title]="'messageContains' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.messageContains"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [tooltip]="'messageContainsTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+
+  <v-input
+    name="userId"
+    [title]="'userId' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.userId"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [placeholder]="'U012AB3CD'"
+    [tooltip]="'userIdTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+
+  <v-select
+    name="threadScope"
+    [items]="obs.threadScopeItems || []"
+    [title]="'threadScope' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultSelectionId]="obs.prefill?.threadScope || 'ANY'"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [tooltip]="'threadScopeTooltip' | pluginTranslate: pluginId | async"
+  ></v-select>
+
+  <v-input
+    name="includeBotMessages"
+    type="checkbox"
+    [title]="'includeBotMessages' | pluginTranslate: pluginId | async"
+    [margin]="true"
+    [defaultValue]="obs.prefill?.includeBotMessages ?? false"
+    [disabled]="obs.disabled"
+    [required]="false"
+    [tooltip]="'includeBotMessagesTooltip' | pluginTranslate: pluginId | async"
+  ></v-input>
+</v-form>

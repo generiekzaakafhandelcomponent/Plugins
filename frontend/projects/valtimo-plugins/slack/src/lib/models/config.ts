@@ -16,14 +16,32 @@
 
 import {PluginConfigurationData} from '@valtimo/plugin';
 
+/**
+ * Keep these in lockstep with `ReceiveMessageProperties` in Kotlin. The backend treats a
+ * value it does not recognise as "no filter", so a value that drifts here surfaces as a
+ * process that fires too often rather than as an error on save.
+ */
+const THREAD_SCOPES = {
+  ANY: 'ANY',
+  THREAD_STARTS_ONLY: 'THREAD_STARTS_ONLY',
+  THREAD_REPLIES_ONLY: 'THREAD_REPLIES_ONLY',
+} as const;
+
+type ThreadScope = (typeof THREAD_SCOPES)[keyof typeof THREAD_SCOPES];
+
 interface SlackConfig extends PluginConfigurationData {
   url: string;
   token: string;
+  messagesPerPage?: number;
+  maxPagesPerPoll?: number;
+  maxThreadsPerPoll?: number;
+  initialLookbackMinutes?: number;
 }
 
 interface PostMessageConfig {
   channel: string;
   message: string;
+  threadTs?: string;
 }
 
 interface PostMessageWithFileConfig {
@@ -32,4 +50,23 @@ interface PostMessageWithFileConfig {
   fileName?: string;
 }
 
-export {SlackConfig, PostMessageConfig, PostMessageWithFileConfig};
+/**
+ * Action properties of the `receive-message` process link. Only the channel is required —
+ * the rest are optional filters, and all of them are AND-ed.
+ */
+interface ReceiveMessageConfig {
+  channel: string;
+  messageContains?: string;
+  userId?: string;
+  includeBotMessages?: boolean;
+  threadScope?: ThreadScope;
+}
+
+export {
+  PostMessageConfig,
+  PostMessageWithFileConfig,
+  ReceiveMessageConfig,
+  SlackConfig,
+  THREAD_SCOPES,
+  ThreadScope,
+};

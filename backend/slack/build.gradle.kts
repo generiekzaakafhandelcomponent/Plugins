@@ -28,16 +28,27 @@ dockerCompose {
 }
 
 dependencies {
+    compileOnly("com.ritense.valtimo:authorization")
+    compileOnly("com.ritense.valtimo:contract")
     compileOnly("com.ritense.valtimo:core")
+    compileOnly("com.ritense.valtimo:document")
     compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:process-document")
     compileOnly("com.ritense.valtimo:temporary-resource-storage")
     compileOnly("com.ritense.valtimo:value-resolver")
 
     compileOnly("org.springframework.boot:spring-boot-starter-webflux")
+    compileOnly("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    // For @SchedulerLock on the poller. Valtimo core already provides the LockProvider.
+    compileOnly("net.javacrumbs.shedlock:shedlock-spring")
+
+    compileOnly("com.fasterxml.jackson.core:jackson-databind")
     implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 
     // Testing
+    testImplementation("com.ritense.valtimo:authorization")
+    testImplementation("com.ritense.valtimo:contract")
     testImplementation("com.ritense.valtimo:core")
     testImplementation("com.ritense.valtimo:plugin-valtimo")
     testImplementation("com.ritense.valtimo:temporary-resource-storage")
@@ -50,6 +61,8 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation("net.javacrumbs.shedlock:shedlock-spring")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind")
 
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.hamcrest:hamcrest-library")

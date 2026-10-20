@@ -45,8 +45,15 @@ valtimo:
   plugin:
     encryption-secret: "abcdefghijklmnop"
   database: postgres
+  slack:
+    # The poller bean is wired up so that the context is still verified, but its cron is
+    # pushed out of reach: a scheduled run firing mid-test would read a channel the test
+    # under way did not ask about. Tests that exercise the poller call it directly.
+    poll-cron: "0 0 4 1 1 *"
+    retention-cron: "0 30 4 1 1 *"
 
 logging:
   level:
     org.springframework.beans: DEBUG
     reactor.netty.http.client.HttpClient: DEBUG
+    com.ritense.valtimoplugins.slack: DEBUG
