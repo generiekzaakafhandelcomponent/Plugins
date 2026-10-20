@@ -16,31 +16,33 @@
 
 package com.ritense.valtimoplugins.smtpmail.plugin
 
-
 import com.ritense.plugin.annotation.Plugin
 import com.ritense.plugin.annotation.PluginAction
 import com.ritense.plugin.annotation.PluginActionProperty
 import com.ritense.plugin.annotation.PluginProperty
 import com.ritense.processlink.domain.ActivityTypeWithEventName.SERVICE_TASK_START
 import com.ritense.valtimoplugins.smtpmail.dto.Email
+import com.ritense.valtimoplugins.smtpmail.dto.EmailList
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
+import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailPluginPropertyDto
 import com.ritense.valtimoplugins.smtpmail.service.SmtpMailService
+import com.ritense.valtimoplugins.smtpmail.validation.requireNoControlChars
+import com.ritense.valtimoplugins.smtpmail.validation.requireValidEmail
 import org.camunda.bpm.engine.delegate.DelegateExecution
 
 @Plugin(
     key = "smtp-mail",
     title = "SMTP mail Plugin",
-    description = "Send mail through SMTP with the SMTP mail plugin"
+    description = "Send mail through SMTP with the SMTP mail plugin",
 )
 class SmtpMailPlugin(
     private val smtpMailService: SmtpMailService,
 ) {
-
     @PluginProperty(key = "host", secret = false, required = true)
     lateinit var host: String
 
     @PluginProperty(key = "port", secret = false, required = true)
-    var port: Int? = 25
+    var port: Int? = DEFAULT_PORT
 
     @PluginProperty(key = "username", required = false, secret = false)
     var username: String? = null
@@ -49,45 +51,111 @@ class SmtpMailPlugin(
     var password: String? = null
 
     @PluginProperty(key = "protocol", required = false, secret = false)
-    var protocol: String? = "smtp"
+    var protocol: String? = DEFAULT_PROTOCOL
 
+    // Off by default: enabling this writes the entire SMTP dialogue, Bcc and body included, to the log.
     @PluginProperty(key = "debug", required = false, secret = false)
-    var debug: Boolean? = true
+    var debug: Boolean? = DEFAULT_DEBUG
 
     @PluginProperty(key = "auth", required = false, secret = false)
-    var auth: Boolean? = true
+    var auth: Boolean? = DEFAULT_AUTH
 
     @PluginProperty(key = "startTlsEnable", required = false, secret = false)
-    var startTlsEnable: Boolean? = true
+    var startTlsEnable: Boolean? = DEFAULT_START_TLS_ENABLE
 
     @PluginAction(
         key = "send-mail",
         title = "Send mail",
         description = "Send an email",
-        activityTypes = [SERVICE_TASK_START]
+        activityTypes = [SERVICE_TASK_START],
     )
     fun sendMail(
         execution: DelegateExecution,
         @PluginActionProperty sender: Email,
         @PluginActionProperty fromName: String?,
-        @PluginActionProperty recipients: List<Email>,
-        @PluginActionProperty cc: List<Email>?,
-        @PluginActionProperty bcc: List<Email>?,
+        @PluginActionProperty recipients: EmailList,
+        @PluginActionProperty cc: EmailList?,
+        @PluginActionProperty bcc: EmailList?,
         @PluginActionProperty subject: String,
-        @PluginActionProperty contentId: String,
+        @PluginActionProperty contentId: String?,
         @PluginActionProperty attachmentIds: List<String>?,
+        @PluginActionProperty content: String? = null,
+    ) = sendMail(
+        sender = sender,
+        fromName = fromName,
+        recipients = recipients.addresses,
+        cc = cc?.addresses,
+        bcc = bcc?.addresses,
+        subject = subject,
+        contentId = contentId,
+        attachmentIds = attachmentIds,
+        content = content,
+    )
+
+    @JvmOverloads
+    fun sendMail(
+        sender: Email,
+        fromName: String?,
+        recipients: List<Email>,
+        cc: List<Email>?,
+        bcc: List<Email>?,
+        subject: String,
+        contentId: String?,
+        attachmentIds: List<String>?,
+        content: String? = null,
     ) {
+        // Header injection guard, re-checked server side for defence in depth.
+        requireNoControlChars(subject, "subject")
+        requireNoControlChars(fromName, "fromName")
+
+        requireValidEmail(sender.address, "sender")
+
+        require(content.isNullOrBlank() != contentId.isNullOrBlank()) {
+            "Exactly one of the fields 'content' and 'contentId' must be provided"
+        }
+
+        // Normalising here holds a programmatic caller to the same splitting and validation as a process link.
+        val toAddresses = EmailList(recipients).normalized("recipients")
+        val ccAddresses = EmailList(cc.orEmpty()).normalized("cc")
+        val bccAddresses = EmailList(bcc.orEmpty()).normalized("bcc")
+
+        // Without this, JavaMail would surface the far less obvious 'No recipient addresses'.
+        require(toAddresses.isNotEmpty()) { "Field 'recipients' must contain at least one email address" }
+
         smtpMailService.sendSmtpMail(
-            mailContext = SmtpMailContextDto(
-                sender = sender,
-                fromName = fromName.takeIf { !it.isNullOrBlank() } ?: sender.address,
-                recipients = recipients,
-                ccList = cc ?: emptyList(),
-                bccList = bcc ?: emptyList(),
-                subject = subject,
-                contentResourceId = contentId,
-                attachmentResourceIds = attachmentIds ?: emptyList(),
-            )
+            mailContext =
+                SmtpMailContextDto(
+                    sender = sender,
+                    fromName = fromName.takeIf { !it.isNullOrBlank() } ?: sender.address,
+                    recipients = toAddresses,
+                    ccList = ccAddresses,
+                    bccList = bccAddresses,
+                    subject = subject,
+                    contentResourceId = contentId.takeUnless { it.isNullOrBlank() },
+                    content = content.takeUnless { it.isNullOrBlank() },
+                    attachmentResourceIds = attachmentIds ?: emptyList(),
+                ),
+            connection = getConnectionProperties(),
         )
+    }
+
+    fun getConnectionProperties() =
+        SmtpMailPluginPropertyDto(
+            host = host,
+            port = port ?: DEFAULT_PORT,
+            username = username,
+            password = password,
+            protocol = protocol ?: DEFAULT_PROTOCOL,
+            debug = debug ?: DEFAULT_DEBUG,
+            auth = auth ?: DEFAULT_AUTH,
+            startTlsEnable = startTlsEnable ?: DEFAULT_START_TLS_ENABLE,
+        )
+
+    companion object {
+        private const val DEFAULT_PORT = 25
+        private const val DEFAULT_PROTOCOL = "smtp"
+        private const val DEFAULT_DEBUG = false
+        private const val DEFAULT_AUTH = true
+        private const val DEFAULT_START_TLS_ENABLE = true
     }
 }

@@ -16,7 +16,6 @@
 
 val kotlinLoggingVersion: String by project
 val mockitoKotlinVersion: String by project
-val okhttpVersion: String by project
 
 dockerCompose {
     setProjectName("smtpmail")
@@ -43,6 +42,12 @@ dependencies {
     compileOnly("com.fasterxml.jackson.core:jackson-core")
 
     // Testing
+    testImplementation("com.ritense.valtimo:core")
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:temporary-resource-storage")
+    testImplementation("com.ritense.valtimo:value-resolver")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("com.ritense.valtimo:document")
     testImplementation("com.ritense.valtimo:local-resource")
     testImplementation("com.ritense.valtimo:process-document")
@@ -62,9 +67,6 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
 
     testImplementation("org.postgresql:postgresql")
-
-    testImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
-    testImplementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

@@ -1,0 +1,211 @@
+/*
+ * Copyright 2026 Ritense BV, the Netherlands.
+ *
+ * Licensed under EUPL, Version 1.2 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.ritense.valtimoplugins.smtpmail.validation
+
+import com.ritense.valtimoplugins.smtpmail.BaseTest
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
+
+class SmtpMailValidationTest : BaseTest() {
+    // -- Hosts without a dot (regression, these worked before validation was introduced) ---
+
+    @Test
+    fun `accepts dev at localhost`() {
+        assertTrue(isValidEmail("dev@localhost"), "dev@localhost should be a valid address")
+    }
+
+    @Test
+    fun `accepts test at mailhog`() {
+        assertTrue(isValidEmail("test@mailhog"), "test@mailhog should be a valid address")
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "dev@localhost",
+            "test@mailhog",
+            "dev@mailpit",
+            "postmaster@LOCALHOST",
+            "dev@mail-catcher",
+            "dev@smtp4dev",
+        ],
+    )
+    fun `accepts an address on a hostname without a dot`(address: String) {
+        assertTrue(isValidEmail(address), "$address should be a valid address")
+    }
+
+    // -- Dotted domains keep working ------------------------------------------------------
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "afzender@example.com",
+            "ontvanger@example.com",
+            "geheim@example.com",
+            "postmaster@localhost.localdomain",
+            "voor.naam@gemeente.example.nl",
+            "user+tag@sub.domain.example.co.uk",
+            "user_name%test-1@mail-server.example.com",
+        ],
+    )
+    fun `accepts a dotted domain address`(address: String) {
+        assertTrue(isValidEmail(address), "$address should be a valid address")
+    }
+
+    // -- Malformed addresses stay rejected ------------------------------------------------
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "not-an-address",
+            "",
+            " ",
+            "@example.com",
+            "user@",
+            "@",
+            "user@@example.com",
+            "user@.com",
+            "user@.",
+            "user@example.",
+            "user@example.c",
+            "user..name@example.com",
+            "user@sub..example.com",
+            "user@-example.com",
+            "user@example-.com",
+            "user@-localhost",
+            "user@localhost-",
+            "user name@example.com",
+            "user@exa mple.com",
+            "user@localhost ",
+            " user@localhost",
+            "user@local_host",
+            "user@localhost.123",
+            "<user@example.com>",
+            "user@example.com>",
+            "Gemeente <user@example.com>",
+        ],
+    )
+    fun `rejects a malformed address`(address: String) {
+        assertFalse(isValidEmail(address), "$address should not be a valid address")
+    }
+
+    @Test
+    fun `rejects an address longer than 254 characters`() {
+        val tooLong = "a".repeat(250) + "@localhost"
+
+        assertTrue(tooLong.length > 254)
+        assertFalse(isValidEmail(tooLong))
+    }
+
+    @Test
+    fun `accepts an address of exactly 254 characters`() {
+        val localPart = "a".repeat(254 - "@localhost".length)
+        val atMaxLength = "$localPart@localhost"
+
+        assertTrue(atMaxLength.length == 254)
+        assertTrue(isValidEmail(atMaxLength))
+    }
+
+    @Test
+    fun `rejects a hostname label longer than 63 characters`() {
+        assertFalse(isValidEmail("dev@" + "a".repeat(64)))
+        assertTrue(isValidEmail("dev@" + "a".repeat(63)))
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "dev@localhost\r",
+            "dev@localhost\n",
+            "dev\r@localhost",
+            "dev@local\nhost",
+            "dev@localhost\u0000",
+            "dev@localhost\t",
+            "ok@example.com\r\nBcc: evil@example.com",
+        ],
+    )
+    fun `rejects an address containing a control character`(address: String) {
+        assertFalse(isValidEmail(address), "$address should not be a valid address")
+    }
+
+    // -- CR and LF detection (CWE-93 header injection guard) -------------------------------
+
+    @Test
+    fun `containsControlChars detects CR and LF`() {
+        assertTrue(containsControlChars("phishy\rBcc: evil@example.com"))
+        assertTrue(containsControlChars("phishy\nBcc: evil@example.com"))
+        assertTrue(containsControlChars("phishy\r\nBcc: evil@example.com"))
+    }
+
+    @Test
+    fun `containsControlChars passes plain text and null`() {
+        assertFalse(containsControlChars("Uw aanvraag"))
+        assertFalse(containsControlChars(null))
+    }
+
+    @Test
+    fun `requireNoControlChars rejects CR and LF and names the field`() {
+        val subject =
+            assertThrows<IllegalArgumentException> {
+                requireNoControlChars("phishy\rBcc: evil@example.com", "subject")
+            }
+        assertTrue(subject.message!!.contains("subject"))
+
+        val fromName =
+            assertThrows<IllegalArgumentException> {
+                requireNoControlChars("Gemeente\r\nBcc: evil@example.com", "fromName")
+            }
+        assertTrue(fromName.message!!.contains("fromName"))
+    }
+
+    @Test
+    fun `requireNoControlChars accepts plain text and null`() {
+        assertDoesNotThrow { requireNoControlChars("Uw aanvraag", "subject") }
+        assertDoesNotThrow { requireNoControlChars(null, "fromName") }
+    }
+
+    // -- requireValidEmail ------------------------------------------------------------------
+
+    @Test
+    fun `requireValidEmail accepts a host without a dot`() {
+        assertDoesNotThrow { requireValidEmail("dev@localhost", "recipients") }
+        assertDoesNotThrow { requireValidEmail("test@mailhog", "recipients") }
+    }
+
+    @Test
+    fun `requireValidEmail rejects CRLF before it rejects the address`() {
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                requireValidEmail("dev@localhost\r\nBcc: evil@example.com", "recipients")
+            }
+
+        assertTrue(exception.message!!.contains("CR or LF"))
+        assertTrue(exception.message!!.contains("recipients"))
+    }
+
+    @Test
+    fun `requireValidEmail rejects a malformed address and names the field`() {
+        val exception = assertThrows<IllegalArgumentException> { requireValidEmail("not-an-address", "sender") }
+
+        assertTrue(exception.message!!.contains("sender"))
+    }
+}

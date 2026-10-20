@@ -23,6 +23,7 @@ data class SmtpMailContextDto(
     val ccList: List<Email>,
     val bccList: List<Email>,
     val subject: String,
-    val contentResourceId: String,
-    val attachmentResourceIds: List<String>
+    val contentResourceId: String?,
+    val attachmentResourceIds: List<String>,
+    val content: String? = null,
 )

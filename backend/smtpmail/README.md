@@ -7,6 +7,7 @@
   * [Usage](#usage)
     * [Plugin configuration](#plugin-configuration)
     * [Plugin action: Send Mail](#plugin-action-send-mail)
+      * [Addressing multiple recipients](#addressing-multiple-recipients)
     * [Prepare mail contents](#prepare-mail-contents)
       * [Mail template plugin](#mail-template-plugin)
       * [Text template plugin](#text-template-plugin)
@@ -38,7 +39,9 @@ Create a configuration instance for the plugin and configure the following prope
 * `Username` - The email address or account name used to send mail.
 * `Password` - The authentication password
 * `Protocol` - smtp
-* `debug` - optional, set to true for development reasons 
+* `debug` - optional, off by default. Only enable while troubleshooting: it writes the complete SMTP dialogue -
+  envelope recipients (including Bcc), headers and the message body - to the application log at `DEBUG` level for
+  logger `com.ritense.valtimoplugins.smtpmail.client.SmtpMailClient`. The SMTP password is never traced.
 * `Authentication` - set to true when authentication is needed
 * `STARTTLS` - set connection to SMTP Host using TLS
 Create process link between a BPMN service task and the desired plugin action.
@@ -48,18 +51,58 @@ Create process link between a BPMN service task and the desired plugin action.
 
 * `sender`- Sender Email address
 * `fromName` - Sender Email name
-* `recipients` - TO List with email addresses
-* `cc` -  CC List with email addresses (optional)
-* `bcc` -  BCC List with email addresses (optional)
+* `recipients` - TO email addresses, see [addressing multiple recipients](#addressing-multiple-recipients)
+* `cc` - CC email addresses (optional)
+* `bcc` - BCC email addresses (optional)
 * `subject` - Subject of email
-* `contentId` - The content ID of the contents of the mail, see [options](#prepare-mail-contents) to generate content
+* `contentId` - The content ID of a temporary file with the HTML contents of the mail, see
+  [options](#prepare-mail-contents) to generate content
+* `content` - The HTML contents of the mail, usually a process variable such as `pv:mailContent`. Use this instead of
+  `contentId` when the mail is reviewed in a user task before it is sent
 * `attachmentIds` - List with IDs of files in local storage are added as attachment of the mail (optional)
+
+Exactly one of `contentId` and `content` must be provided; the configuration screen lets you choose between them.
+
+Before sending, the plugin rejects a CR or LF character in `sender`, `fromName`, `recipients`, `cc`, `bcc` and
+`subject` to prevent mail header injection, and it rejects malformed addresses. A host without a dot - a local mail
+catcher or an internal hostname such as `dev@localhost` or `test@mailhog` - is a valid address.
+
+The mail is always sent through the plugin configuration that is linked to the service task.
+
+#### Addressing multiple recipients
+`recipients`, `cc` and `bcc` each accept either a list of addresses or a single value, so the property can point at a
+form field or process variable of either shape:
+
+```json
+"recipients": "doc:recipients"
+```
+
+Every value is split on commas and semicolons, which lets a single text field carry more than one recipient. A
+semicolon is not an RFC 5322 separator but is accepted because that is the separator Outlook uses. Surrounding
+whitespace and empty entries are discarded, and each resulting address is validated individually. All of the following
+therefore address the same two recipients:
+
+```text
+["jan@example.com", "piet@example.com"]
+"jan@example.com,piet@example.com"
+"jan@example.com; piet@example.com"
+["jan@example.com", "piet@example.com;"]
+```
+
+`recipients` must hold at least one address once this normalisation is done; `cc` and `bcc` may end up empty. The
+`sender` is a single address and is never split.
+
+Note that splitting means one value can address more than one mailbox: a property that resolves to a single string the
+submitter controls, such as a form field, can expand to any number of recipients. Only point `recipients`, `cc` and
+`bcc` at values the process itself determines, or at a field whose addresses you are willing to deliver to.
 
 ### Prepare mail contents
 There are 2 plugins available to generate the contents of an email:
 
 #### Mail template plugin
-Generate Mail contents with plugin action `Generate Mail File` with a case mail template
+Generate Mail contents with plugin action `Generate Mail File` with a case mail template. To review the mail before it
+is sent, use `Generate Mail Content` instead: it stores the HTML in a process variable that `content` can point to. A
+temporary file may be removed before a review task is picked up.
 * `mailTemplateKey` - A Case Mail template  
 * `processVariableName` - process variable name of the generated mail contents
 

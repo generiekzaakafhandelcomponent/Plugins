@@ -17,66 +17,77 @@ package com.ritense.valtimoplugins.smtpmail.service
 
 import com.ritense.resource.domain.MetadataType
 import com.ritense.resource.service.TemporaryResourceStorageService
+import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.smtpmail.client.SmtpMailClient
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContentDto
 import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailContextDto
-import com.ritense.valtimo.contract.annotation.SkipComponentScan
-import java.io.InputStream
+import com.ritense.valtimoplugins.smtpmail.dto.SmtpMailPluginPropertyDto
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
+import java.io.InputStream
 
 @SkipComponentScan
 @Service
 class SmtpMailService(
     private val smtpMailClient: SmtpMailClient,
-    private val storageService: TemporaryResourceStorageService
+    private val storageService: TemporaryResourceStorageService,
 ) {
-
     fun sendSmtpMail(
-        mailContext: SmtpMailContextDto
+        mailContext: SmtpMailContextDto,
+        connection: SmtpMailPluginPropertyDto,
     ) {
-        val mailContent = prepareMailContent(
-            contentResourceId = mailContext.contentResourceId,
-            attachmentResourceIds = mailContext.attachmentResourceIds
-        )
+        val mailContent = prepareMailContent(mailContext)
 
-        smtpMailClient.sendEmail(mailContext, mailContent).also {
+        smtpMailClient.sendEmail(connection, mailContext, mailContent).also {
             logger.info { "Attempted to send SMTP mail with subject ${mailContext.subject}" }
         }
     }
 
-    private fun prepareMailContent(
-        contentResourceId: String,
-        attachmentResourceIds: List<String>
-    ): SmtpMailContentDto {
+    private fun prepareMailContent(mailContext: SmtpMailContextDto): SmtpMailContentDto {
         val attachments: MutableList<SmtpMailContentDto.Attachment> = mutableListOf()
 
         var totalAttachmentsSize = 0
 
-        attachmentResourceIds.forEach { attachmentResourceId ->
-            totalAttachmentsSize += checkForMaxAttachmentSize(
-                storageService.getResourceContentAsInputStream(attachmentResourceId),
-                totalAttachmentsSize
-            )
+        mailContext.attachmentResourceIds.forEach { attachmentResourceId ->
+            totalAttachmentsSize +=
+                checkForMaxAttachmentSize(
+                    storageService.getResourceContentAsInputStream(attachmentResourceId),
+                    totalAttachmentsSize,
+                )
 
             val attachmentMetadata = storageService.getResourceMetadata(attachmentResourceId)
             val fileName =
-                "${attachmentMetadata[MetadataType.FILE_NAME.key]}.${attachmentMetadata[MetadataType.CONTENT_TYPE.key]}"
+                if ((attachmentMetadata[MetadataType.FILE_NAME.key] as String?)?.contains('.') == true) {
+                    attachmentMetadata[MetadataType.FILE_NAME.key] as String
+                } else if (attachmentMetadata[MetadataType.FILE_NAME.key] != null &&
+                    attachmentMetadata[MetadataType.CONTENT_TYPE.key] != null
+                ) {
+                    "${attachmentMetadata[MetadataType.FILE_NAME.key]}.${attachmentMetadata[MetadataType.CONTENT_TYPE.key]}"
+                } else if (attachmentMetadata[MetadataType.CONTENT_TYPE.key] != null) {
+                    "attachment.${attachmentMetadata[MetadataType.CONTENT_TYPE.key]}"
+                } else {
+                    attachmentMetadata[MetadataType.FILE_NAME.key] as String? ?: "attachment"
+                }
 
             attachments.add(SmtpMailContentDto.Attachment(fileName, attachmentResourceId))
         }
 
-        val mailMessageAsInputStream = storageService.getResourceContentAsInputStream(contentResourceId).also {
-            logger.debug { "Fetching mail message with resourceId '$contentResourceId" }
-        }
-
         return SmtpMailContentDto(
-            mailMessage = mailMessageAsInputStream.toPlainText(),
-            attachments = attachments
+            mailMessage = mailContext.content ?: fetchMailMessage(mailContext.contentResourceId),
+            attachments = attachments,
         )
     }
 
-    private fun checkForMaxAttachmentSize(attachment: InputStream, totalAttachmentSize: Int): Int {
+    private fun fetchMailMessage(contentResourceId: String?): String {
+        checkNotNull(contentResourceId) { "Mail has neither content nor a contentResourceId" }
+        logger.debug { "Fetching mail message with resourceId '$contentResourceId" }
+        return storageService.getResourceContentAsInputStream(contentResourceId).toPlainText()
+    }
+
+    private fun checkForMaxAttachmentSize(
+        attachment: InputStream,
+        totalAttachmentSize: Int,
+    ): Int {
         val attachmentSize = attachment.readAllBytes().size
 
         if (totalAttachmentSize + attachmentSize > MAX_SIZE_EMAIL_BODY_IN_BYTES) {
@@ -86,13 +97,14 @@ class SmtpMailService(
         return attachmentSize
     }
 
-    private fun InputStream.toPlainText(): String = use { stream ->
-        stream.bufferedReader().readText()
-    }
+    private fun InputStream.toPlainText(): String =
+        use { stream ->
+            stream.bufferedReader().readText()
+        }
 
     companion object {
         val logger = KotlinLogging.logger {}
 
-        private const val MAX_SIZE_EMAIL_BODY_IN_BYTES: Int = 25000000  // 25mb
+        private const val MAX_SIZE_EMAIL_BODY_IN_BYTES: Int = 25000000 // 25mb
     }
 }

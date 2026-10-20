@@ -27,6 +27,8 @@ interface SmtpMailConfig extends PluginConfigurationData {
     startTlsEnable: boolean;
 }
 
+type ContentInputType = 'contentId' | 'content';
+
 interface SendMailConfig {
     sender: string;
     fromName: string;
@@ -34,11 +36,13 @@ interface SendMailConfig {
     cc: string;
     bcc: string;
     subject: string;
-    contentId: string;
+    contentId?: string;
+    content?: string;
     attachmentIds: string;
 }
 
 export {
     SmtpMailConfig,
+    ContentInputType,
     SendMailConfig
 };
