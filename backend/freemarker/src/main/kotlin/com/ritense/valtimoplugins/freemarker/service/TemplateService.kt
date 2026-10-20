@@ -18,14 +18,19 @@ package com.ritense.valtimoplugins.freemarker.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.ritense.document.domain.Document
-import com.ritense.document.domain.impl.JsonSchemaDocument
 import com.ritense.valtimo.contract.annotation.SkipComponentScan
 import com.ritense.valtimoplugins.freemarker.domain.ValtimoTemplate
+import com.ritense.valtimoplugins.freemarker.model.CircularTemplateReferenceException
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.REPLACE_MISSING_PLACEHOLDER_WITH_EMPTY_VALUE
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.SHOW_MISSING_PLACEHOLDER
 import com.ritense.valtimoplugins.freemarker.model.MissingPlaceholderStrategy.THROW_ERROR_WHEN_MISSING_PLACEHOLDER
+import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_CSV
+import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_MAIL
+import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_PDF
+import com.ritense.valtimoplugins.freemarker.model.TEMPLATE_TYPE_TEXT
 import com.ritense.valtimoplugins.freemarker.repository.JsonSchemaDocumentRepositoryStreaming
 import com.ritense.valtimoplugins.freemarker.repository.TemplateRepository
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.byCaseDefinitionName
@@ -36,11 +41,20 @@ import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecifica
 import com.ritense.valtimoplugins.freemarker.repository.ValtimoTemplateSpecificationHelper.Companion.query
 import com.ritense.valtimoplugins.freemarker.web.rest.dto.TemplateKeyType
 import com.ritense.valueresolver.ValueResolverService
+import freemarker.core.HTMLOutputFormat
+import freemarker.core.OutputFormat
+import freemarker.core.ParseException
+import freemarker.core.TemplateClassResolver
+import freemarker.core.TemplateConfiguration
+import freemarker.core.XHTMLOutputFormat
 import freemarker.template.Configuration
+import freemarker.template.DefaultObjectWrapperBuilder
 import freemarker.template.Template
 import freemarker.template.TemplateException
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.io.StringReader
 import java.io.StringWriter
+import java.io.Writer
 import java.util.UUID
 import java.util.stream.Stream
 import org.springframework.data.domain.Page
@@ -60,6 +74,10 @@ class TemplateService(
     private val freemarkerConfiguration: Configuration,
     private val jsonSchemaDocumentRepositoryStreaming: JsonSchemaDocumentRepositoryStreaming,
 ) {
+    // Wraps docs, which is an Iterable
+    private val objectWrapper = DefaultObjectWrapperBuilder(freemarkerConfiguration.incompatibleImprovements)
+        .apply { iterableSupport = true }
+        .build()
 
     fun generate(
         templateKey: String,
@@ -68,7 +86,8 @@ class TemplateService(
     ): String = generate(
         templateKey = templateKey,
         templateType = templateType,
-        document = document
+        document = document,
+        processVariables = emptyMap(),
     )
 
     fun generate(
@@ -96,28 +115,51 @@ class TemplateService(
             document = document,
             processVariables = processVariables,
             missingPlaceholderStrategy = missingPlaceholderStrategy,
+            templateType = valtimoTemplate.type,
         )
     }
 
+    /** Generates a template without escaping. */
     fun generate(
         templateName: String,
         templateContent: String,
         processVariables: Map<String, Any?> = emptyMap(),
         document: Document? = null,
         missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER,
+    ): String = generate(templateName, templateContent, processVariables, document, missingPlaceholderStrategy, null)
+
+    /**
+     * @param templateType mail and pdf templates escape interpolated values as HTML, so document data can't inject
+     * markup, and csv templates escape values that would break the tab-delimited output. Text templates, and a null
+     * type, don't escape.
+     */
+    fun generate(
+        templateName: String,
+        templateContent: String,
+        processVariables: Map<String, Any?> = emptyMap(),
+        document: Document? = null,
+        missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER,
+        templateType: String?,
     ): String {
-        val caseDefinitionName = if (referencesDocs(templateContent)) document?.definitionId()?.name() else null
-        streamDocuments(caseDefinitionName).use { documentsStream ->
+        LazyDocuments(document?.definitionId()?.name()).use { docs ->
             val dataModel = mutableMapOf<String, Any?>()
-            document?.let { dataModel["doc"] = objectMapper.convertValue<Map<String, Any?>>(document.content().asJson()) }
-            document?.let { dataModel["docs"] = streamToMap(documentsStream) }
+            document?.let {
+                dataModel["doc"] = objectMapper.convertValue<Map<String, Any?>>(document.content().asJson())
+                dataModel["docs"] = docs
+            }
             dataModel["pv"] = processVariables
 
-            val template = Template(UUID.randomUUID().toString(), templateContent, freemarkerConfiguration)
+            val template = parseTemplate(templateContent, templateType)
             var exceptionCaught: Exception? = null
 
             for (i in 1..10) {
                 try {
+                    // Re-check without docs before querying them again
+                    if (exceptionCaught != null && docs.isQueried()) {
+                        template
+                            .createProcessingEnvironment(dataModel + ("docs" to emptyList<Any>()), Writer.nullWriter())
+                            .process()
+                    }
                     val writer = StringWriter()
                     template.createProcessingEnvironment(dataModel, writer).process()
                     return writer.toString()
@@ -125,7 +167,7 @@ class TemplateService(
                     if (!resolveDataModel(
                             document = document,
                             templateName = templateName,
-                            templateContent = templateContent,
+                            template = template,
                             incompleteDataModel = dataModel,
                             missingPlaceholderStrategy = missingPlaceholderStrategy
                         )
@@ -142,9 +184,57 @@ class TemplateService(
     fun findPlaceholders(
         templateContent: String,
         incompleteDataModel: Map<String, Any?> = mutableMapOf()
+    ): Map<String, Any> = findPlaceholders(
+        parseTemplate(templateContent, null as String?),
+        incompleteDataModel
+    )
+
+    private fun parseTemplate(templateContent: String, templateType: String?): Template {
+        val outputFormat = when (templateType) {
+            TEMPLATE_TYPE_MAIL -> HTMLOutputFormat.INSTANCE
+            TEMPLATE_TYPE_PDF -> XHTMLOutputFormat.INSTANCE
+            TEMPLATE_TYPE_CSV -> TsvOutputFormat.INSTANCE
+            else -> null
+        }
+        if (outputFormat != null) {
+            try {
+                return parseTemplate(templateContent, outputFormat)
+            } catch (e: ParseException) {
+                // Templates that escape with ?html or <#escape> can't be auto-escaped; they keep escaping themselves
+                if (e.message?.contains("(legacy escaping)") != true) {
+                    throw e
+                }
+                logger.warn { "Template uses ?html or <#escape>, so its other values aren't escaped either" }
+            }
+        }
+        return parseTemplate(templateContent, null as OutputFormat?)
+    }
+
+    private fun parseTemplate(templateContent: String, outputFormat: OutputFormat?): Template {
+        // Set on the template, because the injected configuration can be one the application configured differently
+        val templateConfiguration = TemplateConfiguration().apply {
+            parentConfiguration = freemarkerConfiguration
+            newBuiltinClassResolver = TemplateClassResolver.ALLOWS_NOTHING_RESOLVER
+            setAPIBuiltinEnabled(false)
+            objectWrapper = this@TemplateService.objectWrapper
+            outputFormat?.let { this.outputFormat = it }
+        }
+        return Template(
+            UUID.randomUUID().toString(),
+            null,
+            StringReader(templateContent),
+            freemarkerConfiguration,
+            templateConfiguration,
+            null,
+        ).also { templateConfiguration.apply(it) }
+    }
+
+    private fun findPlaceholders(
+        template: Template,
+        incompleteDataModel: Map<String, Any?>
     ): Map<String, Any> {
         // Might not find placeholders that are hidden behind a freemarker-condition
-        val completeDataModel = findCompleteDataModelWithDummyData(templateContent, incompleteDataModel)
+        val completeDataModel = findCompleteDataModelWithDummyData(template, incompleteDataModel)
         return extractPlaceholders(completeDataModel)
     }
 
@@ -177,6 +267,23 @@ class TemplateService(
             templateTypes = templateTypes
         )
         return templateRepository.findAll(query)
+    }
+
+    /** Like [findTemplates], but without loading the content and metadata of every template. */
+    fun findTemplateKeys(
+        templateKey: String? = null,
+        caseDefinitionName: String? = null,
+        templateType: String? = null,
+        templateTypes: List<String>? = null,
+        pageable: Pageable = Pageable.unpaged(),
+    ): Page<TemplateKeyType> {
+        val query = buildSpecification(
+            templateKey = templateKey,
+            caseDefinitionName = caseDefinitionName,
+            templateType = templateType,
+            templateTypes = templateTypes
+        )
+        return templateRepository.findKeyTypes(query, pageable)
     }
 
     fun findTemplate(
@@ -224,6 +331,8 @@ class TemplateService(
         templateType: String,
         metadata: Map<String, Any?>,
     ): ValtimoTemplate {
+        requireValidTemplateKey(templateKey)
+        requireValidTemplateType(templateType)
         require(
             !templateRepository.exists(
                 byKeyAndCaseDefinitionNameAndType(templateKey, caseDefinitionName, templateType)
@@ -281,19 +390,21 @@ class TemplateService(
 
     private fun resolveDataModel(
         templateName: String,
-        templateContent: String,
+        template: Template,
         document: Document? = null,
         incompleteDataModel: MutableMap<String, Any?> = mutableMapOf(),
         missingPlaceholderStrategy: MissingPlaceholderStrategy = THROW_ERROR_WHEN_MISSING_PLACEHOLDER
     ): Boolean {
         val resolvedPlaceholders = extractPlaceholders(incompleteDataModel)
-        val newPlaceholders = findPlaceholders(templateContent, incompleteDataModel)
+        val newPlaceholders = findPlaceholders(template, incompleteDataModel)
             .filter { !resolvedPlaceholders.keys.contains(it.key) }
         val resolvedValues = if (document == null) {
             newPlaceholders
         } else {
             try {
                 valueResolverService.resolveValues(document.id().toString(), newPlaceholders.keys)
+            } catch (e: CircularTemplateReferenceException) {
+                throw e
             } catch (ignore: Exception) {
                 newPlaceholders.keys.associate { newPlaceholder ->
                     try {
@@ -301,6 +412,8 @@ class TemplateService(
                             document.id().toString(),
                             listOf(newPlaceholder)
                         )[newPlaceholder]
+                    } catch (e: CircularTemplateReferenceException) {
+                        throw e
                     } catch (ignore: Exception) {
                         newPlaceholder to null
                     }
@@ -379,17 +492,19 @@ class TemplateService(
     }
 
     private fun findCompleteDataModelWithDummyData(
-        templateContent: String,
-        incompleteDataModel: Map<String, Any?> = mutableMapOf()
+        template: Template,
+        incompleteDataModel: Map<String, Any?>
     ): Map<String, Any?> {
         val dataModel = incompleteDataModel.toMutableMap()
-        val template = Template(UUID.randomUUID().toString(), templateContent, freemarkerConfiguration)
+        // Placeholder discovery renders the template many times; don't query all documents on every render.
+        if (dataModel["docs"] is LazyDocuments) {
+            dataModel["docs"] = emptyList<Any>()
+        }
         var prevPlaceholder: String? = null
         var dummyValueIndex = 0
         for (i in 1..100) {
             try {
-                val writer = StringWriter()
-                template.createProcessingEnvironment(dataModel, writer).process()
+                template.createProcessingEnvironment(dataModel, Writer.nullWriter()).process()
                 break
             } catch (e: TemplateException) {
                 val missingPlaceholder = e.blamedExpressionString?.substringBefore(' ') ?: prevPlaceholder
@@ -412,8 +527,8 @@ class TemplateService(
     ) {
         var node = dataModel
         val parts = placeholder.split('.', ':')
-        parts.forEach { part ->
-            if (part == parts.last()) {
+        parts.forEachIndexed { index, part ->
+            if (index == parts.lastIndex) {
                 node[part] = value
             } else {
                 val v = node[part]
@@ -437,30 +552,28 @@ class TemplateService(
         }
     }
 
-    private fun referencesDocs(templateContent: String): Boolean {
-        return DOCS_REFERENCE.containsMatchIn(" $templateContent ")
-    }
+    /**
+     * The `docs` variable. Documents are only queried when the template iterates over them, and every iteration
+     * opens a fresh stream, so a template can list `docs` more than once.
+     */
+    private inner class LazyDocuments(
+        private val caseDefinitionName: String?,
+    ) : Iterable<Map<String, Any?>>, AutoCloseable {
+        private val openStreams = mutableListOf<Stream<String>>()
 
-    private fun streamDocuments(caseDefinitionName: String?): Stream<JsonSchemaDocument> {
-        return if (caseDefinitionName == null) {
-            emptyList<JsonSchemaDocument>().stream()
-        } else {
-            jsonSchemaDocumentRepositoryStreaming
-                .streamAllByCaseDefinitionName(caseDefinitionName)
-        }
-    }
+        fun isQueried() = openStreams.isNotEmpty()
 
-    private fun streamToMap(stream: Stream<JsonSchemaDocument>): Iterable<Map<String, Any?>> {
-        return Iterable {
-            val iterator = stream.iterator()
-            object : Iterator<Map<String, Any?>> {
-                override fun hasNext(): Boolean = iterator.hasNext()
-                override fun next(): Map<String, Any?> =
-                    objectMapper.convertValue<Map<String, Any?>>(iterator.next().content().asJson())
+        override fun iterator(): Iterator<Map<String, Any?>> {
+            if (caseDefinitionName == null) {
+                return emptyList<Map<String, Any?>>().iterator()
             }
+            val stream = jsonSchemaDocumentRepositoryStreaming.streamContentByCaseDefinitionName(caseDefinitionName)
+            openStreams += stream
+            return stream.map { objectMapper.readValue<Map<String, Any?>>(it) }.iterator()
         }
-    }
 
+        override fun close() = openStreams.forEach { it.close() }
+    }
 
     private fun defaultTemplateContent(templateType: String): String =
         when (templateType) {
@@ -510,9 +623,9 @@ class TemplateService(
 
             "csv" ->
                 """
-                |Example;First name;Last name
+                |Example${'\t'}First name${'\t'}Last name
                 |<#list docs as doc>
-                |  This is an example;${'$'}{doc.firstName};${'$'}{doc.lastName}
+                |This is an example${'\t'}${'$'}{doc.firstName}${'\t'}${'$'}{doc.lastName}
                 |</#list>
             |
                 """.trimMargin()
@@ -522,6 +635,15 @@ class TemplateService(
 
     companion object {
         private val logger = KotlinLogging.logger {}
-        private val DOCS_REFERENCE = Regex("[^A-z]docs[^A-z]")
+
+        // A key with a slash can't be used in the template URL
+        fun requireValidTemplateKey(templateKey: String) =
+            require(templateKey.isNotBlank() && '/' !in templateKey) { "Invalid template key '$templateKey'" }
+
+        private val TEMPLATE_TYPES = listOf(TEMPLATE_TYPE_MAIL, TEMPLATE_TYPE_TEXT, TEMPLATE_TYPE_PDF, TEMPLATE_TYPE_CSV)
+
+        // No plugin uses a template of another type
+        fun requireValidTemplateType(templateType: String) =
+            require(templateType in TEMPLATE_TYPES) { "Invalid template type '$templateType'" }
     }
 }

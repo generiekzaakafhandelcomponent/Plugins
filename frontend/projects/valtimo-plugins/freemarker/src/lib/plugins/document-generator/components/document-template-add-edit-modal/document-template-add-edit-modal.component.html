@@ -35,7 +35,7 @@
 
     <section cdsModalContent>
         <form [formGroup]="form">
-            <cds-label [invalid]="key.dirty && key.invalid">
+            <cds-label [invalid]="key.dirty && key.invalid" invalidText="Only letters, digits, - and _ are allowed">
                 {{ 'Key' }}
 
                 <input

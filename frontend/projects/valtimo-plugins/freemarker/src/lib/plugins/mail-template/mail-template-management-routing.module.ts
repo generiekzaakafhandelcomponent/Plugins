@@ -27,7 +27,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     data: {
       title: 'Mail Template Editor',
-      templates: [ROLE_ADMIN],
+      roles: [ROLE_ADMIN],
       customPageTitle: true,
     },
   },

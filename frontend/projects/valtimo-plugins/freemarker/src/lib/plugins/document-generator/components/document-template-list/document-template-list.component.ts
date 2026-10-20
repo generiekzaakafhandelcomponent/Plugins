@@ -57,11 +57,6 @@ export class DocumentTemplateListComponent implements OnInit {
             key: 'type',
             label: 'Document type',
         },
-        {
-            viewType: ViewType.BOOLEAN,
-            key: 'readOnly',
-            label: 'Read only',
-        },
     ];
 
 
@@ -101,9 +96,13 @@ export class DocumentTemplateListComponent implements OnInit {
         this._caseDefinitionName$.pipe(
             take(1),
             switchMap(caseDefinitionName => this.templateService.addTemplate({caseDefinitionName, ...data}))
-        ).subscribe(template => {
-            this.showAddModal$.next(false);
-            this.gotoDocumentTemplateEditor(template.caseDefinitionName, template.key, template.type);
+        ).subscribe({
+            next: template => {
+                this.showAddModal$.next(false);
+                this.gotoDocumentTemplateEditor(template.caseDefinitionName, template.key, template.type);
+            },
+            // the modal has already reset its form, so it can't be retried
+            error: () => this.showAddModal$.next(false),
         });
     }
 
@@ -121,8 +120,10 @@ export class DocumentTemplateListComponent implements OnInit {
                 type: templates[0]?.type || 'pdf',
                 templates
             })),
-        ).subscribe(_ => {
-            this.reloadTemplateList();
+        ).subscribe({
+            // a failed delete may still have deleted some of the templates
+            next: () => this.reloadTemplateList(),
+            error: () => this.reloadTemplateList(),
         });
     }
 
@@ -142,9 +143,12 @@ export class DocumentTemplateListComponent implements OnInit {
             switchMap(caseDefinitionName => this.templateService.getAllDocumentTemplates(caseDefinitionName)),
             map(templatePage => templatePage.content),
             take(1)
-        ).subscribe(templateListItems => {
-            this.templates$.next(templateListItems);
-            this.loading$.next(false);
+        ).subscribe({
+            next: templateListItems => {
+                this.templates$.next(templateListItems);
+                this.loading$.next(false);
+            },
+            error: () => this.loading$.next(false),
         });
     }
 

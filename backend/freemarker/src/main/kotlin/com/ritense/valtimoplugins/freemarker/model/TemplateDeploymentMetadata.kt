@@ -23,4 +23,25 @@ data class TemplateDeploymentMetadata(
     val metadata: Map<String, Any?>? = null,
     val content: String? = null,
     val contentRef: String? = null,
-)
+) {
+    /**
+     * The inline [content], or else the classpath resource [contentRef] points to. Only template files can be
+     * referenced, so an imported definition can't read other resources, such as the application configuration.
+     */
+    fun readContent(): String {
+        if (content != null) {
+            return content
+        }
+        val ref = requireNotNull(contentRef) { "Missing template content" }
+        require(CONTENT_REF_EXTENSIONS.any { ref.endsWith(it, ignoreCase = true) }) {
+            "contentRef '$ref' must end with one of $CONTENT_REF_EXTENSIONS"
+        }
+        val resource = requireNotNull(javaClass.getResource(ref)) { "contentRef '$ref' not found" }
+        return resource.readText()
+    }
+
+    companion object {
+        private val CONTENT_REF_EXTENSIONS =
+            listOf(".ftl", ".ftlh", ".ftlx", ".html", ".htm", ".xhtml", ".txt", ".csv", ".tsv")
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "templateKey": "text-letter-template",
+  "caseDefinitionName": "profile",
+  "templateType": "text",
+  "metadata": {},
+  "contentRef": "/config/template/letter.ftlh"
+}

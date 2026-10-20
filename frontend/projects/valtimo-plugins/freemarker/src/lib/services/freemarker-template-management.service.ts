@@ -96,7 +96,7 @@ export class FreemarkerTemplateManagementService {
 
     public getTemplate(caseDefinitionName: string, templateType: TemplateType, key: string): Observable<TemplateResponse> {
         return this.http.get<TemplateResponse>(
-            `${this.valtimoEndpointUri}v1/case-definition/${caseDefinitionName}/template-type/${templateType}/template/${key}`
+            `${this.valtimoEndpointUri}v1/case-definition/${caseDefinitionName}/template-type/${templateType}/template/${encodeURIComponent(key)}`
         );
     }
 

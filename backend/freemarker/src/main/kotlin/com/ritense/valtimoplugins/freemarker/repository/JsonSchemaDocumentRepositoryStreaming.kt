@@ -18,16 +18,36 @@ package com.ritense.valtimoplugins.freemarker.repository
 
 import com.ritense.document.domain.Document
 import com.ritense.document.domain.impl.JsonSchemaDocument
+import jakarta.persistence.QueryHint
 import java.util.stream.Stream
+import org.hibernate.jpa.HibernateHints.HINT_FETCH_SIZE
+import org.hibernate.jpa.HibernateHints.HINT_READ_ONLY
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.jpa.repository.QueryHints
 
 interface JsonSchemaDocumentRepositoryStreaming : JpaRepository<JsonSchemaDocument, Document.Id> {
 
+    @Deprecated("Loads every document entity. Use streamContentByCaseDefinitionName instead.")
     @Query(
         """SELECT d
         FROM JsonSchemaDocument d
         WHERE d.documentDefinitionId.name = :caseDefinitionName"""
     )
     fun streamAllByCaseDefinitionName(caseDefinitionName: String): Stream<JsonSchemaDocument>
+
+    /**
+     * Streams only the JSON content: no entities enter the persistence context and no eager associations are loaded.
+     * The fetch size makes the PostgreSQL driver use a cursor instead of buffering the whole result set.
+     */
+    @Query(
+        """SELECT d.content.content
+        FROM JsonSchemaDocument d
+        WHERE d.documentDefinitionId.name = :caseDefinitionName"""
+    )
+    @QueryHints(
+        QueryHint(name = HINT_FETCH_SIZE, value = "500"),
+        QueryHint(name = HINT_READ_ONLY, value = "true"),
+    )
+    fun streamContentByCaseDefinitionName(caseDefinitionName: String): Stream<String>
 }

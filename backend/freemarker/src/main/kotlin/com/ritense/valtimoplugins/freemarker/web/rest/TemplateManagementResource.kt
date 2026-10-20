@@ -52,14 +52,14 @@ class TemplateManagementResource(
         @RequestParam(value = "templateTypes", required = false) templateTypes: List<String>?,
         pageable: Pageable,
     ): ResponseEntity<Page<TemplateListItemResponse>> {
-        val templates = templateService.findTemplates(
+        val templates = templateService.findTemplateKeys(
             templateKey = templateKey,
             caseDefinitionName = caseDefinitionName,
             templateType = templateType,
             templateTypes = templateTypes,
             pageable = pageable
         )
-        return ResponseEntity.ok(templates.map { TemplateListItemResponse.of(it) })
+        return ResponseEntity.ok(templates.map { TemplateListItemResponse(key = it.key, type = it.type) })
     }
 
     @GetMapping("/v1/case-definition/{caseDefinitionName}/template-type/{templateType}/template/{key}")
@@ -68,7 +68,8 @@ class TemplateManagementResource(
         @PathVariable templateType: String,
         @PathVariable key: String,
     ): ResponseEntity<TemplateResponse> {
-        val template = templateService.getTemplate(key, caseDefinitionName, templateType)
+        val template = templateService.findTemplate(key, caseDefinitionName, templateType)
+            ?: return ResponseEntity.notFound().build()
         return ResponseEntity.ok(TemplateResponse.of(template))
     }
 
@@ -89,6 +90,8 @@ class TemplateManagementResource(
     fun updateTemplate(
         @RequestBody request: UpdateTemplateRequest,
     ): ResponseEntity<TemplateResponse> {
+        TemplateService.requireValidTemplateKey(request.key)
+        TemplateService.requireValidTemplateType(request.type)
         val template = templateService.saveTemplate(
             request.key,
             request.caseDefinitionName,

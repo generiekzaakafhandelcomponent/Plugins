@@ -50,11 +50,6 @@ export class MailTemplateListComponent implements OnInit {
             key: 'key',
             label: 'Key',
         },
-        {
-            viewType: ViewType.BOOLEAN,
-            key: 'readOnly',
-            label: 'Read only',
-        },
     ];
 
     private readonly _caseDefinitionName$: Observable<string> = this.route.params.pipe(
@@ -95,9 +90,13 @@ export class MailTemplateListComponent implements OnInit {
                 caseDefinitionName,
                 type: 'mail', ...data
             }))
-        ).subscribe(template => {
-            this.showAddModal$.next(false);
-            this.gotoMailTemplateEditor(template.caseDefinitionName, template.key);
+        ).subscribe({
+            next: template => {
+                this.showAddModal$.next(false);
+                this.gotoMailTemplateEditor(template.caseDefinitionName, template.key);
+            },
+            // the modal has already reset its form, so it can't be retried
+            error: () => this.showAddModal$.next(false),
         });
     }
 
@@ -115,8 +114,10 @@ export class MailTemplateListComponent implements OnInit {
                 type: 'mail',
                 templates
             })),
-        ).subscribe(_ => {
-            this.reloadTemplateList();
+        ).subscribe({
+            // a failed delete may still have deleted some of the templates
+            next: () => this.reloadTemplateList(),
+            error: () => this.reloadTemplateList(),
         });
     }
 
@@ -136,9 +137,12 @@ export class MailTemplateListComponent implements OnInit {
             switchMap(caseDefinitionName => this.templateService.getAllMailTemplates(caseDefinitionName)),
             map(templatePage => templatePage.content),
             take(1)
-        ).subscribe(templateListItems => {
-            this.templates$.next(templateListItems);
-            this.loading$.next(false);
+        ).subscribe({
+            next: templateListItems => {
+                this.templates$.next(templateListItems);
+                this.loading$.next(false);
+            },
+            error: () => this.loading$.next(false),
         });
     }
 
