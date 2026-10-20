@@ -18,6 +18,7 @@ package com.ritense.valtimoplugins.valtimollm.autoconfiguration
 
 import com.ritense.document.service.impl.JsonSchemaDocumentService
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimoplugins.valtimollm.client.ChatCompletionsClients
 import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmSummaryModel
 import com.ritense.valtimoplugins.valtimollm.client.ValtimoLlmTextGenerationModel
 import com.ritense.valtimoplugins.valtimollm.plugin.ValtimoLlmPluginFactory
@@ -30,20 +31,19 @@ import org.springframework.web.client.RestClient
 class ValtimoLlmAutoConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean(ChatCompletionsClients::class)
+    fun valtimoLlmChatCompletionsClients(restClientBuilder: RestClient.Builder) =
+        ChatCompletionsClients(restClientBuilder)
+
+    @Bean
     @ConditionalOnMissingBean(ValtimoLlmSummaryModel::class)
-    fun MistralSummaryModel(
-        restClientBuilder: RestClient.Builder
-    ) = ValtimoLlmSummaryModel(
-        restClientBuilder, null, null
-    )
+    fun MistralSummaryModel(chatCompletionsClients: ChatCompletionsClients) =
+        ValtimoLlmSummaryModel(chatCompletionsClients)
 
     @Bean
     @ConditionalOnMissingBean(ValtimoLlmTextGenerationModel::class)
-    fun MistralTextGenerationModel(
-        restClientBuilder: RestClient.Builder
-    ) = ValtimoLlmTextGenerationModel(
-        restClientBuilder, null, null
-    )
+    fun MistralTextGenerationModel(chatCompletionsClients: ChatCompletionsClients) =
+        ValtimoLlmTextGenerationModel(chatCompletionsClients)
 
 
     @Bean

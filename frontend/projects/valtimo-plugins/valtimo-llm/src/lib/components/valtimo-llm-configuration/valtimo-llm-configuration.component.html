@@ -57,4 +57,16 @@
             [tooltip]="'tokenTooltip' | pluginTranslate: pluginId | async"
     >
     </v-input>
+    <v-input
+            name="model"
+            [title]="'model' | pluginTranslate: pluginId | async"
+            [fullWidth]="true"
+            [margin]="true"
+            [disabled]="obs.disabled"
+            [defaultValue]="obs.prefill?.model"
+            [required]="false"
+            [tooltip]="'modelTooltip' | pluginTranslate: pluginId | async"
+            placeholder="open-mistral-nemo-2407"
+    >
+    </v-input>
 </v-form>

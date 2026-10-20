@@ -39,7 +39,7 @@ const valtimoLlmPluginSpecification: PluginSpecification = {
                 chat: 'Stel een vraag aan een chatmodel',
                 'chat-memorize': 'Stel een vraag aan een chatmodel die vorige vragen en antwoorden onthoudt',
                 url: 'API-URL',
-                urlTooltip: 'URL van de Mistral REST-API',
+                urlTooltip: 'URL van een OpenAI-compatibele chat-API, bijvoorbeeld Mistral of een lokale Ollama',
                 description:
                     'Deze plugin maakt het mogelijk om opdrachten te laten uitvoeren door een Large Language AI model.',
                 configurationTitle: 'Configuratienaam',
@@ -47,6 +47,9 @@ const valtimoLlmPluginSpecification: PluginSpecification = {
                     'Naam waaronder deze pluginconfiguratie binnen de applicatie beschikbaar is.',
                 token: 'Token',
                 tokenTooltip: 'Authenticatietoken met de vereiste scopes.',
+                model: 'Model',
+                modelTooltip:
+                    'Naam van het model, bijvoorbeeld een lokaal Ollama-model. Leeg laten voor open-mistral-nemo-2407.',
                 longText: 'Tekst om samen te vatten',
                 longTextTooltip: 'Voer de tekst in die je wilt samenvatten.',
                 question: 'Vraag aan een chatmodel',
@@ -68,7 +71,7 @@ const valtimoLlmPluginSpecification: PluginSpecification = {
                 chat: 'Ask a question to a chat model',
                 'chat-memorize': 'Ask a question to a chat model that remembers previous questions and answers',
                 url: 'API URL',
-                urlTooltip: 'URL of the Mistral REST API',
+                urlTooltip: 'URL of an OpenAI-compatible chat API, for example Mistral or a local Ollama',
                 description:
                     'This plugin makes it possible to interact with a Large Language AI model..',
                 configurationTitle: 'Configuration name',
@@ -76,6 +79,9 @@ const valtimoLlmPluginSpecification: PluginSpecification = {
                     'Name under which this plugin configuration is available in the application.',
                 token: 'Token',
                 tokenTooltip: 'Authentication token with the required scopes.',
+                model: 'Model',
+                modelTooltip:
+                    'Name of the model, for example a local Ollama model. Leave empty for open-mistral-nemo-2407.',
                 longText: 'Text to summarize',
                 longTextTooltip: 'Enter the text you want summarized.',
                 question: 'Question for the chat model',

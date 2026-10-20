@@ -43,6 +43,22 @@ Go to [https://mistral.ai/](https://mistral.ai/) and create a free account.
 4. Click **"Save"** to store your configuration.
 5. Repeat this for the other plugin **Valtimo LLM Plugin** so all processes are Executable.
 
+#### Using another model or a local LLM
+
+> Available since Valtimo LLM plugin `5.5.0`.
+
+The plugin talks to any OpenAI-compatible chat API (`POST {url}/v1/chat/completions`). Leave **Model** empty to use
+Mistral's `open-mistral-nemo-2407`, or fill in another model name. For example, for a local
+[Ollama](https://ollama.com) run `ollama pull mistral-nemo` and configure:
+
+| Field | Value |
+|-------|-------|
+| **API URL** | `http://localhost:11434/` |
+| **Token** | any value (Ollama ignores it) |
+| **Model** | `mistral-nemo` |
+
+Each configuration uses its own API URL, token and model, so processes can use different models side by side.
+
 ---
 
 ### Step 4: Start Using the Plugin
