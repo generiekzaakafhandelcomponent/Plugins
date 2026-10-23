@@ -21,6 +21,10 @@ interface HttpClientAuthenticationPluginConfig extends PluginConfigurationData {
     authenticationType: string;
     authHeaderName: string;
     authSecret: string;
+    clientId?: string;
+    clientCertificate?: string;
+    clientPrivateKey?: string;
+    serverCertificate?: string;
 }
 
 export {HttpClientAuthenticationPluginConfig};

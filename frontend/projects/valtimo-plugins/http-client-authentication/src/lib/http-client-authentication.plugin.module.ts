@@ -18,19 +18,23 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {PluginTranslatePipeModule} from "@valtimo/plugin";
-import {FormModule, InputModule, RadioModule} from "@valtimo/components";
+import {FormModule, InputLabelModule, InputModule, RadioModule} from "@valtimo/components";
+import {ToggleModule} from "carbon-components-angular";
 import {
     HttpClientAuthenticationPluginConfigurationComponent
 } from "./components/http-client-authentication-plugin-configuration.component";
+import {VInputPlaceholderDirective} from "./components/v-input-placeholder.directive";
 
 @NgModule({
-    declarations: [HttpClientAuthenticationPluginConfigurationComponent],
+    declarations: [HttpClientAuthenticationPluginConfigurationComponent, VInputPlaceholderDirective],
     imports: [
         CommonModule,
         PluginTranslatePipeModule,
         FormModule,
         InputModule,
+        InputLabelModule,
         RadioModule,
+        ToggleModule,
     ],
     exports: [HttpClientAuthenticationPluginConfigurationComponent]
 })

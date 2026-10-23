@@ -17,14 +17,16 @@
 
 package com.ritense.valtimoplugins.httpclientauthentication.plugin
 
+import com.ritense.openzaak.plugin.token.OpenZaakPluginTokenGeneratorService
 import com.ritense.plugin.PluginFactory
 import com.ritense.plugin.service.PluginService
+import com.ritense.valtimoplugins.httpclientauthentication.tls.TlsRequestFactoryCache
 
 class HttpClientAuthenticationPluginFactory(
-    pluginService: PluginService
+    pluginService: PluginService,
+    private val tokenGeneratorService: OpenZaakPluginTokenGeneratorService,
+    private val tlsRequestFactoryCache: TlsRequestFactoryCache,
 ) : PluginFactory<HttpClientAuthenticationPlugin>(pluginService) {
-
-    override fun create(): HttpClientAuthenticationPlugin {
-        return HttpClientAuthenticationPlugin()
-    }
+    override fun create(): HttpClientAuthenticationPlugin =
+        HttpClientAuthenticationPlugin(pluginConfigurationId, tokenGeneratorService, tlsRequestFactoryCache)
 }

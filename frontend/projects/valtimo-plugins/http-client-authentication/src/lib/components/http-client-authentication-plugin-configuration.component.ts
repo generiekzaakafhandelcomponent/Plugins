@@ -26,6 +26,7 @@ import {
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'http-client-authentication-plugin-configuration',
     templateUrl: './http-client-authentication-plugin-configuration.component.html',
+    styles: ['.tls-toggle { margin-block-end: var(--v-input-margin); }'],
 })
 export class HttpClientAuthenticationPluginConfigurationComponent
     // The component explicitly implements the PluginConfigurationComponent interface
@@ -42,28 +43,40 @@ export class HttpClientAuthenticationPluginConfigurationComponent
 
     readonly bearerRadio = {value: 'BEARER', title: 'Bearer'};
     readonly headerRadio = {value: 'HEADER', title: 'Header'};
+    readonly tokenRadio = {value: 'TOKEN', title: 'Token'};
+    readonly zgwJwtRadio = {value: 'ZGW_JWT', title: 'Client ID / secret (ZGW JWT)'};
     readonly noneRadio = {value: 'NONE', title: 'None'};
 
-    readonly authenticationTypeOptions = [this.bearerRadio, this.headerRadio, this.noneRadio];
+    readonly authenticationTypeOptions = [
+        this.bearerRadio,
+        this.headerRadio,
+        this.tokenRadio,
+        this.zgwJwtRadio,
+        this.noneRadio,
+    ];
 
     private saveSubscription!: Subscription;
 
     private readonly formValue$ = new BehaviorSubject<HttpClientAuthenticationPluginConfig | null>(null);
     private readonly valid$ = new BehaviorSubject<boolean>(false);
 
+    // The private key is a secret and never sent back, so an unchanged certificate keeps its stored key
+    private prefilledClientCertificate = '';
+
+    // Secrets are never sent back either, so an unchanged authentication type keeps its stored secret
+    private prefilledAuthenticationType = '';
+
     selectedAuthType$ = new BehaviorSubject(this.bearerRadio)
+
+    // Frontend-only switch: the certificate fields are shown, validated and saved only while it is on
+    readonly tlsEnabled$ = new BehaviorSubject<boolean>(false);
 
     ngOnInit(): void {
         this.prefillConfiguration$.pipe(map(config => {
-            if (config?.authenticationType) {
-                if (config.authenticationType === this.bearerRadio.value) {
-                    this.selectedAuthType$.next(this.bearerRadio)
-                } else if (config.authenticationType === this.headerRadio.value) {
-                    this.selectedAuthType$.next(this.headerRadio)
-                } else if (config.authenticationType === this.noneRadio.value) {
-                    this.selectedAuthType$.next(this.noneRadio)
-                }
-            }
+            this.prefilledClientCertificate = config?.clientCertificate?.trim() ?? '';
+            this.prefilledAuthenticationType = config?.authenticationType ?? '';
+            this.tlsEnabled$.next(!!(this.prefilledClientCertificate || config?.serverCertificate?.trim()));
+            this.selectAuthType(config?.authenticationType);
         })).subscribe();
         this.openSaveSubscription();
     }
@@ -78,32 +91,65 @@ export class HttpClientAuthenticationPluginConfigurationComponent
     }
 
     radioValueChange(radioValue: string): void {
-        if (radioValue) {
-            if (radioValue === this.bearerRadio.value) {
-                this.selectedAuthType$.next(this.bearerRadio)
-            } else if (radioValue === this.headerRadio.value) {
-                this.selectedAuthType$.next(this.headerRadio)
-            } else if (radioValue === this.noneRadio.value) {
-                this.selectedAuthType$.next(this.noneRadio)
-            }
+        this.selectAuthType(radioValue);
+    }
+
+    tlsEnabledChange(tlsEnabled: boolean): void {
+        this.tlsEnabled$.next(tlsEnabled);
+        const formValue = this.formValue$.getValue();
+        if (formValue) {
+            this.handleValid(formValue);
+        }
+    }
+
+    private selectAuthType(authenticationType: string | undefined): void {
+        const option = this.authenticationTypeOptions.find(option => option.value === authenticationType);
+        if (option) {
+            this.selectedAuthType$.next(option);
         }
     }
 
     private handleValid(formValue: HttpClientAuthenticationPluginConfig): void {
-        let valid = false
-        if (formValue.authenticationType === this.bearerRadio.value) {
-            valid = !!(formValue.authSecret
-                && formValue.configurationTitle)
-        } else if (formValue.authenticationType === this.headerRadio.value) {
-            valid = !!(formValue.authHeaderName
-                && formValue.authSecret
-                && formValue.configurationTitle)
-        } else if (formValue.authenticationType === this.noneRadio.value) {
-            valid = !!(formValue.configurationTitle)
-        }
+        const valid = !!formValue.configurationTitle
+            && this.authenticationValid(formValue)
+            && (!this.tlsEnabled$.getValue() || this.certificatesValid(formValue));
 
         this.valid$.next(valid);
         this.valid.emit(valid);
+    }
+
+    private authenticationValid(formValue: HttpClientAuthenticationPluginConfig): boolean {
+        const secretValid = !!formValue.authSecret || formValue.authenticationType === this.prefilledAuthenticationType;
+        switch (formValue.authenticationType) {
+            case this.bearerRadio.value:
+            case this.tokenRadio.value:
+                return secretValid;
+            case this.headerRadio.value:
+                return !!formValue.authHeaderName && secretValid;
+            case this.zgwJwtRadio.value:
+                return !!formValue.clientId && secretValid && (!formValue.authSecret || formValue.authSecret.length >= 32);
+            case this.noneRadio.value:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private certificatesValid(formValue: HttpClientAuthenticationPluginConfig): boolean {
+        const clientCertificate = formValue.clientCertificate?.trim() ?? '';
+        const clientPrivateKey = formValue.clientPrivateKey?.trim() ?? '';
+        if (!clientCertificate) {
+            return !clientPrivateKey;
+        }
+        return !!clientPrivateKey || clientCertificate === this.prefilledClientCertificate;
+    }
+
+    private withoutDisabledFields(formValue: HttpClientAuthenticationPluginConfig): HttpClientAuthenticationPluginConfig {
+        if (this.tlsEnabled$.getValue()) {
+            return formValue;
+        }
+        const {clientCertificate, clientPrivateKey, serverCertificate, ...withoutTlsFields} = formValue;
+        return withoutTlsFields;
     }
 
     private openSaveSubscription(): void {
@@ -116,7 +162,7 @@ export class HttpClientAuthenticationPluginConfigurationComponent
                 .pipe(take(1))
                 .subscribe(([formValue, valid]) => {
                     if (valid) {
-                        this.configuration.emit(formValue);
+                        this.configuration.emit(this.withoutDisabledFields(formValue));
                     }
                 });
         });

@@ -25,12 +25,14 @@
             (valueChange)="formValueChange($event)"
             *ngIf="{
         disabled: disabled$ | async,
-        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null
+        prefill: prefillConfiguration$ ? (prefillConfiguration$ | async) : null,
+        tlsEnabled: tlsEnabled$ | async
     } as obs"
     >
         <v-input
                 name="configurationTitle"
                 [title]="'configurationTitle' | pluginTranslate: pluginId | async"
+                [placeholder]="'configurationTitlePlaceholder' | pluginTranslate: pluginId | async"
                 [margin]="true"
                 [defaultValue]="obs.prefill?.configurationTitle"
                 [disabled]="obs.disabled"
@@ -46,11 +48,12 @@
                 (valueChange)="radioValueChange($event)"
         >
         </v-radio>
-        <ng-container *ngIf="(selectedAuthType$|async).value == 'BEARER'">
+        <ng-container *ngIf="['BEARER', 'TOKEN'].includes((selectedAuthType$|async).value)">
             <v-input
                     name="authSecret"
                     type="password"
                     [title]="'authSecret' | pluginTranslate: pluginId | async"
+                    [vInputPlaceholder]="'authSecretPlaceholder' | pluginTranslate: pluginId | async"
                     [margin]="true"
                     [fullWidth]="true"
                     [defaultValue]="obs.prefill?.authSecret"
@@ -63,6 +66,7 @@
             <v-input
                     name="authHeaderName"
                     [title]="'authHeaderName' | pluginTranslate: pluginId | async"
+                    [placeholder]="'authHeaderNamePlaceholder' | pluginTranslate: pluginId | async"
                     [margin]="true"
                     [fullWidth]="true"
                     [defaultValue]="obs.prefill?.authHeaderName"
@@ -74,9 +78,94 @@
                     name="authSecret"
                     type="password"
                     [title]="'authSecret' | pluginTranslate: pluginId | async"
+                    [vInputPlaceholder]="'authSecretPlaceholder' | pluginTranslate: pluginId | async"
                     [margin]="true"
                     [fullWidth]="true"
                     [defaultValue]="obs.prefill?.authSecret"
+                    [disabled]="obs.disabled"
+                    [required]="false"
+            >
+            </v-input>
+        </ng-container>
+        <ng-container *ngIf="(selectedAuthType$|async).value === 'ZGW_JWT'">
+            <v-input
+                    name="clientId"
+                    [title]="'clientId' | pluginTranslate: pluginId | async"
+                    [placeholder]="'clientIdPlaceholder' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [fullWidth]="true"
+                    [defaultValue]="obs.prefill?.clientId"
+                    [disabled]="obs.disabled"
+                    [required]="true"
+            >
+            </v-input>
+            <v-input
+                    name="authSecret"
+                    type="password"
+                    [title]="'clientSecret' | pluginTranslate: pluginId | async"
+                    [vInputPlaceholder]="'clientSecretPlaceholder' | pluginTranslate: pluginId | async"
+                    [tooltip]="'clientSecretTooltip' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [fullWidth]="true"
+                    [defaultValue]="obs.prefill?.authSecret"
+                    [disabled]="obs.disabled"
+                    [required]="!obs.prefill"
+            >
+            </v-input>
+        </ng-container>
+        <div class="tls-toggle">
+            <v-input-label
+                    [title]="'tlsEnabled' | pluginTranslate: pluginId | async"
+                    [tooltip]="'tlsEnabledTooltip' | pluginTranslate: pluginId | async"
+            >
+            </v-input-label>
+            <cds-toggle
+                    [checked]="obs.tlsEnabled"
+                    [disabled]="obs.disabled"
+                    [onText]="'tlsEnabled.toggleOn' | pluginTranslate: pluginId | async"
+                    [offText]="'tlsEnabled.toggleOff' | pluginTranslate: pluginId | async"
+                    (checkedChange)="tlsEnabledChange($event)"
+            >
+            </cds-toggle>
+        </div>
+        <ng-container *ngIf="obs.tlsEnabled">
+            <v-input
+                    name="clientCertificate"
+                    type="textarea"
+                    [rows]="6"
+                    [title]="'clientCertificate' | pluginTranslate: pluginId | async"
+                    [vInputPlaceholder]="'clientCertificatePlaceholder' | pluginTranslate: pluginId | async"
+                    [tooltip]="'clientCertificateTooltip' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [fullWidth]="true"
+                    [defaultValue]="obs.prefill?.clientCertificate"
+                    [disabled]="obs.disabled"
+                    [required]="false"
+            >
+            </v-input>
+            <v-input
+                    name="clientPrivateKey"
+                    type="textarea"
+                    [rows]="6"
+                    [title]="'clientPrivateKey' | pluginTranslate: pluginId | async"
+                    [vInputPlaceholder]="'clientPrivateKeyPlaceholder' | pluginTranslate: pluginId | async"
+                    [tooltip]="'clientPrivateKeyTooltip' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [fullWidth]="true"
+                    [disabled]="obs.disabled"
+                    [required]="false"
+            >
+            </v-input>
+            <v-input
+                    name="serverCertificate"
+                    type="textarea"
+                    [rows]="6"
+                    [title]="'serverCertificate' | pluginTranslate: pluginId | async"
+                    [vInputPlaceholder]="'serverCertificatePlaceholder' | pluginTranslate: pluginId | async"
+                    [tooltip]="'serverCertificateTooltip' | pluginTranslate: pluginId | async"
+                    [margin]="true"
+                    [fullWidth]="true"
+                    [defaultValue]="obs.prefill?.serverCertificate"
                     [disabled]="obs.disabled"
                     [required]="false"
             >

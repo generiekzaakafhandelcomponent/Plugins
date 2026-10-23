@@ -37,28 +37,77 @@ const httpClientAuthenticationPluginSpecification: PluginSpecification = {
     For each language key an implementation supports, translation keys with a translation are provided below.
     These can then be used in configuration components using the pluginTranslate pipe or the PluginTranslationService.
     At a minimum, the keys 'title' and 'description' need to be defined.
-    Each function key also requires a translation key. In this case, the key 'sample-action' is added.
      */
     pluginTranslations: {
         nl: {
             configurationTitle: 'Configuratienaam',
+            configurationTitlePlaceholder: 'Client Authentication',
             configurationTitleTooltip:
                 'Http Client Authentication Plugin',
             title: 'Http Client Authentication Plugin',
-            description: 'Biedt authenticatie headers voor uitgaande REST clients',
+            description: 'Biedt authenticatie en mutual TLS voor uitgaande REST clients, waaronder de ZGW API plugins',
             authenticationType: 'Authenticatie type',
             authHeaderName: 'Authenticatie header naam',
-            authSecret: 'Authenticatie secret'
+            authHeaderNamePlaceholder: 'X-Api-Key',
+            authSecret: 'Authenticatie secret',
+            authSecretPlaceholder: '0000000000000000000000000000000000000000',
+            clientId: 'Client ID',
+            clientIdPlaceholder: 'valtimo_client',
+            clientSecret: 'Client secret',
+            clientSecretPlaceholder: '00000000-0000-0000-0000-000000000000',
+            clientSecretTooltip: 'Minimaal 32 tekens. Wordt gebruikt om het ZGW JWT-token te ondertekenen.',
+            tlsEnabled: 'Certificaten (mutual TLS)',
+            tlsEnabledTooltip:
+                'Schakel in om een clientcertificaat (mutual TLS) te gebruiken of een specifiek servercertificaat te vertrouwen. Uitschakelen verwijdert de certificaten bij opslaan.',
+            'tlsEnabled.toggleOn': 'Aan',
+            'tlsEnabled.toggleOff': 'Uit',
+            clientCertificate: 'Clientcertificaat (PEM)',
+            clientCertificateTooltip:
+                'Optioneel. Het certificaat waarmee GZAC zich bij mutual TLS identificeert. Leeg laten schakelt mutual TLS uit.',
+            clientCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END CERTIFICATE-----',
+            clientPrivateKey: 'Private key van het clientcertificaat (PEM)',
+            clientPrivateKeyTooltip:
+                'Verplicht bij een nieuw clientcertificaat. Mag niet versleuteld zijn. Wordt na opslaan niet meer getoond; leeg laten behoudt de opgeslagen sleutel.',
+            clientPrivateKeyPlaceholder: '-----BEGIN PRIVATE KEY-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END PRIVATE KEY-----',
+            serverCertificate: 'Servercertificaat (PEM)',
+            serverCertificateTooltip:
+                'Optioneel. Het CA- of servercertificaat dat vertrouwd wordt in plaats van de standaardlijst van de JVM.',
+            serverCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END CERTIFICATE-----'
         },
         en: {
             configurationTitle: 'Configuration name',
+            configurationTitlePlaceholder: 'Client Authentication',
             configurationTitleTooltip:
                 'Http Client Authentication Plugin',
             title: 'Http Client Authentication Plugin',
-            description: 'Provides authentication headers for outbound REST clients',
+            description: 'Provides authentication and mutual TLS for outbound REST clients, including the ZGW API plugins',
             authenticationType: 'Authentication type',
             authHeaderName: 'Authentication header name',
-            authSecret: 'Authentication secret'
+            authHeaderNamePlaceholder: 'X-Api-Key',
+            authSecret: 'Authentication secret',
+            authSecretPlaceholder: '0000000000000000000000000000000000000000',
+            clientId: 'Client ID',
+            clientIdPlaceholder: 'valtimo_client',
+            clientSecret: 'Client secret',
+            clientSecretPlaceholder: '00000000-0000-0000-0000-000000000000',
+            clientSecretTooltip: 'At least 32 characters. Used to sign the ZGW JWT token.',
+            tlsEnabled: 'Certificates (mutual TLS)',
+            tlsEnabledTooltip:
+                'Turn on to present a client certificate (mutual TLS) or to trust a specific server certificate. Turning it off removes the certificates on save.',
+            'tlsEnabled.toggleOn': 'On',
+            'tlsEnabled.toggleOff': 'Off',
+            clientCertificate: 'Client certificate (PEM)',
+            clientCertificateTooltip:
+                'Optional. The certificate GZAC presents for mutual TLS. Leave empty to turn mutual TLS off.',
+            clientCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END CERTIFICATE-----',
+            clientPrivateKey: 'Client certificate private key (PEM)',
+            clientPrivateKeyTooltip:
+                'Required with a new client certificate. Must not be encrypted. Not shown again after saving; leave empty to keep the stored key.',
+            clientPrivateKeyPlaceholder: '-----BEGIN PRIVATE KEY-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END PRIVATE KEY-----',
+            serverCertificate: 'Server certificate (PEM)',
+            serverCertificateTooltip:
+                'Optional. The CA or server certificate to trust instead of the JVM default list.',
+            serverCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END CERTIFICATE-----'
         }
     }
 };
