@@ -1,6 +1,6 @@
 {
   "name": "@valtimo-plugins/http-client-authentication",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "peerDependencies": {
     "@angular/common": "17.3.12",
     "@angular/core": "17.3.12"

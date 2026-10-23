@@ -15,16 +15,65 @@
  *
  */
 
+val mockitoKotlinVersion: String by project
+
 dockerCompose {
-    setProjectName("ClientAuthenticationPlugin")
+    setProjectName("http-client-authentication")
     isRequiredBy(project.tasks.integrationTesting)
 
-    dependencies {
-        compileOnly("com.ritense.valtimo:plugin-valtimo")
-        compileOnly("org.springframework.boot:spring-boot-starter-web")
-
-        compileOnly("io.github.microutils:kotlin-logging")
+    tasks.integrationTesting {
+        useComposeFiles.addAll("$rootDir/docker-resources/docker-compose-base-test.yml", "docker-compose-override.yml")
     }
+}
+
+dependencies {
+    compileOnly("com.ritense.valtimo:plugin-valtimo")
+    compileOnly("com.ritense.valtimo:contract")
+    compileOnly("com.ritense.valtimo:zaken-api")
+    compileOnly("com.ritense.valtimo:documenten-api")
+    compileOnly("com.ritense.valtimo:catalogi-api")
+    compileOnly("com.ritense.valtimo:besluiten-api")
+    compileOnly("com.ritense.valtimo:notificaties-api")
+    compileOnly("com.ritense.valtimo:objecten-api")
+    compileOnly("com.ritense.valtimo:objecttypen-api")
+    compileOnly("com.ritense.valtimo:openzaak-plugin-authentication")
+    compileOnly("org.springframework.boot:spring-boot-autoconfigure")
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework:spring-webflux")
+    compileOnly("org.apache.httpcomponents.client5:httpclient5")
+
+    compileOnly("io.github.microutils:kotlin-logging")
+
+    // Testing
+    testImplementation("com.ritense.valtimo:plugin-valtimo")
+    testImplementation("com.ritense.valtimo:process-document")
+    testImplementation("com.ritense.valtimo:local-resource")
+    testImplementation("com.ritense.valtimo:test-utils-common")
+    testImplementation("com.ritense.valtimo:authorization")
+    testImplementation("com.ritense.valtimo:zaken-api")
+    testImplementation("com.ritense.valtimo:documenten-api")
+    testImplementation("com.ritense.valtimo:catalogi-api")
+    testImplementation("com.ritense.valtimo:besluiten-api")
+    testImplementation("com.ritense.valtimo:notificaties-api")
+    testImplementation("com.ritense.valtimo:objecten-api")
+    testImplementation("com.ritense.valtimo:objecttypen-api")
+    testImplementation("com.ritense.valtimo:openzaak-plugin-authentication")
+    testImplementation("io.github.microutils:kotlin-logging")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework:spring-webflux")
+    testImplementation("org.apache.httpcomponents.client5:httpclient5")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
+
+    testImplementation("org.postgresql:postgresql")
+
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 
 apply(from = "gradle/publishing.gradle")
