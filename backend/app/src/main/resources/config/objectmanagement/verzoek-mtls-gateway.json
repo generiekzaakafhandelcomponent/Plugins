@@ -1,0 +1,9 @@
+{
+  "id": "4f0f9a52-2a3b-4c1d-8e6f-5a7b9c0d1e21",
+  "title": "Verzoeken via mTLS gateway",
+  "objecttypenApiPluginConfigurationId": "bc109d5e-0388-4637-bcfa-b454f402bef8",
+  "objecttypeId": "a6f2e8b1-6c3d-4f7e-9b2a-1d5c8e0f3a74",
+  "objecttypeVersion": 1,
+  "objectenApiPluginConfigurationId": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d02",
+  "showInDataMenu": false
+}

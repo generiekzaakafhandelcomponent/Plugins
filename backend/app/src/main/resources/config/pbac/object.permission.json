@@ -1,0 +1,65 @@
+{
+    "changesetId": "object-v1",
+    "permissions": [
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "view",
+            "roleKey": "ROLE_USER",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "view_list",
+            "roleKey": "ROLE_USER",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "create",
+            "roleKey": "ROLE_USER",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "modify",
+            "roleKey": "ROLE_USER",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "delete",
+            "roleKey": "ROLE_USER",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "view",
+            "roleKey": "ROLE_ADMIN",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "view_list",
+            "roleKey": "ROLE_ADMIN",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "create",
+            "roleKey": "ROLE_ADMIN",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "modify",
+            "roleKey": "ROLE_ADMIN",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.objectenapi.security.Object",
+            "action": "delete",
+            "roleKey": "ROLE_ADMIN",
+            "conditions": []
+        }
+    ]
+}

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-val httpClientAuthenticationPluginVersion: String by project
 val kotlinLoggingVersion: String by project
 val mockitoKotlinVersion: String by project
 val okhttpVersion: String by project
@@ -29,7 +28,7 @@ dockerCompose {
 }
 
 dependencies {
-    implementation("com.ritense.valtimoplugins:http-client-authentication:$httpClientAuthenticationPluginVersion")
+    implementation(project(":backend:http-client-authentication"))
 
     compileOnly("com.ritense.valtimo:contract")
     compileOnly("com.ritense.valtimo:core")

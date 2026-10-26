@@ -1,0 +1,33 @@
+{
+  "changesetId": "mtls-gateway.case-widget-tab.1792742400000",
+  "tabs": [
+    {
+      "caseDefinitionName": "mtls-gateway",
+      "key": "summary",
+      "widgets": [
+        {
+          "type": "fields",
+          "key": "process-variable-result",
+          "title": "Result",
+          "width": 2,
+          "highContrast": true,
+          "properties": {
+            "columns": [
+              [
+                {
+                  "key": "name",
+                  "title": "Name",
+                  "value": "doc:name",
+                  "displayProperties": {
+                    "type": "text",
+                    "hideWhenEmpty": false
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

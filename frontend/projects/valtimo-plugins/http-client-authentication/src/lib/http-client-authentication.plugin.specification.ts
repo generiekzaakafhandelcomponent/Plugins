@@ -58,7 +58,7 @@ const httpClientAuthenticationPluginSpecification: PluginSpecification = {
             clientSecretTooltip: 'Minimaal 32 tekens. Wordt gebruikt om het ZGW JWT-token te ondertekenen.',
             tlsEnabled: 'Certificaten (mutual TLS)',
             tlsEnabledTooltip:
-                'Schakel in om een clientcertificaat (mutual TLS) te gebruiken of een specifiek servercertificaat te vertrouwen. Uitschakelen verwijdert de certificaten bij opslaan.',
+                'Schakel in om een clientcertificaat (mutual TLS) te gebruiken of een specifiek servercertificaat te vertrouwen. Uitschakelen verwijdert de certificaten bij opslaan; de private key blijft versleuteld bewaard, maar wordt niet gebruikt.',
             'tlsEnabled.toggleOn': 'Aan',
             'tlsEnabled.toggleOff': 'Uit',
             clientCertificate: 'Clientcertificaat (PEM)',
@@ -93,7 +93,7 @@ const httpClientAuthenticationPluginSpecification: PluginSpecification = {
             clientSecretTooltip: 'At least 32 characters. Used to sign the ZGW JWT token.',
             tlsEnabled: 'Certificates (mutual TLS)',
             tlsEnabledTooltip:
-                'Turn on to present a client certificate (mutual TLS) or to trust a specific server certificate. Turning it off removes the certificates on save.',
+                'Turn on to present a client certificate (mutual TLS) or to trust a specific server certificate. Turning it off removes the certificates on save; the private key stays stored encrypted, but is not used.',
             'tlsEnabled.toggleOn': 'On',
             'tlsEnabled.toggleOff': 'Off',
             clientCertificate: 'Client certificate (PEM)',

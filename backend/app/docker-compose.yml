@@ -4,7 +4,7 @@ services:
 
   example-core-db:
     container_name: valtimo-plugins-local-example-core-db
-    image: postgres:15
+    image: postgres:18.6
     ports:
       - "54340:5432"
     environment:
@@ -16,65 +16,70 @@ services:
     container_name: valtimo-plugins-local-example-core-keycloak
     depends_on:
       - example-core-keycloak-db
-    image: quay.io/keycloak/keycloak:17.0.1-legacy
+    image: quay.io/keycloak/keycloak:26.8.1
     volumes:
-      - ./docker/imports/keycloak:/opt/jboss/keycloak/imports
+      - ./docker/imports/keycloak:/opt/keycloak/data/import
     ports:
       - "8081:8080"
     environment:
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-      DB_VENDOR: postgres
-      DB_ADDR: example-core-keycloak-db
-      DB_USER: keycloak
-      DB_PASSWORD: keycloak
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://example-core-keycloak-db/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_HTTP_RELATIVE_PATH: /auth
+      KC_HOSTNAME_STRICT: false
     command:
-      - "-Dkeycloak.migration.action=import"
-      - "-Dkeycloak.migration.provider=singleFile"
-      - "-Dkeycloak.migration.file=/opt/jboss/keycloak/imports/realm.json"
-      - "-Dkeycloak.migration.strategy=IGNORE_EXISTING"
+      - start-dev
+      - --import-realm
+    healthcheck:
+      test: [ 'CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() == 200 ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/auth' ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 5s
 
   example-core-keycloak-db:
-    image: postgres:15
+    image: postgres:18.6
     container_name: valtimo-plugins-local-example-core-keycloak-db
     ports:
       - "54329:5432"
     environment:
-      - POSTGRES_USER=${DB_USER:-keycloak}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-keycloak}
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
 
   #zgw
   openzaak:
-    image: openzaak/open-zaak:1.12.4
+    image: openzaak/open-zaak:1.31.0
     container_name: valtimo-plugins-local-openzaak
     platform: linux/amd64
     environment:
       - DB_HOST=openzaak-database
-      - DB_POST=5433
       - SECRET_KEY=veryRestrictedSecretKey
       - DB_USER=openzaak
       - DB_PASSWORD=openzaak
       - DB_NAME=openzaak
-      - CACHE_DEFAULT=redis:6379/0
-      - CACHE_AXES=redis:6379/0
+      - CACHE_DEFAULT=openzaak-redis:6379/0
+      - CACHE_AXES=openzaak-redis:6379/0
       - DEBUG=true
-      - ALLOWED_HOSTS=localhost,host.docker.internal,172.17.0.1,openzaak
+      - ALLOWED_HOSTS=localhost,127.0.0.1,host.docker.internal,172.17.0.1,openzaak
       - OPENZAAK_SUPERUSER_USERNAME=admin
       - OPENZAAK_SUPERUSER_EMAIL=admin@admin.org
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - DJANGO_SUPERUSER_PASSWORD=admin
       - SENDFILE_BACKEND=django_sendfile.backends.simple
+      - NOTIFICATIONS_DISABLED=true
+      - DISABLE_2FA=True
     ports:
       - "8001:8000"
     depends_on:
       - openzaak-database
-      - redis
+      - openzaak-redis
     volumes:
       - openzaak-private-media:/app/private-media # persist data even if container shuts down
 
   openzaak-database:
-    image: mdillon/postgis:11
+    image: postgis/postgis:18-3.6
     container_name: valtimo-plugins-local-openzaak-database
     platform: linux/amd64
     ports:
@@ -86,29 +91,49 @@ services:
     volumes:
       - ./imports/open-zaak:/docker-entrypoint-initdb.d
 
-  redis:
-    image: redis:6.2.6
-    container_name: valtimo-plugins-local-redis
+  openzaak-redis:
+    image: redis:8.10.2
+    container_name: valtimo-plugins-local-openzaak-redis
 
   objecten-api:
-    image: maykinmedia/objects-api:2.1.1
+    image: maykinmedia/objects-api:3.6.2
     container_name: valtimo-plugins-local-objecten-api
     platform: linux/amd64
     ports:
       - "8010:8000"
     environment: &objects-env
-      - CORS_ALLOW_ALL_ORIGINS=true
-      - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
-      - DJANGO_SETTINGS_MODULE=objects.conf.docker
+      - DB_USER=objects
+      - DB_PASSWORD=objects
       - DB_HOST=objecten-api-database
-      - DEBUG=true
-      - TWO_FACTOR_FORCE_OTP_ADMIN=False # this is not available yet in this version
-      - TWO_FACTOR_PATCH_ADMIN=False
+      - DJANGO_SETTINGS_MODULE=objects.conf.docker
+      - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
+      - IS_HTTPS=no
+      - ALLOWED_HOSTS=*
+      - CACHE_DEFAULT=objecten-api-redis:6379/0
+      - CACHE_AXES=objecten-api-redis:6379/0
+      - CELERY_BROKER_URL=redis://objecten-api-redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://objecten-api-redis:6379/1
+      - CELERY_LOGLEVEL=DEBUG
+      - DISABLE_2FA=True
+      - OBJECTS_SUPERUSER_EMAIL=admin@example.org
+      - OBJECTS_SUPERUSER_USERNAME=admin
+      - OBJECTS_SUPERUSER_PASSWORD=admin
+      - DEBUG=True
     depends_on:
       - objecten-api-database
+      - objecten-api-redis
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      # This should allow for enough time for migrations to run before the max
+      # retries have passed. This healthcheck in turn allows other containers
+      # to wait for the database migrations.
+      start_period: 30s
 
   objecten-api-database:
-    image: postgis/postgis:13-3.1
+    image: postgis/postgis:18-3.6
     container_name: valtimo-plugins-local-objecten-api-database
     platform: linux/amd64
     environment:
@@ -117,37 +142,74 @@ services:
       - POSTGRES_DB=objects
 
   objecten-api-import:
-    image: maykinmedia/objects-api:2.1.1
+    image: maykinmedia/objects-api:3.6.2
     container_name: valtimo-plugins-local-objects-api-import
     platform: linux/amd64
     environment: *objects-env
-    # in the current version of django it is not possible to create a new user with password without user interaction by using the createsuperuser command
     command: sh init/init.sh
     volumes:
       - ./imports/objects-api/fixtures:/app/src/objects/fixtures
       - ./imports/objects-api/init:/app/init
     depends_on:
-      - objecten-api
+      objecten-api:
+        condition: service_healthy
+
+  objecten-api-redis:
+    image: redis:8.10.2
+    container_name: valtimo-plugins-local-objecten-api-redis
+    command: [ "redis-server", "--appendonly", "yes" ]
+
+  objecten-api-celery:
+    image: maykinmedia/objects-api:3.6.2
+    container_name: valtimo-plugins-local-objecten-api-celery
+    platform: linux/amd64
+    environment: *objects-env
+    command: /celery_worker.sh
+    healthcheck:
+      test: [ "CMD", "python", "/app/bin/check_celery_worker_liveness.py" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      objecten-api:
+        condition: service_healthy
 
   objecttypen-api:
-    image: maykinmedia/objecttypes-api:2.1.0
+    image: maykinmedia/objecttypes-api:3.4.2
     container_name: valtimo-plugins-local-objecttypen-api
     platform: linux/amd64
     ports:
       - "8011:8000"
     environment: &objecttypes-env
-      - CORS_ALLOW_ALL_ORIGINS=true
-      - SECRET_KEY=${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cy$$15d}
-      - DJANGO_SETTINGS_MODULE=objecttypes.conf.docker
       - DB_HOST=objecttypen-api-database
-      - DEBUG=true
-      - TWO_FACTOR_FORCE_OTP_ADMIN=False # this is not available yet in this version
-      - TWO_FACTOR_PATCH_ADMIN=False
+      - DB_USER=objecttypes
+      - DB_PASSWORD=objecttypes
+      - DJANGO_SETTINGS_MODULE=objecttypes.conf.docker
+      - SECRET_KEY=${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cy$$15d}
+      - ALLOWED_HOSTS=*
+      - CACHE_DEFAULT=objecten-api-redis:6379/2
+      - CACHE_AXES=objecten-api-redis:6379/2
+      - CELERY_BROKER_URL=redis://objecten-api-redis:6379/3
+      - CELERY_RESULT_BACKEND=redis://objecten-api-redis:6379/3
+      - CELERY_LOGLEVEL=DEBUG
+      - DISABLE_2FA=True
+      - OBJECTTYPE_SUPERUSER_EMAIL=admin@example.org
+      - OBJECTTYPE_SUPERUSER_USERNAME=admin
+      - OBJECTTYPE_SUPERUSER_PASSWORD=admin
+      - DEBUG=True
     depends_on:
       - objecttypen-api-database
+      - objecten-api-redis
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
   objecttypen-api-database:
-    image: postgres:14.1
+    image: postgres:18.6
     container_name: valtimo-plugins-local-objecttypen-api-database
     environment:
       - POSTGRES_USER=objecttypes
@@ -155,7 +217,7 @@ services:
       - POSTGRES_DB=objecttypes
 
   objecttypen-api-import:
-    image: maykinmedia/objecttypes-api:2.1.0
+    image: maykinmedia/objecttypes-api:3.4.2
     container_name: valtimo-plugins-local-objecttypen-api-import
     platform: linux/amd64
     environment: *objecttypes-env
@@ -164,17 +226,24 @@ services:
       - ./imports/objecttypes-api/fixtures:/app/src/objecttypes/fixtures
       - ./imports/objecttypes-api/init:/app/init
     depends_on:
-      - objecttypen-api
+      objecttypen-api:
+        condition: service_healthy
 
-  open-notificaties-rabbitmq:
-    image: rabbitmq:3.9-management
-    container_name: valtimo-plugins-local-open-notificaties-rabbitmq
-    expose:
-      - 5672
-      - 15672
+  # Gateway that demands a client certificate (mutual TLS) in front of the ZGW APIs, for testing the Http Client
+  # Authentication plugin. Certificates: imports/mtls-gateway/generate-certs.sh. See the plugin's README.
+  mtls-gateway:
+    image: nginx:1.30.6-alpine
+    container_name: valtimo-plugins-local-mtls-gateway
+    ports:
+      - "8443:8443" # Objecten API
+      - "8444:8444" # Open Zaak
+      - "8445:8445" # Open Notificaties
+    volumes:
+      - ./imports/mtls-gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./imports/mtls-gateway/certs:/etc/nginx/certs:ro
 
   open-notificaties:
-    image: openzaak/open-notificaties:1.4.3
+    image: openzaak/open-notificaties:1.17.0
     container_name: valtimo-plugins-local-open-notificaties
     platform: linux/amd64
     ports:
@@ -183,30 +252,54 @@ services:
       - DJANGO_SETTINGS_MODULE=nrc.conf.docker
       - SECRET_KEY=${SECRET_KEY:-4wHY2Cp5`4(q%)]cuWxPQJRp5kN?g+`.Xah>%6Fsq6+)R>p_}
       - ALLOWED_HOSTS=*
-      - CACHE_DEFAULT=redis-open-notificaties:6379/0
-      - CACHE_AXES=redis-open-notificaties:6379/1
+      - CACHE_DEFAULT=open-notificaties-redis:6379/0
+      - CACHE_AXES=open-notificaties-redis:6379/1
       - DB_PORT=5432
       - DB_HOST=open-notificaties-database
       - DB_NAME=notifications
       - DB_USER=notifications
       - DB_PASSWORD=notifications
       - DEBUG=true
-      - RABBITMQ_HOST=open-notificaties-rabbitmq
-      - PUBLISH_BROKER_URL=redis://redis-open-notificaties:6379/0
-      - CELERY_BROKER_URL=redis://redis-open-notificaties:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis-open-notificaties:6379/0
+      - CELERY_BROKER_URL=redis://open-notificaties-redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://open-notificaties-redis:6379/0
       - CELERY_LOGLEVEL=DEBUG
       - CELERY_WORKER_CONCURRENCY=${CELERY_WORKER_CONCURRENCY:-4}
+      - SUBPATH=${SUBPATH:-/}
+      - DISABLE_2FA=True
+      - OTEL_SDK_DISABLED=true
+      - UWSGI_THREADS=1
+    healthcheck:
+      test: [ "CMD", "maykin-common", "health-check" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      - open-notificaties-database
+      - open-notificaties-redis
 
   open-notificaties-celery:
-    image: openzaak/open-notificaties:1.4.3
+    image: openzaak/open-notificaties:1.17.0
     container_name: valtimo-plugins-local-open-notificaties-celery
     platform: linux/amd64
     environment: *notificaties-env
     command: /celery_worker.sh
+    depends_on:
+      open-notificaties:
+        condition: service_healthy
+
+  open-notificaties-celery-beat:
+    image: openzaak/open-notificaties:1.17.0
+    container_name: valtimo-plugins-local-open-notificaties-celery-beat
+    platform: linux/amd64
+    environment: *notificaties-env
+    command: /celery_beat.sh
+    depends_on:
+      open-notificaties:
+        condition: service_healthy
 
   open-notificaties-database:
-    image: postgres:13.5  # open-notificaties doesn't work with postgres 14.
+    image: postgres:18.6
     container_name: valtimo-plugins-local-open-notificaties-database
     ports:
       - "54319:5432"
@@ -217,9 +310,9 @@ services:
     volumes:
       - ./imports/open-notificaties:/docker-entrypoint-initdb.d
 
-  redis-open-notificaties:
-    image: redis:6.2.6
-    container_name: valtimo-plugins-local-redis-open-notificaties
+  open-notificaties-redis:
+    image: redis:8.10.2
+    container_name: valtimo-plugins-local-open-notificaties-redis
 
     #HaalCentraal
   bag-api-simulator:

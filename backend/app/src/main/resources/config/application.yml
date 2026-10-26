@@ -67,7 +67,7 @@ valtimo:
     encryption-secret: "abcdefghijklmnop"
   docker:
     filter:
-      ports: 8001,8002,8003,8006,8010,8011,8080
+      ports: 8001,8002,8003,8006,8010,8011
   changelog:
     pbac:
       clear-tables: false

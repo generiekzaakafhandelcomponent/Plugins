@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_1"
+                  targetNamespace="http://bpmn.io/schema/bpmn"
+                  exporter="Camunda Modeler"
+                  exporterVersion="5.39.0">
+    <bpmn:collaboration id="Collaboration_1">
+        <bpmn:participant id="mtls-gateway-participant" name="mTLS gateway process" processRef="mtls-gateway-process"/>
+    </bpmn:collaboration>
+    <bpmn:process id="mtls-gateway-process" name="mTLS gateway process" isExecutable="true">
+        <bpmn:startEvent id="start-event" name="Process started">
+            <bpmn:outgoing>Flow_1</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:endEvent id="end-event" name="Process ended">
+            <bpmn:incoming>Flow_1</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="Flow_1" sourceRef="start-event" targetRef="end-event"/>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+            <bpmndi:BPMNShape id="Participant_1_di" bpmnElement="mtls-gateway-participant" isHorizontal="true">
+                <dc:Bounds x="160" y="100" width="500" height="200"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="start-event">
+                <dc:Bounds x="232" y="182" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="214" y="225" width="73" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="end-event">
+                <dc:Bounds x="472" y="182" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="455" y="225" width="71" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+                <di:waypoint x="268" y="200"/>
+                <di:waypoint x="472" y="200"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

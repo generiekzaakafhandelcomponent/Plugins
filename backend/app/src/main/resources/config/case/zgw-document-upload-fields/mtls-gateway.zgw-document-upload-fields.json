@@ -1,0 +1,34 @@
+{
+  "changesetId": "mtls-gateway.zgw-document-upload-fields.1792742400000",
+  "case-definitions": [
+    {
+      "key": "mtls-gateway",
+      "fields": [
+        {
+          "key": "taal",
+          "defaultValue": "eng",
+          "visible": true,
+          "readonly": false
+        },
+        {
+          "key": "vertrouwelijkheidaanduiding",
+          "defaultValue": "zaakvertrouwelijk",
+          "visible": true,
+          "readonly": false
+        },
+        {
+          "key": "informatieobjecttype",
+          "defaultValue": "https://127.0.0.1:8444/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad",
+          "visible": true,
+          "readonly": false
+        },
+        {
+          "key": "status",
+          "defaultValue": "in_bewerking",
+          "visible": true,
+          "readonly": false
+        }
+      ]
+    }
+  ]
+}

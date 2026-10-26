@@ -1,0 +1,88 @@
+[
+    {
+        "id": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d01",
+        "title": "Objects API Authentication via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "http-client-authentication-plugin",
+        "properties": {
+            "authenticationType": "TOKEN",
+            "authSecret": "182c13e2209161852c53cef53a879f7a2f923430",
+            "clientCertificate": "-----BEGIN CERTIFICATE-----\nMIIDUDCCAjigAwIBAgIUEZrXpKmiOJheJzT7DY4ZSwfuuJ4wDQYJKoZIhvcNAQEL\nBQAwMDEuMCwGA1UEAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJv\neCBDQTAgFw0yNjEwMjAwOTA0NTBaGA8yMTI2MDkyNjA5MDQ1MFowITEfMB0GA1UE\nAwwWdmFsdGltby1zYW5kYm94LWNsaWVudDCCASIwDQYJKoZIhvcNAQEBBQADggEP\nADCCAQoCggEBAKMGnFlrg3rmD3AfclI9UsgRQM/aqI/bYxOHKXjDFJ09PSc4+Hbq\n77bNttNnSNENLGSDV8Bm13rigbQRnn+0O6oJ2pjoV455JMh+2uXOMHqB6JouDRKn\nU2HXeWZVWQCPKw4bDrFdqYNFTdWKcc0yTsgVr2RQYtybIdwG6UrUL8Izo+gsfuNV\nq/zq0TDwj2/8sNNRjCdbXK1Ec9yqt0DS8Q8QoOIlSMvoVLRWDjZ8NES4H49sBjNA\nAa79FI4QWz1aS2n/46kHpbZ1DYmMZR/Um8qLwYrPpdMgAgM/QX1nY4Vmfz+CEBxu\nipKvOc7cgPPnNAY3k6Rugre0eZ7xlMZdHAcCAwEAAaNvMG0wCQYDVR0TBAIwADAL\nBgNVHQ8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFGqc1mW8\n9TE8RHtkkraAWPgV3VH9MB8GA1UdIwQYMBaAFEPcKFpwxBehbH8R94Xr6vPhwk8F\nMA0GCSqGSIb3DQEBCwUAA4IBAQC+QWGbKY2xnu7jmFVKdSNfv1H58/yLrTEM5xSX\n9tqiKa6FlHV6hxlhyPX2Gag45IrEUenFF7fgD8BtTsSwIhP/CXWKBWSDvstd0ABO\n43JBi68Sst5kQbXrCmgvl9K/uY5ErqBBegaQwSpoZcxDmzgkZWIUND3G/TWfqj5K\njkfRsshmlIyCYBbfnEB08+qW5St0nkLVKm3dxH4fDMCZDMCy+2RqHE7zX+l8v+Ng\nkto5tzytygOW1GninGzAg+xCPfVKE+KFkNnKbTcv3y+e2mDnz4mDPKjLJRtdQyJz\n8EAHM8zmEbXBX45wm7YoVX5i3pXr4tTEMdSc3DPiyq0NhQsi\n-----END CERTIFICATE-----\n",
+            "clientPrivateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCjBpxZa4N65g9w\nH3JSPVLIEUDP2qiP22MThyl4wxSdPT0nOPh26u+2zbbTZ0jRDSxkg1fAZtd64oG0\nEZ5/tDuqCdqY6FeOeSTIftrlzjB6geiaLg0Sp1Nh13lmVVkAjysOGw6xXamDRU3V\ninHNMk7IFa9kUGLcmyHcBulK1C/CM6PoLH7jVav86tEw8I9v/LDTUYwnW1ytRHPc\nqrdA0vEPEKDiJUjL6FS0Vg42fDREuB+PbAYzQAGu/RSOEFs9Wktp/+OpB6W2dQ2J\njGUf1JvKi8GKz6XTIAIDP0F9Z2OFZn8/ghAcboqSrznO3IDz5zQGN5OkboK3tHme\n8ZTGXRwHAgMBAAECggEAUEpQNIYMAjpOPiVus2w6WgiNSBFj1T3yhMqbtTs26t4f\nQTMAw+ifWQPl2CZVKYh4ZaR+UmcUFxR5VssaqcCFZhBmVcqQXL3zTL+VZXrwS1Wx\nzkWB8L7yBQ0PYEQGioz4YoEW8mmzs9AtLk96DtqJDGgJsrkYh5frzCanPVBVmSn1\nUhD8/hPAN7Pf80pnZuje/dNmS/N9ag28fJvlxyCKYqm4O7poCGJi3ZS+CRNe49Xz\nOuf3kvWzTCm87R3SeMD4CwanMAe42z2Xy2PBbK3tG+26VU6/7sZ5xDXLYW2a3/JS\naE+ZZfFPmTiS4Iny4X7DB7fUMVi8MDdEDBZExjQykQKBgQDjzXp17El6DtZv9i7l\nvvm8cieCfOx0A8J/EgP0d1+c6Y0F2zFhYr0cZc0blOKvu4/kZOfFsNDuXfURxNl/\nDx7Eh45GLpP9tZoT9oon33ZsESs+Z5nBeqMpd2cooSKABWUHS+LWcbJMfqUWAiV2\nPY/M2/hVYXnb2uvqYenqH3tOWQKBgQC3NIJwRTB0bkPoPEzgUe+0vagMy70X12Wv\nQ0CcK0PnMzHft4wHbmqClYYKPoq53U9bHVtgwkl2hdqQRj76JAFqYRwbCr1QyFtZ\n8rpPtk/pY97XM5qcNr6XqZUMfFr/tRrCQWF9b5wFZYx1f+KtQPPSH5KUG+kFLKgJ\n9xjGjvwxXwKBgQCvuBujhO20umdNHBBW5jaL116EuEpIv3GzRTlJxR860akXgFoZ\n7elEU36grPsjZUH8gp2KD/dKN63H1BmVehtYq9viZSGBDilZBs7RLP2TJLc/vviK\nl0fuv40SeSE8sWyZ8T57/l3zxakgTe2JxLj85B0t9y/hmIBsXrTqBPi/mQKBgD/q\nQdeJS+5Syb4ry2Y3L7mOsSJFsiKvMvqCK/hP39C5O50hG+k7zEzifXD1gNB3NUhE\nZazMG3UOHcJXv4DlLtk+J+AHTyTvwW8QD4/fuuFhxkyt5DK7pqKity0z9Utgk4VR\n6gEo/vWjB+22QA7Rqj6UZT7mvdTgT3+qhSpAmBthAoGBALZGCzjG4ZsOjG/R+C8q\nK1ZojMd0BxklGdK9ZmIcGBQn8PsFZ0akgyeZDNTeDINjCQwlM6h5nkR0mMYpyapt\niNWCnFDuD+4aEfaPDnhiaj4OONzs3DBA2ULqy0Yba0sH/zJTWDrcHDEjpgz1jzSr\ntf2YNku8O0MHxm75/nYwDJq0\n-----END PRIVATE KEY-----\n",
+            "serverCertificate": "-----BEGIN CERTIFICATE-----\nMIIDQzCCAiugAwIBAgIUSOmVminHqFtc1+XlJQOIQv9aGaowDQYJKoZIhvcNAQEL\nBQAwMDEuMCwGA1UEAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJv\neCBDQTAgFw0yNjEwMjAwOTA0NTBaGA8yMTI2MDkyNjA5MDQ1MFowMDEuMCwGA1UE\nAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJveCBDQTCCASIwDQYJ\nKoZIhvcNAQEBBQADggEPADCCAQoCggEBANNRJMDmNLuP7evTcdHjegnjuyew77Nk\nVHGqqsEOcAmbkd9CxYs6qe//ITHCJMeH+4TTW0SdBmTiE/42+fGWddQxXWtIXYaH\nEYjlnSDRNYgGRAcWIB2vovmSrs41Pk1eSl8uekOAedPUPLbu3g3eHiB92LEI2CoY\nt6AmQnkWWbxOTZ1AdnPK6InZMCbvxbF91BP3M1yfSYjdGb5Q3BWEBobIe9UE3K0c\nVfgOTgn48wqlzDhpZgbx15ZiOdvA/1BL1F34VmzX+bvH7JdnfE/XkB00O3PpUyf3\nO0JkMhoRDSc2PhC/HRaR+a+VwRzw8tL/mRFcKKIv2bu8jd/yCWZJ7rUCAwEAAaNT\nMFEwHQYDVR0OBBYEFEPcKFpwxBehbH8R94Xr6vPhwk8FMB8GA1UdIwQYMBaAFEPc\nKFpwxBehbH8R94Xr6vPhwk8FMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQEL\nBQADggEBAEeTg0m2O2a0AWOaZ/OvZ9+YHKLtOkt4WZxAjFjdlRRMFwAavNZ4tuhK\nUY0dtFGq532pir3hxt7+pIFs2ajydK3HYlfpM0Ik7OjM4ZNERVe7xEjB02p7jFyv\nzt87y06MA1U8ip1gHB0B/O4FY7gVpy9J/zzeWiFyJ5rQcu/9xVSIEqy9TT9VlWkw\noi5Hbx1+y3025+ysaz469tDDrh/M6T2RGMvG00Y1jdAK6+SDO8p7vUdaMBQLUpYf\nEhV/2k3L4AGXUjIBjuKhP4y5yGtewYm7pGp6qoLgqG6ZU4gYdcdea6bWcAF31UYi\n7xFjibc1aYEPqhJ0oVPNmb8oxCcobJQ=\n-----END CERTIFICATE-----\n"
+        }
+    },
+    {
+        "id": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d02",
+        "title": "Objects API via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "objectenapi",
+        "properties": {
+            "url": "https://127.0.0.1:8443/api/v2/",
+            "authenticationPluginConfiguration": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d01"
+        }
+    },
+    {
+        "id": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d03",
+        "title": "Open Zaak Authentication via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "http-client-authentication-plugin",
+        "properties": {
+            "authenticationType": "ZGW_JWT",
+            "clientId": "valtimo_client",
+            "authSecret": "e09b8bc5-5831-4618-ab28-41411304309d",
+            "clientCertificate": "-----BEGIN CERTIFICATE-----\nMIIDUDCCAjigAwIBAgIUEZrXpKmiOJheJzT7DY4ZSwfuuJ4wDQYJKoZIhvcNAQEL\nBQAwMDEuMCwGA1UEAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJv\neCBDQTAgFw0yNjEwMjAwOTA0NTBaGA8yMTI2MDkyNjA5MDQ1MFowITEfMB0GA1UE\nAwwWdmFsdGltby1zYW5kYm94LWNsaWVudDCCASIwDQYJKoZIhvcNAQEBBQADggEP\nADCCAQoCggEBAKMGnFlrg3rmD3AfclI9UsgRQM/aqI/bYxOHKXjDFJ09PSc4+Hbq\n77bNttNnSNENLGSDV8Bm13rigbQRnn+0O6oJ2pjoV455JMh+2uXOMHqB6JouDRKn\nU2HXeWZVWQCPKw4bDrFdqYNFTdWKcc0yTsgVr2RQYtybIdwG6UrUL8Izo+gsfuNV\nq/zq0TDwj2/8sNNRjCdbXK1Ec9yqt0DS8Q8QoOIlSMvoVLRWDjZ8NES4H49sBjNA\nAa79FI4QWz1aS2n/46kHpbZ1DYmMZR/Um8qLwYrPpdMgAgM/QX1nY4Vmfz+CEBxu\nipKvOc7cgPPnNAY3k6Rugre0eZ7xlMZdHAcCAwEAAaNvMG0wCQYDVR0TBAIwADAL\nBgNVHQ8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFGqc1mW8\n9TE8RHtkkraAWPgV3VH9MB8GA1UdIwQYMBaAFEPcKFpwxBehbH8R94Xr6vPhwk8F\nMA0GCSqGSIb3DQEBCwUAA4IBAQC+QWGbKY2xnu7jmFVKdSNfv1H58/yLrTEM5xSX\n9tqiKa6FlHV6hxlhyPX2Gag45IrEUenFF7fgD8BtTsSwIhP/CXWKBWSDvstd0ABO\n43JBi68Sst5kQbXrCmgvl9K/uY5ErqBBegaQwSpoZcxDmzgkZWIUND3G/TWfqj5K\njkfRsshmlIyCYBbfnEB08+qW5St0nkLVKm3dxH4fDMCZDMCy+2RqHE7zX+l8v+Ng\nkto5tzytygOW1GninGzAg+xCPfVKE+KFkNnKbTcv3y+e2mDnz4mDPKjLJRtdQyJz\n8EAHM8zmEbXBX45wm7YoVX5i3pXr4tTEMdSc3DPiyq0NhQsi\n-----END CERTIFICATE-----\n",
+            "clientPrivateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCjBpxZa4N65g9w\nH3JSPVLIEUDP2qiP22MThyl4wxSdPT0nOPh26u+2zbbTZ0jRDSxkg1fAZtd64oG0\nEZ5/tDuqCdqY6FeOeSTIftrlzjB6geiaLg0Sp1Nh13lmVVkAjysOGw6xXamDRU3V\ninHNMk7IFa9kUGLcmyHcBulK1C/CM6PoLH7jVav86tEw8I9v/LDTUYwnW1ytRHPc\nqrdA0vEPEKDiJUjL6FS0Vg42fDREuB+PbAYzQAGu/RSOEFs9Wktp/+OpB6W2dQ2J\njGUf1JvKi8GKz6XTIAIDP0F9Z2OFZn8/ghAcboqSrznO3IDz5zQGN5OkboK3tHme\n8ZTGXRwHAgMBAAECggEAUEpQNIYMAjpOPiVus2w6WgiNSBFj1T3yhMqbtTs26t4f\nQTMAw+ifWQPl2CZVKYh4ZaR+UmcUFxR5VssaqcCFZhBmVcqQXL3zTL+VZXrwS1Wx\nzkWB8L7yBQ0PYEQGioz4YoEW8mmzs9AtLk96DtqJDGgJsrkYh5frzCanPVBVmSn1\nUhD8/hPAN7Pf80pnZuje/dNmS/N9ag28fJvlxyCKYqm4O7poCGJi3ZS+CRNe49Xz\nOuf3kvWzTCm87R3SeMD4CwanMAe42z2Xy2PBbK3tG+26VU6/7sZ5xDXLYW2a3/JS\naE+ZZfFPmTiS4Iny4X7DB7fUMVi8MDdEDBZExjQykQKBgQDjzXp17El6DtZv9i7l\nvvm8cieCfOx0A8J/EgP0d1+c6Y0F2zFhYr0cZc0blOKvu4/kZOfFsNDuXfURxNl/\nDx7Eh45GLpP9tZoT9oon33ZsESs+Z5nBeqMpd2cooSKABWUHS+LWcbJMfqUWAiV2\nPY/M2/hVYXnb2uvqYenqH3tOWQKBgQC3NIJwRTB0bkPoPEzgUe+0vagMy70X12Wv\nQ0CcK0PnMzHft4wHbmqClYYKPoq53U9bHVtgwkl2hdqQRj76JAFqYRwbCr1QyFtZ\n8rpPtk/pY97XM5qcNr6XqZUMfFr/tRrCQWF9b5wFZYx1f+KtQPPSH5KUG+kFLKgJ\n9xjGjvwxXwKBgQCvuBujhO20umdNHBBW5jaL116EuEpIv3GzRTlJxR860akXgFoZ\n7elEU36grPsjZUH8gp2KD/dKN63H1BmVehtYq9viZSGBDilZBs7RLP2TJLc/vviK\nl0fuv40SeSE8sWyZ8T57/l3zxakgTe2JxLj85B0t9y/hmIBsXrTqBPi/mQKBgD/q\nQdeJS+5Syb4ry2Y3L7mOsSJFsiKvMvqCK/hP39C5O50hG+k7zEzifXD1gNB3NUhE\nZazMG3UOHcJXv4DlLtk+J+AHTyTvwW8QD4/fuuFhxkyt5DK7pqKity0z9Utgk4VR\n6gEo/vWjB+22QA7Rqj6UZT7mvdTgT3+qhSpAmBthAoGBALZGCzjG4ZsOjG/R+C8q\nK1ZojMd0BxklGdK9ZmIcGBQn8PsFZ0akgyeZDNTeDINjCQwlM6h5nkR0mMYpyapt\niNWCnFDuD+4aEfaPDnhiaj4OONzs3DBA2ULqy0Yba0sH/zJTWDrcHDEjpgz1jzSr\ntf2YNku8O0MHxm75/nYwDJq0\n-----END PRIVATE KEY-----\n",
+            "serverCertificate": "-----BEGIN CERTIFICATE-----\nMIIDQzCCAiugAwIBAgIUSOmVminHqFtc1+XlJQOIQv9aGaowDQYJKoZIhvcNAQEL\nBQAwMDEuMCwGA1UEAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJv\neCBDQTAgFw0yNjEwMjAwOTA0NTBaGA8yMTI2MDkyNjA5MDQ1MFowMDEuMCwGA1UE\nAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJveCBDQTCCASIwDQYJ\nKoZIhvcNAQEBBQADggEPADCCAQoCggEBANNRJMDmNLuP7evTcdHjegnjuyew77Nk\nVHGqqsEOcAmbkd9CxYs6qe//ITHCJMeH+4TTW0SdBmTiE/42+fGWddQxXWtIXYaH\nEYjlnSDRNYgGRAcWIB2vovmSrs41Pk1eSl8uekOAedPUPLbu3g3eHiB92LEI2CoY\nt6AmQnkWWbxOTZ1AdnPK6InZMCbvxbF91BP3M1yfSYjdGb5Q3BWEBobIe9UE3K0c\nVfgOTgn48wqlzDhpZgbx15ZiOdvA/1BL1F34VmzX+bvH7JdnfE/XkB00O3PpUyf3\nO0JkMhoRDSc2PhC/HRaR+a+VwRzw8tL/mRFcKKIv2bu8jd/yCWZJ7rUCAwEAAaNT\nMFEwHQYDVR0OBBYEFEPcKFpwxBehbH8R94Xr6vPhwk8FMB8GA1UdIwQYMBaAFEPc\nKFpwxBehbH8R94Xr6vPhwk8FMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQEL\nBQADggEBAEeTg0m2O2a0AWOaZ/OvZ9+YHKLtOkt4WZxAjFjdlRRMFwAavNZ4tuhK\nUY0dtFGq532pir3hxt7+pIFs2ajydK3HYlfpM0Ik7OjM4ZNERVe7xEjB02p7jFyv\nzt87y06MA1U8ip1gHB0B/O4FY7gVpy9J/zzeWiFyJ5rQcu/9xVSIEqy9TT9VlWkw\noi5Hbx1+y3025+ysaz469tDDrh/M6T2RGMvG00Y1jdAK6+SDO8p7vUdaMBQLUpYf\nEhV/2k3L4AGXUjIBjuKhP4y5yGtewYm7pGp6qoLgqG6ZU4gYdcdea6bWcAF31UYi\n7xFjibc1aYEPqhJ0oVPNmb8oxCcobJQ=\n-----END CERTIFICATE-----\n"
+        }
+    },
+    {
+        "id": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d04",
+        "title": "Catalogi API via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "catalogiapi",
+        "properties": {
+            "url": "https://127.0.0.1:8444/catalogi/api/v1/",
+            "authenticationPluginConfiguration": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d03"
+        }
+    },
+    {
+        "id": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d05",
+        "title": "Zaken API via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "zakenapi",
+        "properties": {
+            "url": "https://127.0.0.1:8444/zaken/api/v1/",
+            "authenticationPluginConfiguration": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d03"
+        }
+    },
+    {
+        "id": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d08",
+        "title": "Documenten API via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "documentenapi",
+        "properties": {
+            "url": "https://127.0.0.1:8444/documenten/api/v1/",
+            "bronorganisatie": "051845623",
+            "authenticationPluginConfiguration": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d03",
+            "apiVersion": "1.4.2-maykin-1.13.0"
+        }
+    },
+    {
+        "id": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d06",
+        "title": "Open Notificaties Authentication via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "http-client-authentication-plugin",
+        "properties": {
+            "authenticationType": "ZGW_JWT",
+            "clientId": "valtimo",
+            "authSecret": "zZ!xRP&$qTn4A9ETa^ZMKepDm^8egjPz",
+            "clientCertificate": "-----BEGIN CERTIFICATE-----\nMIIDUDCCAjigAwIBAgIUEZrXpKmiOJheJzT7DY4ZSwfuuJ4wDQYJKoZIhvcNAQEL\nBQAwMDEuMCwGA1UEAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJv\neCBDQTAgFw0yNjEwMjAwOTA0NTBaGA8yMTI2MDkyNjA5MDQ1MFowITEfMB0GA1UE\nAwwWdmFsdGltby1zYW5kYm94LWNsaWVudDCCASIwDQYJKoZIhvcNAQEBBQADggEP\nADCCAQoCggEBAKMGnFlrg3rmD3AfclI9UsgRQM/aqI/bYxOHKXjDFJ09PSc4+Hbq\n77bNttNnSNENLGSDV8Bm13rigbQRnn+0O6oJ2pjoV455JMh+2uXOMHqB6JouDRKn\nU2HXeWZVWQCPKw4bDrFdqYNFTdWKcc0yTsgVr2RQYtybIdwG6UrUL8Izo+gsfuNV\nq/zq0TDwj2/8sNNRjCdbXK1Ec9yqt0DS8Q8QoOIlSMvoVLRWDjZ8NES4H49sBjNA\nAa79FI4QWz1aS2n/46kHpbZ1DYmMZR/Um8qLwYrPpdMgAgM/QX1nY4Vmfz+CEBxu\nipKvOc7cgPPnNAY3k6Rugre0eZ7xlMZdHAcCAwEAAaNvMG0wCQYDVR0TBAIwADAL\nBgNVHQ8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFGqc1mW8\n9TE8RHtkkraAWPgV3VH9MB8GA1UdIwQYMBaAFEPcKFpwxBehbH8R94Xr6vPhwk8F\nMA0GCSqGSIb3DQEBCwUAA4IBAQC+QWGbKY2xnu7jmFVKdSNfv1H58/yLrTEM5xSX\n9tqiKa6FlHV6hxlhyPX2Gag45IrEUenFF7fgD8BtTsSwIhP/CXWKBWSDvstd0ABO\n43JBi68Sst5kQbXrCmgvl9K/uY5ErqBBegaQwSpoZcxDmzgkZWIUND3G/TWfqj5K\njkfRsshmlIyCYBbfnEB08+qW5St0nkLVKm3dxH4fDMCZDMCy+2RqHE7zX+l8v+Ng\nkto5tzytygOW1GninGzAg+xCPfVKE+KFkNnKbTcv3y+e2mDnz4mDPKjLJRtdQyJz\n8EAHM8zmEbXBX45wm7YoVX5i3pXr4tTEMdSc3DPiyq0NhQsi\n-----END CERTIFICATE-----\n",
+            "clientPrivateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCjBpxZa4N65g9w\nH3JSPVLIEUDP2qiP22MThyl4wxSdPT0nOPh26u+2zbbTZ0jRDSxkg1fAZtd64oG0\nEZ5/tDuqCdqY6FeOeSTIftrlzjB6geiaLg0Sp1Nh13lmVVkAjysOGw6xXamDRU3V\ninHNMk7IFa9kUGLcmyHcBulK1C/CM6PoLH7jVav86tEw8I9v/LDTUYwnW1ytRHPc\nqrdA0vEPEKDiJUjL6FS0Vg42fDREuB+PbAYzQAGu/RSOEFs9Wktp/+OpB6W2dQ2J\njGUf1JvKi8GKz6XTIAIDP0F9Z2OFZn8/ghAcboqSrznO3IDz5zQGN5OkboK3tHme\n8ZTGXRwHAgMBAAECggEAUEpQNIYMAjpOPiVus2w6WgiNSBFj1T3yhMqbtTs26t4f\nQTMAw+ifWQPl2CZVKYh4ZaR+UmcUFxR5VssaqcCFZhBmVcqQXL3zTL+VZXrwS1Wx\nzkWB8L7yBQ0PYEQGioz4YoEW8mmzs9AtLk96DtqJDGgJsrkYh5frzCanPVBVmSn1\nUhD8/hPAN7Pf80pnZuje/dNmS/N9ag28fJvlxyCKYqm4O7poCGJi3ZS+CRNe49Xz\nOuf3kvWzTCm87R3SeMD4CwanMAe42z2Xy2PBbK3tG+26VU6/7sZ5xDXLYW2a3/JS\naE+ZZfFPmTiS4Iny4X7DB7fUMVi8MDdEDBZExjQykQKBgQDjzXp17El6DtZv9i7l\nvvm8cieCfOx0A8J/EgP0d1+c6Y0F2zFhYr0cZc0blOKvu4/kZOfFsNDuXfURxNl/\nDx7Eh45GLpP9tZoT9oon33ZsESs+Z5nBeqMpd2cooSKABWUHS+LWcbJMfqUWAiV2\nPY/M2/hVYXnb2uvqYenqH3tOWQKBgQC3NIJwRTB0bkPoPEzgUe+0vagMy70X12Wv\nQ0CcK0PnMzHft4wHbmqClYYKPoq53U9bHVtgwkl2hdqQRj76JAFqYRwbCr1QyFtZ\n8rpPtk/pY97XM5qcNr6XqZUMfFr/tRrCQWF9b5wFZYx1f+KtQPPSH5KUG+kFLKgJ\n9xjGjvwxXwKBgQCvuBujhO20umdNHBBW5jaL116EuEpIv3GzRTlJxR860akXgFoZ\n7elEU36grPsjZUH8gp2KD/dKN63H1BmVehtYq9viZSGBDilZBs7RLP2TJLc/vviK\nl0fuv40SeSE8sWyZ8T57/l3zxakgTe2JxLj85B0t9y/hmIBsXrTqBPi/mQKBgD/q\nQdeJS+5Syb4ry2Y3L7mOsSJFsiKvMvqCK/hP39C5O50hG+k7zEzifXD1gNB3NUhE\nZazMG3UOHcJXv4DlLtk+J+AHTyTvwW8QD4/fuuFhxkyt5DK7pqKity0z9Utgk4VR\n6gEo/vWjB+22QA7Rqj6UZT7mvdTgT3+qhSpAmBthAoGBALZGCzjG4ZsOjG/R+C8q\nK1ZojMd0BxklGdK9ZmIcGBQn8PsFZ0akgyeZDNTeDINjCQwlM6h5nkR0mMYpyapt\niNWCnFDuD+4aEfaPDnhiaj4OONzs3DBA2ULqy0Yba0sH/zJTWDrcHDEjpgz1jzSr\ntf2YNku8O0MHxm75/nYwDJq0\n-----END PRIVATE KEY-----\n",
+            "serverCertificate": "-----BEGIN CERTIFICATE-----\nMIIDQzCCAiugAwIBAgIUSOmVminHqFtc1+XlJQOIQv9aGaowDQYJKoZIhvcNAQEL\nBQAwMDEuMCwGA1UEAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJv\neCBDQTAgFw0yNjEwMjAwOTA0NTBaGA8yMTI2MDkyNjA5MDQ1MFowMDEuMCwGA1UE\nAwwlSHR0cCBDbGllbnQgQXV0aGVudGljYXRpb24gc2FuZGJveCBDQTCCASIwDQYJ\nKoZIhvcNAQEBBQADggEPADCCAQoCggEBANNRJMDmNLuP7evTcdHjegnjuyew77Nk\nVHGqqsEOcAmbkd9CxYs6qe//ITHCJMeH+4TTW0SdBmTiE/42+fGWddQxXWtIXYaH\nEYjlnSDRNYgGRAcWIB2vovmSrs41Pk1eSl8uekOAedPUPLbu3g3eHiB92LEI2CoY\nt6AmQnkWWbxOTZ1AdnPK6InZMCbvxbF91BP3M1yfSYjdGb5Q3BWEBobIe9UE3K0c\nVfgOTgn48wqlzDhpZgbx15ZiOdvA/1BL1F34VmzX+bvH7JdnfE/XkB00O3PpUyf3\nO0JkMhoRDSc2PhC/HRaR+a+VwRzw8tL/mRFcKKIv2bu8jd/yCWZJ7rUCAwEAAaNT\nMFEwHQYDVR0OBBYEFEPcKFpwxBehbH8R94Xr6vPhwk8FMB8GA1UdIwQYMBaAFEPc\nKFpwxBehbH8R94Xr6vPhwk8FMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQEL\nBQADggEBAEeTg0m2O2a0AWOaZ/OvZ9+YHKLtOkt4WZxAjFjdlRRMFwAavNZ4tuhK\nUY0dtFGq532pir3hxt7+pIFs2ajydK3HYlfpM0Ik7OjM4ZNERVe7xEjB02p7jFyv\nzt87y06MA1U8ip1gHB0B/O4FY7gVpy9J/zzeWiFyJ5rQcu/9xVSIEqy9TT9VlWkw\noi5Hbx1+y3025+ysaz469tDDrh/M6T2RGMvG00Y1jdAK6+SDO8p7vUdaMBQLUpYf\nEhV/2k3L4AGXUjIBjuKhP4y5yGtewYm7pGp6qoLgqG6ZU4gYdcdea6bWcAF31UYi\n7xFjibc1aYEPqhJ0oVPNmb8oxCcobJQ=\n-----END CERTIFICATE-----\n"
+        }
+    },
+    {
+        "id": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d07",
+        "title": "Notificaties API via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "notificatiesapi",
+        "properties": {
+            "url": "https://127.0.0.1:8445/api/v1/",
+            "callbackUrl": "http://host.docker.internal:8080/api/v1/notificatiesapi/callback?configuration=mtls-gateway",
+            "authenticationPluginConfiguration": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d06"
+        }
+    }
+]

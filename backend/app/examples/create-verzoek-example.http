@@ -1,0 +1,62 @@
+# Creates a verzoek object in the Objects API through the mTLS gateway. Run it with the "mtls" environment
+# (http-client.private.env.json), which presents the sandbox client certificate.
+#
+# The Objects API notifies Open Notificaties (kanaal "objecten"), which calls Valtimo back. The Verzoek plugin then
+# fetches the verzoek, creates an mTLS gateway case, creates a zaak in Open Zaak with the BSN as initiator, and starts
+# the "mtls-gateway-process". Valtimo reaches the Objects API, Open Zaak and Open Notificaties only through the mTLS
+# gateway.
+#
+# The objecttype URL is the address the Objects API knows the Objecttypen API by: directly, at
+# http://host.docker.internal:8011. The Objecttypen API is not behind the gateway.
+@keycloak_token_url = http://localhost:8081/auth/realms/valtimo/protocol/openid-connect/token
+@valtimo_url = http://localhost:8080
+@objects_api_url = https://127.0.0.1:8443/api/v2/objects
+@token = 182c13e2209161852c53cef53a879f7a2f923430
+@objecttype_url = http://host.docker.internal:8011/api/v2/objecttypes/a6f2e8b1-6c3d-4f7e-9b2a-1d5c8e0f3a74
+@objecttype_version = 1
+
+### Log in to Valtimo as admin
+POST {{keycloak_token_url}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=valtimo-console&username=admin&password=admin
+
+> {% client.global.set("valtimo_token", response.body.access_token); %}
+
+### Link the zaaktype to the mTLS gateway case (once per fresh sandbox; Valtimo 12 can't autodeploy zaaktype links)
+# The Verzoek plugin reads the zaaktype from this link. A second run fails because the link already exists.
+POST {{valtimo_url}}/api/management/v1/zaak-type-link
+Authorization: Bearer {{valtimo_token}}
+Content-Type: application/json
+
+{
+    "documentDefinitionName": "mtls-gateway",
+    "zaakTypeUrl": "https://127.0.0.1:8444/catalogi/api/v1/zaaktypen/744ca059-f412-49d4-8963-5800e4afd486",
+    "zakenApiPluginConfigurationId": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d05",
+    "createWithDossier": true,
+    "rsin": "002564440"
+}
+
+### Create verzoek
+POST {{objects_api_url}}
+Authorization: Token {{token}}
+Content-Crs: EPSG:4326
+Content-Type: application/json
+
+{
+    "type": "{{objecttype_url}}",
+    "record": {
+        "typeVersion": {{objecttype_version}},
+        "data": {
+            "type": "mtls-gateway",
+            "bsn": "999991322",
+            "data": {
+                "name": "Celeste Avion {{$random.alphanumeric(4)}}"
+            },
+            "language_code": "nl",
+            "submission_id": "",
+            "public_reference": "OF-{{$random.alphanumeric(8)}}"
+        },
+        "startAt": "2026-01-01"
+    }
+}

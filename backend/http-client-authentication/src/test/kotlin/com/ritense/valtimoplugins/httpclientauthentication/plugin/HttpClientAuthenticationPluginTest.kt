@@ -229,6 +229,23 @@ internal class HttpClientAuthenticationPluginTest {
     }
 
     @Test
+    fun `should reuse the mutual TLS connection for the next request`() {
+        MtlsTestServer().use { server ->
+            val plugin =
+                plugin(AuthenticationType.NONE) {
+                    clientCertificate = TlsFixtures.CLIENT_CERTIFICATE
+                    clientPrivateKey = TlsFixtures.CLIENT_PRIVATE_KEY
+                    serverCertificate = TlsFixtures.CA_CERTIFICATE
+                }
+
+            call(plugin, server.baseUrl)
+            call(plugin, server.baseUrl)
+
+            assertEquals(1, server.receivedRequests.map { it.clientPort }.distinct().size)
+        }
+    }
+
+    @Test
     fun `should read a PKCS1 private key`() {
         MtlsTestServer().use { server ->
             val plugin =

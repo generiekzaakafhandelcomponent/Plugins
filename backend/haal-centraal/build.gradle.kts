@@ -15,7 +15,6 @@
  *
  */
 
-val httpClientAuthenticationPluginVersion: String by project
 val mockitoKotlinVersion: String by project
 
 dockerCompose {
@@ -34,7 +33,7 @@ dockerCompose {
 
         implementation(project(":backend:freemarker"))
         implementation(project(":backend:object-management"))
-        implementation("com.ritense.valtimoplugins:http-client-authentication:$httpClientAuthenticationPluginVersion")
+        implementation(project(":backend:http-client-authentication"))
 
         // Testing
         testImplementation("com.ritense.valtimo:local-resource")

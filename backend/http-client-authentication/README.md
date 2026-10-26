@@ -106,7 +106,7 @@ must be correct before you save it.
 ## Configuration files
 
 Configurations can also be deployed with a `*.pluginconfig.json` file. These are checked in the same way as in the
-screen; an invalid configuration stops the application from starting. The plugin key is
+screen; Valtimo logs an invalid configuration and skips it and the rest of its file. The plugin key is
 `http-client-authentication-plugin`, and the property names are:
 
 | Property             | Field in the screen                    | Values                                              |
@@ -137,6 +137,76 @@ class SomeOtherPlugin(
 ```
 
 The plugin has no process actions.
+
+## Testing mutual TLS in the sandbox
+
+The sandbox (`backend/app/docker-compose.yml`) contains `mtls-gateway`, an nginx gateway that only lets requests
+through when they present a client certificate signed by the sandbox CA, like the gateway in front of the ZGW APIs at a
+municipality.
+
+| Gateway                  | Forwards to                             |
+|--------------------------|-----------------------------------------|
+| `https://127.0.0.1:8443` | Objecten API (`objecten-api`)           |
+| `https://127.0.0.1:8444` | Open Zaak (`openzaak`)                  |
+| `https://127.0.0.1:8445` | Open Notificaties (`open-notificaties`) |
+
+The sandbox autodeploys these configurations through the gateway
+([mtls-gateway.pluginconfig.json](../app/src/main/resources/config/plugin/mtls-gateway.pluginconfig.json)), next to the
+plain ones:
+
+| Configuration                                     | Plugin                     | Settings                                                                    |
+|---------------------------------------------------|----------------------------|-----------------------------------------------------------------------------|
+| Objects API Authentication via mTLS gateway       | Http Client Authentication | Token, client certificate and private key, sandbox CA as server certificate |
+| Objects API via mTLS gateway                      | Objecten API               | `https://127.0.0.1:8443/api/v2/`                                            |
+| Open Zaak Authentication via mTLS gateway         | Http Client Authentication | Client ID and secret (`valtimo_client`), same certificates                  |
+| Catalogi API via mTLS gateway                     | Catalogi API               | `https://127.0.0.1:8444/catalogi/api/v1/`                                   |
+| Zaken API via mTLS gateway                        | Zaken API                  | `https://127.0.0.1:8444/zaken/api/v1/`                                      |
+| Documenten API via mTLS gateway                   | Documenten API             | `https://127.0.0.1:8444/documenten/api/v1`, bronorganisatie `051845623`     |
+| Open Notificaties Authentication via mTLS gateway | Http Client Authentication | Client ID and secret (`valtimo`), same certificates                         |
+| Notificaties API via mTLS gateway                 | Notificaties API           | `https://127.0.0.1:8445/api/v1/`, its own callback URL (see below)          |
+
+The object management configuration *Bomen via mTLS gateway* uses the Objects API through the gateway, so
+*Objects → Bomen via mTLS gateway* shows its objects only when the client certificate is presented. The zaaktypes of the
+Catalogi API via the gateway appear next to the regular ones, with `https://127.0.0.1:8444` URLs.
+
+The Objecttypen API is not behind the gateway. The objecttype URL is an identifier, not only an address: the Objects API
+only accepts objecttype URLs under the address it knows the Objecttypen API by, and Valtimo builds that URL from its
+Objecttypes API configuration. Putting the Objecttypen API behind the gateway would make the Objects API, which every
+case shares, depend on the gateway too. So the mTLS object management configurations use the plain
+*Objecttypes API (Autodeployed)*.
+
+*Notificaties API via mTLS gateway* registers its own abonnement in the same Open Notificaties as
+*Notificaties API (Autodeployed)*. Valtimo removes abonnementen with a configuration's callback URL that it doesn't track,
+and it sees the abonnement of the other configuration under a different URL. So the configuration through the gateway
+has its own callback URL, `…/notificatiesapi/callback?configuration=mtls-gateway`, and the two leave each other's
+abonnement alone. A notification that reaches Valtimo through both abonnementen is processed once.
+
+The case *mTLS gateway* shows the whole route: [create-verzoek-example.http](../app/examples/create-verzoek-example.http)
+creates a verzoek in the Objects API through the gateway, and the *Verzoek via mTLS gateway* configuration turns it into
+a case. It starts `mtls-gateway-create-zaakdossier`, a copy of Valtimo's `create-zaakdossier` whose actions use
+*Zaken API via mTLS gateway*, so other cases that use `create-zaakdossier` don't go through the gateway.
+
+The gateway logs every request with the client certificate it received and the authentication scheme (never the
+secret):
+
+```shell
+docker logs -f valtimo-plugins-local-mtls-gateway
+# 192.168.65.1 "GET /api/v2/objects?... HTTP/1.1" 200 client="CN=valtimo-sandbox-client" verify=SUCCESS authorization="Token"
+```
+
+A request without a client certificate is refused with `400 No required SSL certificate was sent`. To call the gateway
+by hand:
+
+```shell
+cd backend/app/imports/mtls-gateway/certs
+curl --cacert ca.pem --cert client.pem --key client-key.pem \
+  -H 'Authorization: Token 182c13e2209161852c53cef53a879f7a2f923430' https://127.0.0.1:8443/api/v2/objects
+```
+
+The certificates in [imports/mtls-gateway/certs](../app/imports/mtls-gateway/certs) are throwaway test material.
+[generate-certs.sh](../app/imports/mtls-gateway/generate-certs.sh) creates new ones and rewrites
+`mtls-gateway.pluginconfig.json` to match. Valtimo's docker filter (`valtimo.docker.filter`) only rewrites
+`http://localhost` URLs, so it leaves the `https://` gateway URLs alone.
 
 ## Release notes
 

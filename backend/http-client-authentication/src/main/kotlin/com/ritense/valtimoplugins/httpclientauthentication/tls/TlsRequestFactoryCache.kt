@@ -47,6 +47,8 @@ class TlsRequestFactoryCache(
                 .custom()
                 .useSystemProperties()
                 .setConnectionManager(connectionManager)
+                // The pool is per certificate set already; its client principal as state would block reuse
+                .disableConnectionState()
                 .build()
         // Same timeouts and buffering as Valtimo's ApacheRequestFactoryCustomizer
         val requestFactory =

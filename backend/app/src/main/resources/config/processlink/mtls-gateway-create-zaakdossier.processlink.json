@@ -1,0 +1,37 @@
+[
+  {
+    "activityId": "create-zaak",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d05",
+    "pluginActionDefinitionKey": "create-zaak",
+    "actionProperties": {
+      "rsin": "pv:RSIN",
+      "zaaktypeUrl": "pv:zaakTypeUrl"
+    }
+  },
+  {
+    "activityId": "create-initiator-zaak-rol",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d05",
+    "pluginActionDefinitionKey": "create-natuurlijk-persoon-zaak-rol",
+    "actionProperties": {
+      "roltypeUrl": "pv:rolTypeUrl",
+      "rolToelichting": "pv:rolDescription",
+      "inpBsn": "pv:initiatorValue"
+    }
+  },
+  {
+    "activityId": "link-document-to-zaak",
+    "activityType": "bpmn:ServiceTask:start",
+    "processLinkType": "plugin",
+    "pluginConfigurationId": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d05",
+    "pluginActionDefinitionKey": "link-document-to-zaak",
+    "actionProperties": {
+      "documentUrl": "pv:documentUrl",
+      "titel": "Verzoek document",
+      "beschrijving": "Document dat hoort bij het verzoek"
+    }
+  }
+]

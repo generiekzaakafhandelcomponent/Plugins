@@ -1,0 +1,30 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "key": "html",
+      "type": "htmlelement",
+      "input": false,
+      "label": "Instructions",
+      "content": "Start a new mTLS gateway case. The zaak and its documents are stored in Open Zaak via the mTLS gateway.",
+      "tableView": false,
+      "refreshOnChange": false
+    },
+    {
+      "key": "name",
+      "type": "textfield",
+      "input": true,
+      "label": "Name",
+      "tableView": true,
+      "applyMaskOn": "change"
+    },
+    {
+      "key": "submit",
+      "type": "button",
+      "input": true,
+      "label": "Start",
+      "tableView": false,
+      "disableOnInvalid": true
+    }
+  ]
+}

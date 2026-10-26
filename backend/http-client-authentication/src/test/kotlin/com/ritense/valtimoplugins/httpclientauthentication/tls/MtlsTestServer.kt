@@ -67,7 +67,9 @@ class MtlsTestServer(
                 ((exchange as HttpsExchange).sslSession.peerCertificates.first() as X509Certificate)
                     .subjectX500Principal.name
             val request = "${exchange.requestMethod} ${exchange.requestURI.path}"
-            receivedRequests.add(ReceivedRequest(request, receivedClientCertificateSubject, receivedAuthorization))
+            receivedRequests.add(
+                ReceivedRequest(request, receivedClientCertificateSubject, receivedAuthorization, exchange.remoteAddress.port),
+            )
             val body = (responses[request] ?: responseBody).toByteArray()
             exchange.responseHeaders.add("Content-Type", "application/json")
             exchange.sendResponseHeaders(200, body.size.toLong())
@@ -87,5 +89,6 @@ class MtlsTestServer(
         val request: String,
         val clientCertificateSubject: String?,
         val authorization: String?,
+        val clientPort: Int,
     )
 }

@@ -1,0 +1,7 @@
+[
+  {
+    "processDefinitionKey": "mtls-gateway-process",
+    "canInitializeDocument": true,
+    "startableByUser": true
+  }
+]

@@ -1,0 +1,29 @@
+[
+    {
+        "id": "4f0f9a52-2a3b-4c1d-8e6f-5a7b9c0d1e22",
+        "title": "Verzoek via mTLS gateway (Autodeployed)",
+        "pluginDefinitionKey": "verzoek",
+        "properties": {
+            "notificatiesApiPluginConfiguration": "7c0b1a52-4f0e-4c55-9a0e-6f3e7e2a1d07",
+            "processToStart": "mtls-gateway-create-zaakdossier",
+            "rsin": "002564440",
+            "verzoekProperties": [
+                {
+                    "type": "mtls-gateway",
+                    "caseDefinitionName": "mtls-gateway",
+                    "processDefinitionKey": "mtls-gateway-process",
+                    "objectManagementId": "4f0f9a52-2a3b-4c1d-8e6f-5a7b9c0d1e21",
+                    "initiatorRoltypeUrl": "https://127.0.0.1:8444/catalogi/api/v1/roltypen/1c359a1b-c38d-47b8-bed5-994db88ead61",
+                    "initiatorRolDescription": "Aanvrager",
+                    "copyStrategy": "specified",
+                    "mapping": [
+                        {
+                            "source": "/name",
+                            "target": "doc:/name"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

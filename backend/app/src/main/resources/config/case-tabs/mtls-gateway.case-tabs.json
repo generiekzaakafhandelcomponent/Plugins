@@ -1,0 +1,34 @@
+{
+  "changesetId": "mtls-gateway.case-tabs.1792742400000",
+  "case-definitions": [
+    {
+      "key": "mtls-gateway",
+      "tabs": [
+        {
+          "key": "summary",
+          "name": "Summary",
+          "type": "widgets",
+          "contentKey": "-"
+        },
+        {
+          "key": "progress",
+          "name": "Progress",
+          "type": "standard",
+          "contentKey": "progress"
+        },
+        {
+          "key": "documents",
+          "name": "Documents",
+          "type": "standard",
+          "contentKey": "documents"
+        },
+        {
+          "key": "audit",
+          "name": "Audit",
+          "type": "standard",
+          "contentKey": "audit"
+        }
+      ]
+    }
+  ]
+}
