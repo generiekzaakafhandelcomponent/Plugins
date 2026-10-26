@@ -50,11 +50,9 @@ const httpClientAuthenticationPluginSpecification: PluginSpecification = {
             authHeaderName: 'Authenticatie header naam',
             authHeaderNamePlaceholder: 'X-Api-Key',
             authSecret: 'Authenticatie secret',
-            authSecretPlaceholder: '0000000000000000000000000000000000000000',
             clientId: 'Client ID',
             clientIdPlaceholder: 'valtimo_client',
             clientSecret: 'Client secret',
-            clientSecretPlaceholder: '00000000-0000-0000-0000-000000000000',
             clientSecretTooltip: 'Minimaal 32 tekens. Wordt gebruikt om het ZGW JWT-token te ondertekenen.',
             tlsEnabled: 'Certificaten (mutual TLS)',
             tlsEnabledTooltip:
@@ -64,15 +62,14 @@ const httpClientAuthenticationPluginSpecification: PluginSpecification = {
             clientCertificate: 'Clientcertificaat (PEM)',
             clientCertificateTooltip:
                 'Optioneel. Het certificaat waarmee GZAC zich bij mutual TLS identificeert. Leeg laten schakelt mutual TLS uit.',
-            clientCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END CERTIFICATE-----',
+            clientCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----',
             clientPrivateKey: 'Private key van het clientcertificaat (PEM)',
             clientPrivateKeyTooltip:
                 'Verplicht bij een nieuw clientcertificaat. Mag niet versleuteld zijn. Wordt na opslaan niet meer getoond; leeg laten behoudt de opgeslagen sleutel.',
-            clientPrivateKeyPlaceholder: '-----BEGIN PRIVATE KEY-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END PRIVATE KEY-----',
-            serverCertificate: 'Servercertificaat (PEM)',
+            serverCertificate: 'Servercertificaat (PEM, optioneel)',
             serverCertificateTooltip:
                 'Optioneel. Het CA- of servercertificaat dat vertrouwd wordt in plaats van de standaardlijst van de JVM.',
-            serverCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END CERTIFICATE-----'
+            serverCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----'
         },
         en: {
             configurationTitle: 'Configuration name',
@@ -85,11 +82,9 @@ const httpClientAuthenticationPluginSpecification: PluginSpecification = {
             authHeaderName: 'Authentication header name',
             authHeaderNamePlaceholder: 'X-Api-Key',
             authSecret: 'Authentication secret',
-            authSecretPlaceholder: '0000000000000000000000000000000000000000',
             clientId: 'Client ID',
             clientIdPlaceholder: 'valtimo_client',
             clientSecret: 'Client secret',
-            clientSecretPlaceholder: '00000000-0000-0000-0000-000000000000',
             clientSecretTooltip: 'At least 32 characters. Used to sign the ZGW JWT token.',
             tlsEnabled: 'Certificates (mutual TLS)',
             tlsEnabledTooltip:
@@ -99,15 +94,14 @@ const httpClientAuthenticationPluginSpecification: PluginSpecification = {
             clientCertificate: 'Client certificate (PEM)',
             clientCertificateTooltip:
                 'Optional. The certificate GZAC presents for mutual TLS. Leave empty to turn mutual TLS off.',
-            clientCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END CERTIFICATE-----',
+            clientCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----',
             clientPrivateKey: 'Client certificate private key (PEM)',
             clientPrivateKeyTooltip:
                 'Required with a new client certificate. Must not be encrypted. Not shown again after saving; leave empty to keep the stored key.',
-            clientPrivateKeyPlaceholder: '-----BEGIN PRIVATE KEY-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END PRIVATE KEY-----',
-            serverCertificate: 'Server certificate (PEM)',
+            serverCertificate: 'Server certificate (PEM, optional)',
             serverCertificateTooltip:
                 'Optional. The CA or server certificate to trust instead of the JVM default list.',
-            serverCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n...\n-----END CERTIFICATE-----'
+            serverCertificatePlaceholder: '-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----'
         }
     }
 };

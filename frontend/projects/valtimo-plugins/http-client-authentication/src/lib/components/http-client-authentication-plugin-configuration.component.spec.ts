@@ -250,22 +250,21 @@ describe('HttpClientAuthenticationPluginConfigurationComponent screen', () => {
     });
 
     for (const language of ['nl', 'en'] as const) {
-        it(`shows a placeholder in every field in ${language}`, () => {
+        it(`shows a placeholder in every non-secret field in ${language}`, () => {
             const fixture = render(language);
             clickTlsToggle(fixture);
             const t = translations[language];
             expect(t.clientCertificatePlaceholder).toMatch(/^-----BEGIN CERTIFICATE-----\n\S+\n\.\.\.\n-----END CERTIFICATE-----$/);
-            expect(t.clientPrivateKeyPlaceholder).toMatch(/^-----BEGIN PRIVATE KEY-----\n\S+\n\.\.\.\n-----END PRIVATE KEY-----$/);
-            const expected: Record<string, [string, string][]> = {
+            const expected: Record<string, [string, string | null][]> = {
                 HEADER: [
                     ['configurationTitle', t.configurationTitlePlaceholder],
                     ['authHeaderName', t.authHeaderNamePlaceholder],
-                    ['authSecret', t.authSecretPlaceholder],
+                    ['authSecret', null],
                 ],
                 ZGW_JWT: [
                     ['configurationTitle', t.configurationTitlePlaceholder],
                     ['clientId', t.clientIdPlaceholder],
-                    ['authSecret', t.clientSecretPlaceholder],
+                    ['authSecret', null],
                 ],
             };
 
@@ -282,7 +281,7 @@ describe('HttpClientAuthenticationPluginConfigurationComponent screen', () => {
                 expect(placeholders).toEqual([
                     ...expected[authenticationType],
                     ['clientCertificate', t.clientCertificatePlaceholder],
-                    ['clientPrivateKey', t.clientPrivateKeyPlaceholder],
+                    ['clientPrivateKey', null],
                     ['serverCertificate', t.serverCertificatePlaceholder],
                 ]);
             }
