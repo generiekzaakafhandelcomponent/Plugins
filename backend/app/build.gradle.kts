@@ -1,4 +1,5 @@
 val kotlinLoggingVersion: String by project
+val httpClientAuthenticationPluginVersion: String by project
 
 dependencies {
     implementation(platform("com.ritense.valtimo:valtimo-dependency-versions"))
@@ -43,7 +44,8 @@ dependencies {
     implementation(project(":backend:value-mapper"))
     implementation(project(":backend:socrates"))
     implementation(project(":backend:printstraat"))
-    implementation(project(":backend:http-client-authentication"))
+    // Deprecated here; moved to github.com/generiekzaakafhandelcomponent/http-client-authentication-plugin
+    implementation("com.ritense.valtimoplugins:http-client-authentication:$httpClientAuthenticationPluginVersion")
 }
 
 tasks.jar {

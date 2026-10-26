@@ -138,7 +138,7 @@ import {
 import {
     HttpClientAuthenticationPluginModule,
     httpClientAuthenticationPluginSpecification
-} from "../../projects/valtimo-plugins/http-client-authentication/src/public-api";
+} from "@valtimo-plugins/http-client-authentication";
 import {LoggingModule} from '@valtimo/logging';
 import {DashboardModule} from "@valtimo/dashboard";
 import {DashboardManagementModule} from "@valtimo/dashboard-management";

@@ -175,7 +175,7 @@
     "@valtimo-plugins/valtimo-ocr": "file:dist/valtimo-plugins/valtimo-ocr",
     "@valtimo-plugins/valtimo-s2t": "file:dist/valtimo-plugins/valtimo-s2t",
     "@valtimo-plugins/xential": "file:dist/valtimo-plugins/xential",
-    "@valtimo-plugins/http-client-authentication": "file:dist/valtimo-plugins/http-client-authentication",
+    "@valtimo-plugins/http-client-authentication": "2.1.1-V12",
     "jasmine-core": "5.2.0",
     "karma": "6.4.4",
     "karma-chrome-launcher": "3.2.0",
