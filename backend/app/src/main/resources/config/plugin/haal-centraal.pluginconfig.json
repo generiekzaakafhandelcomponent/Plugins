@@ -1,8 +1,8 @@
 [
   {
-    "id": "6a6a3adc-ad44-4774-bcb0-b1a34c426561",
+    "id": "0b7d6c4e-2f1a-4e8b-9c3d-5a6e7f8091a2",
     "title": "Haal Centraal Token Exchange AUTH (autodeployed)",
-    "pluginDefinitionKey": "http-client-authentication-plugin",
+    "pluginDefinitionKey": "http-client-authentication",
     "properties": {
       "authenticationType": "TOKEN_EXCHANGE",
       "tokenEndpoint": "${HAALCENTRAAL_TOKEN_ENDPOINT}",
@@ -19,7 +19,7 @@
     "pluginDefinitionKey": "haalcentraalbrp",
     "properties": {
       "brpBaseUrl": "http://localhost:5010/haalcentraal/api/bewoning",
-      "authenticationPluginConfiguration": "6a6a3adc-ad44-4774-bcb0-b1a34c426561"
+      "authenticationPluginConfiguration": "0b7d6c4e-2f1a-4e8b-9c3d-5a6e7f8091a2"
     }
   },
   {
@@ -28,7 +28,7 @@
     "pluginDefinitionKey": "haalcentraalbag",
     "properties": {
       "bagBaseUrl": "http://localhost:5020/haalcentraal/api/bag/v1/",
-      "authenticationPluginConfiguration": "6a6a3adc-ad44-4774-bcb0-b1a34c426561"
+      "authenticationPluginConfiguration": "0b7d6c4e-2f1a-4e8b-9c3d-5a6e7f8091a2"
     }
   }
 ]

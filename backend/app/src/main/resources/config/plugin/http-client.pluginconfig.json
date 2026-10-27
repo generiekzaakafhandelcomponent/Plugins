@@ -1,8 +1,8 @@
 [
   {
-    "id": "5a47634f-2757-41ba-95de-4dec94752148",
+    "id": "1c8e7d5f-3a2b-4f9c-8d4e-6b7f809102b3",
     "title": "Generic auth plugin (autodeployed)",
-    "pluginDefinitionKey": "http-client-authentication-plugin",
+    "pluginDefinitionKey": "http-client-authentication",
     "properties": {
       "authenticationType": "NONE"
     }
