@@ -13,5 +13,5 @@ The Http Client Authentication plugin in this repository (`backend/http-client-a
   exact `-V12` version on Valtimo 12: a caret range such as `^2.1.0-V12` also matches the Valtimo 13 release 2.1.0.
 - Remove `http-client-authentication-plugin` from the application first: both contain the same classes.
 - The plugin key changed from `http-client-authentication-plugin` to `http-client-authentication`. Valtimo doesn't
-  change the key of a stored configuration, so existing configurations need `2.2.0-V12` or later, which moves them to
+  change the key of a stored configuration, so existing configurations need `2.2.1-V12` or later, which moves them to
   the new key when the application starts. Change the key in `*.pluginconfig.json` files as well, keeping their ids.
